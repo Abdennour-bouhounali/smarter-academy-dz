@@ -138,6 +138,26 @@ export function euclidLines(a, b) {
 }
 
 /**
+ * اللوح المشترك: the lengths a plank of d is laid along — the two numbers, their sum, their difference, the remainder of
+ * the greater by the smaller, three times the first — each with its planks and what is left. `fits` is computed per row,
+ * never stated: the drawing shows which lengths the plank fills.
+ */
+export function plankRows(a, b, d) {
+  const big = Math.max(a, b);
+  const small = Math.min(a, b);
+  const { q, r } = divide(big, small);
+  const row = (id, n, label) => ({ id, n, label, planks: Math.floor(n / d), left: n % d, fits: n % d === 0 });
+  return [
+    row('a', a, `${a}`),
+    row('b', b, `${b}`),
+    row('sum', a + b, `${a} + ${b} = ${a + b}`),
+    row('diff', big - small, `${big} − ${small} = ${big - small}`),
+    row('rest', r, `${big} = ${small} × ${q} + ${r}`),
+    row('triple', 3 * a, `3 × ${a} = ${3 * a}`),
+  ];
+}
+
+/**
  * « جرّب »: the small missions of each instrument. `seen` is the instrument's memory of what the student has already made
  * (a Set of facts written by `observe`); a quest is done when its fact is in it. Nothing here states a rule: a quest only
  * names something to MAKE; the instrument shows what happens.
@@ -162,6 +182,11 @@ export const QUESTS = {
     { id: 'all', text: 'اكشف كلّ قواسم عدد أكبر من 20.' },
     { id: 'odd', text: 'جد عددًا عدد قواسمه فردي.' },
     { id: 'two', text: 'جد عددًا أكبر من 10 له قاسمان فقط.' },
+  ],
+  planks: [
+    { id: 'both', text: 'جد لوحًا أطول من 1 يملأ الطولين الأوّلين معًا (بطولين مختلفين).' },
+    { id: 'sum', text: 'جد لوحًا يملأ المجموع ولا يملأ أيًّا من الطولين الأوّلين.' },
+    { id: 'rest', text: 'اجعل الباقي غير معدوم، ثمّ املأ الطولين الأوّلين بلوح أطول من 1.' },
   ],
   common: [
     { id: 'one', text: 'جد عددين (أكبر من 1) قاسمهما المشترك الوحيد هو 1.' },
@@ -223,6 +248,14 @@ export function observe(tool, st, seen) {
       if (all.length % 2 === 1 && a > 1) put('odd');
       if (all.length === 2 && a > 10) put('two');
     }
+  } else if (tool === 'planks') {
+    const { d } = st;
+    if (Number.isInteger(d) && d > 1) {
+      const both = a % d === 0 && b % d === 0;
+      if (both && a !== b) put('both');
+      if (a % d !== 0 && b % d !== 0 && (a + b) % d === 0) put('sum');
+      if (both && Math.max(a, b) % Math.min(a, b) !== 0) put('rest');
+    }
   } else if (tool === 'common') {
     const g = gcd(a, b);
     if (a > 1 && b > 1 && g === 1) put('one');
@@ -258,6 +291,11 @@ export function luckyPair(tool, rand = Math.random) {
   if (tool.id === 'paper') return { a: int(120, 999), b: int(6, 39) };
   if (tool.id === 'rules') return { a: int(10, 999) * (rand() < 0.5 ? 3 : 1), b: 1 };
   if (tool.id === 'euclid') return { a: int(12, 48), b: int(5, 30) };
+  if (tool.id === 'planks') {
+    // two lengths that share a plank longer than 1: something happens as soon as the plank is moved
+    const g = int(2, 9);
+    return { a: g * int(2, 6), b: g * int(1, 6) };
+  }
   if (tool.id === 'divisors' || tool.id === 'common')
     return { a: Math.min(ah, int(12, 72)), b: Math.min(bh, int(8, 60)) };
   const b = int(Math.max(bl, 2), Math.min(bh, 12));

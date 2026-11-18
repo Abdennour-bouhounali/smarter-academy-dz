@@ -117,6 +117,12 @@ Families on 2026-11-17 (the two prerequisites of the pilot lesson, then the pilo
 | `1am.m3.r02` | قواعد قابلية القسمة | sort by 2, by 5 | sort by 3, by 9, by 4 — with numbers chosen to trap the wrong rule | `rules` |
 | `4am.m1.r01` | قاسم عدد طبيعي | write « 42 = 6 × ▢ » (the equality that shows a divisor); sort three numbers: divisor of 36 or not — a multiple of it is a trap | sort three sentences « صحيحة / خاطئة » (« قاسم », « مضاعف », « يقبل القسمة »: true, turned round, or with a remainder); sort numbers where 1 or the number itself appears | `rows` |
 
+Lesson 3 « خواص قواسم عدد طبيعي » (`khawass-qawasim`, 2026-11-18) needs NO new family: its programme item is the same as
+lesson 2's (`4am.m1.r02`), so the net gives it the same single core tool, `4am.m1.r01` (`launchkit.test.js` checks it, and
+that every core link has a family). **Not in the net**: the Euclidean division, which its third property (the remainder)
+uses — no link `1am.m3.r01` / `2am.m1.r04` → `4am.m1.r02` exists, and adding one would change lesson 2's launch as well
+(they share the item). That is a learning-net decision (`LEARNING_NET.md`), not taken here.
+
 **A lesson with no family for its tools opens an EMPTY kit** (« عُدّتك جاهزة », 0 / 0 — seen by the owner on lesson 2,
 2026-11-17): a family per core tool is part of a lesson's definition of done (`status:lesson-v2`, part S1).
 
@@ -142,7 +148,7 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
 
 ## 7. Check
 
-- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (19 tests: families true and in range, named mistakes,
+- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (20 tests: families true and in range, the tools of lessons 2 and 3 read from the net, named mistakes,
   the engine — never one answer, the workshop, the caps, the fresh tools, the gate and its capsule, the honesty star — and
   the sounds).
 - Walk: `node apps/web/e2e/launch-kit.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): 56 checks — the

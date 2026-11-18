@@ -43,7 +43,7 @@ export const LESSON_PACK = {
 | `id` | the lesson's id — the generator fails when it differs from the folder | — |
 | `phone` | its home was designed AND walked on a phone held sideways (`GAME_WORLD.md` « On a phone ») | `components/auth/phoneLessons.js`, the launch kit |
 | `world` | `id` = a world of `gameworld/LessonGameWorld.jsx › WORLDS`; `content` = what the world is played with (`GAME_WORLD.md` §3 « The pilot's content ») | `LessonIndex.jsx`, `LessonGameWorld.jsx` |
-| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`) | « بطاقة المعارف » on the board, the exam coach |
+| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`); it may live in `world/knowledge.js` when the lesson's older `knowledge.jsx` still serves its old modules (`khawass-qawasim`) | « بطاقة المعارف » on the board, the exam coach |
 | `coach` | `{ <الكفاءة>: <knowledge item id> }` — the sheet « مدرّب الامتحان » reminds; needs `knowledge` | `features/practice/exam/examCoach.js` |
 | `board` | « حصّة القسم »: the lesson on the board (`script`) and its written memo (`memo`) — both or none. The teacher's card shows « في القسم » only for a lesson that has it; a class session with the tests alone, without a script, cannot be declared (the old `classSession: true` of the config is gone) | `boardLessons.js`, `ClassSessionPage`, `LessonMemoPage`, the teacher's card |
 

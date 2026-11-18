@@ -433,6 +433,12 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
 - **Tests at the commit**: web 18,067 and core 1,577 pass. API: 1,464 of 1,473 pass, 6 fail — `MathLabFileFlowTest` (the
   lock query; it fails the same way without this work's change) and five of `DbBackupCommandTest` (a command this work
   never touched; cause not investigated).
+  9. [x] LESSON 3 `khawass-qawasim` (خواص قواسم عدد طبيعي) — DONE 2026-11-18, report `LESSON_3_GATE_REPORT.md` (the
+     owner's validation and the retirement of the old modules remain). It prints ✅ on `status:lesson-v2`; its six walks
+     pass at 1366×768, 1024×768 and 1840×900. Its four keys are FORGED on four NEW investigation kinds added to the kit
+     (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « The eight kinds »). Open, for the owner: Euclidean division
+     is no prerequisite in the net; the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
+     kit still has at 1024×768 (shared with lessons 1–2).
 
 ## 4ter. When each item of 4bis is done
 
@@ -536,24 +542,27 @@ Rules of the order:
 
 ## 9. Prompt for the next session
 
-Rewritten 2026-11-18, after lessons 1 and 2 were finished (Phase 0 is done; phones are paused; the walks run on the
-GPU). Paste it as the first message of a new session. For the NEXT lesson after lesson 3, change the lesson id and its
+Rewritten 2026-11-18, after lessons 1, 2 and 3 were finished (Phase 0 is done; phones are paused; the walks run on the
+GPU). Paste it as the first message of a new session. For the NEXT lesson after lesson 4, change the lesson id and its
 title, and make the reference lesson the most recent one that is done. The earlier prompt (Phase 0, the gate on lesson 2)
 is in git history (`git log -p -- docs/reports/LESSON_V2_MASTER_PLAN.md`).
 
 ```text
-Build lesson 3 of the v2 rollout: `khawass-qawasim` (خواص قواسم عدد طبيعي), 4AM, unit
-aadad-tabiiya-natiqa. Lessons 1 (`qasim-adad-tabii`) and 2 (`qawasim-adad-tabii`) are DONE and print ✅; lesson 2 is
-your reference for how a lesson is built on the kit.
+Build lesson 4 of the v2 rollout: `qasim-mushtarak-akbar` (القاسم المشترك الأكبر لعددين طبيعيين), 4AM, unit
+aadad-tabiiya-natiqa. Lessons 1 (`qasim-adad-tabii`), 2 (`qawasim-adad-tabii`) and 3 (`khawass-qawasim`) are DONE and
+print ✅; lesson 3 is your reference for how a lesson is built on the kit (it also added four investigation kinds to
+the divisor-isles world: `join`, `stack`, `peel`, `letters` — reuse them, add a kind only when a rule fits none).
 
 READ FIRST, in this order, before touching anything:
 1. CLAUDE.md (the rules that bind every task; phones are PAUSED, laptop and tablet only)
 2. docs/reports/LESSON_V2_MASTER_PLAN.md §4ter-0 (live state), §6 (definition of done)
 3. docs/architecture/LESSON_V2.md, GAME_WORLD.md (the kit, a world, the forge, « استكشف »), LAUNCH_KIT.md,
    LESSON_LAB.md, CLASS_SESSION.md §5ter (the board)
-4. docs/reports/LESSON_2_GATE_REPORT.md — what lesson 2 took, what had to be copied, what the walks found
-5. the code of lesson 2 (apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/
-   qawasim-adad-tabii/: lesson.pack.js, world/, board/) and the kit it stands on (lessons/common/gameworld/kit/)
+4. docs/reports/LESSON_2_GATE_REPORT.md and LESSON_3_GATE_REPORT.md — what they took, what had to be copied, what the walks
+   found (lesson 3's walks found six real defects no unit test saw: write the walks EARLY and run them at the three sizes
+   as soon as a screen exists)
+5. the code of lesson 3 (apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/
+   khawass-qawasim/: lesson.pack.js, world/, board/) and the kit it stands on (lessons/common/gameworld/kit/)
 6. the unit's sources and the learning net for this lesson (docs/curriculum/…, LEARNING_NET.md): the الكفاءات
    come from there; the textbook is the reference, never the script, and never send a student to the book
 
@@ -574,15 +583,15 @@ Reuse the kit; fix a kit defect in the kit, never in the lesson. A lesson's cont
 through KidFigure, respect Islam in every string, money « دج », shapes in the brand blue, a formula never breaks,
 an answer is typed in its own shape, nothing scrolls, a card is four lines at most.
 
-STEP 3 — walks. Write the lesson's walks from lesson 2's (world, hub, trainer, sitting, board, launch kit) and PLAY
+STEP 3 — walks. Write the lesson's walks from lesson 3's (world, hub, trainer, sitting, board, launch kit) and PLAY
 every screen through its UI. They must pass at 1366×768, 1024×768 and 1840×900 (no phone). Look at the screenshots
 with your own eyes, student and teacher, and say which ones you did not look at. The walks check: no raw LaTeX,
 no number or word of another lesson, a way out on every screen, formulas read left to right, nothing cut.
 
-STEP 4 — the gate. `npm run status:lesson-v2 -- --lesson khawass-qawasim` prints ✅; unit tests, check:lessons,
+STEP 4 — the gate. `npm run status:lesson-v2 -- --lesson qasim-mushtarak-akbar` prints ✅; unit tests, check:lessons,
 check:unused, check:unreached, check:format and lint on what you changed pass; publish it locally (lesson `available`,
-modules and exercises `published`); write docs/reports/LESSON_3_GATE_REPORT.md (real time from git, lines written,
-what was copied from earlier lessons, what failed). Commit `feat(lessons): khawass-qawasim — v2`. STOP: I validate it.
+modules and exercises `published`); write docs/reports/LESSON_4_GATE_REPORT.md (real time from git, lines written,
+what was copied from earlier lessons, what failed). Commit `feat(lessons): qasim-mushtarak-akbar — v2`. STOP: I validate it.
 Do NOT delete the old modules or `?view=classic` (my decision, still open).
 
 WORKING LIMITS:

@@ -12,7 +12,9 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('qasim-adad-tabii')).toBe(true);
     expect(BOARD_LESSONS).toContain('qawasim-adad-tabii'); // lesson 2 joined with its script and memo (2026-11-18)
     expect(hasClassBoard('qawasim-adad-tabii')).toBe(true);
-    expect(hasClassBoard('khawass-qawasim')).toBe(false);
+    expect(BOARD_LESSONS).toContain('khawass-qawasim'); // lesson 3 joined with its script and memo (2026-11-18)
+    expect(hasClassBoard('khawass-qawasim')).toBe(true);
+    expect(hasClassBoard('qasim-mushtarak-akbar')).toBe(false);
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
     expect(config.id).toBe('qasim-adad-tabii');
@@ -40,18 +42,23 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       session: true,
     });
     expect(classDoor('khawass-qawasim', `${base}/khawass-qawasim`)).toEqual({
-      to: `${base}/khawass-qawasim`,
+      to: '/enseignant/hissa/khawass-qawasim',
+      state: undefined,
+      session: true,
+    });
+    expect(classDoor('qasim-mushtarak-akbar', `${base}/qasim-mushtarak-akbar`)).toEqual({
+      to: `${base}/qasim-mushtarak-akbar`,
       state: CLASSROOM_START_STATE,
       session: false,
     });
     expect(boardLessonOfPath(`${base}/qasim-adad-tabii/2`)).toBe('qasim-adad-tabii');
     expect(boardLessonOfPath(`${base}/qasim-adad-tabii?view=classic`)).toBe('qasim-adad-tabii');
     expect(boardLessonOfPath(`${base}/qawasim-adad-tabii/2`)).toBe('qawasim-adad-tabii');
-    expect(boardLessonOfPath(`${base}/khawass-qawasim/2`)).toBe(null);
+    expect(boardLessonOfPath(`${base}/khawass-qawasim/2`)).toBe('khawass-qawasim');
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
-    expect(canPresentPath(`${base}/khawass-qawasim/2`)).toBe(true);
+    expect(canPresentPath(`${base}/khawass-qawasim/2`)).toBe(false);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

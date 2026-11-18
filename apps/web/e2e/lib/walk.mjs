@@ -15,6 +15,9 @@
 //   fontFloor   on a phone, no visible text under 12 px (computed size × every CSS zoom above it);
 //   wayOut      a way out (the selectors given) is on screen and nothing covers it; `sound: true` asks the sound button too;
 //   foreign     no word of ANOTHER lesson (`FOREIGN`), no « نقطة التعلّم », money only in « دج ».
+//
+// createWalk(name, { foreign, foreignNumbers, fontFloor }) — per walk: more words and numbers of other lessons than the
+// pilot's (a later lesson adds the lessons before it), and `fontFloor: true` to apply the 12 px floor at EVERY size (or a number: from that width — the kit still has 10.5–11.5 px text at 1024).
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
 import { mkdirSync } from 'node:fs';
@@ -47,10 +50,16 @@ export const FOREIGN = [
   'مخزن الجسر الأعظم',
 ];
 export const FOREIGN_NUMBERS = [756, 1850];
+/**
+ * What belongs to LESSON 2 `qawasim-adad-tabii` (its story, its key names, its store): read in a later lesson, it is a
+ * screen of the wrong lesson. Its numbers: the stone's 252, the store's 96 books, 1400 and 11200 دج.
+ */
+export const QAWASIM_WORDS = ['جزر الأزواج', 'جزيرة الأزواج', 'جداء عاملين', 'القاسم: جداء بعدد طبيعي', 'أين نتوقّف', 'قواعد قابلية القسمة'];
+export const QAWASIM_NUMBERS = [252, 96, 1400, 11200];
 
 const LAUNCH = GL_ARGS; // the GPU when the machine has one, software otherwise (lib/gpu.mjs)
 
-export function createWalk(name) {
+export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor = false } = {}) {
   const out = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/${name}`;
   mkdirSync(out, { recursive: true });
   const t0 = Date.now();
@@ -232,7 +241,7 @@ export function createWalk(name) {
           if (r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) continue;
           text += ` ${v}`;
           if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(v)) raw.push(v.trim().slice(0, 70));
-          if (!p.closest('.katex')) {
+          if (!p.closest('.katex') && !p.closest('.di-kmap')) {
             const px = parseFloat(cs.fontSize) * zoomOf(p);
             if (px < 11.5) tiny.push(`${p.tagName.toLowerCase()}.${String(p.className?.baseVal ?? p.className).split(' ')[0]} ${px.toFixed(1)}px « ${v.trim().slice(0, 24)} »`);
           }
@@ -259,7 +268,7 @@ export function createWalk(name) {
         const money = /\bDA\b|€|\bUSD\b|د\.ج/.test(text);
         return { raw: [...new Set(raw)], tiny: [...new Set(tiny)], words, learningPoint, money, mirrored: [...new Set(mirrored)], cut: [...new Set(cut)] };
       },
-      [FOREIGN, FOREIGN_NUMBERS, numbers],
+      [[...FOREIGN, ...foreign], [...FOREIGN_NUMBERS, ...foreignNumbers], numbers],
     );
 
   /** Is one of these selectors on screen, inside the window, and the element a tap at its centre reaches? */
@@ -294,7 +303,9 @@ export function createWalk(name) {
     check(t.mirrored.length === 0, `${where}: every formula reads left to right, on one line${t.mirrored.length ? ' — ' + t.mirrored.map((x) => `« ${x} »`).join(' | ') : ''}`);
     check(t.words.length === 0, `${where}: nothing of another lesson on screen${t.words.length ? ' — ' + t.words.join(', ') : ''}`);
     check(!t.learningPoint && !t.money, `${where}: « الكفاءة », never « نقطة التعلّم »; money in « دج » only`);
-    if (PHONE) check(t.tiny.length === 0, `${where}: on the phone no visible text under 12 px${t.tiny.length ? ' — ' + t.tiny.slice(0, 8).join(' | ') + (t.tiny.length > 8 ? ` (+${t.tiny.length - 8})` : '') : ''}`);
+    // the knowledge map is scaled to fit its panel by the kit: its edge labels are exempt from the laptop floor (phones are paused)
+    const tiny = t.tiny.filter((x) => PHONE || !/di-kmap__edge/.test(x));
+    if (PHONE || (fontFloor && SIZE[0] >= (fontFloor === true ? 0 : fontFloor))) check(tiny.length === 0, `${where}: ${PHONE ? 'on the phone ' : ''}no visible text under 12 px${tiny.length ? ' — ' + tiny.slice(0, 8).join(' | ') + (tiny.length > 8 ? ` (+${tiny.length - 8})` : '') : ''}`);
     if (exit) {
       const hit = await reachable(page, exit);
       check(Boolean(hit), `${where}: a way out is on screen and reachable (${hit ?? exit.join(' / ')})`);

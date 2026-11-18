@@ -19,14 +19,18 @@ import { twin } from './longDivision';
 
 /** The statement of an exam question with its data underlined — the first gesture of the method: « أقرأ وأسطّر المعطيات ». */
 const Marked = ({ text }) =>
-  text.split(/(\d+)/).map((part, i) =>
-    /^\d+$/.test(part) ? (
-      <u key={i} dir="ltr">
-        {part}
-      </u>
-    ) : (
-      part
-    ),
+  text.includes('$') ? (
+    <MathText>{text}</MathText>
+  ) : (
+    text.split(/(\d+)/).map((part, i) =>
+      /^\d+$/.test(part) ? (
+        <u key={i} dir="ltr">
+          {part}
+        </u>
+      ) : (
+        part
+      ),
+    )
   );
 
 const L = {

@@ -168,7 +168,7 @@ await page.click('[data-ll-cabinet-open]'); await page.waitForSelector('[data-ll
   const grades = await page.locator('[data-ll-grade]').evaluateAll((els) => els.map((e) => e.dataset.llGrade));
   expect(grades.join() === '1am,4am', 'its cabinet has two grades: 1AM and the earlier lessons of 4AM');
   const lessons = await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson));
-  expect(lessons.join() === 'qasim-adad-tabii,qawasim-adad-tabii,qasim-mushtarak-akbar', 'the 4AM shelf: the three earlier lessons that have instruments');
+  expect(lessons.join() === 'qasim-adad-tabii,qawasim-adad-tabii,khawass-qawasim,qasim-mushtarak-akbar', 'the 4AM shelf: the four earlier lessons that have instruments');
   await shot('cabinet-pgcd');
   await page.click('[data-ll-grade="1am"]');
   expect((await page.locator('[data-ll-cabinet-tool]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetTool))).join() === 'paper,rules', 'the 1AM shelf is one tap away');
@@ -184,6 +184,13 @@ await dragTo('[data-ll-lens]', 896);
 expect(await page.getAttribute('[data-ll-divisors]', 'data-found') === '1,2,3,4,6,9,12,18,36' && await page.locator('[data-ll-complete]').count() === 1, 'قوس القواسم: sweeping the lens over the line finds the nine divisors of 36, each with its partner');
 expect(await quest('all') === '1' && await quest('odd') === '1', 'an odd number of divisors: the mission is ticked');
 await shot('divisors-36');
+await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="planks"]'); await page.waitForSelector('[data-ll-planks]');
+await setNum('a', 21); await setNum('b', 35);
+await dragTo('[data-ll-plank]', 236 + 7 * (672 / 63), 34); // the span is 3 × 21 = 63 units over 672 px
+expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '7' && await page.getAttribute('[data-ll-planks]', 'data-fits') === '111111' && await page.locator('[data-ll-both]').count() === 1, 'اللوح المشترك: a plank of 7 laid along 21 and 35 fills their sum, their difference, the remainder and 3 × 21');
+expect(await quest('both') === '1' && await quest('rest') === '1', 'two missions of the planks are ticked by what was made');
+await shot('planks-21-35-7');
+await setNum('a', 36); // the numbers are shared: the next instrument is read on 36
 await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="common"]'); await page.waitForSelector('[data-ll-view="common"]');
 await setNum('b', 24);
 expect(await page.getAttribute('[data-ll-pgcd]', 'data-ll-pgcd') === '12' && await page.locator('[data-ll-zone="both"] .ll-dchip.is-top').count() === 1 && (await page.locator('[data-ll-zone="both"] [data-ll-d]').evaluateAll((els) => els.map((e) => e.dataset.llD))).join() === '1,2,3,4,6,12', 'القواسم المشتركة of 36 and 24: 1, 2, 3, 4, 6, 12 — the 12 wears the crown');

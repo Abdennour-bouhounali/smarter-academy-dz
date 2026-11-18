@@ -188,7 +188,13 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
 - **The default test is a file of the repository**, `content/class-tests/<grade>/<lesson>.json` (`start`, `end`, and a
   `pool` of more prepared questions). It is never overwritten. Every question carries a `check` from which its answer is
   RE-COMPUTED by `defaultTests.test.js`, and for a choice every other option is proved wrong: a default test never ships a
-  wrong answer.
+  wrong answer. Files on 2026-11-18: `qasim-adad-tabii`, `qawasim-adad-tabii`, `khawass-qawasim` (lesson 3, written before
+  its board). Lesson 3 added the `check` types of a PROPERTY of divisors — `commonFactor` (« a ± b = d × … », d dividing
+  both), `multipleFactor` / `multipleDivides` (m × a), `converseSum` (d divides a + b but not each: the converse that does
+  not hold), `commonRemainder` / `remainderShares` (the remainder of the Euclidean division, the division written in the
+  text is checked), `letterProof` (« $a + b = d \times (k + m)$ »: an option proves it when its right side is d times a
+  bracket AND equals the left side for several k > m — evaluated, never read from the answer). A check also verifies that
+  the numbers it computes on are the ones written in the question.
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -243,7 +249,9 @@ only a rule that survived gets its NAME.** The teacher is never told what to say
 
 **The script is data** — the lesson's own `board/script.js` (`export const SCRIPT = { title, steps }`, named in its
 pack; the page loads it with `usePackPart(lessonId, 'script')`). A lesson without a script has no
-moment ③. Each step has `id`, `kind`, `chapter` (« نكتشف », « نستنتج », « نسمّي », « نكتب ») and `cue` — ONE oral question
+moment ③. Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
+board COMPUTES, then a `name` step that reads the lesson's own tablet; a long `cue` is cut in the footer at 1024 px, so keep it
+under about 70 characters, and a tablet's `math` holds at most two short equalities, or its row leaves the card). Each step has `id`, `kind`, `chapter` (« نكتشف », « نستنتج », « نسمّي », « نكتب ») and `cue` — ONE oral question
 shown in the footer for the teacher. Kinds, each drawn by one component of `LessonBoard.jsx`:
 
 | Kind | What the class does |

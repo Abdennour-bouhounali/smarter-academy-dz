@@ -9,6 +9,10 @@
  *   chart   « what to read instead of dividing? » — a chart of gaps (a row per tens digit, a column per units digit); the
  *           student tests gaps one after the other with ONE plank, then chooses a LENS (what he looks at in a number) and
  *           the values of that lens he claims hold: the chart answers (a lit cell left out, a dark cell taken in).
+ *   turn, cut           see `InquiryMoves.jsx`.
+ *   join, stack         gaps PUT TOGETHER — glued (a + b), cut (a − b), or k copies of one gap (`InquiryCombine.jsx`).
+ *   peel, letters       the piece left when b is peeled off a, then a claim on the table; a proof assembled from cards
+ *                       (`InquiryProof.jsx`).
  *
  * Nothing here says a rule. The verdict is always a fact of the chart or of the strip.
  */
@@ -109,3 +113,80 @@ export function quotientTex(a, b) {
   const two = Math.floor(v * 100) / 100;
   return `${String(two).replace('.', '{,}')}${Math.abs(two - v) > 1e-9 ? '\\dots' : ''}`;
 }
+
+// ───────────────────────── join: two gaps glued end to end, or the shorter cut off the longer ─────────────────────────
+/**
+ * Plank d on the gaps a and b, then on the gap they make together: glued (`sum`, a + b) or cut (`diff`, a − b, a ≥ b).
+ * Every field is a FACT the world draws: the planks each gap takes, whether it is filled, and the piece the new gap leaves.
+ */
+export function joinOf(d, a, b, op) {
+  if (op === 'diff' && b > a) throw new RangeError(`join: ${a} − ${b} is not a gap`);
+  const value = op === 'sum' ? a + b : a - b;
+  return {
+    value,
+    planksA: Math.floor(a / d),
+    planksB: Math.floor(b / d),
+    fillsA: a % d === 0,
+    fillsB: b % d === 0,
+    planks: Math.floor(value / d),
+    rest: value % d,
+    holds: value % d === 0,
+  };
+}
+
+// ───────────────────────── stack: k copies of one gap, glued end to end ─────────────────────────
+/** Plank d on k copies of the gap `base`: the whole gap, the planks it takes, the piece left. */
+export function stackOf(d, base, k) {
+  const total = k * base;
+  return { total, planks: Math.floor(total / d), rest: total % d, holds: total % d === 0, fillsBase: base % d === 0 };
+}
+
+// ───────────────────────── peel: planks of b laid on a until a piece shorter than b is left ─────────────────────────
+/** The gap a peeled by planks of b: every length left (a, a − b, a − 2b … r), how many planks (q) and the piece r < b. */
+export function peelOf(a, b) {
+  if (!(b > 0 && a >= b)) throw new RangeError(`peel: ${a} by ${b}`);
+  const steps = [a];
+  while (steps.at(-1) >= b) steps.push(steps.at(-1) - b);
+  return { q: steps.length - 1, r: steps.at(-1), steps };
+}
+/** Does plank d fill the gap a, the gap b, the piece r left when b is peeled off a? (three facts of one row) */
+export const fitsRow = (a, b, d) => ({ a: a % d === 0, b: b % d === 0, r: (a % b) % d === 0 });
+/**
+ * His claim « when a plank fills [the column(s) he chose], it fills the piece left », put in front of the table of every
+ * round. `claim = { cols: ['a'] | ['b'] | ['a', 'b'], link: 'and' | 'or' }` (`link` counts only with two columns).
+ *   taken      the rows his claim takes in (every row when no column is chosen)
+ *   intruders  rows it takes in whose plank does NOT fill the piece — the only thing that refutes it
+ *   orphans    rows whose plank fills the piece although the claim does not take them in (a fact; it refutes nothing)
+ * `ok`: a column is chosen, at least one row is taken, and no row is an intruder.
+ */
+export function judgePeelClaim(rounds, claim) {
+  const cols = claim?.cols ?? [];
+  const takes = (f) => (cols.length > 1 && claim.link === 'or' ? cols.some((c) => f[c]) : cols.every((c) => f[c]));
+  const rows = rounds.flatMap(({ a, b, candidates }) =>
+    candidates.map((d) => ({ ...fitsRow(a, b, d), gap: a, bridge: b, d })),
+  );
+  const taken = rows.filter(takes);
+  const intruders = taken.filter((f) => !f.r);
+  const orphans = rows.filter((f) => f.r && !takes(f));
+  return { taken, intruders, orphans, ok: cols.length > 0 && taken.length > 0 && intruders.length === 0 };
+}
+
+// ───────────────────────── letters: a proof assembled from cards ─────────────────────────
+/**
+ * Walks a proof in the order of `ids`: each card may use only what the statement (`given`) or a card ABOVE it introduced
+ * (`card.needs` ⊆ what came before; `card.gives` is what it introduces). `{ ok, at, missing }`: `at` = the first card
+ * that uses something not written yet, `missing` = what it uses (tokens of the lesson, e.g. « k′ »).
+ */
+export function checkProofOrder(cards, ids, given = []) {
+  const byId = Object.fromEntries(cards.map((c) => [c.id, c]));
+  const known = new Set(given);
+  for (let i = 0; i < ids.length; i += 1) {
+    const c = byId[ids[i]];
+    const missing = (c.needs ?? []).filter((t) => !known.has(t));
+    if (missing.length) return { ok: false, at: i, missing };
+    for (const t of c.gives ?? []) known.add(t);
+  }
+  return { ok: true, at: -1, missing: [] };
+}
+/** The first sample of numbers on which a card's line is FALSE (`card.holdsOn(sample)`), or null: the world's answer to a line. */
+export const refuteCard = (card, samples) => samples.find((s) => !card.holdsOn(s)) ?? null;

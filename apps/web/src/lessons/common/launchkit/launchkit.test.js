@@ -204,6 +204,14 @@ describe('عُدّة الانطلاق — the question families', () => {
     expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['4am.m1.r01', 'qasim-adad-tabii', 'core']]);
   });
 
+  it('takes the tool of « خواص قواسم عدد طبيعي » from the learning net: the same core الكفاءة, which has its family', () => {
+    const links = toolsForLesson('khawass-qawasim');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['4am.m1.r01', 'qasim-adad-tabii', 'core']]);
+    // every CORE link of the net has a family: the launch of lesson 3 is never an empty kit (LAUNCH_KIT.md §4)
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+  });
+
   it('changes the form of the question inside a launch', () => {
     expect(pickForm('1am.m3.r01', 1, [])).toBe('write');
     expect(pickForm('1am.m3.r01', 1, ['1:write'])).toBe('place');

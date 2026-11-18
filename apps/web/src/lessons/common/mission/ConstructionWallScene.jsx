@@ -14,7 +14,7 @@ const SLOTS = Array.from({ length: COURSES }, (_, row) => Array.from({ length: P
 }))).flat();
 
 /**
- * Le chantier de la mission « ورشة البناء » (leçon khawass-qawasim, rollout 2026-11-08) — dessiné en code (CLAUDE.md : aucune image
+ * Le chantier de la mission « ورشة البناء » (leçon des خواص القواسم, rollout 2026-11-08) — dessiné en code (CLAUDE.md : aucune image
  * générée dans les leçons). Un mur en briques posées en quinconce, une pile de briques, un apprenti dessiné par `KidFigure`.
  * `fill` ∈ [0, 1] : la part du mur déjà bâtie — elle SUIT les outils gagnés ; la pile s'efface d'autant. La scène ne montre aucun
  * nombre de la مسألة (ni les longueurs des murs, ni leur nombre de rangées) ; seule la brique de 25 porte son nom. Le texte arabe

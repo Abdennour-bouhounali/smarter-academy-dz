@@ -15,6 +15,7 @@ import {
   divisorPairs,
   divisorsOf,
   gcd,
+  plankRows,
   QUESTS,
   observe,
   luckyPair,
@@ -76,9 +77,21 @@ describe('مختبري — the instruments a lesson may show', () => {
     expect(lab.cabinet[1].lessons.map((l) => l.code)).toEqual([
       'qasim-adad-tabii',
       'qawasim-adad-tabii',
+      'khawass-qawasim',
       'qasim-mushtarak-akbar',
     ]);
     expect(lab.all.length).toBe(TOOLS.length);
+  });
+
+  it('« خواص قواسم عدد طبيعي »: its own instrument, and the instruments of the two 4AM lessons before it', () => {
+    const lab = toolsFor('khawass-qawasim');
+    expect(lab.mine.map((t) => t.id)).toEqual(['planks']);
+    expect(lab.cabinet.find((g) => g.grade === '4am').lessons.map((l) => l.code)).toEqual([
+      'qasim-adad-tabii',
+      'qawasim-adad-tabii',
+    ]);
+    expect(lab.all.map((t) => t.id)).not.toContain('common');
+    expect(toolsFor('qawasim-adad-tabii').all.map((t) => t.id)).not.toContain('planks');
   });
 
   it('never shows an instrument of the future, for ANY lesson of the cycle', () => {
@@ -159,6 +172,28 @@ describe('مختبري — the mathematics the instruments draw', () => {
       }
     expect(euclidSquares(48, 18).squares.map((s) => s.side)).toEqual([18, 18, 12, 6, 6]);
   });
+  it('lays one plank along the six lengths: what it fills is computed, and a plank that fills both numbers fills them all', () => {
+    const bad = [];
+    for (let a = 1; a <= 60; a += 1)
+      for (let b = 1; b <= 60; b += 1)
+        for (let d = 1; d <= 60; d += 1) {
+          const rows = plankRows(a, b, d);
+          const [big, small] = [Math.max(a, b), Math.min(a, b)];
+          const want = [a, b, a + b, big - small, big % small, 3 * a];
+          const ok =
+            rows.map((r) => r.id).join() === 'a,b,sum,diff,rest,triple' &&
+            rows.every(
+              (r, i) => r.n === want[i] && r.planks * d + r.left === r.n && r.left < d && r.fits === (r.n % d === 0),
+            ) &&
+            (!(rows[0].fits && rows[1].fits) || rows.every((r) => r.fits)) &&
+            (!rows[0].fits || rows[5].fits);
+          if (!ok) bad.push(`${a} ${b} ${d}`);
+        }
+    expect(bad).toEqual([]);
+    expect(plankRows(22, 20, 7).map((r) => r.fits)).toEqual([false, false, true, false, false, false]); // the sum alone
+    expect(plankRows(35, 21, 7)[4].label).toBe('35 = 21 × 1 + 14');
+    expect(plankRows(21, 35, 7)[3].label).toBe('35 − 21 = 14');
+  });
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -190,6 +225,11 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('rules', { a: 180 }, new Set())).toEqual(['three', 'nine', 'all']);
     expect(observe('paper', { a: 612, b: 6, done: true }, new Set())).toEqual(['end', 'zero', 'exact']);
     expect(observe('common', { a: 18, b: 12 }, new Set())).toEqual(['six']);
+    expect(observe('planks', { a: 21, b: 35, d: 7 }, new Set())).toEqual(['both', 'rest']);
+    expect(observe('planks', { a: 22, b: 20, d: 7 }, new Set())).toEqual(['sum']);
+    expect(observe('planks', { a: 24, b: 12, d: 6 }, new Set())).toEqual(['both']); // 24 = 12 × 2: no remainder
+    expect(observe('planks', { a: 21, b: 35, d: 1 }, new Set())).toEqual([]); // a plank of 1 fills anything
+    expect(observe('planks', { a: 21, b: 35 }, new Set())).toEqual([]); // the plank was never moved: nothing reported
   });
   it('the dice always gives numbers the instrument can show', () => {
     let s = 7;
@@ -210,7 +250,7 @@ describe('مختبري — the sounds', () => {
   const FILES = [
     './LessonLab.jsx',
     './kit.jsx',
-    ...['Rows', 'Jumps', 'Sentences', 'Divisors', 'Common', 'Euclid', 'PaperDivision', 'Rules'].map(
+    ...['Rows', 'Jumps', 'Sentences', 'Divisors', 'Planks', 'Common', 'Euclid', 'PaperDivision', 'Rules'].map(
       (n) => `./tools/${n}.jsx`,
     ),
   ];

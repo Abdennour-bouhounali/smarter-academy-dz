@@ -60,6 +60,18 @@ export const TOOLS = [
     load: () => import('./tools/Divisors'),
   },
   {
+    id: 'planks',
+    lesson: 'khawass-qawasim',
+    lessonTitle: 'خواص قواسم عدد طبيعي',
+    icon: '🪵',
+    name: 'اللوح المشترك',
+    hint: 'غيّر طول اللوح: أيّ الأطوال يملؤها تمامًا؟',
+    needs: 'ab',
+    labels: { a: 'الطول الأوّل', b: 'الطول الثاني' },
+    range: { a: [1, 60], b: [1, 60] },
+    load: () => import('./tools/Planks'),
+  },
+  {
     id: 'common',
     lesson: 'qasim-mushtarak-akbar',
     lessonTitle: 'القاسم المشترك الأكبر لعددين طبيعيين',

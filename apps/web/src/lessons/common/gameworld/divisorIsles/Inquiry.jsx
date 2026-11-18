@@ -5,6 +5,8 @@
  *
  *   <Inquiry spec={forge.inquiry} game={game} onDone={() => …} />
  *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, link? }], divisors, text }
+ *        | turn, cut (`InquiryMoves.jsx`) | join, stack (`InquiryCombine.jsx`) | peel, letters (`InquiryProof.jsx`)
+ *   — every spec shape is in docs/architecture/GAME_WORLD.md « استكشف ».
  * `text` is the LESSON's wording (this file names no lesson and writes none of its numbers).
  */
 import { useEffect, useRef, useState } from 'react';
@@ -22,6 +24,8 @@ import {
   pieceOf,
 } from './inquiry';
 import { Turn, Cut } from './InquiryMoves';
+import { Join, Stack } from './InquiryCombine';
+import { Peel, Letters } from './InquiryProof';
 import './inquiry.css';
 
 const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
@@ -580,6 +584,15 @@ function Chart({ spec, play, onDone }) {
 
 export default function Inquiry({ spec, game, onDone }) {
   const play = (name, p) => game?.audio?.play(name, p);
-  const Kind = { pairs: Pairs, chart: Chart, turn: Turn, cut: Cut }[spec.kind];
+  const Kind = {
+    pairs: Pairs,
+    chart: Chart,
+    turn: Turn,
+    cut: Cut,
+    join: Join,
+    stack: Stack,
+    peel: Peel,
+    letters: Letters,
+  }[spec.kind];
   return <Kind spec={spec} play={play} onDone={onDone} />;
 }

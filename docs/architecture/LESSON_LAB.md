@@ -2,7 +2,7 @@
 
 **BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real student has used it yet.
 
-**Status: built and wired on `dev`.** First eight instruments; the registry is
+**Status: built and wired on `dev`.** Nine instruments (the ninth, `planks`, for `khawass-qawasim` on 2026-11-18); the registry is
 open. Code: `apps/web/src/lessons/common/lessonlab/`. It is a different thing from the Math Lab « مختبر الرياضيات »
 (`/espace/atelier`, `MATH_LAB.md`), which stays untouched: that one is a general workspace with documents; this one belongs to
 the LESSON the student is in and shows only what he has already studied.
@@ -88,7 +88,7 @@ How to use it in an instrument:
 **« جرّب »** (`logic.js › QUESTS`, `observe`): a quest names something to make, never a rule; `observe(tool, state, seen)`
 returns the quests the state has just proved. Nothing is ticked before the student touches the instrument.
 
-### The eight instruments (2026-11-16)
+### The instruments (eight on 2026-11-16; `planks` added 2026-11-18 for lesson 3)
 
 | id | Lesson that introduces it | The hand holds | What is read |
 |---|---|---|---|
@@ -96,6 +96,7 @@ returns the quests the state has just proved. Nothing is ticked before the stude
 | `jumps` « قفزات المضاعفات » | 4AM `qasim-adad-tabii` | the flag (the number) and the first landing (the jump) | landings on the multiples of b; what is missing before the flag |
 | `sentences` « آلة الجمل الأربع » | 4AM `qasim-adad-tabii` | the swap lever | four sentences true together or false together, with the equality that proves it |
 | `divisors` « قوس القواسم » | 4AM `qawasim-adad-tabii` | the lens | each divisor rises with its partner; an arc joins them |
+| `planks` « اللوح المشترك » | 4AM `khawass-qawasim` | the end of the plank (its length d; arrows also move it) | one plank laid along six lengths — a, b, a + b, the difference, the remainder of the greater by the smaller, 3 × a: each filled (green, ✓) or with what is left (amber, « يبقى r »); `logic.js › plankRows`. The opening plank (4) is arbitrary; quests are reported only after the plank was moved |
 | `common` « القواسم المشتركة » | 4AM `qasim-mushtarak-akbar` | the two numbers; a tap on a divisor | three trays; the greatest common one wears the crown |
 | `euclid` « مربّعات إقليدس » | 4AM `bahth-pgcd` | the corner of the rectangle; the scissors | each family of squares writes its division; the last side is the PGCD |
 | `paper` « القسمة على الورقة » | 1AM `qisma-iqlidiya-baqi` | the step button | the division as written on a sheet, with what one says at each step (`gameworld/kit/longDivision.js`) |
@@ -137,18 +138,18 @@ Everything is inside the lazy lesson boundary: `LessonIndex` imports only `regis
 
 ## 8. Check
 
-- Unit: `npx vitest run src/lessons/common/lessonlab` in `apps/web` (19 tests: the order is the catalogue's; no future
+- Unit: `npx vitest run src/lessons/common/lessonlab` in `apps/web` (23 tests in two files, `lab.test.js` and `planks.render.test.jsx` (the planks drawn by a server render: its labels, no raw formula, a plank kept inside the drawing): the order is the catalogue's; no future
   instrument for any lesson; every equality the instruments draw; quests ticked only by what was made; the sounds — every
   name played exists, a number has a note, a sound is short and quiet and does not rattle).
 - Walk: `node apps/web/e2e/lesson-lab.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): lesson 1 of 4AM
   from its game world, then the PGCD lesson from its mission home, then a lesson with no lab. Real pointer drags on the wall,
   the flag, the corner and the lens. At every screenshot: nothing scrolls, nothing leaves the screen, no label is clipped. The walk also LISTENS (in dev `sound.js`
   writes each sound it has really played into `window.__labSounds`): the opening chime, the ticks of the wall and the one
-  chime of the full rows, silence with the switch off, the eight hops, the drawer, the pencil, the scissors, the crown — 47 checks.
+  chime of the full rows, silence with the switch off, the eight hops, the drawer, the pencil, the scissors, the crown — 47 checks; plus 2 written on 2026-11-18 for `planks` (a real drag of the plank to 7 on 21 and 35: every length filled, two quests ticked) and the 4AM shelf of the PGCD lesson now listing four lessons — **these two steps have not been run yet**.
 
 ## 9. Known limits
 
-- Eight instruments, all around division and divisors: the other units have none yet (their lessons show the cabinet only).
+- Nine instruments, all around division and divisors: the other units have none yet (their lessons show the cabinet only).
 - Not validated by the owner; no real student has used it.
 - The lab's state is not synced between devices.
 - The sounds were checked by a walk that reads what was played, not by a human ear: their level and their feel on a tablet's

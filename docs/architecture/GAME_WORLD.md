@@ -413,8 +413,9 @@ made for it.** The forge then opens on that experiment:
 **Every key of `qawasim-adad-tabii` opens on an experiment — four keys, four kinds** (owner, the same day: « not only
 this one … all the steps of rule discovery »); a test of the lesson fails if two of its keys share a kind.
 
-The four kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` — strip and chart — and `InquiryMoves.jsx`
-— wall and saw; styles `inquiry.css`):
+The eight kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` — strip and chart —, `InquiryMoves.jsx`
+— wall and saw —, `InquiryCombine.jsx` — join and stack — and `InquiryProof.jsx` — peel and letters; styles
+`inquiry.css`; the four last ones were added on 2026-11-18 for `khawass-qawasim`):
 
 | Kind | The rule it finds | What the student does |
 |---|---|---|
@@ -422,6 +423,111 @@ The four kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` —
 | `cut` | the plank fills the gap when the count of planks is a natural number | on the gap no mould filled, his hand SLIDES the length of the plank: the planks are laid again at once, with the piece that would have to be sawn, and the count written as the quotient; the lengths he tried make a table. He says how many lengths need no cut (answered with the ones HE found). Then he judges planks from the quotient ALONE, before the saw lays them. Then he writes his rule with the tiles. |
 | `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
 | `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and what he claims of it (its values, or the number it is divisible by): the chart shows the cells that are not green his claim takes in and counts the green cells it leaves out; a claim that holds is tried on the next hundred. Plank 4, which no single digit and no sum separates, is offered a fourth lens: the number the tens and the units write (`last2`) — on the first chart it is the gap itself, and the next hundred is where it is tried. |
+| `join` | a common divisor of a and b divides a + b and a − b | sees two bridges with plank d (filled, or a piece left: a FACT, with `a = d × q + r` written under each); says BEFORE whether d will still fill the gap made by GLUING them (`sum`) or by cutting the shorter off the longer (`diff`); the world slides the second strip after the first (or over its end, and the cut part falls), lays the planks again and writes `a ± b = v` and `v = d × q + r`. A round where neither gap is filled and the glued one holds anyway (22 + 20 with 7) is shown, never hidden. What he found stays in a list. |
+| `stack` | a divisor of a number divides every multiple of it | sees the gap `base` with plank d; for each k says BEFORE whether d fills k copies glued end to end; the copies travel from the gap into a row (2 and 3 drawn, up to 12 packed, more only as a number line with « k × base »), the planks are laid and the calculation written (`k × base = total`, `total = d × q + r`, and `k × (base ÷ d)` planks when d fills the gap). An optional second round has a gap the plank does NOT fill where some copies are filled anyway (14 on 21: two copies) — a fact, never a verdict. |
+| `peel` | a common divisor of a and b divides the remainder of a ÷ b | presses once: the world lays planks of b on the gap a again and again (`a − b = …` written at each step, a sound per plank) down to the piece r < b, and writes `a = b × q + r`. For each plank of the round the table says whether it fills a and whether it fills b (with both divisions written); he says whether it fills the PIECE before the world lays it there. The table of every round stays. Then he BUILDS his claim from the table's columns — « if the plank [fills a] [and / or] [fills b], it fills the piece »: the table outlines the rows his claim takes in, in orange those whose plank does not fill the piece; the claim that takes in no such row (and at least one row) is his rule (`writes: true`). |
+| `letters` | how to prove an « if … then … » for every number (a procedure) | checks the statement on numbers he is given (`a + b = d × □`, he presses □); the world changes the numbers and puts his last line against them (it does not carry over), then hides a number (nothing to compute). Then he assembles the proof from CARDS into numbered slots: a false card is answered by a sample where its numbers do not match (« with d = 3, a = 12, b = 6 this line gives 24, but a + b is 18 »), a card placed too early by what it uses that no line above has written (« this line needs k′ »). The proof he built is the rule (`writes: true`). |
+
+**Spec shapes of `join`, `stack`, `peel`, `letters`** (the contract a lesson's `world/inquiries.js` writes against;
+`T` = `spec.text`, the lesson's words; a `T.x(…)` is a function returning a string, which MAY hold `$…$` formulas
+(MathText) unless marked « plain » — plain strings go into SVG text. No sentence may state the rule; a question never says
+the fact it asks about — the screen passes it only what is already on screen). Every screen exposes its state on
+`window.__inquiry` (dev) and carries `data-iq="<kind>"`, `data-iq-stage`, `data-iq-goal`, `data-iq-fact`, `data-iq-calc`,
+`data-iq-next`, `data-iq-found`; the extra hooks are listed per kind.
+
+```js
+// join — logic: inquiry.js › joinOf(d, a, b, op) → { value, planksA, planksB, fillsA, fillsB, planks, rest, holds }
+{ kind: 'join', d: 7,
+  rounds: [{ op: 'sum' | 'diff', a, b, d? }],          // diff needs a ≥ b; `d` overrides spec.d for one round
+  text: {
+    lead: (d) => …,                                     // THE QUESTION, on screen all along
+    goal: (d) => …,                                     // the goal, plain, in the 🎯 frame
+    label: (n, d, { planks, rest }) => …,               // plain — under a strip: « 21 — 3 ألواح » / « … وبقيت 1 »
+    ask: ({ op, a, b, d, fillsA, fillsB, planksA, planksB }) => …,   // the prediction (yes / no)
+    seen: (f, guess) => …,                              // f = { op, a, b, d, ...joinOf }, after the planks are laid
+    foundLine: (f) => …,                                // kept in the list (f has `guess`)
+    yes, no, next, done,                                // button labels
+  } }
+// result: { rounds: [{ op, a, b, d, guess, holds }] }      hooks: data-iq-say="yes|no", data-iq-step, data-iq-op
+
+// stack — logic: inquiry.js › stackOf(d, base, k) → { total, planks, rest, holds, fillsBase }
+{ kind: 'stack', d: 7, base: 21, times: [2, 3, 10, 100],   // k ≤ 3 drawn, ≤ 12 packed, more: a number line only
+  free?: { d: 14, base: 21, times: [2, 3] } | [ … ],       // more rounds after the first (a gap d does NOT fill)
+  text: {
+    lead: (d, base) => …, goal: (d) => …,                // question; goal (plain)
+    label: (n, d, { planks, rest }) => …,               // plain, as in join
+    ask: ({ d, base, k, fillsBase }) => …,
+    seen: (f, guess) => …,                              // f = { d, base, k, ...stackOf }
+    foundLine: (f) => …,
+    yes, no, next, done,
+  } }
+// result: { rounds: [{ d, base, k, guess, holds }] }   (one entry per k of every round)
+//                                                          hooks: data-iq-say, data-iq-k, data-iq-mode, data-iq-copy, data-iq-numline
+
+// peel — logic: inquiry.js › peelOf(a, b) → { q, r, steps }, fitsRow(a, b, d) → { a, b, r } (booleans),
+//        judgePeelClaim(rounds, claim) → { taken, intruders, orphans, ok }
+{ kind: 'peel', writes: true,
+  rounds: [{ a: 54, b: 21, candidates: [2, 3, 6, 7] }],  // a > b, r = a % b > 0
+  text: {
+    lead: (a, b, ri) => …,                              // before the peel: the question of the round
+    goal: …,                                            // plain STRING
+    peelBtn: (b) => …, peeling: (a, b) => …,            // the button that starts the world's peel; the lead while it runs
+    piece: (r) => …,                                    // plain — over the piece left
+    ask: ({ a, b, d, q, r, fitsA, fitsB }) => …,        // « does plank d fill the piece r? » (yes / no)
+    shown: (row, guess) => …,                           // row = the same + fitsR
+    cols: { plank, a, b, r },                           // the table's row labels (plain)
+    yes, no, next, nextRound, toClaim,
+    claimLead, claimIf, claimThen,                      // plain: the claim is « claimIf [colLabel.a] [link] [colLabel.b] claimThen »
+    colLabel: { a, b }, link: { and, or },
+    claimAsk,                                           // no column chosen yet
+    claimFact: (judge) => …, claimOk: (judge) => …,     // judge = judgePeelClaim(spec.rounds, claim)
+    seal,
+  } }
+// claim = { cols: [] | ['a'] | ['b'] | ['a', 'b'], link: 'and' | 'or' } — `link` counts only with two columns.
+// A claim is REFUTED only by an intruder (a row it takes in whose plank does not fill the piece); `orphans` (rows that
+// fill the piece without being taken) are facts, not refutations. Accepted: exactly { cols: ['a', 'b'], link: 'and' } —
+// PROVIDED the rounds hold a plank of a alone, a plank of b alone (each not filling the piece) and a plank of both:
+// the lesson's test must enumerate the five claims and find exactly one ok (see divisorIsles/inquiry2.test.js).
+// result: { rounds: [{ a, b, q, r, rows: [{ d, fitsA, fitsB, fitsR, guess }] }], claim }
+//         hooks: data-iq-peel, data-iq-say, data-iq-ptable, data-iq-row="a:b:d", data-iq-r, data-iq-claim,
+//                data-iq-col="a|b", data-iq-link="and|or", data-iq-seal, data-iq-ok
+
+// letters — logic: inquiry.js › checkProofOrder(cards, ids, given) → { ok, at, missing },
+//           refuteCard(card, samples) → the first sample where card.holdsOn(sample) is false, or null
+{ kind: 'letters', writes: true,
+  statement: { given: ['$d \\mid a$', …], goal: '$d \\mid a + b$', gives: ['d|a', 'd|b'] },  // MathText strings; `gives` = tokens
+  numbers: { value: (v) => v.a + v.b, by: (v) => v.d, max?: 20 },   // stage 1: he presses □ with by(v) × □ = value(v)
+  samples: [{ d: 7, a: 21, b: 35 }, { d: 3, a: 12, b: 6 }, { d: 5, a: 40, b: 15, hide: 'b' }],   // stage 1 in order;
+                                                      // `hide` = the letter shown as « ? » (no □ asked)
+  show?: ['d', 'a', 'b'],                             // the letters printed (default: the keys of samples[0])
+  cards: [{ id, tex,                                  // tex: a MathText string (Arabic words and $…$)
+            ok: boolean,
+            needs?: [tokens], gives?: [tokens],       // what the line uses / introduces (« k », « k′ », « d(k+k′) »)
+            holdsOn: (sample) => boolean,             // is the line TRUE for these numbers?
+            why?: (sample) => …,                      // REQUIRED when ok: false — the numeric fact for the sample the world picked
+          }],
+  order: [ids],                                       // ONE valid order of exactly the ok cards (any order whose `needs` are met is accepted)
+  text: {
+    lead, goal,                                       // strings (goal plain)
+    numbersAsk: (v) => …, numbersOk: (v, q) => …, numbersMiss: (v, q) => …,
+    carry: (v, before, q) => …,                       // his last line (on `before`) put against the new numbers v
+    hidden: (v, before, q) => …,                      // the sample with a letter hidden (before/q null if no line yet)
+    line: (v, q) => …,                                // his calculation, kept in the list
+    nextSample, toCards,
+    cardsLead, cardsAsk, givenLabel, goalLabel,       // stage 2 (givenLabel / goalLabel plain)
+    needs: (card, missing) => …,                      // a card placed too early: what it uses that no line above wrote
+    placed?: (card) => …, proved, done,
+  } }
+// result: { order: [ids as placed], tries: number of refused placements, refuted: [ids of false cards he tried] }
+//         hooks: data-iq-sample, data-iq-values, data-iq-q=<n>, data-iq-sheet, data-iq-slot=<i>, data-iq-card-in,
+//                data-iq-deck, data-iq-card=<id>, data-iq-said="false|early|ok", data-iq-done
+```
+
+The lesson's own test must check that every `ok` card `holdsOn` every sample, that every false card is refuted by one
+(`refuteCard(...) !== null`), that `checkProofOrder(cards, order, statement.gives).ok`, and that `order` holds exactly
+the ok cards. World sounds: join — `sweep` (the strips move), `plank` / `hit` (laid again / cut), `success` / `crumble`;
+stack — `plank` per copy (`sweep` when packed), then `success` / `crumble`; peel — `plank` per plank laid, `gate` when the
+piece is left; letters — `key`, `fail`, `crumble`, `paper`, `success` on the student's own moves.
 
 **An experiment opens on its QUESTION and its GOAL, and each try shows its calculation** (owner, 2026-11-17: « the
 student must be given the goal … each one we see the rest of the division: x = c × 2 + d, and if d = 0 the cell becomes
@@ -456,7 +562,18 @@ may show), its screen in `Inquiry.jsx`, its words in the lesson. **To use one**:
 `inquiry` + `fromInquiry` on its forge (`qawasim-adad-tabii` is the reference). Before writing a forge, ask what the
 NATURE of its rule is: one condition on a case → the mirror alone; anything else → an experiment first.
 
-**Checked**: `divisorIsles/inquiry.test.js`, the lesson's `world/inquiries.test.js`, and the lesson's walk, which plays
+**Lesson 3 (`khawass-qawasim`) uses the four new kinds, one per key** — `jam-wal-farq` on `join`, `madaaf` on `stack`,
+`baqi-qisma` on `peel` (`writes`), `burhan` on `letters` (`writes`); its `world/inquiries.test.js` fails if two keys share a
+kind. Two things the walk of that lesson taught, now rules of the kit: (1) a judged row of `judgePeelClaim` keeps its
+columns as booleans (`a`, `b`, `r`) and names its round by `gap` and `bridge` — a screen matches a row by those, never by
+`a`/`b`; (2) the statement block of `letters` puts every piece of `MathText` in its own `<span>`, or a grid lays one token
+per row. The exam sheet of « تدرّب » (`kit/Trainer.jsx › Marked`) prints a prompt as plain text with its numbers
+underlined; a prompt that contains `$…$` is rendered through `MathText` instead, so a formula in a prompt is allowed.
+`rf-says`, the labels of `RuleForge` and a tablet's `notes` stay plain text: no `$` in them.
+
+**Checked**: `divisorIsles/inquiry.test.js` and `inquiry2.test.js` (join, stack, peel, letters: every fact true for every
+number a lesson may show; exactly one peel claim holds), `inquiryScreens.render.test.jsx` (the four new screens open on
+their question, goal and first act), the lesson's `world/inquiries.test.js`, and the lesson's walk, which plays
 both experiments through their screens (a wrong pick, a wrong lens, the right claim, the next hundred) and, at each
 screenshot, that nothing leaves the frame, no button is covered, nothing scrolls and no text is under 12 px.
 
