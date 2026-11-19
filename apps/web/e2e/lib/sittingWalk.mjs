@@ -29,8 +29,28 @@ export const words = (t) =>
     .split(/\$[^$]*\$/)
     .map((x) => x.replace(/\s+/g, ' ').trim())
     .filter((x) => x.length > 2);
-/** Money is « دج » on screen (platform rule): « DA » of the bank, glued to a number or not, is read « دج ». */
-const dj = (t) => String(t ?? '').replace(/(?<![A-Za-z])DA(?![A-Za-z])/g, 'دج');
+/**
+ * A string of the bank as the screen must show it (GAME_WORLD.md, kit/bankSitting.js — the rules, written again here):
+ *   money is « دج »: « DA » of the bank, glued to a number or not, is read « دج »; after an amount it is written apart from
+ *   it, and the amount loses its thousands spaces (« 45DA » → « 45 دج », « 211 500DA » → « 211500 دج »);
+ *   a « PGCD(a ; b) » (« = n » with it) written in the words is drawn as a formula (it reads left to right, upright).
+ */
+const SP = '[ \\u00a0\\u202f]';
+const AMOUNT_DA = new RegExp(`(?<![\\d])(\\d{1,3}(?:${SP}\\d{3})+|\\d+)${SP}*DA(?![A-Za-z])`, 'g');
+const PGCD_IN_WORDS = /(?<![A-Za-z\\])(PGCD|PPCM)\s*\(([^()$]*)\)((?:\s*=\s*\d+)?)/g;
+const pgcdDrawn = (t) =>
+  t
+    .split(/(\$[^$]*\$)/)
+    .map((part, i) =>
+      i % 2 === 1 ? part : part.replace(PGCD_IN_WORDS, (_, f, args, eq) => `$\\mathrm{${f}}(${args.trim()})${eq.replace(/\s+/g, ' ')}$`),
+    )
+    .join('');
+const dj = (t) =>
+  pgcdDrawn(
+    String(t ?? '')
+      .replace(AMOUNT_DA, (_, a) => `${a.replace(new RegExp(SP, 'g'), '')} دج`)
+      .replace(/(?<![A-Za-z])DA(?![A-Za-z])/g, 'دج'),
+  );
 const formulasIn = (t) => (String(t ?? '').match(/\$[^$]+\$/g) ?? []).length;
 const ARABIC = /[؀-ۿ]/;
 const DA_ON_SCREEN = /(?<![A-Za-z])DA(?![A-Za-z])/;

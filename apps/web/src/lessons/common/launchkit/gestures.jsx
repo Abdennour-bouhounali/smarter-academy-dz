@@ -103,10 +103,14 @@ export function Write({ q, value, onChange, locked, play }) {
   );
 }
 
-/** A card shows a number or an equality (left-to-right), or a sentence in Arabic (`say`: right-to-left, smaller). */
+/**
+ * A card shows a number or an equality (left-to-right), or a sentence in Arabic (`say`: right-to-left, smaller). A
+ * sentence that carries a LIST (`card.list`, « قواسم 54: 1 ، 2 ، … ») is smaller again (`data-lk-list`): two lines at most,
+ * broken after a comma, for the longest list a family draws (LAUNCH_KIT.md).
+ */
 const CardText = ({ card }) =>
   card.say ? (
-    <span dir="rtl" className="lk-say">
+    <span dir="rtl" className="lk-say" data-lk-list={Array.isArray(card.list) ? '' : undefined}>
       {card.text}
     </span>
   ) : card.text.startsWith('$') ? (

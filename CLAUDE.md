@@ -26,7 +26,11 @@ below.** The French-era lessons and catalogue were deleted on 2026-09-25: an old
    digest of what its exercises ask, learning point by learning point); its
    **exercise bank is used as it is** (`content/practice/<grade>/<id>/`), never regenerated. The pipeline is
    `LESSON_V2_MASTER_PLAN.md` §9.
-4. The contract of the area you touch (table below), then the code.
+4. **Working on a lesson (designing, briefing an agent, reviewing screenshots, finishing): the project skill
+   `.claude/skills/lesson-v2/`** (owner, 2026-11-19; versioned, the only part of `.claude/` that is) — the pipeline, the
+   brief of each agent, the ledger of every defect met so far with the check that catches it, the screenshot review. A
+   lesson is not finished until what it taught is written back into that skill (its §5).
+5. The contract of the area you touch (table below), then the code.
 
 ## The lesson, today: v2 (BINDING since 2026-11-17, owner decision D6)
 

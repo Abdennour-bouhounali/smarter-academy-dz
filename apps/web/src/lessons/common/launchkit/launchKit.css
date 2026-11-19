@@ -670,6 +670,16 @@
 .lk-chip:has(.lk-say) {
   padding: 0.3rem 0.6rem;
 }
+/* a sentence that is a LIST (« قواسم 88: 1 ، 2 ، 4 ، 8 ، 11 ، 22 ، 43 ، 44 ، 88 », the longest `4am.m1.r02` draws): its commas
+   are glued to the number before them (families.js › LIST_SEP), so a line breaks only after one. Sized so the longest list
+   takes two lines at most — measured in Cairo Black: 1.5rem needs 231 px of card, 1.3rem 200, 1.1rem 169; the
+   card holds 246 px (17rem column) and 198 px on a 4:3 screen (14rem column) */
+.lk-card .lk-say[data-lk-list] {
+  font-size: 1.3rem;
+}
+.lk-root--narrow .lk-card .lk-say[data-lk-list] {
+  font-size: 1.1rem;
+}
 .lk-card--none {
   background: transparent;
   box-shadow: none;
@@ -1314,6 +1324,10 @@
   .lk-card .lk-say {
     font-size: 1.2rem;
     line-height: 1.4;
+  }
+  .lk-card .lk-say[data-lk-list],
+  .lk-root--narrow .lk-card .lk-say[data-lk-list] {
+    font-size: 1rem;
   }
   .lk-card--none {
     font-size: 0.92rem;

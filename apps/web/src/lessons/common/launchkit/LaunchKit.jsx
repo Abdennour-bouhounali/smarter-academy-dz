@@ -983,6 +983,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
             lessonCode={lessonCode}
             lessonTitle={lessonTitle}
             initialTool={(labF ?? shownF).labTool}
+            earlierOnly
             onClose={() => setLab(false)}
           />
         </Suspense>

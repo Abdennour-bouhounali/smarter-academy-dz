@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { gcd, commonPlanks, commonOf, ladderOf, nestOf } from './inquiry';
+import { gcd, commonPlanks, commonOf, commonSays, ladderOf, nestOf } from './inquiry';
 
 /**
  * Every experiment of the greatest common divisor is TRUE for every number it may show. The loops collect what does not
@@ -31,6 +31,29 @@ describe('the investigation of the greatest common divisor — gcd and the commo
     });
     expect(gcd(1071, 462)).toBe(21);
     expect(() => gcd(0, 5)).toThrow(RangeError);
+  });
+});
+
+describe('common — what « تحقّق » judges, with and without the longest (`crown`)', () => {
+  const c = commonOf(12, 18, [1, 2, 3, 4, 5, 6, 9, 12]); // both: 1, 2, 3, 6
+  it('by default the longest is marked AND the count typed; both must be right', () => {
+    expect(commonSays(c, { longest: null, count: null })).toEqual({ needLong: true, needCount: true, ok: false });
+    expect(commonSays(c, { longest: 6, count: null })).toEqual({ needLong: false, needCount: true, ok: false });
+    expect(commonSays(c, { longest: 3, count: 4 }).ok).toBe(false);
+    expect(commonSays(c, { longest: 6, count: 3 }).ok).toBe(false);
+    expect(commonSays(c, { longest: 6, count: 4 }).ok).toBe(true);
+    // no candidate holds both: nothing can be marked, the count alone is judged
+    const none = commonOf(8, 15, [2, 3, 5]);
+    expect(commonSays(none, { longest: null, count: 0 })).toEqual({ needLong: false, needCount: false, ok: true });
+  });
+  it('crown: false — the longest is never asked: no mark is missing, the count alone is judged', () => {
+    expect(commonSays(c, { longest: null, count: null }, false)).toEqual({
+      needLong: false,
+      needCount: true,
+      ok: false,
+    });
+    expect(commonSays(c, { longest: null, count: 3 }, false).ok).toBe(false);
+    expect(commonSays(c, { longest: null, count: 4 }, false)).toEqual({ needLong: false, needCount: false, ok: true });
   });
 });
 

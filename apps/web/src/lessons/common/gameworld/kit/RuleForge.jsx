@@ -268,8 +268,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const says = a ? forge.says(rule, a) : null;
   const brokeIt = a && done && says !== a.held;
   const testing = phase === 'test' && run;
-  // the lines on the left: his evidence — or, while a rule that builds its own cases is tested, those cases
-  const all = testing && forge.tests ? run.marks : rows.slice(-EVIDENCE_MAX);
+  // the lines on the left: his evidence — or, while a rule that builds its own cases is tested, those cases. While the
+  // mirror tests his rule it runs on EVERY line he made (`startTest`), so every line is offered to the window below: the
+  // line it is marking, or the one that refuted his rule, stays on screen even when it is older than the last
+  // EVIDENCE_MAX (2026-11-19: a summit search of 15 planks was refuted by its first plank, which had left the column)
+  const all = testing && forge.tests ? run.marks : testing ? rows : rows.slice(-EVIDENCE_MAX);
   // …as many as fit its column: the oldest leave first, and the row that matters stays — the newest, or, while the mirror
   // marks them, the row it is marking (or the one that refuted his rule)
   const focus = testing ? (bad ?? run.marks[Math.max(0, Math.min(run.upto, run.marks.length) - 1)]) : null;

@@ -523,6 +523,9 @@ the term it just left, which reads as the opposite claim.
 and never mirrors.
 
 While in Arabic prose, prefer the Arabic comma `،` to `,` as a list separator.
+A list of numbers written « 1 ، 2 ، 3 » puts a NO-BREAK space before each comma (`'\u00a0، '`): a list that
+wraps then breaks only after a comma and never starts a line with « ، » (2026-11-19; the rule and where it is applied:
+`GAME_WORLD.md` « A list never starts a line with its comma »).
 
 ### Charts read left to right
 

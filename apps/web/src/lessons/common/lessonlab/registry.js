@@ -140,11 +140,13 @@ export const toolById = (id) => TOOLS.find((t) => t.id === id) ?? null;
  *   mine     the instruments introduced by this very lesson;
  *   cabinet  [{ grade, name, lessons: [{ code, title, tools }] }] — every earlier lesson that has instruments, oldest grade first;
  *   all      mine + every instrument of the cabinet (what may ever be put on the bench).
+ * `earlierOnly` (the lab opened BEFORE the lesson, by « عُدّة الانطلاق »): `mine` is empty — the lesson's own instruments
+ * are neither listed nor in `all`.
  */
-export function toolsFor(lesson) {
+export function toolsFor(lesson, { earlierOnly = false } = {}) {
   if (!placeOf(lesson)) return { mine: [], cabinet: [], all: [] };
   const reached = TOOLS.filter((t) => isReached(t.lesson, lesson));
-  const mine = reached.filter((t) => t.lesson === lesson);
+  const mine = earlierOnly ? [] : reached.filter((t) => t.lesson === lesson);
   const earlier = reached.filter((t) => t.lesson !== lesson);
   const cabinet = GRADES.map((grade) => {
     const codes = [...new Set(earlier.filter((t) => placeOf(t.lesson).grade === grade).map((t) => t.lesson))].sort(

@@ -4,7 +4,8 @@
  *
  *   common  « the planks that hold both gaps; the longest of them » — a SEARCH: he takes each candidate plank, says BEFORE
  *           whether it holds the gap a and the gap b; the world lays it on both strips and the plank goes to its shelf
- *           (« a only », « b only », « both »). Then he marks the longest plank of « both » and says how many it holds.
+ *           (« a only », « b only », « both »). Then he marks the longest plank of « both » and says how many it holds —
+ *           or, with `crown: false` (spec or round), only how many it holds: the longest is its own search (`summit`).
  *   ladder  « a pair of gaps replaced by a simpler pair with the same common planks » — a PROCEDURE (subtract or divide):
  *           he predicts the next pair, the world writes the row with its calculation and, beside every row, the planks
  *           that hold both gaps (the same list on every row). He says how many rows the ladder will have; the world
@@ -13,22 +14,30 @@
  *           planks of g; for each probe he says, looking at g only, whether it holds both gaps; the world lays it on the
  *           three strips. At the end the two lists stand side by side.
  *
+ * Modes (`InquiryGcdModes.jsx`, logic `gcdModes.js`): common `witness`, nest `pair`, ladder `fold` and `both` — the
+ * exported `Common`, `Ladder`, `Nest` mount them when `spec.mode` names them; any other spec plays the screens below.
+ *
  * `spec.text` is the lesson's wording (GAME_WORLD.md « استكشف », spec shapes). Nothing here states a rule: every sentence
  * says what the strips, the shelves or the ladder have just done.
  */
 import { useState } from 'react';
 import MathText from '../../components/MathText';
 import { Num } from '../kit/parts';
-import { commonOf, ladderOf, commonPlanks, nestOf } from './inquiry';
+import { commonOf, commonSays, ladderOf, commonPlanks, nestOf } from './inquiry';
 import { Span, Calc, restTex } from './InquiryCombine';
 import { Head, Found, asNumber, onEnter } from './InquiryDivision';
 import { INQUIRY_TEXT } from './strings';
 import { expose, X0, SPAN, useLater, YesNo } from './inquiryParts';
+import { Witness, Pair, Fold, Both } from './InquiryGcdModes';
 
-/** A gap drawn on the scene, with its length written at its end (and planks of d laid on it when d is given). */
-function Strip({ n, d, u, y, tag, gold = false }) {
+/**
+ * A gap drawn on the scene, with its length written at its end (and planks of d laid on it when d is given). A gap of 0
+ * cells is an empty mark at the start of its line, its « 0 » above it: no plank lies on it (0 = d × 0).
+ */
+export function Strip({ n, d, u, y, tag, gold = false }) {
   return (
     <g data-iq-strip={tag}>
+      {n === 0 && <rect className="iq-gapzero" x={X0 - 7} y={y} width="14" height="30" rx="4" data-iq-zero />}
       <Span n={n} d={d} u={u} y={y} laid={Boolean(d)} />
       <text className={`iq-scene__num ${gold ? 'is-gold' : ''}`} x={X0 + n * u} y={y - 12} direction="ltr">
         {n}
@@ -47,10 +56,62 @@ const SHELVES = [
   ['none', (r) => !r.holdsA && !r.holdsB],
 ];
 
-export function Common({ spec, play, onDone }) {
+/**
+ * The tray of candidate planks and the shelves they go to. With `crown` (the default) the chips of « both » can be marked
+ * once the tray is empty, and the longest is lit at the end; with `crown` false no chip of a shelf is ever pickable or lit
+ * — nothing names or outlines the longest.
+ */
+export function Shelves({ T, a, b, rows, tray, placed, hand, stage, crown, long, longest, onTake, onMark }) {
+  return (
+    <div className="iq-shelves">
+      <div className="iq-shelf iq-shelf--tray" data-iq-tray>
+        {tray.map((d) => (
+          <button
+            key={d}
+            type="button"
+            className={`iq-chip ${hand === d ? 'is-on' : ''}`}
+            onClick={() => onTake(d)}
+            disabled={stage !== 'take'}
+            data-iq-plank={d}
+          >
+            {d}
+          </button>
+        ))}
+      </div>
+      {SHELVES.filter(([key, is]) => key !== 'none' || rows.some(is)).map(([key, is]) => (
+        <div key={key} className={`iq-shelf iq-shelf--${key}`} data-iq-shelf={key}>
+          <small>{T.shelf[key](a, b)}</small>
+          <div className="iq-chips">
+            {placed.filter(is).map((r) => {
+              const mine = crown && key === 'both';
+              const pickable = mine && stage === 'say';
+              const lit = mine && (long === r.d || (stage === 'seen' && r.d === longest));
+              return (
+                <button
+                  key={r.d}
+                  type="button"
+                  className={`iq-chip iq-chip--s ${lit ? 'is-on' : ''}`}
+                  onClick={() => pickable && onMark(r.d)}
+                  disabled={!pickable}
+                  {...(mine ? { 'data-iq-long': r.d } : {})}
+                >
+                  {r.d}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function CommonShelves({ spec, play, onDone }) {
   const T = spec.text;
   const [ri, setRi] = useState(0);
   const { a, b, candidates } = spec.rounds[ri];
+  // crown: false — the experiment ends on the shelves and their count; the longest plank of « both » is not asked
+  const crown = (spec.rounds[ri].crown ?? spec.crown) !== false;
   const c = commonOf(a, b, candidates);
   const [stage, setStage] = useState('take'); // take | guess | lay | say | seen
   const [hand, setHand] = useState(null); // the plank he took
@@ -65,12 +126,12 @@ export function Common({ spec, play, onDone }) {
   const [wait, setWait] = useState(null); // what is still missing before « تحقّق » can be answered
   const [found, setFound] = useState([]);
   const later = useLater();
-  expose({ kind: 'common', ri, a, b, stage, hand, placed: placed.length, long, said, found });
+  expose({ kind: 'common', ri, a, b, crown, stage, hand, placed: placed.length, long, said, found });
 
   const u = SPAN / Math.max(a, b);
   const rowOf = (d) => c.rows.find((r) => r.d === d);
   const tray = candidates.filter((d) => !placed.some((p) => p.d === d));
-  const fact = { a, b, common: c.common, longest: c.longest };
+  const fact = { a, b, crown, common: c.common, longest: c.longest };
 
   const take = (d) => {
     if (stage !== 'take') return;
@@ -98,24 +159,23 @@ export function Common({ spec, play, onDone }) {
   };
   const check = () => {
     if (stage !== 'say') return;
-    const count = asNumber(countIn);
-    const needLong = c.longest != null && long == null;
+    const now = { longest: crown ? long : null, count: asNumber(countIn) };
+    const says = commonSays(c, now, crown);
     // a press that cannot be judged yet is answered by what is missing on the screen (never a silent button)
-    if (count == null || needLong) {
+    if (says.needLong || says.needCount) {
       play('pick');
-      const f = { a, b, needLong, needCount: count == null };
+      const f = { a, b, crown, needLong: says.needLong, needCount: says.needCount };
       setWait((T.sayFirst ?? INQUIRY_TEXT.sayFirst)(f));
       return;
     }
     setWait(null);
-    const now = { longest: long, count };
     const first = said ?? now;
     if (!said) setSaid(now);
-    if (long === c.longest && count === c.common.length) {
+    if (says.ok) {
       play('key');
       setMiss(null);
       setStage('seen');
-      setFound((list) => [...list, { a, b, rows: placed, common: c.common, longest: c.longest, said: first }]);
+      setFound((list) => [...list, { a, b, crown, rows: placed, common: c.common, longest: c.longest, said: first }]);
       return;
     }
     play('fail');
@@ -149,7 +209,7 @@ export function Common({ spec, play, onDone }) {
 
   const shown = last;
   return (
-    <section className="iq iq--div iq--common" data-iq="common" data-iq-stage={stage}>
+    <section className="iq iq--div iq--common" data-iq="common" data-iq-stage={stage} data-iq-crown={crown ? '1' : '0'}>
       <Head i={ri} n={spec.rounds.length} lead={T.lead(a, b)} goal={T.goal(a, b)} />
 
       <svg className="iq-scene" viewBox="0 0 1000 190" role="img" aria-label={`${a} · ${b}`}>
@@ -172,45 +232,21 @@ export function Common({ spec, play, onDone }) {
         </MathText>
       </p>
 
-      <div className="iq-shelves">
-        <div className="iq-shelf iq-shelf--tray" data-iq-tray>
-          {tray.map((d) => (
-            <button
-              key={d}
-              type="button"
-              className={`iq-chip ${hand === d ? 'is-on' : ''}`}
-              onClick={() => take(d)}
-              disabled={stage !== 'take'}
-              data-iq-plank={d}
-            >
-              {d}
-            </button>
-          ))}
-        </div>
-        {SHELVES.filter(([key, is]) => key !== 'none' || c.rows.some(is)).map(([key, is]) => (
-          <div key={key} className={`iq-shelf iq-shelf--${key}`} data-iq-shelf={key}>
-            <small>{T.shelf[key](a, b)}</small>
-            <div className="iq-chips">
-              {placed.filter(is).map((r) => {
-                const pickable = key === 'both' && stage === 'say';
-                const lit = key === 'both' && (long === r.d || (stage === 'seen' && r.d === c.longest));
-                return (
-                  <button
-                    key={r.d}
-                    type="button"
-                    className={`iq-chip iq-chip--s ${lit ? 'is-on' : ''}`}
-                    onClick={() => pickable && setLong(r.d)}
-                    disabled={!pickable}
-                    {...(key === 'both' ? { 'data-iq-long': r.d } : {})}
-                  >
-                    {r.d}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Shelves
+        T={T}
+        a={a}
+        b={b}
+        rows={c.rows}
+        tray={tray}
+        placed={placed}
+        hand={hand}
+        stage={stage}
+        crown={crown}
+        long={long}
+        longest={c.longest}
+        onTake={take}
+        onMark={setLong}
+      />
 
       <div className="iq-actions">
         {stage === 'take' && (
@@ -241,7 +277,7 @@ export function Common({ spec, play, onDone }) {
         {stage === 'say' && (
           <>
             <p className="iq-askline">
-              <MathText>{T.sayLead({ a, b })}</MathText>
+              <MathText>{T.sayLead({ a, b, crown })}</MathText>
             </p>
             <div className="iq-tpl" dir="rtl">
               <label>
@@ -274,7 +310,7 @@ const same = (x, y) => x.length === y.length && x.every((v, i) => v === y[i]);
 const samePair = (x, y) => x && y && ((x[0] === y[0] && x[1] === y[1]) || (x[0] === y[1] && x[1] === y[0]));
 
 /** One row of the ladder: the gap a with the planks of b laid (once written) and the piece left, as a bar. */
-function RungBar({ r, written, scale, end }) {
+export function RungBar({ r, written, scale, end }) {
   const planks = written ? r.q : 0;
   const w = r.b * scale;
   return (
@@ -301,7 +337,7 @@ function RungBar({ r, written, scale, end }) {
   );
 }
 
-export function Ladder({ spec, play, onDone }) {
+function LadderRows({ spec, play, onDone }) {
   const T = spec.text;
   const [ri, setRi] = useState(0);
   const { a, b } = spec.rounds[ri];
@@ -495,7 +531,7 @@ export function Ladder({ spec, play, onDone }) {
 // ───────────────────────── nest: the common planks and the planks of g ─────────────────────────
 const YN = [26, 92, 158];
 
-export function Nest({ spec, play, onDone }) {
+function NestG({ spec, play, onDone }) {
   const T = spec.text;
   const [ri, setRi] = useState(0);
   const { a, b, probes } = spec.rounds[ri];
@@ -617,4 +653,18 @@ export function Nest({ spec, play, onDone }) {
       <Found lines={rows.map((r) => ({ key: `${r.p}`, text: T.foundLine(r), fell: r.guess !== r.both }))} />
     </section>
   );
+}
+
+// ───────────────────────── the modes (InquiryGcdModes.jsx): a spec without `mode` plays exactly as above ─────────────────────────
+export function Common(props) {
+  return props.spec.mode === 'witness' ? <Witness {...props} /> : <CommonShelves {...props} />;
+}
+export function Ladder(props) {
+  const { mode } = props.spec;
+  if (mode === 'fold') return <Fold {...props} />;
+  if (mode === 'both') return <Both {...props} />;
+  return <LadderRows {...props} />;
+}
+export function Nest(props) {
+  return props.spec.mode === 'pair' ? <Pair {...props} /> : <NestG {...props} />;
 }

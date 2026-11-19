@@ -62,7 +62,7 @@ Score = lit segments / (2 × tools measured). The kit screen names ONE lesson to
 « تحتاج تثبيتًا » not repaired, then repaired) and offers, for the tool shown:
 
 - **« بطاقة المراجعة »** — the family's `memo` (three or four lines);
-- **« جرّب الأداة في مختبري »** — the lab opened ON the family's instrument (`LessonLab initialTool`);
+- **« جرّب الأداة في مختبري »** — the lab opened ON the family's instrument (`LessonLab initialTool`), `earlierOnly`: the kit is played BEFORE the lesson, so the lab lists no « أدوات هذا الدرس » (the lesson's own instrument names what it will make him discover) — only the cabinet of the earlier lessons (`LESSON_LAB.md` §2);
 - **« أعد فحص الأداة »** — that tool alone is asked again (no workshop; the try is not counted twice);
 - **« الدرس كاملًا »** — the earlier lesson, with the existing one-click return (`mission/returnToLesson.js`); « الدرس قريبًا »
   when the lesson is not published.
@@ -113,7 +113,13 @@ One entry in `FAMILIES`, keyed by the item id of the net:
 - **The shapes a family may use, without touching the gestures**: *write* with or without a box for the remainder
   (« 47 = 6 × ▢ + ▢ », « 42 = 6 × ▢ » — with no `r` slot only the factor is judged); a *sort* card that is a number, an
   equality (`text` starting with `$`), or a SENTENCE in Arabic (`say: true`: drawn right-to-left, smaller, two lines at
-  most — the walk fails on three).
+  most — the walk fails on three). A sentence that is a LIST (a card with `list`, « قواسم 88: 1 ، 2 ، … », drawn with
+  `data-lk-list`) is joined by `families.js › LIST_SEP` — a NO-BREAK space before each comma, an ordinary one after — so a
+  line breaks only after a comma, never starts with one; it is set smaller (1.3rem, 1.1rem on a 4:3 screen) so the LONGEST
+  list the family draws holds in two lines: « قواسم 88: 1 ، 2 ، 4 ، 8 ، 11 ، 20 ، 22 ، 44 ، 88 » (9 numbers: 8 divisors and an
+  intruder), measured in Cairo Black at 444 px for 1.5rem against a card of 246 px (198 px at 1024 × 768). The launch walks
+  (`lib/launchKitTwoTools.mjs › LONGEST_LIST`, drawn from the generator with a fixed seed) lay that text in a copy of the
+  card on every screen that deals a list and fail on three lines or a line opening on a comma — whatever card the draw dealt.
 - **Tests are part of the family** (`launchkit.test.js`): every generated question is re-computed apart and graded right, the
   numbers of each level stay in their range, every trap names a known mistake, the worked example is true.
 
@@ -124,8 +130,9 @@ Families on 2026-11-17 (the two prerequisites of the pilot lesson, then the pilo
 | `1am.m3.r01` | القسمة الإقليدية | write « 47 = 6 × ▢ + ▢ »; place the greatest multiple not beyond the number | sort three equalities (is it THE Euclidean division?) — asked first; write with a two-digit divisor | `paper` |
 | `1am.m3.r02` | قواعد قابلية القسمة | sort by 2, by 5 | sort by 3, by 9, by 4 — with numbers chosen to trap the wrong rule | `rules` |
 | `2am.m1.r04` | القسمة الإقليدية على أيّ عدد (2AM, 2026-11-18) | write « 47 = 13 × ▢ + ▢ » (a two-digit divisor, quotient ≤ 5; the first one ≤ 29); place the greatest multiple of 11–15 on the 0–60 line | sort three equalities where « $9 = 14 \times 0 + 9$ » must be ACCEPTED (`miss` `quotient-zero`; four shapes in five hold such a card) beside the traps of the remainder — asked first; write a three-digit number by 12–25 (a two-digit quotient, remainder 0 possible). Its worked example estimates the quotient by tens first | `paper` |
-| `1am.m1.r01` | الجمع والطرح والضرب (2026-11-18) | write « 7 × 8 = ▢ » in a situation (pencils in boxes; the first one ≤ 25) or « 47 − 42 = ▢ » (money in دج); place the flag on « a − d » (a pinned on the 0–60 line) | sort three equalities « صحيحة / خاطئة » — a neighbour of the table (`table-slip`), « 5 × 9 + 4 = 65 » the sum before the product (`order-ops`), a borrow forgotten (`borrow-forgot`) beside true ones — asked first; write « 23 × 4 », « 6 × 9 + 5 » (the shape of b × q + r) or a three-digit subtraction with a borrow. A question carries its operation (`calc`): `grade` re-computes it; a sum written for a difference, or the flag moved the wrong way, is `add-for-sub` (in the family's `mistakes`, its worked example is the borrow). Worked examples: product first, the borrow, the table built from a known product or by tens | **none** (`labTool: null`, 2026-11-19): this kit is shown BEFORE « القسمة الإقليدية », and `paper` is that lesson's own instrument. A family's instrument must belong to the item's home lesson or one before it (`launchkit.test.js`); with none, the capsule skips its lab step (card → example → questions) and the result shows no « مختبري » button |
+| `1am.m1.r01` | الجمع والطرح والضرب (2026-11-18) | write « 7 × 8 = ▢ » in a situation (pencils in boxes; the first one ≤ 25) or « 47 − 42 = ▢ » (money in دج); place the flag on « a − d » (a pinned on the 0–60 line) | sort three equalities « صحيحة / خاطئة » — a neighbour of the table (`table-slip`), « 5 × 9 + 4 = 65 » the sum before the product (`order-ops`), a borrow forgotten (`borrow-forgot`) beside true ones — asked first; write « 23 × 4 », « 6 × 9 + 5 » (the shape of b × q + r) or a three-digit subtraction with a borrow. A question carries its operation (`calc`): `grade` re-computes it; a sum written for a difference, or the flag moved the wrong way, is `add-for-sub` (in the family's `mistakes`, its worked example is the borrow). Worked examples: product first, the borrow, the table built from a known product or by tens | **none** (`labTool: null`, 2026-11-19): this kit is shown BEFORE « القسمة الإقليدية », and `paper` is that lesson's own instrument. A family's instrument must belong to the item's home lesson or one before it, and never to a lesson whose kit shows the family (`launchkit.test.js`, for every lesson of the cycle); with none, the capsule skips its lab step (card → example → questions) and the result shows no « مختبري » button |
 | `4am.m1.r01` | قاسم عدد طبيعي | write « 42 = 6 × ▢ » (the equality that shows a divisor); sort three numbers: divisor of 36 or not — a multiple of it is a trap | sort three sentences « صحيحة / خاطئة » (« قاسم », « مضاعف », « يقبل القسمة »: true, turned round, or with a remainder); sort numbers where 1 or the number itself appears | `rows` |
+| `4am.m1.r02` | تعيين قواسم عدد (2026-11-19, for lesson 4) | write « 24 = 4 × ▢ »: the PARTNER of a divisor (the first one ≤ 29); sort three LISTS « قواسم 18: 1 ، 2 ، … » (6 to 8 divisors, never a square, three different numbers): whole, or a partner missing (`partner-forgot`), 1 or the number left out (`one-and-itself`), an intruder that leaves a remainder (`rest-not-zero`) | sort three lists of 40–99 — asked first — where the last pair tried is missing, both halves (`stop-early`), beside the other slips; write the partner of a two-digit divisor. A list card carries `n` and `list` (`launchkit.test.js` judges it from them). Its worked example writes every pair up to the square and the whole list; its first step answers the mistake shown (where to stop, 1 and the number, a remainder) | `divisors` |
 
 Lessons 2 « قواسم عدد طبيعي » and 3 « خواص قواسم عدد طبيعي » (`qawasim-adad-tabii`, `khawass-qawasim`) share their
 programme item `4am.m1.r02`, so the net gives them the same tools. Since 2026-11-18 there are TWO, both core: `4am.m1.r01`
@@ -141,6 +148,9 @@ scenario, `e2e/lib/launchKitTwoTools.mjs`) pass at 1366×768, 1024×768 and 1840
 which shares `2am.m1.r06` with it — and `2am.m1.r06` requires `2am.m1.r05`, the link goes from r05 to r06): **a tool is an EARLIER الكفاءة** — `toolsForLesson` now drops an item whose home lesson
 comes after the lesson (`LEARNING_NET.md` §3, `toolsForLesson`); it stays in the lesson's review links. No family was written for `2am.m1.r05`.
 A family no longer carries a `lesson` field: a lesson that has a pack is never named by shared code (`lessonPack.test.js`).
+
+**Lesson 4 « القاسم المشترك الأكبر لعددين طبيعيين » (2026-11-19)**: two core tools, `4am.m1.r02` (home `qawasim-adad-tabii`, family above) then
+`2am.m1.r04`; `launchkit.test.js` checks the list and that every core link has a family. Not walked yet.
 
 **A lesson with no family for its tools opens an EMPTY kit** (« عُدّتك جاهزة », 0 / 0 — seen by the owner on lesson 2,
 2026-11-17): a family per core tool is part of a lesson's definition of done (`status:lesson-v2`, part S1).
@@ -163,11 +173,11 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
 - the gate (§3bis) lives in the browser like the rest: a teacher does not see who needed a capsule;
 - no picture of a الكفاءة with its sources (measured / deduced), no window of earlier الكفاءات, no automatic update from a
   later success, no « prerequisite or new idea? » diagnosis, no class grid;
-- five families (`1am.m1.r01`, `1am.m3.r01`, `1am.m3.r02`, `2am.m1.r04`, `4am.m1.r01`): a lesson whose tools have none has no launch.
+- six families (`1am.m1.r01`, `1am.m3.r01`, `1am.m3.r02`, `2am.m1.r04`, `4am.m1.r01`, `4am.m1.r02`): a lesson whose tools have none has no launch.
 
 ## 7. Check
 
-- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (28 tests: families true and in range — the 2AM division with its own ranges, the 1AM operations with theirs (every equality of their worked examples evaluated, every slip named) —, the tools of lessons 2 and 3 and of the three lessons of the division road read from the net, a whole launch of « القسمة الإقليدية » (one who knows, one who misses everything and gets the capsule), named mistakes,
+- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (30 tests: families true and in range — the divisor lists of `4am.m1.r02` judged from their own numbers, every trap and worked example checked, the tools of lesson 4 — — the 2AM division with its own ranges, the 1AM operations with theirs (every equality of their worked examples evaluated, every slip named) —, the tools of lessons 2 and 3 and of the three lessons of the division road read from the net, a whole launch of « القسمة الإقليدية » (one who knows, one who misses everything and gets the capsule), named mistakes,
   the engine — never one answer, the workshop, the caps, the fresh tools, the gate and its capsule, the honesty star —,
   the order of the level-2 forms of every family, WHOLE launches played by the pure pieces the component chains
   (`nextStep` → `nextForm` → `makeQuestion` → `grade`, seeded) for the documented students of the walks — their sequences,

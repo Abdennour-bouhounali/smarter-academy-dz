@@ -98,6 +98,9 @@ export const TX = {
       retain: ['⭐', 'للحفظ', 'core'],
       warning: ['⚠️', 'انتبه', 'mistake'],
       takeaway: ['🎯', 'خلاصة', 'core'],
+      relationship: ['🔑', 'قاعدة', 'core'],
+      method: ['🧭', 'طريقة', 'core'],
+      tip: ['✨', 'حيلة', 'guide'],
     },
     legend: { core: 'ما يجب أن تعرفه', guide: 'ما يساعدك', mistake: 'ما يجب أن تحذره' },
     discover: 'وضع الاكتشاف',
@@ -134,6 +137,8 @@ export const KT = {
   resume: 'واصل المغامرة',
   restart: 'من البداية',
   loading: 'نبني العالم…',
+  // what a screen shows IN PLACE OF the name of a key he does not hold yet (« no rule is told »: the name comes after him)
+  hidden: '؟ ؟ ؟',
   noWebgl: 'هذا الجهاز لا يعرض العالم ثلاثيّ الأبعاد. افتح الدرس بمتصفّح آخر أو على جهاز آخر.',
   controls: { move: 'تحرّك', jump: 'اقفز', act: 'افعل', space: 'المسافة' },
   hud: {

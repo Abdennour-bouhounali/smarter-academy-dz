@@ -41,7 +41,11 @@ export default function End({ s, o, stars, game, world, basePath, config, onRest
         {keys
           .map((id) => [id, rules[id]])
           .map(([id, v]) => (
-            <span key={id} className={s.keys.includes(id) ? 'is-on' : ''} title={v.title}>
+            <span
+              key={id}
+              className={s.keys.includes(id) ? 'is-on' : ''}
+              title={s.keys.includes(id) ? v.title : undefined}
+            >
               {v.icon}
             </span>
           ))}

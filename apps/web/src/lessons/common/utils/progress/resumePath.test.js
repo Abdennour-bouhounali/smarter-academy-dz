@@ -124,5 +124,6 @@ describe('les appelants n’assemblent plus l’URL à la main', () => {
     };
     walk(srcRoot);
     expect(offenders).toEqual([]);
-  });
+    // reads every source file: under 1 s alone, over the default 5 s among the whole suite (2026-11-19)
+  }, 60_000);
 });

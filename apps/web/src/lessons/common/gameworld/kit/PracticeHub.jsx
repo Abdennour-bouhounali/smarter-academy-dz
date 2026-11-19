@@ -15,6 +15,8 @@ import { ExamLadder } from './Spaces';
 export default function PracticeHub({ s, game, sel: selFrom, space0 }) {
   const { ladder, journey, rules, text, practiceMap } = useLesson();
   const nodeMeta = (id) => (id === SUMMARY ? text.summary : rules[id]);
+  // « no rule is told »: a key's name (its tablet's title) and its levels' names appear only once he holds the key
+  const nameOf = (id, isOpen) => (isOpen || id === SUMMARY ? nodeMeta(id).title : KT.hidden);
   const [space, setSpace] = useState(space0 ?? 'game');
   const keys = s.openKeys;
   const progress = s.practice;
@@ -149,7 +151,7 @@ export default function PracticeHub({ s, game, sel: selFrom, space0 }) {
                       data-open={isOpen}
                     >
                       <span className="di-node__icon">{isOpen ? m.icon : <Lock size={22} />}</span>
-                      <strong>{m.title}</strong>
+                      <strong>{nameOf(n.id, isOpen)}</strong>
                       <span className="di-node__pips">
                         {n.levels.map((_, l) => {
                           const st = progress[ladder.levelId(i, l)]?.stars ?? 0;
@@ -164,7 +166,7 @@ export default function PracticeHub({ s, game, sel: selFrom, space0 }) {
               <aside className="di-map__panel" data-di-panel={node.id}>
                 <div className="di-map__panelhead">
                   <span>{open ? meta.icon : '🔒'}</span>
-                  <h3>{meta.title}</h3>
+                  <h3>{nameOf(node.id, open)}</h3>
                 </div>
                 {!open && (
                   <p className="di-feedback di-feedback--soft">
@@ -207,7 +209,7 @@ export default function PracticeHub({ s, game, sel: selFrom, space0 }) {
                           </span>
                           <span className="di-level__name">
                             <b>{KT.map.level(l + 1)}</b>
-                            <small>{text.levels[node.id][l]}</small>
+                            {(open || node.id === SUMMARY) && <small>{text.levels[node.id][l]}</small>}
                           </span>
                           <span className="di-level__score">
                             <Stars n={st} />

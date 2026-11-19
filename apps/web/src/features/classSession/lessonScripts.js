@@ -73,6 +73,8 @@ export function missingEvidence(log) {
  *               that lead somewhere, the class is free to try others;
  *   forge       the class writes its rule with two tiles; the board runs it on the class's bridges, then attacks it;
  *   ask         one question with choices, PROVED by bridges the board builds (`single` or several right answers);
+ *               optional `words: { card, held, fell }` — the label of a card and its two verdicts, when the choices are
+ *               not planks (bouquets, boxes…); a word left out keeps the board's « لوح » / « يثبت » / « ينهار »;
  *   statements  sentences the class judges true or false, each proved by an equality;
  *   name        the rule gets its name: the tablet of the lesson (`tablet` key of the game's strings — one wording for the
  *               student's world and for the board), read aloud by a student or by the teacher;
@@ -91,6 +93,9 @@ export const FORMS = {
 export const fills = (step, option) => step.a % option === 0;
 export const askRight = (step, picked) =>
   picked.length === step.answer.length && step.answer.every((v) => picked.includes(v));
+/** The words of an `ask` step's cards: the label of a card and its two verdicts — the step's own `words`, or the planks'. */
+const ASK_WORDS = { card: 'لوح', held: 'يثبت', fell: 'ينهار' };
+export const askWords = (step) => ({ ...ASK_WORDS, ...step.words });
 /** The rail of the board: one dot per step, with the chapter it belongs to (« نكتشف », « نستنتج », « نسمّي », « نكتب »). */
 export const railOf = (script) =>
   script.steps.map((s, i) => ({

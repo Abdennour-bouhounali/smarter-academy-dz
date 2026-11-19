@@ -30,6 +30,12 @@ The lab opens on the first instrument of the lesson (or of the cabinet when the 
   `{ mine, cabinet, all }`; `hasLab(lesson)` says whether any instrument is reached (the very first lessons of 1AM have none:
   they get no door).
 - Tested for **every lesson of the four grades**: no lesson ever lists an instrument of a lesson after it.
+- **Opened BEFORE the lesson** (« عُدّة الانطلاق », 2026-11-19): `toolsFor(lesson, { earlierOnly: true })` and
+  `<LessonLab earlierOnly />` leave out the lesson's OWN instruments — `mine` is empty, not in `all`, and the rail has no
+  « أدوات هذا الدرس » group at all (`data-ll-mine` is not rendered); an `initialTool` that is one of them is ignored. The
+  lesson's own instrument names what the lesson will make him discover (lesson 4's « 🤝 القواسم المشتركة » is the name of its
+  first key). Only the cabinet « خزانتي » and the instrument picked from it are shown. `lab.test.js` checks it for every lesson;
+  `launchkit.test.js` checks that every family's `labTool` is in the `earlierOnly` lab of every lesson whose kit shows it.
 
 ## 3. An instrument
 
@@ -119,7 +125,7 @@ When a NEW lesson has a manipulation worth keeping at hand, give it an instrumen
 | a lesson with a game world (`qasim-adad-tabii`) | « مختبري » on the title screen (`data-di-lab-open`) | overlay `{ type: 'lab' }`, the lab rendered `inline` inside the game's root, with the lab's own sounds; the 3D world behind it is neither simulated nor drawn while it is open (`Game.js › loop`) |
 | a lesson in mission mode | « 🧪 مختبري » in the foot row of the returning home (`MissionHome`, `data-mission-lab`) | `?lab=1` |
 | any other lesson page, for a student | « 🧪 مختبري » beside the lesson chip (`data-lesson-lab-open`) | `?lab=1` |
-| the kit of « عُدّة الانطلاق » (`LAUNCH_KIT.md`) | « جرّب الأداة في مختبري » | `<LessonLab initialTool={family.labTool} />`: the lab opens ON that instrument, put on the bench like a pick from the cabinet (ignored when the lesson has not reached it). A family with no instrument (`labTool: null`, e.g. `1am.m1.r01`, shown before the lesson that introduces `paper`) shows no lab button and its capsule has no lab step |
+| the kit of « عُدّة الانطلاق » (`LAUNCH_KIT.md`) | « جرّب الأداة في مختبري » | `<LessonLab initialTool={family.labTool} earlierOnly />`: the lab opens ON that instrument, put on the bench like a pick from the cabinet (ignored when the lesson has not reached it); `earlierOnly` (§2): the kit is played before the lesson, so the lab shows no « أدوات هذا الدرس » — only the cabinet (the walk library `e2e/lib/launchKitTwoTools.mjs › labShot` asserts it). A family with no instrument (`labTool: null`, e.g. `1am.m1.r01`, shown before the lesson that introduces `paper`) shows no lab button and its capsule has no lab step |
 
 `LessonIndex` renders the lab for `?lab=1` when `hasLab(lesson)` (portal to the body); closing removes the parameter. A teacher
 gets no button (he may open `?lab=1` by hand). Lessons and the lab stay behind `RequireLargeScreen` (≥ 768 px).

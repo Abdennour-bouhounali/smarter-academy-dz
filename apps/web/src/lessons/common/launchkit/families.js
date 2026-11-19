@@ -13,7 +13,8 @@
  * Adding a family = one entry in FAMILIES keyed by the item id of the net, with tests in launchkit.test.js (every generated
  * question is re-computed there). Phase 1 (2026-11-17): the two prerequisites of « التعرّف على قاسم لعدد طبيعي », then
  * « التعرّف على قاسم » itself, which the next lesson stands on; 2026-11-18: the 2AM Euclidean division (any divisor), the
- * second core tool of « قواسم عدد طبيعي » and « خواص قواسم » and a core tool of the PGCD lessons.
+ * second core tool of « قواسم عدد طبيعي » and « خواص قواسم » and a core tool of the PGCD lessons; 2026-11-19: the divisor
+ * lists of `4am.m1.r02`, the other core tool of the PGCD lessons.
  * A sort card is a number or an equality (`text`), or a SENTENCE in Arabic (`say: true`, drawn right-to-left, smaller).
  * A card the student must ACCEPT may name the mistake of refusing it (`miss`), as a `trap` names the mistake of accepting.
  */
@@ -52,6 +53,8 @@ export const MISTAKES = {
   'multiple-for-divisor': 'انتبه: لا تخلط بين القاسم والمضاعف — قاسم العدد لا يتجاوزه.',
   'sentence-reversed': 'انتبه: ترتيب العددين مهمّ — نقول « 6 قاسم للعدد 42 » و « 42 مضاعف للعدد 6 ».',
   'one-and-itself': 'انتبه: العدد 1 والعدد نفسه قاسمان دائمًا.',
+  'partner-forgot': 'انتبه: كلّ قسمة تامّة تعطي قاسمين معًا — العدد المجرَّب وشريكه.',
+  'stop-early': 'انتبه: نجرّب كلّ عدد مربّعه لا يتجاوز العدد، ولا نتوقّف قبله.',
   'quotient-zero': 'انتبه: إذا كان العدد أصغر من المقسوم عليه، فالحاصل 0 والباقي هو العدد نفسه.',
   'table-slip': 'انتبه: راجع جدول الضرب — جوابك جداء عدد مجاور.',
   'borrow-forgot': 'انتبه: إذا كان رقم الآحاد أصغر، نستلف عشرة — لا نطرح الرقم الصغير من الكبير.',
@@ -752,6 +755,141 @@ function divisorExample(rand, level, { mistake = null } = {}) {
   };
 }
 
+// ───────────────────────── 4am.m1.r02 — تعيين مجموعة قواسم عدد طبيعي ─────────────────────────
+// What the PGCD lessons stand on: the WHOLE list of a number's divisors, found by pairs (« a = d × k » gives d and its
+// partner k), trying d while d × d does not pass a. Its mistakes are those of an incomplete list: a partner forgotten,
+// the search stopped one number too early, 1 or the number itself left out, a number that leaves a remainder let in.
+const divisorList = (n) => {
+  const out = [];
+  for (let d = 1; d <= n; d += 1) if (n % d === 0) out.push(d);
+  return out;
+};
+/**
+ * « 1 ، 2 ، 3 »: a NO-BREAK space before each comma and an ordinary one after it — a line of a list breaks only AFTER a
+ * comma, never starts with one (seen on the launch card at 1366 × 768, 2026-11-19).
+ */
+export const LIST_SEP = '\u00a0، ';
+const listText = (xs) => xs.join(LIST_SEP);
+/** The numbers whose list stands on a card: 6 to 8 divisors, never a square (every divisor has a partner of its own). */
+const LISTS_FROM = {
+  1: [12, 18, 20, 28, 30, 32],
+  2: [40, 42, 44, 45, 50, 52, 54, 56, 63, 66, 70, 75, 78, 88, 98, 99],
+};
+/** The divisors d of n with d × d ≤ n: the numbers tried, one per pair. */
+const tried = (n) => divisorList(n).filter((d) => d * d <= n);
+
+/** « a = b × ▢ »: b is a divisor of a, the student writes its PARTNER — the other half of the pair. */
+function listWrite(rand, level, first) {
+  const [b, q] =
+    level === 1
+      ? first
+        ? [int(rand, 2, 4), int(rand, 5, 7)]
+        : [int(rand, 2, 6), int(rand, 6, 9)]
+      : [int(rand, 11, 19), int(rand, 3, 9)];
+  const a = b * q;
+  return {
+    gesture: 'write',
+    a,
+    b,
+    prompt:
+      level === 1
+        ? `نكتب قواسم ${a} أزواجًا. أكمل الزوج الذي يبدأ بالعدد ${b}.`
+        : `العدد ${b} قاسم للعدد ${a}. أكمل المساواة: شريكه قاسم أيضًا.`,
+    tokens: [String(a), '=', String(b), '×', S('q', 'الشريك', String(q).length)],
+  };
+}
+
+/** One card: the list of n — whole, or with the slip `kind` makes (its trap). */
+function listCard(rand, kind, n, id) {
+  const all = divisorList(n);
+  const pairs = tried(n).filter((d) => d > 1);
+  let list = all;
+  let trap = null;
+  if (kind === 'partner') {
+    const d = pick(rand, pairs);
+    list = all.filter((x) => x !== n / d);
+    trap = 'partner-forgot';
+  } else if (kind === 'edge') {
+    const gone = pick(rand, [1, n]);
+    list = all.filter((x) => x !== gone);
+    trap = 'one-and-itself';
+  } else if (kind === 'early') {
+    // stopped one number too early: the last pair tried is missing, both halves
+    const d = pairs.at(-1);
+    list = all.filter((x) => x !== d && x !== n / d);
+    trap = 'stop-early';
+  } else if (kind === 'intruder') {
+    const outs = [];
+    for (let k = 2; k < n / 2; k += 1) if (n % k !== 0) outs.push(k);
+    list = [...all, pick(rand, outs)].sort((x, y) => x - y);
+    trap = 'rest-not-zero';
+  }
+  return { id, text: `قواسم ${n}: ${listText(list)}`, say: true, n, list, bin: kind === 'full' ? 'yes' : 'no', trap };
+}
+
+/** Three lists, each of its own number: whole, or with a partner missing, 1 or the number left out, an intruder, the search stopped early. */
+function listSort(rand, level) {
+  const kinds = shuffle(
+    rand,
+    pick(
+      rand,
+      level === 1
+        ? [
+            ['full', 'partner', 'edge'],
+            ['full', 'partner', 'intruder'],
+            ['full', 'full', 'partner'],
+            ['partner', 'edge', 'full'],
+          ]
+        : [
+            ['full', 'early', 'partner'],
+            ['early', 'edge', 'full'],
+            ['full', 'early', 'intruder'],
+            ['early', 'partner', 'full'],
+          ],
+    ),
+  );
+  const ns = shuffle(rand, LISTS_FROM[level]).slice(0, 3);
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ قائمة هي قواسم العدد كلّها، دون نقص ولا زيادة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'قائمة كاملة' },
+      { id: 'no', label: 'ناقصة أو فيها دخيل' },
+    ],
+    cards: kinds.map((k, i) => listCard(rand, k, ns[i], `c${i + 1}`)),
+  };
+}
+
+/**
+ * The worked example: the divisors of a number found by pairs. Its first step answers the mistake shown — 1 and the
+ * number itself, a number that leaves a remainder, or where the search stops (and why each division gives TWO divisors).
+ */
+function listExample(rand, level, { mistake = null } = {}) {
+  const n = pick(rand, LISTS_FROM[level === 2 ? 2 : 1]);
+  const s = Math.floor(Math.sqrt(n));
+  let first;
+  if (mistake === 'one-and-itself') first = `أبدأ دائمًا بالزوج $${n} = 1 \\times ${n}$: العددان 1 و ${n} قاسمان.`;
+  else if (mistake === 'rest-not-zero') {
+    const outs = [];
+    for (let k = 2; k < n / 2; k += 1) if (n % k !== 0) outs.push(k);
+    const k = pick(rand, outs);
+    first = `العدد ${k} ليس قاسمًا: $${n} = ${k} \\times ${Math.floor(n / k)} + ${n % k}$، والباقي ليس 0.`;
+  } else if (mistake === 'partner-forgot')
+    first = `كلّ قسمة تامّة تعطي قاسمين: العدد المجرَّب وشريكه. أجرّب من 1 إلى ${s}، لأنّ $${s} \\times ${s} = ${s * s}$ لا يتجاوز ${n}.`;
+  else
+    first = `أجرّب من 1 إلى ${s}: $${s} \\times ${s} = ${s * s}$ لا يتجاوز ${n}، و $${s + 1} \\times ${s + 1} = ${(s + 1) * (s + 1)}$ يتجاوزه.`;
+  return {
+    title: `قواسم العدد ${n}`,
+    steps: [
+      first,
+      `الأزواج: ${tried(n)
+        .map((d) => `$${n} = ${d} \\times ${n / d}$`)
+        .join('، ')}.`,
+      `قواسم ${n}: ${listText(divisorList(n))}.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
   '1am.m1.r01': {
     item: '1am.m1.r01',
@@ -840,6 +978,47 @@ export const FAMILIES = {
       '« $b$ قاسم للعدد $a$ » و « $a$ مضاعف للعدد $b$ » و « $a$ يقبل القسمة على $b$ »: المعنى نفسه.',
       'العدد 1 والعدد نفسه قاسمان دائمًا.',
       'مثال: $42 = 6 \\times 7$، إذن 6 قاسم للعدد 42؛ و $44 = 6 \\times 7 + 2$، إذن 6 ليس قاسمًا للعدد 44.',
+    ],
+  },
+  '4am.m1.r02': {
+    item: '4am.m1.r02',
+    // the name of the gesture, never the title of its home lesson (a lesson's title is foreign on another lesson's screen)
+    name: 'تعيين قواسم عدد',
+    icon: '📋',
+    labTool: 'divisors',
+    mistakes: ['partner-forgot', 'stop-early', 'one-and-itself', 'rest-not-zero'],
+    forms: { 1: ['write', 'sort'], 2: ['sort', 'write'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'sort' ? listSort(rand, level) : listWrite(rand, level, first),
+    example: listExample,
+    rules: [
+      {
+        id: 'pairs',
+        title: 'القواسم أزواج',
+        text: 'كلّ كتابة $a = b \\times k$ تعطي قاسمين للعدد $a$: العدد $b$ وشريكه $k$.',
+        example: '$45 = 5 \\times 9$: العددان 5 و 9 قاسمان للعدد 45.',
+        check: { a: 45, b: 5, q: 9, r: 0 },
+      },
+      {
+        id: 'square',
+        title: 'نجرّب حتّى المربّع',
+        text: 'لتعيين قواسم $a$ نجرّب الأعداد التي مربّعها لا يتجاوز $a$، ونكتب مع كلّ قاسم شريكه.',
+        example: '$7 \\times 7 = 49$ لا يتجاوز 50، و $8 \\times 8 = 64$ يتجاوزه: لقواسم 50 نجرّب من 1 إلى 7.',
+        check: { a: 50, b: 5, q: 10, r: 0 },
+      },
+      {
+        id: 'whole',
+        title: 'القائمة كاملة',
+        text: 'قائمة قواسم $a$ تبدأ بالعدد 1 وتنتهي بالعدد $a$ نفسه، ولا يدخلها عدد يترك باقيًا.',
+        example: `قواسم 18: ${listText([1, 2, 3, 6, 9, 18])}، و $18 = 4 \\times 4 + 2$: العدد 4 ليس منها.`,
+        check: { a: 18, b: 4, q: 4, r: 2 },
+      },
+    ],
+    memo: [
+      'كلّ كتابة $a = b \\times k$ تعطي قاسمين: $b$ وشريكه $k$.',
+      'نجرّب الأعداد من 1 إلى أكبر عدد مربّعه لا يتجاوز $a$.',
+      'العدد 1 والعدد $a$ نفسه في القائمة دائمًا.',
+      `مثال: $45 = 1 \\times 45 = 3 \\times 15 = 5 \\times 9$، إذن قواسم 45 هي ${listText([1, 3, 5, 9, 15, 45])}.`,
     ],
   },
   '1am.m3.r01': {

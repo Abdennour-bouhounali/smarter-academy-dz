@@ -31,7 +31,7 @@ import Trainer from './Trainer';
 import Fit from './Fit';
 import { SoundToggle } from './parts';
 import { useLesson } from './LessonContext';
-import { TX } from './text';
+import { KT, TX } from './text';
 
 /**
  * The lesson's knowledge, as this page reads it (`useLesson().knowledge`): its graph (nodes and labelled links), its memo
@@ -228,7 +228,7 @@ export default function KnowledgePage({ s, game, sel }) {
                       <span className="di-knode__icon">{o ? icon : <Lock size={15} />}</span>
                       <span className="di-knode__text">
                         <small>{o ? label : TX.know.lockedTitle}</small>
-                        <strong>{o ? n.title : '؟ ؟ ؟'}</strong>
+                        <strong>{o ? n.title : KT.hidden}</strong>
                       </span>
                       {o && read.includes(n.id) && (
                         <i className="di-knode__tick">{gold ? <Award size={13} /> : <Check size={13} />}</i>
@@ -304,8 +304,8 @@ function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
                 onClick={() => setId(fid)}
                 data-di-trail-card={fid}
               >
-                <span>{icon}</span>
-                {n.title}
+                <span>{isOpen(n) ? icon : <Lock size={15} />}</span>
+                {isOpen(n) ? n.title : KT.hidden}
               </button>
             </React.Fragment>
           );
@@ -352,7 +352,7 @@ function Journey({ node, found, isOpen, setId, onFull, game, ...body }) {
                   <small>
                     {edgeLabel(id, n.id)} · {label}
                   </small>
-                  <strong>{n.title}</strong>
+                  <strong>{isOpen(n) ? n.title : KT.hidden}</strong>
                 </span>
                 <ArrowLeft size={20} />
               </button>
@@ -419,7 +419,7 @@ function CardBody({ node, open, item, tab, setTab, id, read, sealed, trained, ga
           </span>
           <div>
             <small>{TX.know.lockedTitle}</small>
-            <h3>؟ ؟ ؟</h3>
+            <h3>{KT.hidden}</h3>
           </div>
         </div>
         <p className="di-feedback di-feedback--soft">{TX.know.locked}</p>

@@ -7,7 +7,9 @@
  *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, link? }], divisors, nextManual?, text }
  *        | turn, cut (`InquiryMoves.jsx`) | join, stack (`InquiryCombine.jsx`) | peel, letters (`InquiryProof.jsx`)
  *        | groups, rebuild, estimate, bracket (`InquiryDivision.jsx` — the Euclidean division)
- *        | common, ladder, nest (`InquiryGcd.jsx` — the greatest common divisor)
+ *        | common, ladder, nest (`InquiryGcd.jsx` — the greatest common divisor) | cycle (`InquiryCycle.jsx`)
+ *        | summit (`InquirySummit.jsx`) | deal (`InquiryDeal.jsx`) | lists (`InquiryLists.jsx`)
+ *        | sort (`InquirySort.jsx`) | measure (`InquiryMeasure.jsx`) | part (`InquiryPart.jsx`)
  *   — every spec shape is in docs/architecture/GAME_WORLD.md « استكشف ».
  * `text` is the LESSON's wording (this file names no lesson and writes none of its numbers).
  */
@@ -31,6 +33,12 @@ import { Peel, Letters } from './InquiryProof';
 import { Groups, Rebuild, Estimate, Bracket } from './InquiryDivision';
 import { Common, Ladder, Nest } from './InquiryGcd';
 import { Cycle } from './InquiryCycle';
+import { Summit } from './InquirySummit';
+import { Deal } from './InquiryDeal';
+import { Lists } from './InquiryLists';
+import { Sort } from './InquirySort';
+import { Measure } from './InquiryMeasure';
+import { Part } from './InquiryPart';
 import { INQUIRY_TEXT } from './strings';
 import { FAST, expose } from './inquiryParts';
 import './inquiry.css';
@@ -610,6 +618,12 @@ export default function Inquiry({ spec, game, onDone }) {
     ladder: Ladder,
     nest: Nest,
     cycle: Cycle,
+    summit: Summit,
+    deal: Deal,
+    lists: Lists,
+    sort: Sort,
+    measure: Measure,
+    part: Part,
   }[spec.kind];
   return <Kind spec={spec} play={play} onDone={onDone} />;
 }

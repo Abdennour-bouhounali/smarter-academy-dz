@@ -207,6 +207,12 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   `needed` (the trips NEEDED, ⌈a ÷ b⌉), `upper` (the value by excess, a remainder required), `bracket` (« $q < a \div b <
   q + 1$ » or « $a \div b = q$ », compared as fractions, the two numbers consecutive, the Euclidean division written in the
   question). The numbers are the platform's own, none of the lesson's world.
+  **Lesson 4 « القاسم المشترك الأكبر » (2026-11-19)**: `4am/qasim-mushtarak-akbar.json` — no pair of the lesson's exercise
+  bank. New `check` types: `pgcd` (a number, re-computed by Euclid), `pgcdPick` (the option equal to the PGCD — a common
+  divisor that is not the greatest and the larger number are the wrong ones), `commonDivisor` (true / false: d divides a
+  AND b — also a sharing into d identical lots), `commonSet` (« 1 ، 3 ، 9 »: the list of the common divisors, exactly),
+  `pgcdDivisors` (the PGCD the question gives is checked true, and the right list is its divisors), `perLot` (the lots
+  given ARE the PGCD; one lot holds a ÷ PGCD).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -261,7 +267,10 @@ only a rule that survived gets its NAME.** The teacher is never told what to say
 
 **The script is data** — the lesson's own `board/script.js` (`export const SCRIPT = { title, steps }`, named in its
 pack; the page loads it with `usePackPart(lessonId, 'script')`). A lesson without a script has no
-moment ③. Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
+moment ③. Lesson 4 `qasim-mushtarak-akbar` (13 stations, 2026-11-19) shows how a question about TWO numbers is asked with
+an `ask`, which builds over ONE gap: the options are chosen so that the planks filling that gap are exactly the answer (all
+options divide the other number, written with its equalities in the text) — its `board.test.js` computes both sides.
+Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most
 two rows of short equalities, or its row leaves the card — `board/board.test.js` of `khawass-qawasim`, `qisma-iqlidiya-baqi`,
@@ -275,7 +284,7 @@ shown in the footer for the teacher. Kinds, each drawn by one component of `Less
 | `bridges` | **experiments**: it chooses a gap and a plank (two big steppers, or a suggested bridge), PREDICTS « يثبت / ينهار » (or builds without predicting), the board builds; the bridge joins « جسور القسم » (the class's evidence, the last 8); a right prediction earns the class a star; the equality $a = b \times q + r$ is written under each bridge |
 | `forge` | **concludes**: its bridges become a table (planks laid, cells left, held or not); it writes a rule with two tiles (the same tiles as the student's rule forge, `ruleForge.js`); the board runs the rule on every line, then ATTACKS it with a gap the class has not built. A rule contradicted by a line, or broken by the attack, goes back to the class — the bridge that broke it joins the evidence. The rule that survives two attacks is sealed « قاعدة القسم صمدت » |
 | `name` | the rule gets its name: the tablet of the lesson (`tablet` = a key of the lesson's own `rules` — its `world/` content, handed to the board by `ClassSessionPage` through `usePackPart(lessonId, 'world')`: **one wording for the student's world and for the board**; before 2026-11-18 the board read the pilot's strings), read aloud by a student the teacher picks or by the teacher; after a `forge` the class's own rule is shown above it. « من يتذكّر؟ » hides the key words (`recall`), never inside a formula: the class says them, a tap shows them |
-| `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five) |
+| `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five). A card is labelled « لوح » and its verdict is « يثبت / ينهار »; a step whose choices are NOT planks gives its own `words: { card, held, fell }` (`lessonScripts.js › askWords`; a word left out keeps the default) — lesson 4's `deal`, a number of bouquets: « عدد الباقات », « توزَّع كلّها / تبقى زنابق ». A `card` label holds no number (it would need Arabic number agreement: 3 باقات، 12 باقة) |
 | `statements` | sentences judged « صحيح / خطأ » one after the other; each verdict comes with its reason (`proofOf`) |
 | `trace` | what goes in the copybook: the keys of the lesson, in the wording just read. A lesson whose tablets are long splits the copybook into SEVERAL `trace` steps of two keys (lesson 2: `trace-1`, `trace-2`). A chain of four `=` or more (« 60 = 1 × 60 = 2 × 30 = … ») takes its own row and a smaller size (`data-long`); a tablet of five items or more shrinks its card (`data-dense`) — never cut, never broken |
 

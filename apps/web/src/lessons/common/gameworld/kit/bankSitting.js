@@ -7,7 +7,8 @@
  * A level of the sitting is a level of the bank: level N serves `sheets` exam sheets drawn from the bank's level N. What a
  * sheet says is the bank's: its statement (content, formulas, table), its steps in order, its answer types, its points
  * (`metadata.exam.points`), its time (`metadata.estimatedMinutes`), its model solution and its hints. Two things are done
- * AT DISPLAY, never in the bank: « DA » is written « دج » (platform rule), and nothing of `metadata.source` is shown.
+ * AT DISPLAY, never in the bank: « DA » is written « دج » (platform rule), and nothing of `metadata.source` is shown; and a
+ * « PGCD(a ; b) » written in the words is drawn as the formula it is (`namesAsMath`).
  *
  *   mark      the evaluator of the practice space (`@smarter-academy/core/practice › evaluateAnswer`): correct or
  *             equivalent → the points of the step; partially correct → half; anything else → 0. The SERVER judges again.
@@ -115,11 +116,37 @@ export function cashDj(text) {
     .join('');
 }
 
+/**
+ * « PGCD(a ; b) » (or « PPCM(a ; b) ») written in the WORDS of a bank line — Latin letters, brackets and numbers inside an
+ * Arabic sentence, which the bidi algorithm scrambles on screen (« هو PGCD(252 ; 36 = (180. »; 2026-11-19, the bank of
+ * the PGCD lesson of 4AM writes it so 108 times) — is drawn AT DISPLAY as the formula it is, with the « = n » that follows
+ * it: it reads left to right. Inside a formula the name gets upright letters (`\mathrm`), not KaTeX's italic P·G·C·D.
+ * Display only, like `cashDj`: the bank's file is not changed, the mark reads the bank's own step.
+ */
+const NAMED_IN_WORDS = /(?<![A-Za-z\\])(PGCD|PPCM)\s*\(([^()$]*)\)((?:\s*=\s*\d+)?)/g;
+const NAMED_IN_MATH = /(?<![A-Za-z\\{])(PGCD|PPCM)(?![A-Za-z])/g;
+export function namesAsMath(text) {
+  if (typeof text !== 'string' || !/PGCD|PPCM/.test(text)) return text;
+  return text
+    .split(/(\$[^$]*\$)/)
+    .map((part, i) =>
+      i % 2 === 1
+        ? part.replace(NAMED_IN_MATH, '\\mathrm{$1}')
+        : part.replace(
+            NAMED_IN_WORDS,
+            (_, name, args, eq) => `$\\mathrm{${name}}(${args.trim()})${eq.replace(/\s+/g, ' ')}$`,
+          ),
+    )
+    .join('');
+}
+/** A string of the bank as the sitting SHOWS it: its money in « دج », its PGCD drawn. */
+const shown = (text) => namesAsMath(cashDj(text));
+
 /** A formula of the bank's `result` (LaTeX without dollars), as a line of MathText: with dollars unless it is Arabic. */
 function resultLine(result) {
   if (!result) return null;
-  if (ARABIC.test(result) && !/\\text\{/.test(result)) return cashDj(result);
-  return cashDj(`$${result}$`);
+  if (ARABIC.test(result) && !/\\text\{/.test(result)) return shown(result);
+  return shown(`$${result}$`);
 }
 
 /**
@@ -128,10 +155,10 @@ function resultLine(result) {
  */
 const shownOf = (q) => ({
   ...q,
-  statement: cashDj(q.statement),
-  lead: cashDj(q.lead),
+  statement: shown(q.statement),
+  lead: shown(q.lead),
   answerFormat: cashDj(q.answerFormat),
-  ...(q.choices ? { choices: q.choices.map((c) => ({ ...c, content: cashDj(c.content) })) } : {}),
+  ...(q.choices ? { choices: q.choices.map((c) => ({ ...c, content: shown(c.content) })) } : {}),
 });
 
 /** One exam sheet of the bank → the exercise of a subject (`i` = its place on the sheet). */
@@ -147,16 +174,16 @@ function fromBank(ex, i, keyOf = {}) {
     id,
     bankId: ex.id,
     title: /الوضعي/.test(heading) ? 'الوضعيّة الإدماجيّة' : `التمرين ${ORDINAL[i] ?? i + 1}`,
-    topic: ex.metadata?.title ?? '',
+    topic: namesAsMath(ex.metadata?.title ?? ''),
     points,
     minutes: ex.metadata?.estimatedMinutes ?? 5,
-    statement: cashDj(ex.statement?.content ?? ''),
-    formulas: (ex.statement?.formulas ?? []).map(cashDj),
+    statement: shown(ex.statement?.content ?? ''),
+    formulas: (ex.statement?.formulas ?? []).map(shown),
     table: ex.statement?.table
       ? {
           ...ex.statement.table,
-          head: ex.statement.table.head.map(cashDj),
-          rows: ex.statement.table.rows.map((r) => r.map(cashDj)),
+          head: ex.statement.table.head.map(shown),
+          rows: ex.statement.table.rows.map((r) => r.map(shown)),
         }
       : null,
     questions: ex.questions.map((q, k) => {
@@ -167,8 +194,8 @@ function fromBank(ex, i, keyOf = {}) {
         qid: q.id,
         step: q.step,
         sub: q.sub ?? null,
-        lead: cashDj(q.lead ?? null),
-        text: cashDj(q.statement ?? ''),
+        lead: shown(q.lead ?? null),
+        text: shown(q.statement ?? ''),
         answerType: q.answerType,
         paper,
         points: paper ? 0 : share[t++],
@@ -209,10 +236,10 @@ function markBank(q, v) {
 
 /** The model copy: the bank's solution lines, then its boxed result. */
 const modelOf = (q) =>
-  [...(q.bank.solution?.lines ?? []).map(cashDj), resultLine(q.bank.solution?.result)].filter(Boolean);
+  [...(q.bank.solution?.lines ?? []).map(shown), resultLine(q.bank.solution?.result)].filter(Boolean);
 
 /** « أرشدني »: the bank's hints, in their order — they never give the answer. */
-const guideOf = (q) => (q.bank.hints ?? []).map((h) => cashDj(h.content));
+const guideOf = (q) => (q.bank.hints ?? []).map((h) => shown(h.content));
 
 /** What the corrector looks for ON THE PAPER, by the shape of the step. */
 function schemeOf(q) {
@@ -231,7 +258,7 @@ function schemeOf(q) {
 /** What the student wrote, as a line of text (MathText): the choice he picked, or the value he typed. */
 function writtenOf(q, v) {
   if (!answeredBank(q, v)) return null;
-  if (q.answerType === 'choice') return cashDj(q.bank.choices?.find((c) => c.id === v.choiceId)?.content ?? '');
+  if (q.answerType === 'choice') return shown(q.bank.choices?.find((c) => c.id === v.choiceId)?.content ?? '');
   return String(v.value);
 }
 

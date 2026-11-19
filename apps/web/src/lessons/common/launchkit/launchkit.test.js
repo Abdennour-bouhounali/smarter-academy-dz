@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { toolsForLesson, getItem, homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
-import { TOOLS } from '../lessonlab/registry';
-import { isReached } from '../lessonlab/order';
-import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
+import { TOOLS, toolById, toolsFor } from '../lessonlab/registry';
+import { GRADES, isReached } from '../lessonlab/order';
+import ORDER from '../lessonlab/lessonOrder.generated.json';
+import { FAMILIES, LIST_SEP, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
 import {
   planTools,
   nextStep,
@@ -37,7 +38,10 @@ const arithmetic = (text) => {
     .reduce((sum, term) => sum + term.split(' - ').reduce((v, x, i) => (i === 0 ? value(x) : v - value(x)), 0), 0);
   return lhs === Number(m[2]);
 };
+/** Every divisor of n, computed here. */
+const divisorsApart = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((d) => n % d === 0);
 const accepts = (q, c) => {
+  if (c.list) return c.list.join() === divisorsApart(c.n).join(); // « قواسم 12: 1 ، 2 ، … »: the whole list, nothing else
   if (arithmetic(c.text) !== null) return arithmetic(c.text);
   if (c.say) return c.verb === 'divisor' ? Number.isInteger(c.y / c.x) : Number.isInteger(c.x / c.y); // « x قاسم لـ y » / « x مضاعف لـ y », « x يقبل القسمة على y »
   if (q.of) return Number.isInteger(q.of / c.n);
@@ -84,7 +88,27 @@ describe('عُدّة الانطلاق — the question families', () => {
     }
     // « الجمع والطرح والضرب » is shown before « القسمة الإقليدية »: « القسمة على الورقة » is that lesson's own tool
     expect(FAMILIES['1am.m1.r01'].labTool).toBe(null);
-    expect(familyFor('4am.m1.r02')).toBe(null);
+    // « تعيين مجموعة قواسم عدد » (2026-11-19, for lesson 4): its instrument is the one of its home lesson
+    expect(familyFor('4am.m1.r02').labTool).toBe('divisors');
+  });
+
+  it('the capsule’s lab never opens on an instrument of the lesson being prepared — for EVERY lesson of the cycle', () => {
+    // the kit is played BEFORE the lesson: its lab is `earlierOnly` (LESSON_LAB.md §2), so a family's instrument must be
+    // one of a lesson strictly before every lesson whose kit shows that family, or the capsule would open on nothing
+    let seen = 0;
+    for (const g of GRADES)
+      for (const code of ORDER[g])
+        for (const t of planTools(toolsForLesson(code), (id) => Boolean(familyFor(id)))) {
+          const tool = familyFor(t.item).labTool;
+          if (tool === null) continue;
+          seen += 1;
+          expect(toolById(tool).lesson, `${code}: ${t.item} → ${tool}`).not.toBe(code);
+          expect(
+            toolsFor(code, { earlierOnly: true }).all.map((x) => x.id),
+            `${code}: ${t.item} → ${tool}`,
+          ).toContain(tool);
+        }
+    expect(seen).toBeGreaterThan(0);
   });
 
   it('every generated question is true: the answer computed apart is graded right, and it can be handed in', () => {
@@ -282,6 +306,117 @@ describe('عُدّة الانطلاق — the question families', () => {
     for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
   });
 
+  it('« تعيين مجموعة قواسم عدد »: its pairs, its lists, their traps and its worked example say the truth', () => {
+    const item = '4am.m1.r02';
+    const seen = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      // write: the partner of a divisor, never a remainder box
+      for (const level of [1, 2]) {
+        const w = makeQuestion(rng(seed), item, level, 'write', { first: seed % 5 === 0 });
+        expect(w.tokens.filter((t) => typeof t === 'object').map((t) => t.slot)).toEqual(['q']);
+        expect(w.a % w.b).toBe(0);
+        expect(grade(w, { q: String(w.a / w.b) })).toEqual({ correct: true, mistake: null });
+        expect(grade(w, { q: String(w.a / w.b + 1) }).correct).toBe(false);
+        expect(w.prompt).toContain(String(w.a));
+        expect(w.prompt).toContain(String(w.b));
+      }
+      // sort: three lists of three different numbers, each judged from its own numbers
+      for (const level of [1, 2]) {
+        const s = makeQuestion(rng(seed * 104729 + level), item, level, 'sort');
+        expect(new Set(s.cards.map((c) => c.n)).size).toBe(3);
+        for (const c of s.cards) {
+          const all = divisorsApart(c.n);
+          expect(c.text).toBe(`قواسم ${c.n}: ${c.list.join('\u00a0، ')}`); // the card shows the list it is judged on
+          // a line of the list breaks only AFTER a comma: a no-break space before each one, never an ordinary one
+          expect(c.text).not.toMatch(/ ،/);
+          expect(c.say).toBe(true); // a sentence in Arabic: drawn right to left
+          expect(all.length).toBeGreaterThanOrEqual(6);
+          expect(all.length).toBeLessThanOrEqual(8); // a card stays short
+          expect(Number.isInteger(Math.sqrt(c.n))).toBe(false);
+          expect(c.n).toBeLessThanOrEqual(level === 1 ? 32 : 99);
+          expect(c.bin, c.text).toBe(accepts(s, c) ? 'yes' : 'no');
+          const missing = all.filter((d) => !c.list.includes(d));
+          const extra = c.list.filter((d) => !all.includes(d));
+          if (c.trap === 'partner-forgot') {
+            expect(missing).toHaveLength(1);
+            expect(missing[0] * missing[0]).toBeGreaterThan(c.n); // the big half of a pair
+            expect(c.list).toContain(c.n / missing[0]); // its partner is there
+            expect(missing[0]).not.toBe(c.n);
+          }
+          if (c.trap === 'stop-early') {
+            // the last pair tried is missing, both halves: d is the greatest divisor whose square does not pass n
+            expect(missing).toHaveLength(2);
+            const [d, k] = missing;
+            expect(d * k).toBe(c.n);
+            expect(d).toBe(Math.max(...all.filter((x) => x * x <= c.n)));
+            expect(level).toBe(2);
+          }
+          if (c.trap === 'one-and-itself') expect(missing.length === 1 && [1, c.n].includes(missing[0])).toBe(true);
+          if (c.trap === 'rest-not-zero') {
+            expect(missing).toEqual([]);
+            expect(extra).toHaveLength(1);
+            expect(c.n % extra[0]).not.toBe(0);
+            expect(c.list).toEqual([...c.list].sort((x, y) => x - y)); // the intruder hides in its place
+          }
+          if (c.bin === 'yes') expect(c.trap).toBe(null);
+          else {
+            expect(MISTAKES[c.trap], c.trap).toBeTruthy();
+            expect(grade(s, { ...right(s), [c.id]: 'yes' })).toEqual({ correct: false, mistake: c.trap });
+          }
+          if (c.trap) seen.add(c.trap);
+        }
+      }
+    }
+    expect([...seen].sort()).toEqual(['one-and-itself', 'partner-forgot', 'rest-not-zero', 'stop-early']);
+    // the worked example: a true pair for every number tried, the whole list at the end, a first step on the mistake shown
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, ...FAMILIES[item].mistakes]) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          const n = Number(e.title.match(/\d+/)[0]);
+          expect(e.steps).toHaveLength(3);
+          const pairs = [...e.steps[1].matchAll(/\$(\d+) = (\d+) \\times (\d+)\$/g)].map((m) => m.slice(1).map(Number));
+          expect(pairs.map(([, d]) => d)).toEqual(divisorsApart(n).filter((d) => d * d <= n));
+          for (const [a, d, k] of pairs) expect(d * k, `${a} = ${d} × ${k}`).toBe(a);
+          expect(e.steps[2]).toBe(`قواسم ${n}: ${divisorsApart(n).join(LIST_SEP)}.`);
+          const s = Math.floor(Math.sqrt(n));
+          if (mistake === 'one-and-itself') expect(e.steps[0]).toContain(`${n} = 1 \\times ${n}`);
+          else if (mistake === 'rest-not-zero') {
+            const m = e.steps[0]
+              .match(/\$(\d+) = (\d+) \\times (\d+) \+ (\d+)\$/)
+              .slice(1)
+              .map(Number);
+            expect(m[1] * m[2] + m[3]).toBe(n);
+            expect(m[3]).toBeGreaterThan(0);
+            expect(m[3]).toBeLessThan(m[1]);
+          } else {
+            expect(e.steps[0]).toContain(`${s} \\times ${s} = ${s * s}`);
+            expect(s * s).toBeLessThanOrEqual(n);
+            expect((s + 1) * (s + 1)).toBeGreaterThan(n);
+          }
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+        }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // its rules and memo: every list they write is a true list of divisors
+    const lists = [...FAMILIES[item].rules.map((r) => r.example), ...FAMILIES[item].memo].flatMap((t) =>
+      [...t.matchAll(/قواسم (\d+)(?: هي)?: ([\d \u00a0،]+\d)/g)].map((m) => [Number(m[1]), m[2]]),
+    );
+    expect(lists.length).toBeGreaterThanOrEqual(1);
+    for (const [n, l] of lists) expect(l.split('،').map((x) => Number(x.trim()))).toEqual(divisorsApart(n));
+    expect(FAMILIES[item].memo.at(-1)).toContain('قواسم 45 هي 1\u00a0، 3\u00a0، 5\u00a0، 9\u00a0، 15\u00a0، 45');
+  });
+
+  it('takes the tools of « القاسم المشترك الأكبر » from the learning net: the divisor lists of lesson 2, then the 2AM division', () => {
+    const links = toolsForLesson('qasim-mushtarak-akbar');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['4am.m1.r02', 'qawasim-adad-tabii', 'core'],
+      ['2am.m1.r04', 'qisma-iqlidiya-hasr', 'core'],
+    ]);
+    // every CORE link of the net has a family: the launch of lesson 4 is never an empty kit (LAUNCH_KIT.md §4)
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+  });
+
   it('« الجمع والطرح والضرب » (1AM): its operations are true, in their ranges, and a slip is named', () => {
     const item = '1am.m1.r01';
     const seen = new Set();
@@ -409,6 +544,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       '2am.m1.r04': ['sort', 'write'],
       '1am.m3.r02': ['three', 'nine', 'four'], // no form named `sort`: its own order
       '4am.m1.r01': ['sentences', 'pick'], // no form named `sort`: its own order
+      '4am.m1.r02': ['sort', 'write'],
     });
     for (const item of Object.keys(FAMILIES)) {
       expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered

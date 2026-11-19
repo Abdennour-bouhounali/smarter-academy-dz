@@ -96,11 +96,13 @@
   color: #fde68a;
 }
 
-/* the page's header holds five controls in discovery mode: its subtitle stays on one line */
+/* the page's header holds up to five controls: its subtitle WRAPS (two lines at most at the widths we serve) and is never
+   cut — at 1840 × 900 the counters show their words and an ellipsis had eaten the end of the sentence (2026-11-19). The
+   map below is `flex: 1`: it gives the line back, nothing scrolls. */
 .di-page__head p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: break-word;
+  line-height: 1.4;
 }
 
 /* ───────── « خريطة المعارف » rebuilt (2026-11-15): the page fits the screen, the discovery is a JOURNEY ───────── */

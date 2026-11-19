@@ -110,6 +110,18 @@ describe('مختبري — the instruments a lesson may show', () => {
     expect(toolsFor('qawaid-qabiliyat-qisma').all.map((t) => t.id)).not.toContain('bracket'); // 2AM comes later
   });
 
+  it('opened BEFORE the lesson (« عُدّة الانطلاق », `earlierOnly`): only the instruments of the lessons before it', () => {
+    const before = toolsFor('qasim-mushtarak-akbar', { earlierOnly: true });
+    expect(before.mine).toEqual([]);
+    expect(before.all.map((t) => t.id)).not.toContain('common'); // « 🤝 القواسم المشتركة » names the lesson's first key
+    expect(before.all.map((t) => t.id)).toContain('divisors');
+    expect(before.cabinet).toEqual(toolsFor('qasim-mushtarak-akbar').cabinet); // the cabinet is the same
+    for (const g of GRADES)
+      for (const code of ORDER[g])
+        for (const t of toolsFor(code, { earlierOnly: true }).all)
+          expect(t.lesson, `${t.id} in ${code}`).not.toBe(code);
+  });
+
   it('never shows an instrument of the future, for ANY lesson of the cycle', () => {
     for (const g of GRADES)
       for (const code of ORDER[g]) {

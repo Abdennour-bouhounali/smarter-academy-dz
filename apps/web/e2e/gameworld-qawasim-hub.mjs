@@ -64,6 +64,7 @@ await w.run(async () => {
     await page.click('[data-di-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.waitForTimeout(500);
     expect(await page.locator('[data-di-node]').count() === 5 && await page.locator('[data-di-node][data-open="true"]').count() === 0, 'a new student: five nodes on the map, all locked');
     expect(await page.locator('[data-di-level]:not([disabled])').count() === 0 && await page.locator('[data-di-next]').count() === 0, '…and no level can be played before a key is earned');
+    { const names = await page.locator('[data-di-node]').evaluateAll((els) => els.map((e) => [e.dataset.diNode, e.querySelector('strong').textContent.trim()])); expect(names.every(([id, t]) => id === 'exam' || t === '؟ ؟ ؟'), `no rule is named before it is forged: each locked key reads « ؟ ؟ ؟ » (${names.map((n) => n[1]).join(' · ')})`); } // « no rule is told » (GAME_WORLD.md, 2026-11-19)
     await shot(page, 'hub-locked', { exit: ['[data-di-map-close]'], numbers: true });
     await page.click('[data-di-space="exam"]'); await page.waitForSelector('[data-di-ladder="locked"]');
     await shot(page, 'exam-locked', { exit: ['[data-di-map-close]'], numbers: true });

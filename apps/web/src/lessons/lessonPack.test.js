@@ -39,7 +39,9 @@ describe('the pack of a lesson — the ONE place where it says what it gives the
         expect((await loadPackPart(id, 'memo')).glance, id).toBeTruthy();
       }
     }
-  });
+    // every pack's world, knowledge and board are imported one after the other: 1 s alone, but over the default 5 s
+    // when the whole suite imports beside it (measured 2026-11-19, seven packs) — so this test has its own limit
+  }, 60_000);
 
   it('the exam coach finds a knowledge sheet behind every الكفاءة the pack names', async () => {
     for (const id of lessonsWithPack('coach')) {

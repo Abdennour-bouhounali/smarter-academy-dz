@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import Inquiry from './Inquiry';
+import { Shelves } from './InquiryGcd';
+import { commonOf } from './inquiry';
 
 // the screens expose their state to the walks on `window` (dev only): give the server render one
 globalThis.window = globalThis.window ?? {};
@@ -115,5 +117,54 @@ describe('the investigation screens — common, ladder, nest open on their quest
     const html = renderToString(<Inquiry spec={one} onDone={() => {}} />);
     expect(html).toContain('data-iq-in="count"');
     expect(html).toContain('countAsk(');
+  });
+
+  describe('common with crown: false — the experiment ends on the shelves and their count', () => {
+    const rows = commonOf(12, 18, [1, 2, 3, 5, 6, 9]).rows;
+    const placed = rows.map((r) => ({ ...r, guessA: r.holdsA, guessB: r.holdsB }));
+    const shelves = (crown, stage, long = null) =>
+      renderToString(
+        <Shelves
+          T={SPECS.common.text}
+          a={12}
+          b={18}
+          rows={rows}
+          tray={[]}
+          placed={placed}
+          hand={null}
+          stage={stage}
+          crown={crown}
+          long={long}
+          longest={6}
+          onTake={() => {}}
+          onMark={() => {}}
+        />,
+      );
+
+    it('by default the chips of « both » can be marked once the tray is empty, and the longest is lit at the end', () => {
+      const say = shelves(true, 'say', 3);
+      expect(say).toContain('data-iq-long="6"');
+      expect(say).toMatch(/class="iq-chip iq-chip--s is-on"[^>]*data-iq-long="3"/);
+      expect(say).not.toMatch(/disabled=""[^>]*data-iq-long="6"/);
+      expect(shelves(true, 'seen')).toMatch(/class="iq-chip iq-chip--s is-on"[^>]*data-iq-long="6"/);
+    });
+
+    it('crown: false — no chip of a shelf is pickable, marked or lit; nothing names or outlines the longest', () => {
+      for (const stage of ['say', 'seen']) {
+        const out = shelves(false, stage, 6);
+        expect(out).toContain('data-iq-shelf="both"');
+        expect(out).not.toContain('data-iq-long');
+        expect(out).not.toContain('is-on');
+        expect(out).not.toMatch(/<button(?![^>]*disabled)[^>]*iq-chip--s/);
+      }
+    });
+
+    it('the screen carries the option (spec or round) for the walks', () => {
+      const off = { ...SPECS.common, crown: false };
+      expect(renderToString(<Inquiry spec={off} onDone={() => {}} />)).toContain('data-iq-crown="0"');
+      const round = { ...SPECS.common, rounds: [{ ...SPECS.common.rounds[0], crown: false }] };
+      expect(renderToString(<Inquiry spec={round} onDone={() => {}} />)).toContain('data-iq-crown="0"');
+      expect(renderToString(<Inquiry spec={SPECS.common} onDone={() => {}} />)).toContain('data-iq-crown="1"');
+    });
   });
 });

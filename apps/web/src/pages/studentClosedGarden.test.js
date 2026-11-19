@@ -66,7 +66,8 @@ describe('l’espace élève est un jardin clos', () => {
         }
         expect(code, `${file} ouvre une fenêtre`).not.toMatch(/window\.open\(/);
       }
-    });
+      // reads every file of the folder: under 1 s alone, over the default 5 s among the whole suite (2026-11-19)
+    }, 60_000);
   }
 
   it('la سبّورة refuse les intégrations et n’ouvre aucun lien sortant', () => {

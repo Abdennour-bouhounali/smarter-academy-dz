@@ -298,9 +298,11 @@ export const commonPlanks = (a, b) => divisorsOf(Math.min(a, b)).filter((d) => a
 /**
  * common — each candidate plank laid on the gap a and on the gap b: does it hold a, b, both? `common` = the candidates on
  * the shelf « both » (shortest first), `longest` = the longest of them (null when no candidate holds both).
+ * ONE gap may be 0 cells (0 = d × 0: every plank « fills » it — a limit case a lesson shows); never both, never a plank 0.
  */
 export function commonOf(a, b, candidates) {
-  if (!(a > 0 && b > 0)) throw new RangeError(`common: ${a}, ${b}`);
+  if (!(a >= 0 && b >= 0 && a + b > 0)) throw new RangeError(`common: ${a}, ${b}`);
+  if (!candidates.every((d) => d > 0)) throw new RangeError(`common: a plank of 0`);
   const rows = candidates.map((d) => {
     const holdsA = a % d === 0;
     const holdsB = b % d === 0;
@@ -311,6 +313,18 @@ export function commonOf(a, b, candidates) {
     .map((r) => r.d)
     .sort((x, y) => x - y);
   return { rows, common, longest: common.length ? common.at(-1) : null };
+}
+
+/**
+ * common — what « تحقّق » does with what he said: `said` = { longest, count } (longest = the plank he marked, null when
+ * none; count = the number typed, null when the box is empty). `crown` false: the longest is not asked — the count alone
+ * is judged and a mark is never missing. `needLong` / `needCount` = what is still missing before it can be judged.
+ */
+export function commonSays(c, said, crown = true) {
+  const needLong = crown && c.longest != null && said.longest == null;
+  const needCount = said.count == null;
+  const ok = !needLong && !needCount && said.count === c.common.length && (!crown || said.longest === c.longest);
+  return { needLong, needCount, ok };
 }
 
 /**

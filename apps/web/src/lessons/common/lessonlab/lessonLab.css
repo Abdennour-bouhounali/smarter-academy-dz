@@ -211,6 +211,10 @@
   color: #7dfcff;
   margin-top: 0.15rem;
 }
+/* the group « أدوات هذا الدرس »: a hook for the walks, laid out as if its children stood in the rail */
+.ll-rail__mine {
+  display: contents;
+}
 .ll-rail__none {
   font-size: 0.92rem;
   line-height: 1.7;

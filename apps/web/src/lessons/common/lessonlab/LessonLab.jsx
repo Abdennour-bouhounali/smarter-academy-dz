@@ -208,8 +208,20 @@ function Cabinet({ cabinet, onPick, onClose, play }) {
   );
 }
 
-export default function LessonLab({ lessonCode, lessonTitle, onClose, inline = false, initialTool = null }) {
-  const lab = useMemo(() => toolsFor(lessonCode), [lessonCode]);
+/**
+ * `earlierOnly`: the lab is opened BEFORE the lesson (« عُدّة الانطلاق »): only the instruments of the lessons before it.
+ * The lesson's own instruments (« أدوات هذا الدرس ») are not listed and not reachable — they would name what the student
+ * has not discovered yet — and an `initialTool` that is one of them is ignored.
+ */
+export default function LessonLab({
+  lessonCode,
+  lessonTitle,
+  onClose,
+  inline = false,
+  initialTool = null,
+  earlierOnly = false,
+}) {
+  const lab = useMemo(() => toolsFor(lessonCode, { earlierOnly }), [lessonCode, earlierOnly]);
   const saved = useRef(load()).current;
   const [nums, setNums] = useState({ a: saved.a ?? 42, b: saved.b ?? 5 });
   // `initialTool`: another page (« عُدّة الانطلاق ») opens the lab ON one instrument the lesson has reached — put on the bench like a pick from the cabinet
@@ -434,13 +446,17 @@ export default function LessonLab({ lessonCode, lessonTitle, onClose, inline = f
         </header>
 
         <aside className="ll-rail">
-          <h3>{L.mine}</h3>
-          {lab.mine.length ? (
-            lab.mine.map((t) => (
-              <ToolTile key={t.id} tool={t} on={t.id === tool.id} done={done[t.id] ?? []} onPick={pick} />
-            ))
-          ) : (
-            <p className="ll-rail__none">{L.noMine}</p>
+          {!earlierOnly && (
+            <div className="ll-rail__mine" data-ll-mine>
+              <h3>{L.mine}</h3>
+              {lab.mine.length ? (
+                lab.mine.map((t) => (
+                  <ToolTile key={t.id} tool={t} on={t.id === tool.id} done={done[t.id] ?? []} onPick={pick} />
+                ))
+              ) : (
+                <p className="ll-rail__none">{L.noMine}</p>
+              )}
+            </div>
           )}
           {pickedTools.length > 0 && <h3>{L.picked}</h3>}
           {pickedTools.map((t) => (

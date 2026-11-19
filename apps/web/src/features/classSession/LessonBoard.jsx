@@ -54,6 +54,7 @@ import {
   blanks,
   FORMS,
   askRight,
+  askWords,
 } from './lessonScripts';
 
 const LL = {
@@ -123,7 +124,6 @@ const LL = {
   pickBoard: 'من يأتي إلى السبّورة؟ اضغط طاولته.',
   me: 'أقرأها أنا',
   recall: 'من يتذكّر؟',
-  plankWord: 'لوح',
   check: 'نتحقّق بالجسور',
   askRight: 'أصاب القسم.',
   askLook: 'لننظر إلى الجسور.',
@@ -711,8 +711,13 @@ function Name({ step, memo, onPick, onMe, rules }) {
   );
 }
 
-/** One question, answered by the class and PROVED by bridges: every plank chosen or not is built in one line. */
+/**
+ * One question, answered by the class and PROVED by bridges: every plank chosen or not is built in one line. A step whose
+ * choices are not planks (bouquets, boxes…) names them with its own `words` ({ card, held, fell }); a missing word keeps
+ * the board's default (« لوح », « يثبت », « ينهار »).
+ */
 function Ask({ step }) {
+  const words = askWords(step);
   const [picked, setPicked] = useState([]);
   const [checked, setChecked] = useState(false);
   const single = step.answer.length === 1;
@@ -742,7 +747,7 @@ function Ask({ step }) {
               aria-pressed={picked.includes(o)}
               data-cs-ask-option={o}
             >
-              <small>{LL.plankWord}</small>
+              <small>{words.card}</small>
               <b dir="ltr">{o}</b>
               {checked && (
                 <>
@@ -750,7 +755,7 @@ function Ask({ step }) {
                   <span dir="ltr">
                     <MathText>{`$${equalityOf(c)}$`}</MathText>
                   </span>
-                  <em>{c.held ? LL.holds : LL.falls}</em>
+                  <em>{c.held ? words.held : words.fell}</em>
                 </>
               )}
             </button>

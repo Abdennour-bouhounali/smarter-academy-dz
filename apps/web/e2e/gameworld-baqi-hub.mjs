@@ -123,6 +123,16 @@ await w.run(async () => {
         (await page.locator('[data-di-next]').count()) === 0,
       '…and no level can be played before a key is earned',
     );
+    {
+      // « no rule is told »: a locked key node shows « ؟ ؟ ؟ », never its rule's name (GAME_WORLD.md, 2026-11-19)
+      const names = await page
+        .locator('[data-di-node]')
+        .evaluateAll((els) => els.map((e) => [e.dataset.diNode, e.querySelector('strong').textContent.trim()]));
+      expect(
+        names.every(([id, t]) => id === 'exam' || t === '؟ ؟ ؟'),
+        `no rule is named before it is forged: each locked key reads « ؟ ؟ ؟ » (${names.map((n) => n[1]).join(' · ')})`,
+      );
+    }
     await shot(page, 'hub-locked', { exit: ['[data-di-map-close]'], numbers: true });
     await page.click('[data-di-space="exam"]');
     await page.waitForSelector('[data-di-ladder="locked"]');

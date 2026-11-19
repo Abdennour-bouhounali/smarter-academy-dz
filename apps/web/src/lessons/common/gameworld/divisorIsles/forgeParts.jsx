@@ -3,8 +3,18 @@
  * A case may carry a `text` (a sentence about the bridge): it is then written above the bridge and in its line.
  * In some forges the truth of a case (`held`) is not « the bridge holds » — a promise kept, a plank that had to be tried:
  * the case then says whether the bridge itself holds in `fits`, and what its line shows in `tag`.
+ *
+ * A case may instead be a SHARING (`deal`): two collections dealt into k identical lots — no bridge, no plank. It is
+ * drawn with the pieces of the investigation `deal` (`dealParts.jsx`) and its line names no plank:
+ *   c.deal = { a: { n, item }, b: { n, item }, k, lot, claim? }
+ *     a, b   the two collections: how many, and the kind of item (a glyph of `dealParts.jsx › GLYPHS`: rose, lily…)
+ *     k      the number of identical lots, `lot` their kind (vase, basket — `dealParts.jsx › LOTS`)
+ *     claim  [x, y] when the case asks « does each lot hold x and y? »: drawn, faint, in the empty lots before the deal
+ * Whether everything is shared is `fits` (or `held`), as for a bridge: the held / fell look follows it.
  */
 import Inquiry from './Inquiry';
+import { dealOf } from './deal';
+import { Glyph, GlyphDefs, LOTS, Lot, LotShape, Pile, grid } from './dealParts';
 
 const WHICH = 'أيّ جسر تعنيه؟ المرآة ستبنيه بعد جوابك.';
 /** Does the BRIDGE of the case hold? (its own `fits`, or the truth of the case when they are the same thing) */
@@ -13,6 +23,7 @@ const cells = (n) => (n <= 10 ? `${n} خانات` : `${n} خانة`);
 
 /** The bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
 function Mirror({ c, stage, fast, tight = false }) {
+  if (c.deal) return <DealMirror c={c} stage={stage} fast={fast} tight={tight} />;
   const W = 720;
   const cell = Math.min(34, W / Math.max(c.a, c.b));
   const x0 = (W - cell * c.a) / 2;
@@ -90,6 +101,7 @@ function Mirror({ c, stage, fast, tight = false }) {
 }
 
 const Mini = ({ c }) => {
+  if (c.deal) return <DealMini c={c} />;
   const W = 150;
   const cell = W / Math.max(c.a, 1);
   return (
@@ -115,6 +127,185 @@ const Mini = ({ c }) => {
           className="is-left"
         />
       )}
+    </svg>
+  );
+};
+
+// ───────────────────────────── a case that is a SHARING (`c.deal`) ─────────────────────────────
+// The mirror draws it in a 1000 × 230 scene (the bridge's own proportions: the same box in the mirror, also `tight`):
+// the table on top — the two piles, their counts, and between them the kind of lot with its number — and the k lots
+// under it. Up to 60 items a pile and 12 lots stay legible (a pile of 60 is three rows of twenty).
+const DW = 1000;
+const DH = 230;
+const LOT_Y = 114;
+const LOT_H = 112;
+const LOT_GAP = 8;
+/** The boxes of k lots, centred, never wider than 240 (two lots would otherwise be two squat vases). */
+const lotBoxes = (k) => {
+  const w = Math.min(240, (DW - 24 - (k - 1) * LOT_GAP) / k);
+  const x0 = (DW - (k * w + (k - 1) * LOT_GAP)) / 2;
+  return Array.from({ length: k }, (_, i) => [x0 + i * (w + LOT_GAP), LOT_Y, w, LOT_H]);
+};
+/** A claim is drawn inside each empty lot when its items stay recognisable there; else once, over the lots. */
+const claimFits = (lot, box, n) => {
+  const [, , iw, ih] = LOTS[lot](...box).inner;
+  return grid(n, 0, 0, iw, ih, 22).p >= 9;
+};
+
+/** The claim « each lot holds x and y », drawn once over the empty lots: a lot, then x items and y items (no word). */
+function ClaimTag({ lot, claim, a, b }) {
+  const digits = (n) => String(n).length * 17;
+  const parts = [
+    { w: 34, el: (x) => <LotShape kind={lot} box={[x, 150, 34, 38]} /> },
+    {
+      w: 26,
+      el: (x) => (
+        <text x={x + 13} y="180">
+          =
+        </text>
+      ),
+    },
+    {
+      w: digits(claim[0]) + 6,
+      el: (x) => (
+        <text x={x + (digits(claim[0]) + 6) / 2} y="180">
+          {claim[0]}
+        </text>
+      ),
+    },
+    { w: 30, el: (x) => <use href={`#rfd-${a}`} x={x} y="152" width="30" height="30" /> },
+    {
+      w: 26,
+      el: (x) => (
+        <text x={x + 13} y="180">
+          +
+        </text>
+      ),
+    },
+    {
+      w: digits(claim[1]) + 6,
+      el: (x) => (
+        <text x={x + (digits(claim[1]) + 6) / 2} y="180">
+          {claim[1]}
+        </text>
+      ),
+    },
+    { w: 30, el: (x) => <use href={`#rfd-${b}`} x={x} y="152" width="30" height="30" /> },
+  ];
+  const gap = 8;
+  const width = parts.reduce((t, p) => t + p.w, 0) + gap * (parts.length - 1);
+  let x = (DW - width) / 2;
+  return (
+    <g className="rf-deal__claim" data-rf-claim={claim.join(',')}>
+      <rect x={x - 18} y="144" width={width + 36} height="50" rx="14" />
+      {parts.map((p, i) => {
+        const el = <g key={i}>{p.el(x)}</g>;
+        x += p.w + gap;
+        return el;
+      })}
+    </g>
+  );
+}
+
+/**
+ * The sharing in the mirror. `ask`: the two collections on the table and the k empty lots (a claim drawn faint in them);
+ * `build`: the world deals, round by round (one item of each kind per lot and per round); `done`: what could not be
+ * dealt stays on the table, set apart in amber — the lots glow when nothing is left.
+ */
+function DealMirror({ c, stage, fast, tight }) {
+  const { a, b, k, lot, claim } = c.deal;
+  const d = dealOf(a.n, b.n, k);
+  const built = stage !== 'ask';
+  const done = stage === 'done';
+  const boxes = lotBoxes(k);
+  const ghost = !built && claim && claimFits(lot, boxes[0], claim[0] + claim[1]);
+  const beat = fast ? 8 : 110;
+  const look = done ? (fitsOf(c) ? 'is-held' : 'is-fell') : '';
+  return (
+    <svg
+      viewBox={`0 0 ${DW} ${DH}`}
+      className={`rf-deal is-${stage} ${look} ${tight ? 'is-tight' : ''}`}
+      data-rf-deal={`${a.n}:${b.n}:${k}`}
+      data-rf-stage={stage}
+      role="img"
+      aria-label={`${a.n} · ${b.n} → ${k}`}
+    >
+      <GlyphDefs ns="rfd" />
+      <rect className="iqd-table" x="8" y="2" width="984" height="104" rx="14" />
+      <Pile
+        ns="rfd"
+        tag="a"
+        kind={a.item}
+        n0={a.n}
+        rem={built ? d.rA : a.n}
+        box={[545, 6, 440, 96]}
+        left={done && d.rA > 0}
+      />
+      <Pile
+        ns="rfd"
+        tag="b"
+        kind={b.item}
+        n0={b.n}
+        rem={built ? d.rB : b.n}
+        box={[15, 6, 440, 96]}
+        left={done && d.rB > 0}
+      />
+      <LotShape kind={lot} box={[478, 12, 44, 50]} />
+      <text className="rf-deal__k" x="500" y="96" data-rf-deal-k>
+        {k}
+      </text>
+      {boxes.map((box, i) => (
+        <Lot
+          key={`${k}-${i}-${built}`}
+          ns="rfd"
+          i={i}
+          kind={lot}
+          box={box}
+          itemA={a.item}
+          itemB={b.item}
+          cA={built ? d.qA : ghost ? claim[0] : 0}
+          cB={built ? d.qB : ghost ? claim[1] : 0}
+          full={built ? Math.max(1, d.qA + d.qB) : ghost ? claim[0] + claim[1] : 1}
+          cls={built ? 'is-in' : 'is-ghost'}
+          delay={built ? (j) => `${j * beat}ms` : undefined}
+        />
+      ))}
+      {!built && claim && !ghost && <ClaimTag lot={lot} claim={claim} a={a.item} b={b.item} />}
+    </svg>
+  );
+}
+
+/** The head of a sharing's line: the two counts with their items (the number of lots is in its tag). */
+const DealHead = ({ deal }) => (
+  <span className="rf-dealhead" dir="ltr">
+    <strong>{deal.a.n}</strong>
+    <Glyph kind={deal.a.item} />
+    <strong>{deal.b.n}</strong>
+    <Glyph kind={deal.b.item} />
+  </span>
+);
+
+/** The mini of a sharing: its k lots side by side, and an amber block when something stays on the table. */
+const DealMini = ({ c }) => {
+  const { a, b, k } = c.deal;
+  const d = dealOf(a.n, b.n, k);
+  const W = 150;
+  const room = d.ok ? W : W - 22;
+  const w = room / k;
+  return (
+    <svg viewBox={`0 0 ${W} 14`} className="rf-mini rf-mini--deal" aria-hidden="true">
+      {Array.from({ length: k }, (_, i) => (
+        <rect
+          key={i}
+          x={i * w + 0.75}
+          y="2"
+          width={Math.max(1, w - 1.5)}
+          height="11"
+          rx="4"
+          className={fitsOf(c) ? 'is-held' : ''}
+        />
+      ))}
+      {!d.ok && <rect x={W - 18} y="4" width="18" height="8" rx="3" className="is-left" />}
     </svg>
   );
 };
@@ -147,6 +338,8 @@ function Line({ c, children }) {
         )}
         {c.text ? (
           <span>{c.text}</span>
+        ) : c.deal ? (
+          <DealHead deal={c.deal} />
         ) : (
           <>
             <strong dir="ltr">{c.a}</strong> <span>{L.plank(c.b)}</span>
@@ -162,4 +355,9 @@ function Line({ c, children }) {
   );
 }
 
-export const FORGE_PARTS = { Mirror, Line, Inquiry, beats: (c) => c.q };
+export const FORGE_PARTS = {
+  Mirror,
+  Line,
+  Inquiry,
+  beats: (c) => (c.deal ? dealOf(c.deal.a.n, c.deal.b.n, c.deal.k).rounds : c.q),
+};

@@ -135,7 +135,7 @@ export function explain(w, n) {
       for (let d = 1; d <= w.a; d += 1) if (w.a % d === 0) ds.push(d);
       return {
         wrong: `عُدّها زوجًا زوجًا: كلّ جداء يساوي ${w.a} يعطي قاسمين.`,
-        right: `قواسم ${w.a} هي: ${ds.join(' ، ')} — عددها ${ds.length}.`,
+        right: `قواسم ${w.a} هي: ${ds.join('\u00a0، ')} — عددها ${ds.length}.`,
       };
     }
     default:
@@ -157,6 +157,8 @@ export const INQUIRY_TEXT = {
       : needLong
         ? 'لم تعلّم لوحًا بعدُ: اضغط أطول لوح على رفّ الهوّتين معًا.'
         : 'خانة عدد الألواح فارغة: عُدّ الألواح على رفّ الهوّتين معًا واكتب العدد.',
+  // common · witness: the tray is empty and no plank of it filled both gaps — that fact only (never « they share none »)
+  witnessEmpty: () => 'لا لوح من هذه الكومة يملأ الهوّتين معًا.',
   // chart: the next hundred, while he tests its first gaps himself (then the world finishes it: `text.confirming`)
   confirmTest: (b, from, n) =>
     `هل تصمد قراءتك بعد المئة الأولى؟ جرّب اللوح ${b} بنفسك على أوّل ${n === 1 ? 'هوّة' : n === 2 ? 'هوّتين' : n <= 10 ? `${n} هوّات` : `${n} هوّة`} من ${from}، ثمّ يكمل العالم إلى ${from + 99}.`,
@@ -286,7 +288,7 @@ export const T = {
     choose: 'أيّ القالبين يملأ 756 خانة تمامًا؟ احسب في كرّاسك، ثمّ اختر.',
     mould: (b) => `ألواح طولها ${b}`,
     untried: 'لم يُجرَّب بعد',
-    tried: (r) => `جُرِّب: تبقى ${r} خانة`,
+    tried: (r) => `جُرِّب: ${cells(r)}`,
     price: 'ثمن اللوح الواحد: 1850 بلّورة ضوء',
     divide: (b) => `القالب ${b}: كم لوحًا يدخل في 756 خانة؟ وكم خانة تبقى؟`,
     qLabel: 'عدد الألواح',

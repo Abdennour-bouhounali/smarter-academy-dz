@@ -472,7 +472,10 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      untracked; no `board/`, no pack — so `check:unreached` / `check:unused` flag them until their packs exist). **NOT
      FINISHED**: the review of 2026-11-19 found blockers (memo quizzes marking true answers wrong, evidence on wrong
      answers, rules told instead of found, the 1AM lesson forged on Euclid's algorithm, no `pgcd` claim kind) to repair
-     BEFORE their boards and packs. They stay OUT of the batch-1b commit.
+     BEFORE their boards and packs. They stay OUT of the batch-1b commit. **2026-11-19: the redesign of the five 4AM
+     lessons is PROPOSED in `BATCH_2_DESIGN.md`** (every key with the experiment of its own nature; six new kinds and
+     four new modes; lesson 4 first, alone, to « done »). **ACCEPTED the same day (« Go, full design »); lesson 4 is
+     built (step 17); the other four 4AM folders and the 1AM one are still untracked drafts.**
   14. [~] THE INDEPENDENT REVIEW of 2026-11-19: the session of 2026-11-18 (steps 11–13) had been orchestrated by a weaker
      model; nine reviews (the three division lessons, lesson 3, the kit and its inquiry kinds, the walks' integrity, the
      satellites / deletions / docs, batch 2 in two groups) — record: `REVIEW_2026-11-19.md`. The fixes are WRITTEN by ten
@@ -498,6 +501,67 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      (§6) is not met for lesson 3 and the three division lessons, and the review's fixes (step 14) are unverified in a
      browser. `main` was not touched.
   16. [ ] OWED: the walks of the six v2 lessons at the three sizes, their screenshots looked at, what they find fixed.
+     **A first measure exists, at 1366×768 only** (a run the session before had left in the background, 2026-11-19
+     10:16–10:43, on the tree that was pushed; it ran WHILE the unit suite and lint ran, and its last walks — the
+     sittings of lessons 1–3 and the six launch walks — while agents had started editing source, so those are not
+     trustworthy): **18 of 37 walks pass, 19 fail.** Pass: the hub of every lesson, the six boards, the story of `hasr`,
+     `khawass` and the pilot, the trainers of `baqi` and `hasr`, the pilot's practice, the sitting of `baqi` (2,121
+     checks). Fail, to re-run alone and sort into defect / walk fault / load:
+     - screen defects: 11.5 px text on the pilot's mistake card (`gameworld-field`), 11.3 px « أدواتي » in « مختبري »
+       (`lesson-lab`), a formula broken across two lines on a knowledge card of `qawaid` (its trainer walk), four bank
+       sheets of `qawaid` that scroll sideways in the sitting (l1-006, l3-001, l4-001), the ✕ of `baqi`'s first forge
+       leaving the world for `/espace/cours`;
+     - walk faults or defects, not yet told apart: `gameworld-qawaid` (« URL is not a constructor »),
+       `gameworld-qawasim-trainer` (« [c.kind] is not a function »), `gameworld-qawasim` (the third test of the next
+       hundred writes no division), `gameworld-khawass-trainer` (a card read is not ticked), the sittings of `hasr`,
+       `khawass`, `qawasim` and the pilot (a sentence of the bank missing from the paper, 30 s click timeouts), the six
+       launch walks (they stop on reading a card).
+     **A second, clean measure was started on 2026-11-19 afternoon** — the same walks at 1366×768, one at a time, on a
+     FROZEN copy of the pushed commit (`git archive HEAD`, its own server): 17 of the 38 were run before the run was
+     paused for lesson 4. Pass: the pilot's world, practice, sync and board, `gameworld-qawasim` and its hub and board,
+     `gameworld-khawass` and its hub. Fail, already explained: the sittings of the pilot and of `qawasim` (26–27 lines
+     each — a fault of the WALK, which expected « 15دج » where the screen rightly shows « 15 دج »; corrected in
+     `lib/sittingWalk.mjs` with lesson 4), `launch-kit-qawasim` (the walk's card reader did not read `\displaystyle`;
+     corrected the same way). Fail, real: `gameworld-field` (11.5 px on the mistake card), `lesson-lab` (11.3 px
+     « أدواتي »). Fail, not yet explained: `gameworld-qawasim-trainer` (« [c.kind] is not a function »),
+     `gameworld-khawass-trainer` (a card read is not ticked), `launch-kit` (a 30 s wait on « return to the lesson »).
+     The 21 walks left (`khawass` sitting, board, launch; the three division lessons) and the other two sizes are owed.
+  17. [x] LESSON 4 `qasim-mushtarak-akbar` — v2, 2026-11-19 (`LESSON_4_GATE_REPORT.md`): the first lesson of
+     `BATCH_2_DESIGN.md`. Four keys on four kinds (`common` without the longest, `summit`, `deal`, `nest`); the old
+     version deleted; its six walks pass at 1366×768, 1024×768 and 1840×900 (18 of 18 runs, then the six again at
+     1366×768 and the story at 1024×768 on the final tree); status ✅ but the paused phone line. In the same work: **the
+     world has twenty-two experiment kinds** (`summit`, `deal` played by lesson 4; `lists`, `sort`, `measure`, `part`
+     and the modes `common/witness`, `nest/pair`, `ladder/fold`, `ladder/both` written and unit-tested for lessons 5–8,
+     NOT yet seen in a browser); a forge case may be a SHARING, drawn as vases; a board `ask` step may carry its own
+     words; the lab opened from the launch kit offers only instruments of earlier lessons; three card kinds got their
+     icon; the forge's log offers every row while the mirror tests; a « PGCD(a ; b) » of the bank is drawn as a formula
+     at display. Repo checks on the final tree: `npm run lint`, `check:format`, `check:lessons` (entry bundle 197.8 KB of
+     212) pass; `check:unused` and `check:unreached` report ONLY the five untracked draft folders of step 13 (not
+     committed); the web unit suite: 18,883 tests, 4 failures on the first run — two real (a lesson's id in a kit
+     comment; two counters that could break in the new kinds), two 5 s timeouts under load — all four corrected, then
+     re-run (the result is in the commit's message). NOT run: the core and API test suites.
+  18. [x] THE PROJECT SKILL `.claude/skills/lesson-v2/` (owner, 2026-11-19: « a special skill for this project that is
+     going to be more and more powerful », and that folder taken out of `.gitignore` « so it could go to github »):
+     `SKILL.md` (the pipeline, walking a frozen copy while agents write, the closing step), `briefs.md` (one template
+     per agent), `defects.md` (the ledger of every defect met so far, with the check that catches it, and the cost of
+     each lesson), `review.md` (the design review and the screenshot review). A lesson is not done until what it
+     taught is written back into it. Its first test is lesson 5. Not built yet: the shared walk library that would turn
+     a lesson's six walks into data (the walks are the largest cost of a lesson: 690,000 of 2.9 million agent tokens and
+     73 minutes for lesson 4) — planned after unit 1's lessons.
+  19. [ ] OWNER'S REDESIGN of 2026-11-19 (after lesson 4 was built; decisions taken the same day):
+     - **For every game world (the kit)**: the current instruction is BIG and stays on screen until it is done — he may
+       fold it and open it again; what matters from the previous island (the gaps crossed, the planks used, what was
+       found) is shown on the RIGHT of the game; he can walk BACK — the camera turns with him (today the camera always
+       looks along the road ahead, so the down arrow walks him towards the lens).
+     - **Lesson 4, keys 1 and 2 are discovered ON THE ISLANDS, and the islands REPLACE the experiment screen of the
+       mirror** (the mirror keeps the tiles, the test on what he did on the islands, the attacks, the seal): key 1 — he
+       is told the two gaps ahead and that the planks he picks now build BOTH bridges, the next island having none: one
+       plank fills neither, one only the first, one both; with the wrong one he walks back and picks again. Key 2 — the
+       same with planks that all fill both; every plank costs the same and his purse only pays for the longest: with a
+       shorter one the coins run out before the second bridge is finished.
+     - **Lessons 5–8 are redesigned the same way** (a situation lived on the islands wherever one exists): the design
+       page is rewritten and shown to the owner BEFORE they are built.
+     The six lessons already built change with the kit and are re-walked.
 
 ## 4ter. When each item of 4bis is done
 
