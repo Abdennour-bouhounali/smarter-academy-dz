@@ -12,7 +12,7 @@ const fitsOf = (c) => c.fits ?? c.held;
 const cells = (n) => (n <= 10 ? `${n} خانات` : `${n} خانة`);
 
 /** The bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
-function Mirror({ c, stage, fast }) {
+function Mirror({ c, stage, fast, tight = false }) {
   const W = 720;
   const cell = Math.min(34, W / Math.max(c.a, c.b));
   const x0 = (W - cell * c.a) / 2;
@@ -20,6 +20,10 @@ function Mirror({ c, stage, fast }) {
   const done = stage === 'done';
   // the plank shown before the build stands over the gap's first cells; one that is longer than the gap is centred
   const sampleX = c.b > c.a ? (W - cell * c.b) / 2 : x0;
+  const sample = !built || c.b > c.a;
+  // tight (the mirror shares the screen with the tiles): a built bridge with no plank shown above it leaves out the empty
+  // band on top — same scale, less height; the planks still drop in from above it (the svg does not clip)
+  const top = tight && !sample ? 48 : 0;
   // a SENTENCE is asked alone: showing its bridge before he answers would tell him how to read it
   if (c.text && stage === 'ask')
     return (
@@ -38,8 +42,8 @@ function Mirror({ c, stage, fast }) {
         </p>
       )}
       <svg
-        viewBox={`0 0 ${W} 150`}
-        className={`rf-bridge is-${stage} ${done ? (fitsOf(c) ? 'is-held' : 'is-fell') : ''} ${c.text ? 'has-sentence' : ''}`}
+        viewBox={`0 ${top} ${W} ${150 - top}`}
+        className={`rf-bridge is-${stage} ${done ? (fitsOf(c) ? 'is-held' : 'is-fell') : ''} ${c.text ? 'has-sentence' : ''} ${tight ? 'is-tight' : ''}`}
         data-rf-bridge={`${c.a}:${c.b}`}
         data-rf-stage={stage}
       >
@@ -56,7 +60,7 @@ function Mirror({ c, stage, fast }) {
             className={`rf-cell ${built && i >= c.q * c.b ? 'is-left' : ''}`}
           />
         ))}
-        {(!built || c.b > c.a) && (
+        {sample && (
           <g>
             <rect x={sampleX} y="30" width={cell * c.b - 2} height="24" rx="6" className="rf-plank rf-plank--sample" />
             <text x={sampleX + (cell * c.b) / 2} y="22" textAnchor="middle" className="rf-cap">

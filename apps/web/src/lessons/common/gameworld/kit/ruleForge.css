@@ -205,7 +205,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.38rem;
+  /* the list takes the room the column has left, no more: RuleForge measures it and lets the oldest rows go until the
+     rest fit (never a scroll, never a row cut by the window — GAME_WORLD.md « The evidence fits its column ») */
+  flex: 1 1 0;
   min-height: 0;
+  overflow: hidden;
 }
 .rf-log li {
   display: grid;
@@ -297,9 +301,11 @@
   color: #6ee7b7;
 }
 
+/* the mirror is 15.5rem high, unless the panel under it needs that room (a build with many long tiles): it then gives
+   way, down to what it holds itself — the panel is never pushed below the window (GAME_WORLD.md « The panel fits ») */
 .rf-main {
   display: grid;
-  grid-template-rows: 15.5rem minmax(0, 1fr);
+  grid-template-rows: minmax(min-content, 15.5rem) minmax(min-content, 1fr);
   gap: 0.8rem;
   min-height: 0;
 }
@@ -460,7 +466,9 @@
   line-height: 1.7;
   animation: rf-pop 0.4s;
 }
-.rf-fb span {
+/* only the fact written under a verdict (`.rf-fb > span`): a formula inside it keeps KaTeX's own inline boxes — a block
+   on every span of the formula had broken « 72 = 3 × 24 » into a column of atoms */
+.rf-fb > span {
   display: block;
   font-size: 1.05rem;
   font-weight: 700;
@@ -667,6 +675,28 @@
 
 /* a phone held sideways: the two columns of the forge keep a readable text and scroll, each inside its frame */
 
+/* ───────── the build: tiles of two lines and the robot's experiment above them share 720 units of height ─────────
+   A tile wraps on a compact line, the panel keeps tighter gaps, and the mirror draws its case `tight` (the world leaves
+   out the empty band above a built bridge: same scale, less height — divisorIsles/forgeParts.jsx). */
+.rf-root[data-rf='build'] .rf-panel {
+  gap: 0.6rem;
+  padding-block: 0.7rem;
+}
+.rf-tile {
+  line-height: 1.45;
+}
+.rf-bridge.is-tight {
+  height: auto;
+  max-height: 10.6rem;
+}
+
+/* ───────── a forge with three slots: three columns side by side (a third slot under the first two ran the build below
+   the window — lesson qawaid-qabiliyat-qisma, forge 4) ───────── */
+.rf-tiles[data-rf-slots='3'] {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.7rem;
+}
+
 /* ───────── a forge with four slots (one per phrasing): four narrow columns, two tiles each ───────── */
 .rf-tiles[data-rf-slots='4'] {
   grid-template-columns: repeat(4, 1fr);
@@ -697,8 +727,20 @@
   max-height: 62%;
 }
 .rf-log li > .rf-line--sentence {
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  align-items: center;
   font-size: max(var(--di-min-font, 12px), 0.86rem);
+}
+/* a sentence of the evidence holds two lines at most (its verdict stays beside it, the whole sentence is its title): eight
+   long sentences, each on as many lines as it took, ran below a 900 px window (walks of 2026-11-19) */
+.rf-log li > .rf-line--sentence > span {
+  flex: 1 1 0;
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
 }
 
 /* ───────── the last step written on several lines (one sentence per line) ───────── */

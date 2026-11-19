@@ -9,16 +9,27 @@ not measured is said so. Contract: `docs/architecture/LESSON_V2.md` §6; plan: `
 tablet only. **No student has played it and the owner has not validated it.** The old modules and `?view=classic` are
 still there (the owner's decision, still open). **Update 2026-11-18: DELETED on the owner's order — `OLD_VERSION_TRACE_2026-11-18.md`.**
 
+> **Review of 2026-11-19 — this lesson's « done » (CLAUDE.md, `LESSON_V2.md` §6) is NOT met yet.** About 50 screenshots
+> were never looked at with the eyes (row « Screenshots » below), and the exam-sitting numbers below belong to the GENERATED
+> sitting, deleted the same day (the sitting now serves the bank as it is, `kit/bankSitting.js`). The sitting walks were
+> run on the bank afterwards, but with the walk weaknesses the review found (one random sheet per run, a weakened
+> `gameworld-sitting.mjs`); they are being repaired. Lines marked **SUPERSEDED** wait for the re-run: **to be re-measured**.
+> The world itself changed on 2026-11-19 (`REVIEW_2026-11-19.md`): the bridge after the third key is now **105** (was 70:
+> 280 with the piece 175 laid on it leaves 105; moulds 10, 14, 35 — two fill it), island H is « جزيرة الحجر » (was
+> « جزيرة الحروف »: the word « حروف » comes only with the tablet), the letters are k, k′ (n for the multiplier), the four
+> forges ask no predictions, the two forges whose experiment writes the rule hold no false tile, and a half-right answer
+> of « تدرّب » no longer earns P1 or P3.
+
 ## What was measured
 
 | Check | Result |
 |---|---|
-| Walks, six of them, at 1366×768, 1024×768 and 1840×900 | all pass at the three sizes. 1366×768: the student's world 670 checks, hub 219, « تدرّب » 465, exam sitting 156, board 167, launch kit PASSED. 1024×768: 611 / 199 / 432 / 142 / 167 / PASSED. 1840×900: 670 / 219 / 465 / 156 / 167 / PASSED. **One flake**: the sitting walk failed once at 1840×900 on a 30-second `page.screenshot` timeout (33 checks in), and passed twice in a row afterwards (156 / 156) |
+| Walks, six of them, at 1366×768, 1024×768 and 1840×900 | all pass at the three sizes. 1366×768: the student's world 670 checks, hub 219, « تدرّب » 465, exam sitting 156, board 167, launch kit PASSED. 1024×768: 611 / 199 / 432 / 142 / 167 / PASSED. 1840×900: 670 / 219 / 465 / 156 / 167 / PASSED. **One flake**: the sitting walk failed once at 1840×900 on a 30-second `page.screenshot` timeout (33 checks in), and passed twice in a row afterwards (156 / 156). **SUPERSEDED (2026-11-19):** the sitting counts 156 / 142 / 156 are those of the generated sitting, deleted; the kit, the walks (12 px floor by default) and the world changed since — every walk of this lesson: **to be re-measured** |
 | « مختبري » walk (`lesson-lab.mjs`, the new instrument and the four-lesson shelf) | 49 ok, 0 FAIL at 1366×768 (run once; not at the other two sizes) |
 | Unit tests | the whole web suite after the last code edit: **1032 files, 18,167 tests pass** (an earlier full run had 4 failures, all fixed: the pack test, two `boardLessons` assertions and a loop of the kit's tests that timed out under load) |
 | Repo checks | `check:unused`, `check:unreached`, `check:format`, `check:lessons` (entry bundle 197.8 KB of 212) pass. `npm run lint` has 4 errors, all in `e2e/class-lesson-qawasim.mjs` (lesson 2's walk, untouched: four unused variables) |
 | Published locally (§6.6) | lesson `available`; 9 modules `published`; 50 exercises `published`, read from the local database (the old modules and bank were already there; nothing was added to them) |
-| Screenshots looked at with the eyes (§6.5) | student: the letters proof screen (before and after the fix), the join foil round, the stack number line, the peel claim, the fourth tablet (before the fix); board: the stack ask, the peel ask, the naming card of the proof, and at 1024 the first naming card and the foil ask (both before their fixes). **NOT looked at one by one:** the other ~50 shots of the world walk, the hub, « تدرّب », the sitting, the launch kit, the other board shots, and every 1024×768 and 1840×900 shot that passed |
+| Screenshots looked at with the eyes (§6.5) | student: the letters proof screen (before and after the fix), the join foil round, the stack number line, the peel claim, the fourth tablet (before the fix); board: the stack ask, the peel ask, the naming card of the proof, and at 1024 the first naming card and the foil ask (both before their fixes). **NOT looked at one by one:** the other ~50 shots of the world walk, the hub, « تدرّب », the sitting, the launch kit, the other board shots, and every 1024×768 and 1840×900 shot that passed — **so the definition of done is not met** (review, 2026-11-19): they must be looked at after the re-run |
 
 ## Time and size (git, not a stopwatch)
 
@@ -59,7 +70,8 @@ walk, and fixed what they found.
    day): the kit's small text (step numbers, the mirror's `rf-says` and log, the sheet's field labels, the board's
    toolbar, the paper's points label) was raised to 12 px, with the zoom of the frame it sits in counted (the rule forge
    is drawn at ×0.8 at 1024×768). Exempt, on purpose: the knowledge map (the kit scales it to its panel). Text that a
-   `Fit` frame shrinks dynamically cannot be floored by CSS.
+   `Fit` frame shrinks dynamically cannot be floored by CSS. **SUPERSEDED (2026-11-19):** the knowledge map is no longer
+   exempt and a `Fit` given a `floor` keeps 12 px (`GAME_WORLD.md` « 12 px floor at every size »).
 
 ## Copied from lesson 2, on purpose
 
@@ -81,8 +93,12 @@ numbers, a width for the font floor), the class test's shape. A shared helper fo
   question family in `launchkit/families.js` (« القسمة الإقليدية على أيّ عدد », instrument `paper`) — it also serves the
   three PGCD lessons, where it was already core but had no family. **To re-run**: the launch walks of lessons 2 and 3
   (`launch-kit-qawasim.mjs`, `launch-kit-khawass.mjs`) were written for ONE tool (one slot in the bag, scores 2/2, 0/2).
-- **The sitting's exercises are generated** (in the bank's shapes, answers computed by code); the 50 exercises of the old
-  bank are not read by it.
+- ~~**The sitting's exercises are generated** (in the bank's shapes, answers computed by code); the 50 exercises of the old
+  bank are not read by it.~~ — **RESOLVED 2026-11-18 (code; walks not re-run)**: the sittings of lessons 1–3 (and of the three
+  uncommitted 1AM/2AM lessons) now serve the bank AS IT IS through the kit's adapter `kit/bankSitting.js`
+  (`world/sitting.js` is one call: `createBankSittings({ lesson })`); marked by the practice evaluator, evidence through the
+  practice engine (the server re-computes). The sitting walks of lessons 1–3 were rewritten for it and have NOT been run. **SUPERSEDED (2026-11-19):** they were run afterwards, but the review found them too weak (one random sheet per run, the answer key read from the page) — being repaired; result **to be re-measured**.
+  Findings, design, what falls back and the bank defects: `docs/reports/BANK_AS_IS_2026-11-18.md`.
 - The `stack` ask on the board draws 600 planks of 3 in one bar: it reads as stripes (seen at 1366×768), not as planks.
 - **Phone**: paused. No phone walk. **A real tablet, a real phone and the owner's validation** were never part of this work.
 - **The walks are not in CI.**

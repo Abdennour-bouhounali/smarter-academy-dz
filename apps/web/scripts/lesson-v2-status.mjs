@@ -83,6 +83,9 @@ async function statusOf(entry) {
   add('S3 knowledge: named in the pack', Boolean(flags.knowledge));
   add('S6 exam coach: named in the pack', Boolean(flags.coach));
   add('S4 practice bank is the BEM exam sheet', examStyle.includes(entry.id), 'content/practice/exam-style.json');
+  // the exam sittings serve the lesson's bank AS IT IS (owner, 2026-11-18): its world/sitting.js goes through the kit's adapter
+  const sitting = read(path.join(world, 'sitting.js')) ?? '';
+  add('S4bis the bank is served as it is', /createBankSittings\(/.test(sitting) && !/createSittings\(/.test(sitting), 'world/sitting.js › createBankSittings (kit/bankSitting.js)');
   add('S8 « مختبري »: an instrument of its own', labRegistry.includes(`lesson: '${entry.id}'`));
   const tools = await coreTools(entry.id);
   if (tools === null) add('S1 launch kit: a family per core tool', null, 'the learning net could not be read from this script');

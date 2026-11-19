@@ -90,11 +90,13 @@ describe('« تدرّب » — the trainer of « خواص قواسم عدد طب
   });
 
   it('each proof is true with letters: the right product equals the goal for any numbers; the foils do not', () => {
+    // the letters of the proof: a = d × k, b = d × k′ (k′ is read before k)
     const value = (s, { d, p, q, n }) =>
       s
         .replace(/−/g, '-')
         .replace(/×/g, '*')
-        .replace(/[dpqn]/g, (x) => ({ d, p, q, n })[x]);
+        .replace(/k′/g, q)
+        .replace(/[dkn]/g, (x) => ({ d, k: p, n })[x]);
     const evaluate = (s) => {
       // a tiny evaluator for « 7 * (5 + 3) », « 7 + (5 - 3) », « 4 * 7 * 5 »
       const inner = s.replace(/\(([^()]+)\)/g, (_, e) => String(evaluate(e)));
@@ -121,7 +123,55 @@ describe('« تدرّب » — the trainer of « خواص قواسم عدد طب
         const goal = { sum: d * p + d * q, diff: d * p - d * q, mult: n * d * p }[target];
         expect(evaluate(value(P.right, vals)), `${target} ${P.right}`).toBe(goal);
         for (const f of P.foils) expect(evaluate(value(f, vals)), `${target} ${f}`).not.toBe(goal);
+        // the natural number the last line names is the factor of the right product
+        expect(P.right).toBe(`d × (${P.factor})`);
+        expect(evaluate(value(P.factor, vals)) * d).toBe(goal);
       }
     }
+  });
+
+  it('writes its proofs with ONE pair of letters, k and k′ — never q, which is the quotient of a division', () => {
+    for (const [target, P] of Object.entries(PROOFS)) {
+      const visible = [P.cond, P.given, P.goal, P.factor, P.right, ...P.foils].join(' ');
+      expect(visible, target).not.toMatch(/[pq]/);
+      expect(P.given, target).toContain('a = d × k');
+      const tex = [P.givenTex, P.goalTex, P.factorTex, P.rightTex].join(' ');
+      expect(tex.replace(/\\(times|quad)/g, ''), target).not.toMatch(/[pq]/);
+      // the same line in plain text and in LaTeX
+      expect(
+        P.rightTex
+          .replace(/\\times/g, '×')
+          .replace(/'/g, '′')
+          .replace(/-/g, '−'),
+      ).toBe(P.right);
+      const fix = check({ kind: 'proof', target }, {}).fix;
+      expect(fix).toContain(`$${P.factorTex}$ عدد طبيعي`);
+      expect(fix).not.toMatch(/undefined/);
+    }
+    expect(PROOFS.sum.given).toBe('a = d × k ، b = d × k′');
+    // the quotient keeps its letter q in the answer of a division (the label of its box)
+    const rest = trainer.makeSession(rng(11), 'baqi').find((x) => x.kind === 'rest');
+    expect(JSON.stringify(rest.form)).toContain('حاصل القسمة');
+  });
+
+  it('every reason of a « صحيح أم خطأ؟ علّل » is a sentence: « لأنّ » is followed by a formula or a noun', () => {
+    let n = 0;
+    for (let seed = 1; seed <= 120; seed += 1) {
+      for (const card of ['majmu', 'mudaaf', 'baqi', 'burhan']) {
+        for (const q of trainer.makeSession(rng(seed * 53 + 5), card).filter((x) => x.kind === 'tf' && x.reasons)) {
+          expect(q.reasons.filter((r) => r.ok)).toHaveLength(1);
+          for (const r of q.reasons) {
+            expect(r.t, r.t).toMatch(/^لأنّ(ه)? /);
+            // never a verb or a particle after « لأنّ »
+            expect(r.t, r.t).not.toMatch(/^لأنّ (يجب|يكفي|يوجد|لا |قد |لم |ليس)/);
+            n += 1;
+          }
+          // the right reason is the correction itself
+          expect(q.reasons.find((r) => r.ok).t).toBe(`لأنّ ${q.why}`);
+          expect(q.why, q.why).toMatch(/^(\$|كلّ |المطلوب )/);
+        }
+      }
+    }
+    expect(n).toBeGreaterThan(500);
   });
 });

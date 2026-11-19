@@ -1,7 +1,12 @@
-// « عُدّة الانطلاق » of lessons 2 and 3 (« قواسم عدد طبيعي », « خواص قواسم عدد طبيعي ») — ONE walk of the launch as a STUDENT
-// (simulated session, no API), played by launch-kit-qawasim.mjs and launch-kit-khawass.mjs. Since 2026-11-18 the learning net
-// gives both lessons the SAME two core tools: A = 4am.m1.r01 (« قاسم عدد طبيعي », the lesson before) then B = 2am.m1.r04
-// (« القسمة الإقليدية على أيّ عدد », 2AM). Four students:
+// « عُدّة الانطلاق » — the shared walks of a lesson's LAUNCH as a STUDENT (simulated session, no API).
+//
+// `harness(...)`: what every launch walk needs — a student signed in with a mocked API, the screen checks, and the gestures
+// played through the UI with answers COMPUTED here from what the screen shows (the equation's numbers, the prompt, the card in
+// the hand), never read from the game: the game's own `bin` of a card is only CROSS-CHECKED against the walk's computation.
+//
+// `walkLaunch(...)` — lessons 2 and 3 (« قواسم عدد طبيعي », « خواص قواسم عدد طبيعي »), played by launch-kit-qawasim.mjs and
+// launch-kit-khawass.mjs. Since 2026-11-18 the learning net gives both lessons the SAME two core tools: A = 4am.m1.r01
+// (« قاسم عدد طبيعي », the lesson before) then B = 2am.m1.r04 (« القسمة الإقليدية على أيّ عدد », 2AM). Four students:
 //   1. knows everything: four answers (A: write, sentences; B: write, then its level-2 SORT of three equalities — since
 //      2026-11-18 a family's level-2 sort is asked first, `families.js › pickForm`), 4 / 4, take-off;
 //   2. slips on A's sentences and on B's first equality: B's flag on the line, B's sort, B « تحتاج تثبيتًا » in three answers, the
@@ -9,25 +14,48 @@
 //   3. misses everything: 0 / 4, ONE capsule (the first core tool, A), the door opens — B stays « نبدأ منها », no second lock;
 //   4. knows A, misses B: B's workshop (its worked example, the flag again), the capsule of B (its card, its example, the
 //      instrument `paper`, two easy questions answered right) — B rises to « تحتاج تثبيتًا », 3 / 4, take-off.
-// Answers are COMPUTED from the numbers on screen (the equation, the prompt, the equality of a card), never typed in here.
+//
+// `walkLaunchOne(...)` — a lesson whose launch holds ONE tool (the learning net gives it one direct prerequisite with a question
+// family): the 1AM « القسمة الإقليدية » (tool 1am.m1.r01, the operations), the 1AM « قواعد قابلية القسمة » and the 2AM
+// « القسمة الإقليدية وحصر حاصل القسمة » (tool 1am.m3.r01, the 1AM division). The tool is a CORE one (`weight` not
+// `support`: unclassified counts as core, `engine.js › gateOf`). Four students:
+//   1. knows: the very first question (level 1, write), then the level-2 SORT — 2 / 2, no workshop, take-off;
+//   2. slips on the sort: « تحتاج تثبيتًا » in two answers, the workshop opens on the trap he took, two sorts LIKE it answered
+//      right — repaired, still « تحتاج تثبيتًا », 1 / 2, the door open, ONE lesson to revise (its memo, its lab, its page);
+//   3. misses everything: 0 / 2, the gate — ONE capsule (card, example, the instrument, two easy questions missed), the door
+//      opens whatever he answers, the tool flagged « كبسولة منجزة », not a new try;
+//   4. misses the stations and the workshop, then answers the capsule right: repaired by the capsule, 1 / 2, take-off.
+//
 // At every screenshot: nothing scrolls or leaves its panel (the rules of launch-kit.mjs, plus a sentence on two lines at most,
-// a placed card in its box, the boxes above the buttons), and the SOFT checks (printed FAIL, the walk goes on): no raw
-// formula, no word of another lesson, no text under 12 px, the launch's ✕ reachable.
+// a placed card in its box, the boxes above the buttons) — a hard FAIL; and the checks printed FAIL that let the walk go on
+// (the run still fails): no raw formula, no word of another lesson, no text under 12 px (`lib/walk.mjs › tinyText`, the same
+// floor as every walk), the launch's ✕ reachable. The lab opened from a capsule gets the same floor and its own ✕.
+import { FAMILIES } from '../../src/lessons/common/launchkit/families.js';
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
+import { tinyText } from './walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
 export const A = '4am.m1.r01';
 export const B = '2am.m1.r04';
 
-/** `ids`: four student ids; `alien`: words of another lesson that must never show (soft); `alienLabel`: that lesson, for the log. */
-export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'another lesson' }) {
-  const LESSON = `${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/4am/ansab_al_aadad_wal_hisab/${id}`;
+const norm = (s) =>
+  String(s ?? '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+/**
+ * The shared machinery of a launch walk. `url`: the lesson page; `grade`: the student's year (the lesson's own);
+ * `alien`: words of other lessons that must never show; `alienLabel`: those lessons, for the log.
+ */
+export function harness({ id, url, grade = '4am', outName, alien = [], alienLabel = 'another lesson' }) {
   const OUT = process.argv[2] || `${tmpdir()}/${outName}`;
   const SIZE = (process.env.E2E_SIZE || '1366x768').split('x').map(Number);
   const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
   mkdirSync(OUT, { recursive: true });
+  const S = { page: null, n: 0, zeroSeen: false, browser: null };
+  const errors = [];
   const expect = (cond, msg) => {
     if (!cond) {
       console.log('FAIL', msg);
@@ -37,50 +65,55 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     }
     console.log('ok  ', msg);
   };
-  const browser = await chromium.launch({ args: GL_ARGS });
-  const errors = [];
-  const seenB = new Set(); // the forms of B the walk met: the 2AM level-2 sort must come up
-  let zeroSeen = false; // a card « s = b × 0 + s » (to ACCEPT) was on screen and sorted by its computed box
-  let n = 0;
-  let page;
+  const say = (ok, msg) => {
+    if (ok) console.log('ok  ', msg);
+    else {
+      console.log('FAIL', msg);
+      process.exitCode = 1;
+    }
+  };
 
   async function student(uid) {
-    const ctx = await browser.newContext({
+    S.browser ??= await chromium.launch({ args: GL_ARGS });
+    const ctx = await S.browser.newContext({
       viewport: { width: SIZE[0], height: SIZE[1] },
       ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}),
     });
-    await ctx.addInitScript((u) => {
-      window.__paperFast = true;
-      window.__launchFast = true;
-      localStorage.setItem('token', 'qa-fake-token');
-      const real = window.fetch.bind(window);
-      window.fetch = async (input, init) => {
-        const url = typeof input === 'string' ? input : input.url;
-        if (url.includes('/api/'))
-          return new Response(
-            JSON.stringify(
-              url.includes('/auth/me')
-                ? {
-                    success: true,
-                    user: {
-                      id: u,
-                      name: 'تلميذ',
-                      role: 'student',
-                      roles: ['student'],
-                      email_verified_at: '2026-09-01T00:00:00Z',
-                      emailVerified: true,
-                      nameComplete: true,
-                      level: '4am',
-                      grade: '4am',
-                    },
-                  }
-                : { success: true, data: [] },
-            ),
-            { status: 200, headers: { 'Content-Type': 'application/json' } },
-          );
-        return real(input, init);
-      };
-    }, uid);
+    await ctx.addInitScript(
+      ([u, year]) => {
+        window.__paperFast = true;
+        window.__launchFast = true;
+        localStorage.setItem('token', 'qa-fake-token');
+        const real = window.fetch.bind(window);
+        window.fetch = async (input, init) => {
+          const url = typeof input === 'string' ? input : input.url;
+          if (url.includes('/api/'))
+            return new Response(
+              JSON.stringify(
+                url.includes('/auth/me')
+                  ? {
+                      success: true,
+                      user: {
+                        id: u,
+                        name: 'تلميذ',
+                        role: 'student',
+                        roles: ['student'],
+                        email_verified_at: '2026-09-01T00:00:00Z',
+                        emailVerified: true,
+                        nameComplete: true,
+                        level: year,
+                        grade: year,
+                      },
+                    }
+                  : { success: true, data: [] },
+              ),
+              { status: 200, headers: { 'Content-Type': 'application/json' } },
+            );
+          return real(input, init);
+        };
+      },
+      [uid, grade],
+    );
     const p = await ctx.newPage();
     p.on('pageerror', (e) => {
       errors.push(e.message);
@@ -91,6 +124,7 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
 
   /** Nothing scrolls, nothing leaves the screen or its panel — checked at every screenshot (the rules of launch-kit.mjs). */
   const shot = async (name) => {
+    const page = S.page;
     await page.waitForTimeout(350);
     const bad = await page.evaluate((phone) => {
       const out = [];
@@ -165,134 +199,225 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`);
     }
     await soft(name);
-    n += 1;
-    await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
+    S.n += 1;
+    await page.screenshot({ path: `${OUT}/${String(S.n).padStart(2, '0')}-${name}.png` });
   };
-  /** SOFT checks of every screen (printed FAIL, the walk goes on): no raw formula, no word of another lesson, no text under 12 px, the ✕. */
-  async function soft(name) {
-    const t = await page.evaluate((words) => {
-      const root = document.querySelector('.lk-root');
-      const raw = [];
-      const tiny = [];
-      let all = '';
-      const zoomOf = (el) => {
-        let z = 1;
-        for (let x = el; x && x.nodeType === 1; x = x.parentElement) z *= parseFloat(getComputedStyle(x).zoom) || 1;
-        return z;
-      };
-      const wk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      for (let x = wk.nextNode(); x; x = wk.nextNode()) {
-        const p = x.parentElement;
-        if (!p || !x.nodeValue.trim() || p.closest('script, style, .katex-mathml')) continue;
-        const r = p.getBoundingClientRect();
-        if (r.width <= 1 || r.height <= 1 || r.bottom < 0 || r.top > innerHeight) continue;
-        const cs = getComputedStyle(p);
-        if (cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
-        all += ` ${x.nodeValue}`;
-        if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(x.nodeValue)) raw.push(x.nodeValue.trim().slice(0, 40));
-        if (!p.closest('.katex') && !p.closest('svg')) {
-          const px = parseFloat(cs.fontSize) * zoomOf(p);
-          if (px < 11.5)
-            tiny.push(
-              `${p.tagName.toLowerCase()}.${String(p.className).split(' ')[0]} ${px.toFixed(1)}px « ${x.nodeValue.trim().slice(0, 20)} »`,
-            );
+  /** The checks that let the walk go on (printed FAIL, the run fails): no raw formula, no word of another lesson, no text under 12 px, the ✕. */
+  async function soft(name, { exit = '[data-lk-close]', words = true } = {}) {
+    const page = S.page;
+    const t = await page.evaluate(
+      ([words, xsel]) => {
+        const raw = [];
+        let all = '';
+        const wk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        for (let x = wk.nextNode(); x; x = wk.nextNode()) {
+          const p = x.parentElement;
+          if (!p || !x.nodeValue.trim() || p.closest('script, style, noscript, title, .katex-mathml')) continue;
+          const r = p.getBoundingClientRect();
+          if (r.width <= 1 || r.height <= 1 || r.bottom < 0 || r.top > innerHeight) continue;
+          const cs = getComputedStyle(p);
+          if (cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
+          all += ` ${x.nodeValue}`;
+          if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(x.nodeValue)) raw.push(x.nodeValue.trim().slice(0, 40));
         }
-      }
-      const xb = document.querySelector('[data-lk-close]');
-      let exit = false;
-      if (xb) {
-        const r = xb.getBoundingClientRect();
-        const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-        exit =
-          r.width > 0 && r.right <= innerWidth + 1 && r.top >= -1 && Boolean(top && (top === xb || xb.contains(top)));
-      }
-      return { raw: [...new Set(raw)], tiny: [...new Set(tiny)], words: words.filter((w) => all.includes(w)), exit };
-    }, alien);
-    const say = (ok, msg) => {
-      if (ok) console.log('ok  ', msg);
-      else {
-        console.log('FAIL', msg);
-        process.exitCode = 1;
-      }
-    };
+        const xb = document.querySelector(xsel);
+        let exit = false;
+        if (xb) {
+          const r = xb.getBoundingClientRect();
+          const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+          exit =
+            r.width > 0 && r.right <= innerWidth + 1 && r.top >= -1 && Boolean(top && (top === xb || xb.contains(top)));
+        }
+        return { raw: [...new Set(raw)], words: words.filter((w) => all.includes(w)), exit };
+      },
+      [alien, exit],
+    );
+    const tiny = await tinyText(page);
     say(t.raw.length === 0, `${name}: no raw formula on screen${t.raw.length ? ' — ' + t.raw.join(' | ') : ''}`);
-    if (alien.length)
+    if (alien.length && words)
       say(
         t.words.length === 0,
         `${name}: nothing of ${alienLabel} on screen${t.words.length ? ' — ' + t.words.join(', ') : ''}`,
       );
+    say(tiny.length === 0, `${name}: no text under 12 px${tiny.length ? ' — ' + tiny.slice(0, 6).join(' | ') : ''}`);
     say(
-      t.tiny.length === 0,
-      `${name}: no text under 12 px${t.tiny.length ? ' — ' + t.tiny.slice(0, 6).join(' | ') : ''}`,
+      t.exit,
+      `${name}: ${exit === '[data-lk-close]' ? 'the launch’s ✕' : 'the lab’s ✕'} is on screen and a click reaches it`,
     );
-    say(t.exit, `${name}: the launch’s ✕ is on screen and a click reaches it`);
   }
+  /** The lab opened over the launch (a capsule's instrument): the same floor and formulas, its own ✕; then the screenshot. */
+  const labShot = async (name) => {
+    await S.page.waitForTimeout(500);
+    // the lab's cabinet names the earlier lessons by design (`lessonlab/registry.js › toolsFor`): no foreign-word check here
+    await soft(name, { exit: '[data-ll-close]', words: false });
+    S.n += 1;
+    await S.page.screenshot({ path: `${OUT}/${String(S.n).padStart(2, '0')}-${name}.png` });
+  };
+
   const px = (sel) =>
-    page.evaluate((s) => {
+    S.page.evaluate((s) => {
       const el = document.querySelector(s);
       const z = Number(document.querySelector('.lk-fit').style.zoom || 1);
       return el ? Math.round(parseFloat(getComputedStyle(el).fontSize) * z) : 0;
     }, sel);
-  const cur = () => page.evaluate(() => window.__launch.cur);
+  const cur = () => S.page.evaluate(() => window.__launch.cur);
   const tool = async (item) => ({
-    band: await page.getAttribute(`[data-lk-tool="${item}"]`, 'data-lk-band'),
-    seg: await page.getAttribute(`[data-lk-tool="${item}"]`, 'data-lk-segments'),
+    band: await S.page.getAttribute(`[data-lk-tool="${item}"]`, 'data-lk-band'),
+    seg: await S.page.getAttribute(`[data-lk-tool="${item}"]`, 'data-lk-segments'),
   });
   const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-  const bands = () => page.locator('[data-lk-kcard]').evaluateAll((els) => els.map((e) => e.dataset.lkBand).join());
-  const kcard = (item) => page.textContent(`[data-lk-kcard="${item}"]`);
+  const bands = () => S.page.locator('[data-lk-kcard]').evaluateAll((els) => els.map((e) => e.dataset.lkBand).join());
+  const kcard = (item) => S.page.textContent(`[data-lk-kcard="${item}"]`);
   const kit = (uid) =>
-    page.evaluate((u) => JSON.parse(localStorage.getItem(`u_${u}_smarter_launch_kit`) ?? 'null'), uid);
-  /** What the question shows: the numbers of the equation to complete, the sentence of the prompt. */
+    S.page.evaluate((u) => JSON.parse(localStorage.getItem(`u_${u}_smarter_launch_kit`) ?? 'null'), uid);
+  /** What the question shows: the tokens of the equation to complete, its boxes, the prompt (its words, its formulas apart). */
   const onScreen = () =>
-    page.evaluate(() => ({
-      eq: [...document.querySelectorAll('.lk-question .lk-equation > b')].map((b) => b.textContent.trim()),
-      prompt: document.querySelector('.lk-question .lk-prompt')?.textContent ?? '',
-    }));
-  /** The box an equality card « $a = b \times q ± r$ » belongs in, computed apart: THE Euclidean division of a by b? */
-  const euclid = (text) => {
-    const m = /^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/.exec(text);
-    if (!m) return null;
-    const [a, b, k, r] = [m[1], m[2], m[3], m[5]].map(Number);
-    return m[4] === '+' && a === b * k + r && r < b ? 'yes' : 'no';
+    S.page.evaluate(() => {
+      const pr = document.querySelector('.lk-question .lk-prompt');
+      let plain = '';
+      if (pr) {
+        const c = pr.cloneNode(true);
+        c.querySelectorAll('.katex').forEach((k) => k.remove());
+        plain = c.textContent;
+      }
+      return {
+        eq: [...document.querySelectorAll('.lk-question .lk-equation > b')].map((b) => b.textContent.trim()),
+        slots: [...document.querySelectorAll('.lk-question [data-lk-slot]')].map((s) => s.dataset.lkSlot),
+        plain,
+        tex: pr ? [...pr.querySelectorAll('annotation')].map((a) => a.textContent) : [],
+      };
+    });
+  /** The card in the hand, as the screen shows it: a formula (its TeX), a sentence, or a number. */
+  const cardInHand = () =>
+    S.page.evaluate(() => {
+      const c = document.querySelector('[data-lk-card]');
+      if (!c) return null;
+      return {
+        id: c.dataset.lkCard,
+        tex: c.querySelector('annotation')?.textContent ?? null,
+        say: c.querySelector('.lk-say')?.textContent ?? null,
+        text: c.textContent,
+      };
+    });
+  /**
+   * The box a card belongs in, computed HERE from the card and the prompt:
+   *   « a = b × q ± r »         THE Euclidean division of a by b? (+, the equality true, r < b)
+   *   « x × y (+ z) = v », « x − y = v »   is the equality true?
+   *   « x قاسم للعدد y », « x مضاعف للعدد y », « x يقبل القسمة على y »   is the sentence true?
+   *   a number                  a divisor of the prompt's number (« قاسم للعدد of »), or divisible by its k (« القسمة على k »).
+   */
+  const boxOf = (card, plain) => {
+    if (card.tex) {
+      const tex = norm(card.tex);
+      let m = /^(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)$/.exec(tex);
+      if (m) {
+        const [a, b, k, r] = [m[1], m[2], m[3], m[5]].map(Number);
+        const yes = m[4] === '+' && a === b * k + r && r < b;
+        if (k === 0 && m[4] === '+') {
+          S.zeroSeen = true;
+          expect(yes, `a quotient 0 is THE Euclidean division of a smaller number (« ${tex} »)`);
+        }
+        return yes ? 'yes' : 'no';
+      }
+      m = /^(\d+) \\times (\d+)(?: \+ (\d+))? = (\d+)$/.exec(tex);
+      if (m) return Number(m[1]) * Number(m[2]) + Number(m[3] ?? 0) === Number(m[4]) ? 'yes' : 'no';
+      m = /^(\d+) - (\d+) = (\d+)$/.exec(tex);
+      if (m) return Number(m[1]) - Number(m[2]) === Number(m[3]) ? 'yes' : 'no';
+      expect(false, `the walk can read the card « ${tex} »`);
+    }
+    if (card.say) {
+      const t = norm(card.say);
+      let m = /^(\d+) قاسم للعدد (\d+)$/.exec(t);
+      if (m) return Number(m[2]) % Number(m[1]) === 0 ? 'yes' : 'no';
+      m = /^(\d+) (?:مضاعف للعدد|يقبل القسمة على) (\d+)$/.exec(t);
+      if (m) return Number(m[1]) % Number(m[2]) === 0 ? 'yes' : 'no';
+      expect(false, `the walk can read the sentence « ${t} »`);
+    }
+    const n = Number(norm(card.text));
+    const of = /قاسم للعدد (\d+)/.exec(plain);
+    if (of) return Number(of[1]) % n === 0 ? 'yes' : 'no';
+    const k = /القسمة على (\d+)/.exec(plain);
+    if (k) return n % Number(k[1]) === 0 ? 'yes' : 'no';
+    expect(false, `the walk can read the number card « ${card.text} » with its prompt « ${norm(plain)} »`);
+    return null;
   };
   const type = async (v) => {
-    for (const d of String(v)) await page.click(`[data-lk-key="${d}"]`);
+    for (const d of String(v)) await S.page.click(`[data-lk-key="${d}"]`);
   };
+
+  /** Sends the card in the hand to its box (right) or to the other one (wrong), by a tap on the box. Returns the box sent to. */
+  async function sortOne(right) {
+    const { q } = await cur();
+    const card = await cardInHand();
+    expect(Boolean(card), 'a card is in the hand');
+    const { plain } = await onScreen();
+    const bin = boxOf(card, plain);
+    const game = q.cards.find((c) => c.id === card.id);
+    expect(
+      game && game.bin === bin,
+      `the box of « ${norm(card.tex ?? card.say ?? card.text)} », computed apart, is the game's (${bin})`,
+    );
+    const to = right ? bin : bin === 'yes' ? 'no' : 'yes';
+    await S.page.click(`[data-lk-send="${to}"]`);
+    return to;
+  }
 
   /** Fills the answer of the question on screen — right or wrong — with real taps and drags, WITHOUT handing it in. */
   async function fill(right) {
+    const page = S.page;
     const { q } = await cur();
-    if (q.item === B) seenB.add(`${q.level}:${q.form}`);
+    const sc = await onScreen();
     if (q.gesture === 'write') {
-      const { eq } = await onScreen();
-      const a = Number(eq[0]);
-      const b = Number(eq[2]);
-      if (a !== q.a || b !== q.b) expect(false, `the equation on screen is the question asked (${eq.join(' ')})`);
-      const tq = Math.floor(a / b);
-      const tr = a % b;
-      if (!(await page.locator('[data-lk-slot="r"]').count())) await type(right ? tq : tq + 1);
-      else {
-        // wrong: a TRUE equality whose remainder is too big (« rest-too-big »)
-        await type(right ? tq : tq - 1);
-        await page.click('[data-lk-slot="r"]');
-        await type(right ? tr : tr + b);
+      let vals;
+      if (sc.eq[1] === '=') {
+        // « a = b × ▢ (+ ▢) »: the Euclidean division, or the equality that shows a divisor (no box for a remainder)
+        const a = Number(sc.eq[0]);
+        const b = Number(sc.eq[2]);
+        expect(a === q.a && b === q.b, `the equation on screen is the question asked (${sc.eq.join(' ')})`);
+        const tq = Math.floor(a / b);
+        const tr = a % b;
+        if (sc.slots.includes('r')) {
+          expect(same(sc.slots, ['q', 'r']) && tq >= 1, `two boxes: the quotient, then the remainder (${a} ÷ ${b})`);
+          vals = right ? { q: tq, r: tr } : { q: tq - 1, r: tr + b }; // wrong: a TRUE equality whose remainder is too big
+        } else {
+          expect(same(sc.slots, ['q']) && tr === 0, `ONE box, and ${b} divides ${a}: the equality of a divisor`);
+          vals = { q: right ? tq : tq + 1 };
+        }
+      } else {
+        // « x × y (+ z) = ▢ » or « x − y = ▢ »: an operation, computed here
+        const [x, op, y] = [Number(sc.eq[0]), sc.eq[1], Number(sc.eq[2])];
+        const z = sc.eq[3] === '+' ? Number(sc.eq[4]) : 0;
+        expect(
+          ['×', '−'].includes(op) && same(sc.slots, ['v']),
+          `an operation to compute, ONE box (${sc.eq.join(' ')})`,
+        );
+        const v = op === '×' ? x * y + z : x - y;
+        vals = { v: right ? v : v + 10 };
+      }
+      for (const s of sc.slots) {
+        await page.click(`[data-lk-slot="${s}"]`);
+        await type(vals[s]);
       }
     } else if (q.gesture === 'sort') {
-      for (const c of q.cards) {
-        const bin = euclid(c.text) ?? c.bin; // an equality is judged here; a number or a sentence keeps its box
-        if (bin !== c.bin) expect(false, `the box of « ${c.text} », computed apart, is the game's (${bin} / ${c.bin})`);
-        if (/\\times 0 \+/.test(c.text)) {
-          zeroSeen = true;
-          if (bin !== 'yes')
-            expect(false, `a quotient 0 is THE Euclidean division of a smaller number (« ${c.text} »)`);
-        }
-        await page.click(`[data-lk-send="${right ? bin : bin === 'yes' ? 'no' : 'yes'}"]`);
-      }
+      for (let i = 0; i < q.cards.length; i += 1) await sortOne(right);
+      expect((await page.locator('[data-lk-card]').count()) === 0, 'every card is in a box');
     } else {
-      const [a, b] = (await onScreen()).prompt.match(/\d+/g).map(Number); // « العدد a … مضاعف للعدد b لا يتجاوز a »
-      const target = Math.floor(a / b) * b;
-      const goal = right ? target : target + b <= q.max ? target + b : a + 1; // wrong: one jump too far, still on the line
+      let target;
+      let wrong;
+      if (sc.tex.length) {
+        // « العدد a مثبَّت … ناتج $a - d$ »: the flag counts back d from a
+        const m = /^(\d+) - (\d+)$/.exec(norm(sc.tex[0]));
+        expect(Boolean(m), `the walk can read the difference « ${sc.tex[0]} »`);
+        target = Number(m[1]) - Number(m[2]);
+        wrong = Number(m[1]); // wrong: the flag left on the number itself
+      } else {
+        // « العدد a … أكبر مضاعف للعدد b لا يتجاوز a »
+        const [a, b] = sc.plain.match(/\d+/g).map(Number);
+        expect(a === q.a && b === q.b, `the prompt is the question asked (${a}, ${b})`);
+        target = Math.floor(a / b) * b;
+        wrong = target + b <= q.max ? target + b : target - b; // wrong: a neighbour multiple, still on the line
+      }
+      const goal = right ? target : wrong;
       const box = await page.locator('[data-lk-line]').boundingBox();
       const k = Math.min(box.width / 940, box.height / 250);
       const ox = box.x + (box.width - 940 * k) / 2;
@@ -307,17 +432,38 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       await page.mouse.up();
       await page.waitForTimeout(150); // let the last move be drawn before the value is read
       const got = Number(await page.getAttribute('[data-lk-line]', 'data-lk-x'));
-      if (got !== goal || q.a !== a || q.b !== b)
-        expect(false, `the flag follows the hand (asked ${goal}, got ${got})`);
+      expect(got === goal, `the flag follows the hand (asked ${goal}, got ${got})`);
     }
     return q;
   }
   const hand = async () => {
-    await page.click('[data-lk-done]');
+    await S.page.click('[data-lk-done]');
   };
   const settle = async () => {
-    await page.waitForFunction(() => !document.querySelector('[data-lk-signal]'), null, { timeout: 5000 });
-    await page.waitForTimeout(150);
+    await S.page.waitForFunction(() => !document.querySelector('[data-lk-signal]'), null, { timeout: 5000 });
+    await S.page.waitForTimeout(150);
+  };
+  /** Hands the answer in and HEARS the verdict: the signal lasts 60 ms in a fast walk, so an observer set before keeps it. */
+  const handAndHear = async () => {
+    await S.page.evaluate(() => {
+      window.__said = null;
+      const o = new MutationObserver(() => {
+        const el = document.querySelector('[data-lk-signal]');
+        if (el && !window.__said) {
+          window.__said = {
+            kind: el.dataset.lkSignal,
+            signal: el.textContent,
+            stage: document.querySelector('.lk-stage').textContent,
+          };
+          o.disconnect();
+        }
+      });
+      o.observe(document.body, { childList: true, subtree: true, attributes: true });
+    });
+    await hand();
+    const said = await (await S.page.waitForFunction(() => window.__said)).jsonValue();
+    await settle();
+    return said;
   };
   const answer = async (right) => {
     const q = await fill(right);
@@ -326,27 +472,109 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     return q;
   };
   const open = async (uid) => {
-    page = await student(uid);
-    await page.goto(LESSON, { waitUntil: 'networkidle' });
-    await page.waitForSelector('[data-di-start]');
-    await page.click('[data-di-start]');
-    await page.waitForSelector(`[data-launch-kit="${id}"]`);
+    S.page = await student(uid);
+    await S.page.goto(url, { waitUntil: 'networkidle' });
+    await S.page.waitForSelector('[data-di-start]');
+    await S.page.click('[data-di-start]');
+    await S.page.waitForSelector(`[data-launch-kit="${id}"]`);
+    return S.page;
   };
   const begin = async () => {
-    await page.click('[data-lk-start]');
-    await page.waitForSelector('[data-lk-question]');
+    await S.page.click('[data-lk-start]');
+    await S.page.waitForSelector('[data-lk-question]');
   };
-  const takeOff = async () => {
-    await page.click('[data-lk-go]');
-    await page.waitForFunction(
-      () => !document.querySelector('[data-launch-kit]') && window.__world.getState().phase !== 'title',
-      null,
-      { timeout: 15000 },
+  /** « انطلق إلى الدرس »: the countdown, then the launch closes and the world plays (`WorldRuntime › launched → start`). */
+  const takeOff = async (msg) => {
+    await S.page.click('[data-lk-go]');
+    await S.page.waitForFunction(() => !document.querySelector('[data-launch-kit]'), null, { timeout: 15000 });
+    const phase = await S.page.evaluate(() => window.__world.getState().phase);
+    expect(
+      phase === 'play' && (await S.page.locator('.lk-root').count()) === 0,
+      `${msg} (the world's phase: ${phase})`,
     );
+  };
+  /** The workshop's worked example, revealed step by step through its button; every step on screen, then « فهمت ». */
+  const revealWorkshop = async () => {
+    const len = await S.page.evaluate(() => window.__launch.cur.ex.steps.length);
+    for (let i = 1; i < len; i += 1) await S.page.click('[data-lk-step-next]');
+    expect(
+      (await S.page.locator('[data-lk-step]').count()) === len &&
+        (await S.page.locator('[data-lk-step-next]').count()) === 0 &&
+        (await S.page.locator('[data-lk-try]').count()) === 1,
+      `the worked example, revealed step by step (${len} steps), then « فهمت: أجرّب بسؤالين »`,
+    );
+    return len;
+  };
+  /** The capsule's worked example, revealed step by step through « الخطوة التالية ». */
+  const revealCapsule = async () => {
+    const len = await S.page.evaluate(() => window.__launch.cap.ex.steps.length);
+    for (let i = 1; i < len; i += 1) await S.page.click('[data-lk-capsule-next]');
+    expect(
+      (await S.page.locator('[data-lk-step]').count()) === len &&
+        (await S.page.getAttribute('[data-lk-capsule]', 'data-lk-capsule-step')) === 'example',
+      `the capsule's worked example, revealed step by step (${len} steps)`,
+    );
+    return len;
+  };
+  /** The capsule's lab: opened ON the tool's instrument, checked, closed. */
+  const capsuleLab = async (labTool, name, msg) => {
+    await S.page.click('[data-lk-capsule-lab]');
+    await S.page.waitForSelector('[data-lesson-lab]');
+    expect((await S.page.getAttribute('[data-lesson-lab]', 'data-ll-tool-on')) === labTool, msg);
+    await labShot(name);
+    await S.page.click('[data-ll-close]');
+    await S.page.waitForFunction(() => !document.querySelector('[data-lesson-lab]'));
+  };
+  const done = async () => {
+    expect(errors.length === 0, `no page error (${errors.length})`);
+    await S.browser?.close();
+    console.log(process.exitCode ? 'FAILED' : `PASSED — screenshots in ${OUT}`);
+  };
+
+  return {
+    S,
+    PHONE,
+    expect,
+    shot,
+    labShot,
+    px,
+    cur,
+    tool,
+    same,
+    bands,
+    kcard,
+    kit,
+    onScreen,
+    sortOne,
+    fill,
+    hand,
+    handAndHear,
+    settle,
+    answer,
+    open,
+    begin,
+    takeOff,
+    revealWorkshop,
+    revealCapsule,
+    capsuleLab,
+    done,
+  };
+}
+
+/** Lessons 2 and 3: `ids`: four student ids; `alien`: words of another lesson that must never show; `alienLabel`: that lesson. */
+export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'another lesson' }) {
+  const url = `${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/4am/ansab_al_aadad_wal_hisab/${id}`;
+  const H = harness({ id, url, grade: '4am', outName, alien, alienLabel });
+  const { PHONE, expect, shot, px, cur, tool, same, bands, kcard, kit, sortOne, fill, hand, settle, answer } = H;
+  const seenB = new Set(); // the forms of B the walk met: the 2AM level-2 sort must come up
+  const note = async () => {
+    const { q } = await cur();
+    if (q.item === B) seenB.add(`${q.level}:${q.form}`);
+    return q;
   };
   /** B's level-1 equality: a two-digit divisor (11–19), a quotient of 2 to 5. */
   const easyB = (q) => q.b >= 11 && q.b <= 19 && Math.floor(q.a / q.b) >= 2 && Math.floor(q.a / q.b) <= 5;
-  /** B's level-2 sort: three EQUALITIES with a divisor of 12–25, each one's box computable from its own numbers. */
+  /** B's level-2 sort: three EQUALITIES with a divisor of 12–25. */
   const sortB = (q) =>
     q.form === 'sort' &&
     q.cards.length === 3 &&
@@ -354,9 +582,13 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       const m = /^\$\d+ = (\d+) \\times \d+ [+-] \d+\$$/.exec(c.text);
       return m && Number(m[1]) >= 12 && Number(m[1]) <= 25;
     });
+  const ans = async (right) => {
+    await note();
+    return answer(right);
+  };
 
   // ══ 1. a student who knows: the bag holds TWO core tools; four answers charge both; take-off ══
-  await open(ids[0]);
+  let page = await H.open(ids[0]);
   expect(
     (await page.evaluate(() => window.__world.getState().phase)) === 'title',
     'the first « ابدأ » opens the launch: the world has not started',
@@ -379,7 +611,7 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     );
   }
   await shot('bag');
-  await begin();
+  await H.begin();
   let q = (await cur()).q;
   expect(
     q.item === A && q.level === 1 && q.gesture === 'write' && q.a <= 25 && q.a % q.b === 0,
@@ -415,14 +647,14 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   );
   expect((await px('.lk-card .lk-say')) >= (PHONE ? 13 : 17), 'a sentence card is comfortable to read');
   await shot('sentences');
-  await page.click(`[data-lk-send="${q.cards[0].bin}"]`);
-  await page.click(`[data-lk-send="${q.cards[1].bin}"]`);
+  await sortOne(true);
+  await sortOne(true);
   await shot('sentences-placed');
-  await page.click(`[data-lk-send="${q.cards[2].bin}"]`);
+  await sortOne(true);
   await hand();
   await settle();
   expect(same(await tool(A), { band: 'solid', seg: '2' }), 'two right answers: the first tool is « ثابتة »');
-  q = (await cur()).q;
+  q = await note();
   expect(
     q.item === B && q.level === 1 && q.gesture === 'write' && easyB(q),
     `then the second tool, the 2AM division, from an easy one: « ${q.a} = ${q.b} × ▢ + ▢ » — a two-digit divisor`,
@@ -437,7 +669,7 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await page.waitForSelector('[data-lk-signal="good"]');
   expect((await tool(B)).seg === '1', 'a right division lights one segment of the second tool');
   await settle();
-  q = (await cur()).q;
+  q = await note();
   expect(
     q.item === B && q.level === 2 && q.gesture === 'sort' && sortB(q),
     `then a harder one, by another gesture: three equalities to sort — is each THE Euclidean division? (${q.cards.map((c) => c.text).join(' · ')})`,
@@ -469,13 +701,12 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
       'the result is written in the student’s toolbox: both tools, 100, one try',
     );
   }
-  await takeOff();
-  expect(true, 'take-off: the launch closes and the world of the lesson starts');
+  await H.takeOff('take-off: the launch closes and the world of the lesson plays');
 
   // ══ 2. a student who slips: A's sentences, B's first equality — the flag, two « تحتاج تثبيتًا », the workshop on A ══
-  await open(ids[1]);
-  await begin();
-  await answer(true);
+  page = await H.open(ids[1]);
+  await H.begin();
+  await ans(true);
   await fill(false);
   // the signal lasts a moment: an observer set BEFORE the answer is handed in keeps what it said
   await page.evaluate(() => {
@@ -499,13 +730,13 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     same(await tool(A), { band: 'consolidate', seg: '1' }),
     'one right, one missed: the first tool is « تحتاج تثبيتًا »',
   );
-  q = (await cur()).q;
+  q = await note();
   expect(
     q.item === B && q.level === 1 && q.gesture === 'write',
     'the workshop waits: the second tool is measured first (stations before the workshop)',
   );
-  await answer(false);
-  q = (await cur()).q;
+  await ans(false);
+  q = await note();
   expect(
     q.item === B && q.level === 1 && q.gesture === 'place' && q.b >= 11 && q.b <= 15 && q.max === 60,
     `a tool is never judged on one answer: a second easy one, by another gesture — the flag on the greatest multiple of ${q.b} not beyond ${q.a}`,
@@ -515,12 +746,12 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await hand();
   await page.waitForSelector('[data-lk-signal="good"]');
   await settle();
-  q = (await cur()).q;
+  q = await note();
   expect(
     q.item === B && q.level === 2 && q.gesture === 'sort' && sortB(q),
     'missed then right: a third question, the harder one — the sort of three equalities',
   );
-  await answer(true);
+  await ans(true);
   expect(
     same(await tool(B), { band: 'consolidate', seg: '1' }),
     'missed, then right twice: the 2AM division is « تحتاج تثبيتًا » — three answers, never one',
@@ -531,7 +762,7 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     'the workshop opens on the FIRST tool (both are « تحتاج تثبيتًا »), on the mistake its answer showed',
   );
   await shot('workshop-mistake');
-  while (await page.locator('[data-lk-step-next]').count()) await page.click('[data-lk-step-next]');
+  await H.revealWorkshop();
   await shot('workshop-example');
   await page.click('[data-lk-try]');
   await page.waitForSelector('[data-lk-qphase="workshop"]');
@@ -541,8 +772,8 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     'after the worked example, two questions LIKE the one he missed: sentences again, on other numbers',
   );
   await shot('workshop-question');
-  await answer(true);
-  await answer(true);
+  await ans(true);
+  await ans(true);
   await page.waitForSelector('[data-lk-result]');
   expect(
     (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '2/4' &&
@@ -560,21 +791,21 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await shot('result-repaired');
 
   // ══ 3. a student who misses everything: ONE capsule — the first core tool — then the door opens whatever he answers ══
-  await open(ids[2]);
-  await begin();
-  await answer(false);
+  page = await H.open(ids[2]);
+  await H.begin();
+  await ans(false);
   q = (await cur()).q;
   expect(
     q.item === A && q.level === 1 && q.form === 'pick',
     'a tool is never judged on one answer: a second easy question, by another gesture — numbers to sort',
   );
   await shot('pick-easy');
-  await answer(false);
+  await ans(false);
   expect(same(await tool(A), { band: 'start', seg: '0' }), 'two easy misses: the first tool is « نبدأ منها »');
-  q = (await cur()).q;
+  q = await note();
   expect(q.item === B && q.level === 1 && q.gesture === 'write', 'then the second tool is measured too');
-  await answer(false);
-  q = (await cur()).q;
+  await ans(false);
+  q = await note();
   expect(q.item === B && q.gesture === 'place', 'its second easy question: the flag');
   await fill(false);
   await shot('b-place-missed');
@@ -582,12 +813,18 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await settle();
   expect(same(await tool(B), { band: 'start', seg: '0' }), 'two easy misses: the 2AM division is « نبدأ منها » too');
   await page.waitForSelector(`[data-lk-example="${A}"]`);
-  expect(true, 'ONE workshop: the first tool at « نبدأ منها »');
-  while (await page.locator('[data-lk-step-next]').count()) await page.click('[data-lk-step-next]');
+  {
+    const c = await cur();
+    expect(
+      c.kind === 'example' && c.item === A && c.level === 1 && (await page.locator('[data-lk-example]').count()) === 1,
+      'ONE workshop, on the FIRST tool at « نبدأ منها », at the easy level',
+    );
+  }
+  await H.revealWorkshop();
   await page.click('[data-lk-try]');
   await page.waitForSelector('[data-lk-qphase="workshop"]');
-  await answer(false);
-  await answer(false);
+  await ans(false);
+  await ans(false);
   await page.waitForSelector('[data-lk-result]');
   expect(
     (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '0/4' &&
@@ -606,30 +843,23 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await shot('capsule-card');
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-capsule-step="example"]');
-  for (let i = 0; i < 2; i += 1) await page.click('[data-lk-capsule-next]');
   expect(
-    (await page.locator('[data-lk-step]').count()) === 3,
+    (await H.revealCapsule()) === 3,
     'then a worked example in three steps: the division, its remainder, the conclusion',
   );
   await shot('capsule-example');
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-capsule-step="lab"]');
   await shot('capsule-lab');
-  await page.click('[data-lk-capsule-lab]');
-  await page.waitForSelector('[data-lesson-lab]');
-  expect(
-    (await page.getAttribute('[data-lesson-lab]', 'data-ll-tool-on')) === 'rows',
+  await H.capsuleLab(
+    'rows',
+    'capsule-instrument',
     'then the instrument of the tool in the lab: the rows of the division, with his own numbers',
   );
-  n += 1;
-  await page.waitForTimeout(500);
-  await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-capsule-instrument.png` });
-  await page.click('[data-ll-close]');
-  await page.waitForFunction(() => !document.querySelector('[data-lesson-lab]'));
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-qphase="capsule"]');
-  await answer(false);
-  await answer(false);
+  await ans(false);
+  await ans(false);
   await page.waitForSelector('[data-lk-capsule-end="done"]');
   expect(
     (await page.locator('[data-lk-go]').count()) === 1 && (await page.locator('[data-lk-gate]').count()) === 0,
@@ -656,14 +886,14 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await shot('capsule-end');
 
   // ══ 4. a student who knows the first tool and misses the 2AM division: ITS workshop, ITS capsule, answered right ══
-  await open(ids[3]);
-  await begin();
-  await answer(true);
-  await answer(true);
-  q = (await cur()).q;
+  page = await H.open(ids[3]);
+  await H.begin();
+  await ans(true);
+  await ans(true);
+  q = await note();
   expect(q.item === B && q.gesture === 'write', 'the first tool charged, the second is asked');
-  await answer(false);
-  await answer(false);
+  await ans(false);
+  await ans(false);
   expect(
     same(await tool(A), { band: 'solid', seg: '2' }) && same(await tool(B), { band: 'start', seg: '0' }),
     'the first tool « ثابتة », the 2AM division « نبدأ منها »',
@@ -674,15 +904,11 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     'the workshop of the 2AM division opens on the mistake of the flag: the multiple does not go beyond the number',
   );
   await shot('b-workshop-mistake');
-  while (await page.locator('[data-lk-step-next]').count()) await page.click('[data-lk-step-next]');
-  expect(
-    (await page.locator('[data-lk-step]').count()) === 3 && (await page.locator('[data-lk-try]').count()) === 1,
-    'its worked example, revealed step by step: the greatest multiple, the remainder, the equality',
-  );
+  expect((await H.revealWorkshop()) === 3, 'its worked example: the greatest multiple, the remainder, the equality');
   await shot('b-workshop-example');
   await page.click('[data-lk-try]');
   await page.waitForSelector('[data-lk-qphase="workshop"]');
-  q = (await cur()).q;
+  q = await note();
   expect(
     q.item === B && q.level === 1 && q.gesture === 'place',
     'then two questions LIKE the one he missed: the flag again',
@@ -691,7 +917,7 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await shot('b-workshop-place');
   await hand();
   await settle();
-  await answer(false);
+  await ans(false);
   await page.waitForSelector('[data-lk-result]');
   expect(
     (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '2/4' &&
@@ -710,33 +936,20 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
   await shot('b-capsule-card');
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-capsule-step="example"]');
-  {
-    const len = await page.evaluate(() => window.__launch.cap.ex.steps.length);
-    for (let i = 1; i < len; i += 1) await page.click('[data-lk-capsule-next]');
-    expect(
-      len === 3 && (await page.locator('[data-lk-step]').count()) === len,
-      `then its worked example, revealed step by step (${len} steps)`,
-    );
-  }
+  expect((await H.revealCapsule()) === 3, 'its worked example has three steps');
   await shot('b-capsule-example');
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-capsule-step="lab"]');
   await shot('b-capsule-lab');
-  await page.click('[data-lk-capsule-lab]');
-  await page.waitForSelector('[data-lesson-lab]');
-  expect(
-    (await page.getAttribute('[data-lesson-lab]', 'data-ll-tool-on')) === 'paper',
+  await H.capsuleLab(
+    'paper',
+    'b-capsule-instrument',
     'then its instrument in the lab: the division on paper, with his own numbers',
   );
-  n += 1;
-  await page.waitForTimeout(500);
-  await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-b-capsule-instrument.png` });
-  await page.click('[data-ll-close]');
-  await page.waitForFunction(() => !document.querySelector('[data-lesson-lab]'));
   await page.click('[data-lk-capsule-next]');
   await page.waitForSelector('[data-lk-qphase="capsule"]');
   for (let i = 0; i < 2; i += 1) {
-    q = (await cur()).q;
+    q = await note();
     expect(
       q.item === B && q.level === 1 && ['write', 'place'].includes(q.gesture),
       `capsule question ${i + 1}: an easy one of the 2AM division (${q.gesture})`,
@@ -772,15 +985,379 @@ export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'a
     );
   }
   await shot('b-capsule-end');
-  await takeOff();
-  expect(true, 'take-off after the capsule: the world of the lesson starts');
+  await H.takeOff('take-off after the capsule: the world of the lesson plays');
 
   expect(seenB.has('2:sort'), 'the 2AM level-2 sort was asked in a launch (it opens level 2 since 2026-11-18)');
-  if (!zeroSeen)
+  // the card « s = b × 0 + s » is drawn at random (`families.js › anySort`: three shapes in five hold one): it is checked
+  // whenever it comes up (boxOf), and its absence in one run is not a defect
+  if (!H.S.zeroSeen)
     console.log(
-      'note  no card « s = b × 0 + s » came up in the two sorts of this run (one shape in five has none): re-run to see it',
+      'note  no card « s = b × 0 + s » came up in the sorts of this run (two shapes in five have none): re-run to see it',
     );
-  expect(errors.length === 0, `no page error (${errors.length})`);
-  await browser.close();
-  console.log(process.exitCode ? 'FAILED' : `PASSED — screenshots in ${OUT}`);
+  await H.done();
+}
+
+/**
+ * A lesson whose launch holds ONE tool. `tool`: { item, name (as the bag names it), year (« من السنة … »), home (the title of
+ * its home lesson, named under « راجع أوّلًا »), firstOk(q) (the very first question: level 1,
+ * write, a near-certain win), memo (the lines of its card), mistakeLead (a word of the workshop's lead on the trap of the
+ * sort) }; `ids`: four student ids; `alien`, `alienLabel`: words of other lessons that must never show.
+ */
+export async function walkLaunchOne({
+  id,
+  url,
+  grade,
+  outName,
+  ids,
+  alien = [],
+  alienLabel = 'another lesson',
+  tool: given,
+}) {
+  // the tool's instrument is READ from its family (families.js › labTool): null = the family has none — e.g. its instrument
+  // belongs to the lesson being launched and must not be shown before it — and then the capsule has no lab step and no
+  // « مختبري » button (LaunchKit.jsx)
+  const T = { ...given, labTool: FAMILIES[given.item]?.labTool ?? null };
+  const H = harness({ id, url, grade, outName, alien, alienLabel });
+  const { PHONE, expect, shot, px, cur, tool, same, bands, kcard, kit, fill, hand, settle, answer } = H;
+  const I = T.item;
+  const forms = new Set(); // every form of the tool the walk met
+  const ans = async (right) => {
+    const q = await answer(right);
+    forms.add(`${q.level}:${q.form}`);
+    return q;
+  };
+
+  // ══ 1. a student who knows: ONE tool in the bag, two answers, 2 / 2, no workshop, take-off ══
+  let page = await H.open(ids[0]);
+  expect(
+    (await page.evaluate(() => window.__world.getState().phase)) === 'title',
+    'the first « ابدأ » opens the launch: the world has not started',
+  );
+  expect(
+    (
+      await page
+        .locator('[data-lk-tool]')
+        .evaluateAll((els) => els.map((e) => `${e.dataset.lkTool}:${e.dataset.lkBand}:${e.dataset.lkSegments}`))
+    ).join() === `${I}:waiting:0`,
+    `the bag holds the ONE tool the learning net gives this lesson (${I}), empty`,
+  );
+  {
+    const bag = await page.textContent('[data-lk-bag]');
+    const intro = await page.textContent('[data-lk-intro]');
+    expect(
+      bag.includes(T.name) && bag.includes(T.year) && intro.includes('أداة واحدة من دروسك السابقة'),
+      `the tool is named in the student’s words (« ${T.name} », ${T.year}); the intro says ONE tool`,
+    );
+  }
+  await shot('bag');
+  await H.begin();
+  let q = (await cur()).q;
+  expect(
+    q.item === I && q.level === 1 && q.gesture === 'write' && T.firstOk(q),
+    'the first question is a very easy one, answered by WRITING',
+  );
+  expect(await page.locator('[data-lk-done]').isDisabled(), '« تمّ » waits for a complete answer');
+  console.log('    text on screen (px): prompt', await px('.lk-prompt'), '· equation', await px('.lk-equation'));
+  expect((await px('.lk-prompt')) >= (PHONE ? 15 : 19), 'the question is comfortable to read');
+  await fill(true);
+  await shot('write');
+  {
+    const said = await H.handAndHear();
+    expect(
+      said.kind === 'good' && said.signal.includes('أحسنت'),
+      `a right answer: ✓ « أحسنت! » (${said.signal.trim()})`,
+    );
+  }
+  expect((await tool(I)).seg === '1', 'a right answer lights one segment of the tool');
+  forms.add(`1:${q.form}`);
+  q = (await cur()).q;
+  expect(
+    q.item === I && q.level === 2 && q.gesture === 'sort' && q.cards.length === 3,
+    'then a harder one, by another gesture: the level-2 SORT of three cards (asked first at level 2)',
+  );
+  await shot('sort');
+  await H.sortOne(true);
+  await shot('sort-one-placed');
+  await H.sortOne(true);
+  await H.sortOne(true);
+  await shot('sort-placed');
+  expect((await H.handAndHear()).kind === 'good', 'the three cards in their boxes: ✓');
+  forms.add('2:sort');
+  await page.waitForSelector('[data-lk-result]');
+  expect(
+    (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '2/2' &&
+      same(await tool(I), { band: 'solid', seg: '2' }) &&
+      (await page.locator('[data-lk-example]').count()) === 0 &&
+      (await page.locator('[data-lk-revise]').count()) === 0,
+    'two right answers: 2 / 2, the tool « ثابتة » — no workshop, nothing to revise',
+  );
+  expect(
+    (await page.locator('[data-lk-go]').count()) === 1 &&
+      (await page.locator('[data-lk-gate]').count()) === 0 &&
+      (await page.textContent('.lk-result h3')).includes('كاملة'),
+    'the kit is complete: the take-off is open',
+  );
+  await shot('result-solid');
+  {
+    const k = await kit(ids[0]);
+    expect(
+      k.items[I].band === 'solid' && k.lessons[id].tries === 1 && k.lessons[id].last.percent === 100,
+      'the result is written in the student’s toolbox: the tool « ثابتة », 100, one try',
+    );
+  }
+  await H.takeOff('take-off: the launch closes and the world of the lesson plays');
+
+  // ══ 2. a student who slips on the sort: « تحتاج تثبيتًا », the workshop on the trap, two sorts right — repaired ══
+  page = await H.open(ids[1]);
+  await H.begin();
+  await ans(true);
+  q = (await cur()).q;
+  expect(q.item === I && q.level === 2 && q.gesture === 'sort', 'right at once: the harder one, the sort');
+  await fill(false);
+  await shot('sort-missed');
+  {
+    const said = await H.handAndHear();
+    expect(
+      said.kind === 'later' && said.signal.includes('سنعود إليه') && !said.stage.includes('خطأ'),
+      'a miss says « سنعود إليه » — never « wrong », never the right answer',
+    );
+  }
+  expect(
+    same(await tool(I), { band: 'consolidate', seg: '1' }),
+    'one right, one missed: the tool is « تحتاج تثبيتًا » — two answers, the game stops asking',
+  );
+  await page.waitForSelector(`[data-lk-example="${I}"]`);
+  {
+    const c = await cur();
+    const lead = await page.textContent('.lk-example__lead');
+    expect(
+      c.kind === 'example' && c.level === 2 && Boolean(c.mistake) && lead.includes('انتبه'),
+      `the workshop opens on the trap his sort took (« ${lead.trim()} »), at the harder level`,
+    );
+  }
+  await shot('workshop-mistake');
+  await H.revealWorkshop();
+  await shot('workshop-example');
+  await page.click('[data-lk-try]');
+  await page.waitForSelector('[data-lk-qphase="workshop"]');
+  q = (await cur()).q;
+  expect(
+    q.item === I && q.level === 2 && q.gesture === 'sort',
+    'after the worked example, two questions LIKE the one he missed: a sort again, on other numbers',
+  );
+  await shot('workshop-question');
+  await ans(true);
+  await ans(true);
+  await page.waitForSelector('[data-lk-result]');
+  expect(
+    (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '1/2' &&
+      (await bands()) === 'consolidate' &&
+      (await kcard(I)).includes('أُصلحت الآن') &&
+      (await page.locator('[data-lk-go]').count()) === 1 &&
+      (await page.locator('[data-lk-gate]').count()) === 0,
+    'repaired, the tool keeps « تحتاج تثبيتًا » (« أُصلحت الآن »): 1 / 2 — and the door is open',
+  );
+  expect(
+    (await page.getAttribute('[data-lk-revise]', 'data-lk-revise')) === I &&
+      (await page.textContent('[data-lk-revise]')).includes('راجع أوّلًا') &&
+      (await page.textContent('[data-lk-revise]')).includes(T.home),
+    `ONE lesson to revise first: the home lesson of the tool (« ${T.home} »)`,
+  );
+  await shot('result-repaired');
+  await page.click('[data-lk-memo-open]');
+  await page.waitForSelector('[data-lk-memo]');
+  expect(
+    (await page.locator('[data-lk-memo] li').count()) === T.memo,
+    `the revision card of the tool (${T.memo} lines)`,
+  );
+  await shot('memo');
+  await page.click('[data-lk-memo-close]');
+  if (T.labTool) {
+    await page.click('[data-lk-lab-open]');
+    await page.waitForSelector(`[data-lesson-lab="${id}"]`);
+    expect(
+      (await page.getAttribute('[data-lesson-lab]', 'data-ll-tool-on')) === T.labTool,
+      `« جرّب الأداة في مختبري » opens the lab ON the instrument of that tool (${T.labTool})`,
+    );
+    await H.labShot('lab');
+    await page.click('[data-ll-close]');
+    await page.waitForFunction(() => !document.querySelector('[data-lesson-lab]'));
+  } else {
+    expect(
+      (await page.locator('[data-lk-lab-open]').count()) === 0 && !(await page.textContent('[data-lk-result]')).includes('جرّب الأداة في مختبري'),
+      'a tool with NO instrument (labTool: null): no « جرّب الأداة في مختبري » button',
+    );
+  }
+  // the home lesson is `available` in the catalogue (core › getLessonPath gives its page): its button is there, not « قريبًا »
+  expect(
+    (await page.locator('[data-lk-lesson]').count()) === 1 ||
+      (PHONE && (await page.locator('[data-lk-lesson-computer]').count()) === 1),
+    '« الدرس كاملًا » leads to the home lesson of the tool',
+  );
+  {
+    const k = await kit(ids[1]);
+    expect(
+      k.items[I].band === 'consolidate' && k.items[I].repaired === true && k.lessons[id].last.percent === 50,
+      'the toolbox: the tool repaired, « تحتاج تثبيتًا », 50',
+    );
+  }
+
+  // ══ 3. a student who misses everything: 0 / 2, the gate, ONE capsule missed too — the door opens whatever he answers ══
+  page = await H.open(ids[2]);
+  await H.begin();
+  await ans(false);
+  q = (await cur()).q;
+  expect(
+    q.item === I && q.level === 1 && q.gesture === 'place',
+    'a tool is never judged on one answer: a second easy question, by another gesture — PLACING a flag',
+  );
+  await fill(false);
+  await shot('place-missed');
+  await hand();
+  await settle();
+  forms.add(`1:${q.form}`);
+  expect(same(await tool(I), { band: 'start', seg: '0' }), 'two easy misses: the tool stays dim — « نبدأ منها »');
+  await page.waitForSelector(`[data-lk-example="${I}"]`);
+  {
+    const c = await cur();
+    expect(c.kind === 'example' && c.level === 1, 'the workshop: at the easy level');
+  }
+  await H.revealWorkshop();
+  await page.click('[data-lk-try]');
+  await page.waitForSelector('[data-lk-qphase="workshop"]');
+  q = (await cur()).q;
+  expect(
+    q.item === I && q.level === 1 && q.gesture === 'place',
+    'two questions LIKE the one he missed: the flag again',
+  );
+  await ans(false);
+  await ans(false);
+  await page.waitForSelector('[data-lk-result]');
+  expect(
+    (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '0/2' &&
+      (await bands()) === 'start' &&
+      (await page.locator('[data-lk-go]').count()) === 0 &&
+      (await page.getAttribute('[data-lk-gate]', 'data-lk-gate')) === I &&
+      (await page.textContent('.lk-result h3')).includes('كبسولة'),
+    'everything missed: 0 / 2 — the take-off is replaced by ONE capsule, the one of this core tool',
+  );
+  await shot('gate');
+  await page.click('[data-lk-capsule-start]');
+  await page.waitForSelector('[data-lk-capsule-step="card"]');
+  expect(
+    (await page.locator('[data-lk-capsule-card] li').count()) === T.memo &&
+      (await page.locator('.lk-capsteps li').count()) === (T.labTool ? 4 : 3) &&
+      (await page.locator('.lk-capsteps li.is-now').count()) === 1 &&
+      (T.labTool || !(await page.textContent('.lk-capsteps')).includes('جرّب بيدك')),
+    `the capsule shows its ${T.labTool ? 'four steps' : 'three steps (no lab: the tool has no instrument)'}; first the card of the tool (${T.memo} lines)`,
+  );
+  await shot('capsule-card');
+  await page.click('[data-lk-capsule-next]');
+  await page.waitForSelector('[data-lk-capsule-step="example"]');
+  await H.revealCapsule();
+  await shot('capsule-example');
+  if (T.labTool) {
+    await page.click('[data-lk-capsule-next]');
+    await page.waitForSelector('[data-lk-capsule-step="lab"]');
+    await shot('capsule-lab');
+    await H.capsuleLab(T.labTool, 'capsule-instrument', 'then the instrument of the tool, in the lab, with his own numbers');
+  } else {
+    // LaunchKit.jsx: with no instrument, the last step of the example offers « إلى السؤالين » (L.toQuestions)
+    expect(
+      (await page.locator('[data-lk-capsule-lab]').count()) === 0 &&
+        (await page.textContent('[data-lk-capsule-next]')).includes('إلى السؤالين'),
+      'no instrument: the example leads straight to the two questions — no lab step, no « مختبري » button',
+    );
+  }
+  await page.click('[data-lk-capsule-next]');
+  await page.waitForSelector('[data-lk-qphase="capsule"]');
+  for (let i = 0; i < 2; i += 1) {
+    q = (await cur()).q;
+    expect(q.item === I && q.level === 1, `capsule question ${i + 1}: an easy one of the tool (${q.gesture})`);
+    await fill(false);
+    if (i === 0) await shot(`capsule-${q.gesture}`);
+    await hand();
+    await settle();
+  }
+  await page.waitForSelector('[data-lk-capsule-end="done"]');
+  expect(
+    (await page.locator('[data-lk-go]').count()) === 1 && (await page.locator('[data-lk-gate]').count()) === 0,
+    'both capsule answers missed — and the door is OPEN: the capsule is passed by doing it, never a second lock',
+  );
+  expect(
+    (await page.getAttribute(`[data-lk-kcard="${I}"]`, 'data-lk-band')) === 'start' &&
+      (await kcard(I)).includes('كبسولة منجزة') &&
+      (await page.textContent('[data-lk-revise]')).includes(T.home),
+    'the tool stays « نبدأ منها », flagged « كبسولة منجزة » — nothing is pretended; its lesson to revise',
+  );
+  {
+    const k = await kit(ids[2]);
+    expect(
+      k.items[I].capsule === true && k.items[I].band === 'start' && k.lessons[id].tries === 1,
+      'the toolbox remembers the capsule; it is not a new try',
+    );
+  }
+  await shot('capsule-end');
+
+  // ══ 4. a student who misses the stations and the workshop, then answers the capsule right: repaired, take-off ══
+  page = await H.open(ids[3]);
+  await H.begin();
+  await ans(false);
+  await ans(false);
+  await page.waitForSelector(`[data-lk-example="${I}"]`);
+  await H.revealWorkshop();
+  await page.click('[data-lk-try]');
+  await page.waitForSelector('[data-lk-qphase="workshop"]');
+  await ans(false);
+  await ans(false);
+  await page.waitForSelector('[data-lk-result]');
+  expect(
+    (await page.getAttribute('[data-lk-gate]', 'data-lk-gate')) === I,
+    'everything missed: the gate asks the capsule of the tool',
+  );
+  await page.click('[data-lk-capsule-start]');
+  await page.waitForSelector('[data-lk-capsule-step="card"]');
+  await page.click('[data-lk-capsule-next]');
+  await page.waitForSelector('[data-lk-capsule-step="example"]');
+  await H.revealCapsule();
+  if (T.labTool) {
+    await page.click('[data-lk-capsule-next]');
+    await page.waitForSelector('[data-lk-capsule-step="lab"]');
+  } else expect((await page.locator('[data-lk-capsule-lab]').count()) === 0, 'no instrument: no lab step in this capsule either');
+  await page.click('[data-lk-capsule-next]');
+  await page.waitForSelector('[data-lk-qphase="capsule"]');
+  for (let i = 0; i < 2; i += 1) {
+    q = (await cur()).q;
+    expect(q.item === I && q.level === 1, `capsule question ${i + 1}: an easy one of the tool (${q.gesture})`);
+    await fill(true);
+    await shot(`capsule-right-${i + 1}-${q.gesture}`);
+    expect((await H.handAndHear()).kind === 'good', `capsule question ${i + 1} answered right: ✓`);
+  }
+  await page.waitForSelector('[data-lk-capsule-end="repaired"]');
+  expect(
+    (await page.locator('[data-lk-go]').count()) === 1 &&
+      (await page.locator('[data-lk-gate]').count()) === 0 &&
+      (await page.getAttribute('[data-lk-score]', 'data-lk-score')) === '1/2' &&
+      (await page.getAttribute(`[data-lk-kcard="${I}"]`, 'data-lk-band')) === 'consolidate' &&
+      (await kcard(I)).includes('أُصلحت الآن'),
+    'both capsule answers right: the tool rises to « تحتاج تثبيتًا » (« أُصلحت الآن »), 1 / 2, the door open',
+  );
+  {
+    const k = await kit(ids[3]);
+    expect(
+      k.items[I].band === 'consolidate' &&
+        k.items[I].repaired === true &&
+        k.items[I].capsule === true &&
+        k.lessons[id].tries === 1,
+      'the toolbox: the tool repaired by its capsule, one try',
+    );
+  }
+  await shot('capsule-repaired');
+  await H.takeOff('take-off after the capsule: the world of the lesson plays');
+
+  expect(
+    forms.has('1:write') && forms.has('1:place') && forms.has('2:sort'),
+    `the launch asked the tool's three gestures: write, place, sort (${[...forms].join(' ')})`,
+  );
+  await H.done();
 }

@@ -158,6 +158,30 @@ export function plankRows(a, b, d) {
 }
 
 /**
+ * مسطرة الحصر: n planks of length b laid from 0 along a length a. What the drawing reads — never a rule: how long the n
+ * planks are, what is left of a (`left`, when they do not pass a) or how far they pass it (`over`), and the two counts that
+ * frame a ÷ b: the full planks `q` (the most that do not pass a) and the planks NEEDED `need` (the fewest that cover a — q
+ * itself when a remainder 0 makes them one). `top` is the most planks the hand may lay: one past the full ones, never more.
+ */
+export function bracketOf(a, b, n) {
+  const { q, r } = divide(a, b);
+  const top = q + 1;
+  const k = Math.max(0, Math.min(top, Math.round(Number(n) || 0)));
+  const laid = k * b;
+  return {
+    q,
+    r,
+    n: k,
+    top,
+    laid,
+    left: laid <= a ? a - laid : null,
+    over: laid > a ? laid - a : 0,
+    exact: laid === a,
+    need: r === 0 ? q : q + 1,
+  };
+}
+
+/**
  * « جرّب »: the small missions of each instrument. `seen` is the instrument's memory of what the student has already made
  * (a Set of facts written by `observe`); a quest is done when its fact is in it. Nothing here states a rule: a quest only
  * names something to MAKE; the instrument shows what happens.
@@ -202,6 +226,11 @@ export const QUESTS = {
     { id: 'end', text: 'أكمل قسمة حتى آخر خطوة.' },
     { id: 'zero', text: 'جد قسمة في حاصلها الرقم 0.' },
     { id: 'exact', text: 'أكمل قسمة باقيها 0 ومقسومها أكبر من 500.' },
+  ],
+  bracket: [
+    { id: 'over', text: 'اجعل آخر لوح وحده يتجاوز الطول.' },
+    { id: 'exact', text: 'املأ الطول تمامًا بأكثر من 10 ألواح.' },
+    { id: 'big', text: 'جد الألواح الكاملة والألواح اللازمة لطول من أربعة أرقام ولوح من رقمين.' },
   ],
   rules: [
     { id: 'three', text: 'أضِئ ثلاثة مصابيح معًا.' },
@@ -274,6 +303,15 @@ export function observe(tool, st, seen) {
       if (String(Math.floor(a / b)).includes('0')) put('zero');
       if (a % b === 0 && a > 500) put('exact');
     }
+  } else if (tool === 'bracket') {
+    // reported only once the hand has laid planks: `n` the planks laid, `lo` / `hi` whether the full count and the next one
+    // were both laid for these numbers
+    if (Number.isInteger(st.n) && b > 0) {
+      const x = bracketOf(a, b, st.n);
+      if (x.r > 0 && x.n === x.q + 1) put('over');
+      if (x.exact && x.n > 10) put('exact');
+      if (a >= 1000 && b >= 10 && b <= 99 && x.r > 0 && st.lo && st.hi) put('big');
+    }
   } else if (tool === 'rules') {
     const lit = digitRules(a).filter((x) => x.ok).length;
     if (a > 0 && lit >= 3) put('three');
@@ -289,6 +327,7 @@ export function luckyPair(tool, rand = Math.random) {
   const [al, ah] = tool.range.a;
   const [bl, bh] = tool.range.b;
   if (tool.id === 'paper') return { a: int(120, 999), b: int(6, 39) };
+  if (tool.id === 'bracket') return { a: int(150, 2999), b: int(11, 60) };
   if (tool.id === 'rules') return { a: int(10, 999) * (rand() < 0.5 ? 3 : 1), b: 1 };
   if (tool.id === 'euclid') return { a: int(12, 48), b: int(5, 30) };
   if (tool.id === 'planks') {

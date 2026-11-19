@@ -10,7 +10,7 @@ const SERVER = readFileSync(api('app/Domain/GameWorld/ClaimVerifier.php'), 'utf8
 describe('the claims of a game answer — one rule for the browser and for the server', () => {
   it('knows exactly the kinds the server knows', () => {
     const list = /const KINDS = \[([^\]]+)\]/.exec(SERVER)[1];
-    const server = [...list.matchAll(/'([a-z]+)'/g)].map((m) => m[1]);
+    const server = [...list.matchAll(/'([a-zA-Z]+)'/g)].map((m) => m[1]);
     expect([...CLAIM_KINDS].sort()).toEqual(server.sort());
   });
 

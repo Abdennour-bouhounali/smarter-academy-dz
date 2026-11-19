@@ -106,6 +106,11 @@ describe('registry — every indexed lesson loads with its own routes', () => {
     if (lessonPackFlags(id).world) {
       const modules = flattenRoutes(factory()).filter((p) => p.path && p.path !== basePath);
       for (const route of modules) expect(route.element?.props?.to, `${id} ${route.path}`).toBe(basePath);
+      // ONE knowledge source: the pack's (the world's « خريطة المعارف »). The home mounts no 🧠 map of its own.
+      const home = flattenRoutes(factory()).find((p) => p.path === basePath);
+      const frame = home.element?.props?.children;
+      expect(frame?.props?.Component, `${id} home frame`).toBeTruthy();
+      expect(frame.props.loadKnowledge, `${id}: a v2 home loads no second knowledge map`).toBeFalsy();
     }
   });
 });

@@ -209,29 +209,103 @@ three mistakes end the day. Money is written « دج », without a thousands spa
 
 ## 2quater. « الامتحان الأبيض » — the exam sitting (PROTOTYPE, 2026-11-16)
 
-**Status: a prototype of the SITTING only, to judge the feel. Not the rebuilt exercise bank, not validated.**
-Opened from a level of the exam ladder (§2quinquies; until 2026-11-16 a button of the title screen opened it directly). `ExamSitting.jsx`, logic `sitting.js`, style
+**Status: a prototype of the SITTING, to judge the feel, not validated. Since 2026-11-18 its sheets are the lesson's EXERCISE
+BANK, served as it is** (owner: « you will use the exercises bank as it is »; `kit/bankSitting.js`, findings and design:
+`docs/reports/BANK_AS_IS_2026-11-18.md`).
+Opened from a level of the exam ladder (§2quinquies; until 2026-11-16 a button of the title screen opened it directly). `ExamSitting.jsx`, logic `sitting.js` + `bankSitting.js`, style
 `examSitting.css` (prefix `xs-`). It is the opposite of the game on purpose: one sheet of paper, three colours — black for the
 subject, blue for what the student writes, RED for the corrector and never before the copy comes back — silence, no stars.
 
 | Phase | What the student has | What he does NOT have |
 |---|---|---|
-| `read` — reading time | the whole subject (three exercises, the longest in the widest column); a tap underlines a word or a number in pencil | any answer box |
-| `sit` — the sitting | the subject on one side, the answer sheet on the other (one exercise per page, never a screen back); answers typed in their own shape; a flag « أعود إليه »; a quiet pace line; one notice at the last minute; « أسلّم ورقتي » asks once; **« خروج »** in the header (reading time and sitting; owner, 2026-11-17) leaves after ONE confirmation (« تخرج من الامتحان؟ » — « أواصل » / « نعم، أخرج »): nothing is marked, no evidence is sent, the ladder does not move, and the same level opens again on a new sheet (`Game.js › quitSitting`); **a forgotten exercise is shown first** (owner, 2026-11-16): if an exercise that is not on screen has NO box filled at all, the first « أسلّم ورقتي » turns the answer sheet to it and names it (« انتبه: لم تكتب شيئًا في التمرين الثاني. ها هو أمامك. » + « أواصل ») — once per sitting; the next « أسلّم ورقتي » is accepted, exercises empty or not (`sitting.js › forgotten`, `touched`). It says only « empty », never right or wrong; the time-out hand-in is not delayed by it | any verdict: no tick, no mark, no red, no hint, no sound |
-| `back` — the copy handed back | the total in a red circle and an appreciation; a red mark per question (✓ ½ ✗, « لم تُجب »); for a question: the scheme to tick against his own paper, then « أرشدني » (the rule, back to the paper — never the answer) or « اشرح لي » (the model copy, in red); « دفتر أخطائي »: one line to write by hand per rule that lost points | — |
+| `read` — reading time | the whole subject (the bank's sheets, each with its statement, formulas, table and numbered steps « 2) ب) »); a tap underlines a word or a number in pencil | any answer box |
+| `sit` — the sitting | the subject on one side, the answer sheet on the other (one sheet per page, never a screen back; every page stays mounted, hidden when not on screen, so a box keeps what he typed); each step answered in the practice space's OWN widget for its `answerType` — `choice` → `ChoiceInput`, `rational` → `TemplateInput` (« قوالب الإجابة », `templateFor`), `integerSet` → `IntegerSetInput`; a `selfCheck` step (« بيّن أن ») has no box: « تُحرَّر على ورقتك فقط »; a flag « أعود إليه »; a quiet pace line; one notice at the last minute; « أسلّم ورقتي » asks once; **« خروج »** in the header (reading time and sitting; owner, 2026-11-17) leaves after ONE confirmation (« تخرج من الامتحان؟ » — « أواصل » / « نعم، أخرج »): nothing is marked, no evidence is sent, the ladder does not move, and the same level opens again on a new sheet (`Game.js › quitSitting`); **a forgotten exercise is shown first** (owner, 2026-11-16): if an exercise that is not on screen has NO box filled at all, the first « أسلّم ورقتي » turns the answer sheet to it and names it (« انتبه: لم تكتب شيئًا في التمرين الثاني. ها هو أمامك. » + « أواصل ») — once per sitting; the next « أسلّم ورقتي » is accepted, exercises empty or not (`sitting.js › forgotten`, `answered`). It says only « empty », never right or wrong; the time-out hand-in is not delayed by it | any verdict: no tick, no mark, no red, no hint, no sound |
+| `back` — the copy handed back | the total in a red circle and an appreciation; a red mark per question (✓ ½ ✗, « لم تُجب », ✎ for a step written on paper); for a question: the scheme to tick against his own paper, then « أرشدني » (the bank's HINTS — never the answer — and back to the paper) or « اشرح لي » (the bank's model solution, its lines and its boxed result); « دفتر أخطائي »: one line to write by hand per rule that lost points | — |
 
-- **The subject is generated** (`makeSubject(rand, level, weak)`; level 4 is the 10-point, 12-minute sheet): a Euclidean division
-  and its verdict, an equality to read both ways and the right phrasing, then a situation (two crate sizes, the count, the
-  invoice). No two sittings are alike. The reading sheet has as many columns as the level has exercises.
-- **Marked by a scheme** (`mark`): half the points of a division for the quotient, half for the remainder; a blank earns 0 and is
-  shown as a blank, not as a mistake. `model` writes the model copy; `scheme` what the corrector looks for on the paper.
-- **الكفاءات**: at the hand-in — and only then — every answered question the server can re-compute is sent as evidence
-  (`evidenceOf`, context `case`): a first and only try, unassisted. Never a blank, never the invoice.
-- Check: `node apps/web/e2e/gameworld-sitting.mjs [outDir]` (also with `E2E_SIZE=1024x768` and `1840x900`): 45 checks (the
-  ladder, a sitting, the moment between two levels, « تقدّمي »), and at every screenshot nothing scrolls, nothing is cut,
-  nothing is scaled below ×0.8. Unit: `sitting.test.js`, `journey.test.js`.
-- Not built yet (the rest of the proposal): real BEM subjects, a full BEM-length exam, spaced returns, the resume of an
-  interrupted sitting, the photo of the paper, the parent's line.
+- **The subject is the lesson's BANK, as it is** (`kit/bankSitting.js › createBankSittings({ lesson })`; a lesson's
+  `world/sitting.js` is that one call): level N of the ladder serves `sheets` exam sheets drawn from
+  `content/practice/<grade>/<lesson>/level-N/` (`BANK_LEVELS`: 1, 2, 2, 2, 1 sheets — level 5 is the bank's « الوضعيّة
+  الإدماجيّة (08 ن) »), loaded when the exam space or a sitting opens through the practice space's own loader
+  (`features/practice/practiceContent.js`, lazily: it never enters a world's chunk). Nothing is generated, copied or rewritten:
+  statement, formulas, table, steps, answer types, points (`metadata.exam.points`), minutes (`metadata.estimatedMinutes`),
+  hints and model solution are the bank's. Two things happen AT DISPLAY only: « DA » of MONEY is written « دج » (`cashDj`), and
+  nothing of `metadata.source` (textbook pages) is shown. `cashDj` (2026-11-19) touches money only: in a formula `\text{ DA}`
+  or DA glued to a number (`1040DA`, `11225\,DA`) — leaving the formula when it ends it (`$1040$ دج`), `\text{ دج}` inside;
+  in the words DA after a number (« 900DA », « 900 DA »), right after a formula ending on a number (`$1500$DA`), « (DA) »,
+  « بالـ DA », « بالدينار DA » — never when a Latin letter follows, never a name (`$AB + DA = 7$` stays). The amount before a
+  DA in the words loses its thousands spaces (« 211 500DA » → « 211500 دج »: groups of exactly three digits only). It runs
+  on every string the sitting shows — statement, formulas, table, steps, the model copy and its boxed `result`, the hints,
+  the choice written back — and on what the practice WIDGETS draw: each step carries `shown` (its `statement`, `lead`,
+  `answerFormat` and choices through `cashDj`), given to `ChoiceInput` / `TemplateInput` / `IntegerSetInput`, while the mark
+  and the copy sent to the server read the bank's own step (`bank`). `kit/bankDisplay.test.js` draws EVERY sheet of every
+  level of the twelve v2 banks (the DEV hook below) and finds no « DA » left on screen. A sheet with a step of a type the sitting does not draw (`multiChoice`,
+  `affine`, `interval`, `point`: `SITTING_TYPES`) is left out of the sittings and stays in « /espace/pratique » — none in the six
+  v2 banks of 2026-11-18.
+- **An empty level is never sat** (2026-11-19): `makeSubject` returns `null` when the level has nothing to mark — no sheet
+  in its pool (an empty bank level, a lesson missing from the exercise index), or only sheets written on paper (total 0).
+  The sitting then says « لا يوجد بعدُ موضوع لهذه الدرجة. » with a way out (`data-xs="empty"`): nothing is marked, sent or
+  promoted. And a subject whose total is 0 is never passed (`sitting.js › sittingPassed`: no star, no appreciation, no
+  promotion in `journey.applySitting`). `sittings.available(n)` says whether a level can be sat: once the bank is loaded,
+  the ladder (`Spaces.jsx`) shows such a rung locked, with its reason « لا توجد بعدُ ورقة امتحان لهذه الدرجة »
+  (`data-di-exam-empty`), and it cannot be opened; the « empty » screen stays as the fallback.
+- **Every copy is evidence, whatever happens** (owner, 2026-11-19: « we do not care if the student leave or not, we must
+  count evidence whatever happen »): a sheet sat again — after a blank copy, after reading its model solution — is drawn and
+  sent like the first time (the draw only leaves out the sheets of the last miss while the level has others, as before);
+  opening a sitting and quitting costs nothing (nothing is recorded, marked or sent). `kit/sittingSat.test.js` checks both.
+- **The clock hands in once**: the countdown updater is pure (`sitting.js › tick`), and the time-out hand-in is an effect on
+  `left === 0` (`timeUp`) behind a once-only guard — a StrictMode double call cannot send two copies.
+- **Marked by the practice evaluator** (`mark` = `@smarter-academy/core/practice › evaluateAnswer`): a sheet's points are
+  shared between its typed steps in quarter points (`shareQuarters`); correct or equivalent → the step's points, partially
+  correct (e.g. a strict subset of a set) → half, anything else → 0; a blank earns 0 and is shown as a blank; a `selfCheck` step
+  carries no points here (written on paper, its model copy comes back with the copy).
+- **الكفاءات** (`sheetOf`, `kit/bankEvidence.js`): at the hand-in — and only then — the copy goes to the PRACTICE ENGINE, the
+  path of the exam sheets of « /espace/pratique »: one session at the level (`POST /lessons/{code}/practice/sessions`), one
+  question attempt per ANSWERED step (`…/questions`, `…/answers` with the raw answer; the browser's outcome travels only as a
+  prediction), the exercises completed, the session closed. The SERVER reads each question in the content and re-computes the
+  verdict with its own evaluator; a `selfCheck` or `counted: false` step is judged but never evidence. A step left BLANK is
+  not sent: the server would read a missing answer as `abandoned`, which is INERT (recorded, but it moves no mastery and is
+  out of every rate — `Outcome.php`), so sending it would cost nothing either. What follows is a fact of the MASTERY ENGINE, not a rule of the
+  sitting: it classifies a question answered again in a later session by its `item_key` — after a failure
+  `retry_after_failure` (weight ×0.6), after a success `repeat_after_success` (×0.1); an `abandoned` row is not a try, so a
+  question left blank then answered later arrives as a `first`. Ids are chosen once, so a retry is a duplicate; a copy that
+  could not be sent waits (per student, 30 days) and goes when the world opens or the connection returns — one flush at a
+  time, and a copy queued while a flush waits on the network stays queued (the flush re-reads the queue before writing it).
+  A copy or a step the server REFUSES (4xx) is dropped with a trace: a warning in development and a counter
+  (`refusedSittings()`, storage key `smarter_world_sitting_refused`) that no screen reads. No game claim is sent by a sitting. A teacher's preview sends nothing. Each answered step with a key
+  also adds to the key's tally of « تقدّمي » (`Game.handInSitting`, `tallyOf`).
+- **The ladder** shows a level's minutes and points once its bank is loaded (`levelMinutes`, `levelPoints`: a range when
+  the sheets of a level differ, e.g. « 2–2,5 نقاط »).
+- Check: the sitting walk of each v2 lesson — `gameworld-sitting.mjs` (the pilot) and `gameworld-<lesson>-sitting.mjs`
+  (`qawasim`, `khawass`, `baqi`, `qawaid`, `hasr`), all built on `e2e/lib/sittingWalk.mjs` (2026-11-19), at 1366×768,
+  `E2E_SIZE=1024x768` and `1840x900`. Three parts, each in its own session: `levelFive` (one sitting of level 5 answered
+  right with the bank's key on disk, the hand-in, the model copy, the promotion, « تقدّمي » before and after a reload),
+  `copies` (a blank copy, a wrong copy with « أرشدني » / « اشرح لي », a copy quit half-way, a right copy) and `everySheet`
+  (EVERY sheet of EVERY level opened through the ladder with the DEV hook below, its text checked against the disk, its
+  answer boxes in their shape, each screen through the walk's `shot`: nothing scrolls or is cut, 12 px, no raw formula,
+  no « DA »). `E2E_PARTS=five|copies|sheets` (comma list) runs only some parts and prints « NOT a full run ». The answer
+  key and the points are always read from the bank on disk (`e2e/lib/bankSheet.mjs › fromDisk`), never from the page.
+  **Written on 2026-11-19 and NOT yet run** at the time of writing. Unit: the kit's `kit.test.js` (a toy bank: money-only `cashDj`, the empty level, the DEV hook
+  in and out of production, the clock), `examSitting.render.test.jsx` (the empty screen), `sittingSat.test.js` (every copy
+  is evidence),
+  `bankEvidence.test.js` (sent, queued, refused, the flush race) and `bankDisplay.test.js` (every sheet of the twelve v2
+  banks, no « DA » of money on screen); per lesson `world/sitting.test.js` against its REAL bank (every level, every step
+  markable to full points by the bank's key, no « DA » of money in any shown string); `journey.test.js`. Status script: S4bis.
+- **A walk chooses its sheet (DEV only)**: when `import.meta.env.DEV` and `localStorage['di.dev.sheet']` holds the id of a
+  bank exercise of the level being opened, `makeSubject` puts that sheet first (`DEV_SHEET_KEY`); `sittings.sheetIds(n)`
+  lists a level's sittable sheets so a walk can loop over all of them. A production build reads nothing (the branch is
+  dropped; `kit.test.js` checks it with `DEV` stubbed false). See §5.
+- **12 px on the screen, however far a sheet is zoomed** (2026-11-19, after the first walks measured choice labels at
+  10.5 px and the sheet's tip at 8.5 px at 1366×768 and 1024×768): every `Fit` of the sitting is given `floor={12}`
+  (`Fit.jsx › floor`): the box sets `--di-min-font` on its content to 12 px divided by its own zoom × the zoom of the frames
+  above it (`.xs-fit`, zoomed to the window), and every size of `examSitting.css` is written `max(var(--di-min-font, 12px),
+  <its size>)` — the practice widgets too (`.xs-field` and its Tailwind `text-xs … text-2xl`). Floored text no longer shrinks
+  with the box: only the paddings, the gaps and the widgets do; if that is not enough the box reaches its `min` (0.5) and is
+  cut, which the walks report. To keep the sheet's zoom high, a `choice` step lays its choices side by side at the width of
+  their words (`.xs-field[data-xs-type='choice'] .grid`: « نعم / لا » on one line, seven weekdays on two) instead of
+  ChoiceInput's two columns of 48 px rows. `Fit` now also shrinks a box that is too tall by more than ONE pixel (its 0.5 %
+  dead band alone let a 685 px sheet stand cut in a 682 px box at 1840×900) — this applies to every `Fit` of the kit.
+- Not built yet (the rest of the proposal): a full BEM-length exam, spaced returns, the resume of an interrupted sitting, the
+  photo of the paper, the student's own self-mark of a `selfCheck` step inside the sitting, the parent's line.
 
 ## 2quinquies. Two practice spaces, the exam ladder, « تقدّمي » and « مختبري » (2026-11-16, NOT validated)
 
@@ -241,21 +315,24 @@ felt BETWEEN two levels of the exam, never inside a sitting.
 - **« فضاء اللعب » / « فضاء الامتحان »** — a switch at the top of the practice hub (`KnowledgeMap`, `data-di-space`). The game
   space is the 16 levels of §2bis. The exam space opens once the student has PLAYED: the four keys and the first run of each
   (`journey.js › examOpen`). The title screen no longer opens a sitting directly.
-- **The ladder** (`Spaces.jsx › ExamLadder`, `sitting.js › LEVELS`): five rising steps.
+- **The ladder** (`Spaces.jsx › ExamLadder`, `bankSitting.js › BANK_LEVELS`): five rising steps — the five levels of the
+  lesson's bank, with the names the practice space gives them.
 
-  | Level | Sheet | Minutes | Points |
-  |---|---|---|---|
-  | 1 « القسمة والقاسم » | one division, small numbers | 5 | 3 |
-  | 2 « القاسم والجداء » | a division, a product | 8 | 6 |
-  | 3 « أوّل وضعيّة » | a product, a first situation | 10 | 7 |
-  | 4 « امتحان قصير » | division, product, situation | 12 | 10 |
-  | 5 « على منوال الامتحان » | exam-size division, a situation, the lorries (the remainder means one more lorry) | 15 | 12 |
+  | Level | Sheets drawn from the bank's level | Minutes, points |
+  |---|---|---|
+  | 1 « أستعيد الأساسيات » | 1 | the sheet's own (`estimatedMinutes`, `exam.points`) |
+  | 2 « أوظّف » | 2 | their sum |
+  | 3 « أتدرّب » | 2 | their sum |
+  | 4 « أتعمّق » | 2 | their sum |
+  | 5 « الوضعيّة الإدماجيّة » | 1 (08 ن) | the sheet's own |
 
   A level is passed at **80 %** of its points (`PASS`); stars: 1 from 80 %, 2 from 90 %, 3 for a full paper. A passed level
-  opens the next. Every sheet is generated: a level played again is never the same sheet.
-- **Adapted to the student** (`applySitting`, `weakKinds`): after a sheet under 80 %, the kinds of exercise where points were
-  lost are remembered for that level; the next sheet of the level is SIMILAR with other numbers and puts those kinds FIRST
-  (`focus`). After two fails in a row the student is sent to train on the rule first (« أتدرّب أوّلًا » opens the card).
+  opens the next. Each sitting draws its sheets at random from the bank's level (ten sheets each).
+- **Adapted to the student** (`applySitting`, `weakKinds`): after a sheet under 80 %, what lost points is remembered for that
+  level — the rule KEYS of the lost steps (a step's الكفاءة → the key, `keysOfPoints`) and the sheets themselves (`ex:<id>`);
+  the next sheet of the level leaves out the sheets already missed while the level has others, and puts the sheets that ask
+  the missed keys FIRST (`focus`). After two fails in a row the student is sent to train on the rule first (« أتدرّب أوّلًا »
+  opens the card of the first missed key: `cards.ofExercise[w] ?? cards.ofKey[w]`).
 - **The moment between two levels** (`Spaces.jsx › Promotion`, `Game.js › finishSitting`): when the copy is closed the game
   comes back — the finale sound, the stars one by one, confetti, « ارتقيتَ إلى الدرجة n! » — or, under 80 %, a calm card:
   « ليس بعد… ورقة أخرى وتنجح ». Nothing of this exists inside the sitting.
@@ -394,9 +471,53 @@ and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, fr
   board is under 12 px ON THE SCREEN (computed size × every CSS zoom). A small label is written
   `max(var(--di-min-font, 12px), <its size>)`; a frame that zooms itself below 1 sets `--di-min-font` to 12 px in its
   own units (the forge: `RuleForge › rf-fit`, 15 px at the 0.8 of 1024×768); a `<small>` with no size of its own is
-  floored by `:where(.di-root) small` / `:where(.cs-root) small`. Exempt: the labels of the knowledge map (`.di-kmap`,
-  placed in % and scaled with its panel) and what `Fit` shrinks to make a too-tall card fit. The walks check it with
-  `fontFloor: true` (`e2e/lib/walk.mjs`).
+  floored by `:where(.di-root) small` / `:where(.cs-root) small`. The knowledge map is NOT exempt (2026-11-19 — its labels
+  were drawn at 10–11.5 px below 1101 px and under « تدرّب »): `KnowledgePage` sets `--di-page-floor` (12 px ÷ the page's
+  zoom) on its zoomed box, the map divides it again by its own ×0.84 while « تدرّب » is open, and every text of the map
+  (edge labels, a card's kind and title, the legend, the stars) is floored in `kit/styles/knowledge.css`; below 1101 px a
+  card gives back the room with a smaller icon and padding. A `Fit` given a `floor` keeps 12 px while it shrinks: the exam sitting
+  (§2quater) and, since 2026-11-19, every pop-up card of the world (`parts › Card` — a tablet with the student's own rule
+  above a long list was shrunk to ×0.87 and its labels drawn at 11.4 px, lesson `qisma-iqlidiya-hasr`). The walks check it
+  at every screenshot (`e2e/lib/walk.mjs`): `fontFloor` is ON by default since 2026-11-19 (it was opt-in, at 11.5 px), the
+  threshold is 12 px less only the rounding a zoom leaves (`FLOOR_PX = 11.95`), the knowledge map is no longer exempt, and a
+  walk that switches it off (`fontFloor: false`) must say why in a comment; walks with their own `shot` call `tinyText(page)`.
+- **The panel fits under the mirror** (2026-11-19: the « اختبر قاعدتي » button ran below the window at 720 units of height —
+  1366×768, 1840×900 — in builds with three slots or with long two-line tiles plus the robot's experiment). The mirror row
+  is `minmax(min-content, 15.5rem)`: it gives way, down to what it holds, when the panel needs the room (never cut,
+  never pushing the panel out). Three slots are laid side by side (`.rf-tiles[data-rf-slots='3']`, like four and five);
+  a tile wraps on a compact line (1.45) and the build panel keeps tighter gaps; while he builds, `RuleForge` passes
+  `tight` to the world's `Mirror` (`parts.Mirror({ c, stage, fast, tight })`) — the bridge world then leaves out the empty
+  band above a built bridge (same scale, less height: `divisorIsles/forgeParts.jsx`, `.rf-bridge.is-tight`).
+- **A fact under a verdict** (`.rf-fb > span`, the child only): a formula inside it keeps KaTeX's inline boxes (a block on
+  every span had broken « 72 = 3 × 24 » into a column of atoms).
+- **A typed remainder box holds the slip it exists to catch**: `slot('r', …, w)` takes as many digits as the remainder
+  written one plank too few (`r + b`) — a box of 2 digits read « 126 » as « 12 » and answered « the sum is wrong » instead
+  of « too big » (`qisma-iqlidiya-baqi`, 2750 ÷ 64). Tested in that lesson's `forges.test.js`.
+- **The evidence fits its column** (2026-11-19: at 1840×900, in the last step and the sealed step of the forges whose cases
+  are SENTENCES — lessons `qisma-iqlidiya-baqi`, `qisma-iqlidiya-hasr` — eight long sentences ran below the window). The log
+  never scrolls and is never cut: (1) a sentence row holds two lines at most (`.rf-line--sentence > span`, line clamp; its
+  verdict stays beside it; the whole sentence is the row's `title`); (2) the list takes only the room its column has left
+  (`.rf-log ul { flex: 1 1 0; overflow: hidden }`) and `RuleForge` measures it before paint: while it is taller than that
+  room, the OLDEST row leaves, until the rest fit (per layout: phase, number of rows, window size, zoom — a new layout starts
+  from all rows again). The row that matters always stays: the newest — or, while the mirror marks the rows, the row it is
+  marking or the one that refuted his rule. Only fewer rows are shown, never another student's or invented evidence; the
+  rows that left are still in the forge's evidence (the test runs on all of them). A phone held sideways is unchanged (its
+  list slides inside itself).
+- **A forge whose experiment WRITES the rule (`inquiry.writes`) holds no false tile** (2026-11-19, `khawass-qawasim`):
+  `RuleForge` skips the tiles there (`phases` = « استكشف → المرآة تختبرها → اختم ») and the world's screen hands over only
+  an ACCEPTED claim or a complete proof, so a false tile, a help on tiles or a test of a false rule on his rows could never
+  be shown. Such a forge keeps ONE option per slot (the rule — its sentence for the tablet), the two attacks, the seal and
+  the last step; its false rules are refuted where he writes them (the `peel` table refuses a claim that takes in an
+  intruder, a false `letters` card is answered by numbers), and the lesson's `inquiries.test.js` enumerates them.
+- **After an experiment no prediction is asked**: the experiment held them. `RuleForge` still calls `forge.predictCases`
+  for every forge (`kit/RuleForge.jsx`, at mount), so a forge that opens on an experiment returns `[]`
+  (`khawass-qawasim › noPredictions`, its four forges) and leaves the words of that step (`text.ask`, `fact`, `next`)
+  unwritten. (Other v2 lessons still return cases there; on a forge that opens on an experiment the kit has no
+  « تنبّأ » phase, so they are computed and never shown.)
+- **Known limit of the kit — the last step (`use`) asks ONE verdict**: besides the typed boxes of `use.lines`, `use.verdict`
+  is a single yes / no (`data-rf-use-verdict`, `RuleForge.jsx`), and `check(case, values, verdict)` receives one boolean. A
+  last step that needs two separate judgements (or a choice among more than two) cannot be written yet: the lesson
+  folds it into boxes, or the kit must grow first.
 - NOT done: the class board (`LessonBoard`) forges only the first rule with the class; the three others are still asked
   and proved there. How a rule was found is kept in the browser only.
 
@@ -430,20 +551,53 @@ made for it.** The forge then opens on that experiment:
 **Every key of `qawasim-adad-tabii` opens on an experiment — four keys, four kinds** (owner, the same day: « not only
 this one … all the steps of rule discovery »); a test of the lesson fails if two of its keys share a kind.
 
-The eight kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` — strip and chart —, `InquiryMoves.jsx`
-— wall and saw —, `InquiryCombine.jsx` — join and stack — and `InquiryProof.jsx` — peel and letters; styles
-`inquiry.css`; the four last ones were added on 2026-11-18 for `khawass-qawasim`):
+The sixteen kinds of `divisorIsles/` (logic `inquiry.js`; screens `Inquiry.jsx` — strip and chart —, `InquiryMoves.jsx`
+— wall and saw —, `InquiryCombine.jsx` — join and stack —, `InquiryProof.jsx` — peel and letters —,
+`InquiryDivision.jsx` — groups, rebuild, estimate, bracket —, `InquiryGcd.jsx` — common, ladder, nest — and
+`InquiryCycle.jsx` — cycle, with its own logic `cycle.js` and styles `inquiryCycle.css`, added on 2026-11-19 for the
+second key of `qisma-iqlidiya-baqi`; what every screen shares — the walks' dev hooks `FAST` / `expose`, the scene's frame
+`X0` / `SPAN`, the timers `useLater`, the « yes / no » of a prediction — is ONE copy in `inquiryParts.jsx` (2026-11-19);
+styles `inquiry.css`; join … letters were added on 2026-11-18 for `khawass-qawasim`, groups … bracket the same day for the
+Euclidean division of 1AM `qisma-iqlidiya-baqi` and 2AM `qisma-iqlidiya-hasr`, common … nest the same day for the
+greatest common divisor of 4AM unit 1 (PGCD, Euclid's algorithms, coprime numbers, reducing fractions). 1AM
+`qawaid-qabiliyat-qisma` (2026-11-19) plays keys 1 and 2 on `chart` — key 1 with the link `equals` (planks 5 then 2),
+key 2 with `divides` (planks 9 then 3) — and key 3 on `join`, mode `sum`: plank 4 on a gap of whole hundreds GLUED to a
+short gap (100 + 28, 100 + 26, 300 + 28, 200 + 26, 200 + 12, 300 + 22; hundreds stop at 300, the scale of the `join`
+drawing); its `inquiries.test.js` fails if two keys share a (kind, mode) — see the note under the `chart` row):
 
 | Kind | The rule it finds | What the student does |
 |---|---|---|
 | `turn` | a bridge that holds gives a second one (a = d × e, read both ways) | lifts the planks of HIS first bridge one by one into a WALL (one row per plank), then takes the wall down column by column: the same cells are the second bridge. Then he says what the columns will give BEFORE the wall is turned: a bridge that held, a bridge that fell (its wall is ragged — unequal columns, no plank), a square wall (the plank itself), and a bridge that is not drawn. Then he writes his rule with the tiles. |
 | `cut` | the plank fills the gap when the count of planks is a natural number | on the gap no mould filled, his hand SLIDES the length of the plank: the planks are laid again at once, with the piece that would have to be sawn, and the count written as the quotient; the lengths he tried make a table. He says how many lengths need no cut (answered with the ones HE found). Then he judges planks from the quotient ALONE, before the saw lays them. Then he writes his rule with the tiles. |
 | `pairs` | where the search for all the planks of a gap stops | tries the planks of ONE gap in order; a plank and its partner (gap ÷ plank, whole or not) walk toward each other on a strip and CROSS; past the crossing every partner is a plank already tried. First gap: after the crossing, « can a new plank still appear? » — on « maybe » the world tries every plank up to the gap in front of him. Next gaps: he says the last plank BEFORE trying; the squares join the table from the second gap; on the last gap only the planks and their squares are shown before any trial. Then he writes his rule with the tiles. |
-| `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and what he claims of it (its values, or the number it is divisible by): the chart shows the cells that are not green his claim takes in and counts the green cells it leaves out; a claim that holds is tried on the next hundred. Plank 4, which no single digit and no sum separates, is offered a fourth lens: the number the tens and the units write (`last2`) — on the first chart it is the gap itself, and the next hundred is where it is tried. |
+| `chart` | what to read in a number instead of dividing | tests ONE plank on the gaps of a chart (a row per tens digit, a column per units digit), one after the other, then lets the world finish; chooses a LENS (units digit, tens digit, sum of the digits) and what he claims of it (its values, or the number it is divisible by): the chart shows the cells that are not green his claim takes in and counts the green cells it leaves out; a claim that holds is tried on the next hundred — he tests its first gaps HIMSELF, one after the other with their divisions written (`spec.nextManual`, default 3; the lead is `text.confirmTest(b, from, n)`, or the world's own sentence when the lesson gives none), his claim outlined on every gap tested, then the world finishes the hundred (`text.confirming`) — the hundred is never only watched. Plank 4, which no single digit and no sum separates, is offered a fourth lens: the number the tens and the units write (`last2`) — on the first chart it is the gap itself, and the next hundred is where it is tried. Today only `qawasim-adad-tabii` (4AM) offers that lens; `qawaid-qabiliyat-qisma` (1AM) finds plank 4's reading on `join` instead (note below the table). |
 | `join` | a common divisor of a and b divides a + b and a − b | sees two bridges with plank d (filled, or a piece left: a FACT, with `a = d × q + r` written under each); says BEFORE whether d will still fill the gap made by GLUING them (`sum`) or by cutting the shorter off the longer (`diff`); the world slides the second strip after the first (or over its end, and the cut part falls), lays the planks again and writes `a ± b = v` and `v = d × q + r`. A round where neither gap is filled and the glued one holds anyway (22 + 20 with 7) is shown, never hidden. What he found stays in a list. |
 | `stack` | a divisor of a number divides every multiple of it | sees the gap `base` with plank d; for each k says BEFORE whether d fills k copies glued end to end; the copies travel from the gap into a row (2 and 3 drawn, up to 12 packed, more only as a number line with « k × base »), the planks are laid and the calculation written (`k × base = total`, `total = d × q + r`, and `k × (base ÷ d)` planks when d fills the gap). An optional second round has a gap the plank does NOT fill where some copies are filled anyway (14 on 21: two copies) — a fact, never a verdict. |
 | `peel` | a common divisor of a and b divides the remainder of a ÷ b | presses once: the world lays planks of b on the gap a again and again (`a − b = …` written at each step, a sound per plank) down to the piece r < b, and writes `a = b × q + r`. For each plank of the round the table says whether it fills a and whether it fills b (with both divisions written); he says whether it fills the PIECE before the world lays it there. The table of every round stays. Then he BUILDS his claim from the table's columns — « if the plank [fills a] [and / or] [fills b], it fills the piece »: the table outlines the rows his claim takes in, in orange those whose plank does not fill the piece; the claim that takes in no such row (and at least one row) is his rule (`writes: true`). |
 | `letters` | how to prove an « if … then … » for every number (a procedure) | checks the statement on numbers he is given (`a + b = d × □`, he presses □); the world changes the numbers and puts his last line against them (it does not carry over), then hides a number (nothing to compute). Then he assembles the proof from CARDS into numbered slots: a false card is answered by a sample where its numbers do not match (« with d = 3, a = 12, b = 6 this line gives 24, but a + b is 18 »), a card placed too early by what it uses that no line above has written (« this line needs k′ »). The proof he built is the rule (`writes: true`). |
+| `groups` | lay as many full planks as fit; the quotient counts them; stop when what is left is shorter than a plank (a SEARCH) | lays planks of b on a gap of a ONE AT A TIME and says BEFORE each one « will one more plank fit? » (yes / no); the world lays it (`plank` sound, `a − b × k = left` written, the cells left labelled on the strip) or shows it hanging past the dashed end of the gap (`hit`, `b > left` written). A round may have b > a (no plank fits), an exact fit (the plank that does not fit hangs over 0 cells), or a big gap (a ≥ 10 b: after `manual` predictions « أكمل » lets the world lay the rest quickly, `sweep` per plank). Then he types how many planks and how many cells are left (two boxes); a miss is answered by a fact and the planks get their numbers; his answers stay in the list. |
+| `rebuild` | a = b × q + r — the gap is rebuilt from its planks and its piece (a PATTERN read backwards) | sees q planks of b and a piece of r cells lying on a gap hidden under a CLOTH; types the gap's length in its template « b × q + r = □ » (a round may be `bare`: the box alone); the cloth is lifted (`sweep`), the gap and `b × q + r = a` are shown. A round with r ≥ b: after the lift the world lays the planks that fit in the piece (`plank` each, drawn green) and writes `a = b × q′ + r′` — a fact: that piece was not left over. |
+| `estimate` | the technique for a big gap and a long plank: estimate the tens of planks, then the units (hundreds first when there are that many) (a PROCEDURE) | the whole gap is a bar; under it a RULER of the current step from 0 to 10 marks of b × 10^place (×10, ×20 … ×90, then ×1 … ×9), with what is left as a gold flag; he presses the biggest mark that does not pass the flag (chips 0 … 9 × 10^place). A mark past the flag, or one with room for the next mark, is answered by the fact (`fail`); the right one lays that block of planks (`sweep`, `plank`) and writes `from − b × count = left`. The steps are the kit's long division (`kit/longDivision.js`), so a 0 in the quotient is a step too. At the end `a = b × q + r` (`gate`). **Blind** (`blind: true` on the spec or on one round — 2026-11-19, for a three-digit plank whose multiples he does not know): the marks show their count only (« ×10 » … « ×1 » …), never the product, and the gold flag stands APART at the ruler's right end (placed on the ruler it would show which mark passes it); he presses a mark, THEN the world writes `b × count = value` against what is left (`value > left` — past the flag; `value + unit = next ≤ left` — room for one more), and every product he revealed stays under its mark until the step is laid (`data-iq-shown`). Every mark he pressed, refused ones included, is in the result's `guesses`. Without `blind` the ruler prints every product, as before. **Used by** 1AM `qisma-iqlidiya-baqi` (two-digit planks, sighted) and 2AM `qisma-iqlidiya-hasr` key 1 (`ESTIMATE_INQUIRY`: `blind: true`, THREE-digit planks 208, 248, 365 on the gap 4576 he has just crossed, then 2241 ÷ 365 and 22152 ÷ 208; the first round — the plank that filled his gap — is sighted, `blind: false`). The mirror of that forge draws what is left cell by cell up to `DRAW_MAX = 2600` cells (`world/forges.js`): its speed with that many cells has NOT been measured. |
+| `bracket` | a ÷ b lies between two consecutive natural numbers — the planks that are full and the planks that are needed; it IS a natural number exactly when nothing is left (a BRACKETING) | a number line of the multiples of b (eight steps around the flag, « … » and 0 at the left when the window does not start at 0; the mark below the flag stands 1 to 5 steps from the window's start, from (a + b) mod 5, so the flag's place changes with the round) with the gap a as a gold flag; he types the two numbers in the template « b × □ ≤ a < b × □ »; a miss is answered by the two products he made; the right pair lights the two marks (`b×lo`, `b×hi`) and the step between them, then he says whether the flag stands BETWEEN two marks or ON one; the world writes `a ÷ b` (`quotientTex`, computed on integers: a natural number, an exact decimal written exactly — 23 ÷ 5 = 4,6 —, or two places and « … » when it goes on) and `a = b × q + r`. Rounds include flags ON a mark (a multiple of b): the template still accepts exactly one pair (the mark the flag stands on, and the next), and once he has answered, that mark takes the flag's gold (`data-iq-onmark`) beside `a = b × q + 0`. |
+| `common` | the planks that hold BOTH gaps; the longest of them (the greatest common divisor) (a SEARCH over two gaps) | two strips, gap a above gap b; he TAKES each candidate plank from the tray and says BEFORE, twice, whether it holds a and whether it holds b (yes / no each, then « ضع »); the world lays it on both strips (`plank`), writes both divisions (`a = d × q + r`, rest green when 0) and the plank goes to its shelf: « a only », « b only », « both » (a fourth shelf « neither » appears only when a candidate holds neither). When the tray is empty he marks the longest plank of « both » and types how many planks « both » holds; a miss is answered by the fact (`sayMiss`) and he tries again. Rounds may have only the plank 1 in common, b a multiple of a, a = b. |
+| `ladder` | a pair of gaps can be replaced by a simpler pair that keeps the same common planks, until one gap is gone; the last value that is not 0 is the longest common plank (Euclid — a PROCEDURE, `mode: 'subtract'` or `'divide'`) | a ladder of rows (left to right: its number, a bar of the gap a with the plank(s) b laid and the piece left in amber, the pair `(a ; b)` and its calculation `a − b = …` or `a = b × q + r`, then the planks that hold both gaps of that row with a ✓ — the same list on every row, a FACT). He types the NEXT pair `( □ ; □ )` (either order) for the first `manual` rows; the world writes the row anyway and answers by the fact. Then he types how many rows the ladder will have; the world finishes it (`sweep` per row, `gate` at the end) and the last value that is not 0 is lit gold. More than six rows: the first, one folded line « … », the last four. The result keeps the number of rows, so a lesson can compare the two modes on the same pair. |
+| `nest` | the common planks of two gaps are exactly the planks (divisors) of their longest common plank (a SET EQUALITY) | the world gives a, b, g (`given`, a formula line of the lesson) and the chips of the planks of g, and draws three strips a, b, g; for each probe (common ones, ones holding a single gap, longer than g, dividing g) he says, looking at g only, whether it holds BOTH gaps; the world lays it on the three strips (`plank`) and writes the three divisions; at the end the two lists — the planks of both gaps / the planks of g — stand side by side. |
+| `cycle` | what a plank of b can leave on a gap: 0, 1, …, b − 1 — never b cells or more — and the most is b − 1 (a PATTERN) | ONE plank b and a gap that GROWS one cell at a time (a, a + 1, a + 2 …). The first gap of a round is shown as a fact (its planks, the cells left, `a = b × q + r`); before each new cell he says how many cells will be left (chips 0 … b + 1: « b » can be said); the world adds the cell and lays every plank that fits (`sweep`, pitched by the cells left — or `plank` where one more plank goes in) and writes the division. Under the strip a STAIRCASE keeps one column per gap he has seen — as many small cells as were left: it climbs to b − 1 and falls to 0 where a plank went in (a mark of the plank; what he had said stays beside it, struck through, when the strip did otherwise). Then PROBES — planks he has not laid: he types the most cells the plank will leave and says whether b cells will be left once, BOTH before the world moves; the world then grows the gap alone from a gap the plank fills, through the whole climb, the fall and one more cell, and the staircase answers. What he found stays in a list. |
+
+**Key 3 of `qawaid-qabiliyat-qisma` (« الرقمان الأخيران », plank 4) — what the code does, and an OPEN choice.** The
+experiment is `join` / `sum` (`world/inquiries.js › HUNDREDS_INQUIRY`): it starts from the gate dash he has just ridden
+(28 is the number divisible by 4, 26 its even neighbour), a gap of hundreds is always filled (a fact, `300 = 4 × 75 + 0`),
+and he says BEFORE each gluing whether plank 4 fills the new gap. He then writes his rule with tiles (no `writes`): the
+reading `last2` of the forge's tiles is worded « العدد المشكّل من رقمَي آحادها وعشراتها » — the lesson says « المشكّل »
+everywhere, the bank's word (its tests forbid « المكوّن » in the journey and on the board); the rule that holds is
+`last2` × « يقبل القسمة على 4 » (4 readings × 3 conditions = 12 rules, one holds; the lesson's forges allow 60 rules in all,
+`forges.test.js`).
+> **2026-11-19 — OPEN, for the owner.** The draft of this lesson had played keys 2 AND 3 on the same `chart` (the review:
+> the same experiment twice), key 3 with the `last2` lens and the words « العدد المكوّن من الآحاد والعشرات » — the reading
+> THE OWNER named on 2026-11-17 for plank 4 of `qawasim-adad-tabii`'s chart (recorded below, « An experiment opens on its
+> QUESTION … »; still used there). The `join` experiment and the word « المشكّل » replaced that chart reading in this
+> lesson. The owner has been asked to choose: (a) the new `join` experiment, (b) his chart reading back for key 3, or
+> (c) the `join` experiment with his word « المكوّن ». Until he answers, the code is (a).
 
 **Spec shapes of `join`, `stack`, `peel`, `letters`** (the contract a lesson's `world/inquiries.js` writes against;
 `T` = `spec.text`, the lesson's words; a `T.x(…)` is a function returning a string, which MAY hold `$…$` formulas
@@ -484,7 +638,10 @@ the fact it asks about — the screen passes it only what is already on screen).
 // peel — logic: inquiry.js › peelOf(a, b) → { q, r, steps }, fitsRow(a, b, d) → { a, b, r } (booleans),
 //        judgePeelClaim(rounds, claim) → { taken, intruders, orphans, ok }
 { kind: 'peel', writes: true,
-  rounds: [{ a: 54, b: 21, candidates: [2, 3, 6, 7] }],  // a > b, r = a % b > 0
+  rounds: [{ a: 50, b: 20, candidates: [2, 4, 5, 25] }], // a > b, r = a % b > 0 — r = 10: 25 fills a alone, 4 fills b
+                                                         // alone (neither fills 10), 2 and 5 fill both: exactly ONE claim
+                                                         // holds (54, 21, [2, 3, 6, 7] alone would hold two: every plank of
+                                                         // 54 there fills 12 — inquiry2.test.js checks both)
   text: {
     lead: (a, b, ri) => …,                              // before the peel: the question of the round
     goal: …,                                            // plain STRING
@@ -534,11 +691,243 @@ the fact it asks about — the screen passes it only what is already on screen).
     cardsLead, cardsAsk, givenLabel, goalLabel,       // stage 2 (givenLabel / goalLabel plain)
     needs: (card, missing) => …,                      // a card placed too early: what it uses that no line above wrote
     placed?: (card) => …, proved, done,
+    unrefuted?: (card) => …,                          // a false card NO sample refutes (data that should not exist —
+                                                      //   the lesson's test forbids it): where it stands, never a crash
+    noWhole?: (v, value, by) => …,                    // a sample with no natural □ (value not a multiple of by): shown,
+                                                      //   then « next » — defaults for both in strings.js › INQUIRY_TEXT
   } }
+// the chips of □ run from 1 to max(numbers.max, the sample's quotient): a quotient past `max` still has its chip
 // result: { order: [ids as placed], tries: number of refused placements, refuted: [ids of false cards he tried] }
 //         hooks: data-iq-sample, data-iq-values, data-iq-q=<n>, data-iq-sheet, data-iq-slot=<i>, data-iq-card-in,
 //                data-iq-deck, data-iq-card=<id>, data-iq-said="false|early|ok", data-iq-done
 ```
+
+**Spec shapes of `groups`, `rebuild`, `estimate`, `bracket`** (the Euclidean division: a gap of a cells, planks of b,
+a = b × q + r with 0 ≤ r < b; the same conventions as above — `T` = `spec.text`, `$…$` allowed unless « plain », no
+sentence states the rule; every screen carries `data-iq`, `data-iq-stage`, `data-iq-goal`, `data-iq-calc`,
+`data-iq-fact`, `data-iq-next`, `data-iq-found`, and exposes its state on `window.__inquiry`). The typed boxes are the
+kit's `Num` (`kit/parts.jsx`), laid inside the line they complete (`.iq-tpl`, never two lines); Enter checks.
+
+```js
+// groups — logic: inquiry.js › groupsOf(a, b) → { q, r, steps: [{ k, fits, left }] }
+//          (steps[k − 1] = the k-th plank tried; the last step is always the plank that does NOT fit; `left` = cells left)
+{ kind: 'groups', manual?: 3,                          // predictions before « أكمل » is offered (only when a ≥ 10 b)
+  rounds: [{ a, b }],                                  // b > a (0 planks), an exact fit, a big gap (a ≥ 10 b) are all allowed
+  text: {
+    lead: (a, b) => …, goal: (a, b) => …,              // the question; the goal (plain)
+    ask: ({ a, b, k, left }) => …,                     // « will plank k fit? » — left = the cells left NOW
+    yes, no, finish,                                   // button labels (finish = « أكمل »)
+    laid: (f) => …, over: (f) => …,                    // f = { a, b, q, r, k, fits, left, guess } — the plank just tried
+                                                       //   (guess is null for the plank tried after « أكمل »)
+    left: (n) => …,                                    // plain — over the cells left on the strip
+    sayLead: ({ a, b }) => …,                          // how many planks, how many cells left?
+    sayPlanks, sayLeft, check,                         // plain labels of the two boxes; the button
+    sayMiss: (f) => …,                                 // f + said: { q, r } — what he typed, answered by the strip
+    sayOk: (f) => …,
+    foundLine: ({ a, b, q, r, said }) => …,            // kept in the list
+    next, done,
+  } }
+// result: { rounds: [{ a, b, q, r, guesses: [{ k, guess, fits }], said: { q, r } }] }   (said = his FIRST answer)
+//         hooks: data-iq-say="yes|no", data-iq-k, data-iq-finish, data-iq-in="q|r", data-iq-check
+
+// rebuild — logic: inquiry.js › rebuildOf(b, q, r) → { a, valid: r < b, more, q2, r2 }   (q2, r2 = the division of a)
+{ kind: 'rebuild',
+  rounds: [{ b, q, r, bare? }],                        // r ≥ b allowed: the world lays `more` planks in the piece;
+                                                       // bare: the box alone, without « b × q + r = »
+  text: {
+    lead: (round) => …, goal: (round) => …,            // goal plain
+    label: (round) => …,                               // plain — under the strip (and the scene's aria-label)
+    ask: (round) => …,                                 // how long is the gap under the cloth?
+    lift,                                              // the button that says the length and lifts the cloth
+    seen: (f) => …, more: (f) => …,                    // f = { b, q, r, said, a, valid, more, q2, r2 }; `more` when r ≥ b
+    foundLine: (f) => …,                               // shown dim when said ≠ a
+    next, done,
+  } }
+// result: { rounds: [{ b, q, r, said, a }] }           hooks: data-iq-in="a", data-iq-lift, data-iq-cloth="down|up"
+
+// estimate — logic: inquiry.js › estimateSteps(a, b) → [{ place, unit, q, from, left }]
+//            (the steps of kit/longDivision.js: unit = b × 10^place, q = 0…9 the biggest that does not pass `from`,
+//             from < 10 × unit, left = from − q × unit < unit)
+{ kind: 'estimate',
+  blind?: true,                                        // the marks hide their products until pressed (also per round)
+  rounds: [{ a, b, blind? }],                          // 1AM: a ≤ 4 digits, b = 11…99; 2AM: any b
+  text: {
+    lead: (a, b) => …, goal: (a, b) => …,              // goal plain
+    ask: ({ a, b, place, unit, from }) => …,           // which mark? (10^place planks a mark)
+    left: (n) => …,                                    // plain — over what is left of the gap
+    passes: (m) => …, short: (m) => …,                 // m = { a, b, place, unit, from, k, count, value, left }:
+                                                       //   k marks = count planks = value cells; short also has `next`
+    laid: (m) => …,                                    // the step just laid (same m, for that step)
+    sum: ({ a, b, q, r, steps }) => …,                 // the end of the round
+    foundLine: ({ a, b, q, r, tens, units }) => …,
+    next, done,
+  } }
+// result: { rounds: [{ a, b, q, r, tens, units, guesses: [{ place, count, ok }] }] }   (tens = ⌊q / 10⌋, units = q mod 10)
+//         hooks: data-iq-place, data-iq-ruler=<unit>, data-iq-flag=<from>, data-iq-mark=<count>,
+//                data-iq-blind="1|0", data-iq-shown=<count> (blind: a mark whose product he revealed)
+//         logic of one press: inquiry.js › estimateMark(step, k) → { k, value, kind: 'passes'|'short'|'ok', next }
+
+// bracket — logic: inquiry.js › bracketOf(a, b) → { lo, hi, exact, r }   (hi = lo + 1; exact ⇔ r = 0)
+//           bracketSays(a, b, lo, hi) → { loFits, hiPasses, consecutive, ok }
+{ kind: 'bracket',
+  rounds: [{ a, b }],                                  // include flags ON a mark (exact) and between two marks
+  text: {
+    lead: (a, b) => …, goal: (a, b) => …,              // goal plain; « full crates / crates needed » wording goes here
+    ask: ({ a, b }) => …, check,                       // above the template « b × □ ≤ a < b × □ »
+    miss: (m) => …,                                    // m = { a, b, lo, hi, loValue, hiValue, ...bracketSays }
+    ok: (f) => …,                                      // f = { a, b, lo, hi, exact, r, said } — the pair holds
+    where: (f) => …, between, onMark,                  // between two marks, or ON one? (two buttons)
+    seen: (f) => …,                                    // after he said where (f.said = 'between' | 'on')
+    foundLine: (f) => …,                               // shown dim when said is not what the line shows
+    next, done,
+  } }
+// result: { rounds: [{ a, b, lo, hi, exact, said, guesses: [{ lo, hi, ok }] }] }
+//         hooks: data-iq-in="lo|hi", data-iq-check, data-iq-where="between|on", data-iq-flag=<a>
+```
+
+**Spec shapes of `common`, `ladder`, `nest`** (the greatest common divisor: a gap of a cells is held by planks of d when
+d divides a; the same conventions as above — `T` = `spec.text`, `$…$` allowed unless « plain », no sentence states the
+rule, `data-iq`, `data-iq-stage`, `data-iq-goal`, `data-iq-calc`, `data-iq-fact`, `data-iq-next`, `data-iq-found`,
+`window.__inquiry`; the typed boxes are the kit's `Num` inside `.iq-tpl`). None writes the rule (`writes` is not set).
+
+```js
+// common — logic: inquiry.js › commonOf(a, b, candidates) → { rows: [{ d, holdsA, holdsB, both }], common, longest }
+//          (common = the candidates that hold both, shortest first; longest = the last of them, null when none);
+//          gcd(a, b) → the longest plank of both gaps (a, b > 0)
+{ kind: 'common',
+  rounds: [{ a, b, candidates: [planks…] }],          // include gcd(a, b) among the candidates so `longest` IS the gcd
+                                                       // (the lesson's test checks commonOf(...).longest === gcd(a, b))
+  text: {
+    lead: (a, b) => …, goal: (a, b) => …,              // the question; the goal (plain)
+    take: ({ a, b }) => …,                             // no plank in hand: « take a plank from the pile »
+    ask: ({ a, b, d }) => …,                           // the prediction for plank d (two yes / no below it)
+    onA: (a) => …, onB: (b) => …,                      // plain — the label before each pair of yes / no
+    yes, no, lay,                                      // button labels (lay = the world lays the plank)
+    seen: (f, guess) => …,                             // f = { a, b, d, holdsA, holdsB, both, guessA, guessB },
+                                                       //   guess = { a, b } — after the plank is laid on both strips
+    shelf: { a: (a, b) => …, b: (a, b) => …, both: (a, b) => …, none: (a, b) => … },   // plain shelf labels
+    sayLead: ({ a, b }) => …,                          // mark the longest of « both », type how many it holds
+    sayCount, check,                                   // plain label of the box; the button
+    sayMiss: (f) => …, sayOk: (f) => …,                // f = { a, b, common, longest, said: { longest, count } }
+    sayFirst?: ({ a, b, needLong, needCount }) => …,   // « تحقّق » with no plank marked and/or the box empty: what is
+                                                       //   missing (default: the world's sentence, strings.js › INQUIRY_TEXT)
+    foundLine: (f) => …,                               // f = { a, b, rows, common, longest, said } — kept in the list
+    next, done,
+  } }
+// result: { rounds: [{ a, b, rows: [{ d, guessA, guessB, both }], common, longest, said: { longest, count } }] }
+//         (said = his FIRST answer)
+//         hooks: data-iq-tray, data-iq-plank=<d>, data-iq-say-a="yes|no", data-iq-say-b="yes|no", data-iq-lay,
+//                data-iq-shelf="a|b|both|none", data-iq-long=<d> (the chips of « both »), data-iq-in="count",
+//                data-iq-check, data-iq-strip="a|b"
+
+// ladder — logic: inquiry.js › ladderOf(a, b, mode) → { rows: [{ a, b, q, value, next }], gcd, steps }
+//          (the first row is (max, min); subtract: value = a − b, q = 1, next = (max(b, value), min(b, value));
+//           divide: a = b × q + value, next = (b, value); the last row is the one where value = 0 (next = null);
+//           gcd = the b of the last row; steps = the number of rows);
+//          commonPlanks(a, b) → the planks of both gaps, shortest first (the ✓ list of each row)
+{ kind: 'ladder', mode: 'subtract' | 'divide',
+  manual?: 2,                                          // rows whose next pair he predicts before the count (default 2;
+                                                       //   capped at steps − 1: a ladder of one row asks the count at once)
+  rounds: [{ a, b, mode? }],                           // a, b > 0; `mode` overrides spec.mode for one round — the same
+                                                       //   pair in both modes lets the lesson compare the rows. Keep a
+                                                       //   subtract ladder short (≤ 10 rows): past six rows the screen folds
+  text: {
+    lead: (a, b, mode) => …, goal: (a, b, mode) => …,  // goal plain
+    ask: ({ a, b, mode, row }) => …,                   // « what pair comes after (a ; b)? » — above the template ( □ ; □ )
+    write,                                             // the button that writes the row
+    seen: (f) => …,                                    // f = { a, b, mode, value, q, next, said: [x, y], hit } — the row
+                                                       //   just written (hit: his pair, in either order, is `next`)
+    planks,                                            // plain — the head of the ✓ column
+    folded: (k) => …,                                  // plain — the folded line (k rows hidden)
+    countAsk: ({ a, b, mode, written }) => …,          // how many rows will the ladder have (all of them)?
+    countLabel, finish,                                // plain label of the box; the button (the world finishes)
+    end: (f) => …,                                     // f = { a, b, mode, steps, guessed, gcd } — the ladder is done
+    foundLine: (f) => …,                               // same f (+ guesses); shown dim when guessed ≠ steps
+    next, done,
+  } }
+// result: { rounds: [{ a, b, mode, steps, guessed, gcd, guesses: [{ row, said: [x, y], hit }] }] }
+//         hooks: data-iq-mode, data-iq-ladder, data-iq-row=<n>, data-iq-ticks="1,2,…", data-iq-fold=<k>,
+//                data-iq-in="x|y|count", data-iq-write, data-iq-count
+
+// nest — logic: inquiry.js › nestOf(a, b, probes) → { g, divisorsOfG, common, rows: [{ p, inG, both }], equal }
+//        (equal is always true — the lesson's test sweeps it)
+{ kind: 'nest',
+  rounds: [{ a, b, probes: [numbers…] }],             // mix: planks of g, planks of a single gap, longer than g
+  text: {
+    lead: (a, b) => …, goal: (a, b) => …,              // goal plain
+    given: ({ a, b, g }) => …,                         // a MathText line naming g (the lesson writes its notation)
+    divisorsLabel: (g) => …,                           // plain — over the chips of the planks of g (and in the end lists)
+    ask: ({ a, b, g, p }) => …,                        // looking at g only: does p hold both gaps? (yes / no)
+    yes, no,
+    seen: (f, guess) => …,                             // f = { a, b, g, p, inG, both, holdsA, holdsB, guess }
+    foundLine: (f) => …,                               // same f — kept in the list, dim when guess ≠ both
+    compare: (f) => …,                                 // f = { a, b, ...nestOf } — under the two lists
+    commonLabel: (a, b) => …,                          // plain — over the list of the planks of both gaps
+    next, done,
+  } }
+// result: { rounds: [{ a, b, g, rows: [{ p, guess, both }] }] }
+//         hooks: data-iq-probe=<p>, data-iq-say="yes|no", data-iq-divs="1,2,…", data-iq-strip="a|b|g",
+//                data-iq-lists, data-iq-list="common|g"
+```
+
+World sounds: common — `pick` (he takes a plank), `sweep` + `plank` (the world lays it on both strips), `success` /
+`crumble` (his two predictions against the strips), `key` / `fail` on his longest and count; ladder — `pick` (his pair,
+his count), `plank` per row written, `sweep` per row the world finishes, `gate` at the end; nest — `pick`, `sweep` +
+`plank` (laid on the three strips), `success` / `crumble`. The logic is swept by `divisorIsles/inquiryGcd.test.js` (every
+experiment true for every a, b ≤ 120–160); the screens by `inquiryGcd.render.test.jsx`.
+
+World sounds: groups — `pick` (his prediction), `plank` per plank laid, `hit` for the plank that does not fit, `sweep`
+per plank of « أكمل », `key` / `fail` on his count; rebuild — `pick`, `sweep` (the cloth), `plank` per extra plank,
+`success` / `crumble`; estimate — `fail` on a mark that passes or leaves room, `sweep` + `plank` when a block is laid,
+`gate` at the end; bracket — `key` / `fail` on his pair, `success` / `crumble` on « between / on ». None of the four
+writes the rule (`writes` is not set): the forge's tiles come after them.
+
+**Spec shape of `cycle`** (2026-11-19; one plank on gaps that grow cell by cell — the same conventions: `T` =
+`spec.text`, `$…$` allowed unless « plain », no sentence states the rule, `data-iq`, `data-iq-stage`, `data-iq-goal`,
+`data-iq-calc`, `data-iq-fact`, `data-iq-next`, `data-iq-found`, `window.__inquiry`; `writes` is not set):
+
+```js
+// cycle — logic: cycle.js › cycleOf(b, from, count) → { b, from, steps: [{ a, q, r, wraps }] }
+//         (steps[0] = the gap `from`, shown; wraps: the cell just added was the b-th cell left — one more plank went in);
+//         probeOf(b, from) → the same from the gap the plank fills at or under `from` (`start`), b + 2 gaps: the whole
+//         climb 0 … b − 1, the fall, one more; largestLeft(b) = b − 1
+{ kind: 'cycle',
+  rounds: [{ b, from, count }],                        // b ≥ 2, from ≥ b, count ≥ 2 — choose `from` and `count` so that
+                                                       //   the round SHOWS b − 1 cells left, then the fall, then one gap
+                                                       //   more (the lesson's test checks it); keep a round short (≤ 8
+                                                       //   gaps: every one is predicted) and b ≤ 9 (chips 0 … b + 1)
+  probes?: [{ b, from }],                              // planks he has not laid cell by cell (b up to 12: one column a gap)
+  text: {
+    lead: (b, from, count) => …, goal: (b) => …,       // the question of a round; the goal (plain)
+    start: (f) => …,                                   // f = { a, b, q, r } — the first gap, a FACT
+    ask: ({ a, b, from, left }) => …,                  // a = the gap once the cell is added; from, left = the gap now
+    grew: (f) => …,                                    // f = { a, b, q, r, wraps, said } — said: his number, or null
+                                                       //   while the world grows a probe
+    left: (n) => …,                                    // plain — over the cells left on the strip
+    foundLine: ({ b, from, steps }) => …,              // a round kept in the list (steps: [{ a, r, said }])
+    next, toProbe, done,                               // next round · the first probe · the end (button labels)
+    probeLead: (b, start) => …,                        // the question of a probe
+    maxAsk: ({ b }) => …, maxUnit,                     // « the most cells it will leave? »; plain label of its box
+    sameAsk: ({ b }) => …, yes, no,                    // « will b cells be left once? »
+    grow,                                              // the button that lets the world grow the gap
+    probeSeen: (p) => …, probeLine: (p) => …,          // p = { b, from, max, said: { max, same } } — after the run; kept
+  } }
+// result: { rounds: [{ b, from, steps: [{ a, r, said }] }], probes: [{ b, from, max, said: { max, same } }] }
+//         hooks: data-iq-part="round|probe", data-iq-plank, data-iq-gap, data-iq-strip=<a>, data-iq-left=<r>,
+//                data-iq-stairs="4,5,6,7,0", data-iq-col="<a>:<r>", data-iq-col-next=<a>, data-iq-chips,
+//                data-iq-say=<n>, data-iq-in="max", data-iq-same="yes|no", data-iq-grow
+```
+
+World sounds: cycle — `pick` (his number, his « yes / no »), then what the world does with the new cell: `sweep`
+(pitched by the cells left: the count climbs) or `plank` where one more plank goes in; a probe plays the same per
+cell, then `key` / `fail` on the two things he had said. **A kind may live in its own files** — `cycle.js`,
+`InquiryCycle.jsx`, `inquiryCycle.css` (imported by its screen), one line of the `Kind` map of `Inquiry.jsx` — and
+**its screen is a pure VIEW of a reducer** (`cycleReducer(spec, state, action)`, `CycleView({ spec, state, act })`):
+the tests have no DOM, so a stage is reached by playing actions through the reducer and rendered with
+`renderToString` — `cycle.test.js` (every step is the Euclidean division of its gap, the cells left climb by one and
+fall exactly where they would be b, for every plank up to 40; the state machine: a prediction, the world, the last gap,
+both answers before a probe runs) and `inquiryCycle.render.test.jsx` (it opens on its question, its goal and the first
+gap as a fact; a round and a probe PLAYED stage by stage). A new screen should be written the same way.
 
 The lesson's own test must check that every `ok` card `holdsOn` every sample, that every false card is refuted by one
 (`refuteCard(...) !== null`), that `checkProofOrder(cards, order, statement.gives).ok`, and that `order` holds exactly
@@ -562,11 +951,15 @@ one of two ways (`link` on the plank; words `text.link`; logic `inquiry.js › c
 يساوي · 0 أو 5 », he gathers the VALUES of the lens (planks 5 and 2); **`divides`** — « مجموع الأرقام · يقبل القسمة على ·
 9 », he presses ONE number among `divisors` (2…9) and the claim takes every gap whose lens shows a number divisible by it
 (planks 9, 3 and 4 — owner: « use يساوي for 5 and 2, for others use يقبل القسمة على »). Said that way a reading holds on
-every hundred (a sum of 27 is taken too), where a list of values would not. A test of the lesson requires that exactly
+every hundred, where a list of values would not: the sum lens offers every sum a hundred shows (`LENSES.sum.values(from)`
+= 1 … the hundreds' own digit sum + 18 — 18 on the first chart, 19 on 100–199, 27 on 900–999, so a sum of 27 is taken
+too; `inquiry.test.js` checks 3 and 9 on every hundred up to 1999). In `qawasim-adad-tabii` (the lesson these owner's
+words were given for, 2026-11-17) a test of the lesson requires that exactly
 one lens with one number holds for each of them: the sum of the digits for 9 and for 3, and for 4 the lens the owner
 named — « العدد المكوّن من الآحاد والعشرات » (`last2`), offered to plank 4 only. Plank 4's former side road (« no lens
 separates this chart », the same cells in every hundred, long gaps placed on the one chart) was removed with it: with
-that lens the sentence « no lens separates » would be false.
+that lens the sentence « no lens separates » would be false. (1AM `qawaid-qabiliyat-qisma` charts only planks 5, 2, 9
+and 3; its plank 4 is played on `join` — the OPEN note under the table of kinds.)
 
 **What the world does alone is HEARD** (owner, 2026-11-17: « add sound effect when completing the numbers here »): while
 the chart is filled by the world (« أكمل الجدول », then the next hundreds) each step plays `sweep` (a count that climbs),
@@ -588,9 +981,17 @@ per row. The exam sheet of « تدرّب » (`kit/Trainer.jsx › Marked`) print
 underlined; a prompt that contains `$…$` is rendered through `MathText` instead, so a formula in a prompt is allowed.
 `rf-says`, the labels of `RuleForge` and a tablet's `notes` stay plain text: no `$` in them.
 
-**Checked**: `divisorIsles/inquiry.test.js` and `inquiry2.test.js` (join, stack, peel, letters: every fact true for every
-number a lesson may show; exactly one peel claim holds), `inquiryScreens.render.test.jsx` (the four new screens open on
-their question, goal and first act), the lesson's `world/inquiries.test.js`, and the lesson's walk, which plays
+**Checked**: `divisorIsles/inquiry.test.js` (pairs, chart, turn, cut; `quotientTex` against an integer long division for
+every a ≤ 2000, b ≤ 100) and `inquiry2.test.js` (join, stack, peel, letters: every fact true over the ranges written in
+its header — the numbers the lessons give today with room above: join gaps ≤ 160 and planks ≤ 40, stack ≤ 1000 copies,
+peel gaps ≤ 1000 and bridges ≤ 300 —, a lesson that gives more widens them; exactly one peel claim holds),
+`inquiryDivision.test.js` (groups, rebuild, estimate, bracket:
+a = b × q + r with 0 ≤ r < b over every gap up to 400 and plank up to 40, every two-digit plank on every gap up to 9999,
+planks up to 1000; only the right bracket accepted), `inquiryScreens.render.test.jsx`,
+`inquiryDivision.render.test.jsx` and `inquiryGcd.render.test.jsx` (the screens open on their question, goal and first
+act), `inquiryStages.render.test.jsx` (groups, rebuild, estimate, bracket, common, ladder, nest and chart PLAYED past their
+first screen — a prediction answered, the world's fact, the next stage —, plus the guards of join and letters: the
+screen is called as a function with a three-hook store and fake timers, no DOM), the lesson's `world/inquiries.test.js`, and the lesson's walk, which plays
 both experiments through their screens (a wrong pick, a wrong lens, the right claim, the next hundred) and, at each
 screenshot, that nothing leaves the frame, no button is covered, nothing scrolls and no text is under 12 px.
 
@@ -613,9 +1014,12 @@ state line under the tables):
 | `random.js` | `rng(seed)`, `int`, `pick`, `shuffle`: everything generated takes a `rand`, so the tests replay it | — |
 | `ladder.js` | the practice ladder: fair waves, runs, what is open, the next level, the stars; `buildWave` for generators | `createLadder({ nodes, generators, isRight })` |
 | `trainer.js` | « تدرّب »: six questions, game, game, exam, game, exam, exam; the stars of a session | `createTrainer({ kinds, plans, planOf, fallback })` |
-| `sitting.js` | « الامتحان الأبيض »: a subject from a level, weak kinds first, the two shapes of an answer, the stars | `createSittings({ levels, build, mark })` |
+| `sitting.js` | « الامتحان الأبيض »: the frame — `answered`, `forgotten`, `pace`, the stars, `PASS` | — |
+| `bankSitting.js` | the sittings served from the lesson's BANK as it is: the levels, a subject drawn from a level, the marking by the practice evaluator, « دج » at display, the model copy and hints, what the hand-in sends; tests `bankDisplay.test.js` (every sheet of the v2 banks drawn, no « DA » of money left) and `sittingSat.test.js` (every copy is evidence; quitting costs nothing) | `createBankSittings({ lesson })` |
+| `bankEvidence.js` (+ `bankEvidence.test.js`) | sends a handed-in copy to the practice engine (session, attempts, raw answers) and keeps what could not be sent (sent, queued, refused, the flush race) | — |
+| `storyEnd.js` (+ test) | the END of the story completes the lesson: `storyFinished(save)`, every module of the config marked done (a finished save repairs an older student's progress); mastery untouched (`LESSON_V2.md` §1ter) | its `lesson.config.js` modules |
 | `journey.js` | the road: when the exam space opens, a promotion, « تقدّمي », the ONE next step | `createJourney({ keys, ladder, levels, stages, cards })` |
-| `evidence.js` | which answers count (first try, no help), the id of the الكفاءة, the payload sent | `createEvidence({ grade, points })` |
+| `evidence.js` | which answers count (first try, no help), the id of the الكفاءة, the payload sent; `guardEvidence` drops a TRUE claim made on an answer the lesson's `check` refused (`LESSON_V2.md` §1bis) | `createEvidence({ grade, points })` |
 | `evidenceSend.js` | the POST to `/lessons/{code}/game-evidence` and the retry queue (§4) | — |
 | `tips.js` (+ test) | « حيلة »: the calculation shortcuts, given only when one clearly helps | — |
 | `longDivision.js` (+ test) | the long division as it is written and said on paper, its twin (used by `Paper.jsx` and by « مختبري ») | — |
@@ -624,7 +1028,7 @@ state line under the tables):
 | `Fit.jsx` | the box of every panel: it never scrolls, it fits (§2ter) | — |
 | `Paper.jsx` | the paper mode: the gate, the sign, the long-division model sheet | — |
 | `Spaces.jsx` | `ExamLadder`, `Promotion`, `ProgressPage` (« تقدّمي ») | `journey`, `sittings`, `rules`, `cards`, `evidence` |
-| `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater) | `sittings` (with `mark`, `model`, `scheme`, `evidenceOf`), `rules` |
+| `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater): the bank's sheets, the practice widgets | `sittings` (from `createBankSittings`), `rules`, `keys`, `evidence` |
 | `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes | `trainer` |
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
@@ -643,7 +1047,7 @@ state line under the tables):
 |---|---|
 | `practice.js` | the kinds of wave of the lesson, `isRight`, the five nodes and sixteen levels; exports the bound `ladder` and `PRACTICE_MAP` (where each node sits on the hub, its links) |
 | `trainer.js` | the kinds of question, the plan of each card, `check` (hint, then correction), `solution`, `answerLabel`, `PHRASES` |
-| `sitting.js` | the four exercises by tier, the five levels, `mark`, `model`, `scheme`, `evidenceOf` |
+| `sitting.js` | ONE call: `createBankSittings({ lesson: '<id>' })` — the exam sittings serve the lesson's bank as it is |
 | `forges.js` | the four forges of the lesson, one per key (§2sexies) |
 | `journey.js` | the four keys, bound to the ladder and the levels |
 | `evidence.js` | the الكفاءة of each key and the CLAIM each kind of answer makes (their verdict is the kit's `claims.js`) |
@@ -662,6 +1066,10 @@ state line under the tables):
 | `Depot.js`, `Worlds.js` | the 3D worlds of the cases: the depot, the friends' table, the tiler's site; `runSim` shows what was decided |
 | `ruleForge.js` (+ test), `forgeParts.jsx` | the rule forge IN THIS WORLD: a bridge as a case, the evidence of a crossing, the law of the world as a forge (`remainderForge`), and how a case is drawn (§2sexies) |
 | `strings.js` | every Arabic sentence, the sentence of a practice wave (`waveSay`) and the guidance after a mistake (`explain`) |
+| `inquiry.js` (+ `inquiry.test.js`, `inquiry2.test.js`, `inquiryDivision.test.js`, `inquiryGcd.test.js`), `Inquiry.jsx`, `InquiryMoves.jsx`, `InquiryCombine.jsx`, `InquiryProof.jsx`, `InquiryDivision.jsx`, `InquiryGcd.jsx`, `inquiry.css` | « استكشف »: the pure logic and the screens of the experiments (§2sexies, the sixteen kinds) |
+| `cycle.js` (+ test), `InquiryCycle.jsx`, `inquiryCycle.css` (+ `inquiryCycle.render.test.jsx`) | the `cycle` kind in its own files: a reducer and a pure view (2026-11-19) |
+| `inquiryParts.jsx` | what every experiment screen shares: `FAST`, `expose`, `X0` / `SPAN`, `useLater`, `YesNo` |
+| `inquiryScreens`, `inquiryDivision`, `inquiryGcd`, `inquiryStages` `.render.test.jsx` | the screens rendered without a DOM: their first screen, and (`inquiryStages`) eight kinds played past it |
 | `../engine/builders.js`, `robot.js`, `audio.js`, `input.js` | reusable: low-poly builders, the robot, synthesised sound, keyboard + touch input |
 | `../../lessonlab/` | « مختبري », the lab of every lesson — its own contract: `LESSON_LAB.md` |
 
@@ -703,6 +1111,8 @@ eleven screens. What is NOT extracted, and why:
   `workshop` or a `storm`, and names the plank it `holdsWith`), the guardians' fact, the waves of the dash, its own
   words (`text`, laid over the world's) and what happens on the way — `onArrive`, `afterKey`, `pendingForge`, `onHold`,
   `objective`, `onStatues`, `onStone`, `onQuiz`, `onBossPaid`: functions that receive the game and use its commands.
+  A story's `game.onModule(n)` marks only the modules it teaches on the way; the END of the story marks every module of
+  the config (the kit, `kit/storyEnd.js` — LESSON_V2.md §1ter): a story never marks the rest itself.
   `Game.js` names no island by its number and no key any more. STILL the pilot's inside the world: its story DATA
   (`logic.js › ISLANDS, SEGMENTS, DASH_WAVES, STATUES`) and its story WORDS (`strings.js`: the robot's sentences, the
   stone's question, the store, the tablets) — a second lesson gives its own and overrides them;
@@ -712,8 +1122,8 @@ A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-
 `world/index.js`, named there (`world.content`). The world receives it as the `lesson` prop.
 
 **The shape of an exam answer is DATA.** The kit draws what the lesson describes, and never knows its mathematics:
-- a sitting question is `sentence` (words around ONE `{ choice: [{ value, text }] }`) or `tokens` (signs around boxes
-  made with `slot`) — `kit/sitting.js`;
+- a sitting question is a STEP of a bank sheet (`kit/bankSitting.js › fromBank`): its `answerType`, its bank question in
+  `bank`, its points, its key; its answer is what the practice widget writes (`{ choiceId }`, `{ value }`);
 - a trainer question is a `tap` (`options`), a true / false (`statement`, `truth`, `reasons?`), or a `form` — lines of
   tokens: a string, `{ strong }`, `{ text, rtl? }`, `{ num, label }`, `{ choice, options }` — `kit/trainer.js`.
 The lesson keeps how an answer is judged (`check`, `mark`), its model copy and its claims.
@@ -771,6 +1181,16 @@ a hint then the correction, the exam sheet without scrolling).
 mistake (guidance, rule, the question that comes back), a won and a lost level, the exam node, the save, « من البداية », and a
 device without a game save. Unit tests: `npx vitest run src/lessons/common/gameworld` in `apps/web` (every generated wave has
 exactly one right gate; every wrong gate has its guidance).
+
+**Choosing the sheet of a sitting (DEV only, 2026-11-19).** A sitting draws its sheet at random; a walk that must see a given
+sheet sets, before opening the sitting, `localStorage.setItem('di.dev.sheet', '<bank exercise id>')` (e.g.
+`ex-4am-khawass-qawasim-l5-001`) — `bankSitting.js › makeSubject` then puts that sheet first when it belongs to the level
+being opened (otherwise the key is ignored). To loop over a whole level, read its ids from `window.__world.lesson.sittings
+.sheetIds(n)` (or the bank folder on disk) and set the key before each sitting. It works only under `import.meta.env.DEV`;
+a production build never reads it. Remove the key after the walk (`localStorage.removeItem('di.dev.sheet')`). The sitting
+walks do exactly this for every sheet of the bank (`e2e/lib/sittingWalk.mjs › everySheet`, about 3 s a sheet, ~2.5–3 min
+for the 50 sheets of a lesson at one size, plus `levelFive` and `copies` — §2quater); `E2E_PARTS=sheets` runs that part
+alone and says it is not a full run.
 
 Two behaviours a change must keep: a slow machine drops the retina resolution, then the shadows (`adaptQuality`); a tree standing
 between the camera and the robot ducks down, and a sign too close to the lens hides (`occluders`, `signs`).

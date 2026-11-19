@@ -13,6 +13,10 @@
  * each verdict, or when the two sides disagree on a row.
  */
 const natural = (x) => Number.isInteger(x) && x >= 0;
+/** The numbers admitted by the kinds below: naturals of school size, ≤ 10^6 — the server's `MAX` (no product overflows). */
+const MAX = 1000000;
+const n = (x) => natural(x) && x <= MAX;
+const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 
 const KINDS = {
   /** a = b × q + r with r < b, and « b fills a » said rightly. */
@@ -53,6 +57,37 @@ const KINDS = {
   stop: (c) => natural(c.b) && c.b * c.b <= c.a && c.a < (c.b + 1) * (c.b + 1),
   /** « a is divisible by b » said rightly — a divisibility rule, without posing the division. */
   divisible: (c) => natural(c.b) && c.b > 0 && typeof c.fits === 'boolean' && c.fits === (c.a % c.b === 0),
+  /** The quotient of a by b lies between two CONSECUTIVE naturals: b × lo ≤ a < b × hi, hi = lo + 1 (lo = a ÷ b when b divides a). */
+  bracket: (c) =>
+    n(c.a) && n(c.b) && n(c.lo) && n(c.hi) && c.b > 0 && c.hi === c.lo + 1 && c.b * c.lo <= c.a && c.a < c.b * c.hi,
+  /** The containers of b that a fills (the quotient rounded DOWN) and the containers it needs (rounded UP). */
+  fullNeeded: (c) =>
+    n(c.a) &&
+    n(c.b) &&
+    n(c.full) &&
+    n(c.need) &&
+    c.b > 0 &&
+    c.full === Math.floor(c.a / c.b) &&
+    c.need === Math.ceil(c.a / c.b),
+  /** g is the greatest common divisor of a and b, not both 0 (PGCD(a ; 0) = a). */
+  pgcd: (c) => n(c.a) && n(c.b) && n(c.g) && c.a + c.b > 0 && c.g === gcd(c.a, c.b),
+  /** « a and b are coprime » said rightly: PGCD(a ; b) = 1. */
+  coprime: (c) =>
+    n(c.a) && n(c.b) && c.a >= 1 && c.b >= 1 && typeof c.says === 'boolean' && c.says === (gcd(c.a, c.b) === 1),
+  /** d is a divisor of a AND of b. */
+  commonDivisor: (c) =>
+    n(c.a) && n(c.b) && n(c.d) && c.a >= 1 && c.b >= 1 && c.d >= 1 && c.a % c.d === 0 && c.b % c.d === 0,
+  /** a/b is the fraction given, p/q the student's writing: equal (a × q = p × b) and, unless `reduced === false`,
+   * irreducible (PGCD(p ; q) = 1). */
+  fraction: (c) =>
+    n(c.a) &&
+    n(c.b) &&
+    n(c.p) &&
+    n(c.q) &&
+    c.b > 0 &&
+    c.q > 0 &&
+    c.a * c.q === c.p * c.b &&
+    (c.reduced === false || gcd(c.p, c.q) === 1),
 };
 
 export const CLAIM_KINDS = Object.keys(KINDS);

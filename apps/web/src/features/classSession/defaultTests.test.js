@@ -61,10 +61,125 @@ const letterProof = (option, c) => {
   ].every(([k, n]) => lhs(c.d * k, c.d * n, k, n) === rhs(c.d * k, c.d * n, k, n));
   return same && m[2].startsWith(`${c.d} \\times (`) && m[2].endsWith(')');
 };
+/** The value of « 7 \times 6 + 4 » or « 83 - 47 » (the product before the sum), computed here; NaN for another shape. */
+const evalExpr = (expr) => {
+  if (!/^\d+(?: (?:\\times|[+-]) \d+)*$/.test(String(expr).trim())) return NaN;
+  const value = (t) => t.split(' \\times ').reduce((p, x) => p * Number(x), 1);
+  return String(expr)
+    .trim()
+    .split(' + ')
+    .reduce((sum, term) => sum + term.split(' - ').reduce((v, x, i) => (i === 0 ? value(x) : v - value(x)), 0), 0);
+};
+/** « $lhs = rhs$ » → is it true? */
+const equalityHolds = (text) => {
+  const m = String(text).match(/^\$(.+) = (.+)\$$/);
+  return Boolean(m) && evalExpr(m[1]) === evalExpr(m[2]) && Number.isFinite(evalExpr(m[1]));
+};
+/** « بين 30 و 40 » → [30, 40]. */
+const between = (text) => {
+  const m = String(text).match(/^بين (\d+) و (\d+)$/);
+  return m ? [+m[1], +m[2]] : null;
+};
+/** What a divisibility rule READS of a number: the units digit (2, 5, 10), the digit sum (3, 9), the last two digits (4). */
+const READS = {
+  units: { text: (n) => `رقم آحاده ${n % 10}`, by: [2, 5, 10] },
+  sum: {
+    text: (n) =>
+      `مجموع أرقامه ${String(n)
+        .split('')
+        .reduce((s, d) => s + Number(d), 0)}`,
+    by: [3, 9],
+  },
+  lastTwo: { text: (n) => `العدد ${n % 100} المكوَّن من رقميه الأخيرين`, by: [4] },
+};
+/** « $q < a \div b < q + 1$ » or « $a \div b = q$ » about a ÷ b → is it true? (a ÷ b compared as a fraction, never rounded) */
+const bracketHolds = (option, a, b) => {
+  const lt = String(option).match(/^\$(\d+) < (\d+) \\div (\d+) < (\d+)\$$/);
+  if (lt) {
+    const [lo, x, y, hi] = lt.slice(1).map(Number);
+    return x === a && y === b && hi === lo + 1 && lo * b < a && a < hi * b;
+  }
+  const eqm = String(option).match(/^\$(\d+) \\div (\d+) = (\d+)\$$/);
+  return Boolean(eqm) && +eqm[1] === a && +eqm[2] === b && a === b * +eqm[3];
+};
+const shows = (q, ...nums) => {
+  for (const n of nums) expect(q.text, `${q.id}: the question shows ${n}`).toContain(String(n));
+};
+
 /** The truth of each option of a choice (or the value of a number / a true-false), from the `check` alone. */
 function truth(q) {
   const c = q.check;
   switch (c.type) {
+    // ── the operations (1AM): a product, a difference, « x × y + z » ──
+    case 'product':
+      shows(q, c.x, c.y);
+      return c.x * c.y;
+    case 'difference':
+      shows(q, c.x, c.y);
+      expect(c.x - c.y, `${q.id}: never negative`).toBeGreaterThanOrEqual(0);
+      return c.x - c.y;
+    case 'equality':
+      expect(q.text, q.id).toContain(`$${c.expr}$`);
+      return equalityHolds(`$${c.expr}$`);
+    case 'valuePick':
+      expect(q.text, q.id).toContain(`$${c.expr}$`);
+      return q.options.map((o) => Number(o) === evalExpr(c.expr));
+    case 'trueEquality':
+      return q.options.map((o) => equalityHolds(o));
+    // ── the Euclidean division ──
+    case 'dividend':
+      expect(c.r, `${q.id}: the remainder is smaller than the divisor`).toBeLessThan(c.b);
+      shows(q, c.b, c.q, c.r);
+      return c.b * c.q + c.r;
+    case 'restMax':
+      shows(q, c.b);
+      return c.b - 1;
+    case 'restPick':
+      shows(q, c.b);
+      return q.options.map((o) => Number(o) < c.b);
+    case 'remainderIs':
+      shows(q, c.a, c.b);
+      return c.a % c.b === c.r;
+    case 'euclidIs':
+      expect(q.text, q.id).toContain(`$${c.a} = ${c.b} \\times ${c.q} + ${c.r}$`);
+      return c.b * c.q + c.r === c.a && c.r < c.b;
+    case 'quotientBetween': {
+      shows(q, c.a, c.b);
+      const k = Math.floor(c.a / c.b);
+      return q.options.map((o) => {
+        const lohi = between(o);
+        return Boolean(lohi) && lohi[0] <= k && k < lohi[1];
+      });
+    }
+    // ── the divisibility rules (1AM) ──
+    case 'missingDigit': {
+      const fits = Array.from({ length: 10 }, (_, d) => d).filter((d) => Number(`${c.prefix}${d}`) % c.k === 0);
+      expect(fits, `${q.id}: exactly one digit fits`).toHaveLength(1);
+      shows(q, c.prefix, c.k);
+      return fits[0];
+    }
+    case 'ruleReads':
+      shows(q, c.n, c.k);
+      return q.options.map((o, i) => {
+        const f = READS[c.forms[i]];
+        expect(o, `${q.id}: the option is written as its form says`).toBe(f.text(c.n));
+        return f.by.includes(c.k);
+      });
+    // ── bracketing a quotient (2AM) ──
+    case 'needed':
+      shows(q, c.a, c.b);
+      return Math.ceil(c.a / c.b);
+    case 'upper':
+      shows(q, c.a, c.b);
+      expect(c.a % c.b, `${q.id}: a value « by excess » needs a remainder`).not.toBe(0);
+      return Math.floor(c.a / c.b) + 1;
+    case 'bracket': {
+      const [k, r] = [Math.floor(c.a / c.b), c.a % c.b];
+      expect(q.text, `${q.id}: the division written is the Euclidean one`).toContain(
+        `$${c.a} = ${c.b} \\times ${k} + ${r}$`,
+      );
+      return q.options.map((o) => bracketHolds(o, c.a, c.b));
+    }
     case 'partner':
       expect(c.a % c.b, `${q.id}: ${c.b} must divide ${c.a}`).toBe(0);
       return c.a / c.b;
@@ -169,6 +284,31 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/qasim-adad-tabii.json');
     expect(files.map((f) => f.name)).toContain('4am/qawasim-adad-tabii.json');
     expect(files.map((f) => f.name)).toContain('4am/khawass-qawasim.json'); // lesson 3: written before its board
+    // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
+    for (const name of [
+      '1am/qisma-iqlidiya-baqi.json',
+      '1am/qawaid-qabiliyat-qisma.json',
+      '2am/qisma-iqlidiya-hasr.json',
+    ])
+      expect(files.map((f) => f.name)).toContain(name);
+    for (const { name, data } of files) {
+      expect(name, 'the file sits in the folder of its grade, named after its lesson').toBe(
+        `${data.grade}/${data.lesson}.json`,
+      );
+    }
+  });
+
+  it('the checks themselves say the truth (the arithmetic, the brackets, what a rule reads)', () => {
+    expect(evalExpr('7 \\times 6 + 4')).toBe(46);
+    expect(evalExpr('83 - 47')).toBe(36);
+    expect(evalExpr('5 \\times 8 + 3')).toBe(43);
+    expect(equalityHolds('$5 \\times 8 + 3 = 55$')).toBe(false);
+    expect(bracketHolds('$22 < 527 \\div 23 < 23$', 527, 23)).toBe(true);
+    expect(bracketHolds('$21 < 527 \\div 23 < 22$', 527, 23)).toBe(false);
+    expect(bracketHolds('$22 < 527 \\div 23 < 24$', 527, 23)).toBe(false); // not two consecutive numbers
+    expect(bracketHolds('$527 \\div 23 = 22$', 527, 23)).toBe(false);
+    expect(bracketHolds('$936 \\div 26 = 36$', 936, 26)).toBe(true);
+    expect(READS.lastTwo.text(5728)).toBe('العدد 28 المكوَّن من رقميه الأخيرين');
   });
 
   for (const { name, data } of files) {

@@ -40,10 +40,15 @@ export const lesson = {
   trainer: { ...trainer, evidenceOf: trainerEvidence },
   journey,
   evidence,
-  /** Which card of the knowledge map trains what: a key, or a kind of exam exercise that was missed. */
+  /**
+   * Which card of the knowledge map trains what a sitting missed. The sitting is the lesson's BANK (kit/bankSitting.js ›
+   * `weakKinds`): what it leaves is the KEYS of the questions that lost points, first — each has its card in `ofKey` —
+   * then `ex:<id>` for the sheets, which name no kind of exercise: `ofExercise` is empty (the kit reads it before
+   * `ofKey`, Spaces.jsx), and a sheet whose questions carry no key opens `fallback`.
+   */
   cards: {
     ofKey: { 'jam-wal-farq': 'majmu', madaaf: 'mudaaf', 'baqi-qisma': 'baqi', burhan: 'burhan' },
-    ofExercise: { sumDiff: 'majmu', multiple: 'mudaaf', rest: 'baqi', proof: 'burhan', wall: 'mithal-735' },
+    ofExercise: {},
     fallback: 'majmu',
   },
   /** « خريطة المعارف »: { graph, modules, positions }. */

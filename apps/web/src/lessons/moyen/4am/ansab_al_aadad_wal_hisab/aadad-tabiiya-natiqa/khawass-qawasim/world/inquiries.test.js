@@ -10,7 +10,7 @@ import {
 } from '../../../../../../common/gameworld/divisorIsles/inquiry';
 import { JOIN_INQUIRY, STACK_INQUIRY, PEEL_INQUIRY, LETTERS_INQUIRY } from './inquiries';
 import { FORGES } from './forges';
-import { NUMBERS } from './story';
+import { NUMBERS, STORY, TABLETS } from './story';
 
 const said = (x) => expect(String(x)).not.toMatch(/undefined|NaN|\[object/);
 /** Every sentence of an investigation is said, and none states the rule it leads to. */
@@ -123,12 +123,44 @@ describe('the four investigations of « خواص قواسم عدد طبيعي »
     for (const c of claims.slice(1, 4))
       expect(judgePeelClaim(PEEL_INQUIRY.rounds, c).intruders.length).toBeGreaterThan(0);
     const F = FORGES['baqi-qisma'];
-    // every claim maps to a rule of the tiles; only the accepted one is the rule
-    for (const claim of claims.slice(1)) {
-      const { rule } = F.fromInquiry({ rounds: [], claim });
-      expect(F.slots[0].options.map((o) => o.id)).toContain(rule.if);
-      expect(F.isTheRule(rule)).toBe(judgePeelClaim(PEEL_INQUIRY.rounds, claim).ok);
-    }
+    // the accepted claim — the only one the screen lets him seal — is the rule the forge writes on his tablet
+    const { rule } = F.fromInquiry({ rounds: [], claim: ok[0] });
+    expect(F.isTheRule(rule)).toBe(true);
+    expect(F.ruleText(rule)).toContain('الهوّة والجسر معًا');
+    expect(F.ruleText(rule)).toContain(PEEL_INQUIRY.text.claimThen.replace('.', ''));
+  });
+
+  it('PEEL and STACK: a count is agreed with what it counts — one, two, three to ten, eleven and more', () => {
+    const T = PEEL_INQUIRY.text;
+    const judgeOf = (n, list = 'intruders') => ({
+      intruders: [],
+      taken: [],
+      [list]: Array.from({ length: n }, (_, i) => ({ d: i + 2 })),
+    });
+    expect(T.claimFact(judgeOf(1))).toMatch(/^لوح أخذته جملتك لا يملأ القطعة/);
+    expect(T.claimFact(judgeOf(2))).toMatch(/^لوحان أخذتهما جملتك لا يملآن القطعة/);
+    expect(T.claimFact(judgeOf(3))).toMatch(/^3 ألواح أخذتها جملتك لا تملأ القطعة/);
+    expect(T.claimFact(judgeOf(11))).toMatch(/^11 لوحًا أخذتها جملتك لا تملأ القطعة/);
+    expect(T.claimOk(judgeOf(2, 'taken'))).toMatch(/^لوحان أخذتهما جملتك، وكلاهما/);
+    expect(T.claimOk(judgeOf(4, 'taken'))).toMatch(/^4 ألواح أخذتها جملتك، وكلّها/);
+    // the claim « the gap alone » of THIS table takes in exactly two planks that leave the piece: the dual is said
+    const alone = judgePeelClaim(PEEL_INQUIRY.rounds, { cols: ['a'], link: 'and' });
+    expect(alone.intruders.map((f) => f.d)).toEqual([21, 5]);
+    expect(T.claimFact(alone)).toContain('لوحان أخذتهما جملتك لا يملآن القطعة الباقية: 21 و 5');
+    expect(JSON.stringify([1, 2, 3, 11].map((n) => T.claimFact(judgeOf(n))))).not.toMatch(/\b2 ألواح/);
+    // the copies he glues are the object of « نلصق »: « نسختين », never « نسختان »
+    const S = STACK_INQUIRY.text;
+    expect(S.ask({ d: 6, base: 18, k: 2 })).toContain('نلصق نسختين من الهوّة 18');
+    expect(S.ask({ d: 6, base: 18, k: 3 })).toContain('نلصق 3 نسخ من');
+    expect(S.ask({ d: 6, base: 18, k: 100 })).toContain('نلصق 100 نسخة من');
+    // two planks are « لوحان طولهما », and the cells left agree too
+    const J = JOIN_INQUIRY.text;
+    const cut = { op: 'diff', a: 35, b: 21, d: 7, ...joinOf(7, 35, 21, 'diff') };
+    expect(J.seen(cut, null)).toContain('لوحان طولهما 7، ولا خانة باقية');
+    const short = { op: 'diff', a: 40, b: 21, d: 7, ...joinOf(7, 40, 21, 'diff') };
+    expect(J.seen(short, null)).toContain('لوحان طولهما 7، وبقيت 5 خانات');
+    const two = { op: 'sum', a: 21, b: 30, d: 7, ...joinOf(7, 21, 30, 'sum') };
+    expect(J.seen(two, null)).toContain('7 ألواح طولها 7، وبقيت خانتان');
   });
 
   it('PEEL: every sentence says what the table did, and none states the rule', () => {
@@ -211,7 +243,22 @@ describe('the four investigations of « خواص قواسم عدد طبيعي »
       if (i > 0) lines.push(T.carry(v, samples[i - 1], (samples[i - 1].a + samples[i - 1].b) / samples[i - 1].d));
     });
     lines.push(T.hidden(samples[2], samples[1], 12), T.hidden(samples[2], null, null));
-    noRule(lines, /حروف|بالحروف|تبرهن|يكفي|عدد طبيعي/);
+    // …nor does what stands around the experiment: the name of its island, the title and the words of its mirror
+    const island = STORY.islands.find((i) => i.feature === 'stone');
+    const M = FORGES.burhan.text;
+    lines.push(island.name, M.title, M.sub, M.log, STORY.text.say.h, STORY.text.quiz.harbour.prompt);
+    expect(M.title).toContain(island.name);
+    noRule(lines, /حروف|حرف|بالحروف|تبرهن|برهان|يكفي|عدد طبيعي/);
+    // the word comes with the tablet, once he has assembled the proof
+    expect(TABLETS.burhan.lines.join(' ')).toContain('بحروف');
+    // ONE pair of letters, from the cards to the tablet: k and k′ — and q stays the quotient of the tablet before
+    const cardsText = LETTERS_INQUIRY.cards.map((c) => c.tex).join(' ');
+    expect(cardsText).toContain("k'");
+    expect(cardsText).not.toMatch(/[pq]/);
+    expect(TABLETS.burhan.math.join(' ')).toContain("a = d \\times k \\qquad b = d \\times k'");
+    expect(TABLETS.burhan.math.join(' ')).not.toMatch(/[pq](?![a-z])/);
+    expect(TABLETS['baqi-qisma'].lines.join(' ')).toContain('b \\times q');
+    expect(FORGES.burhan.text.tryKey({ d: 5, k: 8, k2: 11 })).toContain("$k' = 11$");
     said(T.needs(LETTERS_INQUIRY.cards[2], ["k'"]));
     expect(T.needs(LETTERS_INQUIRY.cards[3], ['dk+dk'])).toContain('\\times');
   });

@@ -3,9 +3,14 @@
 // each, so EVERY kind of question of the lesson's `world/trainer.js` is played through its screen: tap (the gates), true /
 // false (game, and exam with its reason), sumDiff (« a ± b = d × [ ] »), multiple (« a × n = d × [ ] »), rest (the division
 // then « الباقي = d × [ ] »), proof (three words chosen in their sentence). In each session: a wrong then a right answer
-// (the hint), a right one at the first try, two wrong (the written correction, the model sheet when the question has one).
+// (the hint), a right one at the first try, two wrong (the written correction — and, for the division of « باقي القسمة »,
+// its model sheet, opened and read to its end).
+// Before the sessions, ONE CARD is read as a card: a common mistake (the wrong sentence first, the rest uncovered by him,
+// its numbers computed here), then the memo sheet of a key and its two questions — answered wrong, then right: sealed.
 // The right answers are computed HERE from the numbers of the question (a proof's right product: by putting numbers in
-// the letters), never taken from the lesson. What is posted as evidence (exam format, first try) is captured and asserted.
+// the letters), never taken from the lesson. What is posted as evidence (exam format, first try) is captured and asserted:
+// a HALF-right first try (the sum right and the difference wrong; the division right and « الباقي = d × k » wrong) must be
+// sent as a FALSE claim.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/gameworld-khawass-trainer.mjs [outDir]
 import { createWalk, lessonUrl, QAWASIM_WORDS, QAWASIM_NUMBERS, TOUCH } from './lib/walk.mjs';
 
@@ -34,11 +39,8 @@ const TRAIN = {
   baqi: ['tap', 'tf', 'rest'],
   burhan: ['tap', 'tf', 'proof'],
 };
-const w = createWalk('gameworld-khawass-trainer', {
-  foreign: QAWASIM_WORDS,
-  foreignNumbers: QAWASIM_NUMBERS,
-  fontFloor: true,
-});
+// the 12 px floor is on by default (lib/walk.mjs), the knowledge map included
+const w = createWalk('gameworld-khawass-trainer', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS });
 const { expect, check, shot } = w;
 
 /** Is gate value n right for this wave? Computed HERE. */
@@ -50,9 +52,15 @@ const gateRight = (x, n) =>
     divisibleBy: () => n >= 1 && n % x.b === 0,
     remainder: () => n === x.a % x.b,
   })[x.type]();
-/** A word of a proof written with × and −, evaluated with numbers in the letters. */
+/**
+ * A word of a proof written with × and −, evaluated with numbers in the letters. The lesson's letters are k and k′
+ * (a = d × k, b = d × k′): k′ is read as `j`.
+ */
 const evalLetters = (text, v) =>
-  Function(...Object.keys(v), `return ${text.replace(/×/g, '*').replace(/−/g, '-')};`)(...Object.values(v));
+  Function(
+    ...Object.keys(v),
+    `return ${text.replace(/k′/g, 'j').replace(/×/g, '*').replace(/−/g, '-')};`,
+  )(...Object.values(v));
 /** The option of a choice slot of a form whose text passes `test`. */
 const choiceOf = (q, slot, test) => {
   const t = q.form.lines.flatMap((l) => l.tokens).find((x) => x && x.choice === slot);
@@ -90,11 +98,23 @@ function solve(q) {
       // the goal, as written on the sheet, and its right product: equal for every number put in the letters
       const goal = q.form.lines[2].tokens[0];
       const tries = [
-        { d: 3, p: 7, q: 2, n: 5 },
-        { d: 11, p: 4, q: 3, n: 9 },
+        { d: 3, k: 7, j: 2, n: 5 },
+        { d: 11, k: 4, j: 3, n: 9 },
       ];
       const same = (text) =>
-        tries.every((v) => evalLetters(text, v) === evalLetters(goal.replace('a', '(d*p)').replace('b', '(d*q)'), v));
+        tries.every((v) => evalLetters(text, v) === evalLetters(goal.replace('a', '(d*k)').replace('b', '(d*j)'), v));
+      // one pair of letters in the whole lesson: no p, no q (q is the quotient of a division) in what the sheet writes
+      const written = q.form.lines
+        .flatMap((l) => l.tokens)
+        .flatMap((t) => (t?.options ? t.options.map((o) => o.text) : [String(t)]));
+      const second = q.target === 'mult' ? 'k' : 'k′'; // « n × a » has one number to write: a = d × k
+      expect(
+        written.some((t) => t.includes(second)) && !written.some((t) => /[pq]/.test(t)),
+        `proof « ${q.target} »: written with k and k′, never p or q (${written
+          .filter((t) => /[a-z]/.test(t))
+          .slice(0, 3)
+          .join(' | ')})`,
+      );
       return {
         start: choiceOf(q, 'start', (t) => t.startsWith('d يقسم') && !/[+−×]/.test(t)),
         k: choiceOf(q, 'k', same),
@@ -105,7 +125,10 @@ function solve(q) {
       throw new Error(`unknown kind ${q.kind}`);
   }
 }
-/** A wrong answer of the same shape — one whose claim (when it is evidence) is FALSE. */
+/**
+ * A wrong answer of the same shape — one whose claim (when it is evidence) must be FALSE. The answers in several parts
+ * are HALF-right on purpose: the first part is right, the part that carries the الكفاءة of the lesson is not.
+ */
 function wrongOf(q) {
   const r = solve(q);
   switch (q.kind) {
@@ -114,11 +137,11 @@ function wrongOf(q) {
     case 'tf':
       return { truth: !r.truth, reason: r.reason };
     case 'sumDiff':
-      return { s: r.s + 1, f: r.f };
+      return { s: r.s, f: r.f + 1 }; // the sum is right, the difference is not
     case 'multiple':
       return { k: r.k + 1 };
     case 'rest':
-      return { q: r.q, r: r.r + 1, k: r.k };
+      return { q: r.q, r: r.r, k: r.k + 1 }; // the division is right, « الباقي = d × k » is not
     case 'proof':
       return { ...r, start: otherChoice(q, 'start', r.start) };
     default:
@@ -159,6 +182,148 @@ await w.run(async () => {
   );
   await shot(page, 'know-full', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
 
+  // ══════════════════════════ one CARD, read as a card ══════════════════════════
+  const kstate = () =>
+    page.evaluate(() => {
+      const k = window.__world.getState().know;
+      return { read: k.read, sealed: k.sealed };
+    });
+  /** The TeX of the formulas drawn inside `sel` (KaTeX keeps it in its annotation). */
+  const texIn = (sel) =>
+    page.evaluate(
+      (s) =>
+        [...document.querySelectorAll(`${s} annotation`)].map((x) => x.textContent.replace(/\\displaystyle\s*/, '')),
+      sel,
+    );
+  {
+    // a common mistake — the converse: 7 divides 42 = 22 + 20, « so it divides 22 and 20 »
+    await page.click('[data-di-knode="khata-aks"]');
+    await page.waitForSelector('[data-di-kpanel="khata-aks"]');
+    await page.waitForTimeout(250);
+    const P = '[data-di-kpanel="khata-aks"]';
+    expect(
+      (await page.locator(`${P} [data-di-tab]`).count()) === 2 &&
+        (await page.getAttribute(`${P} [data-di-tab="card"]`, 'aria-selected')) === 'true' &&
+        ((await page.textContent(`${P} .di-kpanel__head h3`)) ?? '').trim().length > 2,
+      'a card opens in its panel: its kind, its title, its two tabs (the card, « تدرّب ») — the card first',
+    );
+    const wrong = (await page.textContent(`${P} .di-parts .is-wrong`)) ?? '';
+    const sum = 22 + 20;
+    expect(
+      sum % 7 === 0 && 22 % 7 !== 0 && 20 % 7 !== 0 && ['7', String(sum), '22', '20'].every((x) => wrong.includes(x)),
+      `the card of a common mistake shows the WRONG sentence first, with the story's numbers (7 divides ${sum} = 22 + 20, neither 22 nor 20): « ${wrong.trim().slice(0, 60)} »`,
+    );
+    expect(
+      (await page.locator(`${P} [data-di-uncover]`).count()) === 1 &&
+        (await page.locator(`${P} .di-parts .is-why, ${P} .di-parts .is-right`).count()) === 0 &&
+        (await page.getAttribute('[data-di-knode="khata-aks"]', 'data-read')) === 'false' &&
+        !(await kstate()).read.includes('khata-aks'),
+      'the reason and the right sentence are NOT shown before he asks: the card is not read yet',
+    );
+    await shot(page, 'know-card-mistake', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+    await page.click(`${P} [data-di-uncover]`);
+    await page.waitForSelector(`${P} .di-parts .is-right`);
+    const why = await texIn(`${P} .di-parts .is-why`);
+    expect(
+      why.some((f) => f.replace(/\s/g, '') === `22=7\\times${Math.floor(22 / 7)}+${22 % 7}`),
+      `uncovered, the card proves it with the division, computed here: 22 = 7 × ${Math.floor(22 / 7)} + ${22 % 7} (${why.join(' · ')})`,
+    );
+    expect(
+      (await page.locator(`${P} [data-di-uncover]`).count()) === 0 &&
+        (await page.locator(`${P} .di-parts .is-right`).count()) === 1 &&
+        (await page.getAttribute('[data-di-knode="khata-aks"]', 'data-read')) === 'true' &&
+        (await kstate()).read.join() === 'khata-aks' &&
+        (await page.getAttribute('[data-di-know-read]', 'data-di-know-read')) === '1',
+      'the card is now READ: ticked on the map, counted at the top of the page, saved',
+    );
+    await shot(page, 'know-card-mistake-read', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+
+    // the card of a key: its memo sheet, then its two questions — wrong, then right
+    await page.click('[data-di-knode="majmu"]');
+    await page.waitForSelector('[data-di-kpanel="majmu"]');
+    const K = '[data-di-kpanel="majmu"]';
+    expect(
+      (await page.locator(`${K} [data-di-tab]`).evaluateAll((els) => els.map((e) => e.dataset.diTab))).join() ===
+        'card,memo,quiz,train',
+      'the card of a KEY has four tabs: the card, its memo sheet, its questions, « تدرّب »',
+    );
+    await page.click(`${K} [data-di-tab="memo"]`);
+    await page.waitForSelector(`${K} .di-memo`);
+    {
+      const rows = await page.locator(`${K} .di-memo > div`).count();
+      const tex = await texIn(`${K} .di-memo`);
+      const plain = await page
+        .locator(`${K} .di-memo dd`)
+        .evaluateAll((els) => els.filter((e) => !e.querySelector('.katex')).map((e) => e.textContent));
+      expect(
+        rows === 5 && tex.length === 2 && plain.length === 3 && plain.every((t) => t.trim().length > 5),
+        `the memo sheet: the rule and its example drawn as formulas, the sentence that sticks, the trap, what to do in the exam (${rows} rows)`,
+      );
+      // the example is the story's: 7 divides 21 and 35, so 56 and 14 — every number computed here
+      expect(
+        tex.some((f) => ['7', '21', '35', String(21 + 35), String(35 - 21)].every((x) => f.includes(x))),
+        `its example says 7 | 21, 7 | 35 ⇒ 7 | ${21 + 35}, 7 | ${35 - 21} (${tex.join(' · ').slice(0, 90)})`,
+      );
+      check(!plain.some((t) => /\$|\\[a-zA-Z]{2,}/.test(t)), 'no raw formula in the sentences of the memo sheet');
+    }
+    await shot(page, 'know-card-memo', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+    await page.click(`${K} [data-di-tab="quiz"]`);
+    await page.waitForSelector(`${K} [data-di-quiz-check]`);
+    const options = await page.locator(`${K} [data-di-quiz]`).evaluateAll((els) =>
+      els.map((e) => ({
+        id: e.dataset.diQuiz,
+        text: e.textContent,
+        tex: [...e.querySelectorAll('annotation')].map((x) => x.textContent.replace(/\\displaystyle\s*/, '')),
+      })),
+    );
+    expect(
+      options.length === 6 && (await page.locator(`${K} [data-di-quiz-check][disabled]`).count()) === 1,
+      'two questions of three choices; « تحقّق » waits until both are answered',
+    );
+    // question 1: « 7 divides 21 and 35, so 7 divides… » — the walk evaluates each choice
+    const valueOf = (tex) => {
+      const t = tex.replace(/\s/g, '');
+      if (t.includes('\\div')) return NaN; // a quotient: not a number the key speaks of
+      return t.split(/(?=[+-])/).reduce((s, x) => s + Number(x), 0);
+    };
+    const q1 = options.filter((o) => o.id.startsWith('0-'));
+    const right1 = q1.filter((o) => Number.isInteger(valueOf(o.tex[0])) && valueOf(o.tex[0]) % 7 === 0);
+    expect(
+      right1.length === 1 && valueOf(right1[0].tex[0]) === 35 - 21,
+      `question 1: exactly one choice is a number 7 surely divides — 35 − 21 = 14 (${q1.map((o) => o.tex[0]).join(' | ')})`,
+    );
+    // question 2: « 7 divides 42 = 22 + 20, so… » — a choice that says « 7 divides N » is right only if it does
+    const q2 = options.filter((o) => o.id.startsWith('1-'));
+    const claims = (o) => (o.text.trim().startsWith('لا') ? null : Number(o.tex.at(-1)));
+    const right2 = q2.filter((o) => claims(o) === null || claims(o) % 7 === 0);
+    expect(
+      right2.length === 1 && claims(right2[0]) === null && q2.filter((o) => claims(o) !== null).length === 2,
+      `question 2: 7 divides neither 22 nor 20 — the one right choice is the one that claims nothing (${q2.map((o) => claims(o) ?? '—').join(' | ')})`,
+    );
+    const wrong1 = q1.find((o) => o.id !== right1[0].id);
+    await page.click(`${K} [data-di-quiz="${wrong1.id}"]`);
+    await page.click(`${K} [data-di-quiz="${right2[0].id}"]`);
+    await page.click(`${K} [data-di-quiz-check]`);
+    await page.waitForTimeout(200);
+    expect(
+      (await page.locator(`${K} .di-quiz .di-feedback`).count()) === 1 &&
+        (await page.locator(`${K} .di-quiz__gold`).count()) === 0 &&
+        (await kstate()).sealed.length === 0,
+      'one wrong choice of two: the sheet is NOT sealed, he is asked to look again',
+    );
+    await shot(page, 'know-card-quiz-retry', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+    await page.click(`${K} [data-di-quiz="${right1[0].id}"]`);
+    await page.click(`${K} [data-di-quiz-check]`);
+    await page.waitForSelector(`${K} .di-quiz__gold`);
+    expect(
+      (await kstate()).sealed.join() === 'jam-wal-farq' &&
+        (await page.getAttribute('[data-di-know-sealed]', 'data-di-know-sealed')) === '1' &&
+        (await page.locator('[data-di-knode="majmu"].is-gold').count()) === 1,
+      'both right: the memo sheet of « المجموع والفرق » is SEALED — gold on the map, counted, saved',
+    );
+    await shot(page, 'know-card-quiz-sealed', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+  }
+
   const tr = () =>
     page.evaluate(() => ({
       q: window.__trainer?.q,
@@ -196,6 +361,8 @@ await w.run(async () => {
   };
 
   const allPosts = [];
+  let modelsRead = 0;
+  let halfRight = 0;
   for (const card of Object.keys(TRAIN)) {
     await knode(card);
     await page.waitForTimeout(200);
@@ -307,7 +474,10 @@ await w.run(async () => {
         seen.add(`${q.kind}:${q.format}`);
         await shot(page, `tr-${card}-${i + 1}-${q.kind}-${q.format}`, { exit: ['[data-di-know-close]'] });
       }
-      const plan = i === 0 || i === 2 ? 'wrong-right' : i === 4 ? 'wrong-wrong' : 'right';
+      // questions 1, 3 and 5 are missed at the first try (one of them twice: the written correction). On « باقي القسمة »
+      // the question missed twice is the DIVISION (question 3), so that its model sheet is opened; elsewhere question 5.
+      const twice = card === 'baqi' ? 2 : 4;
+      const plan = i === twice ? 'wrong-wrong' : i === 0 || i === 2 || i === 4 ? 'wrong-right' : 'right';
       firstTries.push({
         q,
         first: plan === 'right' ? 'right' : 'wrong',
@@ -343,13 +513,40 @@ await w.run(async () => {
             `${card} · question ${i + 1} (${q.kind}): a second wrong answer gets the written correction`,
           );
           await shot(page, `tr-${card}-fix-${q.kind}`, { exit: ['[data-di-know-close]'] });
-          if (await page.locator('[data-di-tr-model]').count()) {
+          // the model sheet: offered beside the correction of a question that poses a division, and of no other
+          const posed = q.kind === 'rest';
+          expect(
+            ((await page.locator('[data-di-tr-model]').count()) === 1) === posed,
+            `${card} · question ${i + 1} (${q.kind}): ${posed ? 'its model sheet is offered beside the correction' : 'no model sheet — it poses no division'}`,
+          );
+          if (posed) {
             await page.click('[data-di-tr-model]');
             await page.waitForSelector('[data-di-model]');
-            for (let k = 0; k < 12 && (await page.locator('[data-di-model-next]').count()); k += 1)
+            expect(
+              (await page.getAttribute('[data-di-model]', 'data-di-model')) === 'own' &&
+                (await page.getAttribute('[data-di-model]', 'data-di-model-a')) === String(q.a) &&
+                (await page.getAttribute('[data-di-model]', 'data-di-model-b')) === String(q.b),
+              `${card}: after the correction the model sheet poses HIS division: ${q.a} ÷ ${q.b}`,
+            );
+            let taps = 0;
+            for (; taps < 12 && (await page.locator('[data-di-model-next]').count()); taps += 1)
               await page.click('[data-di-model-next]');
+            const final = (await page.textContent('[data-di-model]')) ?? '';
+            expect(
+              taps >= 1 &&
+                (await page.locator('[data-di-model-next]').count()) === 0 &&
+                (await page.locator('[data-di-model-close]').count()) === 1 &&
+                [Math.floor(q.a / q.b), q.a % q.b].every((x) => final.includes(String(x))),
+              `${card}: read step by step (${taps} taps) to its end — the quotient ${Math.floor(q.a / q.b)} and the remainder ${q.a % q.b}, computed here, are on the sheet`,
+            );
             await shot(page, `tr-${card}-model`, { exit: ['[data-di-model-close]'] });
             await page.click('[data-di-model-close]');
+            await page.waitForTimeout(150);
+            expect(
+              (await page.locator('[data-di-model]').count()) === 0 && (await tr()).fb === 'fix',
+              `${card}: closing the model sheet comes back to the correction`,
+            );
+            modelsRead += 1;
           }
         }
       }
@@ -399,20 +596,38 @@ await w.run(async () => {
       const x = owed[k];
       const c = p.claim;
       const v = x.value;
+      const { a, b, d } = x.q;
+      // which part of what he wrote the claim states, decided HERE from his numbers: the first part that is wrong —
+      // or, when the first part is right, the part that is this lesson's الكفاءة (the difference; the remainder = d × k)
+      const sumRight = x.q.kind === 'sumDiff' && d * Number(v.s) === a + b;
+      const divided = x.q.kind === 'rest' && b * Number(v.q) + Number(v.r) === a && Number(v.r) < b;
       const shapeOk = {
-        sumDiff: () => c.kind === 'pair' && c.a === x.q.a + x.q.b && c.b === x.q.d && c.e === Number(v.s),
-        multiple: () => c.kind === 'pair' && c.a === x.q.a * x.q.n && c.b === x.q.d && c.e === Number(v.k),
+        sumDiff: () =>
+          c.kind === 'pair' &&
+          c.b === d &&
+          (sumRight ? c.a === a - b && c.e === Number(v.f) : c.a === a + b && c.e === Number(v.s)),
+        multiple: () => c.kind === 'pair' && c.a === a * x.q.n && c.b === d && c.e === Number(v.k),
         rest: () =>
-          c.kind === 'division' && c.a === x.q.a && c.b === x.q.b && c.q === Number(v.q) && c.r === Number(v.r),
+          divided
+            ? c.kind === 'pair' && c.a === a % b && c.b === d && c.e === Number(v.k)
+            : c.kind === 'division' && c.a === a && c.b === b && c.q === Number(v.q) && c.r === Number(v.r),
       }[x.q.kind]();
       // the verdict the server will compute, computed here: a wrong first try makes a FALSE claim, a right one a TRUE claim
-      const truth = { pair: () => c.b * c.e === c.a, division: () => c.b * c.q + c.r === c.a && c.r >= 0 && c.r < c.b }[
-        c.kind
-      ]();
+      const truth = {
+        pair: () => c.e > 0 && c.b * c.e === c.a,
+        division: () => c.b * c.q + c.r === c.a && c.r >= 0 && c.r < c.b,
+      }[c.kind]();
       expect(
         shapeOk && truth === (x.first === 'right'),
         `${card}: evidence ${k + 1} (${x.q.kind}) carries what he WROTE at the first try — claim ${JSON.stringify(c).slice(0, 90)} — ${truth ? 'true' : 'false'} as his answer was ${x.first}`,
       );
+      if (x.first === 'wrong' && (sumRight || divided)) {
+        halfRight += 1;
+        expect(
+          truth === false,
+          `${card}: a HALF-right first try (${x.q.kind}: ${sumRight ? 'the sum right, the difference wrong' : 'the division right, the remainder not written d × k'}) is sent as a FALSE claim — no الكفاءة is credited`,
+        );
+      }
     }
     allPosts.push(...posts);
   }
@@ -420,6 +635,11 @@ await w.run(async () => {
     new Set(allPosts.map((p) => p.attemptId)).size === allPosts.length && allPosts.length === 6,
     `every evidence has its own attempt id (${allPosts.length}: two per card, none for the proof)`,
   );
+  expect(
+    halfRight === 2,
+    `two half-right first tries were sent and judged false: a sum without its difference, a division without « الباقي = d × k » (${halfRight})`,
+  );
+  expect(modelsRead === 1, `the model sheet of a division was opened and read to its end (${modelsRead})`);
   await page.click('[data-di-know-close]');
   await page.waitForSelector('[data-di-start]');
   expect(

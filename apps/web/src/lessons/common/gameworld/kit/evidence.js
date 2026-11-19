@@ -14,6 +14,17 @@ import { verifyClaim } from './claims';
 /** Does this answer count? ctx = { firstTry, helped } — helped: a model sheet or the rule was opened before it. */
 export const counts = (ctx) => Boolean(ctx?.firstTry) && !ctx.helped;
 
+/**
+ * The kit's SAFETY NET on a trainer answer (Trainer.jsx): the lesson's `check` says the answer is NOT right, yet the claim
+ * its evidence built would verify TRUE — the claim covers only part of the answer. It is not sent (a wrong answer is never
+ * credited), and development says so: the lesson's `world/evidence.js` must claim the whole answer.
+ */
+export function guardEvidence(ev, ok) {
+  if (!ev || ok || !verifyClaim(ev.claim)) return ev;
+  if (import.meta.env.DEV) console.warn('[evidence] a wrong answer made a TRUE claim — not sent:', ev);
+  return null;
+}
+
 export function createEvidence({ grade, points }) {
   /** The id of the الكفاءة a key proves, as the catalogue writes it — or null for a key that proves none. */
   const learningPointOf = (lessonId, key) => (points[key] ? `${grade}_${lessonId}_${points[key]}` : null);

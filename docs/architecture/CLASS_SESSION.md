@@ -195,6 +195,18 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   text is checked), `letterProof` (« $a + b = d \times (k + m)$ »: an option proves it when its right side is d times a
   bracket AND equals the left side for several k > m — evaluated, never read from the answer). A check also verifies that
   the numbers it computes on are the ones written in the question.
+  **The division road (2026-11-18)**: `1am/qisma-iqlidiya-baqi.json`, `1am/qawaid-qabiliyat-qisma.json`,
+  `2am/qisma-iqlidiya-hasr.json` — the API finds a file in ANY grade folder (`ClassSessionService::defaultTest` globs
+  `*/<lesson>.json`), and the test checks that a file sits in `<grade>/<lesson>.json` of its own `grade` and `lesson`. Their
+  start tests ask what the launch kit measures (the 1AM operations for the 1AM division; the 1AM division for the two others)
+  then two teasers. New `check` types, each re-computed: the operations — `product`, `difference`, `equality` (« $7 \times 6
+  + 4 = 46$ », the product before the sum), `valuePick`, `trueEquality`; the division — `dividend` (b × q + r with r < b),
+  `restMax`, `restPick`, `remainderIs`, `euclidIs` (a written equality: true AND r < b), `quotientBetween` (« بين 30 و 40 »:
+  the quotient estimated by tens); the rules — `missingDigit` (« 47▢ »: exactly one digit fits), `ruleReads` (what the rule
+  of k reads: the units digit, the digit sum or the last two digits, each option written as its form says); the bracket —
+  `needed` (the trips NEEDED, ⌈a ÷ b⌉), `upper` (the value by excess, a remainder required), `bracket` (« $q < a \div b <
+  q + 1$ » or « $a \div b = q$ », compared as fractions, the two numbers consecutive, the Euclidean division written in the
+  question). The numbers are the platform's own, none of the lesson's world.
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -250,8 +262,11 @@ only a rule that survived gets its NAME.** The teacher is never told what to say
 **The script is data** — the lesson's own `board/script.js` (`export const SCRIPT = { title, steps }`, named in its
 pack; the page loads it with `usePackPart(lessonId, 'script')`). A lesson without a script has no
 moment ③. Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
-board COMPUTES, then a `name` step that reads the lesson's own tablet; a long `cue` is cut in the footer at 1024 px, so keep it
-under about 70 characters, and a tablet's `math` holds at most two short equalities, or its row leaves the card). Each step has `id`, `kind`, `chapter` (« نكتشف », « نستنتج », « نسمّي », « نكتب ») and `cue` — ONE oral question
+board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
+a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most
+two rows of short equalities, or its row leaves the card — `board/board.test.js` of `khawass-qawasim`, `qisma-iqlidiya-baqi`,
+`qawaid-qabiliyat-qisma` and `qisma-iqlidiya-hasr` asserts both (`cue.length ≤ 70`, `math.length ≤ 2`); `qawasim-adad-tabii`'s
+does not yet. Each step has `id`, `kind`, `chapter` (« نكتشف », « نستنتج », « نسمّي », « نكتب ») and `cue` — ONE oral question
 shown in the footer for the teacher. Kinds, each drawn by one component of `LessonBoard.jsx`:
 
 | Kind | What the class does |
@@ -269,6 +284,12 @@ Rules of this screen:
 - **The verdict is what the class sees**: planks drop into the water and the open cells blink, or the child crosses
   (`BoardBridge.jsx`, the shared `KidFigure`). Never « wrong »: a prediction that misses is met by « لماذا؟ », a choice
   that misses by « لننظر إلى الجسور ».
+- **On the board, an `ask`'s `answer` is what FILLS the gap** (2026-11-19): `LessonBoard › Ask` draws every choice as the
+  bridge of the gap and that plank — green when the plank fills it, amber and falling when it does not. So the right choice
+  must be a plank that fills `a`: a question whose right answer is a plank that LEAVES cells (« which plank leaves 2? »)
+  would show the right answer as a fallen bridge. Ask it the other way round. `qisma-iqlidiya-baqi` re-asked its questions
+  so (its five `ask` stations: `count`, `grow`, `rebuild`, `scope`, `cable`) and its `board.test.js` checks every `ask` against the world's
+  `ruleForge.js › outcome(a, plank).held`: the planks drawn as holding are exactly the `answer`.
 - **A name never comes before the action**: every `name` step follows a `forge`, an `ask` or a `statements` step (tested).
 - **An adult's board**: the rail (one group per key of the lesson, then the copybook) jumps to any station; ← / → and
   PageDown / PageUp work for a presenter remote; « التالي » is never disabled — it is only quieter while the class has

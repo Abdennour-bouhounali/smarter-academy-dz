@@ -4,8 +4,10 @@
  * written here and none is told: what answers him is the strip or the chart.
  *
  *   <Inquiry spec={forge.inquiry} game={game} onDone={() => …} />
- *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, link? }], divisors, text }
+ *   spec = { kind: 'pairs', gaps: [36, 40, 30], text } | { kind: 'chart', planks: [{ b, manual, lenses, link? }], divisors, nextManual?, text }
  *        | turn, cut (`InquiryMoves.jsx`) | join, stack (`InquiryCombine.jsx`) | peel, letters (`InquiryProof.jsx`)
+ *        | groups, rebuild, estimate, bracket (`InquiryDivision.jsx` — the Euclidean division)
+ *        | common, ladder, nest (`InquiryGcd.jsx` — the greatest common divisor)
  *   — every spec shape is in docs/architecture/GAME_WORLD.md « استكشف ».
  * `text` is the LESSON's wording (this file names no lesson and writes none of its numbers).
  */
@@ -26,12 +28,12 @@ import {
 import { Turn, Cut } from './InquiryMoves';
 import { Join, Stack } from './InquiryCombine';
 import { Peel, Letters } from './InquiryProof';
+import { Groups, Rebuild, Estimate, Bracket } from './InquiryDivision';
+import { Common, Ladder, Nest } from './InquiryGcd';
+import { Cycle } from './InquiryCycle';
+import { INQUIRY_TEXT } from './strings';
+import { FAST, expose } from './inquiryParts';
 import './inquiry.css';
-
-const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
-const expose = (state) => {
-  if (import.meta.env.DEV) window.__inquiry = state;
-};
 
 // ───────────────────────── pairs: a plank and its partner walk toward each other ─────────────────────────
 const SW = 1000;
@@ -293,6 +295,8 @@ const divisionTex = (n, b) => {
 };
 /** How many of the last divisions stay on screen (the newest is the large one). */
 const DIVISIONS = 4;
+/** How many gaps of the next hundred he tests himself before the world finishes it (`spec.nextManual` overrides). */
+const NEXT_MANUAL = 3;
 
 function Chart({ spec, play, onDone }) {
   const T = spec.text;
@@ -319,14 +323,18 @@ function Chart({ spec, play, onDone }) {
   const judge = lens ? judgeClaim(p.b, lens, taken, from) : null;
   expose({ kind: 'chart', pi, b: p.b, from, stage, upto, taps, lens, link, values, judge, full, found });
 
+  // on the next hundred he tests the first gaps HIMSELF, one after the other (as on the first chart), then the world
+  // finishes the hundred
+  const handNext = spec.nextManual ?? NEXT_MANUAL;
   const testNext = () => {
     const n = Math.max(upto, first);
     play(holds(n, p.b) ? 'key' : 'pick');
     setUpto(n + 1);
     setTaps(taps + 1);
+    if (stage === 'confirm' && taps + 1 >= handNext && n + 1 < from + 100) fill(undefined, n + 1);
   };
-  const fill = (then) => {
-    let n = Math.max(upto, first);
+  const fill = (then, start = Math.max(upto, first)) => {
+    let n = start;
     let tick = 0;
     clearInterval(timer.current);
     timer.current = setInterval(
@@ -386,18 +394,16 @@ function Chart({ spec, play, onDone }) {
     setStage('test');
     turnTo(0);
   };
+  // the gaps he may still test by hand: on the first chart until it is full, on the next hundred his first `handNext`
+  const byHand = (stage === 'test' && !full) || (stage === 'confirm' && taps < handNext && !full);
   const tapCell = (n) => {
-    if (stage === 'test' && n === Math.max(upto, first)) testNext();
+    if (byHand && n === Math.max(upto, first)) testNext();
   };
-  // the next hundred is tested by the world as soon as it is on screen: the student watches it light up
-  useEffect(() => {
-    if (stage === 'confirm' && upto === from && from > 0) fill();
-  }, [stage, from]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const confirmed = stage === 'confirm' && full;
   // while he tests by hand, the division of each gap is WRITTEN: the last ones stay, the newest first
   const divisions =
-    stage === 'test'
+    stage === 'test' || (stage === 'confirm' && !full)
       ? Array.from({ length: Math.max(0, Math.min(DIVISIONS, upto - first)) }, (_, i) => upto - 1 - i)
       : [];
   const lensLabel = lens ? T.lens[lens] : '';
@@ -424,7 +430,9 @@ function Chart({ spec, play, onDone }) {
                       : T.lensAsk(p.b)
                     : confirmed
                       ? T.confirmed(p.b, from)
-                      : T.confirming(p.b, from)}
+                      : byHand
+                        ? (T.confirmTest ?? INQUIRY_TEXT.confirmTest)(p.b, from, handNext)
+                        : T.confirming(p.b, from)}
             </MathText>
           </p>
         </div>
@@ -498,7 +506,7 @@ function Chart({ spec, play, onDone }) {
         )}
 
         <div className="iq-actions">
-          {stage === 'test' && !full && (
+          {byHand && (
             <button
               type="button"
               className="rf-btn rf-btn--main"
@@ -562,12 +570,13 @@ function Chart({ spec, play, onDone }) {
             const c = claimed(n) && stage === 'lens';
             const cls = lit(n) ? 'is-lit' : dark(n) ? 'is-dark' : '';
             const mark = c ? (holds(n, p.b) ? 'is-claimed' : 'is-intruder') : '';
-            const kept = stage === 'confirm' && full && claimed(n);
+            // on the next hundred his claim is outlined on every gap already tested (by him, then by the world)
+            const kept = stage === 'confirm' && tested(n) && claimed(n);
             return (
               <button
                 key={n}
                 type="button"
-                className={`iq-cell ${cls} ${mark} ${kept ? 'is-claimed' : ''} ${n === Math.max(upto, first) && !full && stage === 'test' ? 'is-next' : ''}`}
+                className={`iq-cell ${cls} ${mark} ${kept ? 'is-claimed' : ''} ${n === Math.max(upto, first) && byHand ? 'is-next' : ''}`}
                 onClick={() => tapCell(n)}
                 data-iq-cell={n}
                 data-iq-lit={lit(n) ? '1' : dark(n) ? '0' : ''}
@@ -593,6 +602,14 @@ export default function Inquiry({ spec, game, onDone }) {
     stack: Stack,
     peel: Peel,
     letters: Letters,
+    groups: Groups,
+    rebuild: Rebuild,
+    estimate: Estimate,
+    bracket: Bracket,
+    common: Common,
+    ladder: Ladder,
+    nest: Nest,
+    cycle: Cycle,
   }[spec.kind];
   return <Kind spec={spec} play={play} onDone={onDone} />;
 }

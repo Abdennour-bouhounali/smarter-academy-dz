@@ -1,23 +1,45 @@
 import { describe, it, expect } from 'vitest';
 import { joinOf, stackOf, peelOf, fitsRow, judgePeelClaim, checkProofOrder, refuteCard } from './inquiry';
 
-/** Every experiment is TRUE for every number it may show: the loops run over every gap and plank a lesson could give. */
+/**
+ * Every experiment is TRUE for every number it may show. The ranges cover what the lessons that use these kinds give
+ * today, with room above: join — gaps up to 160 (the largest given is 152), planks up to 40 (largest 19); stack — gaps
+ * up to 60 (18, 21), planks up to 20 (6, 14), up to 1000 copies (100); peel — gaps up to 1000 (962, 735, 100), bridges up
+ * to 300 (296, 280, 42), every plank that divides the bridge (planks given up to 74). A lesson that gives more must
+ * widen these loops. The loops COLLECT what does not hold (`sweep`, one `expect` at the end): millions of cases stay fast.
+ */
+const sweep = (fn) => {
+  const bad = [];
+  fn((ok, label) => {
+    if (!ok && bad.length < 5) bad.push(label);
+  });
+  expect(bad).toEqual([]);
+};
+/** The planks of a gap (its divisors), shortest first. */
+const planksOf = (n) => {
+  const out = [];
+  for (let d = 1; d <= n; d += 1) if (n % d === 0) out.push(d);
+  return out;
+};
+
 describe('the investigation of a rule — join: two gaps glued, or cut one from the other', () => {
   it('a plank that fills both gaps fills the glued gap and the cut gap; the facts add up', () => {
-    for (let d = 1; d <= 15; d += 1)
-      for (let a = 1; a <= 45; a += 1)
-        for (let b = 1; b <= 45; b += 1)
-          for (const op of b <= a ? ['sum', 'diff'] : ['sum']) {
-            const j = joinOf(d, a, b, op);
-            expect(j.value).toBe(op === 'sum' ? a + b : a - b);
-            expect(j.planks * d + j.rest).toBe(j.value);
-            expect(j.rest).toBeLessThan(d);
-            expect(j.holds).toBe(j.value % d === 0);
-            expect(j.planksA * d + (a % d)).toBe(a);
-            if (j.fillsA && j.fillsB) expect(j.holds, `${d}: ${a} ${op} ${b}`).toBe(true);
-            // one filled and the other not: the joined gap never holds
-            if (j.fillsA !== j.fillsB) expect(j.holds, `${d}: ${a} ${op} ${b}`).toBe(false);
-          }
+    sweep((check) => {
+      for (let d = 1; d <= 40; d += 1)
+        for (let a = 1; a <= 160; a += 1)
+          for (let b = 1; b <= 160; b += 1)
+            for (const op of b <= a ? ['sum', 'diff'] : ['sum']) {
+              const j = joinOf(d, a, b, op);
+              const at = `${d}: ${a} ${op} ${b}`;
+              check(j.value === (op === 'sum' ? a + b : a - b), at);
+              check(j.planks * d + j.rest === j.value && j.rest < d, at);
+              check(j.holds === (j.value % d === 0), at);
+              check(j.planksA * d + (a % d) === a && j.planksB * d + (b % d) === b, at);
+              if (j.fillsA && j.fillsB) check(j.holds, at);
+              // one filled and the other not: the joined gap never holds
+              if (j.fillsA !== j.fillsB) check(!j.holds, at);
+            }
+    });
   }, 30000);
 
   it('neither gap filled, and the glued gap holds anyway — a fact the world shows', () => {
@@ -25,52 +47,68 @@ describe('the investigation of a rule — join: two gaps glued, or cut one from 
     expect(joinOf(7, 21, 35, 'sum')).toMatchObject({ value: 56, holds: true, planks: 8, planksA: 3, planksB: 5 });
     expect(joinOf(7, 35, 21, 'diff')).toMatchObject({ value: 14, holds: true, planks: 2 });
     expect(joinOf(7, 21, 30, 'sum')).toMatchObject({ value: 51, holds: false, rest: 2 });
+    expect(joinOf(19, 152, 95, 'diff')).toMatchObject({
+      value: 57,
+      fillsA: true,
+      fillsB: true,
+      holds: true,
+      planks: 3,
+    });
     expect(() => joinOf(7, 20, 21, 'diff')).toThrow(RangeError);
   });
 });
 
 describe('the investigation of a rule — stack: k copies of one gap', () => {
   it('a plank that fills a gap fills every number of copies of it; it counts k × (base ÷ d) planks', () => {
-    for (let d = 1; d <= 20; d += 1)
-      for (let base = 1; base <= 60; base += 1)
-        for (const k of [1, 2, 3, 4, 5, 7, 10, 12, 100, 1000]) {
-          const s = stackOf(d, base, k);
-          expect(s.total).toBe(k * base);
-          expect(s.planks * d + s.rest).toBe(s.total);
-          expect(s.fillsBase).toBe(base % d === 0);
-          if (s.fillsBase) expect(s).toMatchObject({ holds: true, planks: k * (base / d) });
-        }
+    sweep((check) => {
+      for (let d = 1; d <= 20; d += 1)
+        for (let base = 1; base <= 60; base += 1)
+          for (const k of [1, 2, 3, 4, 5, 7, 10, 12, 100, 1000]) {
+            const s = stackOf(d, base, k);
+            const at = `${d}: ${k} × ${base}`;
+            check(s.total === k * base && s.planks * d + s.rest === s.total && s.rest < d, at);
+            check(s.fillsBase === (base % d === 0), at);
+            if (s.fillsBase) check(s.holds && s.planks === k * (base / d), at);
+          }
+    });
   });
   it('a gap the plank does not fill may still be filled by some copies: a fact, never a verdict', () => {
     expect(stackOf(14, 21, 1)).toMatchObject({ fillsBase: false, holds: false });
     expect(stackOf(14, 21, 2)).toMatchObject({ total: 42, holds: true, planks: 3 });
     expect(stackOf(14, 21, 3)).toMatchObject({ holds: false, rest: 7 });
+    expect(stackOf(6, 18, 100)).toMatchObject({ total: 1800, holds: true, planks: 300 });
   });
 });
 
 describe('the investigation of a rule — peel: what is left when b is laid on a again and again', () => {
   it('the steps go down by b to a piece shorter than b: a = b × q + r', () => {
-    for (let a = 1; a <= 150; a += 1)
-      for (let b = 1; b <= a; b += 1) {
-        const p = peelOf(a, b);
-        expect(p.steps[0]).toBe(a);
-        expect(p.steps).toHaveLength(p.q + 1);
-        for (let i = 1; i < p.steps.length; i += 1) expect(p.steps[i - 1] - p.steps[i]).toBe(b);
-        expect(b * p.q + p.r).toBe(a);
-        expect(p.r).toBe(a % b);
-      }
-    expect(peelOf(53, 12)).toEqual({ q: 4, r: 5, steps: [53, 41, 29, 17, 5] });
-    expect(() => peelOf(5, 12)).toThrow(RangeError);
-  });
-
-  it('a plank that fills both gaps fills the piece left — for every gap, every plank', () => {
-    for (let a = 2; a <= 150; a += 1)
-      for (let b = 1; b < a; b += 1)
-        for (let d = 1; d <= b; d += 1) {
-          const f = fitsRow(a, b, d);
-          if (f.a && f.b) expect(f.r, `${a}, ${b}, ${d}`).toBe(true);
+    sweep((check) => {
+      for (let a = 1; a <= 1000; a += 1)
+        for (let b = 1; b <= Math.min(a, 300); b += 1) {
+          const p = peelOf(a, b);
+          const at = `${a} by ${b}`;
+          check(p.steps[0] === a && p.steps.length === p.q + 1, at);
+          for (let i = 1; i < p.steps.length; i += 1) if (p.steps[i - 1] - p.steps[i] !== b) check(false, at);
+          check(b * p.q + p.r === a && p.r === a % b && p.r < b, at);
         }
-  });
+    });
+    expect(peelOf(53, 12)).toEqual({ q: 4, r: 5, steps: [53, 41, 29, 17, 5] });
+    expect(peelOf(735, 280)).toEqual({ q: 2, r: 175, steps: [735, 455, 175] });
+    expect(() => peelOf(5, 12)).toThrow(RangeError);
+  }, 30000);
+
+  it('a plank that fills both gaps fills the piece left — for every gap, every plank of the bridge', () => {
+    sweep((check) => {
+      for (let b = 1; b <= 300; b += 1) {
+        const planks = planksOf(b);
+        for (let a = b + 1; a <= 1000; a += 1)
+          for (const d of planks) {
+            const f = fitsRow(a, b, d);
+            if (f.a && f.b) check(f.r, `${a}, ${b}, ${d}`);
+          }
+      }
+    });
+  }, 30000);
 
   /** rounds whose table holds a plank of a alone, of b alone, and of both — none of them fills the piece by chance */
   const ROUNDS = [
@@ -85,10 +123,10 @@ describe('the investigation of a rule — peel: what is left when b is laid on a
     { cols: ['a', 'b'], link: 'or' },
     { cols: ['a', 'b'], link: 'and' },
   ];
+  const holding = (rounds) => CLAIMS.filter((c) => judgePeelClaim(rounds, c).ok);
 
   it('of every claim his table allows, exactly one holds: « both gaps ⇒ the piece »', () => {
-    const ok = CLAIMS.filter((c) => judgePeelClaim(ROUNDS, c).ok);
-    expect(ok).toEqual([{ cols: ['a', 'b'], link: 'and' }]);
+    expect(holding(ROUNDS)).toEqual([{ cols: ['a', 'b'], link: 'and' }]);
     expect(judgePeelClaim(ROUNDS, { cols: ['a'], link: 'and' }).intruders.length).toBeGreaterThan(0);
     expect(judgePeelClaim(ROUNDS, { cols: ['b'], link: 'and' }).intruders.length).toBeGreaterThan(0);
     expect(judgePeelClaim(ROUNDS, { cols: ['a', 'b'], link: 'or' }).intruders.length).toBeGreaterThan(0);
@@ -96,12 +134,25 @@ describe('the investigation of a rule — peel: what is left when b is laid on a
     expect(both.taken.map((f) => f.d)).toEqual([3, 5]);
   });
 
+  it('the example round of GAME_WORLD.md « spec shapes » holds exactly one claim on its own; one round alone may hold two', () => {
+    // GAME_WORLD.md: rounds: [{ a: 50, b: 20, candidates: [2, 4, 5, 25] }] — 25 fills a alone, 4 fills b alone, neither
+    // fills the piece 10; 2 and 5 fill both
+    expect(holding([{ a: 50, b: 20, candidates: [2, 4, 5, 25] }])).toEqual([{ cols: ['a', 'b'], link: 'and' }]);
+    // 54 by 21 alone: every plank of a here fills the piece 12 — « fills a » is never refuted, two claims hold
+    expect(holding([{ a: 54, b: 21, candidates: [2, 3, 6, 7] }])).toHaveLength(2);
+  });
+
   it('« both gaps ⇒ the piece » is never refuted, whatever the rounds', () => {
-    for (let a = 10; a <= 90; a += 7)
-      for (let b = 3; b < a; b += 4) {
-        const candidates = Array.from({ length: b }, (_, i) => i + 1);
-        expect(judgePeelClaim([{ a, b, candidates }], { cols: ['a', 'b'], link: 'and' }).intruders).toEqual([]);
-      }
+    sweep((check) => {
+      for (let a = 10; a <= 1000; a += 7)
+        for (let b = 3; b < Math.min(a, 300); b += 4) {
+          const candidates = [...new Set([...planksOf(b), ...planksOf(a).filter((d) => d <= b)])];
+          check(
+            judgePeelClaim([{ a, b, candidates }], { cols: ['a', 'b'], link: 'and' }).intruders.length === 0,
+            `${a}, ${b}`,
+          );
+        }
+    });
   });
 });
 

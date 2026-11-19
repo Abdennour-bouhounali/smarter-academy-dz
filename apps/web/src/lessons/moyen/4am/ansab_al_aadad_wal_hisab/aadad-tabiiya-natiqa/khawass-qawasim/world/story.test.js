@@ -89,12 +89,69 @@ describe('the numbers of « خواص قواسم عدد طبيعي » — every f
     expect(T.costAsk(35, 29)).toContain('29 لوحًا');
   });
 
+  it('the bridge after the third key is one that key reads: what 280 leaves under the piece 175', () => {
+    const { long, short, plank, after } = NUMBERS.peel;
+    const piece = long % short;
+    const i = STORY.segments.findIndex((s) => s.kind === 'rail') + 1;
+    const seg = STORY.segments[i];
+    // it is the gap that follows the forge of « باقي القسمة » (island 6), and it is 280 = 175 × 1 + 105
+    expect(STORY.pendingForge({ state: { stage: i, keys: [] } })).toBe('baqi-qisma');
+    expect([Math.floor(short / piece), short % piece]).toEqual([1, 105]);
+    expect([seg.id, seg.a, seg.holdsWith, seg.predict]).toEqual(['g105', short % piece, plank, true]);
+    expect(seg.moulds).toEqual(after);
+    // the key decides before any plank is laid: ONE mould fills the bridge AND the piece — and it fills what is left
+    const both = after.filter((b) => divides(b, short) && divides(b, piece));
+    expect(both).toEqual([plank]);
+    expect(after.filter((b) => divides(b, seg.a))).toEqual([plank]);
+    // the two others are the lesson's trap: they fill the bridge only, and the key says nothing of them
+    const one = after.filter((b) => divides(b, short) && !divides(b, piece));
+    expect(one).toEqual([10, 14]);
+    for (const b of one) expect(divides(b, seg.a), `mould ${b}`).toBe(false);
+    // each of them is a plank he met on the table of the experiment
+    expect(NUMBERS.peel.planks).toEqual(expect.arrayContaining(after));
+    // the story says where the gap comes from, and the sentence of the held bridge is true
+    const said = [];
+    const game = { T: STORY.text, say: (line) => said.push(line), onModule: () => {} };
+    STORY.afterKey['baqi-qisma'](game);
+    expect(said[0]).toContain(`القطعة ${piece} على الجسر ${short}`);
+    expect(said[0]).toContain(`${seg.a} خانة`);
+    expect(STORY.onHold(game, seg)).toBe(true);
+    expect(said[1]).toContain('280 = 175 \\times 1 + 105');
+    expect(said[1]).toContain('105 = 35 \\times 3');
+    expect(STORY.onHold(game, { id: 'g18' })).toBe(false);
+  });
+
   it('every wave of the gate dash has exactly one gate that holds', () => {
     expect(STORY.dashWaves).toHaveLength(8);
     for (const w of STORY.dashWaves) {
       expect(w.gates.filter(w.test), w.say).toHaveLength(1);
       expect(new Set(w.gates).size).toBe(3);
     }
+  });
+
+  it('the gate dash gives nothing of the island it leads to away: no wave says 735, 280, 175, 105 or a product of 35', () => {
+    const { long, short, plank } = NUMBERS.peel;
+    const secret = [long, short, long % short, short % (long % short)];
+    for (const w of STORY.dashWaves) {
+      const numbers = [...(w.say.match(/\d+/g) ?? []).map(Number), ...w.gates];
+      for (const n of secret) expect(numbers, w.say).not.toContain(n);
+      // 35 is a gap of island A (« قاسم مشترك للعددين 21 و 35 »), never the plank of a product to complete
+      expect(w.say, w.say).not.toContain(`${plank} \\times`);
+    }
+    // its last wave reads the sum island A showed: 7 × 6 = 42 = 22 + 20
+    const last = STORY.dashWaves.at(-1);
+    expect(last.say).toContain(`${NUMBERS.join.plank} \\times \\square = 42`);
+    expect(last.gates.filter(last.test)).toEqual([6]);
+  });
+
+  it('agrees a count with what it counts: one plank, two planks, three to ten, eleven and more', () => {
+    const T = STORY.text.boss;
+    expect(T.err.long(35, 1)).toMatch(/^لوح واحد طوله 35/);
+    expect(T.err.long(35, 2)).toMatch(/^لوحان طولهما 35/);
+    expect(T.err.long(35, 3)).toMatch(/^3 ألواح طولها 35/);
+    expect(T.err.long(35, 30)).toMatch(/^30 لوحًا طولها 35: 1050 خانة/);
+    expect(STORY.text.say.first).toMatch(/^3 ألواح طولها 7 تملأ 21 خانة/);
+    expect(STORY.text.say.bossOk).toMatch(/^29 لوحًا طولها 35/);
   });
 
   it('the tablets say the story’s own numbers, and their equalities are true', () => {

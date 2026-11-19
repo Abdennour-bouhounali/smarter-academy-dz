@@ -463,7 +463,7 @@ group too few leaves enough for another (`short`: a ghost bouquet over the lefto
 'short' | 'exact', ok })` (`r` null on `over`; `a` is 48 during the contrast), `onFinished({ a, b })`. Not eligible for « جرّب كل
 الإمكانيات ». Default q = 0. DOM: `[data-division-jumps][data-world][data-a][data-b][data-q][data-solved]`, `[data-dj-glance]`,
 `[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
-`[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
+`[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs` — it opens the lesson's module pages, DELETED on 2026-11-18 (the lesson is v2; `docs/reports/OLD_VERSION_TRACE_2026-11-18.md` §8): no page mounts this lab today.
 
 **Look (2026-10-14, kit §8ter).** A `PromptCard` on top in the §17.9 form — context with every number (« عند بائعة الأزهار 47 زهرةً، وفي كل باقة 6
 زهرات. »; a lesson `lead` replaces it for its own numbers, e.g. 253 pearls), the question « اصنع الباقات حتى تعرف كم باقة كاملة تخرج من
@@ -503,7 +503,7 @@ two gestures land in one render — `onFinished({ mode })`. Not eligible for « 
 `[data-dc-cell=<n>][data-colour][data-revealed]`, `[data-dc-ledger-row=<d>]`, `[data-dc-card=<digit>][data-placed]`,
 `[data-dc-slot=<i>][data-digit]` (slot 0 = leftmost digit), `[data-dc-lamp=<d>][data-state][data-flip]`, `[data-dc-claim=<d>]
 [data-claim]`, `[data-dc-task=<d>][data-done]`, `[data-dc-submit]`, `[data-dc-none]`, `[data-dc-verdict]`, `[data-dc-refused]`,
-`[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs`.
+`[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs` — it opens the lesson's module pages, DELETED on 2026-11-18 (the lesson is v2; `docs/reports/OLD_VERSION_TRACE_2026-11-18.md` §8): no page mounts this lab today.
 
 **Look (2026-10-14, kit §8ter).** Both worlds sit on the kit: a `PromptCard` in the §17.9 form (context « في الجدول الأعداد من 0 إلى 48. » /
 « عندك أربع بطاقات: 4 ، 5 ، 9 ، 3. », question « لوّن كل مضاعفات 2 ثم 5 ثم 3. » / « رتّب البطاقات حتى تكوّن أكبر عدد يقبل القسمة على

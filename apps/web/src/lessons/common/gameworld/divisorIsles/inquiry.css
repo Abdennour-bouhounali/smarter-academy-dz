@@ -1046,3 +1046,363 @@
     display: none;
   }
 }
+
+/* ── groups, rebuild, estimate, bracket: the Euclidean division (InquiryDivision.jsx) ── a = b × q + r, 0 ≤ r < b.
+   SVG text is ≥ 18 units of a 1000-wide scene; HTML text keeps the 12 px floor of the forge's zoom (--di-min-font). */
+.iq--div {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto;
+  gap: 0.4rem;
+}
+.iq--div .iq-lead p {
+  font-size: max(var(--di-min-font, 12px), 1.2rem);
+}
+.iq--div .iq-goal {
+  font-size: max(var(--di-min-font, 12px), 1rem);
+}
+.iq--div .iq-fact {
+  min-height: 1.6em;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
+}
+.iq--div .iq-calc {
+  min-height: 1.8rem;
+  font-size: max(var(--di-min-font, 12px), 1.25rem);
+}
+.iq--div .iq-found li {
+  font-size: max(var(--di-min-font, 12px), 0.92rem);
+}
+/* the question of the moment, beside its buttons or its boxes */
+.iq-askline {
+  flex: 1 1 100%;
+  margin: 0;
+  text-align: center;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
+  font-weight: 800;
+  line-height: 1.5;
+}
+.rf-root .iq-askline {
+  color: #e8f6ff;
+}
+/* a typed answer in its own shape: the boxes inside the line they complete (never two lines) */
+.iq-tpl {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: max(var(--di-min-font, 12px), 1.4rem);
+  font-weight: 800;
+  white-space: nowrap;
+}
+.rf-root .iq-tpl {
+  color: #e8f6ff;
+}
+.iq-tpl label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.iq-tpl label small {
+  font-size: max(var(--di-min-font, 12px), 0.95rem);
+  font-weight: 800;
+  opacity: 0.85;
+}
+.iq .di-num {
+  height: 2.6rem;
+  min-width: 3.4rem;
+  font-size: max(var(--di-min-font, 12px), 1.4rem);
+}
+/* the end of the gap: a plank that passes it hangs in the air */
+.iq-gapend {
+  stroke: #e8f6ff;
+  stroke-width: 3;
+  stroke-dasharray: 6 5;
+}
+.iq-plankno {
+  font-size: 18px;
+  fill: #06203f;
+}
+.iq-plank.is-new {
+  fill: #8dffb0;
+  stroke: #e8f6ff;
+}
+/* the cloth over the gap of « rebuild »: lifted once he has said its length */
+.iq-cloth {
+  fill: #1c3f7a;
+  stroke: #9fd8ff;
+  stroke-width: 2;
+  transform-box: fill-box;
+  transition:
+    transform 0.8s cubic-bezier(0.5, 0, 0.25, 1),
+    opacity 0.8s;
+}
+.iq-cloth.is-lifted {
+  transform: translateY(70px);
+  opacity: 0;
+}
+/* the ruler (estimate) and the line of the multiples (bracket) */
+.iq-mark line {
+  stroke: rgba(159, 216, 255, 0.7);
+  stroke-width: 2.5;
+}
+.iq-mark__value {
+  font-size: 19px;
+  fill: #9fd8ff;
+}
+.iq-mark__count {
+  font-size: 18px;
+  fill: #cfe9ff;
+}
+.iq-mark.is-pick line {
+  stroke-width: 5;
+}
+.iq-mark.is-ok line {
+  stroke: #7dfcff;
+}
+.iq-mark.is-ok text {
+  fill: #7dfcff;
+}
+.iq-mark.is-passes line,
+.iq-mark.is-short line {
+  stroke: #fbbf24;
+}
+.iq-mark.is-passes text,
+.iq-mark.is-short text {
+  fill: #fbbf24;
+}
+/* bracket: the flag stands ON this mark (nothing left) — the mark takes the flag's gold */
+.iq-mark.is-flagged line {
+  stroke: #fbbf24;
+  stroke-width: 6;
+}
+.iq-mark.is-flagged .iq-mark__value {
+  fill: #fbbf24;
+  font-weight: 700;
+}
+.iq-flag line {
+  stroke: #fbbf24;
+  stroke-width: 3;
+}
+.iq-flag path {
+  fill: #fbbf24;
+}
+.iq-flag text {
+  font-size: 22px;
+  fill: #fbbf24;
+}
+@media (max-height: 500px) {
+  .iq--div {
+    gap: 0.2rem;
+  }
+  .iq .di-num {
+    height: 2.3rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .iq-cloth {
+    transition: none;
+  }
+}
+
+/* ── common, ladder, nest: the greatest common divisor (InquiryGcd.jsx) ── one plank for two gaps. Same floors as above:
+   SVG text ≥ 18 units of a 1000-wide scene, HTML text max(--di-min-font, …). */
+.iq--common {
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto auto auto auto;
+}
+.iq--nest {
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto auto auto;
+}
+.iq-scene__num.is-gold {
+  fill: #fbbf24;
+}
+.iq .rf-btn.is-on {
+  background: #7dfcff;
+  border-color: #7dfcff;
+}
+.rf-root .iq .rf-btn.is-on {
+  color: #06203f;
+}
+.iq .iq-chip:disabled {
+  cursor: default;
+}
+.iq-side {
+  font-size: max(var(--di-min-font, 12px), 1rem);
+  font-weight: 900;
+}
+.rf-root .iq-side {
+  color: #9fd8ff;
+}
+/* common: the tray of candidate planks (right) and the shelves they go to */
+.iq-shelves {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.6rem;
+  min-height: 3.6rem;
+}
+.iq-shelf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 7rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.9rem;
+  border: 1.5px solid rgba(159, 216, 255, 0.3);
+  background: rgba(255, 255, 255, 0.04);
+}
+.iq-shelf small {
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
+  font-weight: 800;
+}
+.rf-root .iq-shelf small {
+  color: #9fd8ff;
+}
+.iq-shelf--tray {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  border-style: dashed;
+  max-width: 16rem;
+}
+.iq-shelf--both {
+  border-color: rgba(141, 255, 176, 0.6);
+  background: rgba(141, 255, 176, 0.08);
+}
+.iq-shelf--none {
+  opacity: 0.7;
+}
+.iq-shelf .iq-chip,
+.iq--nest .iq-chip {
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
+}
+/* ladder: one row per pair, read left to right: its number, its bar, the pair and its calculation, the common planks */
+.iq-ladder {
+  display: grid;
+  grid-auto-rows: minmax(0, 2.7rem);
+  align-content: center;
+  gap: 0.25rem;
+  min-height: 0;
+  overflow: hidden;
+}
+.iq-rung {
+  display: grid;
+  grid-template-columns: 2rem minmax(6rem, 1fr) minmax(0, 1.4fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0 0.6rem;
+  border-radius: 0.8rem;
+  animation: iq-drop 0.35s ease-out backwards;
+}
+.iq-rung.is-written {
+  background: rgba(125, 252, 255, 0.06);
+}
+.iq-rung.is-new {
+  background: rgba(125, 252, 255, 0.14);
+}
+.iq-rung--head,
+.iq-rung--fold {
+  animation: none;
+}
+.iq-rung--head small,
+.iq-rung--fold small {
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
+  font-weight: 800;
+  text-align: center;
+}
+.iq-rung--fold small {
+  grid-column: 2 / -1;
+}
+.rf-root .iq-rung--head small,
+.rf-root .iq-rung--fold small {
+  color: #9fd8ff;
+}
+.iq-rung__n {
+  font-size: max(var(--di-min-font, 12px), 1rem);
+  font-weight: 900;
+  text-align: center;
+}
+.rf-root .iq-rung__n {
+  color: #7dfcff;
+}
+.iq-rung__bar {
+  width: 100%;
+  height: 1.7rem;
+}
+.iq-rung__tex {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: max(var(--di-min-font, 12px), 1.15rem);
+  white-space: nowrap;
+}
+.rf-root .iq-rung__tex {
+  color: #e8f6ff;
+}
+.iq-rung__ticks {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  font-size: max(var(--di-min-font, 12px), 0.95rem);
+  font-weight: 900;
+  white-space: nowrap;
+}
+.iq-rung__ticks b {
+  padding: 0 0.4rem;
+  border-radius: 0.5rem;
+  background: rgba(141, 255, 176, 0.15);
+}
+.rf-root .iq-rung__ticks b,
+.rf-root .iq-rung__ticks i {
+  color: #8dffb0;
+}
+.iq-rung__ticks i {
+  font-style: normal;
+}
+.iq-plank.is-open {
+  fill: rgba(47, 125, 246, 0.35);
+  stroke-dasharray: 4 3;
+}
+.iq-plank.is-end {
+  fill: #fbbf24;
+  stroke: #ffe2a8;
+}
+/* nest: g and its planks, given all along; then the two lists side by side */
+.iq-gknown {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.9rem;
+  font-size: max(var(--di-min-font, 12px), 1.15rem);
+  font-weight: 800;
+}
+.iq-gknown small,
+.iq-lists small {
+  font-size: max(var(--di-min-font, 12px), 0.95rem);
+  font-weight: 800;
+}
+.rf-root .iq-gknown,
+.rf-root .iq-lists small {
+  color: #e8f6ff;
+}
+.iq-lists {
+  display: flex;
+  justify-content: center;
+  gap: 1.4rem;
+  flex: 1 1 100%;
+}
+.iq-lists > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 0.9rem;
+  border: 1.5px solid rgba(141, 255, 176, 0.5);
+}
+@media (prefers-reduced-motion: reduce) {
+  .iq-rung {
+    animation: none;
+  }
+}

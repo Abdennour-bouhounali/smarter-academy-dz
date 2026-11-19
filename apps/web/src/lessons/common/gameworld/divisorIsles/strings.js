@@ -145,6 +145,27 @@ export function explain(w, n) {
   }
 }
 
+/**
+ * The world's own words for an experiment (`Inquiry*.jsx`) when the lesson's `spec.text` does not give its own: a press
+ * that cannot be answered yet is answered by what is missing on the screen — a fact, never « wrong ».
+ */
+export const INQUIRY_TEXT = {
+  // common: « تحقّق » pressed with no plank marked on the shelf of both gaps, or with the count box empty
+  sayFirst: ({ needLong, needCount }) =>
+    needLong && needCount
+      ? 'لم تعلّم لوحًا بعدُ، وخانة عدد الألواح فارغة: اضغط أطول لوح على رفّ الهوّتين معًا، ثمّ اكتب العدد.'
+      : needLong
+        ? 'لم تعلّم لوحًا بعدُ: اضغط أطول لوح على رفّ الهوّتين معًا.'
+        : 'خانة عدد الألواح فارغة: عُدّ الألواح على رفّ الهوّتين معًا واكتب العدد.',
+  // chart: the next hundred, while he tests its first gaps himself (then the world finishes it: `text.confirming`)
+  confirmTest: (b, from, n) =>
+    `هل تصمد قراءتك بعد المئة الأولى؟ جرّب اللوح ${b} بنفسك على أوّل ${n === 1 ? 'هوّة' : n === 2 ? 'هوّتين' : n <= 10 ? `${n} هوّات` : `${n} هوّة`} من ${from}، ثمّ يكمل العالم إلى ${from + 99}.`,
+  // letters: a false card that none of the samples refutes — where it stands, not a verdict
+  unrefuted: () => 'هذا السطر لا يُستنتَج من المعطيات ولا من سطر فوقه: لا مكان له في البرهان.',
+  // letters: a sample whose □ is not a natural number (value is not by × a natural number) — shown, then the world moves on
+  noWhole: (v, value, by) => `بهذه الأعداد لا يوجد عدد طبيعي □ يجعل $${by} \\times \\square = ${value}$.`,
+};
+
 export const T = {
   turn: { body: 'الأرخبيل واسع: يُلعب والهاتف بالعرض.' },
   title: 'أرخبيل القواسم',

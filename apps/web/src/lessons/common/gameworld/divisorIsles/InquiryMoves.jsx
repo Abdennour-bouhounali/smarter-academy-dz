@@ -11,13 +11,7 @@
 import { useEffect, useRef, useState } from 'react';
 import MathText from '../../components/MathText';
 import { wall, pieceOf, quotientTex } from './inquiry';
-
-const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
-const expose = (state) => {
-  if (import.meta.env.DEV) window.__inquiry = state;
-};
-const X0 = 40;
-const SPAN = 920;
+import { FAST, expose, X0, SPAN } from './inquiryParts';
 
 // ───────────────────────── turn ─────────────────────────
 const GAP_Y = 318;

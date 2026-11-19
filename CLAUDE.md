@@ -21,7 +21,12 @@ below.** The French-era lessons and catalogue were deleted on 2026-09-25: an old
 2. **`docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0 — the LIVE state of the lesson v2 rollout and the ordered list of
    what is left** (the first unticked line is the next thing to do). `npm run status:lesson-v2` prints the same from the
    code: which lessons are v2, and how many still stand on each old system.
-3. The contract of the area you touch (table below), then the code.
+3. **Rebuilding a lesson: never read the old lesson** (owner, 2026-11-18 — it is rebuilt from scratch). What it must teach is
+   `npm run lesson:brief -- <id>` (the learning net: الكفاءات, learning-point ids, prerequisites, what not to rebuild, and a
+   digest of what its exercises ask, learning point by learning point); its
+   **exercise bank is used as it is** (`content/practice/<grade>/<id>/`), never regenerated. The pipeline is
+   `LESSON_V2_MASTER_PLAN.md` §9.
+4. The contract of the area you touch (table below), then the code.
 
 ## The lesson, today: v2 (BINDING since 2026-11-17, owner decision D6)
 
@@ -40,6 +45,9 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
   rule. A rule that is a search, a pattern or a procedure is FOUND FIRST by an experiment made for it (`forge.inquiry` —
   « استكشف »: he tries, predicts, claims, and the world answers with facts), starting from what he has just done; a help
   never narrows to a choice between written rules. `GAME_WORLD.md` « استكشف »; reference: `qawasim-adad-tabii`.
+- **The LAST lesson of each unit** (« أدمج تعلّماتي ») is not a lesson of keys: it is three missions on the BEM's
+  integration situation, a recap of the unit and the bank as training exams. It is built after the unit's other lessons,
+  by `docs/reports/INTEGRATION_LESSON_PLAN.md` (owner, 2026-11-19; PLAN, not built), and it is designed and coded by Fable.
 - A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768,
   1024×768 and 1840×900 pass AND its screenshots were looked at with the eyes.
 - Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
@@ -90,6 +98,13 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 - **Discover, don't be told**: the student acts first; a rule gets its name only after he has it.
 - **Show your limit**: a lesson or a lab that merely works is not done (`MANIPULATION_DNA.md` §17 — for 11–13 year olds).
 - A learning point is « الكفاءة / الكفاءات » in every visible string — never « نقطة التعلّم » (identifiers unchanged).
+- **The exercise bank is used AS IT IS, in every generation** (owner, 2026-11-18): a lesson's practice space and exam sitting
+  serve `content/practice/<grade>/<id>/` unchanged — never generated look-alike exercises. A defect of the bank (a « DA »
+  price, a textbook citation) is reported to the owner, never silently replaced. Where the code stands (review of
+  2026-11-19): the exam sitting « الامتحان الأبيض » and the practice page serve the bank; the per-key drills « تدرّب » of a
+  world still generate their own questions — OPEN, the owner decides whether they move to the bank; a « DA » of the bank is
+  shown as « دج » on screen (the file is not changed) and the sheets are listed in `BANK_AS_IS_2026-11-18.md`. **A lesson is rebuilt from scratch and its
+  old version is never read**: what it must teach is `npm run lesson:brief -- <id>` (`LESSON_V2_MASTER_PLAN.md` §9).
 - **A class test never changes a student's progress.** Only exam-format first tries of the game are evidence, and the
   SERVER re-computes their verdict (`LESSON_V2.md` §1bis). The student's private answers and his world save are never
   evidence and never read by a teacher, a school or a parent.
@@ -144,7 +159,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 | `npm run check:lessons` | lesson and exercise validators, the generated indexes, the calendar, the entry budget |
 | `npm run check:entry-budget` | the entry bundle: 212 KB gzip (measured 197.8). No entry module imports a catalogue name; lessons mount through ONE lazy boundary |
 | `npm test` (core, web, scripts) — or `npx vitest run` in `apps/web` / `packages/core` | unit tests |
-| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`, `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
+| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`; a sitting walk opens every sheet of the bank (`E2E_PARTS=<part>` runs one part, not a full run); `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
 
 Generators to run after a change: `generate:lesson-index` (a lesson, its modules or its pack), `generate:lab-order`
 (a lesson added or re-ordered), `generate:learning-net` (a link of the net), `generate:compass-index`.

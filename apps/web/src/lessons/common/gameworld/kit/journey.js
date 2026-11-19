@@ -13,7 +13,7 @@
  *   cards   how many cards its knowledge map has
  */
 import { SUMMARY } from './ladder';
-import { PASS, sittingStars } from './sitting';
+import { sittingPassed, sittingStars } from './sitting';
 
 export const emptyExam = () => ({ best: {}, fails: {}, weak: {}, sittings: 0 });
 const starsOf = (exam, n) => exam.best?.[n]?.stars ?? 0;
@@ -32,10 +32,11 @@ export function createJourney({ keys, ladder, levels, stages, cards }) {
    * A sitting was handed in. Returns the new exam state and what the student is told:
    *   passed (≥ 80 % of the points) — `promoted` when it is the first time this level is passed (the next level opens);
    *   otherwise the kinds of exercise to work on: the NEXT sheet of this level puts them first, with other numbers.
+   * A subject with no points (`total` 0) is never passed: no star, no promotion.
    */
-  function applySitting(exam, level, mark, total, weak) {
+  function applySitting(exam, level, mark, total, weak = []) {
     const stars = sittingStars(mark, total);
-    const passed = mark >= total * PASS;
+    const passed = sittingPassed(mark, total);
     const before = exam.best?.[level] ?? { stars: 0, mark: 0 };
     const next = {
       ...exam,

@@ -4,6 +4,7 @@
 // Run (dev server up): [E2E_SIZE=1366x768] [E2E_TOUCH=1] node apps/web/e2e/gameworld-qawasim.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
+import { tinyText } from './lib/walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -24,7 +25,9 @@ async function noScroll(page, where) {
   const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
     // a formula is DRAWN: no dollar sign, no backslash command may be read on screen (text outside the rendered formulas)
-    { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('.katex, script, style')) continue; if (/\$|\\(times|div|frac|dfrac|le|ge|ne|sqrt|cdot)\b/.test(t.nodeValue) && p.getClientRects().length) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); } }
+    // (any backslash command, as lib/walk.mjs › readScreen), and money is « دج » only — never « DA », €, USD or « د.ج »
+    { let text = ''; const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('script, style, noscript, .katex-mathml, title') || !p.getClientRects().length) continue; if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(t.nodeValue)) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); const cs = getComputedStyle(p); if (cs.visibility !== 'hidden' && Number(cs.opacity) !== 0) text += ` ${t.nodeValue}`; }
+      if (/(?<![A-Za-z])DA(?![A-Za-z])|€|\bUSD\b|د\.ج/.test(text)) bad.push('money not in « دج » (DA, €, USD or د.ج on screen)'); }
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
@@ -47,6 +50,8 @@ async function noScroll(page, where) {
   // a « cut » that is only a fit in progress gets a moment — a real cut stays and fails
   for (let i = 0; i < 5 && res.bad.length && res.bad.every((b) => b.startsWith('cut:')); i += 1) { await page.waitForTimeout(300); res = await measure(); }
   for (const x of res.small) shrunk.set(x, where);
+  // the 12 px floor (GAME_WORLD.md « 12 px floor »), at every size: the shared rule of lib/walk.mjs › tinyText
+  { const tiny = await tinyText(page); if (tiny.length) res.bad.push(`text under 12 px: ${tiny.slice(0, 8).join(' | ')}${tiny.length > 8 ? ` (+${tiny.length - 8})` : ''}`); }
   // on a phone a box may scroll INSIDE itself (GAME_WORLD.md « On a phone »): the page itself, and sideways, never
   if (TOUCH) res.bad = res.bad.filter((b) => !b.startsWith('scrolls: ') && !b.startsWith('cut: ') && !b.startsWith('leaves the screen'));
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
@@ -410,14 +415,15 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
     let taps = 0;
     const goal = await page.textContent('[data-iq-goal]');
     expect((await page.textContent('.iq-lead')).includes(`لوح طوله ${b}`) && goal.includes('الهدف') && goal.includes('دون تقسيم') && goal.includes(`العدد ${b}`) && (await page.textContent('[data-iq-how]')).includes('الباقي 0') && await page.locator('[data-iq-div]').count() === 0, `plank ${b}: the chart opens on its QUESTION (which gaps take a bridge of planks of ${b}?) and its GOAL (to know them without dividing each time)`);
-    while (await page.locator('[data-iq-fill]').count() === 0) {
+    const wrongGaps = []; // every gap tested by hand, measured on the screen: its division, its rest, the colour of its cell
+    while (await page.locator('[data-iq-fill]').count() === 0 && taps < 60) {
       const n = Number(await page.getAttribute('[data-iq-test]', 'data-iq-test'));
       await page.click('[data-iq-test]'); taps += 1;
       const d = await page.evaluate((k) => { const li = document.querySelector('[data-iq-div]'); const cell = document.querySelector(`[data-iq-cell="${k}"]`); return { n: Number(li.dataset.iqDiv), rest: Number(li.dataset.iqRest), tex: li.querySelector('annotation')?.textContent ?? '', green: getComputedStyle(cell).backgroundColor === 'rgb(22, 163, 74)' }; }, n);
       if (!(d.n === n && d.rest === n % b && d.tex.includes(` ${n} = ${Math.floor(n / b)} \\times ${b} + `) && d.green === (n % b === 0)))
-        expect(false, `plank ${b}, gap ${n}: its division is written (${d.tex}), rest ${d.rest}, cell green: ${d.green}`);
+        wrongGaps.push(`gap ${n}: division « ${d.tex} » (shown for ${d.n}), rest ${d.rest}, cell green: ${d.green}`);
     }
-    expect(true, `plank ${b}: every gap he tries shows ITS division « n = q × ${b} + r », and its cell turns green exactly when the rest is 0`);
+    expect(taps >= 1 && wrongGaps.length === 0, `plank ${b}: every gap he tries (${taps}) shows ITS division « n = q × ${b} + r », and its cell turns green exactly when the rest is 0${wrongGaps.length ? ' — ' + wrongGaps.join(' | ') : ''}`);
     const litByHand = await page.locator('.iq-cell.is-lit').count();
     expect((await iq()).b === b && taps >= 6 && litByHand >= 2, `plank ${b}: ${taps} gaps tested by hand, one after the other (${litByHand} lit) before the world may finish the chart`);
     if (b === 5) await inquiryFits('inquiry4-test');
@@ -445,9 +451,24 @@ s = await st(); expect(s.stage === 7 && s.overlay === 'forge' && (await fg()).ke
       await inquiryFits(`inquiry4-claim-${b}`);
     }
     await page.evaluate(() => { window.__heard = []; });
-    await page.click('[data-iq-seal]'); await page.waitForSelector('[data-iq-next]');
+    await page.click('[data-iq-seal]');
+    // the next hundred: he tests its first gaps HIMSELF (Inquiry.jsx › Chart, `spec.nextManual`, 3 by default), each one
+    // writing its division; only then the world finishes the hundred and « next » appears
+    await page.waitForSelector('[data-iq-test]');
+    expect((await iq()).from === 100 && (await iq()).stage === 'confirm' && await page.locator('[data-iq-next]').count() === 0, `plank ${b}: his reading is carried to the next hundred (100–199), and he tests it himself first`);
+    const nextGaps = [];
+    for (let k = 0; k < 3; k += 1) {
+      expect(await page.locator('[data-iq-next]').count() === 0, `plank ${b}: before his test ${k + 1} of the next hundred, the world does not finish it for him`);
+      const n = Number(await page.getAttribute('[data-iq-test]', 'data-iq-test'));
+      await page.click('[data-iq-test]');
+      const d = await page.evaluate(() => { const li = document.querySelector('[data-iq-div]'); return li ? { n: Number(li.dataset.iqDiv), rest: Number(li.dataset.iqRest), tex: li.querySelector('annotation')?.textContent ?? '' } : null; }, n);
+      if (!(n === 100 + k && d && d.n === n && d.rest === n % b && d.tex.includes(` ${n} = ${Math.floor(n / b)} \\times ${b} + `))) nextGaps.push(`gap ${n}: ${JSON.stringify(d)}`);
+      if (b === 5 && k === 0) await inquiryFits('inquiry4-next-test');
+    }
+    expect(nextGaps.length === 0, `plank ${b}: his three tests of the next hundred (100, 101, 102) each write ITS division « n = q × ${b} + r »${nextGaps.length ? ' — ' + nextGaps.join(' | ') : ''}`);
+    await page.waitForSelector('[data-iq-next]');
     heard = await page.evaluate(() => window.__heard);
-    expect(heard.includes('sweep') && heard.at(-1) === 'gate', `plank ${b}: the next hundred, tested by the world, is heard too`);
+    expect(heard.includes('sweep') && heard.at(-1) === 'gate', `plank ${b}: the rest of the next hundred, finished by the world, is heard too`);
     expect((await iq()).from === 100 && (await page.textContent('.iq-lead')).includes('صمدت') && await page.locator('.iq-cell.is-lit:not(.is-claimed)').count() === 0 && await page.locator('.iq-cell.is-claimed.is-dark').count() === 0, `plank ${b}: his reading is tried on the next hundred (100–199) and holds`);
     if (b === 3) await inquiryFits('inquiry4-confirm-3');
     await page.click('[data-iq-next]');
@@ -522,7 +543,10 @@ expect((await st()).overlay == null && await page.evaluate(() => window.__world.
 await act(); await page.waitForTimeout(400);
 s = await page.evaluate(() => window.__world.getState().overlay);
 expect(s?.type === 'boss' && s.view === 'cost' && s.q === 8, 'the store opens again on the price of the 8 shelves');
-if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]');
+// the store's card is keyed by its view (DivisorIsles.jsx › <Boss key=…>): reopened, it is mounted afresh, so its paper gate
+// « كتبتُ على ورقتي » (kit/Paper.jsx › PaperGate, always around the price) is closed again and must be passed again
+expect(await page.locator('[data-di-pgate-go]').count() === 1 && await page.locator('[data-di-cost]').count() === 0, 'the store reopened on the price: its paper gate is closed again, the amount box behind it');
+await page.click('[data-di-pgate-go]');
 await page.fill('[data-di-cost]', '11200'); await page.click('[data-di-check]'); await ff(0.5);
 expect((await st()).overlay == null && (await page.evaluate(() => window.__world.getState().objective)).includes('اعبر إلى المنارة'), 'paid 11200 دج (8 × 1400): the objective says to cross to the lighthouse');
 await cross(7); await ff(3); await page.waitForTimeout(500); await shot('finale');

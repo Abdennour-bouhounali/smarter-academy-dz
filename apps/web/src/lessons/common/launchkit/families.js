@@ -53,7 +53,221 @@ export const MISTAKES = {
   'sentence-reversed': 'انتبه: ترتيب العددين مهمّ — نقول « 6 قاسم للعدد 42 » و « 42 مضاعف للعدد 6 ».',
   'one-and-itself': 'انتبه: العدد 1 والعدد نفسه قاسمان دائمًا.',
   'quotient-zero': 'انتبه: إذا كان العدد أصغر من المقسوم عليه، فالحاصل 0 والباقي هو العدد نفسه.',
+  'table-slip': 'انتبه: راجع جدول الضرب — جوابك جداء عدد مجاور.',
+  'borrow-forgot': 'انتبه: إذا كان رقم الآحاد أصغر، نستلف عشرة — لا نطرح الرقم الصغير من الكبير.',
+  'order-ops': 'انتبه: نحسب الجداء أوّلًا، ثمّ نضيف.',
+  'add-for-sub': 'انتبه: الطرح يُنقص العدد — الراية ترجع نحو 0.',
 };
+
+// ───────────────────────── 1am.m1.r01 — الجمع والطرح والضرب ─────────────────────────
+// What the Euclidean division of 1AM stands on (the net's `requires`): a product of the table, a difference « what is left »,
+// and the recomposition « b × q + r » computed in the right order. A question of this family carries its operation in
+// `calc` ({ op, x, y, z }): `grade` re-computes the value from it — never a stored answer.
+const CALC = {
+  times: (c) => c.x * c.y,
+  minus: (c) => c.x - c.y,
+  timesPlus: (c) => c.x * c.y + c.z,
+};
+const calcValue = (c) => CALC[c.op](c);
+/** The difference written digit by digit, the small digit taken from the big one (the borrow forgotten). */
+const borrowless = (x, y) => {
+  const [a, b] = [String(x), String(y).padStart(String(x).length, '0')];
+  return Number([...a].map((d, i) => Math.abs(Number(d) - Number(b[i]))).join(''));
+};
+const calcText = (c) =>
+  c.op === 'minus' ? `${c.x} - ${c.y}` : c.op === 'times' ? `${c.x} \\times ${c.y}` : `${c.x} \\times ${c.y} + ${c.z}`;
+const calcTokens = (c) => {
+  const w = String(calcValue(c)).length;
+  const head =
+    c.op === 'minus'
+      ? [String(c.x), '−', String(c.y)]
+      : c.op === 'times'
+        ? [String(c.x), '×', String(c.y)]
+        : [String(c.x), '×', String(c.y), '+', String(c.z)];
+  return [...head, '=', S('v', 'الناتج', w)];
+};
+/** A two-digit subtraction that needs a borrow: the units digit of x is smaller than that of y. */
+const borrowPair = (rand, lo, hi) => {
+  for (let i = 0; i < 200; i += 1) {
+    const x = int(rand, lo, hi);
+    const y = int(rand, 13, x - 10);
+    if (x % 10 < y % 10) return { x, y };
+  }
+  return { x: 72, y: 47 };
+};
+
+function calcWrite(rand, level, first) {
+  const op = first
+    ? 'times'
+    : level === 1
+      ? pick(rand, ['times', 'minus'])
+      : pick(rand, ['times', 'minus', 'timesPlus']);
+  let c;
+  if (op === 'times')
+    c =
+      level === 1
+        ? first
+          ? { op, x: int(rand, 3, 5), y: int(rand, 3, 5) }
+          : { op, x: int(rand, 3, 9), y: int(rand, 3, 9) }
+        : { op, x: int(rand, 12, 29), y: int(rand, 3, 9) };
+  else if (op === 'minus')
+    c =
+      level === 1
+        ? {
+            op,
+            ...(() => {
+              const x = int(rand, 30, 69);
+              return { x, y: int(rand, 11, x - 3) };
+            })(),
+          }
+        : { op, ...borrowPair(rand, 120, 199) };
+  else {
+    const x = int(rand, 6, 9);
+    c = { op, x, y: int(rand, 6, 12), z: int(rand, 1, x - 1) };
+  }
+  const prompt =
+    c.op === 'times'
+      ? `في كلّ علبة ${c.y} أقلام، وعدد العلب ${c.x}. كم قلمًا في المجموع؟`
+      : c.op === 'minus'
+        ? `مع سارة ${c.x} دج، اشترت كرّاسًا بـ ${c.y} دج. كم بقي معها؟`
+        : `في كلّ صفيحة ${c.x} بيضات، وعدد الصفائح ${c.y}، وخارج الصفائح ${c.z} من البيض. كم بيضة في المجموع؟`;
+  return { gesture: 'write', calc: c, prompt, tokens: calcTokens(c) };
+}
+
+/** The flag on « a − d »: the number a is pinned on the 0–60 line, the student counts back d. */
+function calcPlace(rand) {
+  const a = int(rand, 25, 58);
+  const d = int(rand, 3, 9);
+  return {
+    gesture: 'place',
+    a,
+    max: 60,
+    target: a - d,
+    calc: { op: 'minus', x: a, y: d },
+    prompt: `العدد ${a} مثبَّت على المستقيم. اسحب الراية إلى ناتج $${a} - ${d}$.`,
+  };
+}
+
+/** Three equalities: true, or false the way a student slips — a neighbour of the table, the sum before the product, the borrow. */
+function calcSort(rand) {
+  const make = (kind, id) => {
+    const card = (c, shown, trap = null) => ({
+      id,
+      text: `$${calcText(c)} = ${shown}$`,
+      bin: shown === calcValue(c) ? 'yes' : 'no',
+      trap,
+    });
+    if (kind === 'times' || kind === 'slip') {
+      const c = { op: 'times', x: int(rand, 6, 9), y: int(rand, 6, 9) };
+      return kind === 'times' ? card(c, calcValue(c)) : card(c, c.x * (c.y + pick(rand, [-1, 1])), 'table-slip');
+    }
+    if (kind === 'tp' || kind === 'order') {
+      const x = int(rand, 4, 9);
+      const c = { op: 'timesPlus', x, y: int(rand, 4, 9), z: int(rand, 2, x - 1) };
+      return kind === 'tp' ? card(c, calcValue(c)) : card(c, c.x * (c.y + c.z), 'order-ops');
+    }
+    const c = { op: 'minus', ...borrowPair(rand, 52, 98) };
+    return kind === 'minus' ? card(c, calcValue(c)) : card(c, borrowless(c.x, c.y), 'borrow-forgot');
+  };
+  const kinds = shuffle(
+    rand,
+    pick(rand, [
+      ['tp', 'order', 'borrow'],
+      ['times', 'order', 'minus'],
+      ['minus', 'borrow', 'slip'],
+      ['tp', 'slip', 'times'],
+      ['order', 'tp', 'borrow'],
+    ]),
+  );
+  const cards = [];
+  for (const kind of kinds) {
+    let c = make(kind, `c${cards.length + 1}`);
+    for (let i = 0; i < 20 && cards.some((o) => o.text === c.text); i += 1) c = make(kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ مساواة صحيحة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'صحيحة' },
+      { id: 'no', label: 'خاطئة' },
+    ],
+    cards,
+  };
+}
+
+/** The worked example answers the mistake shown: the order (product first), the borrow, or the product of the table. */
+function calcExample(rand, level, { mistake = null } = {}) {
+  if (mistake === 'order-ops') {
+    const x = int(rand, 6, 9);
+    const [y, z] = [int(rand, 4, 9), int(rand, 1, x - 1)];
+    return {
+      title: 'نضرب أوّلًا، ثمّ نضيف',
+      steps: [
+        `أحسب الجداء أوّلًا: $${x} \\times ${y} = ${x * y}$.`,
+        `ثمّ أضيف: $${x * y} + ${z} = ${x * y + z}$.`,
+        `أكتب: $${x} \\times ${y} + ${z} = ${x * y + z}$.`,
+      ],
+    };
+  }
+  if (mistake === 'borrow-forgot' || mistake === 'add-for-sub') {
+    const { x, y } = borrowPair(rand, 52, 98);
+    const [xt, xu, yt, yu] = [Math.floor(x / 10), x % 10, Math.floor(y / 10), y % 10];
+    return {
+      title: 'الطرح مع الاستلاف',
+      steps: [
+        `في الآحاد ${xu} أصغر من ${yu}: أستلف عشرة، $${xu + 10} - ${yu} = ${xu + 10 - yu}$.`,
+        `في العشرات بقي ${xt - 1}: $${xt - 1} - ${yt} = ${xt - 1 - yt}$.`,
+        `أكتب: $${x} - ${y} = ${x - y}$.`,
+        `أتحقّق بالجمع: $${x - y} + ${y} = ${x}$.`,
+      ],
+    };
+  }
+  if (level === 1) {
+    const [x, y] = [int(rand, 4, 9), int(rand, 3, 9)];
+    return {
+      title: `جداء من جدول ${y}`,
+      steps: [
+        `أنطلق من جداء أعرفه: $${x - 1} \\times ${y} = ${(x - 1) * y}$.`,
+        `أضيف ${y} مرّة أخرى: $${(x - 1) * y} + ${y} = ${x * y}$.`,
+        `أكتب: $${x} \\times ${y} = ${x * y}$.`,
+      ],
+    };
+  }
+  const [x, y] = [int(rand, 12, 29), int(rand, 3, 9)];
+  const [t, u] = [Math.floor(x / 10) * 10, x % 10];
+  return {
+    title: 'جداء عدد من رقمين في عدد من رقم واحد',
+    steps: [
+      `أفكّك ${x} إلى عشرات وآحاد: $${x} = ${t} + ${u}$.`,
+      `$${t} \\times ${y} = ${t * y}$ و $${u} \\times ${y} = ${u * y}$.`,
+      `أجمع: $${t * y} + ${u * y} = ${x * y}$.`,
+      `أكتب: $${x} \\times ${y} = ${x * y}$.`,
+    ],
+  };
+}
+
+/** Right or not for a question that carries its operation (`calc`): the value is re-computed, the slip named. */
+function gradeCalc(q, answer) {
+  if (q.gesture === 'place') {
+    const x = Number(answer?.x);
+    if (x === q.target) return { correct: true, mistake: null };
+    return { correct: false, mistake: x === q.calc.x + q.calc.y ? 'add-for-sub' : null };
+  }
+  const c = q.calc;
+  const v = num(answer?.v);
+  if (v === calcValue(c)) return { correct: true, mistake: null };
+  if (!Number.isFinite(v)) return { correct: false, mistake: null };
+  const p = c.x * c.y;
+  const slip = (w) => [c.x * (c.y - 1), c.x * (c.y + 1), (c.x - 1) * c.y, (c.x + 1) * c.y].includes(w) && w !== p;
+  if (c.op === 'times') return { correct: false, mistake: slip(v) ? 'table-slip' : null };
+  if (c.op === 'timesPlus')
+    return { correct: false, mistake: v === c.x * (c.y + c.z) ? 'order-ops' : slip(v - c.z) ? 'table-slip' : null };
+  return {
+    correct: false,
+    mistake: v === borrowless(c.x, c.y) ? 'borrow-forgot' : v === c.x + c.y ? 'add-for-sub' : null,
+  };
+}
 
 // ───────────────────────── 1am.m3.r01 — القسمة الإقليدية ─────────────────────────
 const divisionTokens = (a, b) => [
@@ -539,6 +753,49 @@ function divisorExample(rand, level, { mistake = null } = {}) {
 }
 
 export const FAMILIES = {
+  '1am.m1.r01': {
+    item: '1am.m1.r01',
+    name: 'الجمع والطرح والضرب',
+    icon: '✖️',
+    // NO instrument: this kit is shown BEFORE « القسمة الإقليدية », and the only tool that writes products and subtractions
+    // (« القسمة على الورقة ») is the one that lesson itself introduces — a family's instrument belongs to a lesson the student
+    // has already studied (launchkit.test.js). The capsule skips its lab step, the result shows no « مختبري » button.
+    labTool: null,
+    mistakes: ['table-slip', 'borrow-forgot', 'order-ops', 'add-for-sub'],
+    forms: { 1: ['write', 'place'], 2: ['write', 'sort'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'place' ? calcPlace(rand) : form === 'sort' ? calcSort(rand) : calcWrite(rand, level, first),
+    example: calcExample,
+    rules: [
+      {
+        id: 'product',
+        title: 'الضرب جمع متكرّر',
+        text: 'الجداء $a \\times b$ هو مجموع $b$ مكرّرًا $a$ مرّة: $4 \\times 6 = 6 + 6 + 6 + 6$',
+        example: '$7 \\times 8 = 56$: في 7 علب، في كلّ واحدة 8 أقلام، 56 قلمًا.',
+        check: { a: 56, b: 7, q: 8, r: 0 },
+      },
+      {
+        id: 'order',
+        title: 'نضرب قبل أن نجمع',
+        text: 'في $a \\times b + c$ نحسب الجداء $a \\times b$ أوّلًا، ثمّ نضيف $c$.',
+        example: '$6 \\times 9 + 5 = 54 + 5 = 59$.',
+        check: { a: 59, b: 6, q: 9, r: 5 },
+      },
+      {
+        id: 'difference',
+        title: 'الطرح والتحقّق بالجمع',
+        text: 'إذا كان $a - b = d$ فإنّ $d + b = a$: نتحقّق من الطرح بالجمع.',
+        example: '$72 - 47 = 25$، و $25 + 47 = 72$.',
+        check: { x: 72, y: 47, diff: 25 },
+      },
+    ],
+    memo: [
+      'الجداء $a \\times b$: نضيف $b$ إلى نفسه $a$ مرّة — $7 \\times 8 = 56$.',
+      'في $6 \\times 9 + 5$ نضرب أوّلًا ثمّ نضيف: $54 + 5 = 59$.',
+      'في الطرح نستلف عشرة إذا كان رقم الآحاد أصغر: $72 - 47 = 25$.',
+      'نتحقّق من الطرح بالجمع: $25 + 47 = 72$.',
+    ],
+  },
   '4am.m1.r01': {
     item: '4am.m1.r01',
     // no `lesson` here: the home lesson of a tool is read from the learning net (`toolsForLesson`), and shared code names
@@ -587,7 +844,6 @@ export const FAMILIES = {
   },
   '1am.m3.r01': {
     item: '1am.m3.r01',
-    lesson: 'qisma-iqlidiya-baqi',
     name: 'القسمة الإقليدية',
     icon: '➗',
     labTool: 'paper',
@@ -621,7 +877,6 @@ export const FAMILIES = {
   },
   '2am.m1.r04': {
     item: '2am.m1.r04',
-    lesson: 'qisma-iqlidiya-hasr',
     name: 'القسمة الإقليدية على أيّ عدد',
     icon: '🧮',
     labTool: 'paper',
@@ -655,7 +910,6 @@ export const FAMILIES = {
   },
   '1am.m3.r02': {
     item: '1am.m3.r02',
-    lesson: 'qawaid-qabiliyat-qisma',
     name: 'قواعد قابلية القسمة',
     icon: '💡',
     labTool: 'rules',
@@ -750,6 +1004,7 @@ export function complete(q, answer) {
 
 /** Right or not — and the NAME of the mistake when the answer shows one. */
 export function grade(q, answer) {
+  if (q.calc) return gradeCalc(q, answer);
   if (q.gesture === 'write') {
     const tq = Math.floor(q.a / q.b);
     const tr = q.a % q.b;

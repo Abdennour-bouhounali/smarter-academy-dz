@@ -1,178 +1,105 @@
-import { describe, it, expect } from 'vitest';
+// « الامتحان الأبيض » of qasim-adad-tabii: the REAL bank (content/practice/4am/qasim-adad-tabii), served as it is — every level draws
+// real sheets, every step of every sheet is markable to full points by its own answer key, nothing generated, « دج » only.
+import { describe, it, expect, beforeAll } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
-import { verifyClaim as verify } from '../../../../../../common/gameworld/kit/claims';
-import { PHRASES } from './trainer';
-import { sittings, mark, model, scheme, evidenceOf, LEVELS } from './sitting';
-import {
-  allQuestions,
-  answered,
-  appreciation,
-  pace,
-  sittingStars,
-  forgotten,
-  touched,
-} from '../../../../../../common/gameworld/kit/sitting';
+import { keysOfPoints } from '../../../../../../common/gameworld/kit/bankSitting';
+import { allQuestions, forgotten } from '../../../../../../common/gameworld/kit/sitting';
+import { lesson } from './index';
+import { sittings, LEVELS } from './sitting';
 
-const { makeSubject, totalMark, weakKinds } = sittings;
+/** The answer the bank's own key expects, in the shape the practice widgets write. */
+const right = (q) =>
+  q.answerType === 'choice'
+    ? { choiceId: q.bank.choices.find((c) => c.isCorrect).id }
+    : q.paper
+      ? undefined
+      : { value: String(q.bank.expectedAnswer) };
+const keyOf = keysOfPoints('qasim-adad-tabii', lesson);
+const shown = (q) => [
+  q.text,
+  q.lead,
+  q.shown.statement,
+  q.shown.answerFormat,
+  ...(q.shown.choices ?? []).map((c) => c.content),
+  ...sittings.model(q),
+  ...sittings.guide(q),
+  sittings.written(q, right(q)),
+];
+/** « DA » left as MONEY: glued to a number or after one (« 900DA », `$1500$ DA`, `11225\,DA`), `\text{ DA}`, « (DA) ». */
+const MONEY_DA = /(?:\d\$?|\\,|\\text\{)\s*DA(?![A-Za-z])|\(\s*DA\s*\)|بال(?:ـ|دينار)\s*DA(?![A-Za-z])/;
 
-/** The full-mark answer of a question. */
-const right = (q) => {
-  switch (q.type) {
-    case 'division':
-      return { q: Math.floor(q.a / q.b), r: q.a % q.b };
-    case 'verdict':
-      return q.a % q.b === 0 ? 'yes' : 'no';
-    case 'factor':
-    case 'other':
-    case 'count':
-      return { x: q.a / q.b };
-    case 'ceil':
-      return { x: Math.ceil(q.a / q.b) };
-    case 'value':
-      return { x: q.expected };
-    case 'phrase':
-      return PHRASES.find((p) => p.small === q.smallFirst).id;
-    default:
-      return { x: q.q * q.price };
-  }
-};
+describe('the sitting of qasim-adad-tabii — the bank as it is', () => {
+  beforeAll(() => sittings.prepare());
 
-describe('الامتحان الأبيض — the sitting', () => {
-  it('builds a subject of three exercises worth 10 points, every question with its model copy and its scheme', () => {
-    for (let seed = 1; seed <= 80; seed += 1) {
-      const s = makeSubject(rng(seed));
-      const qs = allQuestions(s);
-      expect(s.exercises.map((e) => e.points)).toEqual([3, 3, 4]);
-      expect(s.level).toBe(4);
-      expect(qs).toHaveLength(8);
-      expect(qs.reduce((t, q) => t + q.points, 0)).toBe(s.total);
-      for (const e of s.exercises) expect(e.questions.reduce((t, q) => t + q.points, 0)).toBe(e.points);
-      for (const q of qs) {
-        expect(model(q).length).toBeGreaterThan(0);
-        expect(scheme(q).length).toBeGreaterThan(0);
-        expect(`${q.text}${model(q).join('')}`).not.toMatch(/undefined|NaN/);
-      }
-      const cost = s.exercises[2].questions;
-      expect(cost[0].a % cost[0].b).not.toBe(0);
-      expect(cost[1].a % cost[1].b).toBe(0);
-    }
-  });
-
-  it('gives full marks to the right paper and nothing to an empty one', () => {
-    for (let seed = 1; seed <= 60; seed += 1) {
-      const s = makeSubject(rng(seed));
-      const qs = allQuestions(s);
-      const full = Object.fromEntries(qs.map((q) => [q.id, right(q)]));
-      expect(totalMark(s, full)).toBe(10);
-      expect(totalMark(s, {})).toBe(0);
-      for (const q of qs) expect(answered(q, right(q))).toBe(true);
-      expect(answered(qs[0], { q: 3, r: '' })).toBe(false);
-    }
-  });
-
-  it('marks by the scheme: half of a division for the quotient, half for the remainder', () => {
-    const q = allQuestions(makeSubject(rng(5)))[0];
-    const d = right(q);
-    expect(mark(q, { q: d.q, r: d.r + 1 })).toBe(q.points / 2);
-    expect(mark(q, { q: d.q + 1, r: d.r })).toBe(q.points / 2);
-    expect(mark(q, { q: d.q + 1, r: d.r + 1 })).toBe(0);
-    const other = allQuestions(makeSubject(rng(5)))[3];
-    expect(mark(other, { x: other.b })).toBe(0); // the divisor already shown is not « another » one
-    expect(mark(other, { x: 1 })).toBe(other.points); // 1 is another divisor: a right answer the model copy did not expect
-  });
-
-  it('sends as evidence only what the server can re-compute, with the same verdict as the mark', () => {
-    for (let seed = 1; seed <= 60; seed += 1)
-      for (const q of allQuestions(makeSubject(rng(seed)))) {
-        const ev = evidenceOf(q, right(q));
-        expect(Boolean(ev)).toBe(['division', 'factor', 'phrase', 'count', 'ceil'].includes(q.type));
-        if (ev) expect(verify(ev.claim), `${q.type}`).toBe(true);
-        expect(evidenceOf(q, null)).toBe(null); // an unanswered question is not evidence
-      }
-    const q = allQuestions(makeSubject(rng(2)))[0];
-    expect(verify(evidenceOf(q, { q: 1, r: 1 }).claim)).toBe(false);
-  });
-
-  it('climbs a LADDER of five levels: more exercises, bigger numbers, more minutes — every level solvable to full marks', () => {
+  it('loads the five levels of the bank: ten exam sheets each, with their minutes and points on the ladder', () => {
+    expect(sittings.ready()).toBe(true);
     expect(LEVELS.map((l) => l.n)).toEqual([1, 2, 3, 4, 5]);
-    let last = 0;
+    for (const L of LEVELS) {
+      expect(sittings.levelPoints(L), `level ${L.n}`).toBeTruthy();
+      expect(sittings.levelMinutes(L), `level ${L.n}`).toBeTruthy();
+    }
+  });
+
+  it('serves real sheets, whole, and every step earns its points with the answer the bank expects', () => {
+    const seen = new Set();
     for (const L of LEVELS)
-      for (let seed = 1; seed <= 40; seed += 1) {
-        const s = makeSubject(rng(seed * 3 + L.n), L.n);
+      for (let seed = 1; seed <= 30; seed += 1) {
+        const s = sittings.makeSubject(rng(seed * 7 + L.n), L.n, [], keyOf);
         const qs = allQuestions(s);
-        expect(s.level).toBe(L.n);
-        expect(s.exercises.map((e) => e.kind)).toEqual(L.plan.map((p) => p[0]));
+        expect(s.exercises).toHaveLength(L.sheets);
         expect(new Set(qs.map((q) => q.id)).size).toBe(qs.length);
-        expect(totalMark(s, Object.fromEntries(qs.map((q) => [q.id, right(q)])))).toBe(s.total);
+        for (const e of s.exercises) {
+          seen.add(e.bankId);
+          expect(e.bankId).toMatch(new RegExp(`^ex-4am-qasim-adad-tabii-l${L.n}-\\d{3}$`));
+          expect(e.questions.reduce((t, q) => t + q.points, 0)).toBe(e.points);
+        }
+        const full = Object.fromEntries(qs.map((q) => [q.id, right(q)]));
+        expect(sittings.totalMark(s, full), s.exercises.map((e) => e.bankId).join()).toBe(s.total);
+        expect(sittings.totalMark(s, {})).toBe(0);
+        expect(forgotten(s, full, 0)).toEqual([]);
         for (const q of qs) {
-          expect(model(q).length).toBeGreaterThan(0);
-          expect(scheme(q).length).toBeGreaterThan(0);
-          expect(`${q.text}${model(q).join('')}`).not.toMatch(/undefined|NaN/);
+          expect(sittings.model(q).length, q.id).toBeGreaterThan(0);
+          expect(sittings.scheme(q).length).toBeGreaterThan(0);
+          if (q.key) expect(lesson.keys).toContain(q.key);
+          for (const line of shown(q).filter(Boolean)) {
+            expect(line).not.toMatch(MONEY_DA);
+            expect(line).not.toMatch(/undefined|NaN/);
+          }
         }
-        if (seed === 1) {
-          expect(s.total).toBeGreaterThan(last);
-          last = s.total;
-        }
+        for (const e of s.exercises)
+          for (const line of [
+            e.statement,
+            ...e.formulas,
+            ...(e.table ? [...e.table.head, ...e.table.rows.flat()] : []),
+          ])
+            expect(String(line)).not.toMatch(MONEY_DA);
       }
-    expect(LEVELS.map((l) => l.minutes)).toEqual([5, 8, 10, 12, 15]);
-    const trip = makeSubject(rng(4), 5).exercises[2].questions; // the remainder MEANS one more truck
-    expect(mark(trip[1], { x: Math.floor(trip[1].a / trip[1].b) })).toBe(0);
-    expect(mark(trip[1], { x: Math.floor(trip[1].a / trip[1].b) + 1 })).toBe(trip[1].points);
+    expect(seen.size).toBeGreaterThan(30); // the sheets vary: the bank is drawn from, not one fixed paper
   });
 
-  it('ADAPTS the next sheet: what was missed comes first, with other numbers', () => {
-    const s = makeSubject(rng(9), 4);
-    const qs = allQuestions(s);
-    const answers = Object.fromEntries(qs.map((q) => [q.id, right(q)]));
-    delete answers[s.exercises[2].questions[2].id]; // the invoice left blank
-    expect(weakKinds(s, answers)).toEqual(['cost']);
-    const again = makeSubject(rng(10), 4, ['cost']);
-    expect(again.exercises[0].kind).toBe('cost');
-    expect(again.exercises[0].focus).toBe(true);
-    expect(again.exercises.map((e) => e.kind).sort()).toEqual(['cost', 'division', 'product']);
-    expect(again.exercises[0].statement).not.toBe(s.exercises[2].statement); // similar, never the same
-    expect(again.total).toBe(s.total);
-    expect([sittingStars(10, 10), sittingStars(9, 10), sittingStars(8, 10), sittingStars(7.9, 10)]).toEqual([
-      3, 2, 1, 0,
+  it('hands in only the steps he answered, as he wrote them, for the server to judge again', () => {
+    const s = sittings.makeSubject(rng(3), 2, [], keyOf);
+    const qs = allQuestions(s).filter((q) => !q.paper);
+    const answers = { [qs[0].id]: right(qs[0]) };
+    let n = 0;
+    const sheet = sittings.sheetOf(s, answers, () => `id-${(n += 1)}`);
+    expect(sheet).toMatchObject({ lesson: 'qasim-adad-tabii', level: 2 });
+    expect(sheet.items).toEqual([
+      {
+        exerciseId: s.exercises[0].bankId,
+        questionId: qs[0].qid,
+        attemptUuid: expect.any(String),
+        answer: right(qs[0]),
+        outcome: 'correct',
+      },
     ]);
   });
 
-  it('finds the exercises left completely empty, except the one on screen', () => {
-    const s = makeSubject(rng(4), 4);
-    const [e1, e2, e3] = s.exercises;
-    expect(forgotten(s, {}, 0)).toEqual([1, 2]); // nothing written: the two pages he is not looking at
-    const first = Object.fromEntries(e1.questions.map((q) => [q.id, right(q)]));
-    expect(forgotten(s, first, 0)).toEqual([1, 2]);
-    expect(forgotten(s, first, 1)).toEqual([2]); // the empty exercise on screen is not a forgotten one
-    // one box of one question is enough: the exercise was started, so it is his choice
-    const box = e2.questions.find((q) => q.tokens);
-    const started = { ...first, [box.id]: { [box.tokens.find((t) => typeof t === 'object').slot]: '7' } };
-    expect(touched(box, started[box.id])).toBe(true);
-    expect(answered(box, started[box.id]) && box.tokens.filter((t) => typeof t === 'object').length > 1).toBe(false);
-    expect(forgotten(s, started, 0)).toEqual([2]);
-    expect(touched(e3.questions[0], undefined)).toBe(false);
-    expect(touched(e1.questions[0], { q: '', r: '' })).toBe(false);
-    expect(touched({}, '')).toBe(false);
-    expect(forgotten(makeSubject(rng(4), 1), {}, 0)).toEqual([]); // a single exercise: nothing can be forgotten
-  });
-
-  it('writes an appreciation and a pace', () => {
-    expect([10, 7.5, 5, 2].map((m) => appreciation(m, 10))).toEqual([
-      'ممتاز',
-      'جيّد',
-      'متوسّط: راجع أخطاءك',
-      'يحتاج إلى عمل: لا تيأس',
-    ]);
-    expect([pace(0, 720), pace(360, 720), pace(900, 720)]).toEqual([0, 0.5, 1]);
-  });
-});
-
-describe('the points the ladder shows', () => {
-  it('are the points of the subject that level really gives', async () => {
-    const { sittings } = await import('./sitting');
-    const { rng: seeded } = await import('../../../../../../common/gameworld/kit/random');
-    for (const level of sittings.levels)
-      for (let seed = 1; seed <= 5; seed += 1)
-        expect(sittings.makeSubject(seeded(seed), level.n).total).toBe(sittings.levelPoints(level));
+  it('ADAPTS the next sheet: the sheet he missed is left out while the level has others', () => {
+    const s = sittings.makeSubject(rng(9), 1, [], keyOf);
+    const weak = sittings.weakKinds(s, {});
+    expect(weak).toContain(`ex:${s.exercises[0].bankId}`);
+    for (let seed = 1; seed <= 10; seed += 1)
+      expect(sittings.makeSubject(rng(seed), 1, weak, keyOf).exercises[0].bankId).not.toBe(s.exercises[0].bankId);
   });
 });

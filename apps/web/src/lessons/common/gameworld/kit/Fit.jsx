@@ -8,20 +8,36 @@
  * (`data-di-fit-scroll`). Readable beats unscrolled on a phone; nothing changes on a tablet or a laptop.
  *   room: by default the height of the box itself (a flex child with a fixed share); `avail(box)` gives it otherwise
  *         (`cardRoom` for a pop-up card whose height follows its content).
+ *   floor: the 12 px floor KEPT while the box shrinks (GAME_WORLD.md « 12 px floor »): the box sets `--di-min-font` on its
+ *         content to `floor` px in the units of EVERY zoom above the text (its own × the frames around it), so a size written
+ *         `max(var(--di-min-font, 12px), …)` is still drawn at `floor` px or more. The floored text then no longer shrinks
+ *         with the box: only the rest does (paddings, gaps, widgets) — when that is not enough the box reaches `min` and
+ *         its end is cut, which the walks report. Off by default: the panels of the world are laid out not to need it.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
 import { SHORT_SCREEN } from '../engine/phoneScreen';
 
 const PHONE_FLOOR = 0.9;
 
-export default function Fit({ className = '', innerClass = '', avail = null, min = 0.5, children, ...rest }) {
+export default function Fit({
+  className = '',
+  innerClass = '',
+  avail = null,
+  min = 0.5,
+  floor = 0,
+  children,
+  ...rest
+}) {
   const outer = useRef(null);
   const inner = useRef(null);
   const zr = useRef(1);
   const [z, setZ] = useState(1);
+  const [around, setAround] = useState(1); // the zoom of the frames above the box (a sheet zoomed to the window)
   const [scrolls, setScrolls] = useState(false);
   const room = useRef(avail);
   room.current = avail;
+  const floorOn = useRef(floor > 0);
+  floorOn.current = floor > 0;
   useLayoutEffect(() => {
     const o = outer.current;
     const i = inner.current;
@@ -34,6 +50,11 @@ export default function Fit({ className = '', innerClass = '', avail = null, min
       const have = room.current ? room.current(o) : o.getBoundingClientRect().height;
       const need = i.getBoundingClientRect().height;
       if (!(have > 0) || !(need > 0)) return;
+      if (floorOn.current) {
+        let a = 1;
+        for (let x = o; x && x.nodeType === 1; x = x.parentElement) a *= parseFloat(getComputedStyle(x).zoom) || 1;
+        setAround((old) => (Math.abs(old - a) > 0.001 ? a : old));
+      }
       const sig = `${Math.round(have / 8)}|${i.textContent.length}|${i.querySelectorAll('*').length}`;
       if (sig !== cap.sig) cap = { z: 1.001, sig };
       const cur = zr.current;
@@ -41,7 +62,8 @@ export default function Fit({ className = '', innerClass = '', avail = null, min
       let next = cur;
       const floor = window.matchMedia?.(SHORT_SCREEN).matches ? PHONE_FLOOR : min;
       setScrolls(floor === PHONE_FLOOR && cur * ratio * 0.985 < floor);
-      if (ratio < 0.995) {
+      // too tall by more than a pixel (a 0.5 % dead band alone let a 685 px sheet stand cut in a 682 px box)
+      if (ratio < 0.995 || need > have + 1) {
         cap = { z: cur, sig };
         next = Math.max(floor, cur * ratio * 0.985);
       } // too tall: shrink just enough
@@ -79,11 +101,18 @@ export default function Fit({ className = '', innerClass = '', avail = null, min
       data-di-fit-scroll={scrolls ? '' : undefined}
       {...rest}
     >
-      <div ref={inner} className={`di-fitbox__in ${innerClass}`} style={z < 1 ? { zoom: z } : undefined}>
+      <div ref={inner} className={`di-fitbox__in ${innerClass}`} style={styleOf(z, floor, around)}>
         {children}
       </div>
     </div>
   );
+}
+
+/** The inner box's style: its zoom when below 1; with a floor, the floor in the units of every zoom above the text. */
+function styleOf(z, floor, around) {
+  const s = z < 1 ? { zoom: z } : {};
+  if (floor > 0) s['--di-min-font'] = `${Math.ceil((floor * 100) / (Math.min(z, 1) * around)) / 100}px`;
+  return Object.keys(s).length ? s : undefined;
 }
 
 const px = (el, prop) => parseFloat(getComputedStyle(el)[prop]) || 0;

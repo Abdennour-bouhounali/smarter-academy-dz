@@ -10,16 +10,10 @@
  *
  * `spec.text` is the lesson's wording. Nothing here states a rule: every sentence says what the strips just did.
  */
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import MathText from '../../components/MathText';
 import { joinOf, stackOf } from './inquiry';
-
-const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
-const expose = (state) => {
-  if (import.meta.env.DEV) window.__inquiry = state;
-};
-const X0 = 40;
-const SPAN = 920;
+import { FAST, expose, X0, SPAN, useLater, YesNo } from './inquiryParts';
 
 /** The division of a gap by the plank as it is written: n = q × d + r — the rest green when it is 0, amber otherwise. */
 export const restTex = (n, d) => {
@@ -27,12 +21,16 @@ export const restTex = (n, d) => {
   return `${n} = ${d} \\times ${Math.floor(n / d)} + \\textcolor{${r ? '#fbbf24' : '#8dffb0'}}{${r}}`;
 };
 
-/** The calculations of a step, read left to right, one formula per item (a formula never breaks). */
+/**
+ * The calculations of a step, read left to right, one formula per item (a formula never breaks). Two items may be the same
+ * formula (a = b, b | a…): they are keyed by their place, never by their text.
+ */
 export function Calc({ items }) {
   return (
     <div className="iq-calc" dir="ltr" data-iq-calc>
-      {items.filter(Boolean).map((tex) => (
-        <MathText key={tex}>{`$${tex}$`}</MathText>
+      {items.filter(Boolean).map((tex, i) => (
+        // eslint-disable-next-line react/no-array-index-key -- the list is rebuilt whole each render; equal lines are legal
+        <MathText key={i}>{`$${tex}$`}</MathText>
       ))}
     </div>
   );
@@ -85,25 +83,6 @@ export function Span({ n, d, u, x = X0, y, h = 30, laid = true, fast = false }) 
 
 /** How long the planks of a gap take to be laid (the same rhythm as `Span`). */
 const layTime = (planks) => (FAST() ? 20 : Math.min(900, planks * 90) + 350);
-
-/** Answer buttons « yes / no » of a prediction. */
-function YesNo({ T, onSay }) {
-  return [
-    [true, T.yes],
-    [false, T.no],
-  ].map(([v, label]) => (
-    <button key={label} type="button" className="rf-btn" onClick={() => onSay(v)} data-iq-say={v ? 'yes' : 'no'}>
-      {label}
-    </button>
-  ));
-}
-
-/** A short chain of timers that are all cleared when the screen leaves. */
-function useLater() {
-  const timers = useRef([]);
-  useEffect(() => () => timers.current.forEach(clearTimeout), []);
-  return (ms, fn) => timers.current.push(setTimeout(fn, FAST() ? Math.min(ms, 15) : ms));
-}
 
 // ───────────────────────── join ─────────────────────────
 const YA = 44;

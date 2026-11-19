@@ -65,9 +65,22 @@ await w.run(async () => {
 
   const tr = () => page.evaluate(() => ({ q: window.__trainer?.q, index: window.__trainer?.index, dom: document.querySelector('[data-di-trainer]')?.dataset.diTrainer, fb: document.querySelector('[data-di-tr-fb]')?.dataset.diTrFb ?? null, fbText: document.querySelector('[data-di-tr-fb]')?.textContent ?? '' }));
   const trainerText = () => page.textContent('[data-di-trainer]');
+  /**
+   * The paper gate « كتبتُ على ورقتي » (kit/Paper.jsx › PaperGate): every question written on a sheet (kit/Trainer.jsx) closes
+   * its answer boxes behind it until it is passed once; the question stays mounted between two tries (keyed by its index), so
+   * the gate does not come back for the second try. A gate to tap or a game true / false has none. `gate.open` tracks it.
+   */
+  const passGate = async (q, gate, what) => {
+    // Trainer.jsx › Question: a « tap » and a game-format true / false answer at once; every other question is a sheet whose
+    // boxes sit behind the gate (an exam true / false, and every form, whatever its format)
+    const want = !(q.kind === 'tap' || (q.kind === 'tf' && q.format !== 'exam')) && !gate.open;
+    const shown = await page.locator('[data-di-pgate-go]').count();
+    expect(shown === (want ? 1 : 0), `${what}: the paper gate « كتبتُ على ورقتي » is ${want ? 'there (a sheet, not yet passed)' : 'absent (gates to tap, a game true / false, or already passed)'} (found ${shown})`);
+    if (want) { await page.click('[data-di-pgate-go]'); gate.open = true; }
+  };
   /** Answers the question on screen with `v`, through its own controls. */
-  const reply = async (q, v) => {
-    if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]'); // « كتبتُ على ورقتي »
+  const reply = async (q, v, gate, what) => {
+    await passGate(q, gate, what);
     if (q.kind === 'tap') { await page.click(`[data-di-tr-opt="${v}"]`); return; }
     if (q.kind === 'tf') {
       await page.click(`[data-di-tr-tf="${v.truth}"]`);
@@ -94,6 +107,8 @@ await w.run(async () => {
     for (let i = 0; i < 6; i += 1) {
       const t = await tr();
       const { q } = t;
+      const gate = { open: false };
+      const what = `${card} · question ${i + 1} (${q.kind}, ${q.format})`;
       formats.push(t.dom);
       expect(t.index === i && q.format === t.dom, `${card} · question ${i + 1}: « ${q.kind} » in the ${q.format} format`);
       // the question on screen says ITS numbers
@@ -103,7 +118,7 @@ await w.run(async () => {
       if (q.format === 'exam') {
         check(await page.locator('[data-di-trainer] [data-di-paper], .di-trainer [data-di-paper]').count() >= 1 && await page.evaluate(() => window.__world.getState().paper === true), `${card} · question ${i + 1}: the exam format is answered in PAPER MODE (no music, the sign « وضع الورقة »)`);
         if (q.kind !== 'tf') {
-          if (await page.locator('[data-di-pgate-go]').count()) { await page.click('[data-di-pgate-go]'); await page.waitForTimeout(1200); } // the sheet opens with a short animation
+          await passGate(q, gate, what); await page.waitForTimeout(1200); // the sheet opens with a short animation
           // the answer is typed in its own shape: every box sits in a line of the template, never a free text box
           const shape = await page.evaluate(() => [...document.querySelectorAll('.di-sheet input, .di-sheet select')].map((el) => ({ inLine: Boolean(el.closest('.di-sheet__line')), line: el.closest('.di-sheet__line')?.textContent.trim() ?? '' })));
           expect(shape.length > 0 && shape.every((x) => x.inLine), `${card} · question ${i + 1}: the answer boxes sit inside the template of the answer (${shape.length} boxes)`);
@@ -139,24 +154,29 @@ await w.run(async () => {
       const plan = i === 0 || i === 2 ? 'wrong-right' : i === 4 ? 'wrong-wrong' : 'right';
       firstTries.push({ q, first: plan === 'right' ? 'right' : 'wrong', value: plan === 'right' ? solve(q) : wrongOf(q) });
       if (plan === 'right') {
-        await reply(q, solve(q)); await page.waitForTimeout(150);
+        await reply(q, solve(q), gate, what); await page.waitForTimeout(150);
         expect((await tr()).fb === 'ok', `${card} · question ${i + 1} (${q.kind}): the right answer is accepted at once`);
       } else {
-        await reply(q, wrongOf(q)); await page.waitForTimeout(150);
+        await reply(q, wrongOf(q), gate, what); await page.waitForTimeout(150);
         let f = await tr();
         expect(f.fb === 'hint', `${card} · question ${i + 1} (${q.kind}): a wrong answer gets a HINT first (« ${f.fbText.trim().slice(0, 70)} »)`);
         if (q.kind === 'tap' && i === 0) await shot(page, `tr-${card}-hint-tap`, { exit: ['[data-di-know-close]'] });
         if (i === 2) await shot(page, `tr-${card}-hint-${q.kind}`, { exit: ['[data-di-know-close]'] });
         if (plan === 'wrong-right') {
-          await reply(q, solve(q)); await page.waitForTimeout(150);
+          await reply(q, solve(q), gate, what); await page.waitForTimeout(150);
           f = await tr();
           expect(f.fb === 'ok', `${card} · question ${i + 1} (${q.kind}): …then the right answer is accepted`);
         } else {
-          await reply(q, wrongOf(q)); await page.waitForTimeout(150);
+          await reply(q, wrongOf(q), gate, what); await page.waitForTimeout(150);
           f = await tr();
           expect(f.fb === 'fix' && f.fbText.includes('التصحيح'), `${card} · question ${i + 1} (${q.kind}): a second wrong answer gets the written correction`);
           await shot(page, `tr-${card}-fix-${q.kind}`, { exit: ['[data-di-know-close]'] });
-          if (await page.locator('[data-di-tr-model]').count()) {
+          // « اقرأ التصحيح على الورقة » comes with a wrong final answer exactly when the question's form carries a model sheet
+          // (kit/Trainer.jsx: `!fb.ok && q.form?.model`; in this lesson, the « show » form — world/trainer.js › showForm)
+          const hasModel = Boolean(q.form?.model);
+          const modelBtn = await page.locator('[data-di-tr-model]').count();
+          expect(modelBtn === (hasModel ? 1 : 0), `${what}: the model-sheet link is ${hasModel ? 'offered (its form has a model)' : 'absent (its form has no model)'} after the correction (found ${modelBtn})`);
+          if (hasModel) {
             await page.click('[data-di-tr-model]'); await page.waitForSelector('[data-di-model]');
             for (let k = 0; k < 12 && await page.locator('[data-di-model-next]').count(); k += 1) await page.click('[data-di-model-next]');
             await shot(page, `tr-${card}-model`, { exit: ['[data-di-model-close]'] });

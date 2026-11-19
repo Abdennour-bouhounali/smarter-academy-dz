@@ -16,6 +16,7 @@ import {
   divisorsOf,
   gcd,
   plankRows,
+  bracketOf,
   QUESTS,
   observe,
   luckyPair,
@@ -61,10 +62,13 @@ describe('مختبري — the instruments a lesson may show', () => {
   it('the first lesson of 4AM: its three instruments, the cabinet of 1AM, and NOTHING of the lessons after it', () => {
     const lab = toolsFor('qasim-adad-tabii');
     expect(lab.mine.map((t) => t.id)).toEqual(['rows', 'jumps', 'sentences']);
-    expect(lab.cabinet.map((g) => g.grade)).toEqual(['1am']);
+    expect(lab.cabinet.map((g) => g.grade)).toEqual(['1am', '2am']);
     expect(lab.cabinet[0].lessons.map((l) => [l.code, l.tools.map((t) => t.id)])).toEqual([
       ['qisma-iqlidiya-baqi', ['paper']],
       ['qawaid-qabiliyat-qisma', ['rules']],
+    ]);
+    expect(lab.cabinet[1].lessons.map((l) => [l.code, l.tools.map((t) => t.id)])).toEqual([
+      ['qisma-iqlidiya-hasr', ['bracket']],
     ]);
     expect(lab.all.map((t) => t.id)).not.toContain('euclid');
     expect(lab.all.map((t) => t.id)).not.toContain('divisors');
@@ -73,8 +77,8 @@ describe('مختبري — the instruments a lesson may show', () => {
   it('the PGCD lesson: its own instrument, and every instrument of the lessons before it — of this year and of the earlier ones', () => {
     const lab = toolsFor('bahth-pgcd');
     expect(lab.mine.map((t) => t.id)).toEqual(['euclid']);
-    expect(lab.cabinet.map((g) => g.grade)).toEqual(['1am', '4am']);
-    expect(lab.cabinet[1].lessons.map((l) => l.code)).toEqual([
+    expect(lab.cabinet.map((g) => g.grade)).toEqual(['1am', '2am', '4am']);
+    expect(lab.cabinet[2].lessons.map((l) => l.code)).toEqual([
       'qasim-adad-tabii',
       'qawasim-adad-tabii',
       'khawass-qawasim',
@@ -92,6 +96,18 @@ describe('مختبري — the instruments a lesson may show', () => {
     ]);
     expect(lab.all.map((t) => t.id)).not.toContain('common');
     expect(toolsFor('qawasim-adad-tabii').all.map((t) => t.id)).not.toContain('planks');
+  });
+
+  it('the division road: each of its three lessons has an instrument of its own, and finds the ones before it', () => {
+    expect(toolsFor('qisma-iqlidiya-baqi').mine.map((t) => t.id)).toEqual(['paper']);
+    expect(toolsFor('qisma-iqlidiya-baqi').cabinet).toEqual([]);
+    expect(toolsFor('qawaid-qabiliyat-qisma').mine.map((t) => t.id)).toEqual(['rules']);
+    const hasr = toolsFor('qisma-iqlidiya-hasr');
+    expect(hasr.mine.map((t) => t.id)).toEqual(['bracket']);
+    expect(hasr.cabinet.map((g) => [g.grade, g.lessons.map((l) => l.code)])).toEqual([
+      ['1am', ['qisma-iqlidiya-baqi', 'qawaid-qabiliyat-qisma']],
+    ]);
+    expect(toolsFor('qawaid-qabiliyat-qisma').all.map((t) => t.id)).not.toContain('bracket'); // 2AM comes later
   });
 
   it('never shows an instrument of the future, for ANY lesson of the cycle', () => {
@@ -194,6 +210,38 @@ describe('مختبري — the mathematics the instruments draw', () => {
     expect(plankRows(35, 21, 7)[4].label).toBe('35 = 21 × 1 + 14');
     expect(plankRows(21, 35, 7)[3].label).toBe('35 − 21 = 14');
   });
+  it('lays n planks of b along a: what is left or what passes, the full planks and the planks needed — for every pair', () => {
+    const bad = [];
+    for (let a = 1; a <= 200; a += 1)
+      for (let b = 1; b <= 60; b += 1) {
+        const q = Math.floor(a / b);
+        for (let n = -2; n <= q + 3; n += 1) {
+          const x = bracketOf(a, b, n);
+          const k = Math.max(0, Math.min(q + 1, n));
+          const ok =
+            x.q === q &&
+            x.r === a - q * b &&
+            x.top === q + 1 &&
+            x.n === k &&
+            x.laid === k * b &&
+            (k * b <= a ? x.left === a - k * b && x.over === 0 : x.left === null && x.over === k * b - a) &&
+            x.exact === (k * b === a) &&
+            // the full planks do not pass a, one more does; the planks needed cover a, one fewer does not
+            q * b <= a &&
+            (q + 1) * b > a &&
+            x.need * b >= a &&
+            (x.need - 1) * b < a &&
+            (x.r === 0 ? x.need === q : x.need === q + 1);
+          if (!ok) bad.push(`${a} ${b} ${n}`);
+        }
+      }
+    expect(bad).toEqual([]);
+    expect(bracketOf(438, 16, 27)).toMatchObject({ q: 27, r: 6, left: 6, over: 0, need: 28 });
+    expect(bracketOf(438, 16, 28)).toMatchObject({ left: null, over: 10 });
+    expect(bracketOf(438, 16, 99).n).toBe(28); // never more than one plank past the full ones
+    expect(bracketOf(9, 14, 5)).toMatchObject({ q: 0, top: 1, n: 1, over: 5, need: 1 }); // a shorter than one plank
+    expect(bracketOf(9999, 2, 4999).left).toBe(1);
+  });
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -230,6 +278,16 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('planks', { a: 24, b: 12, d: 6 }, new Set())).toEqual(['both']); // 24 = 12 × 2: no remainder
     expect(observe('planks', { a: 21, b: 35, d: 1 }, new Set())).toEqual([]); // a plank of 1 fills anything
     expect(observe('planks', { a: 21, b: 35 }, new Set())).toEqual([]); // the plank was never moved: nothing reported
+    expect(observe('bracket', { a: 100, b: 7 }, new Set())).toEqual([]); // no plank laid by the hand: nothing reported
+    expect(observe('bracket', { a: 100, b: 7, n: 14 }, new Set())).toEqual([]); // 98: the full planks, still inside
+    expect(observe('bracket', { a: 100, b: 7, n: 15 }, new Set())).toEqual(['over']); // 105: the last plank alone passes
+    expect(observe('bracket', { a: 100, b: 7, n: 16 }, new Set())).toEqual(['over']); // brought back to 15: never two past
+    expect(observe('bracket', { a: 120, b: 8, n: 15 }, new Set())).toEqual(['exact']);
+    expect(observe('bracket', { a: 120, b: 12, n: 10 }, new Set())).toEqual([]); // exactly 10 planks: not more than 10
+    expect(observe('bracket', { a: 120, b: 8, n: 16 }, new Set())).toEqual([]); // 128 > 120 but 120 = 8 × 15: nothing to pass
+    expect(observe('bracket', { a: 2615, b: 42, n: 63, lo: true, hi: true }, new Set())).toEqual(['over', 'big']);
+    expect(observe('bracket', { a: 2615, b: 42, n: 62, lo: true, hi: false }, new Set())).toEqual([]);
+    expect(observe('bracket', { a: 2615, b: 7, n: 373, lo: true, hi: true }, new Set())).toEqual([]); // a one-digit plank
   });
   it('the dice always gives numbers the instrument can show', () => {
     let s = 7;
@@ -250,9 +308,18 @@ describe('مختبري — the sounds', () => {
   const FILES = [
     './LessonLab.jsx',
     './kit.jsx',
-    ...['Rows', 'Jumps', 'Sentences', 'Divisors', 'Planks', 'Common', 'Euclid', 'PaperDivision', 'Rules'].map(
-      (n) => `./tools/${n}.jsx`,
-    ),
+    ...[
+      'Rows',
+      'Jumps',
+      'Sentences',
+      'Divisors',
+      'Planks',
+      'Common',
+      'Euclid',
+      'PaperDivision',
+      'Rules',
+      'Bracket',
+    ].map((n) => `./tools/${n}.jsx`),
   ];
   /** Every sound name written in the lab's code: play('x'…), useChime(play, 'x'…), and the two names of a « a ? 'x' : 'y' ». */
   const namesIn = (src) =>

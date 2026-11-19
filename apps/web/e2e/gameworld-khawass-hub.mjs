@@ -5,6 +5,7 @@
 // « خروج » back to the hub; then two wrong gates in one run (the rule comes by itself). A student with no key sees it all locked.
 // Run (dev server up): [E2E_SIZE=1366x768] [E2E_TOUCH=1] node apps/web/e2e/gameworld-khawass-hub.mjs [outDir]
 import { createWalk, lessonUrl, PHONE, QAWASIM_WORDS, QAWASIM_NUMBERS } from './lib/walk.mjs';
+import { readLadder, rungShows, ladderFromDisk, bankOnDisk } from './lib/bankSheet.mjs';
 import { TEXT } from '../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/khawass-qawasim/world/text.js';
 
 const ID = 'khawass-qawasim';
@@ -21,11 +22,10 @@ const WAVE_TYPES = [
   'commonDivisor',
   'dividesRest',
 ];
-const w = createWalk('gameworld-khawass-hub', {
-  foreign: QAWASIM_WORDS,
-  foreignNumbers: QAWASIM_NUMBERS,
-  fontFloor: true,
-});
+/** What each rung of the exam ladder must write, computed from the bank ON DISK (never the product's own numbers). */
+const DISK_LADDER = ladderFromDisk(bankOnDisk('4am', ID));
+// the 12 px floor is on by default (lib/walk.mjs), the knowledge map included
+const w = createWalk('gameworld-khawass-hub', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS });
 const { expect, check, shot, ff } = w;
 const TOP = { exit: ['.di-top a.di-icon', '[data-di-exit]'], sound: true };
 
@@ -35,7 +35,6 @@ const lessonData = (page) =>
     const { lesson } = await import(path);
     return {
       titles: Object.fromEntries(Object.entries(lesson.rules).map(([k, v]) => [k, v.title])),
-      levels: lesson.sittings.levels.map((L) => ({ n: L.n, title: L.title, points: lesson.sittings.levelPoints(L) })),
       root: lesson.practiceMap.root,
       edges: lesson.practiceMap.edges.map((e) => e[2]).filter(Boolean),
     };
@@ -271,18 +270,10 @@ await w.run(async () => {
   await page.waitForSelector('[data-di-ladder="open"]');
   await page.waitForTimeout(400);
   {
-    const rungs = await page.locator('[data-di-exam-level]').evaluateAll((els) =>
-      els.map((e) => ({
-        n: Number(e.dataset.diExamLevel),
-        title: e.querySelector('strong').textContent.trim(),
-        small: e.querySelector('small').textContent,
-        disabled: e.disabled,
-      })),
-    );
+    const rungs = await readLadder(page);
     expect(
-      rungs.length === 5 &&
-        rungs.every((r, i) => r.title === L2.levels[i].title && r.small.includes(String(L2.levels[i].points))),
-      `« فضاء الامتحان »: the five levels of THIS lesson, with their points (${rungs.map((r) => r.title).join(' · ')})`,
+      rungs.length === 5 && rungs.every((r, i) => rungShows(r, DISK_LADDER[i], i)),
+      `« فضاء الامتحان »: the bank's five levels, the practice space's names, their minutes and points (${rungs.map((r) => `${r.title}: ${r.small.trim()}`).join(' · ')})`,
     );
     expect(
       !rungs[0].disabled &&
@@ -297,9 +288,25 @@ await w.run(async () => {
   // the hub’s door to the knowledge page, and back
   await page.click('[data-di-hub-know]');
   await page.waitForSelector('[data-di-know]');
+  {
+    const o = (await st(page)).overlay;
+    const k = await page.textContent('[data-di-know]');
+    expect(
+      o === 'know' &&
+        (await page.locator('[data-di-mapcard]').count()) === 0 &&
+        (k.includes('قاسم مشترك لعددين') || k.includes('خواص قواسم عدد طبيعي')),
+      `the hub’s « خريطة المعارف » opens the lesson’s knowledge page in place of the hub (overlay ${o})`,
+    );
+  }
   await page.click('[data-di-know-hub]');
   await page.waitForSelector('[data-di-mapcard]');
-  expect(true, '« خريطة المعارف » opens from the hub and its « فضاء التدريب » comes back to it');
+  {
+    const o = (await st(page)).overlay;
+    expect(
+      o === 'map' && (await page.locator('[data-di-know]').count()) === 0,
+      `…and its « فضاء التدريب » comes back to the hub (overlay ${o})`,
+    );
+  }
 
   // ── 4. a run of the gate dash: « واصل التدريب » ──
   const nextName = (await page.textContent('[data-di-next]')).trim();
@@ -404,20 +411,30 @@ await w.run(async () => {
   );
   const shown = await page.locator('[data-di-guide-rule]').count();
   check(shown === 1, 'after two mistakes the card SHOWS the rule of THIS lesson by itself (`[data-di-guide-rule]`)');
-  if (shown)
-    check(
-      (await page.textContent('[data-di-guide-rule]')).includes(L2.titles[s.o.wave.key]),
-      'the rule shown is the lesson’s own',
-    );
+  check(
+    shown === 1 && (await page.textContent('[data-di-guide-rule]')).includes(L2.titles[s.o.wave.key]),
+    'the rule shown is the lesson’s own',
+  );
   await shot(page, 'run-guide-lost', { exit: ['[data-di-exit]', '[data-di-resume]'] });
-  if (await page.locator('[data-di-resume]').count()) {
-    await page.click('[data-di-resume]');
-    await ff(page, 0.3);
-    await page.click('[data-di-quit]');
-    await page.waitForSelector('[data-di-mapcard]');
-    await page.click('[data-di-map-close]');
-    await page.waitForSelector('[data-di-start]');
-    expect(true, 'the run is left, the hub closed: back on the title screen');
+  // the guidance card always carries « واصل » (DivisorIsles.jsx › the guide card: `[data-di-resume]`, lost or not)
+  expect((await page.locator('[data-di-resume]').count()) === 1, 'the « lost » card keeps its « واصل » button');
+  await page.click('[data-di-resume]');
+  await ff(page, 0.3);
+  expect(
+    (await st(page)).phase === 'dash' && !(await st(page)).overlay,
+    '« واصل » after the second mistake resumes the run',
+  );
+  await page.click('[data-di-quit]');
+  await page.waitForSelector('[data-di-mapcard]');
+  expect(!(await st(page)).dash && (await st(page)).overlay === 'map', '« خروج » leaves the run: back on the hub');
+  await page.click('[data-di-map-close]');
+  await page.waitForSelector('[data-di-start]');
+  {
+    const s2 = await st(page);
+    expect(
+      s2.phase === 'title' && !s2.overlay && !s2.dash && (await page.locator('[data-di-start]').isVisible()),
+      `the run is left, the hub closed: back on the title screen (phase ${s2.phase}, overlay ${s2.overlay})`,
+    );
   }
   if (PHONE) console.log('    (phone held sideways: the hub is checked in its two-column layout)');
 });

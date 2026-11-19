@@ -92,6 +92,16 @@ describe('the investigation of a rule — chart: a lens, the values claimed, and
     expect(claimValues('divides', 'sum', [], 0)).toEqual([]);
   });
 
+  it('the sum lens shows every sum a hundred can give, so a « divisible by » reading holds on EVERY hundred', () => {
+    for (let from = 0; from <= 1900; from += 100) {
+      const sums = new Set(chartCells(from).map((n) => LENSES.sum.of(n)));
+      expect(LENSES.sum.values(from), `from ${from}`).toEqual([...Array(Math.max(...sums)).keys()].map((i) => i + 1));
+      for (const b of [3, 9])
+        expect(judgeClaim(b, 'sum', claimValues('divides', 'sum', [b], from), from).ok, `${b} from ${from}`).toBe(true);
+    }
+    expect(claimValues('divides', 'sum', [9], 900)).toEqual([9, 18, 27]); // 999: a sum of 27 is taken too
+  });
+
   it('counts the cells that light in a stretch of the chart — what rings while the chart is filled', () => {
     for (const b of [2, 3, 4, 5, 9])
       for (const from of [0, 100, 200])
@@ -142,4 +152,28 @@ describe('the investigation of a rule — turn: a bridge as a wall, and cut: a w
     expect(quotientTex(31, 7)).toBe('4{,}42\\dots');
     expect(quotientTex(36, 9)).toBe('4');
   });
+
+  it('the quotient is written from integers only: an exact decimal exactly, « … » only when the decimal goes on', () => {
+    // the oracle: long division by hand, one digit after the other, on integers
+    const oracle = (a, b) => {
+      if (a % b === 0) return String(a / b);
+      let r = a % b;
+      const digits = [];
+      while (digits.length < 2) {
+        r *= 10;
+        digits.push(Math.floor(r / b));
+        r %= b;
+      }
+      const shown = r ? digits.join('') : digits.join('').replace(/0+$/, '');
+      return `${Math.floor(a / b)}{,}${shown}${r ? '\\dots' : ''}`;
+    };
+    const wrong = [];
+    for (let a = 0; a <= 2000; a += 1)
+      for (let b = 1; b <= 100; b += 1) if (quotientTex(a, b) !== oracle(a, b)) wrong.push(`${a} ÷ ${b}`);
+    expect(wrong).toEqual([]);
+    expect(quotientTex(23, 5)).toBe('4{,}6');
+    expect(quotientTex(912, 25)).toBe('36{,}48');
+    expect(quotientTex(10, 3)).toBe('3{,}33\\dots');
+    expect(quotientTex(1, 200)).toBe('0{,}00\\dots');
+  }, 30000);
 });

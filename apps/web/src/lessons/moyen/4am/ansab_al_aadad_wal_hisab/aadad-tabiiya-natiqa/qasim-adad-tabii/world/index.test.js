@@ -14,12 +14,12 @@ describe('the pack of qasim-adad-tabii', () => {
     expect(cardIds).toContain(lesson.cards.fallback);
   });
 
-  it('names every level of the ladder and sends every kind of exam exercise to a card', () => {
+  it('names every level of the ladder; what an exam sitting misses (its rule keys) sends to a card', () => {
     lesson.ladder.nodes.forEach((node) => {
       expect(lesson.text.levels[node.id], node.id).toHaveLength(node.levels.length);
     });
-    const kinds = new Set(lesson.sittings.levels.flatMap((level) => level.plan.map(([kind]) => kind)));
-    for (const kind of kinds) expect(cardIds, kind).toContain(lesson.cards.ofExercise[kind]);
+    // the sittings serve the bank as it is (kit/bankSitting.js): a missed step is named by the key of its الكفاءة
+    for (const key of lesson.keys) expect(cardIds, key).toContain(lesson.cards.ofKey[key]);
   });
 
   it('places every card of the knowledge map', () => {

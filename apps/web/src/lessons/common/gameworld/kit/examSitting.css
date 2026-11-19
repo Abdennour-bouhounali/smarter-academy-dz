@@ -37,33 +37,33 @@
 }
 .xs-head h2 {
   margin: 0;
-  font-size: 1.55rem;
+  font-size: max(var(--di-min-font, 12px), 1.55rem);
   font-weight: 900;
   color: #111827;
 }
 .xs-head p {
   margin: 0;
-  font-size: 1rem;
+  font-size: max(var(--di-min-font, 12px), 1rem);
   color: #374151;
 }
 .xs-seat {
-  font-size: 1.05rem;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
   border: 1.5px solid #111827;
   padding: 0.1rem 0.8rem;
   border-radius: 0.2rem;
 }
 .xs-seat b {
-  font-size: 1.25rem;
+  font-size: max(var(--di-min-font, 12px), 1.25rem);
 }
 .xs-clock {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-size: 1.05rem;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
 }
 .xs-clock b {
   font:
-    800 1.5rem 'JetBrains Mono',
+    800 max(var(--di-min-font, 12px), 1.5rem) 'JetBrains Mono',
     ui-monospace,
     monospace;
 }
@@ -72,7 +72,7 @@
   align-items: center;
   gap: 0.3rem;
   font:
-    700 0.85rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 0.85rem) 'Cairo',
     sans-serif;
   color: #4b5563;
 }
@@ -91,13 +91,13 @@
 }
 .xs-total b {
   font:
-    900 1.9rem 'Cairo',
+    900 max(var(--di-min-font, 12px), 1.9rem) 'Cairo',
     sans-serif;
   line-height: 1;
 }
 .xs-total i {
   font:
-    700 0.95rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 0.95rem) 'Cairo',
     sans-serif;
   font-style: normal;
   margin-top: -0.9rem;
@@ -109,13 +109,13 @@
   gap: 0.5rem;
   margin: 0;
   font:
-    700 1rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 1rem) 'Cairo',
     sans-serif;
   color: #374151;
 }
 .xs-tip--in {
   justify-content: flex-start;
-  font-size: 0.85rem;
+  font-size: max(var(--di-min-font, 12px), 0.85rem);
   margin-bottom: 0.4rem;
   color: #1d3fae;
 }
@@ -152,7 +152,7 @@
 .xs-ex h3,
 .xs-sheet h3 {
   margin: 0 0 0.4rem;
-  font-size: 1.35rem;
+  font-size: max(var(--di-min-font, 12px), 1.35rem);
   font-weight: 900;
   color: #111827;
   border-bottom: 2px solid #111827;
@@ -163,21 +163,23 @@
   font-style: normal;
   /* the sheet is zoomed to fit (×0.7 at 1024×768): 1.2rem still reads 12 px there */
   font:
-    700 1.2rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 1.2rem) 'Cairo',
     sans-serif;
   color: #4b5563;
 }
 .xs-statement {
   margin: 0 0 0.5rem;
-  font-size: 1.3rem;
+  font-size: max(var(--di-min-font, 12px), 1.3rem);
   line-height: 2;
+  /* the bank writes its lists line by line (« • … ») inside one paragraph: each stays on its own line */
+  white-space: pre-line;
 }
 .xs-ex ol {
   margin: 0;
   padding-inline-start: 1.4rem;
   display: grid;
   gap: 0.35rem;
-  font-size: 1.25rem;
+  font-size: max(var(--di-min-font, 12px), 1.25rem);
   line-height: 1.9;
 }
 .xs-ex .katex {
@@ -217,52 +219,98 @@
 }
 .xs-n {
   font:
-    800 1.2rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 1.2rem) 'Cairo',
     sans-serif;
 }
-.xs-line {
+.xs-step {
   flex: 1;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  min-width: 0;
+  display: grid;
+  gap: 0.35rem;
+  font-family: 'Cairo', sans-serif;
+}
+.xs-step__ask {
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
+  font-weight: 700;
+  color: #374151;
+}
+/* the practice space's own widgets (ChoiceInput, TemplateInput, IntegerSetInput) in blue ink on the answer sheet */
+.xs-field {
+  color: #1d3fae;
+  font-size: max(var(--di-min-font, 12px), 1rem);
+}
+/* their Tailwind sizes keep the 12 px floor of the sheet's zoom too (Fit floor): the sheet is zoomed down to fit, and a
+   « text-xs » line or a choice label drawn at 0.6 of 16 px is under 12 px (walks of 2026-11-19, 1366 × 768 and 1024 × 768) */
+.xs-field .text-xs {
+  font-size: max(var(--di-min-font, 12px), 0.75rem);
+}
+.xs-field .text-sm {
+  font-size: max(var(--di-min-font, 12px), 0.875rem);
+}
+.xs-field .text-lg {
+  font-size: max(var(--di-min-font, 12px), 1.125rem);
+}
+.xs-field .text-xl,
+.xs-field .sm\:text-xl {
+  font-size: max(var(--di-min-font, 12px), 1.25rem);
+}
+.xs-field .text-2xl {
+  font-size: max(var(--di-min-font, 12px), 1.5rem);
+}
+/* a choice takes the width of its words, side by side: « نعم » and « لا » stand on one line, seven weekdays on two — not one
+   per half-row 48 px high (ChoiceInput's own grid), which made the sheet zoom down to ~0.6 */
+.xs-field[data-xs-type='choice'] .grid {
+  display: flex;
   flex-wrap: wrap;
-  font:
-    800 1.45rem 'Cairo',
-    sans-serif;
+  gap: 0.4rem;
 }
-.xs-box {
+.xs-field[data-xs-type='choice'] .grid > button {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 2.5rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 0.6rem;
+}
+.xs-field input,
+.xs-field textarea {
+  color: #1d3fae;
+}
+.xs-onpaper {
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
-}
-.xs-box small {
-  font:
-    600 max(var(--di-min-font, 12px), 0.7rem) 'Cairo',
-    sans-serif;
+  gap: 0.4rem;
   color: #6b7280;
+  font:
+    700 max(var(--di-min-font, 12px), 0.95rem) 'Cairo',
+    sans-serif;
+}
+.xs-formulas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem 2.2rem;
+  margin: 0.3rem 0;
+  font-size: max(var(--di-min-font, 12px), 1.1rem);
   white-space: nowrap;
 }
-.xs-box input,
-.xs-line select {
-  height: 2.5rem;
-  border: 0;
-  border-bottom: 2.5px solid #1d3fae;
-  background: rgba(29, 63, 174, 0.05);
-  color: #1d3fae;
+.xs-lead {
+  font-weight: 700;
+}
+.xs-wait {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 1rem;
   font:
-    800 1.45rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 1.2rem) 'Cairo',
     sans-serif;
-  text-align: center;
-  outline: none;
-  border-radius: 0.2rem 0.2rem 0 0;
+  color: #374151;
 }
-.xs-line select {
-  font-size: 1.1rem;
-  padding: 0 0.4rem;
-}
-.xs-box input:focus,
-.xs-line select:focus {
-  background: rgba(29, 63, 174, 0.14);
+.xs-body[hidden] {
+  display: none;
 }
 .xs-flag {
   flex: none;
@@ -300,7 +348,7 @@
   background: #fffdf6;
   color: #111827;
   font:
-    800 1rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 1rem) 'Cairo',
     sans-serif;
   cursor: pointer;
   border-radius: 0.3rem;
@@ -323,7 +371,7 @@
   border: 1.5px solid #111827;
   background: #fffdf6;
   font:
-    800 0.95rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 0.95rem) 'Cairo',
     sans-serif;
   cursor: pointer;
   border-radius: 0.3rem;
@@ -363,7 +411,7 @@
   align-items: center;
   gap: 0.5rem;
   font:
-    700 0.95rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 0.95rem) 'Cairo',
     sans-serif;
 }
 .xs-confirm--forgot {
@@ -383,7 +431,7 @@
 .xs-btn--quit {
   min-height: 2.3rem;
   padding: 0 0.8rem;
-  font-size: 0.9rem;
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
   border-color: #9ca3af;
   color: #374151;
 }
@@ -408,14 +456,14 @@
 .xs-quitbox h3 {
   margin: 0 0 0.5rem;
   font:
-    900 1.45rem 'Cairo',
+    900 max(var(--di-min-font, 12px), 1.45rem) 'Cairo',
     sans-serif;
   color: #111827;
 }
 .xs-quitbox p {
   margin: 0 0 1.1rem;
   font:
-    700 1.08rem/1.8 'Cairo',
+    700 max(var(--di-min-font, 12px), 1.08rem) / 1.8 'Cairo',
     sans-serif;
   color: #374151;
 }
@@ -427,7 +475,7 @@
   margin: 0;
   text-align: center;
   font:
-    800 1.05rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 1.05rem) 'Cairo',
     sans-serif;
   color: #111827;
   background: #fde68a;
@@ -442,7 +490,7 @@
   align-content: center;
   gap: 1rem;
   font:
-    800 1.3rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 1.3rem) 'Cairo',
     sans-serif;
   color: #374151;
 }
@@ -474,7 +522,7 @@
 .xs-appreciation {
   margin: -0.2rem 0 0;
   text-align: center;
-  font-size: 1.5rem;
+  font-size: max(var(--di-min-font, 12px), 1.5rem);
   font-weight: 700;
   color: #c81e1e;
   transform: rotate(-1.5deg);
@@ -485,7 +533,7 @@
 .xs-ink {
   color: #1d3fae;
   font:
-    800 1.1rem 'Cairo',
+    800 max(var(--di-min-font, 12px), 1.1rem) 'Cairo',
     sans-serif;
   white-space: nowrap;
 }
@@ -497,7 +545,7 @@
 .xs-none {
   color: #9ca3af;
   font:
-    700 1rem 'Cairo',
+    700 max(var(--di-min-font, 12px), 1rem) 'Cairo',
     sans-serif;
 }
 .xs-paper--back .xs-ex {
@@ -506,7 +554,7 @@
 .xs-paper--back ol {
   list-style: none;
   padding: 0;
-  font-size: 1rem;
+  font-size: max(var(--di-min-font, 12px), 1rem);
   gap: 0.15rem;
 }
 .xs-row {
@@ -530,22 +578,25 @@
   background: #f6f1e3;
 }
 .xs-row__q {
-  font-size: 1.05rem;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
   line-height: 1.6;
 }
 .xs-pen {
   color: #c81e1e;
   font:
-    900 1.25rem 'Cairo',
+    900 max(var(--di-min-font, 12px), 1.25rem) 'Cairo',
     sans-serif;
   white-space: nowrap;
 }
 .xs-pen i {
   font-style: normal;
-  font-size: 0.9rem;
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
 }
 .xs-pen.is-ok {
   color: #c81e1e;
+}
+.xs-pen.is-paper {
+  color: #6b7280;
 }
 .xs-sheet--back {
   background-image: none;
@@ -558,13 +609,13 @@
   justify-items: center;
   text-align: center;
   padding: 2rem 1rem;
-  font-size: 1.15rem;
+  font-size: max(var(--di-min-font, 12px), 1.15rem);
 }
 .xs-notebook ol {
   text-align: start;
   display: grid;
   gap: 0.5rem;
-  font-size: 1.1rem;
+  font-size: max(var(--di-min-font, 12px), 1.1rem);
   line-height: 1.8;
   padding-inline-start: 1.2rem;
   list-style: decimal;
@@ -578,7 +629,7 @@
   gap: 0.6rem;
 }
 .xs-detail h3 {
-  font-size: 1.15rem;
+  font-size: max(var(--di-min-font, 12px), 1.15rem);
   border: 0;
   line-height: 1.7;
 }
@@ -593,7 +644,7 @@
 .xs-help small,
 .xs-scheme small {
   display: block;
-  font-size: 0.78rem;
+  font-size: max(var(--di-min-font, 12px), 0.78rem);
   font-weight: 800;
   color: #6b7280;
 }
@@ -608,7 +659,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
+  font-size: max(var(--di-min-font, 12px), 1rem);
   font-weight: 600;
   cursor: pointer;
 }
@@ -628,7 +679,7 @@
 }
 .xs-help p {
   margin: 0.2rem 0;
-  font-size: 1.05rem;
+  font-size: max(var(--di-min-font, 12px), 1.05rem);
   line-height: 1.8;
 }
 .xs-help--model {
@@ -648,13 +699,13 @@
   }
   .xs-statement,
   .xs-ex ol {
-    font-size: 1.08rem;
+    font-size: max(var(--di-min-font, 12px), 1.08rem);
   }
-  .xs-line {
-    font-size: 1.2rem;
+  .xs-step__ask {
+    font-size: max(var(--di-min-font, 12px), 1.1rem);
   }
   .xs-head h2 {
-    font-size: 1.25rem;
+    font-size: max(var(--di-min-font, 12px), 1.25rem);
   }
 }
 
@@ -664,11 +715,11 @@
 }
 .xs-paper--read .xs-statement,
 .xs-paper--read .xs-ex ol {
-  font-size: 1.12rem;
+  font-size: max(var(--di-min-font, 12px), 1.12rem);
   line-height: 1.85;
 }
 .xs-paper--read .xs-ex h3 {
-  font-size: 1.2rem;
+  font-size: max(var(--di-min-font, 12px), 1.2rem);
 }
 .xs-root .xs-help--model,
 .xs-root .xs-help--model p {
@@ -686,5 +737,5 @@
 .xs-cols--1 ol,
 .xs-cols--2 .xs-statement,
 .xs-cols--2 ol {
-  font-size: 1.3rem !important;
+  font-size: max(var(--di-min-font, 12px), 1.3rem) !important;
 }

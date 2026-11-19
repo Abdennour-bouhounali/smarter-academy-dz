@@ -4,18 +4,25 @@
 // one gap), `peel` (the piece a division leaves, then a claim built from the table's columns), `letters` (numbers, then a
 // proof assembled from cards). In each: a wrong pick and the right one, the sounds the world plays, the mirror refuting a
 // wrong rule (join, stack) or the table refusing a wrong claim (peel), the attacks, the seal, the last step, the tablet.
-// Then the gate dash, the stone's question (a wrong pick, then the right set), the store of the last bridge (a wrong
-// shelf, the wrong divisions, the price, its way out) and the lighthouse.
+// Forge 1 also plays what a student who struggles meets: « ساعدني يا زيرو » (two gaps the mirror builds, never a rule), a
+// rule his own gaps agree with and that a NEW gap BREAKS (`data-rf-broken`), after he said what the arithmetic says and
+// not what his rule says (« قاعدتك تقول غير ذلك »).
+// The ✕ is CLICKED twice — in the world (island B) and inside a forge (the first experiment) — and each time he comes
+// back where he was: the same island with its bridge built; the same mirror, its experiment from its first gap.
+// Then the gate dash (its last wave gives nothing of the next island away), the bridge the third key reads (105: what
+// 280 leaves under the piece 175), the stone's question (a wrong pick, then the right set), the store of the last bridge
+// (a wrong shelf, the wrong divisions, the price, its way out) and the lighthouse.
 // At EVERY screenshot (lib/walk.mjs › shot): nothing scrolls / is cut / leaves the screen, no raw LaTeX, formulas left to
 // right on one line, no word or number of lessons 1 and 2, a way out reachable, no text under 12 px (fontFloor).
 // Every investigation screen also: nothing leaves its frame, no button is covered (inquiryFits).
 // The answers are computed HERE from the numbers on screen (state hooks are read for the question, never for the answer).
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/gameworld-khawass.mjs [outDir]
-import { createWalk, lessonUrl, QAWASIM_WORDS, QAWASIM_NUMBERS } from './lib/walk.mjs';
+import { createWalk, lessonUrl, QAWASIM_WORDS, QAWASIM_NUMBERS, FLOOR_PX } from './lib/walk.mjs';
 
 const ID = 'khawass-qawasim';
 const URL = lessonUrl('ansab_al_aadad_wal_hisab', ID);
-const w = createWalk('gameworld-khawass', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS, fontFloor: true });
+// the 12 px floor is on by default (lib/walk.mjs): every screenshot checks it
+const w = createWalk('gameworld-khawass', { foreign: QAWASIM_WORDS, foreignNumbers: QAWASIM_NUMBERS });
 const { expect, check } = w;
 /** The way out of any screen of the world: the top bar's ✕, the forge's own ✕, the ✕ drawn over a dialog. */
 const OUT = { exit: ['[data-di-exit]', '.di-top a.di-icon'], numbers: true };
@@ -213,7 +220,7 @@ await w.run(async () => {
   /** An investigation screen: nothing leaves its frame, no button is covered, no text under 12 px — then the screenshot. */
   const inquiryFits = async (name) => {
     await page.waitForTimeout(250);
-    const bad = await page.evaluate(() => {
+    const bad = await page.evaluate((FLOOR) => {
       const out = [];
       const frame = document.querySelector('.iq');
       if (!frame) return ['no investigation on screen'];
@@ -234,14 +241,15 @@ await w.run(async () => {
         if (
           el.textContent.trim() &&
           !el.querySelector('*:not(.katex):not(.katex *)') &&
-          parseFloat(getComputedStyle(el).fontSize) * zoom < 11.5
+          parseFloat(getComputedStyle(el).fontSize) * zoom < FLOOR
         )
           out.push('text under 12 px: ' + String(el.className).split(' ')[0]);
       }
       // the words drawn in the scene (SVG text) are read too
       for (const el of frame.querySelectorAll('svg text')) {
         const r = el.getBoundingClientRect();
-        if (r.width && r.height < 11.5 * 0.9 && el.textContent.trim())
+        // the box of a line of text drawn at 12 px is about 0.9 of its size high
+        if (r.width && r.height < FLOOR * 0.9 && el.textContent.trim())
           out.push(`scene text under 12 px: « ${el.textContent.trim().slice(0, 20)} » (${r.height.toFixed(1)} px)`);
       }
       if (box.bottom > window.innerHeight + 1 || box.right > window.innerWidth + 1)
@@ -250,7 +258,7 @@ await w.run(async () => {
         if (/(auto|scroll)/.test(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight + 2)
           out.push('scrolls: ' + el.className);
       return [...new Set(out)];
-    });
+    }, FLOOR_PX);
     check(
       bad.length === 0,
       `${name}: the investigation fits its frame — nothing cut, covered, scrolled or too small${bad.length ? ' — ' + bad.join(' | ') : ''}`,
@@ -275,9 +283,44 @@ await w.run(async () => {
     );
   };
 
+  /**
+   * The ✕ is CLICKED: the student really leaves the lesson (the world is gone, the address is another page). Then he
+   * opens the lesson again and presses the title's button, which now offers to RESUME. Where he is then is the caller's
+   * to check.
+   */
+  const leaveAndReturn = async (where, exits) => {
+    const sel = await w.reachable(page, exits);
+    expect(sel !== null, `${where}: the ✕ is on screen and nothing covers it (${exits.join(' / ')})`);
+    await page.click(sel);
+    await page
+      .waitForFunction((id) => !location.pathname.endsWith(`/${id}`) && !document.querySelector('.di-root'), ID, {
+        timeout: 15000,
+      })
+      .catch(() => {});
+    const gone = await page.evaluate(() => ({
+      path: location.pathname,
+      world: Boolean(document.querySelector('.di-root')),
+    }));
+    expect(
+      !gone.path.endsWith(`/${ID}`) && !gone.world,
+      `${where}: the ✕ leaves the lesson — the world is closed, the page is ${gone.path}`,
+    );
+    await page.goto(URL, { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('[data-di-start]', { timeout: 30000 });
+    await page.waitForTimeout(1200);
+    const label = (await page.textContent('[data-di-start]')).trim();
+    expect(
+      label.length > 0 && label !== startLabel,
+      `${where}: back on the lesson, the title offers to RESUME (« ${label} », not « ${startLabel} »)`,
+    );
+    await page.click('[data-di-start]');
+    await page.waitForTimeout(1200);
+  };
+
   // ══════════════════════════ the title ══════════════════════════
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
   await page.waitForTimeout(1200);
+  const startLabel = (await page.textContent('[data-di-start]')).trim();
   expect(
     (await page.textContent('.di-title h1')).includes('جسور المرفأ') &&
       (await page.textContent('.di-title__eyebrow')).includes('خواص قواسم عدد طبيعي'),
@@ -298,6 +341,19 @@ await w.run(async () => {
     (await st()).stage === 1 && (await st()).held == null,
     'on the second island the mould is not kept: he must choose',
   );
+  // ── the ✕ of the WORLD, clicked on island B: he leaves, comes back, and is on island B with his bridge built ──
+  await leaveAndReturn('in the world, on island B', ['.di-top a.di-icon', '.di-top [data-di-exit]']);
+  {
+    const s = await st();
+    expect(
+      s.phase === 'play' && s.stage === 1 && s.overlay == null && s.stars.g21 >= 1 && s.held == null,
+      `he is back WHERE HE WAS: island B, the bridge of 21 still built, no mould in hand (${JSON.stringify({ phase: s.phase, stage: s.stage, overlay: s.overlay, g21: s.stars.g21 })})`,
+    );
+    await ff(0.3);
+    const at = await page.evaluate(() => window.__world.hero.island);
+    expect(at === 1, `the hero stands on island B (island ${at})`);
+    await shot('back-on-island-b');
+  }
   // 35: a wrong mould, then the one that filled 21
   await take(4);
   await toAltar(1);
@@ -328,6 +384,30 @@ await w.run(async () => {
     );
     await forgeTools('forge 1, the investigation');
     await inquiryFits('join-start');
+    // ── the ✕ of the FORGE, clicked after his first answer: he leaves; back, the same mirror waits for him ──
+    await page.click('[data-iq-say="yes"]');
+    await page.waitForSelector('[data-iq-next]');
+    expect((await page.locator('[data-iq-found] li').count()) === 1, 'he answered the first pair: one line found');
+    await leaveAndReturn('inside forge 1', ['.rf-root [data-di-exit]']);
+    await ff(1.5);
+    await page.waitForSelector('[data-rf="inquiry"]', { timeout: 15000 });
+    {
+      const s = await st();
+      expect(
+        s.stage === 2 && s.overlay === 'forge' && s.keys.length === 0 && s.stars.g35 >= 1,
+        'he is back WHERE HE WAS: island C, in front of its mirror — the forge opens again by itself, no key skipped',
+      );
+      await opensOnQuestion('jam-wal-farq', 'join');
+      const again = await iq();
+      expect(
+        again.a === 21 &&
+          again.b === 35 &&
+          again.stage === 'guess' &&
+          (await page.locator('[data-iq-found] li').count()) === 0,
+        'the experiment starts again from HIS two bridges (21 and 35): nothing half-done is kept, nothing is given',
+      );
+      await inquiryFits('join-start-again');
+    }
     const fills = (s) => (s.op === 'sum' ? s.a + s.b : s.a - s.b) % s.d === 0;
     let n = 0;
     while ((await iq()).stage === 'guess') {
@@ -381,6 +461,47 @@ await w.run(async () => {
       (await page.locator('[data-rf-row][data-rf-own="1"]').count()) === 6,
       'only now he WRITES his rule — the mirror will test it on the six gaps HE made',
     );
+    // ── « ساعدني يا زيرو »: the robot gives no rule and picks no tile — the mirror builds two gaps to look at ──
+    expect(
+      (await page.locator('[data-rf-help]:not([disabled])').count()) === 1 &&
+        (await page.getAttribute('.rf-root', 'data-rf-nudges')) === '0',
+      'while he writes his rule, « ساعدني يا زيرو » is offered — not used yet',
+    );
+    {
+      const heard = await hear(async () => {
+        await page.click('[data-rf-help]');
+        await page.waitForSelector('[data-rf-nudge="experiment"]');
+        await page.waitForFunction(() => window.__forge?.help?.running === false, null, { timeout: 20000 });
+      });
+      const f = await fg();
+      const built = f.rows.filter((r) => r.mirror);
+      expect(
+        (await page.getAttribute('.rf-root', 'data-rf-nudges')) === '1' &&
+          f.help.cases.length === 2 &&
+          built.length === 2 &&
+          built.every((c) => c.held === ((c.op === 'sum' ? c.A + c.B : c.A - c.B) % c.d === 0)),
+        `the help is an EXPERIMENT: the mirror built two gaps in front of him (${built.map((c) => `${c.A} ${c.op === 'sum' ? '+' : '−'} ${c.B} with ${c.d}`).join(' ; ')}) and they joined his evidence`,
+      );
+      expect(
+        (await page.locator('[data-rf-choice]').count()) === 0 && Object.values(f.rule).every((v) => v == null),
+        'the help never narrows to a choice of rules, and it picked no tile for him',
+      );
+      const bubble = (await page.textContent('[data-rf-nudge]')) ?? '';
+      expect(
+        bubble.trim().length > 20 && !/كلتيهما|قاعدة|القاعدة/.test(bubble),
+        `what the robot says is a thing to LOOK at, never the rule (« ${bubble.trim().slice(0, 60)} »)`,
+      );
+      check(
+        (await page.locator('[data-rf-row][data-rf-own="0"]').count()) >= 1,
+        'the gaps the mirror built are in his list, marked as the mirror’s',
+      );
+      check(
+        heard[0] === 'crystal' && heard.includes('plank') && heard.includes('success'),
+        `the help is heard: the robot, the planks laid, the verdict (${[...new Set(heard)].join(', ')})`,
+      );
+      await forgeTools('forge 1, the help');
+      await shot('forge1-help');
+    }
     // « if the plank fills at least one of the gaps, it fills both new gaps »: one of his own gaps breaks it
     await page.click('[data-rf-tile="if:some"]');
     await page.click('[data-rf-tile="then:both"]');
@@ -394,7 +515,74 @@ await w.run(async () => {
     await shot('forge1-refuted');
     await page.click('[data-rf-fix]');
     await page.waitForSelector('[data-rf="build"]');
+    // ── a rule his own gaps AGREE with, broken by a new one: « if the plank fills neither gap, it fills the glued one » —
+    //    what 22 + 20 = 42 invites. Only one of his gaps is of that kind, and it held ──
+    await page.click('[data-rf-tile="if:none"]');
+    await page.click('[data-rf-tile="then:sum"]');
+    await page.click('[data-rf-test]');
+    await page.waitForSelector('[data-rf-agreed]');
+    expect(
+      (await page.locator('[data-rf-refuted]').count()) === 0,
+      'the « neither gap » rule agrees with every gap he made: the mirror cannot refute it with HIS evidence',
+    );
+    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"]');
+    {
+      const a = (await fg()).atk;
+      const c = a.list[a.i];
+      // the walk's own arithmetic on the pair the mirror chose
+      const filled = (c.A + c.B) % c.d === 0;
+      const id = `sum:${c.A}:${c.B}:${c.d}`;
+      expect(
+        a.list.length === 1 && c.op === 'sum' && c.A % c.d !== 0 && c.B % c.d !== 0 && !filled,
+        `the mirror attacks with a pair the rule speaks of and gets wrong: the plank ${c.d} fills neither ${c.A} nor ${c.B}, and not ${c.A + c.B} either (${c.A + c.B} = ${c.d} × ${Math.floor((c.A + c.B) / c.d)} + ${(c.A + c.B) % c.d})`,
+      );
+      expect(
+        (await page.locator(`[data-rf-row="${id}"]`).count()) === 0 && c.A + c.B >= 11,
+        'it is a NEW pair, never one he made — and a gap long enough to lay planks on',
+      );
+      await shot('forge1-attack-false-rule');
+      // he answers what the ARITHMETIC says (« not filled ») — his rule says the opposite, and the screen tells him so
+      await page.click('[data-rf-say="no"]');
+      await page.waitForSelector('[data-rf-rule-says]');
+      expect(
+        (await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says')) === 'yes' &&
+          (await page.textContent('[data-rf-rule-says]')).includes('قاعدتك تقول غير ذلك'),
+        'he said « لا يملؤها »: « قاعدتك تقول غير ذلك » — HIS rule says the plank fills it, in its own words',
+      );
+      await shot('forge1-attack-not-his-rule');
+      const heard = await hear(async () => {
+        await page.click('[data-rf-fire]');
+        await page.waitForSelector('[data-rf-broken]');
+      });
+      const broken = (await page.textContent('[data-rf-broken]')) ?? '';
+      expect(
+        (await page.getAttribute('[data-rf-broken]', 'data-rf-broken')) === id &&
+          (await page.locator('[data-rf-survived]').count()) === 0 &&
+          (await page.locator('[data-rf-attack-next]').count()) === 0 &&
+          (await page.locator('[data-rf-seal]').count()) === 0,
+        `the rule BREAKS on ${c.A} + ${c.B} with the plank ${c.d}: no seal, no next challenge — only « أصلح قاعدتي »`,
+      );
+      expect(
+        broken.includes('انكسرت') && broken.includes('يملؤها') && !/خطأ|خاطئ/.test(broken),
+        `the verdict is what the plank did, never « wrong » (« ${broken.trim().slice(0, 70)} »)`,
+      );
+      check(heard.at(-1) === 'crumble', `the broken bridge is heard (${[...new Set(heard)].join(', ')})`);
+      await forgeTools('forge 1, the broken rule');
+      await shot('forge1-broken');
+      await page.click('[data-rf-fix]');
+      await page.waitForSelector('[data-rf="build"]');
+      expect(
+        (await fg()).rows.some((r) => r.mirror && r.op === 'sum' && r.A === c.A && r.B === c.B && r.d === c.d),
+        'the gap that broke his rule joins his evidence: the next rule will be tested on it too',
+      );
+    }
     await finishForge('forge1', ['if:both', 'then:both'], async (u) => {
+      expect(
+        (await page.getAttribute('.rf-root', 'data-rf-tries')) === '3' &&
+          (await page.getAttribute('.rf-root', 'data-rf-nudges')) === '1',
+        'the forge kept how the rule was found: three rules tested, one help',
+      );
       const [p, q] = [u.A / u.d, u.B / u.d];
       expect(
         (await fillUse({ x: p + q, y: p - q + 1 })) === 'diff',
@@ -660,8 +848,35 @@ await w.run(async () => {
   await page.click('[data-di-tablet]');
   await ff(0.3);
 
-  // ── 70 with the plank 7, then the stone of island H ──
-  await bridge(6, 'g70', 70, 8, 7);
+  // ── the bridge the third key READS: the piece 175 laid on the bridge 280 leaves 105. Of the moulds, 10 and 14 fill
+  //    280 only (the lesson's trap); 35 fills 280 and 175 — so it fills what is left ──
+  {
+    const next = 280 % (735 % 280);
+    const moulds = await page.evaluate(() => {
+      const g = window.__world;
+      return { a: g.segs[6].a, id: g.segs[6].id, b: g.isl[6].pedestals.map((p) => p.b) };
+    });
+    expect(
+      next === 105 && moulds.a === next && moulds.id === 'g105',
+      `the gap after the key is what 280 leaves under the piece 175: 280 = 175 × 1 + ${next}`,
+    );
+    const fillsBoth = moulds.b.filter((b) => 280 % b === 0 && 175 % b === 0);
+    expect(
+      moulds.b.length === 3 &&
+        fillsBoth.length === 1 &&
+        moulds.b.filter((b) => next % b === 0).join() === fillsBoth.join(),
+      `its moulds are ${moulds.b.join(', ')}: ONE fills the bridge and the piece (${fillsBoth.join()}) — and it alone fills ${next}`,
+    );
+    const said =
+      ((await page.locator('.di-say').count()) ? await page.locator('.di-say').first().textContent() : '') ?? '';
+    check(
+      ['175', '280', String(next)].every((x) => said.includes(x)),
+      `the robot says where the gap comes from — the piece 175 on the bridge 280 — so the key can read it (« ${said.trim().slice(0, 70)} »)`,
+    );
+    // a mould that fills the bridge ONLY (14: 280 = 14 × 20, 175 = 14 × 12 + 7) leaves cells; the mould of both holds
+    await bridge(6, 'g105', next, 14, fillsBoth[0]);
+    await shot('g105');
+  }
   await cross(6);
   await ff(2.5);
   await page.waitForTimeout(400);
@@ -669,7 +884,7 @@ await w.run(async () => {
     const s = await st();
     expect(
       s.stage === 7 && s.overlay === 'quiz' && s.o.id === 'harbour',
-      'island H « الحروف »: the stone asks the harbour’s question first',
+      'island H « الحجر »: the stone asks the harbour’s question first',
     );
     const opts = await page
       .locator('[data-di-option]')
@@ -706,6 +921,12 @@ await w.run(async () => {
     expect(
       (await iq()).stage === 'numbers' && (await iq()).si === 0 && ['7', '21', '35'].every((x) => v0.includes(x)),
       'it starts from island A: d = 7, a = 21, b = 35',
+    );
+    // the word that names what he is about to find is NOT on screen before he finds it: the island, the mirror, the stone
+    const beforeProof = await page.evaluate(() => document.body.innerText);
+    check(
+      !/حروف|بالحروف|برهان|البرهان/.test(beforeProof) && beforeProof.includes('الحجر'),
+      'during the experiment nothing on screen says « حروف » or « برهان »: the island is « جزيرة الحجر »',
     );
     await inquiryFits('letters-numbers');
     // a wrong press, then the right one — computed here: (a + b) ÷ d
@@ -813,7 +1034,21 @@ await w.run(async () => {
     });
   }
   await shot('tablet-4');
-  expect((await page.textContent('.di-card')).includes('البرهان'), 'the tablet: « البرهان »');
+  {
+    const card = await page.textContent('.di-card');
+    expect(
+      card.includes('البرهان') && card.includes('بحروف'),
+      'the tablet: « البرهان » — the words « بحروف » come NOW, after he assembled the proof',
+    );
+    // ONE pair of letters from his cards to his tablet: k and k′ (q is the quotient of the tablet before)
+    const formulas = await page.evaluate(() =>
+      [...document.querySelectorAll('.di-card annotation')].map((x) => x.textContent),
+    );
+    check(
+      formulas.some((f) => f.includes("k'")) && !formulas.some((f) => /(^|[^a-z\\])[pq]([^a-z]|$)/.test(f)),
+      `the tablet writes the proof with the letters of his cards, k and k′ (${formulas.filter((f) => /k/.test(f)).join(' · ')})`,
+    );
+  }
   await page.click('[data-di-tablet]');
   await ff(0.5);
   expect((await st()).keys.length === 4, 'four keys earned, all forged');

@@ -50,6 +50,7 @@ export class WorldRuntime {
       onSave = () => {},
       onModule = () => {},
       onEvidence = () => {},
+      onSitting = () => {},
       sound = true,
       unlockedKeys = [],
     } = {},
@@ -59,6 +60,7 @@ export class WorldRuntime {
     this.onSave = onSave;
     this.onModule = onModule;
     this.onEvidence = onEvidence;
+    this.onSitting = onSitting;
     this.listeners = new Set();
     this.occluders = [];
     this.signs = [];
@@ -388,6 +390,23 @@ export class WorldRuntime {
     this.set({ tally: this.tally });
     this.save();
     this.onEvidence(context, ev);
+  }
+
+  /**
+   * A copy of « الامتحان الأبيض » was handed in: each answered step that counts adds to the tally of its key (« تقدّمي »), and the
+   * copy goes to the shell, which sends it to the practice engine — the SERVER re-computes every verdict (kit/bankEvidence.js).
+   */
+  handInSitting(subject, answers) {
+    const rows = this.lesson.sittings.tallyOf(subject, answers);
+    for (const r of rows) {
+      const t = this.tally[r.key] ?? { ok: 0, n: 0 };
+      this.tally = { ...this.tally, [r.key]: { ok: t.ok + (r.ok ? 1 : 0), n: t.n + 1 } };
+    }
+    if (rows.length) {
+      this.set({ tally: this.tally });
+      this.save();
+    }
+    this.onSitting(subject, answers);
   }
 
   /** A card of the knowledge page was opened / a rule passed its memory test. */

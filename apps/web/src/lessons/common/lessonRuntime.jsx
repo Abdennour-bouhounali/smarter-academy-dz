@@ -38,15 +38,24 @@ export function LessonPageFrame({ config, Component, module = null, loadKnowledg
   // La page part EN MÊME TEMPS que la carte des connaissances, qui suspend
   // au-dessus d'elle (buildLessonRoutes.jsx › lazyWithPreload). Idempotent.
   Component.preload?.();
+  const page = (
+    <>
+      <Component />
+      <LessonNotebookAnchor config={config} module={module} />
+      {/* Révision d'un prérequis ouverte depuis « راجع قبل أن تنطلق » : UN clic ramène à la leçon de départ */}
+      <ReturnToLessonButton />
+    </>
+  );
   return (
     <LessonAccessGate lessonId={config.id} title={config.title}>
       <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
-        <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={printSubject}>
-          <Component />
-          <LessonNotebookAnchor config={config} module={module} />
-          {/* Révision d'un prérequis ouverte depuis « راجع قبل أن تنطلق » : UN clic ramène à la leçon de départ */}
-          <ReturnToLessonButton />
-        </LazyLessonKnowledgeProvider>
+        {/* No `loadKnowledge` (a v2 lesson, LESSON_V2.md §2): no 🧠 map on the page — the world has its own « خريطة المعارف »,
+            built from the knowledge its pack declares. */}
+        {loadKnowledge ? (
+          <LazyLessonKnowledgeProvider load={loadKnowledge} lessonId={config.id} printTitle={config.title} printSubject={printSubject}>
+            {page}
+          </LazyLessonKnowledgeProvider>
+        ) : page}
       </Suspense>
     </LessonAccessGate>
   );

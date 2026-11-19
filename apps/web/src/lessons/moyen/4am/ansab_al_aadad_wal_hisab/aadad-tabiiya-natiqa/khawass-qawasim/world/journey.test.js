@@ -4,6 +4,7 @@ import { KNOWLEDGE } from './knowledge';
 import { STORY, TABLETS } from './story';
 import { FORGES } from './forges';
 import { lesson } from './index';
+import { LESSON_PACK } from '../lesson.pack';
 
 describe('the road of « خواص قواسم عدد طبيعي »', () => {
   it('its four keys, in order, each with its tablet, its forge, its memo sheet and its card', () => {
@@ -36,8 +37,21 @@ describe('the road of « خواص قواسم عدد طبيعي »', () => {
     }
     for (const e of KNOWLEDGE.graph.edges)
       expect(ids, `${e.from} → ${e.to}`).toEqual(expect.arrayContaining([e.from, e.to]));
-    for (const id of [...Object.values(lesson.cards.ofKey), ...Object.values(lesson.cards.ofExercise)])
-      expect(ids).toContain(id);
+    for (const id of [...Object.values(lesson.cards.ofKey), lesson.cards.fallback]) expect(ids).toContain(id);
+  });
+
+  it('what a sitting of the BANK leaves — keys, then « ex:<id> » — finds its card: no kind of a generated sitting', () => {
+    const { ofKey, ofExercise, fallback } = lesson.cards;
+    // the practice hub reads `ofExercise[weak] ?? ofKey[weak] ?? fallback` (kit/Spaces.jsx): the object must exist
+    expect(ofExercise).toEqual({});
+    expect(Object.keys(ofKey)).toEqual(KEYS);
+    const cardOf = (weak) => ofExercise[weak] ?? ofKey[weak] ?? fallback;
+    const notebook = (id) => KNOWLEDGE.graph.nodes.find((n) => n.id === id)?.notebook;
+    for (const key of KEYS) expect(notebook(cardOf(key)), key).toBe(true);
+    expect(cardOf('ex:4am-khawass-qawasim-l3-004')).toBe(fallback);
+    expect(notebook(fallback)).toBe(true);
+    // the coach of the exam names the same four sheets
+    expect(Object.values(LESSON_PACK.coach)).toEqual(KEYS);
   });
 
   it('every memo sheet is complete and its two questions have one answer in range', () => {

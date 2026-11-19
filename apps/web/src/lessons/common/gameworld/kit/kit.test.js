@@ -1,15 +1,27 @@
 // THE KIT NAMES NO LESSON. These tests drive every frame of the kit with a TOY lesson that has nothing to do with the
 // pilot (« is n a multiple of 10? », two keys), and a boundary test reads the kit's own files.
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rng, int, pick, shuffle } from './random';
 import { createLadder, buildWave, gatePoints, SUMMARY } from './ladder';
 import { createTrainer, SESSION, sessionStars } from './trainer';
-import { createSittings, slot, answered, touched, forgotten, allQuestions, sittingStars, PASS, pace } from './sitting';
+import {
+  answered,
+  forgotten,
+  allQuestions,
+  sittingStars,
+  sittingPassed,
+  PASS,
+  pace,
+  appreciation,
+  tick,
+  timeUp,
+} from './sitting';
+import { createBankSittings, shareQuarters, cashDj, examPoints, keysOfPoints, DEV_SHEET_KEY } from './bankSitting';
 import { createJourney, emptyExam, examLevelOpen } from './journey';
-import { createEvidence, counts } from './evidence';
+import { createEvidence, counts, guardEvidence } from './evidence';
 
 // ── a toy lesson ──
 const isRight = (w, n) => (w.type === 'tens' ? n % 10 === 0 : n % 2 === 1);
@@ -45,39 +57,121 @@ const nodes = [
 ];
 const ladder = createLadder({ nodes, generators, isRight });
 const levels = [
-  { n: 1, title: 'one', minutes: 5, plan: [['count', 1]] },
-  {
-    n: 2,
-    title: 'two',
-    minutes: 8,
-    plan: [
-      ['count', 2],
-      ['say', 1],
-    ],
-  },
+  { n: 1, title: 'one', sheets: 1 },
+  { n: 2, title: 'two', sheets: 2 },
 ];
-const build = {
-  count: (rand, tier) => ({
-    kind: 'count',
-    title: 'counting',
-    points: 2,
-    statement: 's',
-    questions: [
-      { type: 'n', points: 2, expected: tier * int(rand, 1, 3), tokens: ['x', '=', slot('x', 'the number', 2)] },
-    ],
-  }),
-  say: () => ({
-    kind: 'say',
-    title: 'saying',
-    points: 1,
-    situation: true,
-    statement: 's',
-    questions: [{ type: 'word', points: 1, expected: 'yes', sentence: ['10', { choose: true }] }],
-  }),
+// a toy BANK, in the shape of content/practice (EXERCISE_CONTRACT.md « the exam sheet »)
+const sheet = (id, points, questions, statement = { content: 'نعتبر العدد 30.' }) => ({
+  id,
+  metadata: { title: id, estimatedMinutes: 4, exam: { kind: 'adapted', badge: null, heading: 'التمرين', points } },
+  statement,
+  questions,
+});
+const lp = (code) => [{ code, role: 'primary' }];
+const BANK = {
+  1: [
+    sheet('ex-a', '02', [
+      {
+        id: 'q1',
+        step: '01',
+        statement: 'هل 30 مضاعف للعدد 10؟',
+        answerType: 'choice',
+        learningPoints: lp('g_toy_P1'),
+        choices: [
+          { id: 'A', content: 'نعم', isCorrect: true },
+          { id: 'B', content: 'لا', isCorrect: false },
+        ],
+        solution: { lines: ['$30 = 10 \\times 3$'], result: 'نعم' },
+        hints: [{ id: 'h1', content: 'اقسم على 10.' }],
+      },
+      {
+        id: 'q2',
+        step: '02',
+        statement: 'الثمن:',
+        answerType: 'rational',
+        expectedAnswer: '450',
+        learningPoints: lp('g_toy_P2'),
+        answerFormat: 'عدد بالدينار (DA)',
+        solution: { lines: ['$30 \\times 15 = 450$ DA'], result: '450 \\text{ DA}' },
+        hints: [],
+      },
+    ]),
+    sheet('ex-b', '02', [
+      {
+        id: 'q1',
+        step: '01',
+        statement: 'قواسم 6:',
+        answerType: 'integerSet',
+        expectedAnswer: '1;2;3;6',
+        learningPoints: lp('g_toy_P1'),
+        solution: { lines: ['$6 = 1 \\times 6 = 2 \\times 3$'] },
+        hints: [],
+      },
+      {
+        id: 'q2',
+        step: '02',
+        statement: 'بيّن أنّ 6 مضاعف للعدد 3.',
+        answerType: 'selfCheck',
+        learningPoints: lp('g_toy_P1'),
+        solution: { lines: ['$6 = 3 \\times 2$'] },
+        hints: [],
+      },
+    ]),
+    // a type the sitting does not draw: this sheet stays in « /espace/pratique », never in a sitting
+    sheet('ex-z', '02', [
+      {
+        id: 'q1',
+        step: '01',
+        statement: 'اختر',
+        answerType: 'multiChoice',
+        learningPoints: lp('g_toy_P1'),
+        choices: [{ id: 'A', content: '1', isCorrect: true }],
+        solution: { lines: ['1'] },
+      },
+    ]),
+  ],
+  2: [
+    sheet(
+      'ex-c',
+      '03',
+      [
+        {
+          id: 'q1',
+          step: '01',
+          statement: 'x =',
+          answerType: 'rational',
+          expectedAnswer: '3',
+          learningPoints: lp('g_toy_P2'),
+          solution: { lines: ['3'] },
+        },
+      ],
+      { content: 'المساواة:', formulas: ['30 = 10 \\times x'] },
+    ),
+    sheet('ex-d', '02,5', [
+      {
+        id: 'q1',
+        step: '01',
+        statement: 'a',
+        answerType: 'rational',
+        expectedAnswer: '1',
+        learningPoints: lp('g_toy_P1'),
+        solution: { lines: ['1'] },
+      },
+      {
+        id: 'q2',
+        step: '01',
+        sub: 'ب',
+        statement: 'b',
+        answerType: 'rational',
+        expectedAnswer: '2',
+        learningPoints: lp('g_toy_P1'),
+        solution: { lines: ['2'] },
+      },
+    ]),
+  ],
 };
-const mark = (q, v) =>
-  !answered(q, v) ? 0 : (q.type === 'word' ? v === q.expected : Number(v.x) === q.expected) ? q.points : 0;
-const sittings = createSittings({ levels, build, mark, points: { count: 2, say: 1 } });
+const sittings = createBankSittings({ lesson: 'toy', levels, load: async (code, n) => BANK[n] });
+const keyOf = { g_toy_P1: 'tens', g_toy_P2: 'odd' };
 const journey = createJourney({ keys: ['tens', 'odd'], ladder, levels, stages: 3, cards: 5 });
 
 describe('kit/random', () => {
@@ -138,40 +232,198 @@ describe('kit/trainer — with a toy lesson', () => {
   });
 });
 
-describe('kit/sitting — with a toy lesson', () => {
-  it('builds a subject from the level plan, numbers its questions and names a situation', () => {
-    const s = sittings.makeSubject(rng(3), 2);
-    expect(s.level).toBe(2);
-    expect(s.total).toBe(3);
-    expect(s.exercises.map((e) => e.id)).toEqual(['e1', 'e2']);
-    expect(s.exercises[1].title).toContain('وضعيّة');
-    expect(s.exercises[0].title).not.toContain('وضعيّة');
-    expect(allQuestions(s).map((q) => q.id)).toEqual(['e1q1', 'e2q1']);
+describe('kit/bankSitting — a toy bank, served as it is', () => {
+  const right = { e1q1: { choiceId: 'A' }, e1q2: { value: '450' } };
+  it('waits for its bank, then shows each level its minutes and points', async () => {
+    expect(sittings.ready()).toBe(false);
+    expect(sittings.levelPoints(levels[0])).toBe(null);
+    await sittings.prepare();
+    expect(sittings.ready()).toBe(true);
+    expect(sittings.levelPoints(levels[0])).toBe('2');
+    expect(sittings.levelPoints(levels[1])).toBe('5,5');
+    expect(sittings.levelMinutes(levels[1])).toBe('8');
   });
 
-  it('puts the weak kinds first on the next sheet', () => {
-    expect(sittings.makeSubject(rng(3), 2, ['say']).exercises.map((e) => e.kind)).toEqual(['say', 'count']);
-    expect(sittings.makeSubject(rng(3), 2, ['say']).exercises[0].focus).toBe(true);
+  it('serves a sheet whole: its statement, its steps, its points shared in quarters; a « بيّن أن » is for the paper', () => {
+    const s = sittings.makeSubject(rng(1), 1, ['ex:ex-b'], keyOf);
+    expect(s.exercises.map((e) => e.bankId)).toEqual(['ex-a']); // the sheet already missed is left out
+    const [q1, q2] = s.exercises[0].questions;
+    expect([q1.points, q2.points]).toEqual([1, 1]);
+    expect([q1.key, q2.key]).toEqual(['tens', 'odd']);
+    expect(s.title).toContain('1');
+    expect(shareQuarters(2.5, 3)).toEqual([1, 0.75, 0.75]);
+    expect(examPoints('02,5')).toBe(2.5);
+    const b = sittings.makeSubject(rng(1), 1, ['ex:ex-a'], keyOf).exercises[0];
+    expect(b.bankId).toBe('ex-b');
+    for (let seed = 1; seed <= 20; seed += 1)
+      expect(sittings.makeSubject(rng(seed), 1, [], keyOf).exercises[0].bankId).not.toBe('ex-z');
+    expect(b.questions.map((q) => [q.paper, q.points])).toEqual([
+      [false, 2],
+      [true, 0],
+    ]);
+    expect(sittings.model(b.questions[1])).toEqual(['$6 = 3 \\times 2$']);
   });
 
-  it('reads an answer in its two shapes and marks by the lesson scheme', () => {
-    const s = sittings.makeSubject(rng(5), 2);
-    const [n, word] = allQuestions(s);
-    expect(answered(n, { x: '' })).toBe(false);
-    expect(answered(n, { x: '4' })).toBe(true);
-    expect(answered(word, '')).toBe(false);
-    expect(answered(word, 'yes')).toBe(true);
-    expect(touched(n, { x: '' })).toBe(false);
-    const full = { [n.id]: { x: String(n.expected) }, [word.id]: 'yes' };
-    expect(sittings.totalMark(s, full)).toBe(3);
-    expect(sittings.weakKinds(s, { ...full, [word.id]: 'no' })).toEqual(['say']);
-    expect(forgotten(s, { [n.id]: { x: '1' } })).toEqual([1]);
-    expect(forgotten(s, { [n.id]: { x: '1' } }, 1)).toEqual([]);
+  it('marks with the practice evaluator: right, partly right (half), wrong, empty', () => {
+    const s = sittings.makeSubject(rng(1), 1, ['ex:ex-b'], keyOf);
+    expect(sittings.totalMark(s, right)).toBe(2);
+    expect(sittings.totalMark(s, {})).toBe(0);
+    expect(sittings.totalMark(s, { ...right, e1q1: { choiceId: 'B' } })).toBe(1);
+    const b = sittings.makeSubject(rng(1), 1, ['ex:ex-a'], keyOf);
+    expect(sittings.totalMark(b, { e1q1: { value: '1 ؛ 2 ؛ 3 ؛ 6' } })).toBe(2);
+    expect(sittings.totalMark(b, { e1q1: { value: '1; 2' } })).toBe(1); // a strict subset: half
+    expect(answered(b.exercises[0].questions[1], { value: 'x' })).toBe(false); // the paper step has no box
+    expect(answered(b.exercises[0].questions[0], { value: ' ' })).toBe(false);
+  });
+
+  it('writes money « دج » at display, never « DA », and shows nothing of the source', () => {
+    const s = sittings.makeSubject(rng(1), 1, ['ex:ex-b'], keyOf);
+    const q = s.exercises[0].questions[1];
+    expect(sittings.model(q)).toEqual(['$30 \\times 15 = 450$ دج', '$450$ دج']);
+    // the widgets draw the step through cashDj; the mark reads the bank's own step
+    expect(q.shown.answerFormat).toBe('عدد بالدينار (دج)');
+    expect(q.bank.answerFormat).toBe('عدد بالدينار (DA)');
+    expect(JSON.stringify(s)).not.toMatch(/"source"/);
+    expect(sittings.guide(s.exercises[0].questions[0])).toEqual(['اقسم على 10.']);
+  });
+
+  it('cashDj: money only — DA glued to a number, after a formula, in a unit; never a name', () => {
+    const cases = [
+      // in the words
+      ['ثمنه 900DA.', 'ثمنه 900 دج.'],
+      ['ثمنه 900 DA.', 'ثمنه 900 دج.'],
+      ['يبقى للفلاح 211 500DA.', 'يبقى للفلاح 211500 دج.'], // no thousands space
+      ['التكلفة 1 560 000DA', 'التكلفة 1560000 دج'],
+      ['عدد بالدينار (DA)', 'عدد بالدينار (دج)'],
+      ['عدد (بالدينار DA)', 'عدد (بالدينار دج)'],
+      ['ثمن الرزمة (بالـ DA)', 'ثمن الرزمة (بالـ دج)'],
+      ['$5000$DA، و', '$5000$ دج، و'],
+      ['$12 \\times 75 = 900$ DA', '$12 \\times 75 = 900$ دج'],
+      // in a formula
+      ['$1040DA$', '$1040$ دج'],
+      ['$11225\\,DA$', '$11225$ دج'],
+      ['$p \\leq 2500\\,DA$', '$p \\leq 2500$ دج'],
+      ['$2300 \\text{ DA}$', '$2300$ دج'],
+      ['$3 \\times 5\\text{ DA} = 15$', '$3 \\times 5\\text{ دج} = 15$'],
+      // names stay names
+      ['$AB + DA = 7$', '$AB + DA = 7$'],
+      ['المستقيم (AB) و $DA$', 'المستقيم (AB) و $DA$'],
+      ['$x$ DA', '$x$ DA'],
+      ['900DAB', '900DAB'],
+      ['DATA 12', 'DATA 12'],
+      ['1 500 تلميذ و 3 أقسام', '1 500 تلميذ و 3 أقسام'], // a thousands space without money is the bank's: left
+    ];
+    for (const [raw, shown] of cases) expect(cashDj(raw), raw).toBe(shown);
+    expect(cashDj(null)).toBe(null);
+  });
+
+  it('an EMPTY level is never sat: no subject, the level unavailable — and a subject with no points is no subject', async () => {
+    const none = createBankSittings({ lesson: 'toy', levels, load: async () => [] });
+    await none.prepare();
+    expect(none.available(1)).toBe(false);
+    expect(none.makeSubject(rng(1), 1, [], keyOf)).toBe(null);
+    // a lesson missing from the exercise index: its loader finds no id
+    const missing = createBankSittings({ lesson: 'toy', levels, load: async () => [undefined, null] });
+    await missing.prepare().catch(() => {});
+    expect(missing.makeSubject(rng(1), 1, [], keyOf)).toBe(null);
+    // sheets written on paper only: nothing can be marked
+    const paper = createBankSittings({ lesson: 'toy', levels, load: async (c, n) => (n === 1 ? [BANK[1][1]] : []) });
+    await paper.prepare();
+    const only = createBankSittings({
+      lesson: 'toy',
+      levels: [{ n: 1, title: 'one', sheets: 1 }],
+      load: async () => [{ ...BANK[1][1], questions: [BANK[1][1].questions[1]] }],
+    });
+    await only.prepare();
+    expect(only.available(1)).toBe(false);
+    expect(only.makeSubject(rng(1), 1, [], keyOf)).toBe(null);
+    expect(paper.available(1)).toBe(true);
+    expect(sittings.available(1)).toBe(true);
+    expect(sittings.sheetIds(1)).toEqual(['ex-a', 'ex-b']); // ex-z (a type the sitting does not draw) is not served
+    // total 0 is never passed: no star, no appreciation, no promotion
+    expect([sittingPassed(0, 0), sittingStars(0, 0), appreciation(0, 0)]).toEqual([false, 0, '']);
+    const { exam, result } = journey.applySitting(emptyExam(), 1, 0, 0, []);
+    expect(result).toMatchObject({ passed: false, stars: 0, promoted: false, nextLevel: null, finished: false });
+    expect(examLevelOpen(exam, 2)).toBe(false);
+  });
+
+  describe('the DEV hook: a walk chooses its sheet', () => {
+    const store = {};
+    afterEach(() => {
+      vi.unstubAllEnvs();
+      delete globalThis.localStorage;
+    });
+    const stub = (id) => {
+      store[DEV_SHEET_KEY] = id;
+      globalThis.localStorage = { getItem: (k) => store[k] ?? null };
+    };
+
+    it('in development, the sheet named in localStorage is drawn (when it belongs to the level)', () => {
+      stub('ex-b');
+      for (let seed = 1; seed <= 10; seed += 1)
+        expect(sittings.makeSubject(rng(seed), 1, ['ex:ex-b'], keyOf).exercises[0].bankId).toBe('ex-b');
+      stub('ex-c'); // a sheet of another level: ignored
+      expect(['ex-a', 'ex-b']).toContain(sittings.makeSubject(rng(1), 1, [], keyOf).exercises[0].bankId);
+    });
+
+    it('never in a production build', () => {
+      vi.stubEnv('DEV', false);
+      stub('ex-b');
+      for (let seed = 1; seed <= 10; seed += 1)
+        expect(sittings.makeSubject(rng(seed), 1, ['ex:ex-b'], keyOf).exercises[0].bankId).toBe('ex-a');
+    });
+  });
+
+  it('the clock is pure, and time up hands the copy in ONCE (a StrictMode double call of the updater changes nothing)', () => {
+    let left = 3;
+    let handed = false;
+    let sent = 0;
+    for (let s = 0; s < 6; s += 1) {
+      tick(left); // React may call the updater a first time and drop the result
+      left = tick(left);
+      // the effect on `left`, which StrictMode may also run twice
+      for (let k = 0; k < 2; k += 1)
+        if (timeUp('sit', left, handed)) {
+          handed = true;
+          sent += 1;
+        }
+    }
+    expect([left, sent]).toEqual([0, 1]);
+    expect(timeUp('read', 0, false)).toBe(false);
+    const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'ExamSitting.jsx'), 'utf8');
+    expect(src).toMatch(/setLeft\(tick\)/);
+    expect(src).not.toMatch(/setLeft\(\(n\) =>[\s\S]{0,120}handIn/);
+  });
+
+  it('puts what was missed first, and hands in only what he answered, for the server to judge', () => {
+    const s = sittings.makeSubject(rng(4), 2, [], keyOf);
+    expect(s.exercises).toHaveLength(2);
+    expect(s.total).toBe(5.5);
+    const qs = allQuestions(s);
+    const full = Object.fromEntries(qs.map((q) => [q.id, { value: q.bank.expectedAnswer }]));
+    expect(sittings.totalMark(s, full)).toBe(5.5);
+    const one = { [qs[0].id]: full[qs[0].id] };
+    const weak = sittings.weakKinds(s, one);
+    expect(weak.filter((w) => !w.startsWith('ex:')).length).toBeGreaterThan(0);
+    let n = 0;
+    const sheetOut = sittings.sheetOf(s, one, () => `u${(n += 1)}`);
+    expect(sheetOut.items).toHaveLength(1);
+    expect(sheetOut.items[0]).toMatchObject({
+      exerciseId: s.exercises[0].bankId,
+      questionId: 'q1',
+      outcome: 'correct',
+    });
+    expect(sheetOut).toMatchObject({ lesson: 'toy', level: 2, sessionId: expect.any(String) });
+    expect(sittings.tallyOf(s, one)).toEqual([{ key: qs[0].key, ok: true }]);
+    expect(forgotten(s, one, 0)).toEqual([1]);
+    expect(forgotten(s, one, 1)).toEqual([]);
     expect([sittingStars(10, 10), sittingStars(9, 10), sittingStars(8, 10), sittingStars(7.9, 10)]).toEqual([
       3, 2, 1, 0,
     ]);
     expect(PASS).toBe(0.8);
     expect(pace(30, 60)).toBe(0.5);
+    const evidence = createEvidence({ grade: 'g', points: { tens: 'P1', odd: 'P2' } });
+    expect(keysOfPoints('toy', { keys: ['tens', 'odd'], evidence })).toEqual(keyOf);
   });
 });
 
@@ -235,6 +487,18 @@ describe('kit/evidence — with a toy lesson', () => {
     });
     expect(ev.payloadOf('some-lesson', 'case', { key: 'odd', claim: {} }, 'id-2')).toBe(null);
     expect(ev.payloadOf('some-lesson', 'case', null, 'id-3')).toBe(null);
+  });
+
+  it('never sends a TRUE claim for an answer the lesson checks as wrong (the safety net of the trainer)', () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    const half = { key: 'tens', claim: { kind: 'divisible', a: 30, b: 10, fits: true } };
+    expect(guardEvidence(half, false)).toBe(null);
+    expect(warn).toHaveBeenCalled();
+    expect(guardEvidence(half, true)).toBe(half);
+    const wrong = { key: 'tens', claim: { kind: 'divisible', a: 30, b: 10, fits: false } };
+    expect(guardEvidence(wrong, false)).toBe(wrong); // a wrong answer is still sent: a false claim is evidence too
+    expect(guardEvidence(null, false)).toBe(null);
+    warn.mockRestore();
   });
 });
 

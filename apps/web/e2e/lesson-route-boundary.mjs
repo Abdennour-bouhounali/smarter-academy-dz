@@ -17,7 +17,7 @@
 //   7. aucune erreur console sur tout le parcours.
 // Deux connexions API (/auth/login est limité à 6/min). Captures dans /tmp/lesson-route-boundary-qa.
 import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
 const API = process.env.QA_API || 'http://localhost:8000/api/v1';
@@ -26,8 +26,18 @@ const TEACHER = { email: process.env.QA_TEACHER_EMAIL || 'qa-prof@smarter.dz', p
 const STUDENT = { email: process.env.QA_STUDENT_EMAIL || 'qa-eleve@smarter.dz', password: PASSWORD };
 const OUT = process.env.QA_OUT || '/tmp/lesson-route-boundary-qa';
 const CH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab';
-const LESSON = `${CH}/qasim-adad-tabii`;
-const MODULE1 = `${LESSON}/al-maktaba`; // module 1 — le laboratoire à deux niveaux
+// A v2 lesson (its pack declares a WORLD, LESSON_V2.md §2) has NO module page: its module addresses redirect to its home.
+// The module walk below needs a lesson that still has its module pages: the first lesson of this unit that is not v2,
+// read from the generated index (its `modules` are those of its lesson.config.js) — never a name written here.
+const INDEX = JSON.parse(readFileSync(new URL('../src/lessons/lessonIndex.generated.json', import.meta.url), 'utf8'));
+const V2 = new Set(INDEX.lessons.filter((l) => l.pack?.world).map((l) => l.id));
+const UNIT_LESSONS = ['qasim-adad-tabii', 'qawasim-adad-tabii', 'khawass-qawasim', 'qasim-mushtarak-akbar', 'tayin-pgcd', 'bahth-pgcd', 'awwaliyan-fima-baynahuma', 'ikhtizal-kasr', 'wadiya-idmajiya-aadad'];
+const MODULE_LESSON = INDEX.lessons.find((l) => UNIT_LESSONS.includes(l.id) && !V2.has(l.id) && l.modules?.some(([n]) => n === 1));
+if (!MODULE_LESSON) throw new Error('no lesson of the unit still has its module pages: section 2–3 has nothing to walk');
+const SLUG1 = MODULE_LESSON.modules.find(([n]) => n === 1)[1];
+const LESSON = `${CH}/${MODULE_LESSON.id}`;
+const MODULE1 = `${LESSON}/${SLUG1}`; // its module 1
+const V2_LESSON = `${CH}/qasim-adad-tabii`;
 const UNIT = `${CH}/units/aadad-tabiiya-natiqa`;
 mkdirSync(OUT, { recursive: true });
 
@@ -104,17 +114,26 @@ const studentToken = await loginToken(STUDENT);
   check(await page.locator('[data-nb-trigger]').count() > 0, '« كرّاسي » présent');
   await page.screenshot({ path: `${OUT}/teacher-module1.png` });
 
+  // A v2 lesson's module address is not a page any more: it redirects to the lesson's home (its world).
+  {
+    const slug = INDEX.lessons.find((l) => l.id === 'qasim-adad-tabii')?.modules?.find(([n]) => n === 1)?.[1];
+    check(V2.has('qasim-adad-tabii') && Boolean(slug), `qasim-adad-tabii is a v2 lesson whose module 1 has an address (${slug})`);
+    await page.goto(`${BASE}${V2_LESSON}/${slug}`, { waitUntil: 'networkidle' });
+    await page.waitForURL((u) => !u.pathname.endsWith(`/${slug}`), { timeout: 15000 }).catch(() => {});
+    check(new URL(page.url()).pathname.replace(/\/$/, '') === V2_LESSON && (await page.locator('[data-manipulation-workspace]').count()) === 0, `v2 : l'adresse du محور 1 de qasim-adad-tabii renvoie à l'accueil de la leçon (→ ${page.url().replace(BASE, '')})`);
+  }
+
   // Sommaire → محور par un LIEN : la coquille du mode classe ne se remonte pas.
   await page.goto(`${BASE}${LESSON}`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-classroom-scope]', { timeout: 20000 });
   await page.waitForTimeout(600);
   await closeTour(page);
   await page.evaluate(() => { document.querySelector('[data-classroom-scope]').__qaMarker = 'kept'; });
-  const link = page.locator(`a[href$="/al-maktaba"]`).first();
-  check(await link.count() > 0, 'le sommaire lie le محور 1');
-  if (await link.count()) {
+  const link = page.locator(`a[href$="/${SLUG1}"]`).first();
+  check(await link.count() > 0, `le sommaire de ${MODULE_LESSON.id} lie le محور 1`);
+  {
     await link.click();
-    await page.waitForURL(`**/al-maktaba`, { timeout: 15000 });
+    await page.waitForURL(`**/${SLUG1}`, { timeout: 15000 });
     await page.waitForSelector('[data-manipulation-workspace], [data-manipulation]', { timeout: 20000 }).catch(() => {});
     const kept = await page.evaluate(() => document.querySelector('[data-classroom-scope]')?.__qaMarker ?? null);
     check(kept === 'kept', 'navigation sommaire → محور : la coquille du mode classe reste montée (même nœud)');
@@ -124,8 +143,16 @@ const studentToken = await loginToken(STUDENT);
   await page.goto(`${BASE}${UNIT}`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1200);
   await closeTour(page);
+  // a v2 lesson (its pack declares a world, LESSON_V2.md §2) lists NO module chip — its module pages do not exist;
+  // a lesson that still has its module pages lists one chip per module of its lesson.config.js (counted in the index)
   const chips = await page.locator('[data-lesson-modules="qasim-adad-tabii"] [data-module-chip]').count();
-  check(chips === 8, `page d'unité : 8 puces de محاور pour qasim-adad-tabii (${chips})`);
+  check(V2.has('qasim-adad-tabii') && chips === 0, `page d'unité : aucune puce de محور pour la leçon v2 qasim-adad-tabii (${chips})`);
+  {
+    const id = MODULE_LESSON.id;
+    const want = MODULE_LESSON.modules.length;
+    const got = await page.locator(`[data-lesson-modules="${id}"] [data-module-chip]`).count();
+    check(want > 0 && got === want, `page d'unité : ${want} puces de محاور pour ${id}, une par module de sa lesson.config.js (${got})`);
+  }
   const resources = await page.locator('[data-unit-lesson="qasim-adad-tabii"] li[data-unit-resource="manipulation"]').count();
   check(resources > 0, `page d'unité : manipulations de la leçon affichées (${resources})`);
   await page.screenshot({ path: `${OUT}/teacher-unit.png`, fullPage: true });

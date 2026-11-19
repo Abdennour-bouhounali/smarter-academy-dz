@@ -175,8 +175,73 @@ describe('خواص قواسم عدد طبيعي — the script of the lesson on 
     expect(K.bridge / K.plank).toBe(3); // « 3 ألواح » in each copy
     expect((B.long + B.short) / B.plank).toBe(29); // « 29 لوحًا »
     expect(step('harbour').after).toContain('29 لوحًا');
-    expect(step('stack').after).toContain('7 و 11'); // the planks that do not fill 18
-    expect([7, 11].every((o) => K.bridge % o !== 0)).toBe(true);
+    expect(step('stack').after).toContain('7 و 11'); // the planks the key says nothing of: the bridges judge them
+    expect([7, 11].every((o) => K.bridge % o !== 0 && (K.bridge * K.copies) % o !== 0)).toBe(true);
+  });
+
+  it('never leans on the CONVERSE the lesson refutes: a plank the key does not speak of is left to the bridges', () => {
+    // a plank may fill what is made without filling the parts — the facts that forbid the two old sentences
+    expect((K.bridge * K.copies) % 25 === 0 && K.bridge % 25 !== 0).toBe(true); // 25 fills 1800, not 18
+    const rest = P.long % P.short;
+    expect(rest % 25 === 0 && P.short % 25 !== 0 && P.long % 25 !== 0).toBe(true); // 25 fills 175, not 280 nor 735
+    // « 7 and 11 do not fill 18 » is not given as the reason they fail on 1800
+    expect(step('stack').after).not.toMatch(/لا يملآن|لا يملأ/);
+    expect(step('stack').after).toContain('البناء وحده يحكم');
+    // « the planks of both ARE the planks of the remainder » (an equivalence) is not said: only « so they fill it »
+    expect(step('peel').after).not.toMatch(/نفسها|هي التي|فقط|وحدها/);
+    expect(step('peel').after).toContain('فتملأ الباقي');
+    // no sentence of the board states an « only if » about a key
+    const all = SCRIPT.steps.map((s) => [s.text, s.question, s.after, s.cue].join(' ')).join(' ');
+    expect(all).not.toMatch(/إلّا إذا|فقط إذا|هي نفسها/);
+  });
+
+  it('keeps every oral question inside its footer and every tablet inside its card (CLASS_SESSION.md §5ter)', () => {
+    // a cue longer than about 70 characters is cut in the footer at 1024 px
+    for (const s of SCRIPT.steps)
+      expect(s.cue.length, `${s.id}: « ${s.cue} » (${s.cue.length})`).toBeLessThanOrEqual(70);
+    // a tablet's `math` holds at most two rows, and a row at most two SHORT equalities, or it leaves the card
+    const drawn = (tex) =>
+      tex
+        .replace(/\\times/g, '×')
+        .replace(/\\(geq|leq)/g, '≥')
+        .replace(/\\[a-zA-Z]+/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    for (const [key, t] of Object.entries(TABLETS)) {
+      expect(t.math.length, key).toBeGreaterThanOrEqual(1);
+      expect(t.math.length, key).toBeLessThanOrEqual(2);
+      for (const row of t.math) {
+        const parts = row.split('\\qquad');
+        expect(parts.length, `${key}: ${row}`).toBeLessThanOrEqual(2);
+        for (const eq of parts) {
+          expect(eq, `${key}: ${eq}`).toContain('=');
+          expect(drawn(eq).length, `${key}: « ${drawn(eq)} »`).toBeLessThanOrEqual(parts.length === 2 ? 12 : 28);
+        }
+        expect(drawn(row.replace('\\qquad', '  ')).length, `${key}: ${row}`).toBeLessThanOrEqual(28);
+      }
+    }
+  });
+
+  it('writes the proof with the letters of the student’s proof cards: k and k′, never the quotient’s q', () => {
+    const texts = [
+      ...MEMO.criteria.map((c) => c.see),
+      MEMO.connect,
+      ...MEMO.written,
+      ...MEMO.exit.map((e) => e.a),
+      ...MEMO.support,
+      ...MEMO.extend,
+      ...TABLETS.burhan.math.map((m) => `$${m}$`),
+    ];
+    const letters = texts.flatMap(formulas).map((f) => f.replace(/\\[a-zA-Z]+/g, ' '));
+    expect(letters.join(' ')).not.toMatch(/p/);
+    // q appears only as the quotient: beside b, in « a − b × q »
+    for (const f of letters.filter((x) => /q/.test(x))) expect(f, f).toMatch(/b\s+q/);
+    expect(MEMO.written[3]).toContain("a + b = d \\times (k + k')");
+    expect(MEMO.connect).toContain('a - b \\times q');
+    expect(TABLETS.burhan.math[1]).toBe("a + b = d \\times (k + k')");
+    // the multiplier of the second key is n, in the tablet and in the memo
+    expect(TABLETS.madaaf.lines[0]).toContain('a \\times n');
+    expect(MEMO.written[1]).toContain('a \\times n');
   });
 
   it('asks oral questions whose numbers are true', () => {

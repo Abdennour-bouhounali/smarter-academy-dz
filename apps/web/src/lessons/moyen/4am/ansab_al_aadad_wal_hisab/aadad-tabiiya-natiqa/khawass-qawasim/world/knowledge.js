@@ -2,11 +2,12 @@
  * What « خريطة المعارف » shows for lesson `khawass-qawasim` (v2): the lesson's mind map (its cards and their labelled
  * links), the memo sheet of each of its four keys, and where each card sits on the full map.
  *
- * Written for the v2 lesson FROM SCRATCH, with the story's own numbers (`NUMBERS` of story.js — never retyped). The
- * lesson folder's older `knowledge.jsx` / `knowledgeGraph.js` (ids `khassiya-1`, `burhan-idha-fainna`…) are left untouched
- * (the old module pages are deleted; they still feed the lesson page's knowledge map); the memo items here carry the ids of the four KEYS, which is
+ * Written for the v2 lesson FROM SCRATCH, with the story's own numbers (`NUMBERS` of story.js — never retyped). It is
+ * the lesson's ONLY knowledge (`lesson.pack.js › knowledge`); the memo items carry the ids of the four KEYS, which is
  * what `pack.coach` and the board's « بطاقة المعارف » name.
  * A card is open when its key is held (`requires` is always a key); a card with `notebook` shows the memo sheet of its key.
+ * LETTERS (one convention for the whole lesson, `story.js`): a = d × k and b = d × k′ — the pair of the proof he
+ * assembled; q is only the quotient of a Euclidean division; n is the number a is multiplied by.
  */
 import { NUMBERS } from './story';
 
@@ -66,7 +67,7 @@ export const KNOWLEDGE_GRAPH = {
           },
           {
             role: 'right',
-            text: 'الخاصية تسير في اتجاه واحد: إذا قسم $d$ العددين قسم مجموعهما، وقد يقسم المجموع دون أن يقسم أيًّا منهما.',
+            text: 'الخاصية تسير في اتّجاه واحد: إذا قسم $d$ العددين قسم مجموعهما، وقد يقسم المجموع دون أن يقسم أيًّا منهما.',
           },
         ],
       },
@@ -79,7 +80,7 @@ export const KNOWLEDGE_GRAPH = {
       requires: 'madaaf',
       notebook: true,
       title: 'المضاعفات',
-      subtitle: '$d$ يقسم $k \\times a$',
+      subtitle: '$d$ يقسم $n \\times a$',
       reveals: ['mithal-1800'],
     },
     {
@@ -151,7 +152,7 @@ export const KNOWLEDGE_GRAPH = {
           { role: 'why', text: 'مثال واحد، أو ثلاثة، لا يغطّي كلّ الأعداد.' },
           {
             role: 'right',
-            text: 'نكتب الحالة العامّة بحروف: $a + b = d \\times p + d \\times q = d \\times (p + q)$.',
+            text: "نكتب الحالة العامّة بحروف: $a + b = d \\times k + d \\times k' = d \\times (k + k')$.",
           },
         ],
       },
@@ -228,12 +229,12 @@ export const LESSON_KNOWLEDGE = {
         title: 'المضاعفات',
         summary: 'من يقسم عددًا يقسم كلّ مضاعف له.',
         memo: {
-          rule: `d\\mid a\\ \\Rightarrow\\ d\\mid ${R('k')}\\times a`,
+          rule: `d\\mid a\\ \\Rightarrow\\ d\\mid ${R('n')}\\times a`,
           hook: 'من يقسم العدد يقسم كلّ مضاعفاته',
           example: `${S.plank}\\mid${S.bridge}\\Rightarrow ${S.plank}\\mid${S.bridge}\\times${R(S.copies)}`,
           trap: 'قلب الخاصية: 6 يقسم 4 × 3 ولا يقسم 4',
-          exam: 'أكتب a = d × p ثمّ k × a = d × (k × p)',
-          chip: `d\\mid ${R('k')}\\times a`,
+          exam: 'أكتب a = d × k ثمّ n × a = d × (n × k)',
+          chip: `d\\mid ${R('n')}\\times a`,
           quiz: [
             {
               q: `$${S.plank}$ يقسم $${S.bridge}$. إذن $${S.plank}$ يقسم:`,
@@ -280,14 +281,15 @@ export const LESSON_KNOWLEDGE = {
         id: 'burhan',
         type: 'methodes',
         title: 'كيف أبرهن أنّ d يقسم m؟',
-        summary: 'يكفي إيجاد عدد طبيعي k حيث m = d × k، بالحروف لا بالأمثلة.',
+        summary: 'يكفي أن نكتب m جداءً: d في عدد طبيعي — بالحروف لا بالأمثلة.',
         memo: {
-          rule: `m=d\\times${R('k')}\\ ,\\ k\\in\\mathbb{N}\\ \\Rightarrow\\ d\\mid m`,
-          hook: 'نبدأ من الشرط بالحروف ونصل إلى d × k',
-          example: `a+b=d\\times p+d\\times q=d\\times${R('(p+q)')}`,
+          // the proof he assembled, in its own two letters (k and k′): the natural number found is k + k′
+          rule: `a=d\\times k\\ ,\\ b=d\\times k'\\ \\Rightarrow\\ a+b=d\\times${R("(k+k')")}`,
+          hook: 'نبدأ من الشرط بالحروف ونصل إلى جداء: d في عدد طبيعي',
+          example: `${J1}+${J2}=${J.plank}\\times${J1 / J.plank}+${J.plank}\\times${J2 / J.plank}=${J.plank}\\times${R(`(${J1 / J.plank}+${J2 / J.plank})`)}`,
           trap: 'الاكتفاء بالتحقّق على أمثلة',
-          exam: 'نفرض … ، إذن … = d × k و k عدد طبيعي',
-          chip: `m=d\\times${R('k')}`,
+          exam: 'نفرض … ، إذن … = d × (…) وما بين القوسين عدد طبيعي',
+          chip: `d\\times${R("(k+k')")}`,
           quiz: [
             {
               q: 'لإثبات أنّ $d$ يقسم $m$ يكفي أن نجد:',
@@ -295,8 +297,8 @@ export const LESSON_KNOWLEDGE = {
               correct: 1,
             },
             {
-              q: 'إذا كان $a = d \\times p$ و $b = d \\times q$ فإنّ $a - b =$',
-              options: ['$d \\times (p - q)$', '$d - (p - q)$', '$d \\times p \\times q$'],
+              q: "إذا كان $a = d \\times k$ و $b = d \\times k'$ فإنّ $a - b =$",
+              options: ["$d \\times (k - k')$", "$d - (k - k')$", "$d \\times k \\times k'$"],
               correct: 0,
             },
           ],

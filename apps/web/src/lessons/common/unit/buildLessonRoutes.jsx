@@ -47,8 +47,13 @@ export function createLessonRoutesBuilder({ printSubject }) {
   // `retiredModules` (a v2 lesson, docs/architecture/LESSON_V2.md §2): the lesson has no module page any more — its home
   // is the game world. Each module ADDRESS of its config stays a route that redirects to the home: an old link (a
   // report, a « راجع » of another lesson, a bookmark) never ends on a 404. The module ids and numbers stay in the config:
-  // progress is stored by them.
+  // progress is stored by them. Such a lesson has ONE knowledge source, the one its pack declares (`lesson.pack.js ›
+  // knowledge`, read by the world's « خريطة المعارف », the board's cards and the exam coach): its routes pass no
+  // `loadKnowledge`, and its home mounts no 🧠 map of its own (the old map was the deleted lesson's).
   return function buildLessonRoutes({ config, basePath, moduleFiles = {}, retiredModules = false, loadKnowledge, loadIndex }) {
+    if (retiredModules && loadKnowledge) {
+      throw new Error(`${config.id}: a v2 lesson (retiredModules) takes no loadKnowledge — its knowledge is its pack's (LESSON_V2.md §2)`);
+    }
     // La config complète est désormais lisible SYNCHRONEMENT par les pages de
     // la leçon (registry.getLoadedLessonConfig : carte des connaissances…).
     rememberLessonConfig(config);

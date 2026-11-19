@@ -10,16 +10,45 @@
  *   PEEL     the island's long gap 735 and its bridges of 280: two fit, a piece of 175 is left. For each plank of the
  *            table he says whether it fills the piece; then he BUILDS his claim from the columns (`writes`).
  *   LETTERS  the stone: « d divides a and b — does it divide a + b, for EVERY number? » — numbers first, then the
- *            numbers change and one is hidden; then a proof assembled from cards (`writes`).
+ *            numbers change and one is hidden; then a proof assembled from cards (`writes`). Its two letters are k and
+ *            k′ (a = d × k, b = d × k′): the SAME pair on the tablet he then receives, in the trainer and in the memo.
  * No sentence here states a rule: each one says what the strips, the table or the numbers have just done.
+ * Arabic: a count is agreed with what it counts (one, two, 3–10, 11 and more) by the helpers below — never « 2 ألواح ».
  */
 import { planks } from '../../../../../../common/gameworld/divisorIsles/strings';
 import { NUMBERS } from './story';
 
 const math = (s) => `$${s.replaceAll('×', '\\times')}$`;
+/** The cells left, as the SUBJECT of « بقيت »: « خانة واحدة », « خانتان », « 5 خانات », « 12 خانة ». */
 const left = (r) => (r === 1 ? 'خانة واحدة' : r === 2 ? 'خانتان' : r <= 10 ? `${r} خانات` : `${r} خانة`);
-const copies = (k) => (k === 1 ? 'نسخة واحدة' : k === 2 ? 'نسختان' : k <= 10 ? `${k} نسخ` : `${k} نسخة`);
+/** The cells cut off, as the OBJECT of « نقصّ »: « خانتين », « 5 خانات », « 21 خانة ». */
+const cut = (n) => (n === 1 ? 'خانة واحدة' : n === 2 ? 'خانتين' : n <= 10 ? `${n} خانات` : `${n} خانة`);
+/** The copies he glues, as the OBJECT of « نلصق »: « نسختين », « 3 نسخ », « 100 نسخة ». */
+const copies = (k) => (k === 1 ? 'نسخة واحدة' : k === 2 ? 'نسختين' : k <= 10 ? `${k} نسخ` : `${k} نسخة`);
 const fill = (yes) => (yes ? 'يملأ' : 'لا يملأ');
+/** « n ألواح طولها d », agreed with the count: one plank, two planks, more. */
+const planksOf = (n, d) => (n === 1 ? `لوح واحد طوله ${d}` : n === 2 ? `لوحان طولهما ${d}` : `${planks(n)} طولها ${d}`);
+/** What the planks did on a gap: laid with nothing left, laid with cells left, or too long to be laid. */
+const laid = (f) =>
+  f.holds
+    ? `${planksOf(f.planks, f.d)}، ولا خانة باقية.`
+    : f.planks === 0
+      ? `اللوح ${f.d} أطول من الهوّة.`
+      : `${planksOf(f.planks, f.d)}، وبقيت ${left(f.rest)}.`;
+/** The planks his claim takes in that do NOT fill the piece, as the subject of the sentence. */
+const intrudersSay = (n) =>
+  n === 1
+    ? 'لوح أخذته جملتك لا يملأ القطعة الباقية'
+    : n === 2
+      ? 'لوحان أخذتهما جملتك لا يملآن القطعة الباقية'
+      : `${planks(n)} أخذتها جملتك لا تملأ القطعة الباقية`;
+/** The planks his claim takes in, when every one of them fills the piece. */
+const takenSay = (n) =>
+  n === 1
+    ? 'لوح واحد أخذته جملتك، وهو يملأ القطعة الباقية.'
+    : n === 2
+      ? 'لوحان أخذتهما جملتك، وكلاهما يملأ القطعة الباقية.'
+      : `${planks(n)} أخذتها جملتك، وكلّها يملأ القطعة الباقية.`;
 /** What a plank did on a gap, under its strip (plain: it is SVG text). */
 const label = (n, d, { planks: p, rest }) =>
   p === 0 ? `${n} — اللوح أطول` : rest ? `${n} — ${planks(p)}، وبقيت ${left(rest)}` : `${n} — ${planks(p)}`;
@@ -52,15 +81,9 @@ export const JOIN_INQUIRY = {
     ask: ({ op, a, b, d }) =>
       op === 'sum'
         ? `نلصق الهوّة ${b} بعد الهوّة ${a}. هل يملأ اللوح ${d} الهوّة الجديدة، دون أن تبقى خانة؟`
-        : `نقصّ ${b} خانة من الهوّة ${a}. هل يملأ اللوح ${d} ما يبقى، دون أن تبقى خانة؟`,
+        : `نقصّ ${cut(b)} من الهوّة ${a}. هل يملأ اللوح ${d} الهوّة الباقية، دون أن تبقى خانة؟`,
     seen: (f, guess) =>
-      `${math(`${f.a} ${f.op === 'sum' ? '+' : '-'} ${f.b} = ${f.value}`)}: ${
-        f.holds
-          ? `${planks(f.planks)} طولها ${f.d}، ولا خانة باقية.`
-          : f.planks === 0
-            ? `اللوح ${f.d} أطول من الهوّة.`
-            : `${planks(f.planks)} طولها ${f.d}، وبقيت ${left(f.rest)}.`
-      }${after(guess, f.holds)}`,
+      `${math(`${f.a} ${f.op === 'sum' ? '+' : '-'} ${f.b} = ${f.value}`)}: ${laid(f)}${after(guess, f.holds)}`,
     foundLine: (f) =>
       `${math(`${f.a} ${f.op === 'sum' ? '+' : '-'} ${f.b} = ${f.value}`)} — اللوح ${f.d}: ${fill(f.fillsA)} ${f.a}، ${fill(f.fillsB)} ${f.b}، ${fill(f.holds)} ${f.value}`,
     yes: 'نعم، يملؤها',
@@ -82,13 +105,9 @@ export const STACK_INQUIRY = {
     lead: (d, base) => `الهوّة ${base} واللوح ${d}. نلصق نسخًا من الهوّة واحدة بعد الأخرى: هوّة واحدة طويلة.`,
     goal: (d) => `الهدف: أن تعرف قبل اللصق هل يملأ اللوح ${d} النسخ الملصوقة.`,
     label,
-    ask: ({ d, base, k }) => `${copies(k)} من الهوّة ${base}، ملصوقة. هل يملؤها اللوح ${d} دون أن تبقى خانة؟`,
-    seen: (f, guess) =>
-      `${math(`${f.k} × ${f.base} = ${f.total}`)}: ${
-        f.holds
-          ? `${planks(f.planks)} طولها ${f.d}، ولا خانة باقية.`
-          : `${planks(f.planks)} طولها ${f.d}، وبقيت ${left(f.rest)}.`
-      }${after(guess, f.holds)}`,
+    ask: ({ d, base, k }) =>
+      `نلصق ${copies(k)} من الهوّة ${base}. هل يملأ اللوح ${d} الهوّة الطويلة، دون أن تبقى خانة؟`,
+    seen: (f, guess) => `${math(`${f.k} × ${f.base} = ${f.total}`)}: ${laid(f)}${after(guess, f.holds)}`,
     foundLine: (f) =>
       `${math(`${f.k} × ${f.base} = ${f.total}`)} — اللوح ${f.d} ${fill(f.fillsBase)} ${f.base}، و${fill(f.holds)} ${f.total}`,
     yes: 'نعم، يملؤها',
@@ -114,8 +133,8 @@ export const PEEL_INQUIRY = {
   text: {
     lead: (a, b, ri) =>
       ri === 0
-        ? `الهوّة الطويلة ${a} خانة، والجسور ${b} خانة. نضعها عليها واحدًا بعد الآخر حتى لا يتّسع جسر آخر.`
-        : `هوّة أخرى: ${a} خانة، وجسور ${b} خانة. نضعها حتى لا يتّسع جسر آخر.`,
+        ? `الهوّة الطويلة ${a} خانة، وكلّ جسر ${b} خانة. نضع الجسور عليها واحدًا بعد الآخر، حتى لا تتّسع لجسر آخر.`
+        : `هوّة أخرى: ${a} خانة، وكلّ جسر ${b} خانة. نضع الجسور عليها حتى لا تتّسع لجسر آخر.`,
     goal: 'الهدف: أن تعرف أيّ الألواح يملأ القطعة الباقية، قبل أن يوضع عليها.',
     peelBtn: (b) => `ضع الجسور ${b}`,
     peeling: (a, b) => `الجسور ${b} توضع على الهوّة ${a}…`,
@@ -144,11 +163,9 @@ export const PEEL_INQUIRY = {
     claimAsk: 'اضغط عمودًا أو عمودين من الجدول.',
     claimFact: (judge) =>
       judge.intruders.length
-        ? `${judge.intruders.length === 1 ? 'لوح أخذته جملتك' : `${judge.intruders.length} ألواح أخذتها جملتك`} لا يملأ القطعة الباقية: ${judge.intruders
-            .map((f) => f.d)
-            .join(' و ')} (برتقالي في الجدول).`
+        ? `${intrudersSay(judge.intruders.length)}: ${judge.intruders.map((f) => f.d).join(' و ')} (برتقالي في الجدول).`
         : 'جملتك لا تأخذ أيّ لوح من الجدول.',
-    claimOk: (judge) => `${planks(judge.taken.length)} أخذتها جملتك، وكلّها يملأ القطعة الباقية.`,
+    claimOk: (judge) => takenSay(judge.taken.length),
     seal: 'هذه قاعدتي',
   },
 };
@@ -247,8 +264,8 @@ export const LETTERS_INQUIRY = {
   text: {
     lead: 'حجر الجزيرة يسأل: إذا كان $d$ يقسم $a$ و $b$، هل يقسم $a + b$ مهما كانت الأعداد؟',
     goal: 'الهدف: أن تتأكّد لكلّ الأعداد، لا لأعداد هذا الحجر فقط.',
-    numbersAsk: (v) => `$${v.a} + ${v.b} = ${v.d} \\times \\square$ — اضغط العدد الذي مكان $\\square$.`,
-    numbersOk: (v, q) => `$${v.a} + ${v.b} = ${v.a + v.b} = ${v.d} \\times ${q}$: تحقّق.`,
+    numbersAsk: (v) => `$${v.a} + ${v.b} = ${v.d} \\times \\square$ — اضغط العدد الذي يأخذ مكان $\\square$.`,
+    numbersOk: (v, q) => `$${v.a} + ${v.b} = ${v.a + v.b} = ${v.d} \\times ${q}$: المساواة تتحقّق.`,
     numbersMiss: (v, q) => `$${v.d} \\times ${q} = ${v.d * q}$، و $${v.a} + ${v.b} = ${v.a + v.b}$.`,
     carry: (v, before, q) =>
       `أعداد جديدة. سطرك السابق $${before.d} \\times ${q} = ${before.d * q}$، لكنّ $a + b$ الآن $${v.a + v.b}$.`,

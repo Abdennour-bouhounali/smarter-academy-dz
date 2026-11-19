@@ -5,12 +5,15 @@
 // « خروج » back to the hub; then two wrong gates in one run (the rule comes by itself). A student with no key sees it all locked.
 // Run (dev server up): [E2E_SIZE=1366x768] [E2E_TOUCH=1] node apps/web/e2e/gameworld-qawasim-hub.mjs [outDir]
 import { createWalk, lessonUrl, PHONE } from './lib/walk.mjs';
+import { readLadder, rungShows, ladderFromDisk, bankOnDisk } from './lib/bankSheet.mjs';
 import { TEXT } from '../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qawasim-adad-tabii/world/text.js';
 
 const ID = 'qawasim-adad-tabii';
 const URL = lessonUrl('ansab_al_aadad_wal_hisab', ID);
 const KEYS = ['jidaa-aamilayn', 'qasim-rappel', 'tariqa-qawasim', 'qawaid-qisma'];
 const WAVE_TYPES = ['missing', 'fromProduct', 'divisorOf', 'remainder', 'lastTry', 'countOf', 'divisibleBy'];
+/** What each rung of the exam ladder must write, computed from the bank ON DISK (never the product's own numbers). */
+const DISK_LADDER = ladderFromDisk(bankOnDisk('4am', ID));
 const w = createWalk('gameworld-qawasim-hub');
 const { expect, check, shot, ff } = w;
 const TOP = { exit: ['.di-top a.di-icon', '[data-di-exit]'], sound: true };
@@ -21,7 +24,6 @@ const lessonData = (page) =>
     const { lesson } = await import(path);
     return {
       titles: Object.fromEntries(Object.entries(lesson.rules).map(([k, v]) => [k, v.title])),
-      levels: lesson.sittings.levels.map((L) => ({ n: L.n, title: L.title, points: lesson.sittings.levelPoints(L) })),
       root: lesson.practiceMap.root,
       edges: lesson.practiceMap.edges.map((e) => e[2]).filter(Boolean),
     };
@@ -103,8 +105,17 @@ await w.run(async () => {
 
   await page.click('[data-di-launch-open]'); await page.waitForSelector('[data-lk-close]', { timeout: 15000 }); await page.waitForTimeout(800);
   await shot(page, 'door-launch', { exit: ['[data-lk-close]'], sound: ['[data-lk-sound]', '[data-di-sound]'] });
-  await page.click('[data-lk-close]');
-  if (await page.locator('[data-lk-quit-yes]').count()) { await page.waitForTimeout(200); await page.click('[data-lk-quit-yes]'); }
+  {
+    // LaunchKit.jsx › askClose: « خروج » asks « are you sure? » (`[data-lk-quit-yes]`) only in the middle of a run (phase
+    // `play` or `capsule`); on the bag or a result it closes at once. The phase is read from the kit's dev handle.
+    const lkPhase = await page.evaluate(() => window.__launch?.phase ?? null);
+    expect(lkPhase != null, `« عُدّتي » opens on a phase of the launch kit (${lkPhase})`);
+    const asks = lkPhase === 'play' || lkPhase === 'capsule';
+    await page.click('[data-lk-close]'); await page.waitForTimeout(200);
+    const quitAsk = await page.locator('[data-lk-quit-yes]').count();
+    expect(quitAsk === (asks ? 1 : 0), `« عُدّتي » (phase ${lkPhase}): its « خروج » ${asks ? 'asks to confirm in the middle of a run' : 'closes at once'} (confirm button found ${quitAsk})`);
+    if (asks) await page.click('[data-lk-quit-yes]');
+  }
   await backToTitle('« عُدّتي »');
 
   // ── 3. the practice hub: the lesson's own mind map ──
@@ -138,16 +149,26 @@ await w.run(async () => {
   // the exam space: five levels, the first lit
   await page.click('[data-di-space="exam"]'); await page.waitForSelector('[data-di-ladder="open"]'); await page.waitForTimeout(400);
   {
-    const rungs = await page.locator('[data-di-exam-level]').evaluateAll((els) => els.map((e) => ({ n: Number(e.dataset.diExamLevel), title: e.querySelector('strong').textContent.trim(), small: e.querySelector('small').textContent, disabled: e.disabled })));
-    expect(rungs.length === 5 && rungs.every((r, i) => r.title === L2.levels[i].title && r.small.includes(String(L2.levels[i].points))), `« فضاء الامتحان »: the five levels of THIS lesson, with their points (${rungs.map((r) => r.title).join(' · ')})`);
+    const rungs = await readLadder(page);
+    expect(
+      rungs.length === 5 && rungs.every((r, i) => rungShows(r, DISK_LADDER[i], i)),
+      `« فضاء الامتحان »: the bank's five levels, the practice space's names, their minutes and points (${rungs.map((r) => `${r.title}: ${r.small.trim()}`).join(' · ')})`,
+    );
     expect(!rungs[0].disabled && rungs.slice(1).every((r) => r.disabled) && await page.locator('.di-rungs li.is-next [data-di-exam-level="1"]').count() === 1, 'level 1 is open and lit, the four others locked');
   }
   await shot(page, 'hub-exam', { exit: ['[data-di-map-close]'], numbers: true });
   await page.click('[data-di-space="game"]'); await page.waitForSelector('.di-map');
   // the hub’s door to the knowledge page, and back
   await page.click('[data-di-hub-know]'); await page.waitForSelector('[data-di-know]');
+  {
+    const o = (await st(page)).overlay;
+    expect(o === 'know' && await page.locator('[data-di-mapcard]').count() === 0 && (await page.textContent('[data-di-know]')).includes('قواسم عدد طبيعي'), `the hub’s « خريطة المعارف » opens the lesson’s knowledge page in place of the hub (overlay ${o})`);
+  }
   await page.click('[data-di-know-hub]'); await page.waitForSelector('[data-di-mapcard]');
-  expect(true, '« خريطة المعارف » opens from the hub and its « فضاء التدريب » comes back to it');
+  {
+    const o = (await st(page)).overlay;
+    expect(o === 'map' && await page.locator('[data-di-know]').count() === 0 && await page.locator('[data-di-next]').count() === 1, `its « فضاء التدريب » comes back to the hub (overlay ${o}, the knowledge page gone, « واصل التدريب » on screen)`);
+  }
 
   // ── 4. a run of the gate dash: « واصل التدريب » ──
   const nextName = (await page.textContent('[data-di-next]')).trim();
@@ -202,13 +223,18 @@ await w.run(async () => {
   expect(s.overlay === 'guide' && s.o.lost, 'second wrong gate: the guidance card is marked « lost » (the rule shown by itself)');
   const shown = await page.locator('[data-di-guide-rule]').count();
   check(shown === 1, 'after two mistakes the card SHOWS the rule of THIS lesson by itself (`[data-di-guide-rule]`)');
-  if (shown) check((await page.textContent('[data-di-guide-rule]')).includes(L2.titles[s.o.wave.key]), 'the rule shown is the lesson’s own');
+  check(shown === 1 && (await page.textContent('[data-di-guide-rule]')).includes(L2.titles[s.o.wave.key]), 'the rule shown is the lesson’s own');
   await shot(page, 'run-guide-lost', { exit: ['[data-di-exit]', '[data-di-resume]'] });
-  if (await page.locator('[data-di-resume]').count()) {
-    await page.click('[data-di-resume]'); await ff(page, 0.3);
-    await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]');
-    await page.click('[data-di-map-close]'); await page.waitForSelector('[data-di-start]');
-    expect(true, 'the run is left, the hub closed: back on the title screen');
+  // the guidance card always carries « واصل » (DivisorIsles.jsx › the guide card: `[data-di-resume]`, lost or not)
+  expect(await page.locator('[data-di-resume]').count() === 1, 'the « lost » card keeps its « واصل » button');
+  await page.click('[data-di-resume]'); await ff(page, 0.3);
+  expect((await st(page)).phase === 'dash' && !(await st(page)).overlay, '« واصل » after the second mistake resumes the run');
+  await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]');
+  expect(!(await st(page)).dash && (await st(page)).overlay === 'map', '« خروج » leaves the run: back on the hub');
+  await page.click('[data-di-map-close]'); await page.waitForSelector('[data-di-start]');
+  {
+    const s2 = await st(page);
+    expect(s2.phase === 'title' && !s2.overlay && !s2.dash && await page.locator('[data-di-start]').isVisible(), `the run is left, the hub closed: back on the title screen (phase ${s2.phase}, overlay ${s2.overlay})`);
   }
   if (PHONE) console.log('    (phone held sideways: the hub is checked in its two-column layout)');
 });

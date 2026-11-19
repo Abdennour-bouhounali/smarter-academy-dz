@@ -142,7 +142,10 @@ export function Card({ children, tone = '', wide = false }) {
     <div className="di-veil">
       <ExitLink className="di-veil__exit" />
       <div className={`di-card ${tone} ${wide ? 'di-card--wide' : ''}`} role="dialog" aria-modal="true">
-        <Fit avail={cardRoom}>{children}</Fit>
+        {/* the 12 px floor holds while a too-tall card shrinks to fit (GAME_WORLD.md « 12 px floor ») */}
+        <Fit avail={cardRoom} floor={12}>
+          {children}
+        </Fit>
       </div>
     </div>
   );

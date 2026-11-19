@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
-import { getModulePath, getTotalModules, getFirstModuleNumber, getAnyRegisteredLessonId } from '../../../registry';
+import { getModulePath, getTotalModules, getFirstModuleNumber, getAnyRegisteredLessonId, lessonsWithPack, lessonPackFlags, getBuiltLessons } from '../../../registry';
+import { getResumeModulePath } from './getResumeLesson';
 
 // Les configs COMPLÈTES, lues ici directement (un test peut les lire toutes) : le registre, lui,
 // répond depuis l'index généré — ce test vérifie que les deux disent la même chose.
@@ -60,6 +61,35 @@ describe.skipIf(!fixtureLessonId)('getModulePath — le pont entre numéro et ro
       for (const m of c.modules) expect(getModulePath(c.id, m.number), `${c.id} › ${m.number}`).toBe(m.path);
       expect(getTotalModules(c.id), c.id).toBe(c.modules.length);
       expect(getFirstModuleNumber(c.id), c.id).toBe(Math.min(...c.modules.map((m) => Number(m.number))));
+    }
+  });
+});
+
+describe('a v2 lesson (a world in its pack) is resumed on its home, never on a module address', () => {
+  const worlds = lessonsWithPack('world');
+  const paged = getBuiltLessons().map((l) => l.id).find((id) => !lessonPackFlags(id).world && getTotalModules(id) > 1);
+
+  it('there are v2 lessons to check', () => {
+    expect(worlds.length).toBeGreaterThanOrEqual(6);
+  });
+
+  it.each(worlds)('%s: no module address (they only redirect to the world)', (id) => {
+    const first = getFirstModuleNumber(id);
+    for (const n of [first, first + 1, first + 2]) {
+      expect(getModulePath(id, n), `${id} › ${n} still has an address`).toBeTruthy();
+      expect(getResumeModulePath(id, n), `${id} › ${n}`).toBeNull();
+    }
+  });
+
+  it('a lesson still on its module pages keeps its module address', () => {
+    const n = getFirstModuleNumber(paged);
+    expect(getResumeModulePath(paged, n)).toBe(getModulePath(paged, n));
+  });
+
+  it('the resume link and the progression tree read the world-aware path', () => {
+    expect(readFileSync(resolve(srcRoot, 'lessons/common/utils/progress/getResumeLesson.js'), 'utf8')).toMatch(/resumePath: getResumeModulePath\(/);
+    for (const page of ['pages/student/StudentHome.jsx', 'pages/student/Progression.jsx']) {
+      expect(readFileSync(resolve(srcRoot, page), 'utf8'), page).toMatch(/getModulePath: getResumeModulePath/);
     }
   });
 });

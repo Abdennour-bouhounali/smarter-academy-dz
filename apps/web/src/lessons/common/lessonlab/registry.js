@@ -108,6 +108,18 @@ export const TOOLS = [
     load: () => import('./tools/PaperDivision'),
   },
   {
+    id: 'bracket',
+    lesson: 'qisma-iqlidiya-hasr',
+    lessonTitle: 'القسمة الإقليدية وحصر حاصل القسمة',
+    icon: '📏',
+    name: 'مسطرة الحصر',
+    hint: 'ضع الألواح واحدًا بعد الآخر: كم لوحًا كاملًا يدخل؟ وكم لوحًا يلزم؟',
+    needs: 'ab',
+    labels: { a: 'الطول', b: 'طول اللوح' },
+    range: { a: [1, 9999], b: [2, 999] },
+    load: () => import('./tools/Bracket'),
+  },
+  {
     id: 'rules',
     lesson: 'qawaid-qabiliyat-qisma',
     lessonTitle: 'قواعد قابلية القسمة',

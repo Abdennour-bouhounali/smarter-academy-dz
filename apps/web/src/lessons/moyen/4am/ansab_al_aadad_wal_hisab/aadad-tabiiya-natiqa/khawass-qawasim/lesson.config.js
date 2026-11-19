@@ -1,16 +1,8 @@
 /**
- * الدرس 3 — خواص قواسم عدد طبيعي
- * Manuel 4AM, unité 1 : activité 3 (p. 8), معارف 2 (p. 10), « أتعلّم البرهنة » (p. 11), دوري الآن p. 11 (2),
- * exercices 12, 13, 14, 15, 16 (p. 14), puis trois « مسائل » de la plateforme (modules 5–7).
- * Source : docs/sources/4am/unit1/extraction.json.
- *
- * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
- *   Entrée retenue : le CHANTIER (labo divisor-properties, murs de briques de longueur n) posé seul en tête — la main colle,
- *   retire, mesure, et au niveau متقدم (9 | 900 et 90) elle PRÉDIT avant de bâtir ; la première question demande POURQUOI
- *   aucune demi-brique n'est apparue. Rejetée : le نشاط 3 comme entrée (trois triplets a, b, n à « vérifier » sous une carte
- *   qui annonce déjà ce qui est vrai : on vérifie une propriété énoncée, on ne la découvre pas) ; les cas 2 et 3 y deviennent
- *   une APPLICATION, après la réponse. Ordre des idées : POURQUOI pas de demi-brique (rappel « n divise a » APRÈS) → cas 2 et 3
- *   du livre → conjecture à compléter → معارف : خاصية 1 / 2, chacune avec sa brique APRÈS la question → أتعلّم البرهنة.
+ * الدرس 3 — خواص قواسم عدد طبيعي (4AM, item du réseau 4am.m1.r02, shared with lesson 2).
+ * A v2 lesson since 2026-11-18: the student plays it in the world « أرخبيل القواسم » (`lesson.pack.js`, `world/`), built
+ * from scratch on the platform's own numbers; its module pages and mission player are deleted. The textbook only fixed
+ * its الكفاءات (LESSON_DEVELOPMENT_GUIDE §4ter); the coverage map of the textbook stays docs/sources/4am/unit1/extraction.json.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/khawass-qawasim';
 
@@ -34,7 +26,6 @@ export const LESSON_CONFIG = {
   masteryThreshold: 0.8,
   emoji: '🧩',
   estimatedDurationMin: 55,
-  textbookRef: { unit: 1, activity: 3, pages: '8, 10, 11, 14' },
   skills: [
     'معرفة أن القاسم المشترك لعددين يقسم مجموعهما وفرقهما',
     'معرفة أن قاسم عدد يقسم كل مضاعف له',
@@ -42,26 +33,17 @@ export const LESSON_CONFIG = {
     'البرهان على خاصية من الشكل «إذا … فإنّ …» بإيجاد عدد طبيعي k حيث m = d × k',
   ],
   teachingScope: {
-    include: ['خاصية 1 وخاصية 2 من الكتاب', 'البرهنة: المعطيات، المطلوب، البرهان'],
+    include: ['قاسم مشترك لعددين يقسم مجموعهما وفرقهما وباقي قسمة أحدهما على الآخر، وقاسم عدد يقسم مضاعفاته', 'البرهنة: المعطيات، المطلوب، البرهان'],
     exclude: ['القاسم المشترك الأكبر (الدرس 4)', 'خوارزميات البحث عن PGCD (الدرس 6) — تُبرَّر لاحقًا بهذه الخواص'],
   },
+  // The lesson's progressive map is the world's « خريطة المعارف »: the `KNOWLEDGE_GRAPH` of the knowledge its pack declares
+  // (`lesson.pack.js › knowledge`) — the only one; its home mounts no other (LESSON_V2.md §2).
   knowledgeMap: true,
-  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
-  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
-  knowledgeMapOpen: true,
   priorKnowledge: ['qasim-jidaa', 'qisma-iqlidiya'],
   resources: [
-    // Module 1 — workspace à deux niveaux. La propriété est la même ; ce qui
-    // change est la possibilité de la VÉRIFIER en comptant. Les nombres du
-    // manuel sont DESSINÉS en murs de briques de longueur n (thème
-    // `construction`) : accoler, enlever, mesurer — le résultat est toujours
-    // un mur de briques entières. Le contexte est déclaré : une adaptation
-    // de la plateforme, jamais silencieuse.
-    //   مبتدئ  — le cas 1 du manuel (3 | 18 et 12) : les briques se comptent.
-    //   متقدم  — 9 | 900 et 90 : impossible à compter, il faut PRÉDIRE avec
-    //            la propriété avant de poser. Les cas 2 et 3 du manuel
-    //            restent à l'étape 1, où le manuel les pose.
+    // DATA only (exported to the DB; `sourceElementIds` are read by scripts/check-textbook-coverage.mjs): the
+    // `divisor-properties` labs below were the old module pages' instruments; no page of this lesson mounts them any more.
     { kind: 'manipulation', code: 'divisor-properties-18-12', type: 'divisor-properties', module: 1,
       level: 'beginner',
       title: 'الحالة 1: n = 3، a = 18، b = 12',
@@ -86,41 +68,41 @@ export const LESSON_CONFIG = {
   ],
   modules: [
     { id: '00', number: 0, slug: 'astaidd', path: `${LESSON_BASE_PATH}/astaidd`,
-      title: 'أستعدّ', desc: 'ست عبارات: صحيح أم خاطئ؟ «n يقسم a» والقسمة الإقليدية.',
+      title: 'أستعدّ', desc: 'ما يلزم قبل الدرس، تقيسه « عُدّة الانطلاق »: «n يقسم a» والقسمة الإقليدية.',
       stage: 'prerequisite_check', color: 'teal', style: 'diagnostic', estimatedMin: 6, difficulty: 1, actionText: 'أتحقّق من مكتسباتي' },
     { id: '01', number: 1, slug: 'thalath-halat', path: `${LESSON_BASE_PATH}/thalath-halat`,
-      title: 'نشاط 3 — ثلاث حالات', desc: 'n يقسم a و b. هل يقسم a + b؟ و a − b؟ وباقي قسمة a على b؟',
+      title: 'القاسم المشترك: المجموع والفرق', desc: 'n يقسم a و b: هل يقسم a + b و a − b؟',
       stage: 'trigger', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'],
       color: 'indigo', style: 'featured', estimatedMin: 12, difficulty: 1, actionText: 'أتحقّق' },
     { id: '02', number: 2, slug: 'khassiyatan', path: `${LESSON_BASE_PATH}/khassiyatan`,
-      title: 'معارف — خاصيتان', desc: 'من التخمين إلى الخاصية: 9 يقسم 90 و 900، و 5 يقسم 90 و 25.',
+      title: 'المضاعفات وباقي القسمة', desc: 'قاسم عدد يقسم كل مضاعف له، والقاسم المشترك يقسم باقي القسمة الإقليدية لأحدهما على الآخر.',
       stage: 'discovery', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2', '4am_khawass-qawasim_P3'],
       color: 'violet', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أصوغ الخاصية' },
     { id: '03', number: 3, slug: 'ataallam-al-burhana', path: `${LESSON_BASE_PATH}/ataallam-al-burhana`,
-      title: 'أتعلّم البرهنة', desc: 'كيف أبرهن صحة خاصية من الشكل «إذا … فإنّ …»؟',
+      title: 'البرهان: «إذا … فإنّ …»', desc: 'أبرهن أنّ d يقسم m بإيجاد عدد طبيعي k حيث m = d × k.',
       stage: 'discovery', teachesLearningPointIds: ['4am_khawass-qawasim_P4'],
       color: 'emerald', style: 'featured', estimatedMin: 12, difficulty: 3, actionText: 'أبرهن' },
     { id: '04', number: 4, slug: 'awazzif', path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي', desc: 'دوري الآن، وتمارين متدرّجة.',
+      title: 'أتمرّن', desc: 'تمارين متدرّجة على خواص القواسم.',
       stage: 'practice_lab', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2', '4am_khawass-qawasim_P4'],
+      // the textbook element this module is the destination of (docs/sources/4am/unit1/extraction.json; DATA for
+      // scripts/check-textbook-coverage.mjs — it was cited by the deleted content/textbook.js)
+      sourceElementIds: ['now-11-2'],
       color: 'amber', style: 'featured', estimatedMin: 12, difficulty: 2, actionText: 'أتدرّب' },
-    // Les « مسائل » (track: 'problem') : practice_lab, avant le test, qui
-    // reste toujours ouvert. Elles comptent dans la complétion, jamais dans
-    // la maîtrise — docs/architecture/LESSON_CONTRACT.md § Modules « مسائل ».
     { id: '05', number: 5, slug: 'masala-1', path: `${LESSON_BASE_PATH}/masala-1`,
-      title: 'مسألة 1 — ورشة البناء', desc: 'مسألة الدرس: جداران من 875 سم و 350 سم بطوب من 25 سم. حلّ كامل خطوة بخطوة.',
+      title: 'مسألة الدرس', desc: 'وضعية تُحلّ بخواص القواسم.',
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P3'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '06', number: 6, slug: 'masala-2', path: `${LESSON_BASE_PATH}/masala-2`,
-      title: 'مسألة 2 — تعاونية زيت الزيتون', desc: 'خزّانان وصفائح من 15 أو 20 لترًا: أيّها يصلح؟ وكم صفيحة في أربعة أسابيع؟',
+      title: 'مسألة 2', desc: 'وضعية أخرى تُحسب عند إتمام الدرس.',
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P2'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '07', number: 7, slug: 'masala-3', path: `${LESSON_BASE_PATH}/masala-3`,
-      title: 'مسألة 3 — النادي الرياضي', desc: 'أفواج متساوية في فرعين: أبرهن، ثم أختار، ثم أحسب ما يدفعه النادي.',
+      title: 'مسألة 3', desc: 'وضعية ثالثة تُحسب عند إتمام الدرس.',
       stage: 'practice_lab', track: 'problem', teachesLearningPointIds: ['4am_khawass-qawasim_P1', '4am_khawass-qawasim_P4'],
       color: 'amber', style: 'featured', estimatedMin: 8, difficulty: 3, actionText: 'أحلّ المسألة' },
     { id: '08', number: 8, slug: 'itqan', path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي', desc: 'خمس أسئلة تُقيّم الكفاءات الأربع.',
+      title: 'التقويم', desc: 'تقويم الكفاءات: أسئلة على منوال الامتحان.',
       stage: 'evaluation', color: 'slate', style: 'boss', estimatedMin: 7, difficulty: 3, actionText: 'أدخل التقويم' },
   ],
 };

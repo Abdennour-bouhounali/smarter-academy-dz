@@ -7,9 +7,8 @@ import { courseLevels, getAllGrades } from '@smarter-academy/core';
 import { ArrowForward } from '../../components/common/DirectionalIcons';
 import { AuthContext } from '../../context/AuthContext';
 import { useStudyContext } from '../../context/StudyContextContext';
-import { getResumeLesson } from '../../lessons/common/utils/progress/getResumeLesson';
+import { getResumeLesson, getResumeModulePath } from '../../lessons/common/utils/progress/getResumeLesson';
 import { getStudentActivity } from '../../lessons/common/utils/progress/getStudentActivity';
-import { getModulePath } from '../../lessons/registry';
 import { LESSON_PROGRESS_SYNCED_EVENT } from '../../hooks/useLessonProgressSync';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { usePremiumStatus } from '../../hooks/usePremiumStatus';
@@ -114,7 +113,7 @@ export default function StudentHome() {
     return gradeId ? all.filter((g) => g.grade === gradeId) : all;
   }, [profile, gradeId]);
   const tree = useMemo(
-    () => buildProgressionTree(courseLevels, gradeActivity, currentMastery, { gradeId, getModulePath }),
+    () => buildProgressionTree(courseLevels, gradeActivity, currentMastery, { gradeId, getModulePath: getResumeModulePath }),
     [gradeActivity, currentMastery, gradeId],
   );
   const treeIndex = useMemo(() => indexTreeByLesson(tree), [tree]);

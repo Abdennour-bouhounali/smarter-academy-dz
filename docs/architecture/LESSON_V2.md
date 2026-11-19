@@ -1,7 +1,10 @@
 # Lesson v2 — the lesson as data plus one world
 
-**Status: Phase 0 of the rollout (plan `docs/reports/LESSON_V2_MASTER_PLAN.md`). One lesson is built this way today — the
-pilot `qasim-adad-tabii`. This document is the contract a v2 lesson follows; sections marked `Planned` are not built.**
+**Status: rollout in progress (plan `docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0). Six lessons have a pack on 2026-11-19
+— the pilot `qasim-adad-tabii`, `qawasim-adad-tabii` and `khawass-qawasim` (4AM, committed), and `qisma-iqlidiya-baqi`,
+`qawaid-qabiliyat-qisma` (1AM) and `qisma-iqlidiya-hasr` (2AM), NOT committed yet (review fixes in progress);
+`npm run status:lesson-v2` prints the live list. This document is the contract a v2 lesson follows; sections marked
+`Planned` are not built.**
 
 A v2 lesson is what the pilot became: a game world the student plays, a practice space, exam sittings, a knowledge page,
 a launch kit, a lab, and for the teacher a class session with its board and its memo. The pilot was written as one
@@ -27,7 +30,7 @@ else names a lesson.** Before 2026-11-17 a lesson had to be added by hand to `PH
 // lessons/moyen/4am/…/qasim-adad-tabii/lesson.pack.js
 export const LESSON_PACK = {
   id: 'qasim-adad-tabii',
-  phone: true,
+  phone: false, // every pack says false while phones are PAUSED (owner, 2026-11-18)
   world: { id: 'divisor-isles', content: () => import('./world').then((m) => m.lesson) },
   knowledge: () => import('./knowledge.jsx').then((m) => m.LESSON_KNOWLEDGE),
   coach: { P1: 'qasim-baqi', P2: 'qasim-jidaa', P3: 'siyagh-mutakafia', P4: 'wahid-wa-nafsuh' },
@@ -43,7 +46,7 @@ export const LESSON_PACK = {
 | `id` | the lesson's id — the generator fails when it differs from the folder | — |
 | `phone` | its home was designed AND walked on a phone held sideways (`GAME_WORLD.md` « On a phone ») | `components/auth/phoneLessons.js`, the launch kit |
 | `world` | `id` = a world of `gameworld/LessonGameWorld.jsx › WORLDS`; `content` = what the world is played with (`GAME_WORLD.md` §3 « The pilot's content ») | `LessonIndex.jsx`, `LessonGameWorld.jsx` |
-| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`); it may live in `world/knowledge.js` when the lesson's older `knowledge.jsx` still feeds the knowledge map of the lesson page (`khawass-qawasim`) | « بطاقة المعارف » on the board, the exam coach |
+| `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`) and its map (`KNOWLEDGE_GRAPH`, same file) — the lesson's ONLY knowledge source (§2). A rebuilt lesson writes it in `world/knowledge.js`; the two pilots keep it in their root `knowledge.jsx` (imported by their `world/knowledge.js`) | « بطاقة المعارف » on the board, the exam coach, the world's « خريطة المعارف » (through `world.content`) |
 | `coach` | `{ <الكفاءة>: <knowledge item id> }` — the sheet « مدرّب الامتحان » reminds; needs `knowledge` | `features/practice/exam/examCoach.js` |
 | `board` | « حصّة القسم »: the lesson on the board (`script`) and its written memo (`memo`) — both or none. The teacher's card shows « في القسم » only for a lesson that has it; a class session with the tests alone, without a script, cannot be declared (the old `classSession: true` of the config is gone) | `boardLessons.js`, `ClassSessionPage`, `LessonMemoPage`, the teacher's card |
 
@@ -82,15 +85,35 @@ Rules:
 The server holds no code of a lesson's game. An answer that counts toward a الكفاءة is sent as a **claim** (the numbers of
 the question and what the student wrote) to `POST /lessons/{code}/game-evidence`, and `Domain/GameWorld/ClaimVerifier.php`
 re-computes its verdict from the numbers alone. The kinds of claim (`division`, `product`, `phrase`, `sure`,
-`containers`) are statements about natural numbers — they belong to no lesson.
+`containers`, `pair`, `divisors`, `stop`, `divisible`, `bracket`, `fullNeeded`, `pgcd`, `coprime`, `commonDivisor`,
+`fraction`) are statements about natural numbers — they belong to no lesson. Each states the WHOLE answer (e.g. `bracket`:
+b × lo ≤ a < b × hi with hi = lo + 1; `fullNeeded`: full = ⌊a ÷ b⌋ and need = ⌈a ÷ b⌉; `pgcd`: g = PGCD(a ; b), a and b
+not both 0; `coprime`: `says` = (PGCD = 1); `commonDivisor`: d ≥ 1 divides a and b; `fraction` (a/b given, p/q written):
+a × q = p × b, b and q > 0, and PGCD(p ; q) = 1 unless `reduced: false`). The kinds from `bracket` on admit only naturals ≤ 10^6 on both sides.
 
 - A lesson says, in its `world/evidence.js`, WHICH claim each of its answers makes and which الكفاءة each key proves
   (`createEvidence({ grade, points })`); the verdict is the kit's `kit/claims.js › verifyClaim`.
+- **A claim is FALSE whenever the lesson's own `check` calls the answer wrong** (2026-11-19, after the review found
+  half-right answers credited: a claim that carried only the sum of a « sum and difference » answer, only the division of a
+  « remainder » answer, a swapped phrase or a bracket judged on one bound). The claim states the WHOLE answer, in the part
+  that carries THIS lesson's الكفاءة — a right first half never earns the key on its own. Each v2 lesson's
+  `world/evidence.test.js` checks it over the exam questions its trainer generates (many seeds), with wrong and
+  half-wrong answers: `check` refuses ⇒ the claim does not verify (most lessons also: a true claim ⇒ `check` accepts), plus
+  the half-right cases the review found. The six lessons of batch 2 started before that day do not test it yet. The kit keeps a safety net:
+  `kit/evidence.js › guardEvidence(ev, ok)`, called by `Trainer.jsx` on every answer, drops a TRUE claim made on an answer
+  the lesson's `check` refused (a warning in development) — a wrong answer with a FALSE claim is still sent: it is
+  evidence too. The net covers « تدرّب » only; the division steps of the real cases are not passed through it.
 - **To add a kind** (a lesson needs a statement none of the kinds makes): write it in `kit/claims.js` AND in
   `ClaimVerifier.php` (`KINDS`, `verify`), and add rows that are true and rows that are false to the one fixture
   `apps/api/tests/Fixtures/game-claims.json`. `kit/claims.test.js` fails when the two lists differ, when a kind lacks a
   row of each verdict, or when the two sides disagree; `ClaimVerifierTest` replays the fixture on the server.
 - An answer whose verdict cannot be re-computed from numbers (« صحيح أم خطأ؟ علّل ») is never evidence.
+- **The exam sittings are the exception: they serve the lesson's BANK** (owner, 2026-11-18 — GAME_WORLD.md §2quater), so a
+  handed-in copy does not make claims: it goes to the PRACTICE ENGINE like an exam sheet of « /espace/pratique »
+  (`kit/bankEvidence.js`: one session, one attempt per answered step, the raw answer). The server reads the question in the
+  content and re-computes the verdict with its own evaluator (`AnswerEvaluator.php`, EXERCISE_CONTRACT.md « Server-side
+  evaluation »); `selfCheck` and `counted: false` steps are never evidence. Still only exam-format first tries: one answer per
+  step, no hint exists during a sitting, nothing is sent before the hand-in or when he leaves.
 
 ## 1ter. The student's journey, his progress, and a lesson that is rebuilt
 
@@ -118,10 +141,27 @@ content. A budget per lesson is `Planned` (the status script, §3).
 
 **Progress, mastery and the reports still read MODULES — and a v2 lesson still has them, as DATA.** Its
 `lesson.config.js` keeps its modules (ids, numbers, slugs, titles, stages) and its الكفاءات; the world marks a module
-done when the story reaches what that module taught (`onModule`), and the exam-format answers are evidence (§1bis). So
-« بوصلتي », the parent's « التقدّم بالتفصيل », the school's reports and the teacher's tracking need no change for a v2
-lesson. Its module PAGES are deleted (§2): every module address redirects to the home. Traced reader by reader on
-2026-11-18: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`.
+done when the story reaches what that module taught (`onModule`), and the exam-format answers are evidence (§1bis). Its
+module PAGES are deleted (§2): every module address redirects to the home. Traced reader by reader on 2026-11-18:
+`docs/reports/OLD_VERSION_TRACE_2026-11-18.md`.
+
+**A v2 lesson is COMPLETE when its world's story is finished** (2026-11-19, « fix all »). The story marks only some
+modules (4 of 8–9: those it teaches on the way); the others (preparation, the test, the synthesis…) have no page, and
+the progress layer says `completed` only when every module of the config is done (`progressQueue.js ›
+snapshotLessonProgress`). So the kit (`gameworld/kit/storyEnd.js`, wired in `LessonWorld.jsx`) marks EVERY module of
+`config.modules` through `onModule` the first time a world save says `finished` (the last bridge paid, the End screen):
+- on a save during play (the finale saves `finished: true`);
+- **on load** — a save already finished (a student who ended the story before this rule, or on another device: the
+  pulled save) repairs his progress the next time the world opens;
+- never from a teacher's preview. Mastery of each الكفاءة is unchanged: evidence only. The modules the story marks on
+  the way are still marked when their key is sealed (partial progress still shows), and a world needs nothing in its
+  `story.js`. Check: `kit/storyEnd.test.js`.
+
+With that, the readers of `status: 'completed'` (the server keeps it monotonic and trusts the client's snapshot:
+`LessonProgressService`) — the parent's link and weekly report, the teacher's tracking (`ClassroomProgressService`),
+the school / admin reports (`AnalyticsService`, `StudentDossier`) — and those of the module count (`getLessonProgress` →
+the unit page, the lesson tiles, `UnitGroup`, `getStudentActivity`) see a finished v2 lesson as done. « بوصلتي » reads
+the calendar and the learning net, not this status. What stays imperfect: §9 of the trace report.
 
 **When a lesson in use is rebuilt as v2** (rule taken from the pilot — it was never decided otherwise; the owner may
 change it):
@@ -138,24 +178,43 @@ change it):
 <lesson>/
   lesson.config.js     modules (as DATA), الكفاءات, resources — no `studentView`, no `mission`, no `lessonProblem`
   lesson.pack.js       the pack (§1)
-  knowledge.jsx        the knowledge sheets and the mind map
   world/               what the game world is played with — index.js exports `lesson`: its keys and their tablets, its
                        FORGES (one per key: no rule is told — GAME_WORLD.md §2sexies), the practice ladder, the trainer,
                        the exam sittings, the journey, the evidence, the knowledge page, its sentences (GAME_WORLD.md §3)
   board/script.js      « الدرس على السبّورة » (CLASS_SESSION.md §5ter)
   board/memo.js        the written memo (CLASS_SESSION.md §2quater)
-  routes.jsx           `buildLessonRoutes({ …, retiredModules: true })`: the home, and each module address → the home
-  knowledge.jsx, knowledgeGraph.js, content/textbook.js, content/exercises.js
-                       the knowledge map of the lesson page (and `validate:lessons`' graph check) — kept
+  routes.jsx           `buildLessonRoutes({ …, retiredModules: true })`: the home, and each module address → the home;
+                       NO `loadKnowledge` (the builder refuses it): the home mounts no 🧠 map of its own
 ```
+
+**ONE knowledge source** (2026-11-19, `OLD_VERSION_TRACE_2026-11-18.md` §10): what the lesson knows is the file its pack
+names (`knowledge`), shown by the world's « خريطة المعارف », the board's « بطاقة المعارف » and the exam coach. The old
+lesson page's 🧠 map (`LazyLessonKnowledgeProvider`, built from the deleted lesson's `knowledge.jsx` / `knowledgeGraph.js`
+/ `content/textbook.js`) is not mounted on a v2 home. A rebuilt lesson has no root `knowledge.jsx`, `knowledgeGraph.js`
+or `content/`: `validate:lessons` asks that the pack's knowledge file export `KNOWLEDGE_GRAPH` instead, and
+`lessonGraphs.test.js` checks only that this file holds a map (the world draws it at its own `positions`; its invariants
+are the lesson's `world/journey.test.js`). The two pilots' root `knowledge.jsx` + `knowledgeGraph.js` + `content/` stay:
+their pack and their `world/knowledge.js` read them (their cards still quote the textbook's wording — §10 of the trace).
+
+**The modules as the platform shows them.** A module's `title` is TEXT read by the parent, the teacher's tracking and
+the reports: it names what the module stands for in the v2 lesson — the key or the stage the world marks (`onModule`),
+« مسألة الدرس » for the last bridge, « التقويم » for the evaluation — never the deleted page's activity, context or the
+book's section names (« نشاط 3 », « أوظّف تعلّماتي », « مسائل الكتاب »). The teacher's unit page shows no module chips
+for a lesson whose pack has a world (`LessonModuleChips`), and « واصل » / the progression tree open its home
+(`getResumeLesson.js › getResumeModulePath`): its module addresses only redirect there.
 
 **The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
 gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
-`khawass-qawasim`; the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
+`khawass-qawasim`, then (same day) the 1AM `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` and the 2AM
+`qisma-iqlidiya-hasr` — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
+still has a module page (1AM `darb-qisma-ashriya`); the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
 commit as the conversion:
 
 - `modules/` (every module page, « إختبار أولي » included), `moduleContext.js`, and the `content/` files only the pages
   read (`prep`, `peerSheet`, `problems`, the activities' own data) with their tests;
+- the old root `knowledge.jsx`, `knowledgeGraph.js` and `content/textbook.js` / `exercises.js` when the pack's knowledge
+  lives elsewhere (`world/knowledge.js`) — a `sourceElementIds` on the destination module keeps a textbook element they
+  alone cited covered (`check:textbook`);
 - `studentView: 'mission'`, `mission` and `lessonProblem` in `lesson.config.js`; its mission scene in
   `lessons/common/mission/MissionScene.jsx` when no other lesson uses it;
 - the module routes: `routes.jsx` passes `retiredModules: true` instead of its `import.meta.glob` — each module ADDRESS
@@ -163,7 +222,7 @@ commit as the conversion:
 - the walks of the deleted pages.
 
 What stays: the `modules` of the config as data (progress is stored by their numbers; the DB rows `lesson_modules`, the
-reports, the compass read them), `resources` (exported to the DB), the knowledge map files, the practice bank
+reports, the compass read them), `resources` (exported to the DB), the pack's knowledge file, the practice bank
 (`content/practice/`), the class test. The checks know a v2 lesson by `retiredModules: true`: `validate:lessons` takes
 its الكفاءات coverage from `world/evidence.js › POINTS` (the final test is gone) and does not ask for
 `content/problems.js`; `audit:knowledge` skips it (no exposure stream); the status script checks that the old version is
@@ -186,6 +245,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 | S2 every rule is forged | every key of `world/journey.js › KEYS` has its forge in `world/forges.js` |
 | S3 knowledge, S6 exam coach | `pack.knowledge`, `pack.coach` |
 | S4 the practice bank is the BEM exam sheet | the lesson is in `content/practice/exam-style.json` |
+| S4bis the bank is served AS IT IS (owner, 2026-11-18) | the lesson's `world/sitting.js` is ONE call to the kit's bank adapter, `createBankSittings({ lesson })` (`kit/bankSitting.js`), and no `createSittings` — its exam sittings serve `content/practice/<grade>/<id>/` unchanged and generate no exercise (GAME_WORLD.md §2quater, `docs/reports/BANK_AS_IS_2026-11-18.md`) |
 | S8 « مختبري » | an instrument tagged with the lesson in `lessonlab/registry.js` |
 | S1 the launch kit | every CORE tool of the learning net for the lesson has a family in `launchkit/families.js` |
 | T1–T3 the board | `pack.board`, `board/script.js`, `board/memo.js`; a board test that computes every number (`board/board.test.js`) and a board walk (reference: `qawasim-adad-tabii`, CLASS_SESSION.md §5ter) |
@@ -211,7 +271,9 @@ player, the older lesson page, « أستعدّ », « وضع القسم » and t
 that converts its last lesson — never before, never later. On 2026-11-17: 140 lessons built, 1 with a v2 world, 31 on the
 mission player only, 108 on the older lesson page, 139 without a board. On 2026-11-18: 3 with a v2 world, all three with
 their old version deleted; 29 on the mission player only, 108 on the older lesson page, 137 with an « أستعدّ » module,
-137 without a board.
+137 without a board. Later on 2026-11-18 (the division road `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`,
+`qisma-iqlidiya-hasr` converted, their old version deleted): 6 with a v2 world, all six with their old version deleted;
+29 on the mission player only, 105 on the older lesson page, 134 with an « أستعدّ » module, 134 without a board.
 
 NOT in the script yet: a weight budget per lesson; the content checks of `check:lessons` (respect of Islam, independence
 from the book, « دج », counters, formulas) do not read a lesson's `world/` and `board/` folders — plan B8.

@@ -3,9 +3,11 @@
 // and never the answer, the quick workshop that repairs the weakest tool, the kit laid out with ONE lesson to revise, a tool
 // re-checked, the take-off. Then: the launch is played once; a second student misses everything, leaves to the earlier lesson
 // and comes back by the return button. Nothing may scroll, at any moment. The walk also LISTENS (window.__launchSounds).
+// At every screenshot, besides the layout: no visible text under 12 px (`lib/walk.mjs › tinyText`, the floor of every walk).
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/launch-kit.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
+import { tinyText } from './lib/walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -47,6 +49,7 @@ const shot = async (name) => {
     for (const el of root.querySelectorAll('.lk-prompt, .lk-example ol, .lk-revise > div, .lk-kit')) if (el.scrollWidth > el.clientWidth + 3 || (!phone && el.scrollHeight > el.clientHeight + 3)) out.push(`overflows: ${el.className}`); // on a phone what is taller than the stage slides with it; nothing may be wider
     return out;
   }, process.env.E2E_TOUCH === '1' && SIZE[1] <= 500);
+  for (const t of await tinyText(page)) bad.push(`text under 12 px: ${t}`);
   if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
@@ -57,8 +60,10 @@ let heard = 0; const since = async () => { const all = await page.evaluate(() =>
 const kit = (id) => page.evaluate((uid) => JSON.parse(localStorage.getItem(`u_${uid}_smarter_launch_kit`) ?? 'null'), id);
 const A = '1am.m3.r01'; const B = '1am.m3.r02';
 
-/** A wrong place for the flag that is still ON the line: one jump too far, or just after the number when the line ends first. */
-const beyond = (q) => (q.target + q.b <= q.max ? q.target + q.b : q.a + 1);
+/** The greatest multiple of b not beyond a — computed here from the question's two numbers, never read from the game. */
+const greatest = (q) => Math.floor(q.a / q.b) * q.b;
+/** A wrong place for the flag that is still ON the line: one jump too far, or one jump short when the line ends first. */
+const beyond = (q) => (greatest(q) + q.b <= q.max ? greatest(q) + q.b : greatest(q) - q.b);
 /** The box of a sort card, computed apart from what it shows: an equality « $a = b \times q ± r$ » is THE Euclidean division of a by b or not (the 1AM level-2 sort); a number is divisible by the rule's k or not. */
 const boxOf = (q, c) => { const m = /^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/.exec(c.text ?? ''); if (!m) return c.n % q.k === 0 ? 'yes' : 'no'; const [a, b, k, r] = [m[1], m[2], m[3], m[5]].map(Number); return m[4] === '+' && a === b * k + r && r < b ? 'yes' : 'no'; };
 /** Fills the answer of the question on screen — right or wrong — with real taps, WITHOUT handing it in. Returns the question. */
@@ -73,7 +78,7 @@ async function fill(right) {
   } else {
     const box = await page.locator('[data-lk-line]').boundingBox(); const k = Math.min(box.width / 940, box.height / 250); const ox = box.x + (box.width - 940 * k) / 2; const oy = box.y + (box.height - 250 * k) / 2;
     const at = (v) => ({ x: ox + (46 + (v / q.max) * 848) * k, y: oy + 168 * k });
-    const goal = at(right ? q.target : beyond(q)); const from = at(0);
+    const goal = at(right ? greatest(q) : beyond(q)); const from = at(0);
     await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move((from.x + goal.x) / 2, goal.y, { steps: 5 }); await page.mouse.move(goal.x, goal.y, { steps: 5 }); await page.mouse.up(); await page.waitForTimeout(150); // let the last move be drawn before the value is read
   }
   return q;
@@ -119,16 +124,17 @@ const dragCard = async (bin, drop = true) => {
   const c = await page.locator('[data-lk-card]').boundingBox(); const b = await page.locator(`[data-lk-bin="${bin}"]`).boundingBox();
   const from = { x: c.x + c.width / 2, y: c.y + c.height / 2 }; const to = drop ? { x: b.x + b.width / 2, y: b.y + b.height * 0.6 } : { x: from.x, y: from.y + 60 };
   await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move((from.x + to.x) / 2, (from.y + to.y) / 2, { steps: 6 }); await page.mouse.move(to.x, to.y, { steps: 6 });
-  const over = await page.locator('.lk-box.is-over').getAttribute('data-lk-bin').catch(() => null);
+  const over = await page.evaluate(() => document.querySelector('.lk-box.is-over')?.dataset.lkBin ?? null); // no box lit: null
   await page.mouse.up(); await page.waitForTimeout(120); return over;
 };
-const other = q.cards[0].bin === 'yes' ? 'no' : 'yes';
+const first = boxOf(q, q.cards[0]); expect(first === q.cards[0].bin, `the box of « ${q.cards[0].text} », computed apart, is the game's`);
+const other = first === 'yes' ? 'no' : 'yes';
 expect(await dragCard(other, false) === null && await page.locator('[data-lk-placed]').count() === 0 && await page.getAttribute('[data-lk-card]', 'data-lk-card') === q.cards[0].id, 'a card let go outside the boxes comes back to the hand');
 expect(await dragCard(other) === other && await page.locator(`[data-lk-bin="${other}"] [data-lk-placed="${q.cards[0].id}"]`).count() === 1, 'the card is DRAGGED into a box: the box lights up under it, and keeps it');
 await page.click(`[data-lk-placed="${q.cards[0].id}"]`);
 expect(await page.locator('[data-lk-placed]').count() === 0 && await page.getAttribute('[data-lk-card]', 'data-lk-card') === q.cards[0].id, 'a tap takes it back as long as the answer is not handed in: a slip does not count');
-await dragCard(q.cards[0].bin); await shot('sort');
-for (const c of q.cards.slice(1)) await page.click(`[data-lk-send="${c.bin}"]`);
+await dragCard(first); await shot('sort');
+for (const c of q.cards.slice(1)) { const bin = boxOf(q, c); expect(bin === c.bin, `the box of « ${c.text} », computed apart, is the game's`); await page.click(`[data-lk-send="${bin}"]`); }
 await hand(); await page.waitForSelector('[data-lk-signal="good"]'); await shot('signal-good');
 expect((await tool(B)).seg === '1', 'a right answer lights one segment of the tool at once');
 await settle();
@@ -141,8 +147,8 @@ expect(JSON.stringify(await tool(B)) === JSON.stringify({ band: 'solid', seg: '2
 await page.waitForSelector(`[data-lk-example="${A}"]`);
 expect((await page.textContent('.lk-example__lead')).includes('لا يتجاوز العدد') && await page.locator('[data-lk-step]').count() === 1, 'the workshop opens on the mistake the last answer showed, with the first step of a worked example');
 await shot('workshop-example');
-while (await page.locator('[data-lk-step-next]').count()) { await page.click('[data-lk-step-next]'); await page.waitForTimeout(120); }
-expect(await page.locator('[data-lk-step]').count() === 4 && await page.locator('[data-lk-try]').count() === 1, 'the student reveals the example step by step, then tries');
+{ const len = await page.evaluate(() => window.__launch.cur.ex.steps.length); expect(len === 4, `the worked example of the division has four steps (${len})`); for (let i = 1; i < len; i += 1) { await page.click('[data-lk-step-next]'); await page.waitForTimeout(120); } }
+expect(await page.locator('[data-lk-step]').count() === 4 && await page.locator('[data-lk-step-next]').count() === 0 && await page.locator('[data-lk-try]').count() === 1, 'the student reveals the example step by step, then tries');
 await shot('workshop-steps');
 await page.click('[data-lk-try]'); await page.waitForSelector('[data-lk-qphase="workshop"]');
 await fill(true); await shot('workshop-question'); await hand(); await settle();
@@ -183,7 +189,7 @@ await page.click('[data-lk-sound]'); await since(); await page.click('[data-lk-g
 await shot('liftoff');
 await page.waitForFunction(() => !document.querySelector('[data-launch-kit]') && window.__world.getState().phase === 'play', null, { timeout: 8000 });
 expect((await since()).length === 0, '« الصوت » off: the countdown and the take-off are silent');
-expect(true, 'after the take-off the lesson starts: the robot is in its world');
+expect(await page.locator('[data-launch-kit]').count() === 0 && await page.evaluate(() => window.__world.getState().phase) === 'play', 'after the take-off the lesson starts: the launch is gone, the world plays');
 
 // ══ 3. played once: « واصل » enters the world; « عُدّتي » shows the kit, charged ══
 await page.reload({ waitUntil: 'networkidle' }); heard = 0;
@@ -208,8 +214,8 @@ expect((await page.textContent('[data-lk-quit-box]')).includes('تخرج من ا
 await shot('quit'); await page.click('[data-lk-quit-no]');
 expect(await page.locator('[data-lk-quit-box]').count() === 0 && await page.locator('[data-lk-question]').count() === 1 && !(await page.locator('[data-lk-done]').isDisabled()), '« أواصل » keeps the question and what was written');
 for (let i = 0; i < 4; i += 1) { if (i > 0) await fill(false); await hand(); await page.waitForTimeout(260); }
-await page.waitForSelector('[data-lk-example]');
-while (await page.locator('[data-lk-step-next]').count()) await page.click('[data-lk-step-next]');
+await page.waitForSelector(`[data-lk-example="${A}"]`);
+{ const c = await cur(); expect(c.kind === 'example' && c.item === A && c.level === 1, 'the workshop: the core tool at « نبدأ منها », at the easy level'); for (let i = 1; i < c.ex.steps.length; i += 1) await page.click('[data-lk-step-next]'); expect(await page.locator('[data-lk-step]').count() === c.ex.steps.length && await page.locator('[data-lk-try]').count() === 1, `its worked example revealed step by step (${c.ex.steps.length} steps)`); }
 await page.click('[data-lk-try]'); await page.waitForSelector('[data-lk-qphase="workshop"]');
 for (let i = 0; i < 2; i += 1) { await fill(false); await hand(); await page.waitForTimeout(260); }
 await page.waitForSelector('[data-lk-result]');
@@ -246,7 +252,9 @@ const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
 if (PHONE) {
   // a phone opens only the lessons designed for it: the earlier lesson is not a dead end, it is named with where to read it whole
   expect(await page.locator('[data-lk-lesson]').count() === 0 && (await page.textContent('[data-lk-lesson-computer]')).includes('الحاسوب'), 'on a phone « الدرس كاملًا » is not a link to a closed page: it says « على الحاسوب »');
-  await page.click('[data-lk-close]'); if (await page.locator('[data-lk-quit-yes]').count()) await page.click('[data-lk-quit-yes]');
+  // on the result screen the ✕ closes at once: « تخرج من الشحن؟ » is asked only during a question or a capsule (`LaunchKit.jsx › askClose`)
+  await page.click('[data-lk-close]');
+  expect(await page.locator('[data-lk-quit-box]').count() === 0, 'the ✕ of the result screen closes without asking');
   await page.waitForSelector('[data-di-start]');
 } else {
   await page.click('[data-lk-lesson]'); await page.waitForURL(/qisma-iqlidiya-baqi/); await page.waitForSelector('[data-return-to-lesson]');

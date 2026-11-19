@@ -17,13 +17,9 @@ import { useEffect, useRef, useState } from 'react';
 import MathText from '../../components/MathText';
 import { peelOf, fitsRow, judgePeelClaim, checkProofOrder, refuteCard } from './inquiry';
 import { Span, Calc, restTex } from './InquiryCombine';
+import { INQUIRY_TEXT } from './strings';
+import { FAST, expose, X0, SPAN } from './inquiryParts';
 
-const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
-const expose = (state) => {
-  if (import.meta.env.DEV) window.__inquiry = state;
-};
-const X0 = 40;
-const SPAN = 920;
 const mark = (v) => (v === true ? '✓' : v === false ? '✗' : '؟');
 
 // ───────────────────────── peel ─────────────────────────
@@ -342,7 +338,11 @@ export function Letters({ spec, play, onDone }) {
   const [refuted, setRefuted] = useState([]);
   const [said, setSaid] = useState(null); // the world's answer to the last card: { id, kind, text }
   const v = samples[si];
-  const hidden = Boolean(v.hide);
+  // the □ he presses: a sample whose quotient is not a natural number cannot be asked — it is shown like a hidden one
+  // (the world moves on), never a row of chips with no right one
+  const quotient = N.value(v) / N.by(v);
+  const unaskable = !v.hide && !(Number.isInteger(quotient) && quotient >= 1);
+  const hidden = Boolean(v.hide) || unaskable;
   const mine = lines.find((l) => l.si === si);
   const last = lines.filter((l) => l.si < si).at(-1);
   expose({ kind: 'letters', stage, si, hidden, lines, placed, tries, refuted, said, want: spec.order });
@@ -375,7 +375,14 @@ export function Letters({ spec, play, onDone }) {
       play('crumble');
       setTries(tries + 1);
       if (!refuted.includes(id)) setRefuted([...refuted, id]);
-      setSaid({ id, kind: 'false', text: card.why(refuteCard(card, samples)) });
+      // the world answers with the sample where the line is false; a false line no sample refutes (a lesson's data that
+      // let one through) is answered by where it stands — it never crashes and never says « wrong »
+      const where = refuteCard(card, samples);
+      setSaid({
+        id,
+        kind: 'false',
+        text: where && card.why ? card.why(where) : (T.unrefuted ?? INQUIRY_TEXT.unrefuted)(card),
+      });
       return;
     }
     const ord = checkProofOrder(cards, [...placed, id], statement.gives ?? []);
@@ -393,7 +400,8 @@ export function Letters({ spec, play, onDone }) {
       setStage('proved');
     } else play('paper');
   };
-  const max = N.max ?? 20;
+  // the chips reach the sample's quotient even when it is past `max` (never a row with no right chip)
+  const max = Math.max(N.max ?? 20, hidden ? 0 : quotient);
 
   if (stage === 'numbers')
     return (
@@ -419,15 +427,17 @@ export function Letters({ spec, play, onDone }) {
         </div>
         <p className="iq-fact" data-iq-fact>
           <MathText>
-            {hidden
-              ? T.hidden(v, last ? samples[last.si] : null, last?.q ?? null)
-              : mine
-                ? T.numbersOk(v, mine.q)
-                : miss != null
-                  ? T.numbersMiss(v, miss)
-                  : last
-                    ? `${T.carry(v, samples[last.si], last.q)} ${T.numbersAsk(v)}`
-                    : T.numbersAsk(v)}
+            {unaskable
+              ? (T.noWhole ?? INQUIRY_TEXT.noWhole)(v, N.value(v), N.by(v))
+              : hidden
+                ? T.hidden(v, last ? samples[last.si] : null, last?.q ?? null)
+                : mine
+                  ? T.numbersOk(v, mine.q)
+                  : miss != null
+                    ? T.numbersMiss(v, miss)
+                    : last
+                      ? `${T.carry(v, samples[last.si], last.q)} ${T.numbersAsk(v)}`
+                      : T.numbersAsk(v)}
           </MathText>
         </p>
         <div className="iq-actions">

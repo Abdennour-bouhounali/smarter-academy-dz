@@ -631,6 +631,677 @@
   },
   {
    "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 7,
+    "lo": 14,
+    "hi": 15
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 84,
+    "b": 7,
+    "lo": 12,
+    "hi": 13
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 5,
+    "b": 9,
+    "lo": 0,
+    "hi": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 9,
+    "b": 9,
+    "lo": 1,
+    "hi": 2
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 0,
+    "b": 4,
+    "lo": 0,
+    "hi": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 84,
+    "b": 7,
+    "lo": 11,
+    "hi": 12
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 7,
+    "lo": 14,
+    "hi": 14
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 7,
+    "lo": 13,
+    "hi": 15
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 7,
+    "lo": 15,
+    "hi": 16
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 0,
+    "lo": 14,
+    "hi": 15
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": 100,
+    "b": 7,
+    "lo": 14.5,
+    "hi": 15.5
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "bracket",
+    "a": -3,
+    "b": 7,
+    "lo": -1,
+    "hi": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 7,
+    "full": 14,
+    "need": 15
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 84,
+    "b": 7,
+    "full": 12,
+    "need": 12
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 5,
+    "b": 9,
+    "full": 0,
+    "need": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 9,
+    "b": 9,
+    "full": 1,
+    "need": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 0,
+    "b": 6,
+    "full": 0,
+    "need": 0
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 84,
+    "b": 7,
+    "full": 12,
+    "need": 13
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 7,
+    "full": 15,
+    "need": 15
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 7,
+    "full": 14,
+    "need": 14
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 7,
+    "full": 15,
+    "need": 14
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 0,
+    "full": 0,
+    "need": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fullNeeded",
+    "a": 100,
+    "b": 7,
+    "full": "14",
+    "need": 15
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": 36,
+    "g": 12
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 35,
+    "b": 12,
+    "g": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 45,
+    "b": 45,
+    "g": 45
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 18,
+    "b": 0,
+    "g": 18
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 9,
+    "b": 72,
+    "g": 9
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": 36,
+    "g": 6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": 36,
+    "g": 1
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": 36,
+    "g": 24
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 0,
+    "b": 0,
+    "g": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 18,
+    "b": 0,
+    "g": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": -36,
+    "g": 12
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "pgcd",
+    "a": 84,
+    "b": 36
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 35,
+    "b": 12,
+    "says": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 84,
+    "b": 36,
+    "says": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 1,
+    "b": 1,
+    "says": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 7,
+    "b": 7,
+    "says": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 35,
+    "b": 12,
+    "says": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 84,
+    "b": 36,
+    "says": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 0,
+    "b": 1,
+    "says": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 35,
+    "b": 12,
+    "says": 1
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 35,
+    "b": 12
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "coprime",
+    "a": 3.5,
+    "b": 12,
+    "says": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 6
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 12
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 35,
+    "b": 12,
+    "d": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 45,
+    "b": 45,
+    "d": 45
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 7
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 9
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 0,
+    "b": 36,
+    "d": 6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": -6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 84,
+    "b": 36,
+    "d": 1.5
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 7,
+    "q": 3
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 7,
+    "q": 3,
+    "reduced": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 14,
+    "q": 6,
+    "reduced": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 5,
+    "b": 7,
+    "p": 5,
+    "q": 7
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 0,
+    "b": 5,
+    "p": 0,
+    "q": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 45,
+    "b": 45,
+    "p": 1,
+    "q": 1
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 14,
+    "q": 6
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 14,
+    "q": 6,
+    "reduced": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 7,
+    "q": 4
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 7,
+    "q": 4,
+    "reduced": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 0,
+    "p": 7,
+    "q": 3
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 0,
+    "b": 0,
+    "p": 0,
+    "q": 0,
+    "reduced": false
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": 7,
+    "q": 0
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 84,
+    "b": 36,
+    "p": -7,
+    "q": -3
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "fraction",
+    "a": 2000000,
+    "b": 1000000,
+    "p": 2,
+    "q": 1
+   },
+   "ok": false
+  },
+  {
+   "claim": {
     "kind": "unknown",
     "a": 1
    },

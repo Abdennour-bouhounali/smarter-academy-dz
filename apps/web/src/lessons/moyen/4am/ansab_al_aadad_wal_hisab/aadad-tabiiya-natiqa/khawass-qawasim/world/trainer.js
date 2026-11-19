@@ -39,43 +39,47 @@ const restForm = (a, b, d) => ({
   ],
 });
 
-/** The three proofs of the lesson: what is given, what is asked, how it is written. Letters only. */
+/**
+ * The three proofs of the lesson: what is given, what is asked, how it is written. Letters only — the letters of the
+ * proof he assembled in the world and of its tablet: a = d × k, b = d × k′ (never q: the quotient of a division); `n`
+ * is the number a is multiplied by. `factor` is the natural number the goal is d times.
+ */
 export const PROOFS = {
   sum: {
     cond: 'd يقسم a و b',
-    given: 'a = d × p ، b = d × q',
-    givenTex: 'a = d \\times p \\quad b = d \\times q',
+    given: 'a = d × k ، b = d × k′',
+    givenTex: "a = d \\times k \\quad b = d \\times k'",
     goal: 'a + b',
     goalTex: 'a + b',
-    k: 'p + q',
-    kTex: 'p + q',
-    right: 'd × (p + q)',
-    rightTex: 'd \\times (p + q)',
-    foils: ['d × p × q', 'd + (p + q)'],
+    factor: 'k + k′',
+    factorTex: "k + k'",
+    right: 'd × (k + k′)',
+    rightTex: "d \\times (k + k')",
+    foils: ['d × k × k′', 'd + (k + k′)'],
   },
   diff: {
     cond: 'd يقسم a و b',
-    given: 'a = d × p ، b = d × q',
-    givenTex: 'a = d \\times p \\quad b = d \\times q',
+    given: 'a = d × k ، b = d × k′',
+    givenTex: "a = d \\times k \\quad b = d \\times k'",
     goal: 'a − b',
     goalTex: 'a - b',
-    k: 'p − q',
-    kTex: 'p - q',
-    right: 'd × (p − q)',
-    rightTex: 'd \\times (p - q)',
-    foils: ['d × (p + q)', 'd − (p − q)'],
+    factor: 'k − k′',
+    factorTex: "k - k'",
+    right: 'd × (k − k′)',
+    rightTex: "d \\times (k - k')",
+    foils: ['d × (k + k′)', 'd − (k − k′)'],
   },
   mult: {
     cond: 'd يقسم a',
-    given: 'a = d × p',
-    givenTex: 'a = d \\times p',
+    given: 'a = d × k',
+    givenTex: 'a = d \\times k',
     goal: 'n × a',
     goalTex: 'n \\times a',
-    k: 'n × p',
-    kTex: 'n \\times p',
-    right: 'd × (n × p)',
-    rightTex: 'd \\times (n \\times p)',
-    foils: ['n × (d + p)', 'd + n × p'],
+    factor: 'n × k',
+    factorTex: 'n \\times k',
+    right: 'd × (n × k)',
+    rightTex: 'd \\times (n \\times k)',
+    foils: ['n × (d + k)', 'd + n × k'],
   },
 };
 const proofPrompt = (target) =>
@@ -121,8 +125,8 @@ const proofForm = (rand, P) => ({
         {
           choice: 'nat',
           options: shuffle(rand, [
-            { value: 'nat', text: `${P.k} عدد طبيعي` },
-            { value: 'big', text: `${P.k} أكبر من d` },
+            { value: 'nat', text: `${P.factor} عدد طبيعي` },
+            { value: 'big', text: `${P.factor} أكبر من d` },
             { value: 'ex', text: 'تحقّقنا على مثال' },
           ]),
         },
@@ -167,7 +171,7 @@ const Q = {
           [
             `${d} يقسم ${x + y} و $${x + y} = ${x} + ${y}$، إذن ${d} يقسم ${x}`,
             false,
-            `$${x} = ${d} \\times ${Math.floor(x / d)} + ${s}$: الباقي ${s}. القاسم يقسم المجموع دون أن يقسم أجزاءه.`,
+            `$${x} = ${d} \\times ${Math.floor(x / d)} + ${s}$: الباقي ${s}. قد يقسم عددٌ مجموعًا دون أن يقسم حدَّيه.`,
             K.jam,
           ],
         ]);
@@ -215,7 +219,7 @@ const Q = {
           [
             `${d} يقسم ${b}، إذن ${d} يقسم باقي قسمة ${b * q + r2} على ${b}`,
             false,
-            `$${b * q + r2} = ${b} \\times ${q} + ${r2}$، و ${d} لا يقسم ${r2}: يجب أن يقسم ${d} العددين معًا.`,
+            `$${b * q + r2} = ${b} \\times ${q} + ${r2}$، و ${d} لا يقسم ${r2}: الخاصية تشترط أن يقسم ${d} العددين معًا.`,
             K.baqi,
           ],
         ]);
@@ -235,12 +239,13 @@ const Q = {
           [
             `لإثبات أنّ ${d} يقسم ${m} يكفي أن يكون ${m} أكبر من ${d}`,
             false,
-            `يجب إيجاد عدد طبيعي $k$ حيث $${m} = ${d} \\times k$، لكنّ $${m} = ${d} \\times ${Math.floor(m / d)} + ${m % d}$.`,
+            `المطلوب عدد طبيعي $k$ حيث $${m} = ${d} \\times k$، ولا يوجد: $${m} = ${d} \\times ${Math.floor(m / d)} + ${m % d}$.`,
             K.burhan,
           ],
         ]);
       },
     };
+    // `why` opens on a formula or on a noun, never on a verb: the right reason reads « لأنّ » + `why`
     const [statement, truth, why, key] = make[flavour]();
     return {
       format,
@@ -472,12 +477,12 @@ export function check(q, v) {
     }
     case 'proof': {
       const P = PROOFS[q.target];
-      const fix = `نفرض أنّ ${P.cond}: $${P.givenTex}$. إذن $${P.goalTex} = ${P.rightTex}$، و $${P.kTex}$ عدد طبيعي: $d$ يقسم $${P.goalTex}$.`;
+      const fix = `نفرض أنّ ${P.cond}: $${P.givenTex}$. إذن $${P.goalTex} = ${P.rightTex}$، و $${P.factorTex}$ عدد طبيعي: $d$ يقسم $${P.goalTex}$.`;
       if (v?.start !== 'cond')
         return { ok: false, hint: 'في البرهان نبدأ من الشرط (المعطيات)، لا من المطلوب ولا من مثال.', fix };
       if (v?.k !== 'right') return { ok: false, hint: 'عوّض كلّ حرف بكتابته، ثمّ أخرج $d$ عاملًا مشتركًا.', fix };
       if (v?.nat !== 'nat')
-        return { ok: false, hint: 'المطلوب عدد طبيعي $k$ حيث $m = d \\times k$: ماذا يجب أن يكون $k$؟', fix };
+        return { ok: false, hint: 'الجداء وحده لا يكفي: ماذا يجب أن يكون العدد المضروب في $d$؟', fix };
       return { ok: true, fix };
     }
     default:

@@ -1,18 +1,8 @@
 /**
- * الدرس 2 — قواسم عدد طبيعي
- * Manuel 4AM, unité 1 : activité 2 (p. 8), معارف 1 (p. 10), طريقة « تعيين قواسم عدد طبيعي » (p. 11),
- * exercices 3, 4, 6, 7, 8, 9, 11 (p. 14). Source : docs/sources/4am/unit1/extraction.json.
- * puis trois « مسائل » de la plateforme (modules 4–6).
- *
- * CONCEPTION (LESSON_DEVELOPMENT_GUIDE §4ter, rétrofit du 2026-10-15) — le manuel fixe les الكفاءات, pas le parcours.
- *   Entrée retenue : la bibliothèque, des livres rangés en rayons (labo `factor-pairs`, niveau مبتدئ 24 puis متقدم 60) — la main
- *   allonge le rayon et seul un rectangle PARFAIT est gardé : chaque rectangle livre deux diviseurs, et la règle d'arrêt se VIT
- *   (le rectangle se couche). C'est elle qui remplace le tableau à compléter de l'activité 2 ; rejetée : l'activité du manuel telle
- *   quelle (écrire 60 = a × b de tête dans un tableau, puis lire les diviseurs) — c'est un formulaire, la main ne décide rien ;
- *   le nombre 60, les deux sous-questions et 48 / 17 restent dans le labo (niveau متقدم) et les étapes 2–3.
- *   Ordre des idées : un rectangle parfait donne DEUX diviseurs (brique APRÈS la réponse) → tous les diviseurs de 60 → 48 et 17 →
- *   module 2 (105) : un diviseur reçu « gratuitement » comme partenaire → jusqu'où tester AVANT tout calcul → la méthode du
- *   manuel lue ligne à ligne (après) → les règles de divisibilité qui accélèrent (brique après).
+ * الدرس 2 — قواسم عدد طبيعي (4AM, item du réseau 4am.m1.r02).
+ * A v2 lesson since 2026-11-18: the student plays it in the world « أرخبيل القواسم » (`lesson.pack.js`, `world/`), built
+ * from scratch on the platform's own numbers; its module pages and mission player are deleted. The textbook only fixed
+ * its الكفاءات (LESSON_DEVELOPMENT_GUIDE §4ter); the coverage map of the textbook stays docs/sources/4am/unit1/extraction.json.
  */
 export const LESSON_BASE_PATH = '/courses/moyen/4am/ansab_al_aadad_wal_hisab/qawasim-adad-tabii';
 
@@ -37,7 +27,6 @@ export const LESSON_CONFIG = {
   masteryThreshold: 0.8,
   emoji: '🧮',
   estimatedDurationMin: 50,
-  textbookRef: { unit: 1, activity: 2, pages: '8, 10, 11, 14' },
   skills: [
     'كتابة عدد طبيعي على شكل جداء عاملين بكل الأشكال الممكنة',
     'استنتاج كل قواسم عدد طبيعي من كتاباته على شكل جداء عاملين',
@@ -47,24 +36,19 @@ export const LESSON_CONFIG = {
   teachingScope: {
     include: [
       'كتابة عدد على شكل جداء عاملين واستنتاج قواسمه',
-      'طريقة الكتاب: اختبار الأعداد التي مربعها ≤ العدد، وقواعد قابلية القسمة',
+      'الطريقة: اختبار الأعداد التي مربعها ≤ العدد، وقواعد قابلية القسمة',
     ],
     exclude: ['التحليل إلى عوامل أولية (موضوع رسمي آخر)', 'القواسم المشتركة (الدرس 4)'],
   },
+  // The lesson's progressive map is the world's « خريطة المعارف »: the `KNOWLEDGE_GRAPH` of the knowledge its pack declares
+  // (`lesson.pack.js › knowledge`) — the only one; its home mounts no other (LESSON_V2.md §2).
   knowledgeMap: true,
-  // La carte PROGRESSIVE (knowledgeGraph.js) — KNOWLEDGE_MAP.md, Part A.
   knowledgeMapMode: 'progressive',
-  // La carte TOUTE OUVERTE (règle des pilotes, propriétaire 2026-11-08) : toutes les connaissances dès le début, sans verrou par محور.
-  knowledgeMapOpen: true,
   // Acquis du درس 1 (rappelés par une brique « rappel ») et des années antérieures.
   priorKnowledge: ['qasim-jidaa', 'qawaid-qabiliyat-al-qisma'],
   resources: [
-    // Workspace à deux niveaux (module 1). Le contexte du manuel — le
-    // rectangle de points — est GARDÉ aux deux niveaux : il est déjà
-    // manipulable et le dessin EST l'argument (n = d × e ⇔ rectangle
-    // parfait). Forcer un thème ici rendrait la mathématique moins claire
-    // (brief §11). Ce qui change est la DEMANDE : 24 se lit d'un regard,
-    // 60 exige la règle d'arrêt.
+    // DATA only (exported to the DB; `sourceElementIds` are read by scripts/check-textbook-coverage.mjs): the
+    // `factor-pairs` labs below were the old module pages' instruments; no page of this lesson mounts them any more.
     {
       kind: 'manipulation',
       code: 'factor-pairs-24',
@@ -145,7 +129,7 @@ export const LESSON_CONFIG = {
       slug: 'astaidd',
       path: `${LESSON_BASE_PATH}/astaidd`,
       title: 'أستعدّ',
-      desc: 'ست عبارات: صحيح أم خاطئ؟ معنى «قاسم» وقواعد قابلية القسمة.',
+      desc: 'ما يلزم قبل الدرس، تقيسه « عُدّة الانطلاق »: معنى «قاسم» وقواعد قابلية القسمة.',
       stage: 'prerequisite_check',
       color: 'teal',
       style: 'diagnostic',
@@ -158,8 +142,8 @@ export const LESSON_CONFIG = {
       number: 1,
       slug: 'al-adad-60',
       path: `${LESSON_BASE_PATH}/al-adad-60`,
-      title: 'نشاط 2 — قواسم العدد 60',
-      desc: 'اكتب 60 على شكل جداء عاملين بكل الأشكال الممكنة، واستنتج قواسمه.',
+      title: 'قواسم عدد طبيعي: جداءات عاملين',
+      desc: 'كل كتابة a = d × e تعطي قاسمين للعدد a.',
       stage: 'trigger',
       teachesLearningPointIds: ['4am_qawasim-adad-tabii_P1', '4am_qawasim-adad-tabii_P2'],
       color: 'indigo',
@@ -173,8 +157,8 @@ export const LESSON_CONFIG = {
       number: 2,
       slug: 'tariqa-105',
       path: `${LESSON_BASE_PATH}/tariqa-105`,
-      title: 'طريقة — قواسم العدد 105',
-      desc: 'إلى أي عدد نختبر؟ الطريقة المنظّمة مع 48 ثم 17 ثم 105.',
+      title: 'الطريقة المنظّمة وقواعد قابلية القسمة',
+      desc: 'إلى أيّ عدد نختبر؟ نتوقّف حين يتجاوز مربّع القاسم العدد، وقواعد قابلية القسمة تُسرّع الاختبار.',
       stage: 'discovery',
       teachesLearningPointIds: ['4am_qawasim-adad-tabii_P3', '4am_qawasim-adad-tabii_P4'],
       color: 'violet',
@@ -188,8 +172,8 @@ export const LESSON_CONFIG = {
       number: 3,
       slug: 'awazzif',
       path: `${LESSON_BASE_PATH}/awazzif`,
-      title: 'أوظّف تعلّماتي',
-      desc: 'سبعة تمارين من السهل إلى الصعب.',
+      title: 'أتمرّن',
+      desc: 'تمارين على تعيين قواسم عدد طبيعي.',
       stage: 'practice_lab',
       teachesLearningPointIds: ['4am_qawasim-adad-tabii_P2', '4am_qawasim-adad-tabii_P4'],
       color: 'amber',
@@ -206,8 +190,8 @@ export const LESSON_CONFIG = {
       number: 4,
       slug: 'masala-1',
       path: `${LESSON_BASE_PATH}/masala-1`,
-      title: 'مسألة 1 — جدار المكتبة',
-      desc: 'مسألة الدرس: 96 كتابًا في صفوف متساوية ونوعان من الرفوف. حلّ كامل خطوة بخطوة.',
+      title: 'مسألة الدرس',
+      desc: 'وضعية تُحلّ بقواسم عدد طبيعي.',
       stage: 'practice_lab',
       track: 'problem',
       teachesLearningPointIds: [
@@ -227,8 +211,8 @@ export const LESSON_CONFIG = {
       number: 5,
       slug: 'masala-2',
       path: `${LESSON_BASE_PATH}/masala-2`,
-      title: 'مسألة 2 — المخيّم الكشفي',
-      desc: '135 كشّافًا في مجموعات متساوية: كم مجموعة؟ وكم يدفع كل كشّاف؟',
+      title: 'مسألة 2',
+      desc: 'وضعية أخرى تُحسب عند إتمام الدرس.',
       stage: 'practice_lab',
       track: 'problem',
       teachesLearningPointIds: [
@@ -248,8 +232,8 @@ export const LESSON_CONFIG = {
       number: 6,
       slug: 'masala-3',
       path: `${LESSON_BASE_PATH}/masala-3`,
-      title: 'مسألة 3 — حلوى العرس',
-      desc: '90 حبّة مقروط في علب متماثلة، ثم حبّة مكسورة: هل تبقى العلب ممكنة؟',
+      title: 'مسألة 3',
+      desc: 'وضعية ثالثة تُحسب عند إتمام الدرس.',
       stage: 'practice_lab',
       track: 'problem',
       teachesLearningPointIds: [
@@ -269,8 +253,8 @@ export const LESSON_CONFIG = {
       number: 7,
       slug: 'itqan',
       path: `${LESSON_BASE_PATH}/itqan`,
-      title: 'إختبار أولي',
-      desc: 'ست أسئلة تُقيّم الكفاءات الأربع.',
+      title: 'التقويم',
+      desc: 'تقويم الكفاءات: أسئلة على منوال الامتحان.',
       stage: 'evaluation',
       color: 'slate',
       style: 'boss',

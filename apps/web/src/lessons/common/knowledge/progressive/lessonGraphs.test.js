@@ -16,6 +16,11 @@ const configs = import.meta.glob('../../../**/lesson.config.js', { eager: true }
 const knowledgeMods = import.meta.glob('../../../**/knowledge.jsx', { eager: true });
 const graphMods = import.meta.glob('../../../**/knowledgeGraph.js', { eager: true });
 const knowledgeSources = import.meta.glob('../../../**/knowledge.jsx', { eager: true, query: '?raw', import: 'default' });
+// A v2 lesson whose old root knowledge.jsx / knowledgeGraph.js were deleted (LESSON_V2.md §2): its ONE knowledge is the
+// file its pack names, `world/knowledge.js` — the world's « خريطة المعارف », drawn by the world's own page at its own
+// `positions` (not by this renderer's layout) and checked by the lesson's `world/journey.test.js`. It is not held to the
+// invariants below, which are those of the lesson page's 🧠 map; only its presence is checked here.
+const worldKnowledge = import.meta.glob('../../../**/world/knowledge.js', { eager: true });
 // Les SOURCES de la leçon (manuel, exercices, محاور), telles qu'écrites.
 // A v2 lesson (LESSON_V2.md §2) has no module page any more: its text is its world and its board.
 const lessonSources = import.meta.glob(
@@ -29,9 +34,15 @@ const lessonSources = import.meta.glob(
 const KNOWN_UNGROUNDED = { 'qasim-adad-tabii': ['khata-amil'] };
 
 const dirOf = (path) => path.slice(0, path.lastIndexOf('/'));
+/** The lessons whose only knowledge is their world's (no root knowledge.jsx): { dir, id, knowledge }. */
+const WORLD_ONLY = Object.entries(worldKnowledge)
+  .map(([path, mod]) => ({ dir: dirOf(dirOf(path)), mod }))
+  .filter(({ dir }) => !knowledgeMods[`${dir}/knowledge.jsx`])
+  .map(({ dir, mod }) => ({ dir, id: configs[`${dir}/lesson.config.js`]?.LESSON_CONFIG?.id, knowledge: mod }));
 const LESSONS = Object.entries(configs)
   .map(([path, mod]) => ({ dir: dirOf(path), config: mod.LESSON_CONFIG }))
   .filter(({ config }) => config?.knowledgeMap === true)
+  .filter(({ dir }) => !WORLD_ONLY.some((l) => l.dir === dir))
   .map(({ dir, config }) => ({
     id: config.id,
     config,
@@ -64,6 +75,16 @@ const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 /** « PGCD(28 ; 42) », « PGCD$(a ; b)$ », « \mathrm{PGCD}(8\ ;\ 88) » → [x, y] numériques, ou null. */
 const PGCD_RE = /PGCD\s*\(\s*(\d+)\s*;\s*(\d+)\s*\)/g;
 const plain = (t) => t.replace(/\\mathrm\{PGCD\}/g, 'PGCD').replace(/\$/g, '').replace(/\\ /g, ' ').replace(/\\,/g, '');
+
+describe('a v2 lesson whose only knowledge is its world’s', () => {
+  it('the four lessons whose old map was deleted are found', () => {
+    expect(WORLD_ONLY.length).toBeGreaterThanOrEqual(4);
+  });
+  it.each(WORLD_ONLY.map((l) => [l.id, l]))('%s: its world/knowledge.js holds the map and the sheets', (_id, l) => {
+    expect(l.knowledge.KNOWLEDGE_GRAPH?.nodes?.length).toBeGreaterThan(0);
+    expect(Object.keys(l.knowledge.LESSON_KNOWLEDGE?.modules ?? {}).length).toBeGreaterThan(0);
+  });
+});
 
 describe('every lesson is migrated to the progressive map', () => {
   it('finds the lessons that declare a knowledge map', () => {

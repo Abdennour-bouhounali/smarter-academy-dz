@@ -194,11 +194,20 @@ export function coreDependentsOf(itemId) {
  * les « core » d'abord, puis les « support » ; à poids égal l'année la plus récente d'abord (le pas juste en dessous),
  * puis l'ordre du programme. Au plus `max` (4 : cinq minutes). Un lien non classé compte comme « core » en attendant
  * (une année non classée ne perd aucun outil).
+ * Un outil est une الكفاءة ANTÉRIEURE (2026-11-18) : un item dont la leçon d'accueil vient APRÈS la leçon (même année,
+ * `order` plus grand) n'est jamais un outil — un lancement ne mesure pas ce que l'élève n'a pas encore appris. Cas réel :
+ * « القسمة الإقليدية وحصر حاصل القسمة » (2AM, ordre 5) partage `2am.m1.r06` avec « الكسر: نسبة وحاصل قسمة » (ordre 6), et
+ * `2am.m1.r06` « requires » `2am.m1.r05` (le lien va de r05 à r06), un item dont la leçon d'accueil est la leçon 6 ; sans
+ * cette règle, la leçon 5 mesurait un outil de la leçon 6.
  *
  * @returns {Array<{ id, grade, segment, textAr, via, weight, lesson: {code, grade, titleAr, status} | null }>}
  */
 export function toolsForLesson(code, { max = 4 } = {}) {
-  const flat = reviewLinksForLesson(code).flatMap((group) => group.items.map((item) => ({ ...item, lesson: group.lesson })));
+  const at = LESSONS.indexOf(lessonByCode.get(code));
+  const earlier = (lesson) => !lesson || LESSONS.indexOf(lessonByCode.get(lesson.code)) < at;
+  const flat = reviewLinksForLesson(code)
+    .filter((group) => earlier(group.lesson))
+    .flatMap((group) => group.items.map((item) => ({ ...item, lesson: group.lesson })));
   const heavy = (t) => (t.weight === 'support' ? 1 : 0);
   return flat.sort((a, b) => heavy(a) - heavy(b) || itemRankGrade(b.id) - itemRankGrade(a.id) || itemRank(a.id) - itemRank(b.id)).slice(0, max);
 }

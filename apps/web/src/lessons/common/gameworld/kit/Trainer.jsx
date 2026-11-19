@@ -16,6 +16,7 @@ import { useLesson } from './LessonContext';
 import { sessionStars, SESSION } from './trainer';
 import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
 import { twin } from './longDivision';
+import { guardEvidence } from './evidence';
 
 /** The statement of an exam question with its data underlined — the first gesture of the method: « أقرأ وأسطّر المعطيات ». */
 const Marked = ({ text }) =>
@@ -109,7 +110,8 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
     if (fb?.final) return;
     const res = check(q, value);
     // الكفاءات: only the FIRST try of an exam-format question, with no help opened before (evidence.js) — right or wrong
-    onEvidence?.(evidenceOf(q, value, { firstTry: tries === 0, helped: helped.current }));
+    // …and never a TRUE claim for an answer the lesson's check says is wrong (the kit's safety net, evidence.js)
+    onEvidence?.(guardEvidence(evidenceOf(q, value, { firstTry: tries === 0, helped: helped.current }), res.ok));
     const rec = log.current[i] ?? (log.current[i] = { attempts: [], fix: res.fix, tip: null });
     rec.attempts.push({ label: answerLabel(q, value), ok: res.ok });
     rec.tip = res.tip ?? null;

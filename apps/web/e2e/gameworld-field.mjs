@@ -4,6 +4,7 @@
 // Run (dev server up): node apps/web/e2e/gameworld-field.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
+import { tinyText } from './lib/walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -23,7 +24,9 @@ async function noScroll(page, where) {
   const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
     // a formula is DRAWN: no dollar sign, no backslash command may be read on screen (text outside the rendered formulas)
-    { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('.katex, script, style')) continue; if (/\$|\\(times|div|frac|dfrac|le|ge|ne|sqrt|cdot)\b/.test(t.nodeValue) && p.getClientRects().length) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); } }
+    // (any backslash command, as lib/walk.mjs › readScreen), and money is « دج » only — never « DA », €, USD or « د.ج »
+    { let text = ''; const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('script, style, noscript, .katex-mathml, title') || !p.getClientRects().length) continue; if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(t.nodeValue)) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); const cs = getComputedStyle(p); if (cs.visibility !== 'hidden' && Number(cs.opacity) !== 0) text += ` ${t.nodeValue}`; }
+      if (/(?<![A-Za-z])DA(?![A-Za-z])|€|\bUSD\b|د\.ج/.test(text)) bad.push('money not in « دج » (DA, €, USD or د.ج on screen)'); }
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
@@ -46,6 +49,8 @@ async function noScroll(page, where) {
   // a « cut » that is only a fit in progress gets a moment — a real cut stays and fails
   for (let i = 0; i < 5 && res.bad.length && res.bad.every((b) => b.startsWith('cut:')); i += 1) { await page.waitForTimeout(300); res = await measure(); }
   for (const x of res.small) shrunk.set(x, where);
+  // the 12 px floor (GAME_WORLD.md « 12 px floor »), at every size: the shared rule of lib/walk.mjs › tinyText
+  { const tiny = await tinyText(page); if (tiny.length) res.bad.push(`text under 12 px: ${tiny.slice(0, 8).join(' | ')}${tiny.length > 8 ? ` (+${tiny.length - 8})` : ''}`); }
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
 /** Picks a card on the full map. On a phone the map steps aside while a memo, a memory test or a training is open: the tab « البطاقة » brings it back. */
@@ -81,7 +86,10 @@ async function student(id, seed = {}) {
   /** Answers the current step: `value` = an option, two options, or { slot: number }. */
   const answer = async (value) => {
     if (Array.isArray(value)) { for (const v of value) await page.click(`[data-di-opt="${v}"]`); await page.click('[data-di-case-check]'); }
-    else if (typeof value === 'object') { if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]'); for (const [k, v] of Object.entries(value)) await page.fill(`[data-di-slot="${k}"]`, String(v)); await page.click('[data-di-case-check]'); }
+    // a number step is WRITTEN work: its boxes sit behind the paper gate « كتبتُ على ورقتي » (DivisorIsles.jsx › DepotHud: a
+    // PaperGate keyed by order and step, so every new step comes with its gate closed). Every object answer of this walk is the
+    // first on its step, or the retry after the guidance card of § 3 — whose gate the walk asserts closed again just before.
+    else if (typeof value === 'object') { const g = await page.locator('[data-di-pgate-go]').count(); expect(g === 1 && await page.locator('[data-di-slot]').count() === 0, `a calculation step of the depot opens behind its paper gate, the boxes closed (gate found ${g})`); await page.click('[data-di-pgate-go]'); for (const [k, v] of Object.entries(value)) await page.fill(`[data-di-slot="${k}"]`, String(v)); await page.click('[data-di-case-check]'); }
     else await page.click(`[data-di-opt="${value}"]`);
     await settle();
   };
@@ -217,7 +225,10 @@ await a.page.click('[data-di-case-retry]'); await a.settle();
 expect(await a.page.evaluate((q) => window.__world.depot.tiles.length === q, o.q) && (await a.page.textContent('[data-di-facts]')).includes(String(o.total)), 'after a mistake and « try again », what was built and what was found are still there');
 await a.page.waitForTimeout(400); await a.shot('tiling-facts');
 // the last step of the order: look while the boxes are on the floor, before the work is cleared for the next one
-if (await a.page.locator('[data-di-pgate-go]').count()) await a.page.click('[data-di-pgate-go]');
+// after a guidance card and « حاول مجدّدًا » the step's boxes are behind the paper gate again — as § 3 asserts after the first
+// retry of the day (« the answer boxes stay closed until the student says he wrote on his paper »)
+expect(await a.page.locator('[data-di-pgate-go]').count() === 1 && await a.page.locator('[data-di-slot]').count() === 0, 'after « try again » the boxes of the step wait behind the paper gate once more');
+await a.page.click('[data-di-pgate-go]');
 await a.page.fill('[data-di-slot="x"]', String(o.boxes)); await a.page.click('[data-di-case-check]');
 await a.page.evaluate(async () => { const g = window.__world; for (let i = 0; i < 2000; i += 1) { g.step(0.04); await null; await null; const e = g.getState().equation; if (e && e.mode === 'boxes' && !e.live && g.getState().depot.note) break; } });
 await a.page.waitForTimeout(500); await a.shot('tiling-boxes');
@@ -258,7 +269,11 @@ await a.page.click('[data-di-trail-card="qasim"]'); await a.page.waitForTimeout(
 expect(await a.page.locator('[data-di-jcard="qasim"]').count() === 1 && await a.page.locator('[data-di-go="baqi"]').count() === 1, 'the trail goes back to any card already found');
 // card after card to the end: a mystery card when there is one, otherwise a card that still hides something
 for (let i = 0; i < 40 && (await a.st()).know.found.length < 13; i += 1) {
-  if (await a.page.locator('[data-di-mystery]').count()) await a.page.locator('[data-di-mystery]').first().click(); else await a.page.locator('[data-di-frontier], [data-di-go]').first().click();
+  // the journey offers a mystery card while one is left beside the card being read; otherwise a card already found that still
+  // hides a neighbour (`[data-di-frontier]`) or a way on (`[data-di-go]`) — one of the two must be there while cards are missing
+  const mysteries = await a.page.locator('[data-di-mystery]').count();
+  if (mysteries) await a.page.locator('[data-di-mystery]').first().click();
+  else { const ways = await a.page.locator('[data-di-frontier], [data-di-go]').count(); expect(ways > 0, `the journey (${(await a.st()).know.found.length} of 13 found) always offers a way on: a mystery card, or a card that still hides something`); await a.page.locator('[data-di-frontier], [data-di-go]').first().click(); }
   await a.page.waitForTimeout(120);
   if ((await a.st()).know.found.length === 8) { await a.page.waitForTimeout(700); await a.shot('journey-middle'); }
 }
@@ -288,8 +303,18 @@ expect((await a.st()).know.sealed.includes('qasim-baqi'), 'the right answers sea
 // ── « تدرّب » opens ON the card, inside the page: six questions, game format then exam format ──
 const tr = () => a.page.evaluate(() => ({ ...window.__trainer, dom: document.querySelector('[data-di-trainer]')?.dataset.diTrainer, fb: document.querySelector('[data-di-tr-fb]')?.dataset.diTrFb ?? null, fbText: document.querySelector('[data-di-tr-fb]')?.textContent ?? '' }));
 /** Answers the current question of the trainer with `v` (shape of solution()). */
-const reply = async (q, v) => {
-  if (await a.page.locator('[data-di-pgate-go]').count()) await a.page.click('[data-di-pgate-go]'); // « كتبتُ على ورقتي »
+/**
+ * `gate` — { open } for the question on screen: the paper gate « كتبتُ على ورقتي » (kit/Paper.jsx › PaperGate) closes the
+ * answer of EVERY exam-format question of the trainer (kit/Trainer.jsx) until it is passed once; the question stays mounted
+ * between two tries, so it does not come back for the second try; a game question has none.
+ */
+const reply = async (q, v, gate) => {
+  // Trainer.jsx › Question: a « tap » and a game-format true / false answer at once; every other question is a sheet whose
+  // boxes sit behind the gate (an exam true / false, and every form, whatever its format)
+  const want = !(q.kind === 'tap' || (q.kind === 'tf' && q.format !== 'exam')) && !gate.open;
+  const shown = await a.page.locator('[data-di-pgate-go]').count();
+  expect(shown === (want ? 1 : 0), `trainer « ${q.kind} » (${q.format}): the paper gate is ${want ? 'there' : 'absent'} (found ${shown})`);
+  if (want) { await a.page.click('[data-di-pgate-go]'); gate.open = true; }
   if (q.kind === 'tap') { await a.page.click(`[data-di-tr-opt="${v}"]`); return; }
   if (q.kind === 'tf') { await a.page.click(`[data-di-tr-tf="${v.truth}"]`); if (q.format === 'exam') { await a.page.click(`[data-di-tr-reason="${v.reason}"]`); await a.page.click('[data-di-tr-check]'); } return; }
   if (q.kind === 'complete') { await a.page.selectOption('[data-di-tr="phrase"]', v); await a.page.click('[data-di-tr-check]'); return; }
@@ -300,7 +325,7 @@ await knode(a.page, 'baqi'); await a.page.click('[data-di-tab="card"]'); await a
 expect(await a.page.locator('[data-di-know]').count() === 1 && await a.page.locator('[data-di-mapcard]').count() === 0, '« تدرّب على هذه البطاقة » opens the exercise INSIDE the knowledge page');
 const formats = [];
 for (let i = 0; i < 6; i += 1) {
-  const t = await tr(); formats.push(t.dom);
+  const t = await tr(); formats.push(t.dom); const gate = { open: false };
   if (i === 0) { await a.page.waitForTimeout(300); await a.shot('train-game'); expect(t.q.kind === 'tap' && t.q.wave.a <= 100, 'the first question is in the GAME format: gates to tap, small numbers'); }
   if (i === 3) {
     expect(await a.page.evaluate(() => window.__world.getState().paper === false && window.__world.audio.musicWanted === true), 'back to a game question: the paper mode is off and the music returns');
@@ -318,15 +343,15 @@ for (let i = 0; i < 6; i += 1) {
     expect(await a.page.locator('.di-sheet__q u').count() >= 2 && await a.page.locator('.di-sheet [data-di-pgate]').count() === 1, 'the data of the statement are underlined, and the sheet asks for the pen before the boxes open');
     expect(await a.page.evaluate(() => { const pg = document.querySelector('[data-di-know]'); const b = document.querySelector('.di-kpanel__body'); return pg.scrollHeight <= pg.clientHeight + 1 && b.scrollHeight <= b.clientHeight + 1; }), 'the exam sheet fits in the page without scrolling');
     // a deliberate mistake: a remainder that is too big — a hint first, the correction only after a second mistake
-    await reply(t.q, { q: t.q.q - 1, r: t.q.r + t.q.b, fits: false }); let f = await tr();
+    await reply(t.q, { q: t.q.q - 1, r: t.q.r + t.q.b, fits: false }, gate); let f = await tr();
     expect(f.fb === 'hint' && f.fbText.includes('أصغر من') && !f.fbText.includes(`× ${t.q.q} `), 'first mistake: a hint that does not give the answer');
-    await reply(t.q, { q: t.q.q - 1, r: t.q.r + t.q.b, fits: false }); f = await tr(); await a.page.waitForTimeout(300); await a.shot('train-correction');
+    await reply(t.q, { q: t.q.q - 1, r: t.q.r + t.q.b, fits: false }, gate); f = await tr(); await a.page.waitForTimeout(300); await a.shot('train-correction');
     expect(f.fb === 'fix' && f.fbText.includes('التصحيح') && f.fbText.includes(String(t.q.q)), 'second mistake: the written correction');
     await a.page.click('[data-di-tr-model]'); await a.page.waitForSelector('[data-di-model="own"]');
     expect(await a.page.evaluate(([qa, qb]) => { const el = document.querySelector('[data-di-model]'); return Number(el.dataset.diModelA) === qa && Number(el.dataset.diModelB) === qb; }, [t.q.a, t.q.b]), 'after the correction, « اقرأ التحرير النموذجي » writes the student\'s OWN division step by step');
     for (let k = 0; k < 12 && await a.page.locator('[data-di-model-next]').count(); k += 1) await a.page.click('[data-di-model-next]');
     await a.page.waitForTimeout(300); await a.shot('paper-model-own'); await a.page.click('[data-di-model-close]');
-  } else { await reply(t.q, t.solution); expect((await tr()).fb === 'ok', `question ${i + 1} (${t.dom} · ${t.q.kind}) is accepted`); }
+  } else { await reply(t.q, t.solution, gate); expect((await tr()).fb === 'ok', `question ${i + 1} (${t.dom} · ${t.q.kind}) is accepted`); }
   await a.page.click('[data-di-tr-next]');
 }
 expect(formats.join(',') === 'game,game,exam,game,exam,exam', 'the formats alternate and end on the exam format: game, game, exam, game, exam, exam');
@@ -342,7 +367,7 @@ expect(await a.page.locator('[data-di-trainer="done"][data-di-tr-stars="2"]').co
 // the other families of cards: the four sentences (complete, true/false with its reason), 1 and the number itself, the mix
 for (const id of ['siyagh', 'wahid', 'jidaa', 'khulasa']) {
   await knode(a.page, id); await a.page.click('[data-di-tab="train"]'); await a.page.waitForSelector('[data-di-trainer]');
-  for (let i = 0; i < 6; i += 1) { const t = await tr(); await reply(t.q, t.solution); if ((await tr()).fb !== 'ok') throw new Error(`${id} question ${i + 1} ${t.q.kind} refused`); if (id === 'siyagh' && i === 4) { await a.page.waitForTimeout(300); await a.shot('train-tf-exam'); } await a.page.click('[data-di-tr-next]'); }
+  for (let i = 0; i < 6; i += 1) { const t = await tr(); await reply(t.q, t.solution, { open: false }); if ((await tr()).fb !== 'ok') throw new Error(`${id} question ${i + 1} ${t.q.kind} refused`); if (id === 'siyagh' && i === 4) { await a.page.waitForTimeout(300); await a.shot('train-tf-exam'); } await a.page.click('[data-di-tr-next]'); }
   expect((await a.st()).know.trained[id] === 3, `card « ${id} »: a session all right at the first try gives 3 stars`);
 }
 {

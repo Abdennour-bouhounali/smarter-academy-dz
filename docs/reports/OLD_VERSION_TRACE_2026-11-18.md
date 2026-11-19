@@ -135,3 +135,208 @@ world), and `apps/web/scripts/capture-methode.mjs` (row 22).
 files) · `npm run check:format` ✅ · `npm run check:lessons` ✅ (entry 197.8 KB gzip) ·
 `node apps/web/scripts/lesson-v2-status.mjs --lesson <id>` ✅ for the three · `cd apps/web && npx vitest run` ✅ (1,023 files,
 18,109 tests; its first run found the 9 failures of §4, all old-version assertions). NOT run: any walk, the API tests (apps/api was not touched), a build.
+
+## 8. Second batch (same day) — the division road: `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`
+
+Lessons: 1AM `qisma-iqlidiya-baqi` and `qawaid-qabiliyat-qisma`
+(`apps/web/src/lessons/moyen/1am/ansab_al_aadad_wal_hisab/darb-qisma-ashriya/<id>/`) and 2AM `qisma-iqlidiya-hasr`
+(`…/moyen/2am/ansab_al_aadad_wal_hisab/kusur-amaliyat/qisma-iqlidiya-hasr/`). Same job, same shape as §1–§7. Their
+`world/`, `board/` and `lesson.pack.js` (the new version) are untouched. These three lessons were on the OLDER lesson
+page (no `studentView: 'mission'`, no `mission`): there was no mission player and no mission scene to delete.
+
+### 8.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1 hold for these three lessons unchanged (the machinery is shared and already knows
+`retiredModules`). What is specific to them:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `<lesson>/routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`) | pages | **changed**: `retiredModules: true`; each of the 9 / 10 / 9 module addresses redirects to the home |
+| b | `<lesson>/moduleContext.js` | data, for the pages only | **deleted** |
+| c | 1AM `darb-qisma-ashriya/_unit/prepDiagnostic.jsx` + `_unit/moduleContext.js` (the unit has no other lesson) | pages | **deleted** (nothing else imports them); the unit labels of `_unit/unitMeta.js` they alone read (`UNIT_ID`, titles, `BASE`, ids, labels) removed — `src`, `addition`, `PRINT_SUBJECT` stay (content and routes read them). The 2AM unit's helpers stay (five lessons of `kusur-amaliyat` still use them) |
+| d | `lesson.config.js › lessonProblem` (`LessonIndex` › `LessonProblemCard`, `validate:lessons`' check against `problems.js`) | data | **deleted** from the three configs (as §2) |
+| e | `content/problems.js` (the three مسائل pages) + `problems.test.js` | pages | **deleted** |
+| f | `content/textbook.js`, `content/exercises.js` (+ `content.test.js`) | knowledge map (`knowledge.jsx`, `knowledgeGraph.js`), the textbook-coverage citations | **kept** (as row 23). `qawaid`'s `content.test.js` lost its block that parsed the deleted `Module09Itqan.jsx`; `SELF_12` (`exercises.js`, read only by the deleted test page) stays as a textbook citation |
+| g | `packages/core/curriculum/exportContentRegistry.mjs` (deploy) | data + page files | modules and resources **identical** (9 / 10 / 9 modules, 6 / 5 / 5 resources — verified by running the export before and after); **the final-test items of the three deleted « إختبار أولي » disappear: 5 + 5 + 5 = 15** (`final_test:<id>:final:E1…E5`). Practice items stay: 199 / 204 / 207 — follow-up 10 |
+| h | API `lesson_modules`, `lesson_resources`, progress by module number | DB | **untouched** (row 12) |
+| i | Other lessons that name these: `ikhtizal-kitaba-kasriya` (`priorKnowledge`, `requires: ['qawaid-qabiliyat-qisma']`), `wadiya-idmajiya-kusur-amaliyat` (`requires: ['qisma-iqlidiya-hasr-2am']`, its « أستعدّ » « راجع »), `kasr-hasil-qisma` (« تذكّر » `lesson: 'qisma-iqlidiya-hasr'`), `awwaliyan-fima-baynahuma` (« راجع » to `qawaid`), `qasim-adad-tabii` (net comments) | lesson ids | unchanged: they name the LESSON (its home, the world), never a module page |
+| j | `scripts/check-textbook-coverage.mjs` | page files | passes with no destination moved: every element the deleted pages cited is still cited by `textbook.js` / `exercises.js` / `resources`. Only the declared platform additions fall (unit `darb-qisma-ashriya` 9 → 4, `kusur-amaliyat` 51 → 48: those of the deleted `problems.js`) |
+| k | `scripts/audit-knowledge-dependencies.mjs` | page files | skips the three (`[v2 — no module page]`); their stale reports `docs/reports/knowledge-contracts/{1am_qisma-iqlidiya-baqi,1am_qawaid-qabiliyat-qisma,2am_qisma-iqlidiya-hasr}.json` **deleted** |
+| l | `scripts/validate-lessons.mjs` | page files | coverage from `world/evidence.js › POINTS`: 3/3, 4/4, 3/3 الكفاءات covered |
+| m | the three labs `division-jumps`, `digit-cards`, `egg-trays` (`manipulations/operations/`) | named only in the three configs' `resources` | **kept** in the closed registry with their tests — now mounted by NO page (same case as follow-up 2) — follow-up 11 |
+| n | unit tests: `1am …/_unit/prepDiagnostic.test.js`, `2am …/_unit/prepDiagnostic.test.js` | pages | adapted (§8.3) |
+| o | e2e walks | pages | §8.4 |
+
+### 8.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages 9 + 10 + 9 (« أستعدّ », نشاط, معارف, …, three مسائل, « إختبار أولي ») | 28 | 1,696 |
+| `moduleContext.js` ×3 | 3 | 12 |
+| `content/problems.js` + `problems.test.js` ×3 | 6 | 883 |
+| **lesson folders, total** | **37** | **2,591** |
+| 1AM unit `_unit/prepDiagnostic.jsx`, `_unit/moduleContext.js` | 2 | 7 |
+| stale audit reports `docs/reports/knowledge-contracts/*.json` ×3 | 3 | 1,301 |
+| **total** | **42** | **3,899** |
+
+Also removed (edits): `lessonProblem` (with its comment) of the three configs, replaced by the v2 note; the 1AM unit's
+unused labels in `_unit/unitMeta.js`; the « إختبار أولي » block of `qawaid-qabiliyat-qisma/content/content.test.js`.
+**Redirects**: every `config.modules[].path` of the three (e.g.
+`/courses/moyen/2am/ansab_al_aadad_wal_hisab/qisma-iqlidiya-hasr/nashat`) → `<Navigate to={basePath} replace />`.
+What stays is §3's list (config `modules`/`resources`/الكفاءات as data, `index.jsx`, the knowledge map files, the
+practice banks, the class tests, DB rows).
+
+### 8.3 Tests changed
+
+- `1am …/darb-qisma-ashriya/_unit/prepDiagnostic.test.js`: both lessons are v2 → module 0 checked as data, no page; the
+  item checks (they read the deleted pages) are gone; a test names the two v2 lessons; the unit id is a literal.
+- `2am …/kusur-amaliyat/_unit/prepDiagnostic.test.js`: the 4AM pattern (`isV2`, item checks on the lessons still on pages,
+  a test naming `qisma-iqlidiya-hasr`).
+- `qawaid-qabiliyat-qisma/content/content.test.js`: the block reading `Module09Itqan.jsx` removed.
+- Unchanged and passing: `registry.test.js` (its v2 redirect check is generic), `finalSynthesis.test.js` (4AM only: 71),
+  `lessonGraphs.test.js` (no aid of the three maps quoted a deleted page: `KNOWN_UNGROUNDED` unchanged).
+
+### 8.4 Walks (NONE was run)
+
+None deleted, none re-targeted. **Opening the deleted pages** (follow-up 4 extends to them):
+`lesson-kit/1am-darb-qisma-ashriya.mjs` (every module of `qisma-iqlidiya-baqi`, the `division-jumps` lab on `/nashat`),
+`lesson-kit/1am-qawaid-qabiliyat-qisma.mjs` (every module, `digit-cards` on `/nashat`),
+`lesson-kit/2am-kusur-amaliyat.mjs` (every module of `qisma-iqlidiya-hasr`, `egg-trays` on `/nashat`) — these three were
+also the browser suites of the three labs (`MANIPULATION_CONTRACT.md` §2septdecies, §2octodecies, §2unvicies) — and
+`lesson-kit/moyen-retrofit-phase1.mjs` (`/nashat`, `/maarif` of the three, among other lessons). Unaffected: the
+lessons' own world / board walks, `launch-kit.mjs`, `lesson-lab.mjs`, `class-session.mjs` (home and lab links only).
+
+### 8.5 Follow-ups NOT done
+
+10. **15 final-test items retired at the next deploy** (5 per lesson), as follow-up 1: confirm before `main` that the
+    mastery engine reads these lessons with the practice items and the game evidence only.
+11. **Three more labs mounted by no page**: `division-jumps`, `digit-cards`, `egg-trays` (and their figures
+    `FlowerFigure`, `HopperFigure`, `BulbFigure`, `EggFigure`) — keep, delete, or move to « مختبري »: owner's call, with
+    follow-up 2.
+12. **The admin / سفير view and the unit pages** of 1AM `darb-qisma-ashriya` and 2AM `kusur-amaliyat`: as follow-up 7, a
+    reviewer still sees the old `LessonIndex` (module cards whose links land back on the home).
+
+### 8.6 Checks run (one at a time)
+
+`npm run lint`: 1 error, NOT from this change — `scripts/lesson-brief.mjs:67` (`countJson` unused; an untracked file of
+another agent) — **fixed since** (2026-11-19: `countJson` is no longer in `scripts/lesson-brief.mjs`). `npm run check:unused`: nothing of this change; 6 `lesson` exports of `world/index.js` « imported by a test
+only » in the six lessons other agents are writing (`ikhtizal-kitaba-kasriya`, `awwaliyan-fima-baynahuma`, `bahth-pgcd`,
+`ikhtizal-kasr`, `qasim-mushtarak-akbar`, `tayin-pgcd` — their packs are not written yet); the PHP half ✅.
+`npm run check:unreached`: 61 files, all in those six lessons' `world/` (same cause), none of this change.
+`npm run check:format` ✅ · `npm run check:lessons` ✅ (entry 197.8 KB gzip) · `lesson-v2-status --lesson` ✅ for the
+three (phone ➖ paused) · ledger: 6 v2, all 6 with their old version deleted; 29 mission; 105 older page; 134 « أستعدّ »;
+134 without a board. `cd apps/web && npx vitest run` ✅ (1,083 files, 18,550 tests). NOT run: any walk, the API tests (apps/api was not touched), a build.
+
+### 8.7 Residue of the old versions in the six lessons' root files (review fixes, 2026-11-19, NOT committed)
+
+- **Deleted**: `content/exercises.js` of `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr` (row f
+  above). Their only readers were their own `content.test.js` (the exercise blocks removed), the derived memo's glob (not
+  shown for a lesson with a board memo) and `check-textbook-coverage.mjs` — every element they cited (`ex-15…21`,
+  `self-7/8`, `ex-22…32`, `now-42`, `deep-8`, `self-12`, `ex-33`) is still cited by the lesson's practice bank or config:
+  the coverage check passes unchanged. The 4AM three keep theirs (their `knowledgeGraph.js` imports them).
+- **Scrubbed** in the six `lesson.config.js`: `textbookRef` (read by nothing — the API's comes from the catalogue), the
+  headers and comments that described deleted modules and the textbook's pages, module `desc` and resource titles that
+  named the book (« تمارين الكتاب 22 », « تمرين الكتاب 33 », « مثال الكتاب », « أعداد الكتاب », « من الكتاب », « طريقة الكتاب »),
+  the hasr description and emoji (eggs → planks). KEPT: module ids, numbers, slugs, TITLES and stages, `skills`,
+  `resources` codes / `sourceElementIds` / `experience` (the coverage check and the validators read them).
+- **Scrubbed** in the six root `knowledge.jsx`: every `predictPrompt` (17; read only by `KnowledgeBrick` / `PredictRule` of
+  the deleted module pages — they named « الورشة », « المختبر », « الملعب », « الكتاب ») and the French `\text{vraie}` of
+  `khawass-qawasim` (now `P \Rightarrow Q`); the card « أمثلة الكتاب » of `qawaid-qabiliyat-qisma/knowledgeGraph.js` → « مثالان ».
+- **Open (owner / orchestrator):** the root `knowledge.jsx` + `knowledgeGraph.js` stay — they are still visible: the
+  pack's knowledge of `qasim-adad-tabii` and `qawasim-adad-tabii` (board cards, exam coach), and for all six the 🧠 map
+  of the lesson home (`routes.jsx › loadKnowledge` → `LazyLessonKnowledgeProvider`). The other four packs read
+  `world/knowledge.js`, so those lessons show TWO knowledge sources (the world's map and the home's 🧠 map). These maps are
+  built from `content/textbook.js` (the textbook's own activities and numbers, e.g. « 2145 بيضة في صفائح من 30 » in hasr):
+  deleting them means re-pointing `loadKnowledge` and the two packs, and updating `progressiveMap.test.js`,
+  `lessonGraphs.test.js`, `buildLessonMemo.test.js` and the four 4AM batch-2 graphs that import the pilot's graph. Module
+  TITLES that still carry the book or the old context (« مسائل الكتاب والآلة الحاسبة », « نشاط 1 — بيض المزرعة », …) were
+  kept as instructed.
+
+## 9. A v2 lesson could never be completed — fixed (2026-11-19)
+
+**Found by an independent review.** Rows 11 and 14 above were wrong: the world calls `onModule` for only 4 of a lesson's
+8–9 modules (the pilot marks 1–4 of 0–7; `khawass-qawasim` 1, 2, 3, 5 of 0–8; `qisma-iqlidiya-baqi` 1, 2, 4, 5 of 0–8),
+and `progressQueue.js › snapshotLessonProgress` sends `completed` only at 100 % of `config.modules`. The other modules
+have no page any more, so every v2 lesson stayed `in_progress` forever for the parent, the teacher, the school's reports
+and the unit page (« next lesson », the tiles).
+
+**Fix (one mechanism in the kit, no lesson's `story.js` touched):** `gameworld/kit/storyEnd.js` + `LessonWorld.jsx` —
+the first time a world save says `finished` (the end of the story), every module of the config is marked through the
+same `onModule`; a save already finished repairs the progress when the world opens; nothing from a teacher's preview.
+Mastery unchanged (evidence only). Rule: `LESSON_V2.md` §1ter. Test: `kit/storyEnd.test.js` (5 tests).
+
+**Still imperfect (not changed — screens not redesigned):**
+- `currentModule` is never written by a world (no `markModuleVisited`): the teacher's tracking gets `null`, and the
+  resume link of `getLessonProgress` / `getResumeLesson` defaults to module 1 — an address that redirects to the world;
+  `lastActivityAt` of a v2 snapshot is the time of the snapshot (no `lastVisitedAt`).
+- A repaired student's `completed_at` is the day of the repair, not the day he finished the story.
+- The parent's « التقدّم بالتفصيل » shows `modulesCompleted/modulesTotal` (counts only — no retired module titles) and a
+  `finalTest` line that a v2 lesson never fills; the teacher's unit page still shows module chips of the retired pages
+  (row 15); `StudentDossier` writes « N module(s) terminé(s) » — module counts that mean nothing to a v2 lesson's reader.
+- Between two pieces of the story, partial progress stays « 4 of 8 » at most (the modules the story marks).
+
+## 10. One knowledge source, neutral module titles, no dead module link (2026-11-19, NOT committed)
+
+The open items of §8.7 and §9 (« two knowledge sources », module titles, module chips and the resume link).
+
+**1. One knowledge source per v2 lesson.** Readers traced: the home's 🧠 map (`routes.jsx › loadKnowledge` →
+`lessonRuntime.jsx › LessonPageFrame` → `LazyLessonKnowledgeProvider` → `KnowledgeMapTrigger`), the pack (`knowledge`:
+board cards `features/classSession/knowledgeCards.js`, the exam coach), the world (`world/index.js › knowledge`), the
+derived memo glob (`features/teacher/lessonMemo/loadLessonMemoSources.js` — not shown for a lesson with a board memo),
+`validate-lessons.mjs` (graph check), `check-textbook-coverage.mjs` (citations), `audit-predict-prompts.mjs` /
+`audit-knowledge-dependencies.mjs` / `lab-rollout-status.mjs` (skip a missing file), and the tests (`lessonGraphs`,
+`memoContent`, `buildLessonMemo`, the units' `prepDiagnostic`, `wadiya-idmajiya-aadad/content/mission.test.js`, the
+lessons' `content.test.js`). No shared component reads the knowledge context on a v2 home (the world never did).
+- The 🧠 map of the lesson page could NOT render the world's knowledge as is (same `{ modules }` sheets, but its graph is
+  laid out by the world at its own `positions`, its `requires` are keys, and it fails the page map's layout invariants),
+  so no converter was written: **a v2 home mounts no 🧠 map** — the six `routes.jsx` pass no `loadKnowledge`,
+  `buildLessonRoutes` refuses one with `retiredModules`, `LessonPageFrame` skips the provider without it. The lesson's
+  knowledge is the world's « خريطة المعارف », the board's cards and the coach — all through the pack.
+- **Deleted** (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`, `khawass-qawasim`): the root
+  `knowledge.jsx`, `knowledgeGraph.js`, `content/textbook.js`, `content/exercises.js` (khawass), `content/content.test.js`
+  (1AM/2AM) — 13 files + 3 tests, 1,471 lines. The one textbook element only they cited, `now-11-2` (khawass, module 4),
+  is now declared on that module (`sourceElementIds`): `check:textbook` ✅ (declared platform additions fall: unit
+  `darb-qisma-ashriya` 4 → 0, `kusur-amaliyat` 48 → 41).
+- `validate-lessons.mjs`: a v2 lesson with `knowledgeMap: true` needs the file its pack names to export `KNOWLEDGE_GRAPH`
+  (no root `knowledgeGraph.js`). `lessonGraphs.test.js`: those four are checked for a map in `world/knowledge.js`; the page
+  map's invariants stay for the others. `knowledgeMapOpen` (read only by the provider) removed from the three 4AM configs.
+- **The two pilots** keep root `knowledge.jsx` + `knowledgeGraph.js` + `content/` (their pack and `world/knowledge.js`
+  read them). Their cards are BUILT FROM THE TEXTBOOK (`content/textbook.js`, `content/exercises.js`) — listed for the
+  owner, NOT rewritten (pedagogy); no plain textbook reference (« الكتاب », a page) is visible in them, so nothing was removed:
+  - `qasim-adad-tabii` — sheets' `body` (now rendered by nothing) = « معارف 1 » p. 10 verbatim (two definitions with
+    « 11 قاسم للعدد 143 », « 120 = 6 × 20 », the four sentences, 1 / the number itself); memos `siyagh-mutakafia`
+    (6 ∣ 120) and `wahid-wa-nafsuh` (1 ∣ 143) use the book's numbers; map cards `baqi`, `jidaa`, `siyagh`, `wahid`,
+    `intabih` (definitions/remarks verbatim), `ex120`, `ex143`, `khata-amil` (the book's examples), `tadhakkar` (ex-1's
+    method + « أستعدّ » p. 7 items 2–3: 137 = 5 × 25 + 12, 72 = 24 × 3), `khata-ittijah` (ex-5 « 8 يقسم 4 »).
+  - `qawasim-adad-tabii` — sheet `tariqa-qawasim` body = « طرائق » p. 11 rule verbatim; map cards `qawasim` (نشاط 2 p. 8:
+    60, 48, 17), `ex60`, `tariqa`, `ex105` and `khata-nisf` (the method's worked 105), `qawaid` (its rule line),
+    `khata-nisyan` (ex-3: 84), `khata-9` (ex-6).
+
+**2. Module titles** (six configs): each module names what it stands for in the v2 lesson — the key or the stage the
+world marks (`onModule`), « مسألة الدرس » for the last bridge, « مسألة 2 / 3 », « التقويم » for the evaluation; module 0
+stays « أستعدّ » (the units' tests ask it). No « نشاط N », « معارف — », « أوظّف تعلّماتي », « مسائل الكتاب », no deleted
+context (eggs, flowers, library, teams…). `desc` rewritten the same way. Ids, numbers, slugs, stages, `skills`,
+`sourceElementIds` unchanged. Readers: the DB `lesson_modules.title` at the next deploy (the notebook's `moduleTitle`, the
+admin reports), the old `LessonIndex` an admin / سفير still sees; the parent sees counts only.
+
+**3. Module chips and resume** (driven by `lessonPackFlags(id).world`, never a list): `LessonModuleChips` shows NONE for a
+lesson with a world (the chips had no link already; showing a lesson's محاور the teacher cannot open was the defect).
+`getResumeLesson.js › getResumeModulePath` gives no module address for such a lesson, so « واصل » (`resumePath`) and the
+progression tree's « continue » (`StudentHome`, `Progression` pass it as `getModulePath`) open the lesson's home.
+Tests: `components/teacher/lessonModuleChips.render.test.jsx`, `resumePath.test.js` (+9), `registry.test.js` (a v2 home
+carries no `loadKnowledge`).
+
+**4. Still visible, still old (not removed — owner's call or other scope):**
+- `resources` titles of the six configs name the deleted labs' textbook numbers and contexts (e.g. hasr « 2145 بيضة في
+  صفائح من 30 », baqi « 279 زهرة في باقات من 14 », « 253 لؤلؤة », qawasim « قواسم العدد 60 »), and the « مسألة » resource
+  titles their old problems; the UNIT PAGE lists the manipulations to students and teachers (`data-unit-resource`). They
+  go with follow-ups 2 / 11 (the labs no page mounts).
+- The two pilots' textbook-built cards (above).
+- `bahth-pgcd` (old module 0, `priorKnowledge`) names `khassiya-1` / `khassiya-2`, item ids of the deleted khawass
+  `knowledge.jsx` — concept strings, no check failed; that lesson is being rebuilt.
+- Stale comments in `world/knowledge.js` of baqi / hasr / khawass (« the older knowledge.jsx … left untouched ») — world
+  folders are other agents' scope.
+- Walks NOT updated (e2e is other scope): `e2e/lesson-route-boundary.mjs:127` expects 8 module chips for
+  `qasim-adad-tabii` (now 0); `e2e/teacher-memo.mjs` is on `qasim-mushtarak-akbar` (no pack: unchanged) until that lesson
+  gets a world; `e2e/knowledge-map.mjs` opens the 🧠 map of the lesson page for `qasim-adad-tabii`, `qawasim-adad-tabii`,
+  `khawass-qawasim` (its `ALL` list) — those three must leave it (their map is the world's).

@@ -95,7 +95,8 @@ Rules: a NEW unused thing fails CI; a baseline line that is no longer unused fai
 
 1. Delete what the change makes useless **in the same change** — code, export, i18n key, sentence, test of dead code.
 2. `npm run lint && npm run check:unused && npm run check:unreached` pass.
-3. A new or rebuilt area is added to `format:v2` and `check:format`.
+3. A new or rebuilt area is added to `format:v2` and `check:format`. A v2 lesson enters with its `world/`, `board/` and
+   `lesson.pack.js` when its pack is written (on 2026-11-19: the six lessons that have a pack, and `scripts/lesson-brief.mjs`).
 4. Never add to the baseline, never widen `KEPT` without a reason a reader can check.
 
 ## 6. State on 2026-11-17 (the first run)

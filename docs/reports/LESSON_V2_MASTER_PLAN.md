@@ -435,7 +435,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
   9. [x] LESSON 3 `khawass-qawasim` (خواص قواسم عدد طبيعي) — DONE 2026-11-18, report `LESSON_3_GATE_REPORT.md` (the
      owner's validation remains; the old modules are DELETED, step 10). It prints ✅ on `status:lesson-v2`; its six walks
      pass at 1366×768, 1024×768 and 1840×900. Its four keys are FORGED on four NEW investigation kinds added to the kit
-     (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « The eight kinds »). Open, for the owner: the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
+     (`join`, `stack`, `peel`, `letters`: `GAME_WORLD.md` « استكشف »). Open, for the owner: the proof key gives no evidence; the dash's sentence types; the 10.5–11.5 px text the
      kit still has at 1024×768 (shared with lessons 1–2). Done 2026-11-18: the Euclidean division (`2am.m1.r04`) is a core
      prerequisite of `4am.m1.r02` in the net, so lessons 2 and 3 launch with two tools (its family added); their launch
      walks must be updated and re-run.
@@ -449,6 +449,55 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      `status:lesson-v2` now checks that the old version is gone (all three ✅). NOT run: any walk — nine older walks
      still open the deleted pages and must be re-targeted or cut (trace, follow-up 4); the pilot's story walk was
      edited to check the redirect.
+  11. [~] THE DIVISION ROAD — 1AM `qisma-iqlidiya-baqi`, 1AM `qawaid-qabiliyat-qisma`, 2AM `qisma-iqlidiya-hasr`, built on
+     the world « أرخبيل القواسم » (2026-11-18). In the tree (checked 2026-11-19): each has `lesson.pack.js` (world, knowledge
+     from `world/knowledge.js`, coach, board), `world/` (19 files) and `board/`; their old version is deleted
+     (`OLD_VERSION_TRACE_2026-11-18.md` §8); a class test each (`content/class-tests/{1am,2am}/`); « مختبري » got `bracket`
+     for the 2AM lesson; the launch kit got the family `1am.m1.r01`. `status:lesson-v2` prints ✅ for the three.
+     **COMMITTED AND PUSHED to `dev` on 2026-11-19, WITHOUT the walks** (the owner's word, step 15). The independent review of 2026-11-19 (step 14) found defects in
+     all three — evidence claimed on wrong answers (hasr), keys 2 and 3 forged on the same experiment (qawaid), P3 told
+     not discovered and key 2 already sealed inside key 1 (baqi), the textbook residue of their root files. The fixes are
+     WRITTEN (step 14): qawaid's key 3 on `join` (OPEN for the owner: `GAME_WORLD.md`, note under the table of kinds), baqi's
+     key 2 on the new kind `cycle`, hasr's key 1 on a blind `estimate` with three-digit planks — NOT yet verified by the walks.
+  12. [~] THE BANK SERVED AS IT IS by every v2 sitting (2026-11-18): `gameworld/kit/bankSitting.js › createBankSittings`;
+     each of the six lessons' `world/sitting.js` is one call to it (checked 2026-11-19); the exercises are those of
+     `content/practice/<grade>/<id>/`, marked by the practice evaluator, evidence re-computed by the server. Report:
+     `BANK_AS_IS_2026-11-18.md`. The generated sitting is deleted. The kit change is committed since 2026-11-19 (step 15, without the walks). Review fixes WRITTEN
+     (2026-11-19): `cashDj` touches money only and converts « DA » glued to digits, on every shown string; an empty level is
+     never sat nor passed; the clock hands in once; a sitting walk can choose its sheet (DEV hook `di.dev.sheet`). Owner,
+     the same day: every copy is evidence, whatever happens (the « re-sat » rule written that morning was REMOVED). Still
+     open: « تدرّب » generates exam-format questions (`CLAUDE.md`'s rule overstates it — owner's wording to decide).
+  13. [ ] BATCH 2 — world content written for six lessons: 4AM `qasim-mushtarak-akbar`, `tayin-pgcd`, `bahth-pgcd`,
+     `awwaliyan-fima-baynahuma`, `ikhtizal-kasr`, 1AM `ikhtizal-kitaba-kasriya` (`world/` only, 16–18 files each, all
+     untracked; no `board/`, no pack — so `check:unreached` / `check:unused` flag them until their packs exist). **NOT
+     FINISHED**: the review of 2026-11-19 found blockers (memo quizzes marking true answers wrong, evidence on wrong
+     answers, rules told instead of found, the 1AM lesson forged on Euclid's algorithm, no `pgcd` claim kind) to repair
+     BEFORE their boards and packs. They stay OUT of the batch-1b commit.
+  14. [~] THE INDEPENDENT REVIEW of 2026-11-19: the session of 2026-11-18 (steps 11–13) had been orchestrated by a weaker
+     model; nine reviews (the three division lessons, lesson 3, the kit and its inquiry kinds, the walks' integrity, the
+     satellites / deletions / docs, batch 2 in two groups) — record: `REVIEW_2026-11-19.md`. The fixes are WRITTEN by ten
+     packages (each reported its own unit tests passing; the walks NOT re-run; committed without them on 2026-11-19, step 15): C the story's end completes the
+     lesson (`kit/storyEnd.js`); E six claim kinds (`bracket` … `fraction`, JS + PHP + fixture); W the walks (12 px by
+     default, every sheet of the bank, three one-tool launch walks, the lab plays `bracket` and `planks`); B the kit's
+     inquiry kinds and the knowledge map's floor; A the sitting (« دج », empty level, one hand-in, `guardEvidence`); S the
+     satellites and docs; K one knowledge source (no 🧠 map on a v2 home, the root textbook files deleted); L1 khawass,
+     L3 qawaid, L4 hasr — each lesson's evidence, wording and experiments; plus the baqi agent (key 2 on `cycle`, the board's
+     questions re-asked so the answer fills the gap). `LESSON_3_GATE_REPORT.md`:
+     its sitting numbers are superseded and ~50 screenshots were never looked at — lesson 3's « done » is not met yet.
+     Owner decisions raised: what completes a v2 lesson (taken as « the story's end »), the 31 final-test items that retire
+     at the next deploy, the bank's « DA » rule, 18 net pairs « prerequisite taught later » (`LEARNING_NET.md` §8quater).
+  15. [x] BATCH 1b COMMITTED AND PUSHED to `dev` — 2026-11-19, on the owner's word (« no test just commit and push »),
+     WITHOUT the walks and without the six batch-2 folders (step 13, still untracked). Four commits: the shared work (the
+     kit, the bank as it is, the claim kinds, the walks' library, the satellites, the docs), then one per division lesson.
+     What WAS run that day, on the tree as committed plus the batch-2 folders: the web unit suite — 18,731 of 18,734 pass;
+     two fail on a 5 s timeout under the load of the whole suite and pass alone (`lessons/lessonPack.test.js`,
+     `lessons/registry.test.js`); the third is in the UNCOMMITTED batch-2 folder (`qasim-mushtarak-akbar/world/story.test.js`:
+     its market's 208 is now a plank of `qisma-iqlidiya-hasr`) — and `npm run lint`, `npm run check:format`: both pass.
+     **NOT run: `check:unused`, `check:unreached`, `check:lessons`, the core and API tests, and EVERY walk.** So the walks of
+     the six v2 lessons at 1366×768, 1024×768 and 1840×900 and their screenshots are still OWED: until they pass, « done »
+     (§6) is not met for lesson 3 and the three division lessons, and the review's fixes (step 14) are unverified in a
+     browser. `main` was not touched.
+  16. [ ] OWED: the walks of the six v2 lessons at the three sizes, their screenshots looked at, what they find fixed.
 
 ## 4ter. When each item of 4bis is done
 
@@ -550,67 +599,70 @@ Rules of the order:
 
 ---
 
-## 9. Prompt for the next session
+## 9. The fast pipeline, and the prompt for the next batch
 
-Rewritten 2026-11-18, after lessons 1, 2 and 3 were finished (Phase 0 is done; phones are paused; the walks run on the
-GPU). Paste it as the first message of a new session. For the NEXT lesson after lesson 4, change the lesson id and its
-title, and make the reference lesson the most recent one that is done. The earlier prompt (Phase 0, the gate on lesson 2)
-is in git history (`git log -p -- docs/reports/LESSON_V2_MASTER_PLAN.md`).
+Rewritten 2026-11-18, after the first batch (lessons 1–3 and the Euclidean-division lessons they stand on). The owner's
+rules for speed: **a lesson is rebuilt FROM SCRATCH, so the old lesson is never read** — what it must teach comes from
+`npm run lesson:brief -- <id>` (the learning net and the catalogue, 0.1 s: the الكفاءات, the learning points whose ids stay,
+the core/support prerequisites and whether they are v2, what not to rebuild, where it is used later, the unit around it, and
+**a digest of the exercise bank**: how many questions test each learning point (primary/secondary, by level), which answer
+shapes and cognitive demands the student must produce, the situations, and typical asks per level — the weight of each key
+in the design follows it);
+**the exercise bank is used as it is** (`content/practice/<grade>/<id>/`, never regenerated sittings: `BANK_AS_IS_2026-11-18.md`);
+**the design is shown ONCE for the batch** and the owner's « go » covers it; agents code, the main session orchestrates.
+
+**The pipeline of a batch** (start each agent the moment its inputs exist, not when the whole wave ends):
+1. `lesson:brief` for every lesson of the batch → ONE design page: per lesson, its keys (one experiment of its own nature per
+   key — `GAME_WORLD.md` « استكشف »; reuse the kinds of the world — now fifteen —, add a kind only when none fits) → STOP for « go ».
+2. Wave 1 (parallel): the kit's new kinds ∥ one agent per lesson for the WORLD content (story, practice, trainer, journey,
+   evidence, knowledge; the sitting is the bank).
+3. Wave 2 (parallel, each as soon as its inputs exist): forges + inquiries per lesson ∥ board + memo per lesson ∥ ONE
+   satellites agent for the batch (class tests, launch families, « مختبري »: shared registries) ∥ walks per lesson.
+4. The main session: packs, `generate:lesson-index`, repo checks, then the walks at 1366×768, 1024×768 and 1840×900 —
+   ONE heavy run at a time, from one runner script — and the screenshots with the eyes.
+5. The old version of each finished lesson: trace of its readers, then delete (`OLD_VERSION_TRACE_*.md`; owner's order).
+6. One gate report per batch, one commit per lesson (`feat(lessons): <id> — v2`). Never push.
+
+**Batch 2 — the rest of unit 1** (`aadad-tabiiya-natiqa`), in this order; all on `divisor-isles`:
+
+| # | Lesson | Must teach (from the brief) | Sketch of its keys (to confirm at the design stop) |
+|---|---|---|---|
+| 4 | `qasim-mushtarak-akbar` | common divisors of two numbers; PGCD(a ; b) and its notation; a sharing in identical bouquets read with common divisors; the common divisors are the divisors of the PGCD | the planks that hold BOTH gaps (a new kind, `common`: two strips); the longest of them; the equal bouquets; the divisors of the PGCD |
+| 5 | `tayin-pgcd` | PGCD by listing the divisors; PGCD(a ; a) = a, PGCD(a ; 0) = a…; PGCD(a ; b) = b when b divides a | `common` again on lists; the special cases (a mirror alone); « b divides a » |
+| 6 | `bahth-pgcd` | PGCD(a ; b) = PGCD(b ; a − b); the subtraction algorithm; PGCD(a ; b) = PGCD(b ; r); Euclid's algorithm; comparing them | `join` (the difference keeps the common planks); a new `ladder` kind (repeat until nothing is left); `peel` (the remainder); the comparison of the steps |
+| 7 | `awwaliyan-fima-baynahuma` | recognise coprime numbers; prove they are coprime by computing the PGCD; prove they are not by a common divisor | PGCD = 1 (`common`); the proof by the algorithm; the counter-example |
+| — | `ikhtizal-kitaba-kasriya` (1AM, core for 8) | reduce a fractional writing (`1am.m5.r02`) | by common divisors of the two terms (`common`, 1AM numbers) |
+| 8 | `ikhtizal-kasr` | the irreducible form of a fraction; reduce by successive common divisors; reduce with the PGCD; the result of a calculation as an irreducible fraction | planks over two gaps: k and l planks make the fraction k/l; irreducible when coprime — the world's story must fit fractions: a design question |
+| 9 | `wadiya-idmajiya-aadad` | the unit's integration situation, as three missions — **its own plan, accepted by the owner on 2026-11-19: `INTEGRATION_LESSON_PLAN.md`** | NOT a lesson of keys and NOT part of this batch: built AFTER lessons 4–8 are v2 (below) |
+
+**The last lesson of every unit** (« أدمج تعلّماتي ») is not built by the pipeline above. It is the unit's three missions on
+the BEM's integration situation (`INTEGRATION_LESSON_PLAN.md`: what the 19 BEM papers ask, the stations of a mission, the
+engine and its scenes, the order of work). It comes last in its unit: for 4AM unit 1, once lessons 4–8 are v2 and committed,
+starting with mission 1 as a playable prototype the owner plays. It is designed and coded by Fable (owner, 2026-11-19).
+
+Kit work this batch needed: `common`, `ladder`, `nest` — written 2026-11-18 (the world now has fifteen kinds). Before the batch:
+the bank adapter of `BANK_AS_IS_2026-11-18.md` must be done, so no lesson generates a sitting. **Done in code 2026-11-18**
+(`kit/bankSitting.js`; the six v2 sittings switched; their sitting walks not re-run — see that report).
 
 ```text
-Build lesson 4 of the v2 rollout: `qasim-mushtarak-akbar` (القاسم المشترك الأكبر لعددين طبيعيين), 4AM, unit
-aadad-tabiiya-natiqa. Lessons 1 (`qasim-adad-tabii`), 2 (`qawasim-adad-tabii`) and 3 (`khawass-qawasim`) are DONE and
-print ✅; lesson 3 is your reference for how a lesson is built on the kit (it also added four investigation kinds to
-the divisor-isles world: `join`, `stack`, `peel`, `letters` — reuse them, add a kind only when a rule fits none).
+Build batch 2 of the v2 rollout: the lessons of the table above (NOT `wadiya-idmajiya-aadad`: it comes after them, by INTEGRATION_LESSON_PLAN.md). Lessons 1–3 and the 1AM/2AM Euclidean-division lessons are
+DONE (print ✅ on `npm run status:lesson-v2`); lesson 3 `khawass-qawasim` is the reference for how a lesson is built on the kit.
 
-READ FIRST, in this order, before touching anything:
-1. CLAUDE.md (the rules that bind every task; phones are PAUSED, laptop and tablet only)
-2. docs/reports/LESSON_V2_MASTER_PLAN.md §4ter-0 (live state), §6 (definition of done)
-3. docs/architecture/LESSON_V2.md, GAME_WORLD.md (the kit, a world, the forge, « استكشف »), LAUNCH_KIT.md,
-   LESSON_LAB.md, CLASS_SESSION.md §5ter (the board)
-4. docs/reports/LESSON_2_GATE_REPORT.md and LESSON_3_GATE_REPORT.md — what they took, what had to be copied, what the walks
-   found (lesson 3's walks found six real defects no unit test saw: write the walks EARLY and run them at the three sizes
-   as soon as a screen exists)
-5. the code of lesson 3 (apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/
-   khawass-qawasim/: lesson.pack.js, world/, board/) and the kit it stands on (lessons/common/gameworld/kit/)
-6. the unit's sources and the learning net for this lesson (docs/curriculum/…, LEARNING_NET.md): the الكفاءات
-   come from there; the textbook is the reference, never the script, and never send a student to the book
+DO NOT read the old lessons (they are rebuilt from scratch). READ ONLY: CLAUDE.md; this §9; `npm run lesson:brief -- <ids>`;
+GAME_WORLD.md « استكشف » (the fifteen kinds); and, for the agents you brief, LESSON_V2.md, the reference lesson's `lesson.pack.js`,
+`world/` and `board/`, and LESSON_3_GATE_REPORT.md (what the walks found).
 
-STEP 0 — the repository: `git status`, `git log -5`. Work on `dev`. Never push and never merge to main without my word.
+STEP 0 — `git status`, `git log -5`; work on `dev`; never push, never merge to main.
+STEP 1 — the design page for the batch (the table above, confirmed or corrected): for EACH key its own nature of discovery,
+the kit kinds to reuse or add, each lesson's story and numbers (own contexts, own numbers, own wording; never the book), its
+board. STOP and wait for the owner's « go » — once for the batch.
+STEP 2 — the pipeline above. Agents on `opus` write the code; you orchestrate, review, run the checks and the walks.
+STEP 3 — per lesson: `npm run status:lesson-v2 -- --lesson <id>` ✅, its walks at the three sizes pass, its screenshots looked
+at (say which you did not look at), the old version traced and deleted, the exercise bank served as it is, published locally
+(lesson `available`, modules and exercises `published`), `docs/reports/BATCH_2_GATE_REPORT.md` (real time from git, lines
+written, what was copied, what failed, what is open for the owner), commit `feat(lessons): <id> — v2`. STOP: the owner validates.
 
-STEP 1 — design, before any code. Write me a short plan: the lesson's الكفاءات (from the learning net), and for EACH
-rule its own way of discovery — a rule that is a search, a pattern or a procedure is FOUND by an experiment made for it
-(`forge.inquiry`, « استكشف »), never the same mirror re-skinned, never a choice between written rules, never told.
-Say which world mechanic you reuse (the unit's `divisor-isles` unless the lesson needs its own), what the story and
-numbers are (own contexts, own numbers, own wording), and the lesson's board (script + memo). STOP and wait for my
-« go » on the design.
-
-STEP 2 — build, in this order, one part at a time, testing each:
-world content (story, forges, practice ladder, trainer, exam sitting, journey, evidence, knowledge) → pack
-(`npm run generate:lesson-index`) → launch-kit family → class test → « مختبري » instrument → board (script.js,
-memo.js, a board.test.js that COMPUTES every answer and every number) → docs.
-Reuse the kit; fix a kit defect in the kit, never in the lesson. A lesson's content is drawn in code, people only
-through KidFigure, respect Islam in every string, money « دج », shapes in the brand blue, a formula never breaks,
-an answer is typed in its own shape, nothing scrolls, a card is four lines at most.
-
-STEP 3 — walks. Write the lesson's walks from lesson 3's (world, hub, trainer, sitting, board, launch kit) and PLAY
-every screen through its UI. They must pass at 1366×768, 1024×768 and 1840×900 (no phone). Look at the screenshots
-with your own eyes, student and teacher, and say which ones you did not look at. The walks check: no raw LaTeX,
-no number or word of another lesson, a way out on every screen, formulas read left to right, nothing cut.
-
-STEP 4 — the gate. `npm run status:lesson-v2 -- --lesson qasim-mushtarak-akbar` prints ✅; unit tests, check:lessons,
-check:unused, check:unreached, check:format and lint on what you changed pass; publish it locally (lesson `available`,
-modules and exercises `published`); write docs/reports/LESSON_4_GATE_REPORT.md (real time from git, lines written,
-what was copied from earlier lessons, what failed). Commit `feat(lessons): qasim-mushtarak-akbar — v2`. STOP: I validate it.
-DELETE its old version in the same commit (owner, 2026-11-18: « for each lesson that is updated to the gaming version,
-delete the old version »): its module pages, its mission player, `?view=classic` — the recipe is LESSON_V2.md §2 « The
-old version is deleted », the status script checks it.
-
-WORKING LIMITS:
-- Fable orchestrates; code is written by agents on `opus`, except the 3D and a task judged complicated.
-- Walks draw on the GPU by default (e2e/lib/gpu.mjs). Check `uptime` and `free -m` before and after every heavy run;
-  one heavy run at a time until I say two at once are allowed; never edit source while a walk runs. If the load or
-  memory gets close to freezing the laptop, stop and tell me.
-- Every task ends with the docs updated and a « Documentation Sync » section.
-- Report honestly: what failed, what you did not check, what you are unsure of. Never « all green » on what you did not run.
+WORKING LIMITS: Fable orchestrates, opus codes (the 3D excepted). Walks draw on the GPU; ONE heavy run at a time; check
+`uptime` and `free -m`; never edit source while a walk runs; use ONE runner script for the walks. Every task ends with the
+docs updated and a « Documentation Sync » section. Report honestly: what failed, what you did not run or look at.
 ```

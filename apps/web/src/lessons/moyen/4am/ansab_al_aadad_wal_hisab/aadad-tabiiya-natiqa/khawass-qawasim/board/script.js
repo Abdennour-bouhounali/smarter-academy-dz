@@ -10,6 +10,11 @@
  * are forged by each student in his world.
  * Every number of the story is read from `world/story.js › NUMBERS` (one place); the other numbers are the board's own,
  * and `board.test.js` computes all of them.
+ * ONE DIRECTION ONLY: each key goes from the parts to what is made of them. No sentence here may lean on the converse
+ * the lesson refutes (a plank that fills what is made need not fill the parts: 25 fills 175 and not 280; 25 fills
+ * 1800 and not 18) — so a plank the key does not speak of is left to the bridges, never judged by the key.
+ * A `cue` is at most 70 characters (its footer cuts a longer one at 1024 px) and a tablet's `math` at most two short
+ * equalities (CLASS_SESSION.md §5ter) — both tested.
  */
 import { NUMBERS } from '../world/story';
 
@@ -80,7 +85,7 @@ export const SCRIPT = {
       chapter: 'نسمّي',
       tablet: 'jam-wal-farq',
       recall: ['مجموعهما', 'فرقهما'],
-      cue: 'اللوح 15 يملأ هوّتين من 30 و 45 خانة: أيّ هوّتين أخريين يملؤهما بالتأكيد؟',
+      cue: 'اللوح 15 يملأ 30 خانة و 45 خانة: أيّ هوّتين أخريين يملأ بالتأكيد؟',
     },
     {
       id: 'stack',
@@ -92,7 +97,7 @@ export const SCRIPT = {
       a: COPIES,
       options: [3, K.plank, 7, 11],
       answer: [3, K.plank],
-      after: `في كلّ نسخة ${K.bridge / K.plank} ألواح، وفي ${K.copies} نسخة: $${COPIES} = ${K.plank} \\times (${K.bridge / K.plank} \\times ${K.copies}) = ${K.plank} \\times ${COPIES / K.plank}$. واللوح 3 كذلك: $${times(K.bridge, 3)}$. أمّا 7 و 11 فلا يملآن ${K.bridge}.`,
+      after: `في كلّ نسخة ${K.bridge / K.plank} ألواح، وفي ${K.copies} نسخة: $${COPIES} = ${K.plank} \\times (${K.bridge / K.plank} \\times ${K.copies}) = ${K.plank} \\times ${COPIES / K.plank}$. واللوح 3 كذلك: $${times(K.bridge, 3)}$. أمّا 7 و 11 فالبناء وحده يحكم.`,
       cue: `هل قسمنا ${COPIES} على ${K.plank}؟ كم لوحًا في كلّ نسخة، وكم نسخة؟`,
     },
     {
@@ -113,7 +118,7 @@ export const SCRIPT = {
       a: REST,
       options: [...P.planks],
       answer: P.planks.filter((o) => REST % o === 0),
-      after: `الألواح ${COMMON.join(' و ')} تملأ ${P.long} و ${P.short} معًا، وهي نفسها التي تملأ الباقي: $${REST} = ${P.long} - ${P.short} \\times ${PEEL_Q}$.`,
+      after: `الألواح ${COMMON.join(' و ')} تملأ ${P.long} و ${P.short} معًا، فتملأ الباقي: $${REST} = ${P.long} - ${P.short} \\times ${PEEL_Q}$.`,
       cue: `اللوح 10 يملأ ${P.short}: لماذا لا يملأ الباقي ${REST}؟`,
     },
     {

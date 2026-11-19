@@ -103,7 +103,12 @@ export default function KnowledgePage({ s, game, sel }) {
 
   return (
     <div className="di-page" data-di-know data-di-kmode={mode}>
-      <div className="di-page__fit" style={{ zoom: z }} data-di-fit={z.toFixed(2)}>
+      {/* --di-page-floor: the 12 px floor in the units of this zoom (GAME_WORLD.md « 12 px floor »; knowledge.css) */}
+      <div
+        className="di-page__fit"
+        style={{ zoom: z, '--di-page-floor': `${Math.ceil(1200 / z) / 100}px` }}
+        data-di-fit={z.toFixed(2)}
+      >
         <header className="di-page__head">
           <div>
             <h2>{discovering ? TX.know.journey : TX.know.title}</h2>

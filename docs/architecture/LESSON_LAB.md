@@ -2,7 +2,8 @@
 
 **BINDING for the lesson v2 rollout (owner decision D6, 2026-11-17): every v2 lesson follows this contract — `LESSON_V2.md` says how a lesson plugs into it.** What has not changed: it was built on the pilot lesson and no real student has used it yet.
 
-**Status: built and wired on `dev`.** Nine instruments (the ninth, `planks`, for `khawass-qawasim` on 2026-11-18); the registry is
+**Status: built and wired on `dev`.** Ten instruments (the ninth, `planks`, for `khawass-qawasim` on 2026-11-18; the tenth,
+`bracket`, for the 2AM `qisma-iqlidiya-hasr` the same day — the first instrument of 2AM); the registry is
 open. Code: `apps/web/src/lessons/common/lessonlab/`. It is a different thing from the Math Lab « مختبر الرياضيات »
 (`/espace/atelier`, `MATH_LAB.md`), which stays untouched: that one is a general workspace with documents; this one belongs to
 the LESSON the student is in and shows only what he has already studied.
@@ -88,7 +89,7 @@ How to use it in an instrument:
 **« جرّب »** (`logic.js › QUESTS`, `observe`): a quest names something to make, never a rule; `observe(tool, state, seen)`
 returns the quests the state has just proved. Nothing is ticked before the student touches the instrument.
 
-### The instruments (eight on 2026-11-16; `planks` added 2026-11-18 for lesson 3)
+### The instruments (eight on 2026-11-16; `planks` and `bracket` added 2026-11-18)
 
 | id | Lesson that introduces it | The hand holds | What is read |
 |---|---|---|---|
@@ -101,6 +102,11 @@ returns the quests the state has just proved. Nothing is ticked before the stude
 | `euclid` « مربّعات إقليدس » | 4AM `bahth-pgcd` | the corner of the rectangle; the scissors | each family of squares writes its division; the last side is the PGCD |
 | `paper` « القسمة على الورقة » | 1AM `qisma-iqlidiya-baqi` | the step button | the division as written on a sheet, with what one says at each step (`gameworld/kit/longDivision.js`) |
 | `rules` « كاشف قابلية القسمة » | 1AM `qawaid-qabiliyat-qisma` | the digits of a padlock; a tap on a lamp | six lamps (2, 3, 4, 5, 9, 10) and the digits each rule reads |
+| `bracket` « مسطرة الحصر » | 2AM `qisma-iqlidiya-hasr` | the end of the last plank (how many planks of b are laid from 0 — reset to one plank when the numbers change; arrows and two buttons « لوح آخر + » / « − لوح » for one plank at a time) | planks of b along a length a (up to 9999, b up to 999): inside blue, the one that passes rose, what is left a dashed amber gap; under them « n × b = … <, =, > a ». The hand can lay at most ONE plank past the full ones (`logic.js › bracketOf`: `q`, `need`, `left`, `over`). Only once the hand has laid BOTH the full count and the next one does it write the bracket of these numbers (« 27 < 438 ÷ 16 < 28 », or « a ÷ b = q » when nothing is left) and the chip « الكاملة q · اللازمة q + 1 » — never a rule. Over 60 planks are drawn as one bar. Quests: the last plank alone passing, filling exactly with more than 10 planks, the full and the needed planks for a four-digit length and a two-digit plank |
+
+The three lessons of the division road (2026-11-18) each have an instrument of their own (status part S8): `paper` (1AM
+division) and `rules` (1AM divisibility) were already there; `bracket` is new. A 4AM lesson's cabinet now has THREE grades
+when it reaches 2AM: it opens on the NEAREST grade (2AM), 1AM is one tap away.
 
 **To add an instrument**: write `tools/<Name>.jsx`, add its `TOOLS` entry (lesson code + exact title), its maths in `logic.js`
 with tests, its `QUESTS` and its `observe` branch, a step in `e2e/lesson-lab.mjs`, and a row in the table above.
@@ -113,7 +119,7 @@ When a NEW lesson has a manipulation worth keeping at hand, give it an instrumen
 | a lesson with a game world (`qasim-adad-tabii`) | « مختبري » on the title screen (`data-di-lab-open`) | overlay `{ type: 'lab' }`, the lab rendered `inline` inside the game's root, with the lab's own sounds; the 3D world behind it is neither simulated nor drawn while it is open (`Game.js › loop`) |
 | a lesson in mission mode | « 🧪 مختبري » in the foot row of the returning home (`MissionHome`, `data-mission-lab`) | `?lab=1` |
 | any other lesson page, for a student | « 🧪 مختبري » beside the lesson chip (`data-lesson-lab-open`) | `?lab=1` |
-| the kit of « عُدّة الانطلاق » (`LAUNCH_KIT.md`) | « جرّب الأداة في مختبري » | `<LessonLab initialTool="paper" />`: the lab opens ON that instrument, put on the bench like a pick from the cabinet (ignored when the lesson has not reached it) |
+| the kit of « عُدّة الانطلاق » (`LAUNCH_KIT.md`) | « جرّب الأداة في مختبري » | `<LessonLab initialTool={family.labTool} />`: the lab opens ON that instrument, put on the bench like a pick from the cabinet (ignored when the lesson has not reached it). A family with no instrument (`labTool: null`, e.g. `1am.m1.r01`, shown before the lesson that introduces `paper`) shows no lab button and its capsule has no lab step |
 
 `LessonIndex` renders the lab for `?lab=1` when `hasLab(lesson)` (portal to the body); closing removes the parameter. A teacher
 gets no button (he may open `?lab=1` by hand). Lessons and the lab stay behind `RequireLargeScreen` (≥ 768 px).
@@ -138,18 +144,18 @@ Everything is inside the lazy lesson boundary: `LessonIndex` imports only `regis
 
 ## 8. Check
 
-- Unit: `npx vitest run src/lessons/common/lessonlab` in `apps/web` (23 tests in two files, `lab.test.js` and `planks.render.test.jsx` (the planks drawn by a server render: its labels, no raw formula, a plank kept inside the drawing): the order is the catalogue's; no future
+- Unit: `npx vitest run src/lessons/common/lessonlab` in `apps/web` (28 tests in three files, `lab.test.js`, `planks.render.test.jsx` (the planks drawn by a server render: its labels, no raw formula, a plank kept inside the drawing) and `bracket.render.test.jsx` (the opening plank, the product compared with a, no bracket before the hand laid both counts, a length shorter than one plank, and — through its `start` prop — 5000 planks of 2 laid on 9999 drawn by the one-bar branch: one bar and one rose plank, never thousands of rectangles); `bracketOf` is checked for every a ≤ 200, b ≤ 60 and every n: the order is the catalogue's; no future
   instrument for any lesson; every equality the instruments draw; quests ticked only by what was made; the sounds — every
   name played exists, a number has a note, a sound is short and quiet and does not rattle).
 - Walk: `node apps/web/e2e/lesson-lab.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): lesson 1 of 4AM
   from its game world, then the PGCD lesson from its mission home, then a lesson with no lab. Real pointer drags on the wall,
   the flag, the corner and the lens. At every screenshot: nothing scrolls, nothing leaves the screen, no label is clipped. The walk also LISTENS (in dev `sound.js`
   writes each sound it has really played into `window.__labSounds`): the opening chime, the ticks of the wall and the one
-  chime of the full rows, silence with the switch off, the eight hops, the drawer, the pencil, the scissors, the crown — 47 checks; plus 2 written on 2026-11-18 for `planks` (a real drag of the plank to 7 on 21 and 35: every length filled, two quests ticked) and the 4AM shelf of the PGCD lesson now listing four lessons — **these two steps have not been run yet**.
+  chime of the full rows, silence with the switch off, the eight hops, the drawer, the pencil, the scissors, the crown. Lesson 1 of 4AM counts three instruments in « خزانتي » (two of 1AM, one of 2AM), its cabinet opens on 2AM (`qisma-iqlidiya-hasr`, `bracket`) and the walk taps « 1AM » before `paper` and `rules`; the PGCD lesson's cabinet has three grades. **Since 2026-11-19 `bracket` and `planks` are PLAYED, and every drawing is read against what the walk computes itself** (`bracketWanted`, `planksWanted` — never read from the instrument): `bracket` on 100 ÷ 7 (one plank at the opening and no bracket, the hand drags to the 14 full planks — still no bracket —, then one more: « 14 < 100 ÷ 7 < 15 », the quest ticked), on new numbers 1000 ÷ 37 (27 full, 28 needed), on 84 ÷ 7 (filled exactly: the bracket closes on one number), and a HARD check that after typing 84 and 9 one « − لوح » does not write the bracket (the hand must lay both counts for the new numbers — the `Bracket.jsx` reset); `planks` (in the PGCD lesson's cabinet): the plank of 4 at the opening, then dragged to 7, 14 and 5, each time every row (planks, green, « يبقى r », where the planks and the gap end) compared with the computation. **This version of the walk has NOT been run yet** (2026-11-19).
 
 ## 9. Known limits
 
-- Nine instruments, all around division and divisors: the other units have none yet (their lessons show the cabinet only).
+- Ten instruments, all around division and divisors: the other units have none yet (their lessons show the cabinet only).
 - Not validated by the owner; no real student has used it.
 - The lab's state is not synced between devices.
 - The sounds were checked by a walk that reads what was played, not by a human ear: their level and their feel on a tablet's

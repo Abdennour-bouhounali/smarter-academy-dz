@@ -162,7 +162,25 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
   // LazyKnowledgeProvider la reçoit). Les invariants du graphe lui-même —
   // validité, items portés, aides, disposition — sont vérifiés par
   // apps/web/src/lessons/common/knowledge/progressive/lessonGraphs.test.js.
-  if (knowledgeMap) {
+  // A v2 lesson (`retiredModules: true`, LESSON_V2.md §2) has ONE knowledge source, the file its pack names
+  // (`lesson.pack.js › knowledge: () => import('./…')`): that file must export the graph (the world's « خريطة المعارف »).
+  // It needs no root knowledge.jsx / knowledgeGraph.js — they were the deleted lesson's map.
+  const v2Lesson = existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'));
+  const packFile = join(lessonDir, 'lesson.pack.js');
+  const packKnowledge = v2Lesson && existsSync(packFile)
+    ? readFileSync(packFile, 'utf-8').match(/knowledge:\s*\(\)\s*=>\s*import\('\.\/([^']+)'\)/)?.[1] ?? null
+    : null;
+  if (knowledgeMap && v2Lesson) {
+    if (knowledgeMapMode !== 'progressive') {
+      errors.push(`${configPath}: knowledgeMap: true requires knowledgeMapMode: 'progressive' (got ${JSON.stringify(knowledgeMapMode)}) — docs/architecture/KNOWLEDGE_MAP.md A.13`);
+    }
+    const file = packKnowledge && [packKnowledge, `${packKnowledge}.js`, `${packKnowledge}.jsx`].map((f) => join(lessonDir, f)).find((f) => existsSync(f));
+    if (!file) {
+      errors.push(`${rel}: a v2 lesson with knowledgeMap: true needs a pack whose \`knowledge\` names an existing file — docs/architecture/LESSON_V2.md §1`);
+    } else if (!/export\s+const\s+KNOWLEDGE_GRAPH\b|export\s*\{\s*KNOWLEDGE_GRAPH\s*\}/.test(readFileSync(file, 'utf-8'))) {
+      errors.push(`${relative(repoRoot, file)}: the pack's knowledge must export KNOWLEDGE_GRAPH (the lesson's map) — docs/architecture/LESSON_V2.md §2`);
+    }
+  } else if (knowledgeMap) {
     if (knowledgeMapMode !== 'progressive') {
       errors.push(`${configPath}: knowledgeMap: true requires knowledgeMapMode: 'progressive' (got ${JSON.stringify(knowledgeMapMode)}) — docs/architecture/KNOWLEDGE_MAP.md A.13`);
     }

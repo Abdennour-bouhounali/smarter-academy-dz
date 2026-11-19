@@ -21,7 +21,10 @@ namespace App\Domain\GameWorld;
  */
 final class ClaimVerifier
 {
-    public const KINDS = ['division', 'product', 'phrase', 'sure', 'containers', 'pair', 'divisors', 'stop', 'divisible'];
+    public const KINDS = [
+        'division', 'product', 'phrase', 'sure', 'containers', 'pair', 'divisors', 'stop', 'divisible',
+        'bracket', 'fullNeeded', 'pgcd', 'coprime', 'commonDivisor', 'fraction',
+    ];
 
     /** Les nombres admis : des entiers naturels de taille scolaire. */
     public const MAX = 1000000;
@@ -121,9 +124,67 @@ final class ClaimVerifier
                 }
 
                 return $c['fits'] === ($a % $b === 0);
+            case 'bracket':
+                // le quotient de a par b entre deux naturels CONSÉCUTIFS : b × lo ≤ a < b × hi, hi = lo + 1
+                [$a, $b, $lo, $hi] = [$n('a'), $n('b'), $n('lo'), $n('hi')];
+                if ($a === null || $b === null || $lo === null || $hi === null || $b === 0) {
+                    return false;
+                }
+
+                return $hi === $lo + 1 && $b * $lo <= $a && $a < $b * $hi;
+            case 'fullNeeded':
+                // les contenants de b que a remplit (quotient par défaut) et ceux qu'il faut (quotient par excès)
+                [$a, $b, $full, $need] = [$n('a'), $n('b'), $n('full'), $n('need')];
+                if ($a === null || $b === null || $full === null || $need === null || $b === 0) {
+                    return false;
+                }
+
+                return $full === intdiv($a, $b) && $need === intdiv($a + $b - 1, $b);
+            case 'pgcd':
+                // g est le PGCD de a et b, pas tous deux nuls (PGCD(a ; 0) = a)
+                [$a, $b, $g] = [$n('a'), $n('b'), $n('g')];
+                if ($a === null || $b === null || $g === null || $a + $b === 0) {
+                    return false;
+                }
+
+                return $g === self::gcd($a, $b);
+            case 'coprime':
+                // « a et b sont premiers entre eux » dit juste
+                [$a, $b] = [$n('a'), $n('b')];
+                if ($a === null || $b === null || $a < 1 || $b < 1 || ! is_bool($c['says'] ?? null)) {
+                    return false;
+                }
+
+                return $c['says'] === (self::gcd($a, $b) === 1);
+            case 'commonDivisor':
+                // d divise a ET b
+                [$a, $b, $d] = [$n('a'), $n('b'), $n('d')];
+                if ($a === null || $b === null || $d === null || $a < 1 || $b < 1 || $d < 1) {
+                    return false;
+                }
+
+                return $a % $d === 0 && $b % $d === 0;
+            case 'fraction':
+                // a/b la fraction donnée, p/q l'écriture de l'élève : égales (a × q = p × b) et, sauf
+                // `reduced === false`, p/q irréductible (PGCD(p ; q) = 1)
+                [$a, $b, $p, $q] = [$n('a'), $n('b'), $n('p'), $n('q')];
+                if ($a === null || $b === null || $p === null || $q === null || $b === 0 || $q === 0) {
+                    return false;
+                }
+
+                return $a * $q === $p * $b && (($c['reduced'] ?? null) === false || self::gcd($p, $q) === 1);
             default:
                 return false;
         }
+    }
+
+    private static function gcd(int $a, int $b): int
+    {
+        while ($b !== 0) {
+            [$a, $b] = [$b, $a % $b];
+        }
+
+        return $a;
     }
 
     /** L'identité d'un item généré : la même division posée deux fois est le MÊME item (règle des items distincts). */

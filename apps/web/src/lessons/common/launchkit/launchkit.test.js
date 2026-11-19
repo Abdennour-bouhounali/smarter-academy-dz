@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { toolsForLesson, getItem } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
+import { toolsForLesson, getItem, homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
+import { TOOLS } from '../lessonlab/registry';
+import { isReached } from '../lessonlab/order';
 import { FAMILIES, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
 import {
   planTools,
@@ -25,7 +27,18 @@ const rng = (seed) => {
   };
 };
 /** Is a sort card to be accepted? Computed here from the card's own numbers — never read from its `bin`. */
+/** « $7 \\times 8 + 3 = 59$ » → is it true? Computed here (the product before the sum), or null for another shape. */
+const arithmetic = (text) => {
+  const m = String(text).match(/^\$(\d+(?: (?:\\times|[+-]) \d+)+) = (\d+)\$$/);
+  if (!m) return null;
+  const value = (t) => t.split(' \\times ').reduce((p, x) => p * Number(x), 1);
+  const lhs = m[1]
+    .split(' + ')
+    .reduce((sum, term) => sum + term.split(' - ').reduce((v, x, i) => (i === 0 ? value(x) : v - value(x)), 0), 0);
+  return lhs === Number(m[2]);
+};
 const accepts = (q, c) => {
+  if (arithmetic(c.text) !== null) return arithmetic(c.text);
   if (c.say) return c.verb === 'divisor' ? Number.isInteger(c.y / c.x) : Number.isInteger(c.x / c.y); // « x قاسم لـ y » / « x مضاعف لـ y », « x يقبل القسمة على y »
   if (q.of) return Number.isInteger(q.of / c.n);
   const m = c.text.match(/^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/);
@@ -34,12 +47,18 @@ const accepts = (q, c) => {
   return sign === '+' && b * k + r === a && r < b;
 };
 /** The full-mark answer of a question, computed here — never read from the question. */
+/** The value of a question that carries its operation, computed here from its operands: « x × y », « x − y », « x × y + z ». */
+const calcApart = ({ op, x, y, z }) => (op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z);
 const right = (q) =>
-  q.gesture === 'write'
-    ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
-    : q.gesture === 'place'
-      ? { x: q.b * Math.floor(q.a / q.b), moved: true }
-      : Object.fromEntries(q.cards.map((c) => [c.id, accepts(q, c) ? 'yes' : 'no']));
+  q.calc
+    ? q.gesture === 'write'
+      ? { v: String(calcApart(q.calc)) }
+      : { x: calcApart(q.calc), moved: true }
+    : q.gesture === 'write'
+      ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
+      : q.gesture === 'place'
+        ? { x: q.b * Math.floor(q.a / q.b), moved: true }
+        : Object.fromEntries(q.cards.map((c) => [c.id, accepts(q, c) ? 'yes' : 'no']));
 const withRest = (q) => q.tokens.some((t) => t.slot === 'r');
 const each = (fn) => {
   for (const f of Object.values(FAMILIES))
@@ -56,10 +75,15 @@ describe('عُدّة الانطلاق — the question families', () => {
       expect(f.memo.length).toBeGreaterThanOrEqual(3);
       expect(f.forms[1].length).toBeGreaterThanOrEqual(1);
       expect(f.forms[2].length).toBeGreaterThanOrEqual(2);
-      expect(readFileSync(new URL('../lessonlab/registry.js', import.meta.url), 'utf8')).toContain(
-        `id: '${f.labTool}'`,
-      );
+      // the instrument (if any) belongs to a lesson already studied when the kit is shown: the home lesson of the item, or
+      // one before it — never the tool the lesson being prepared introduces itself
+      if (f.labTool === null) continue;
+      const tool = TOOLS.find((t) => t.id === f.labTool);
+      expect(tool, `${f.item}: ${f.labTool}`).toBeTruthy();
+      expect(isReached(tool.lesson, homeLessonOf(f.item).code), `${f.item}: ${f.labTool} (${tool.lesson})`).toBe(true);
     }
+    // « الجمع والطرح والضرب » is shown before « القسمة الإقليدية »: « القسمة على الورقة » is that lesson's own tool
+    expect(FAMILIES['1am.m1.r01'].labTool).toBe(null);
     expect(familyFor('4am.m1.r02')).toBe(null);
   });
 
@@ -81,6 +105,7 @@ describe('عُدّة الانطلاق — the question families', () => {
   it('keeps the numbers of each level where they belong', () => {
     each((f, level, form, q, seed) => {
       if (f.item === '2am.m1.r04') return; // the 2AM division has its own ranges (a two-digit divisor), checked below
+      if (f.item === '1am.m1.r01') return; // the operations are not a division: their own ranges, checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -257,6 +282,93 @@ describe('عُدّة الانطلاق — the question families', () => {
     for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
   });
 
+  it('« الجمع والطرح والضرب » (1AM): its operations are true, in their ranges, and a slip is named', () => {
+    const item = '1am.m1.r01';
+    const seen = new Set();
+    each((f, level, form, q, seed) => {
+      if (f.item !== item) return;
+      if (q.gesture === 'write') {
+        const { op, x, y, z } = q.calc;
+        expect(q.tokens.filter((t) => typeof t === 'object').map((t) => t.slot)).toEqual(['v']);
+        expect(q.tokens.slice(0, 3)).toEqual([String(x), { times: '×', minus: '−', timesPlus: '×' }[op], String(y)]);
+        if (op === 'timesPlus') expect(z).toBeLessThan(x); // the shape of « b × q + r »: what is left is smaller
+        if (op === 'minus') expect(x - y).toBeGreaterThan(0);
+        if (level === 1) {
+          expect(op).not.toBe('timesPlus');
+          if (op === 'times') expect(Math.max(x, y)).toBeLessThanOrEqual(9);
+          if (op === 'minus') expect(x).toBeLessThan(70);
+        }
+        if (level === 1 && seed % 5 === 0) expect(x * y).toBeLessThanOrEqual(25); // the very first question: a near-certain win
+        if (level === 2 && op === 'times') expect(x).toBeGreaterThanOrEqual(12);
+        if (level === 2 && op === 'minus') expect(x % 10).toBeLessThan(y % 10); // a borrow is needed
+        if (op === 'minus') expect(q.prompt).toContain('دج');
+        expect(q.prompt).not.toMatch(/DA|\\times/);
+      }
+      if (q.gesture === 'place') {
+        expect(q.target).toBe(q.calc.x - q.calc.y);
+        expect(q.a).toBe(q.calc.x);
+        expect(q.a).toBeLessThan(q.max);
+        expect(q.target).toBeGreaterThan(0);
+        expect(grade(q, { x: q.calc.x + q.calc.y, moved: true }).mistake).toBe('add-for-sub');
+      }
+    });
+    // the sort on spread seeds (the first draw of a small seed is near 0 and always picks the first shape)
+    for (let seed = 1; seed <= 200; seed += 1) {
+      const q = makeQuestion(rng(seed * 104729 + 17), item, 2, 'sort');
+      for (const c of q.cards) {
+        expect(c.bin, c.text).toBe(arithmetic(c.text) ? 'yes' : 'no');
+        if (c.trap) seen.add(c.trap);
+      }
+    }
+    expect([...seen].sort()).toEqual(['borrow-forgot', 'order-ops', 'table-slip']);
+    // a slip is named by grade, from the operation alone
+    const w = (op, x, y, z) => ({ gesture: 'write', calc: { op, x, y, z }, tokens: [{ slot: 'v' }] });
+    expect(grade(w('times', 7, 8), { v: '56' })).toEqual({ correct: true, mistake: null });
+    expect(grade(w('times', 7, 8), { v: '63' })).toEqual({ correct: false, mistake: 'table-slip' });
+    expect(grade(w('times', 7, 8), { v: '50' })).toEqual({ correct: false, mistake: null });
+    expect(grade(w('timesPlus', 6, 9, 5), { v: '84' })).toEqual({ correct: false, mistake: 'order-ops' });
+    expect(grade(w('timesPlus', 6, 9, 5), { v: '59' })).toEqual({ correct: true, mistake: null });
+    expect(grade(w('minus', 72, 47), { v: '35' })).toEqual({ correct: false, mistake: 'borrow-forgot' });
+    expect(grade(w('minus', 72, 47), { v: '119' })).toEqual({ correct: false, mistake: 'add-for-sub' });
+    expect(grade(w('minus', 72, 47), { v: '25' })).toEqual({ correct: true, mistake: null });
+    // every worked example: each equality it writes is true, and it answers the mistake it was opened on
+    const eqs = (steps) =>
+      steps
+        .flatMap((s) => [...s.matchAll(/\$([^$]*=[^$]*)\$/g)].map((m) => m[1]))
+        .filter((e) => !/[a-z]/.test(e.replaceAll('\\times', '')));
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, 'table-slip', 'borrow-forgot', 'order-ops', 'add-for-sub']) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          const all = eqs(e.steps);
+          expect(all.length, mistake).toBeGreaterThanOrEqual(2);
+          for (const x of all) {
+            const [l, r] = x.split(' = ');
+            expect(arithmetic(`$${x}$`) ?? arithmetic(`$${r} = ${l}$`), `${mistake}: ${x}`).toBe(true); // « 23 = 20 + 3 » too
+          }
+          if (mistake === 'order-ops') expect(e.steps.at(-1)).toMatch(/\\times \d+ \+ \d+ =/);
+          if (mistake === 'borrow-forgot' || mistake === 'add-for-sub') expect(e.title).toContain('الاستلاف');
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+        }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // every mistake its grading names is one of the family's: the borrow example opens on 'add-for-sub' too
+    expect(FAMILIES[item].mistakes).toContain('add-for-sub');
+  });
+
+  it('the three lessons of the division road take their tools from the net, each with its family', () => {
+    const plan = (code) =>
+      planTools(toolsForLesson(code), (id) => Boolean(familyFor(id))).map((t) => [t.item, t.lesson.code]);
+    // « القسمة الإقليدية » (1AM) stands on the operations of « معنى الجمع والطرح »
+    expect(plan('qisma-iqlidiya-baqi')).toEqual([['1am.m1.r01', 'mana-jam-tarh']]);
+    // « قواعد قابلية القسمة » stands on the Euclidean division
+    expect(plan('qawaid-qabiliyat-qisma')).toEqual([['1am.m3.r01', 'qisma-iqlidiya-baqi']]);
+    // « القسمة الإقليدية وحصر حاصل القسمة » (2AM): the 1AM division — never 2am.m1.r05, the الكفاءة of the lesson AFTER it
+    expect(plan('qisma-iqlidiya-hasr')).toEqual([['1am.m3.r01', 'qisma-iqlidiya-baqi']]);
+    for (const code of ['qisma-iqlidiya-baqi', 'qawaid-qabiliyat-qisma', 'qisma-iqlidiya-hasr'])
+      for (const t of toolsForLesson(code).filter((l) => l.weight !== 'support'))
+        expect(familyFor(t.id), `${code}: ${t.id}`).toBeTruthy();
+  });
+
   it('takes the tools of « قواسم عدد طبيعي » from the learning net: the الكفاءة of the lesson before it, then the 2AM division', () => {
     const tools = planTools(toolsForLesson('qawasim-adad-tabii'), (id) => Boolean(familyFor(id)));
     expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
@@ -292,6 +404,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       return used.map((u) => u.slice(2));
     };
     expect(Object.fromEntries(Object.keys(FAMILIES).map((item) => [item, order(item, 2)]))).toEqual({
+      '1am.m1.r01': ['sort', 'write'],
       '1am.m3.r01': ['sort', 'write'],
       '2am.m1.r04': ['sort', 'write'],
       '1am.m3.r02': ['three', 'nine', 'four'], // no form named `sort`: its own order
@@ -334,17 +447,23 @@ function playLaunch(tools, wants, { seed = 1, answers = [], skipWorkshop = false
   throw new Error('a launch never ends');
 }
 const rightOf = (q) =>
-  q.gesture === 'write'
-    ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
-    : q.gesture === 'place'
-      ? { x: q.b * Math.floor(q.a / q.b), moved: true }
-      : Object.fromEntries(q.cards.map((c) => [c.id, c.bin]));
+  q.calc
+    ? right(q)
+    : q.gesture === 'write'
+      ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
+      : q.gesture === 'place'
+        ? { x: q.b * Math.floor(q.a / q.b), moved: true }
+        : Object.fromEntries(q.cards.map((c) => [c.id, c.bin]));
 const wrongOf = (q) =>
-  q.gesture === 'write'
-    ? { q: String(Math.floor(q.a / q.b) + 1), r: String(q.a % q.b) }
-    : q.gesture === 'place'
-      ? { x: q.a + 1, moved: true }
-      : Object.fromEntries(q.cards.map((c) => [c.id, c.bin === 'yes' ? 'no' : 'yes']));
+  q.calc
+    ? q.gesture === 'write'
+      ? { v: String(calcApart(q.calc) + 1) }
+      : { x: q.target + 1, moved: true }
+    : q.gesture === 'write'
+      ? { q: String(Math.floor(q.a / q.b) + 1), r: String(q.a % q.b) }
+      : q.gesture === 'place'
+        ? { x: q.a + 1, moved: true }
+        : Object.fromEntries(q.cards.map((c) => [c.id, c.bin === 'yes' ? 'no' : 'yes']));
 const trail = (list) =>
   list.map(
     (a) =>
@@ -420,6 +539,19 @@ describe('عُدّة الانطلاق — whole launches (the documented student
       const again = playLaunch(pilot, () => true, { seed: seed + 1, answers: kept, skipWorkshop: true });
       expect(trail(again.slice(kept.length))).toEqual(['A1:write+', 'A2:sort+']); // was A2:write: the 1AM sort is reachable
       expect(scoreOf(kitOf(pilot, again)).percent).toBe(100);
+    }
+  });
+
+  it('« القسمة الإقليدية » (1AM): a student who knows takes off, one who misses everything gets the capsule', () => {
+    const one = planTools(toolsForLesson('qisma-iqlidiya-baqi'), has);
+    for (let seed = 1; seed <= 40; seed += 1) {
+      const knows = playLaunch(one, () => true, { seed });
+      expect(trail(knows)).toEqual(['A1:write+', 'A2:sort+']);
+      expect(scoreOf(kitOf(one, knows)).percent).toBe(100);
+      expect(gateOf(kitOf(one, knows))).toBe(null);
+      const misses = playLaunch(one, () => false, { seed });
+      expect(trail(misses)).toEqual(['A1:write-', 'A1:place-', 'A1:place/workshop-', 'A1:place/workshop-']);
+      expect(gateOf(kitOf(one, misses)).item).toBe('1am.m1.r01');
     }
   });
 

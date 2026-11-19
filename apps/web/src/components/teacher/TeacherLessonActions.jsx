@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ClipboardList, GraduationCap } from 'lucide-react';
 import { useLessonConfig } from '../../lessons/useLessonConfig';
+import { lessonPackFlags } from '../../lessons/registry';
 import { lessonMemoPath, classDoor } from '../../features/teacher/lessonMemo/memoRoutes';
 
 /**
@@ -9,12 +10,15 @@ import { lessonMemoPath, classDoor } from '../../features/teacher/lessonMemo/mem
  * inventés : une leçon non construite n'en montre aucun. Compact (une puce
  * par محور, titre tronqué, titre complet au survol) pour que la carte ne
  * s'allonge pas.
+ *
+ * A lesson whose pack has a WORLD (a v2 lesson, LESSON_V2.md §2) shows none: its module pages are deleted (their
+ * addresses only redirect to the world) — its modules are progress DATA, not steps a teacher can open.
  */
 export function LessonModuleChips({ lessonId }) {
   const { t } = useTranslation('teacher');
   // La config complète (titres des محاور) se charge avec la page d'unité.
   const modules = useLessonConfig(lessonId)?.modules ?? [];
-  if (modules.length === 0) return null;
+  if (modules.length === 0 || lessonPackFlags(lessonId).world) return null;
   return (
     <div data-lesson-modules={lessonId}>
       <h4 className="mb-1.5 text-[11px] font-extrabold uppercase tracking-wider text-slate-500">{t('lessonCard.modulesTitle')}</h4>

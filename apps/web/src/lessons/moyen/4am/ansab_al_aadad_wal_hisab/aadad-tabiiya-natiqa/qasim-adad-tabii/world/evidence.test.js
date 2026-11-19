@@ -3,11 +3,24 @@ import { rng } from '../../../../../../common/gameworld/kit/random';
 import { trainer, solution, check, PLAN_OF } from './trainer';
 import { MISSIONS, makeMission, judge, answerOf } from '../../../../../../common/gameworld/divisorIsles/cases';
 import { trainerEvidence, caseEvidence, evidence } from './evidence';
+import { guardEvidence } from '../../../../../../common/gameworld/kit/evidence';
 
 const { makeSession } = trainer;
 const { payloadOf, verify } = evidence;
 
 const FIRST = { firstTry: true, helped: false };
+/** Every answer that keeps one part of the right answer and spoils another: a box emptied, a number moved, a yes flipped. */
+function halfWrong(right) {
+  if (typeof right !== 'object' || right === null) return [];
+  const out = [];
+  for (const k of Object.keys(right)) {
+    const v = right[k];
+    if (typeof v === 'boolean') out.push({ ...right, [k]: !v });
+    else for (const w of ['', Number(v) + 1, Number(v) - 1, 0]) out.push({ ...right, [k]: w });
+  }
+  return out;
+}
+
 /** The الكفاءة a key proves, read from what would be sent to the server. */
 const learningPointOf = (lessonId, key) => payloadOf(lessonId, 'case', { key, claim: {} }, 'id')?.learningPoint ?? null;
 
@@ -65,6 +78,27 @@ describe('which game answers count toward الكفاءات', () => {
     // a division that is right but concluded wrongly is NOT evidence of the learning point
     expect(verify({ kind: 'division', a: 143, b: 11, q: 13, r: 0, fits: false })).toBe(false);
     expect(verify({ kind: 'division', a: 143, b: 11, q: 12, r: 11, fits: false })).toBe(false); // remainder not smaller than the divisor
+  });
+
+  it('a half-wrong answer never yields a true claim (and the kit drops one that would)', () => {
+    let tried = 0;
+    for (const id of Object.keys(PLAN_OF))
+      for (let seed = 1; seed <= 40; seed += 1)
+        for (const q of makeSession(rng(seed * 13 + 5), id)) {
+          if (q.format !== 'exam' || q.kind === 'tf') continue;
+          for (const v of halfWrong(solution(q))) {
+            if (check(q, v).ok) continue;
+            const ev = trainerEvidence(q, v, FIRST);
+            tried += 1;
+            expect(ev && verify(ev.claim), `${q.kind} ${JSON.stringify(v)}`).toBeFalsy();
+            expect(guardEvidence(ev, false)?.claim ?? null).toEqual(ev?.claim ?? null);
+          }
+        }
+    expect(tried).toBeGreaterThan(500);
+    // the kit's net: a TRUE claim for an answer the check calls wrong is never sent
+    const ok = { key: 'k', claim: { kind: 'sure', a: 9, x: 1, y: 9 } };
+    expect(guardEvidence(ok, false)).toBe(null);
+    expect(guardEvidence(ok, true)).toBe(ok);
   });
 
   it('builds the payload the server expects, and nothing for a question without a learning point', () => {

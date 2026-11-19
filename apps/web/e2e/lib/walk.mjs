@@ -12,15 +12,19 @@
 //   cut         no text of the game is cut by the edge of the window (except inside a box that slides on a phone);
 //   rawLatex    no `$` and no backslash command readable on screen outside a drawn formula (`.katex`);
 //   formulas    every drawn formula reads left to right (KaTeX's atoms in order) and keeps ONE line;
-//   fontFloor   no visible text under 12 px (computed size × every CSS zoom above it): on a phone, and at every size for a
-//               walk created with `fontFloor: true` (the knowledge map's labels, scaled to its panel, stay exempt);
+//   fontFloor   no visible text under 12 px (computed size × every CSS zoom above it), at EVERY size, for every walk — a
+//               drawn formula is measured at its own size (the `.katex` box: its exponents and indices are KaTeX's), nothing
+//               else is exempt (the knowledge map included, since 2026-11-19);
 //   wayOut      a way out (the selectors given) is on screen and nothing covers it; `sound: true` asks the sound button too;
 //   foreign     no word of ANOTHER lesson (`FOREIGN`), no « نقطة التعلّم », money only in « دج ».
 //
 // createWalk(name, { foreign, foreignNumbers, fontFloor }) — per walk: more words and numbers of other lessons than the
-// pilot's (a later lesson adds the lessons before it), and `fontFloor: true` to apply the 12 px floor at EVERY size (or a number: from that width only). The kit holds 12 px at every size since 2026-11-18 (GAME_WORLD.md « 12 px floor »).
+// pilot's (a later lesson adds the lessons before it). The 12 px floor is ON by default (GAME_WORLD.md « 12 px floor »);
+// `fontFloor: false` switches it off and must say why in a comment where it is written. The threshold is 12 px, less only
+// the 0.05 px of rounding a zoom leaves (`px < 11.95`). Walks with their OWN `shot` call `tinyText(page)` for the same rule.
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
+import { foreignToAll, WORLD_LESSONS } from './lessonWords.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -30,37 +34,65 @@ export const TOUCH = process.env.E2E_TOUCH === '1';
 /** A phone held sideways: touch, and at most 500 px high (engine/phoneScreen.js › SHORT_SCREEN). */
 export const PHONE = TOUCH && SIZE[1] <= 500;
 export const SIZE_NAME = `${SIZE[0]}x${SIZE[1]}${TOUCH ? '-touch' : ''}`;
-export const lessonUrl = (unit, id) => `${BASE}/courses/moyen/4am/${unit}/${id}`;
+/** A lesson's page: `grade` is the year of the lesson (4am by default; a 1AM or 2AM lesson passes its own). */
+export const lessonUrl = (unit, id, grade = '4am') => `${BASE}/courses/moyen/${grade}/${unit}/${id}`;
+const PILOT = 'qasim-adad-tabii';
 
 /**
- * Words that belong to the PILOT lesson `qasim-adad-tabii` (its rules, its real-world worlds, its levels): none may be read
- * inside another lesson (GAME_WORLD.md § 2ter-0 rule 2). Its store's numbers (756, 32 / 36, 1850) are checked by number on the
- * screens that show no generated number (`numbers` option of `shot`).
+ * The words of the PILOT lesson `qasim-adad-tabii` (its rules, its real-world worlds, its levels, its islands, its store):
+ * none may be read inside another lesson (GAME_WORLD.md § 2ter-0 rule 2). Read from the lessons' data (lib/lessonWords.mjs):
+ * every name that is foreign to ALL the other lessons of the world, since every walk that is not the pilot's checks it.
+ * Its store's numbers (756, 32 / 36, 1850) are checked by number on the screens that show no generated number (`numbers`
+ * option of `shot`).
  */
-export const FOREIGN = [
-  'القاسم بالباقي',
-  'القاسم بالجداء',
-  'أربع جمل، معنى واحد',
-  'تعاونية الواحة',
-  'قعدة الأصدقاء',
-  'ورشة التبليط',
-  'سباق: مضاعف ويقبل القسمة',
-  'سباق: الجمل الأربع وفخاخها',
-  'سباق: أعداد عنيدة',
-  'الطلبيّة العنيدة',
-  'مخزن الجسر الأعظم',
-];
+export const FOREIGN = foreignToAll(WORLD_LESSONS.filter((id) => id !== PILOT));
 export const FOREIGN_NUMBERS = [756, 1850];
 /**
- * What belongs to LESSON 2 `qawasim-adad-tabii` (its story, its key names, its store): read in a later lesson, it is a
- * screen of the wrong lesson. Its numbers: the stone's 252, the store's 96 books, 1400 and 11200 دج.
+ * The words that the walks of lesson 3 `khawass-qawasim` AND of the pilot both check (the pilot's `gameworld-sitting`
+ * imports it too): every name of the other lessons that neither of the two writes (lib/lessonWords.mjs). Extra, by hand:
+ * « جداء عاملين », lesson 2's knowledge card (its tablet's name is longer: « جداء عاملين: قاسمان معًا »).
+ * Its numbers stay lesson 2's: the stone's 252, the store's 96 books, 1400 and 11200 دج.
  */
-export const QAWASIM_WORDS = ['جزر الأزواج', 'جزيرة الأزواج', 'جداء عاملين', 'القاسم: جداء بعدد طبيعي', 'أين نتوقّف', 'قواعد قابلية القسمة'];
+export const QAWASIM_WORDS = foreignToAll(['khawass-qawasim', PILOT], ['جداء عاملين']);
 export const QAWASIM_NUMBERS = [252, 96, 1400, 11200];
+
+/** The 12 px floor, less the 0.05 px of rounding a CSS zoom leaves (GAME_WORLD.md « 12 px floor »). */
+export const FLOOR_PX = 11.95;
+
+/**
+ * The visible texts under 12 px on the page (computed size × every CSS zoom above it; a drawn formula at the size of its
+ * `.katex` box) — the rule of `shot`, for the walks that keep their own screenshot function. Returns « tag.class 11.2px « text » ».
+ */
+export const tinyText = (page) =>
+  page.evaluate((FLOOR) => {
+    const tiny = [];
+    const zoomOf = (el) => {
+      let z = 1;
+      for (let x = el; x && x.nodeType === 1; x = x.parentElement) z *= parseFloat(getComputedStyle(x).zoom) || 1;
+      return z;
+    };
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let t = w.nextNode(); t; t = w.nextNode()) {
+      const p = t.parentElement;
+      if (!p || !t.nodeValue.trim() || p.closest('script, style, noscript, .katex-mathml, title')) continue;
+      if (!p.getClientRects().length) continue;
+      const cs = getComputedStyle(p);
+      if (cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
+      const r = p.getBoundingClientRect();
+      if (r.width <= 1 || r.height <= 1 || r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) continue;
+      const el = p.closest('.katex') ?? p;
+      const px = parseFloat(getComputedStyle(el).fontSize) * zoomOf(el);
+      if (px < FLOOR) tiny.push(`${el.tagName.toLowerCase()}.${String(el.className?.baseVal ?? el.className).split(' ')[0]} ${px.toFixed(1)}px « ${t.nodeValue.trim().slice(0, 24)} »`);
+    }
+    return [...new Set(tiny)];
+  }, FLOOR_PX);
 
 const LAUNCH = GL_ARGS; // the GPU when the machine has one, software otherwise (lib/gpu.mjs)
 
-export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor = false } = {}) {
+/** `pilot: true` — a walk OF the pilot lesson: its own words and numbers (`FOREIGN`, `FOREIGN_NUMBERS`) are not foreign there. */
+export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor = true, pilot = false } = {}) {
+  const baseWords = pilot ? [] : FOREIGN;
+  const baseNumbers = pilot ? [] : FOREIGN_NUMBERS;
   const out = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/${name}`;
   mkdirSync(out, { recursive: true });
   const t0 = Date.now();
@@ -104,8 +136,9 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
    * A student session on a lesson page. `seed` = localStorage entries (already prefixed) written before the app starts;
    * every `/api/` call is answered by a mock (`auth/me` → the student) and RECORDED in `window.__api`; the bodies posted to
    * `/game-evidence` are kept in `window.__posts`. « عُدّة الانطلاق » of `lessonId` is seeded as played.
+   * `grade`: the student's year (4am by default; a walk of a 1AM or 2AM lesson passes its own).
    */
-  async function student({ uid, lessonId, url, seed = {} }) {
+  async function student({ uid, lessonId, url, seed = {}, grade = '4am' }) {
     if (!browser) await launch();
     const ctx = await browser.newContext({
       viewport: { width: SIZE[0], height: SIZE[1] },
@@ -113,7 +146,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
       ...(TOUCH ? { hasTouch: true, isMobile: true } : {}),
     });
     await ctx.addInitScript(
-      ([id, lesson, entries]) => {
+      ([id, lesson, entries, year]) => {
         window.__paperFast = true; // the paper gate's few seconds of « pick up your pen » are skipped by the walk
         window.__forgeFast = true;
         try {
@@ -124,7 +157,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
         } catch {
           /* noop */
         }
-        const user = { id, name: 'تلميذ', firstName: 'ياسين', lastName: 'بلقاسم', role: 'student', roles: ['student'], email: 'eleve@example.test', email_verified_at: '2026-09-01T00:00:00Z', emailVerified: true, nameComplete: true, level: '4am', grade: '4am' };
+        const user = { id, name: 'تلميذ', firstName: 'ياسين', lastName: 'بلقاسم', role: 'student', roles: ['student'], email: 'eleve@example.test', email_verified_at: '2026-09-01T00:00:00Z', emailVerified: true, nameComplete: true, level: year, grade: year };
         const real = window.fetch.bind(window);
         window.fetch = async (input, init) => {
           const url = typeof input === 'string' ? input : input.url;
@@ -144,7 +177,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
           return real(input, init);
         };
       },
-      [uid, lessonId, seed],
+      [uid, lessonId, seed, grade],
     );
     const page = await ctx.newPage();
     page.on('pageerror', (e) => {
@@ -154,7 +187,11 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
     page.on('console', (m) => {
       if (m.type() === 'error' && !/favicon|fonts|ERR_|Failed to load resource/.test(m.text())) console.log('console.error', m.text().slice(0, 300));
     });
-    await page.goto(url, { waitUntil: 'networkidle' });
+    // The DOM, then the app's own sign that it started (index.html's boot spinner replaced by React), then a quiet
+    // network AT BEST: « networkidle » alone waited on every dev module and could time out the whole walk (a load flake).
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.waitForFunction(() => !document.querySelector('#root .root-spinner'), null, { timeout: 60000 });
+    await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
     return { page, ctx };
   }
 
@@ -162,6 +199,8 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
   const ff = (page, sec) =>
     page.evaluate(async (s) => {
       const g = window.__world;
+      // no world: the page reloaded under the walk (a hot reload — source edited while a walk runs) or left the world
+      if (!g) throw new Error('ff: window.__world is gone — the page reloaded (a source edit during a walk?)');
       for (let t = 0; t < s; t += 0.04) {
         g.step(0.04);
         await null;
@@ -209,7 +248,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
   /** Visible text: no `$`, no `\command` outside a drawn formula; and every word of another lesson. */
   const readScreen = (page, numbers) =>
     page.evaluate(
-      ([foreign, foreignNumbers, checkNumbers]) => {
+      ([foreign, foreignNumbers, checkNumbers, FLOOR_PX]) => {
         const raw = [];
         const tiny = [];
         const words = [];
@@ -242,9 +281,11 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
           if (r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) continue;
           text += ` ${v}`;
           if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(v)) raw.push(v.trim().slice(0, 70));
-          if (!p.closest('.katex') && !p.closest('.di-kmap')) {
-            const px = parseFloat(cs.fontSize) * zoomOf(p);
-            if (px < 11.5) tiny.push(`${p.tagName.toLowerCase()}.${String(p.className?.baseVal ?? p.className).split(' ')[0]} ${px.toFixed(1)}px « ${v.trim().slice(0, 24)} »`);
+          {
+            // a formula is read at its own size (its exponents and indices are smaller by KaTeX's design)
+            const el = p.closest('.katex') ?? p;
+            const px = parseFloat(getComputedStyle(el).fontSize) * zoomOf(el);
+            if (px < FLOOR_PX) tiny.push(`${el.tagName.toLowerCase()}.${String(el.className?.baseVal ?? el.className).split(' ')[0]} ${px.toFixed(1)}px « ${v.trim().slice(0, 24)} »`);
           }
         }
         // a formula reads left to right: the atoms KaTeX writes in order must stand left to right on screen (a formula laid
@@ -266,10 +307,12 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
         for (const f of foreign) if (text.includes(f)) words.push(f);
         if (checkNumbers) for (const k of foreignNumbers) if (new RegExp(`(^|[^0-9])${k}([^0-9]|$)`).test(text)) words.push(String(k));
         const learningPoint = text.includes('نقطة التعلّم') || text.includes('نقطة التعلم');
-        const money = /\bDA\b|€|\bUSD\b|د\.ج/.test(text);
+        // « DA » glued to a number (« 900DA ») is money too: no Latin letter on either side (a segment DA in a formula is drawn
+        // letter by letter, one text node each)
+        const money = /(?<![A-Za-z])DA(?![A-Za-z])|€|\bUSD\b|د\.ج/.test(text);
         return { raw: [...new Set(raw)], tiny: [...new Set(tiny)], words, learningPoint, money, mirrored: [...new Set(mirrored)], cut: [...new Set(cut)] };
       },
-      [[...FOREIGN, ...foreign], [...FOREIGN_NUMBERS, ...foreignNumbers], numbers],
+      [[...baseWords, ...foreign], [...baseNumbers, ...foreignNumbers], numbers, FLOOR_PX],
     );
 
   /** Is one of these selectors on screen, inside the window, and the element a tap at its centre reaches? */
@@ -290,9 +333,11 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
    * Checks the screen, then takes its screenshot (the visible screen only: a full-page capture switches the phone rules off).
    * opts: exit — selectors of the way out (one must be reachable); sound — the sound button must be reachable too (true: the
    *       world's `[data-di-sound]`; or the selectors of a screen's own button);
-   *       numbers — the pilot's store numbers may not be read (screens with no generated number).
+   *       numbers — the pilot's store numbers may not be read (screens with no generated number);
+   *       allow — { words, numbers } of another lesson that THIS screen may show because it shows the lesson's exercise
+   *       bank as it is (lib/bankSheet.mjs › bankWrites) — passed on the sheet screens only, never on the others.
    */
-  async function shot(page, label, { exit = null, sound = false, numbers = false } = {}) {
+  async function shot(page, label, { exit = null, sound = false, numbers = false, allow = null } = {}) {
     await page.waitForTimeout(300);
     const where = `${label} @ ${SIZE_NAME}`;
     const s = await noScroll(page);
@@ -302,11 +347,12 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
     check(t.cut.length === 0, `${where}: no text is cut by the edge of the window${t.cut.length ? ' — ' + t.cut.slice(0, 5).join(' | ') + (t.cut.length > 5 ? ` (+${t.cut.length - 5})` : '') : ''}`);
     check(t.raw.length === 0, `${where}: no raw formula on screen${t.raw.length ? ' — ' + t.raw.map((x) => `« ${x} »`).join(' | ') : ''}`);
     check(t.mirrored.length === 0, `${where}: every formula reads left to right, on one line${t.mirrored.length ? ' — ' + t.mirrored.map((x) => `« ${x} »`).join(' | ') : ''}`);
-    check(t.words.length === 0, `${where}: nothing of another lesson on screen${t.words.length ? ' — ' + t.words.join(', ') : ''}`);
+    const allowed = new Set([...(allow?.words ?? []), ...(allow?.numbers ?? []).map(String)]);
+    const words = t.words.filter((x) => !allowed.has(x));
+    check(words.length === 0, `${where}: nothing of another lesson on screen${words.length ? ' — ' + words.join(', ') : ''}${allowed.size && t.words.length > words.length ? ` (the bank's own text here: ${t.words.filter((x) => allowed.has(x)).join(', ')})` : ''}`);
     check(!t.learningPoint && !t.money, `${where}: « الكفاءة », never « نقطة التعلّم »; money in « دج » only`);
-    // the knowledge map is scaled to fit its panel by the kit: its edge labels are exempt from the laptop floor (phones are paused)
-    const tiny = t.tiny.filter((x) => PHONE || !/di-kmap__edge/.test(x));
-    if (PHONE || (fontFloor && SIZE[0] >= (fontFloor === true ? 0 : fontFloor))) check(tiny.length === 0, `${where}: ${PHONE ? 'on the phone ' : ''}no visible text under 12 px${tiny.length ? ' — ' + tiny.slice(0, 8).join(' | ') + (tiny.length > 8 ? ` (+${tiny.length - 8})` : '') : ''}`);
+    const tiny = t.tiny;
+    if (PHONE || fontFloor !== false) check(tiny.length === 0, `${where}: ${PHONE ? 'on the phone ' : ''}no visible text under 12 px${tiny.length ? ' — ' + tiny.slice(0, 8).join(' | ') + (tiny.length > 8 ? ` (+${tiny.length - 8})` : '') : ''}`);
     if (exit) {
       const hit = await reachable(page, exit);
       check(Boolean(hit), `${where}: a way out is on screen and reachable (${hit ?? exit.join(' / ')})`);

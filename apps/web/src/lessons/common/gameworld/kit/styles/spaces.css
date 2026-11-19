@@ -354,7 +354,7 @@
   border: 1.5px dashed #0f766e;
 }
 .di-tablet__mine small {
-  font-size: 0.82rem;
+  font-size: max(var(--di-min-font, 12px), 0.82rem);
   font-weight: 800;
   color: #0f766e;
 }

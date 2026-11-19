@@ -8,7 +8,7 @@
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/class-lesson-khawass.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
-import { FOREIGN, FOREIGN_NUMBERS, QAWASIM_WORDS, QAWASIM_NUMBERS } from './lib/walk.mjs';
+import { FOREIGN, FOREIGN_NUMBERS, QAWASIM_WORDS, QAWASIM_NUMBERS, FLOOR_PX } from './lib/walk.mjs';
 import { mkdirSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -205,8 +205,9 @@ const shot = async (name, wait = 450) => {
     process.exitCode = 1;
     throw new Error(`layout at ${name}`);
   }
-  // soft: text under 12 px (every CSS zoom counted), a button something covers, the board's ✕ not reachable
-  const soft = await page.evaluate(() => {
+  // soft: text under 12 px (every CSS zoom counted; the floor of lib/walk.mjs), a button something covers, the board's ✕
+  // not reachable
+  const soft = await page.evaluate((FLOOR) => {
     const tiny = [];
     const covered = [];
     const zoomOf = (el) => {
@@ -224,7 +225,7 @@ const shot = async (name, wait = 450) => {
       const cs = getComputedStyle(p);
       if (cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
       const px = parseFloat(cs.fontSize) * zoomOf(p);
-      if (px < 11.5)
+      if (px < FLOOR)
         tiny.push(
           `${p.tagName.toLowerCase()}.${String(p.className).split(' ')[0]} ${px.toFixed(1)}px « ${t.nodeValue.trim().slice(0, 20)} »`,
         );
@@ -249,7 +250,7 @@ const shot = async (name, wait = 450) => {
         Boolean(top && (top === x || x.contains(top)));
     }
     return { tiny: [...new Set(tiny)], covered: [...new Set(covered)], exit };
-  });
+  }, FLOOR_PX);
   // the 12 px floor holds at every size (GAME_WORLD.md « 12 px floor »; phones are paused)
   check(
     soft.tiny.length === 0,
@@ -398,10 +399,26 @@ try {
   await nameStep('name-1', 'jam-wal-farq');
   await next();
   await askStep('stack', 18 * 100, [3, 6, 7, 11], 7);
+  const board = () => page.evaluate(() => document.querySelector('.cs-root').innerText);
+  {
+    // ONE direction only: 7 and 11 are not judged by the key (« they do not fill 18 » proves nothing about 1800 —
+    // 25 fills 1800 = 25 × 72 and not 18): the bridges the board built say it
+    const t = await board();
+    check(
+      !/لا يملآن/.test(t) && t.includes('7 و 11'),
+      'stack: the planks 7 and 11 are left to the bridges — the board does not say « they do not fill 18 » as a reason',
+    );
+  }
   await next();
   await nameStep('name-2', 'madaaf');
   await next();
   await askStep('peel', 735 % 280, [5, 7, 10, 14, 35, 70], 10);
+  {
+    // the planks of both fill the remainder — never « they ARE the planks of the remainder » (25 fills 175 = 25 × 7
+    // and not 280)
+    const t = await board();
+    check(!/هي نفسها|نفسها التي/.test(t), 'peel: the board states the key in its one direction, not as an equivalence');
+  }
   await next();
   await nameStep('name-3', 'baqi-qisma');
   await next();
@@ -410,6 +427,14 @@ try {
   await askStep('other', 13 * 20 + 13 * 21, [7, 11, 13, 17], 7);
   await next();
   await nameStep('name-4', 'burhan');
+  {
+    // the tablet of the proof is written with the letters of the student's proof cards: k and k′ (q is the quotient)
+    const tex = await page.$$eval('.cs-root annotation', (els) => els.map((e) => e.textContent));
+    check(
+      tex.some((f) => f.includes("k'")) && !tex.some((f) => /(^|[^a-z\\])[pq]([^a-z]|$)/.test(f)),
+      `name-4: the proof on the board uses k and k′, never p or q (${tex.filter((f) => /k/.test(f)).join(' · ')})`,
+    );
+  }
 
   // ══ 4. the copybook: two pages of two keys ══
   const KEYS = Object.keys(TITLES);

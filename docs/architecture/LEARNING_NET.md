@@ -201,7 +201,7 @@ link may carry a weight, whatever its type:
 | `noRebuildForLesson(code)` | For each item that `extends`/`consolidates` an earlier one: the base, its home lesson and the added value | Lesson generation (§4) |
 | `earlierYearReviewFor({ learningPointCode, lessonCode })` | The review links of the learning point's lesson (or of `lessonCode` when the code is not a known LP), keeping only items from an **earlier year** | « راجع » after a wrong answer (`features/learning/EarlierYearReview.jsx`) |
 | `lessonCodeOfLearningPoint(lpCode)` | `{grade}_{lesson}_P{n}` → `lesson`, or `null` | the above |
-| `toolsForLesson(code, { max = 4 })` | The prerequisites a launch measures, in the order it measures them: core first, then support; at equal weight the nearest year first, then programme order. Flat: `[{ id, grade, segment, textAr, via, weight, lesson }]` | « عُدّة الانطلاق » (`launchkit/engine.js › planTools`), the review table |
+| `toolsForLesson(code, { max = 4 })` | The prerequisites a launch measures, in the order it measures them: core first, then support; at equal weight the nearest year first, then programme order. **Never an item whose home lesson comes AFTER the lesson** (2026-11-18: « القسمة الإقليدية وحصر حاصل القسمة », 2AM order 5, shares `2am.m1.r06` with the lesson of order 6, and `2am.m1.r06` requires `2am.m1.r05` — the link goes from r05 to r06 — whose home is that lesson of order 6: r05 stays a review link of lesson 5, never a tool). Flat: `[{ id, grade, segment, textAr, via, weight, lesson }]` | « عُدّة الانطلاق » (`launchkit/engine.js › planTools`), the review table |
 | `corePrerequisitesOf(itemId)`, `coreDependentsOf(itemId)` | One step along the core links, down and up | Planned: the automatic update and the diagnosis (`LAUNCH_KIT_PLAN_2026-11-17.md`, phase 3) |
 | `weightOf(link)`, `WEIGHTS`, `WEIGHTED_GRADES` | The weight of a link (`null` when not classified) | — |
 | `homeLessonOf(itemId)`, `lessonsOf(itemId)`, `linksInto`, `linksFrom`, `itemRank`, `getItem`, `getLesson`, `UNITS` | Primitives | — |
@@ -519,6 +519,38 @@ What the grain gaps teach: **65 items are taught by more than one lesson (one by
 item.** A level measured on an item cannot always be pinned on one lesson; the home lesson (the first that teaches it) is
 where a student is sent. This is why the picture of a الكفاءة planned for « عُدّة الانطلاق » keeps the learning-point level,
 measured by the exercises, as its first source, and uses the item grain for the years where the student has no exercise yet.
+
+### 8quater. Open for the owner — 18 « prerequisite taught later » pairs hidden by the guard (computed 2026-11-19)
+
+Since 2026-11-18 `toolsForLesson` drops an item whose home lesson comes AFTER the lesson (§3). The guard is right for a
+launch (it never measures what is not taught yet), but it also HIDES the pairs where the net says a lesson needs an item
+that the catalogue teaches later — either the link, the item's home lesson or the catalogue order is wrong. Computed from
+the net (`reviewLinksForLesson`, home lesson later in `LESSONS`): **18 pairs, all in 1AM–3AM (8 / 6 / 4), none in 4AM**;
+all are `requires` links not yet weighted (1AM–3AM are not classified). To review with the net (`2am.m1.r05` is the case
+that made the guard, `qisma-iqlidiya-hasr`):
+
+| Grade | Lesson (order) | Needs item | Whose home lesson comes later |
+|---|---|---|---|
+| 1AM | `kusur-ashriya-kitaba` (1) | `1am.m1.r05` | `mana-jam-tarh` |
+| 1AM | `kusur-ashriya-kitaba` (1) | `1am.m5.r01` | `hasil-qisma-kasr` |
+| 1AM | `adad-ashri-mustaqim-mudarraj` (2) | `1am.m1.r04` | `muqaranat-adad-ashriya` |
+| 1AM | `hasr-qiyam-muqarraba` (4) | `1am.m3.r03` | `qisma-ashriya-taqrib` |
+| 1AM | `tatbiq-qaida-harfiya` (25) | `1am.m2.r08` | `mustatil-murabba-masaha` |
+| 1AM | `naql-tul-muntasaf` (41) | `1am.m4.r08` | `nazir-shakl-khawas` |
+| 1AM | `qays-zawiya-minqala` (56) | `1am.m4.r03` | `tasnif-zawaya-munassif` |
+| 1AM | `tasnif-zawaya-munassif` (57) | `1am.m4.r08` | `nazir-shakl-khawas` |
+| 2AM | `qisma-iqlidiya-hasr` (5) | `2am.m1.r05` | `kasr-hasil-qisma` |
+| 2AM | `jam-tarh-kusur` (7) | `2am.m1.r08` | `muqarana-kasrayn` (the contradiction of §8bis) |
+| 2AM | `nazirat-nuqta` (39) | `2am.m2.r02` | `markaz-tanazur-shakl` |
+| 2AM | `nazir-shakl-khawas-2` (40) | `2am.m2.r02` | `markaz-tanazur-shakl` |
+| 2AM | `mawshur-qaim-wasf` (60) | `2am.m7.r05` | `ustuwana-dawaran-wasf` |
+| 2AM | `hajm-mawshur-qaim` (61) | `2am.m7.r04` | `ustuwana-dawaran-wasf` |
+| 3AM | `mutawassit-mutawazin` (29) | `3am.m7.r08` | `fiat-takrarat` |
+| 3AM | `mutawassit-mutawazin` (29) | `3am.m7.r09` | `tamthil-silsila-ihsaiya` |
+| 3AM | `mahawir-munassifat` (41) | `3am.m4.r03` | `khassiyat-fitaghuras` |
+| 3AM | `awda-daira-mustaqim` (45) | `3am.m4.r03` | `khassiyat-fitaghuras` |
+
+Nothing was changed (no link, no order): each pair is the owner's call, best taken with the 1AM–3AM weights.
 
 ### 8ter. Other open items
 

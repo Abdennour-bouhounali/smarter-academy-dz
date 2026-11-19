@@ -283,6 +283,18 @@ describe('poids des liens — core / support', () => {
       for (const t of tools) expect(t.lesson, `${t.id} a une leçon d’accueil`).toBeTruthy();
     }
     expect(toolsForLesson('inconnue')).toEqual([]);
+    // a tool is an EARLIER الكفاءة: 2am.m1.r06, which the lesson of order 5 shares, requires 2am.m1.r05 (home « الكسر: نسبة
+    // وحاصل قسمة », order 6; the link goes from r05 to r06) — r05 is a review link of lesson 5, never one of its tools
+    expect(reviewLinksForLesson('qisma-iqlidiya-hasr').flatMap((g) => g.items.map((i) => i.id))).toContain('2am.m1.r05');
+    expect(toolsForLesson('qisma-iqlidiya-hasr').map((t) => [t.id, t.lesson.code])).toEqual([
+      ['1am.m3.r01', 'qisma-iqlidiya-baqi'],
+    ]);
+    for (const lesson of LESSONS.filter((l) => l.kind !== 'synthesis'))
+      for (const t of toolsForLesson(lesson.code, { max: 9 }))
+        if (t.lesson)
+          expect(LESSONS.findIndex((l) => l.code === t.lesson.code), `${lesson.code} ← ${t.id}`).toBeLessThan(
+            LESSONS.findIndex((l) => l.code === lesson.code),
+          );
   });
 
   it('garde le poids le plus fort quand un item est atteint par deux liens', () => {

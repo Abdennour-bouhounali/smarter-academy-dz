@@ -28,6 +28,8 @@ import { SoundToggle } from './parts';
 import { TX } from './text';
 
 const fmt = (n) => String(n).replace('.', ',');
+/** A rung whose level has no sheet to sit yet (`sittings.available`): said, never a dead button. */
+const NO_SHEET = 'لا توجد بعدُ ورقة امتحان لهذه الدرجة';
 const Stars = ({ n, size = 18 }) => (
   <span className="di-stars3" dir="ltr">
     {[1, 2, 3].map((i) => (
@@ -38,6 +40,19 @@ const Stars = ({ n, size = 18 }) => (
 
 export function ExamLadder({ s, game }) {
   const { journey, sittings } = useLesson();
+  // the sheets are the lesson's bank (bankSitting.js): a level's minutes and points are known once it is loaded
+  const [, setLoaded] = useState(sittings.ready());
+  useEffect(() => {
+    let live = true;
+    if (!sittings.ready())
+      sittings.prepare().then(
+        () => live && setLoaded(true),
+        () => {},
+      );
+    return () => {
+      live = false;
+    };
+  }, [sittings]);
   const exam = s.exam;
   const open = journey.examOpen(s.openKeys, s.practice);
   const next = journey.nextExamLevel(exam);
@@ -53,27 +68,34 @@ export function ExamLadder({ s, game }) {
       <p className="di-dim">{TX.spaces.passAt}</p>
       <ol className="di-rungs">
         {sittings.levels.map((L, i) => {
-          const can = examLevelOpen(exam, L.n);
+          // a level of the bank with nothing to mark (bankSitting.js › available) cannot be sat: shown, never opened.
+          // Before the bank is loaded it is not known yet — the rung opens, and the sitting says « empty » if need be.
+          const none = sittings.ready() && !sittings.available(L.n);
+          const can = examLevelOpen(exam, L.n) && !none;
           const best = exam.best?.[L.n];
           const focus = (exam.weak?.[L.n] ?? []).length > 0;
           return (
             <li
               key={L.n}
               style={{ '--rise': i }}
-              className={`${can ? '' : 'is-locked'} ${next === L.n ? 'is-next' : ''} ${best ? 'is-passed' : ''}`}
+              className={`${can ? '' : 'is-locked'} ${none ? 'is-empty' : ''} ${next === L.n && !none ? 'is-next' : ''} ${best ? 'is-passed' : ''}`}
             >
               <button
                 type="button"
                 disabled={!can}
                 onClick={() => game.openSitting(L.n)}
                 data-di-exam-level={L.n}
-                title={can ? undefined : TX.spaces.lockedLevel}
+                data-di-exam-empty={none ? '' : undefined}
+                title={can ? undefined : none ? NO_SHEET : TX.spaces.lockedLevel}
               >
                 <b className="di-rung__n">{can ? L.n : <Lock size={18} />}</b>
                 <strong>{L.title}</strong>
-                <small>
-                  <Clock size={13} /> {TX.spaces.minutes(L.minutes)} · {TX.spaces.points(sittings.levelPoints(L))}
-                </small>
+                {sittings.levelPoints(L) && (
+                  <small>
+                    <Clock size={13} /> {TX.spaces.minutes(sittings.levelMinutes(L))} ·{' '}
+                    {TX.spaces.points(sittings.levelPoints(L))}
+                  </small>
+                )}
                 <Stars n={best?.stars ?? 0} />
                 {best && (
                   <small dir="ltr">
@@ -83,10 +105,14 @@ export function ExamLadder({ s, game }) {
                   </small>
                 )}
                 {focus && can && <em>{TX.spaces.focus}</em>}
-                <span className="di-rung__go">
-                  {best ? <RotateCcw size={15} /> : <Play size={15} fill="currentColor" />}{' '}
-                  {best ? TX.spaces.again : TX.spaces.start}
-                </span>
+                {none ? (
+                  <small className="di-rung__none">{NO_SHEET}</small>
+                ) : (
+                  <span className="di-rung__go">
+                    {best ? <RotateCcw size={15} /> : <Play size={15} fill="currentColor" />}{' '}
+                    {best ? TX.spaces.again : TX.spaces.start}
+                  </span>
+                )}
               </button>
             </li>
           );
@@ -160,7 +186,9 @@ export function Promotion({ o, game }) {
               <button
                 type="button"
                 className="di-btn di-btn--primary"
-                onClick={() => game.openKnow(cards.ofExercise[r.weak[0]] ?? cards.fallback)}
+                onClick={() =>
+                  game.openKnow(cards.ofExercise?.[r.weak[0]] ?? cards.ofKey?.[r.weak[0]] ?? cards.fallback)
+                }
                 data-di-promo-train
               >
                 <Compass size={17} /> {TX.spaces.train}

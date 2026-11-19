@@ -19,7 +19,7 @@ lesson stands on — a programme item of the learning net, of the same grade or 
 | A station per tool | 2 or 3 questions; each right answer lights a segment; a miss says « سنعود إليه » |
 | The quick workshop (≈ 1 min, only if needed) | the weakest tool is repaired on the spot: a worked example revealed step by step, opened on the mistake the answers showed, then two similar questions |
 | The kit | each tool in one of four states, the score, « نجمة الصدق », ONE lesson to revise first with four actions |
-| The capsule (≈ 3 min, only when the gate asks) | a CORE tool left at « نبدأ منها »: its card, a worked example, its instrument in the lab, two easy questions — then the door is open (§3bis) |
+| The capsule (≈ 3 min, only when the gate asks) | a CORE tool left at « نبدأ منها »: its card, a worked example, its instrument in the lab (when its family has one), two easy questions — then the door is open (§3bis) |
 | The take-off | countdown, then the lesson starts |
 
 It is **one component for every lesson**: `<LaunchKit lessonCode lessonTitle onDone onClose inline />` needs only the lesson's
@@ -124,6 +124,7 @@ Families on 2026-11-17 (the two prerequisites of the pilot lesson, then the pilo
 | `1am.m3.r01` | القسمة الإقليدية | write « 47 = 6 × ▢ + ▢ »; place the greatest multiple not beyond the number | sort three equalities (is it THE Euclidean division?) — asked first; write with a two-digit divisor | `paper` |
 | `1am.m3.r02` | قواعد قابلية القسمة | sort by 2, by 5 | sort by 3, by 9, by 4 — with numbers chosen to trap the wrong rule | `rules` |
 | `2am.m1.r04` | القسمة الإقليدية على أيّ عدد (2AM, 2026-11-18) | write « 47 = 13 × ▢ + ▢ » (a two-digit divisor, quotient ≤ 5; the first one ≤ 29); place the greatest multiple of 11–15 on the 0–60 line | sort three equalities where « $9 = 14 \times 0 + 9$ » must be ACCEPTED (`miss` `quotient-zero`; four shapes in five hold such a card) beside the traps of the remainder — asked first; write a three-digit number by 12–25 (a two-digit quotient, remainder 0 possible). Its worked example estimates the quotient by tens first | `paper` |
+| `1am.m1.r01` | الجمع والطرح والضرب (2026-11-18) | write « 7 × 8 = ▢ » in a situation (pencils in boxes; the first one ≤ 25) or « 47 − 42 = ▢ » (money in دج); place the flag on « a − d » (a pinned on the 0–60 line) | sort three equalities « صحيحة / خاطئة » — a neighbour of the table (`table-slip`), « 5 × 9 + 4 = 65 » the sum before the product (`order-ops`), a borrow forgotten (`borrow-forgot`) beside true ones — asked first; write « 23 × 4 », « 6 × 9 + 5 » (the shape of b × q + r) or a three-digit subtraction with a borrow. A question carries its operation (`calc`): `grade` re-computes it; a sum written for a difference, or the flag moved the wrong way, is `add-for-sub` (in the family's `mistakes`, its worked example is the borrow). Worked examples: product first, the borrow, the table built from a known product or by tens | **none** (`labTool: null`, 2026-11-19): this kit is shown BEFORE « القسمة الإقليدية », and `paper` is that lesson's own instrument. A family's instrument must belong to the item's home lesson or one before it (`launchkit.test.js`); with none, the capsule skips its lab step (card → example → questions) and the result shows no « مختبري » button |
 | `4am.m1.r01` | قاسم عدد طبيعي | write « 42 = 6 × ▢ » (the equality that shows a divisor); sort three numbers: divisor of 36 or not — a multiple of it is a trap | sort three sentences « صحيحة / خاطئة » (« قاسم », « مضاعف », « يقبل القسمة »: true, turned round, or with a remainder); sort numbers where 1 or the number itself appears | `rows` |
 
 Lessons 2 « قواسم عدد طبيعي » and 3 « خواص قواسم عدد طبيعي » (`qawasim-adad-tabii`, `khawass-qawasim`) share their
@@ -133,6 +134,13 @@ divides the remainder, uses it; link added in the net, `LEARNING_NET.md` §2.2bi
 that every core link has a family. The `2am.m1.r04` family also gives the three PGCD lessons the core tool they had no family
 for. **Re-walked 2026-11-18**: `launch-kit-qawasim.mjs` and `launch-kit-khawass.mjs` (rewritten for the two tools, one shared
 scenario, `e2e/lib/launchKitTwoTools.mjs`) pass at 1366×768, 1024×768 and 1840×900 (§7).
+
+**The division road (2026-11-18)** — `toolsForLesson` (learning net): « القسمة الإقليدية » (1AM) has ONE tool, `1am.m1.r01`
+(new family above); « قواعد قابلية القسمة » has `1am.m3.r01`; « القسمة الإقليدية وحصر حاصل القسمة » (2AM) has `1am.m3.r01`. The
+2AM lesson ALSO received `2am.m1.r05` (« قيمة مقرّبة لحاصل قسمة عشري », home « الكسر: نسبة وحاصل قسمة », the lesson AFTER it,
+which shares `2am.m1.r06` with it — and `2am.m1.r06` requires `2am.m1.r05`, the link goes from r05 to r06): **a tool is an EARLIER الكفاءة** — `toolsForLesson` now drops an item whose home lesson
+comes after the lesson (`LEARNING_NET.md` §3, `toolsForLesson`); it stays in the lesson's review links. No family was written for `2am.m1.r05`.
+A family no longer carries a `lesson` field: a lesson that has a pack is never named by shared code (`lessonPack.test.js`).
 
 **A lesson with no family for its tools opens an EMPTY kit** (« عُدّتك جاهزة », 0 / 0 — seen by the owner on lesson 2,
 2026-11-17): a family per core tool is part of a lesson's definition of done (`status:lesson-v2`, part S1).
@@ -155,11 +163,11 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
 - the gate (§3bis) lives in the browser like the rest: a teacher does not see who needed a capsule;
 - no picture of a الكفاءة with its sources (measured / deduced), no window of earlier الكفاءات, no automatic update from a
   later success, no « prerequisite or new idea? » diagnosis, no class grid;
-- four families: a lesson whose tools have none has no launch.
+- five families (`1am.m1.r01`, `1am.m3.r01`, `1am.m3.r02`, `2am.m1.r04`, `4am.m1.r01`): a lesson whose tools have none has no launch.
 
 ## 7. Check
 
-- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (25 tests: families true and in range — the 2AM division with its own ranges —, the tools of lessons 2 and 3 read from the net, named mistakes,
+- Unit: `npx vitest run src/lessons/common/launchkit` in `apps/web` (28 tests: families true and in range — the 2AM division with its own ranges, the 1AM operations with theirs (every equality of their worked examples evaluated, every slip named) —, the tools of lessons 2 and 3 and of the three lessons of the division road read from the net, a whole launch of « القسمة الإقليدية » (one who knows, one who misses everything and gets the capsule), named mistakes,
   the engine — never one answer, the workshop, the caps, the fresh tools, the gate and its capsule, the honesty star —,
   the order of the level-2 forms of every family, WHOLE launches played by the pure pieces the component chains
   (`nextStep` → `nextForm` → `makeQuestion` → `grade`, seeded) for the documented students of the walks — their sequences,
@@ -183,6 +191,16 @@ Phase 1 is a prototype to judge the feel. **Not built** (plan, phases 2–4):
   is computed from its own equality, a card « s = b × 0 + s » must be in « قسمة إقليدية »; the walk FAILS if the sort never
   came up and prints a `note` when neither sort happened to hold a quotient-0 card (one shape in five). The pilot's walk
   re-checks the 1AM division and now meets its level-2 sort there (boxes computed apart too).
+- Walks of the ONE-tool launches (2026-11-19, **written, NOT yet run**): `node apps/web/e2e/launch-kit-baqi.mjs`,
+  `launch-kit-qawaid.mjs`, `launch-kit-hasr.mjs` [outDir] — one scenario for all three, `e2e/lib/launchKitTwoTools.mjs ›
+  walkLaunchOne({ id, url, grade, outName, ids, alien, tool })`, the lesson giving only its tool (`item`, `name`, its
+  year, its home lesson, `labTool`, the lines of its memo, the shape of the very first question). Four students: one who
+  knows (one tool in the bag, 2 / 2, take-off); one who slips on the level-2 sort of three equalities (the workshop,
+  repaired); one who misses everything (the capsule, the door opens anyway); one who misses then answers the capsule right
+  (repaired, take-off). Every answer is computed from the screen. Tools: `qisma-iqlidiya-baqi` ← « الجمع والطرح والضرب »
+  (`1am.m1.r01`); `qawaid-qabiliyat-qisma` and `qisma-iqlidiya-hasr` ← « القسمة الإقليدية » (`1am.m3.r01`, on `paper`).
+  Known mismatch to fix before the run: `launch-kit-baqi.mjs` still expects the lab on `paper`, while `1am.m1.r01` has NO
+  instrument since 2026-11-19 (`families.js`: `labTool: null` — the capsule skips its lab step).
 - The older game-world walks seed the launch as already played (`u_<id>_smarter_launch_kit`).
 - **On a phone held sideways** (`E2E_TOUCH=1 E2E_SIZE=800x370`: 55 checks; rules in `GAME_WORLD.md` « On a phone »): the bag
   is compact, a capsule's body slides inside itself, and « الدرس كاملًا » of an earlier lesson is a link only when that

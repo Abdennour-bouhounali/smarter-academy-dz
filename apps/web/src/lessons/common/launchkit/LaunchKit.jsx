@@ -411,7 +411,8 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
       play('step');
       return;
     }
-    if (cap.step < 2) {
+    // a family with no instrument (`labTool: null`) has no lab step: from the example straight to the questions
+    if (cap.step < 2 && (cap.step < 1 || FAMILIES[cap.item].labTool)) {
       setCap({ ...cap, step: cap.step + 1 });
       play('step');
       return;
@@ -708,12 +709,15 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
                   <BatteryCharging size={17} /> {L.capsule}: {FAMILIES[cap.item].icon} {FAMILIES[cap.item].name}
                 </span>
                 <ol className="lk-capsteps">
-                  {CAPSULE_STEPS.map((st, i) => (
-                    <li key={st} className={i === cap.step ? 'is-now' : i < cap.step ? 'is-done' : ''}>
-                      <b>{i < cap.step ? '✓' : i + 1}</b>
-                      {L.capStep[st]}
-                    </li>
-                  ))}
+                  {CAPSULE_STEPS.filter((st) => st !== 'lab' || FAMILIES[cap.item].labTool).map((st, n) => {
+                    const i = CAPSULE_STEPS.indexOf(st);
+                    return (
+                      <li key={st} className={i === cap.step ? 'is-now' : i < cap.step ? 'is-done' : ''}>
+                        <b>{i < cap.step ? '✓' : n + 1}</b>
+                        {L.capStep[st]}
+                      </li>
+                    );
+                  })}
                 </ol>
               </div>
               {cap.step === 0 && (
@@ -770,7 +774,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
                   >
                     {cap.step === 1 && cap.shown < cap.ex.steps.length
                       ? `${L.nextStep} ◂`
-                      : cap.step === 2
+                      : cap.step === 2 || (cap.step === 1 && !FAMILIES[cap.item].labTool)
                         ? `${L.toQuestions} ◂`
                         : `${L.next} ◂`}
                   </button>
@@ -861,17 +865,19 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
                     >
                       <StickyNote size={17} /> {L.memo}
                     </button>
-                    <button
-                      type="button"
-                      className="lk-btn"
-                      onClick={() => {
-                        setLab(true);
-                        play('ui');
-                      }}
-                      data-lk-lab-open
-                    >
-                      <FlaskConical size={17} /> {L.lab}
-                    </button>
+                    {shownF?.labTool && (
+                      <button
+                        type="button"
+                        className="lk-btn"
+                        onClick={() => {
+                          setLab(true);
+                          play('ui');
+                        }}
+                        data-lk-lab-open
+                      >
+                        <FlaskConical size={17} /> {L.lab}
+                      </button>
+                    )}
                     <button type="button" className="lk-btn" onClick={() => recheck(shown.item)} data-lk-recheck>
                       <RotateCcw size={17} /> {L.recheck}
                     </button>
@@ -971,7 +977,7 @@ export default function LaunchKit({ lessonCode, lessonTitle, onDone, onClose, in
           </div>
         )}
       </div>
-      {lab && (labF ?? shownF) && (
+      {lab && (labF ?? shownF)?.labTool && (
         <Suspense fallback={null}>
           <LessonLab
             lessonCode={lessonCode}

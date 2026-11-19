@@ -22,13 +22,17 @@ const STEP_KEY = {
   'tiling.boxes': 'qasim-baqi',
 };
 
+/** A box of the answer as a number — a box left EMPTY is no number (never 0: a blank must not complete a claim). */
+const box = (value, k) => (value?.[k] == null || String(value[k]).trim() === '' ? NaN : Number(value[k]));
+
 /**
- * Evidence of a TRAINER answer, or null when it does not count.
+ * Evidence of a TRAINER answer, or null when it does not count. Its claim states the WHOLE answer: a half-wrong answer
+ * (a box left empty, one part right and one wrong) never makes a true claim.
  * ctx = { firstTry, helped } — helped: a model sheet or the rule was opened before this answer.
  */
 export function trainerEvidence(q, value, ctx) {
   if (q.format !== 'exam' || !counts(ctx)) return null;
-  const n = (k) => Number(value?.[k]);
+  const n = (k) => box(value, k);
   switch (q.kind) {
     case 'division':
       return {
@@ -53,7 +57,7 @@ export function caseEvidence(order, stepIndex, value, ctx) {
   const key = STEP_KEY[`${order.kind}.${step.id}`];
   if (!key || step.type !== 'number' || !step.div || !counts(ctx)) return null;
   const [a, b] = step.div;
-  const n = (k) => (value?.[k] == null ? null : Number(value[k]));
+  const n = (k) => (value?.[k] == null || String(value[k]).trim() === '' ? null : Number(value[k]));
   // what the student wrote, as a claim about the Euclidean division of a by b
   if (step.id === 'trucks' || step.id === 'boxes') return { key, claim: { kind: 'containers', a, b, count: n('x') } };
   if (step.id === 'capacity') return { key, claim: { kind: 'product', a, b: n('x'), q: b, other: b } };

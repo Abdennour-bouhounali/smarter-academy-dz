@@ -4,6 +4,7 @@
 // Run (dev server up): node apps/web/e2e/gameworld-practice.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
+import { tinyText } from './lib/walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -23,7 +24,9 @@ async function noScroll(page, where) {
   const measure = () => page.evaluate(() => {
     const bad = []; const small = [];
     // a formula is DRAWN: no dollar sign, no backslash command may be read on screen (text outside the rendered formulas)
-    { const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('.katex, script, style')) continue; if (/\$|\\(times|div|frac|dfrac|le|ge|ne|sqrt|cdot)\b/.test(t.nodeValue) && p.getClientRects().length) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); } }
+    // (any backslash command, as lib/walk.mjs › readScreen), and money is « دج » only — never « DA », €, USD or « د.ج »
+    { let text = ''; const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); for (let t = w.nextNode(); t; t = w.nextNode()) { const p = t.parentElement; if (!p || p.closest('script, style, noscript, .katex-mathml, title') || !p.getClientRects().length) continue; if (!p.closest('.katex') && /\$|\\[a-zA-Z]{2,}/.test(t.nodeValue)) bad.push('raw formula on screen: « ' + t.nodeValue.trim().slice(0, 60) + ' »'); const cs = getComputedStyle(p); if (cs.visibility !== 'hidden' && Number(cs.opacity) !== 0) text += ` ${t.nodeValue}`; }
+      if (/(?<![A-Za-z])DA(?![A-Za-z])|€|\bUSD\b|د\.ج/.test(text)) bad.push('money not in « دج » (DA, €, USD or د.ج on screen)'); }
     const name = (el) => `${el.tagName.toLowerCase()}.${String(el.className).split(' ').slice(0, 2).join('.')}`;
     for (const el of document.querySelectorAll('.di-root *')) {
       const cs = getComputedStyle(el);
@@ -46,6 +49,8 @@ async function noScroll(page, where) {
   // a « cut » that is only a fit in progress gets a moment — a real cut stays and fails
   for (let i = 0; i < 5 && res.bad.length && res.bad.every((b) => b.startsWith('cut:')); i += 1) { await page.waitForTimeout(300); res = await measure(); }
   for (const x of res.small) shrunk.set(x, where);
+  // the 12 px floor (GAME_WORLD.md « 12 px floor »), at every size: the shared rule of lib/walk.mjs › tinyText
+  { const tiny = await tinyText(page); if (tiny.length) res.bad.push(`text under 12 px: ${tiny.slice(0, 8).join(' | ')}${tiny.length > 8 ? ` (+${tiny.length - 8})` : ''}`); }
   if (res.bad.length) { console.log('FAIL no scrolling at «', where, '»:', res.bad.join(' | ')); process.exitCode = 1; throw new Error(`scroll at ${where}`); }
 }
 const browser = await chromium.launch({ args: GL_ARGS });

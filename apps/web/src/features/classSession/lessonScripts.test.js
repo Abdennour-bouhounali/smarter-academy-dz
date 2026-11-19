@@ -64,6 +64,10 @@ describe('حصّة القسم — the rules revised before the lesson', () => {
           expect(c.r).toBeLessThan(c.b);
           expect(r.example).toContain(String(c.a));
         }
+        if (c.diff != null) {
+          expect(c.x - c.y, r.id).toBe(c.diff);
+          expect(r.example).toContain(`${c.x} - ${c.y} = ${c.diff}`);
+        }
         if (c.n) {
           for (const k of c.yes) expect(c.n % k, `${c.n} ÷ ${k}`).toBe(0);
           for (const k of c.no) expect(c.n % k).not.toBe(0);

@@ -5,7 +5,8 @@
  * student's choices back.
  *
  * props: world (what the world gives, below), lesson (its pack), config (LESSON_CONFIG), basePath, exitTo (catalogue),
- *        onModule(n) (marks a module done), completedModules (the lesson's synced progress:
+ *        onModule(n) (marks a module done — and EVERY module of `config` once the story is finished, storyEnd.js),
+ *        completedModules (the lesson's synced progress:
  *        it opens the practice nodes on a device that never played the story), mastery, preview.
  *
  * A WORLD gives the shell:
@@ -29,8 +30,10 @@ import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
 import { readSave, writeSave, schedulePush, flushPush } from './saveSync';
+import { storyEndMarker } from './storyEnd';
 import { AuthContext } from '../../../../context/AuthContext';
 import { sendGameEvidence, flushGameEvidence, newAttemptId } from './evidenceSend';
+import { sendSitting, flushSittings, uuid } from './bankEvidence';
 import { usePhoneScreen } from '../engine/phoneScreen';
 import TurnPhone from '../../../../components/common/TurnPhone';
 import { launchDone } from '../../launchkit/store';
@@ -87,7 +90,10 @@ export default function LessonWorld({
   const tokenRef = useRef(null);
   tokenRef.current = auth?.token ?? null;
   useEffect(() => {
-    const flush = () => flushGameEvidence(tokenRef.current);
+    const flush = () => {
+      flushGameEvidence(tokenRef.current);
+      flushSittings(tokenRef.current);
+    };
     flush();
     window.addEventListener('online', flush);
     return () => window.removeEventListener('online', flush);
@@ -105,15 +111,23 @@ export default function LessonWorld({
   useEffect(() => {
     if (failed || !canvas.current) return undefined;
     let g;
+    // the end of the story completes the lesson: every module of the config is marked (storyEnd.js, LESSON_V2.md §1ter);
+    // a save already finished repairs the progress of a student who ended the story before that rule
+    const storyEnd = storyEndMarker(config, (n) => {
+      if (!previewRef.current) onModuleRef.current?.(n);
+    });
     try {
       const sound = storage.getItem('smarter_world_sound') !== '0';
+      const save = readSave(config.id);
+      if (!previewRef.current) storyEnd(save);
       g = new world.Game(canvas.current, {
         lesson,
-        save: readSave(config.id),
+        save,
         sound,
         unlockedKeys: lesson.keysFromModules?.(completedModules) ?? [],
         onSave: (data) => {
           writeSave(config.id, data);
+          storyEnd(data);
           // his journey follows him to his other devices (saveSync.js) — never from a teacher's preview
           if (!previewRef.current) schedulePush(tokenRef.current, config.id);
         },
@@ -123,6 +137,13 @@ export default function LessonWorld({
           const payload = lesson.evidence.payloadOf(config.id, context, ev, newAttemptId());
           if (import.meta.env.DEV) (window.__evidence ??= []).push(payload);
           sendGameEvidence(tokenRef.current, config.id, payload);
+        },
+        // a handed-in sitting (bank sheets): to the practice engine, which re-computes every verdict on the server
+        onSitting: (subject, answers) => {
+          if (previewRef.current) return;
+          const sheet = lesson.sittings.sheetOf(subject, answers, uuid);
+          if (import.meta.env.DEV) (window.__sittingSheets ??= []).push(sheet);
+          sendSitting(tokenRef.current, sheet);
         },
       });
     } catch (e) {
@@ -399,6 +420,7 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
             )
           }
           onQuit={() => game.quitSitting()}
+          onHandIn={(subject, answers) => game.handInSitting(subject, answers)}
         />
       )}
       {o?.type === 'promotion' && <Promotion o={o} game={game} />}

@@ -13,9 +13,19 @@
  *   join, stack         gaps PUT TOGETHER — glued (a + b), cut (a − b), or k copies of one gap (`InquiryCombine.jsx`).
  *   peel, letters       the piece left when b is peeled off a, then a claim on the table; a proof assembled from cards
  *                       (`InquiryProof.jsx`).
+ *   common, ladder, nest
+ *                       the greatest common divisor (`InquiryGcd.jsx`): the planks that hold two gaps and the longest of
+ *                       them; a pair replaced by a simpler pair with the same common planks; the common planks are the
+ *                       planks of the longest one.
+ *   groups, rebuild, estimate, bracket
+ *                       the Euclidean division a = b × q + r, 0 ≤ r < b, as planks laid one after the other on a gap
+ *                       (`InquiryDivision.jsx`): laid one by one, rebuilt from planks and a piece, estimated by tens of
+ *                       planks then units, and a ÷ b bracketed between two marks.
  *
  * Nothing here says a rule. The verdict is always a fact of the chart or of the strip.
  */
+// the long division drawn on paper (kit): `estimateSteps` reads its steps as tens of planks, then units
+import { longDivision } from '../kit/longDivision';
 
 // ───────────────────────── pairs ─────────────────────────
 /** One plank tried on a gap: its partner (a real number), whether the bridge holds, and whether the partner is BEHIND it. */
@@ -50,7 +60,9 @@ export const LENSES = {
   tens: { of: (n) => Math.floor(n / 10) % 10, values: () => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
   sum: {
     of: (n) => digitsOf(n).reduce((s, x) => s + x, 0),
-    values: (from) => Array.from({ length: 18 + (from ? 1 : 0) }, (_, i) => i + 1),
+    // 1 … the biggest sum on the chart: 18 on the first one (99), then the hundreds' own sum + 18 (19 for 199, 27 for 999)
+    values: (from = 0) =>
+      Array.from({ length: 18 + digitsOf(Math.floor(from / 100)).reduce((s, x) => s + x, 0) }, (_, i) => i + 1),
   },
   // the number written by the tens digit and the units digit: 16 for 316 (on the first chart it is the gap itself)
   last2: {
@@ -106,12 +118,19 @@ export function wall(a, d) {
 // ───────────────────────── cut: how many planks — a whole number, or a piece to saw ─────────────────────────
 /** Planks of b laid on a gap of a: the whole ones, and the cells of the piece that would have to be sawn from one more. */
 export const pieceOf = (a, b) => ({ whole: Math.floor(a / b), piece: a % b, exact: a % b === 0 });
-/** The exact quotient a ÷ b as a formula: a natural number, or a decimal (comma) — cut after two places with « … ». */
+/**
+ * The exact quotient a ÷ b (natural numbers, b > 0) as a formula: a natural number, a decimal that stops within two places
+ * written exactly (23 ÷ 5 → 4,6), or the first two places followed by « … » when the decimal goes on (912 ÷ 25 → 36,48;
+ * 10 ÷ 3 → 3,33…). Computed on integers only — a float floor reads 4,6 as 4,59….
+ */
 export function quotientTex(a, b) {
-  const v = a / b;
-  if (Number.isInteger(v)) return String(v);
-  const two = Math.floor(v * 100) / 100;
-  return `${String(two).replace('.', '{,}')}${Math.abs(two - v) > 1e-9 ? '\\dots' : ''}`;
+  if (a % b === 0) return String(a / b);
+  const hundredths = Math.floor((a * 100) / b);
+  const goesOn = (a * 100) % b !== 0;
+  const whole = Math.floor(hundredths / 100);
+  let places = String(hundredths % 100).padStart(2, '0');
+  if (!goesOn) places = places.replace(/0+$/, '');
+  return `${whole}{,}${places}${goesOn ? '\\dots' : ''}`;
 }
 
 // ───────────────────────── join: two gaps glued end to end, or the shorter cut off the longer ─────────────────────────
@@ -190,3 +209,143 @@ export function checkProofOrder(cards, ids, given = []) {
 }
 /** The first sample of numbers on which a card's line is FALSE (`card.holdsOn(sample)`), or null: the world's answer to a line. */
 export const refuteCard = (card, samples) => samples.find((s) => !card.holdsOn(s)) ?? null;
+
+// ───────────────────────── the Euclidean division: planks of b laid one after the other on a gap of a ─────────────────────────
+/**
+ * groups — planks of b laid ONE AT A TIME on a gap of a (a ≥ 0, b > 0). `steps[k − 1]` is the k-th plank tried: whether it
+ * fits (b × k ≤ a) and the cells left once it is laid (or, when it does not fit, the cells that stay). The last step is
+ * always the plank that does not fit; `q` planks fit and `r` cells are left.
+ */
+export function groupsOf(a, b) {
+  if (!(b > 0 && a >= 0)) throw new RangeError(`groups: ${a} by ${b}`);
+  const q = Math.floor(a / b);
+  const steps = Array.from({ length: q + 1 }, (_, i) => {
+    const k = i + 1;
+    const fits = b * k <= a;
+    return { k, fits, left: fits ? a - b * k : a - b * (k - 1) };
+  });
+  return { q, r: a - b * q, steps };
+}
+
+/**
+ * rebuild — q planks of b and a piece of r cells: the gap they make (a = b × q + r). The piece is a true leftover only when
+ * it is shorter than a plank (`valid`); otherwise more planks fit in it, and `q2`, `r2` are what the world then lays.
+ */
+export function rebuildOf(b, q, r) {
+  if (!(b > 0 && q >= 0 && r >= 0)) throw new RangeError(`rebuild: ${b}, ${q}, ${r}`);
+  return { a: b * q + r, valid: r < b, more: Math.floor(r / b), q2: q + Math.floor(r / b), r2: r % b };
+}
+
+/**
+ * estimate — a big gap and a long plank, by tens of planks then units (and hundreds of planks first when there are that
+ * many): the steps of the kit's long division, read as planks. Each step: `place` (10^place planks at a time), `unit` =
+ * b × 10^place (the length of that many planks), `q` (how many, 0…9 — the biggest that does not pass), `from` (what was
+ * left before it) and `left` (what is left after it). Always `from < 10 × unit` and `left < unit`.
+ */
+export function estimateSteps(a, b) {
+  const ld = longDivision(a, b);
+  let left = a;
+  return ld.steps.map((s) => {
+    const place = ld.width - 1 - s.col;
+    const unit = b * 10 ** place;
+    const from = left;
+    left -= s.digit * unit;
+    return { place, unit, q: s.digit, from, left };
+  });
+}
+
+/**
+ * estimate — one mark pressed on a step's ruler: k marks of `step.unit` against what is left (`step.from`). `passes` = the
+ * product is longer than what is left; `short` = there is room for one more mark; `ok` = the biggest that does not pass
+ * (exactly `step.q`). `value` = k × unit, the product the world writes once he has pressed (on a blind ruler it is not
+ * printed before).
+ */
+export function estimateMark(step, k) {
+  const value = k * step.unit;
+  const kind = value > step.from ? 'passes' : value + step.unit <= step.from ? 'short' : 'ok';
+  return { k, value, kind, next: value + step.unit };
+}
+
+/**
+ * bracket — a ÷ b between two consecutive natural numbers: b × lo ≤ a < b × hi, hi = lo + 1; `exact` when a falls ON the
+ * mark b × lo (nothing is left). `bracketSays` puts the two numbers the student typed in front of the gap.
+ */
+export const bracketOf = (a, b) => {
+  const lo = Math.floor(a / b);
+  return { lo, hi: lo + 1, exact: a % b === 0, r: a % b };
+};
+export const bracketSays = (a, b, lo, hi) => {
+  const loFits = b * lo <= a;
+  const hiPasses = a < b * hi;
+  const consecutive = hi === lo + 1;
+  return { loFits, hiPasses, consecutive, ok: loFits && hiPasses && consecutive };
+};
+
+// ───────────────────────── the greatest common divisor: one plank for two gaps ─────────────────────────
+/** The longest plank that holds both gaps a and b (a, b > 0): Euclid's algorithm, never shown — the screens use it as a fact. */
+export function gcd(a, b) {
+  if (!(a > 0 && b > 0)) throw new RangeError(`gcd: ${a}, ${b}`);
+  let x = a;
+  let y = b;
+  while (y) [x, y] = [y, x % y];
+  return x;
+}
+/** Every plank (natural number) that holds the gap n: its divisors, shortest first. */
+const divisorsOf = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((d) => n % d === 0);
+/** The planks that hold BOTH gaps, shortest first: the tick list the ladder writes beside every row. */
+export const commonPlanks = (a, b) => divisorsOf(Math.min(a, b)).filter((d) => a % d === 0 && b % d === 0);
+
+/**
+ * common — each candidate plank laid on the gap a and on the gap b: does it hold a, b, both? `common` = the candidates on
+ * the shelf « both » (shortest first), `longest` = the longest of them (null when no candidate holds both).
+ */
+export function commonOf(a, b, candidates) {
+  if (!(a > 0 && b > 0)) throw new RangeError(`common: ${a}, ${b}`);
+  const rows = candidates.map((d) => {
+    const holdsA = a % d === 0;
+    const holdsB = b % d === 0;
+    return { d, holdsA, holdsB, both: holdsA && holdsB };
+  });
+  const common = rows
+    .filter((r) => r.both)
+    .map((r) => r.d)
+    .sort((x, y) => x - y);
+  return { rows, common, longest: common.length ? common.at(-1) : null };
+}
+
+/**
+ * ladder — a pair of gaps replaced, row after row, by a simpler pair that keeps the same common planks:
+ *   subtract  (a, b), a ≥ b → the two gaps b and a − b (the longer first); the last row is the one where a = b (a − b = 0)
+ *   divide    (a, b) → (b, r), r the remainder of a ÷ b; the last row is the one where r = 0
+ * Each row: its pair, the value it computes (`value` = a − b or r; `q` = the quotient when dividing) and the next pair
+ * (null on the last row). `gcd` = the b of the last row (the last value that is not 0); `steps` = the number of rows.
+ */
+export function ladderOf(a0, b0, mode) {
+  if (!(a0 > 0 && b0 > 0)) throw new RangeError(`ladder: ${a0}, ${b0}`);
+  if (mode !== 'subtract' && mode !== 'divide') throw new RangeError(`ladder: mode ${mode}`);
+  const rows = [];
+  let a = Math.max(a0, b0);
+  let b = Math.min(a0, b0);
+  for (;;) {
+    const q = mode === 'divide' ? Math.floor(a / b) : 1;
+    const value = a - b * q;
+    const next = value === 0 ? null : mode === 'divide' ? [b, value] : [Math.max(b, value), Math.min(b, value)];
+    rows.push({ a, b, q, value, next });
+    if (!next) break;
+    [a, b] = next;
+  }
+  return { rows, gcd: rows.at(-1).b, steps: rows.length };
+}
+
+/**
+ * nest — g = the longest plank of both gaps, and probes put in front of it: `inG` = the probe holds g, `both` = it holds
+ * a and b. `common` = every plank of both gaps, `divisorsOfG` = every plank of g; `equal` says the two lists are the same.
+ */
+export function nestOf(a, b, probes) {
+  const g = gcd(a, b);
+  const divisorsOfG = divisorsOf(g);
+  const common = commonPlanks(a, b);
+  const rows = probes.map((p) => ({ p, inG: g % p === 0, both: a % p === 0 && b % p === 0 }));
+  const equal = common.length === divisorsOfG.length && common.every((d, i) => d === divisorsOfG[i]);
+  return { g, divisorsOfG, common, rows, equal };
+}

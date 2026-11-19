@@ -2,7 +2,8 @@
  * « مصهر القاعدة » — the SCREEN of a rule forge (frame: forge.js; contract GAME_WORLD.md §2sexies). It names no lesson and
  * no world: the lesson gives the `forge` (its tiles, what a rule says of a case, the evidence, the attacks, the wording)
  * and the world gives the `parts` — how one of ITS cases is drawn:
- *   Mirror({ c, stage, fast })   the case in the mirror; `stage`: ask | build | done
+ *   Mirror({ c, stage, fast, tight })   the case in the mirror; `stage`: ask | build | done; `tight`: the mirror shares
+ *                                the screen with the tiles (the robot's experiment while he builds) — draw it in less height
  *   Line({ c })                  the case as one line of the evidence
  *   beats(c)                     how many strokes the mirror needs to build it (the sound and the wait follow)
  * The student does not receive the rule on a tablet: he predicts, writes HIS rule with tiles, and the MIRROR tests it —
@@ -10,7 +11,7 @@
  * always what the world does in front of him, never « wrong ».
  * One screen, nothing scrolls (designed 1280 × 720, zoomed to the window).
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Check, Hammer, Sparkles, Bot } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { isShortScreen } from '../engine/phoneScreen';
@@ -81,6 +82,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const [words, setWords] = useState('');
   const [use, setUse] = useState(null); // the last step: { c, vals, verdict, fb }
   const [z, setZ] = useState(1);
+  const [win, setWin] = useState('');
+  // the evidence log never runs out of its column (GAME_WORLD.md « The evidence fits its column »): how many rows fit, for
+  // the layout it was measured on (`sig`) — a new layout starts from all the rows again
+  const [logRoom, setLogRoom] = useState({ sig: '', n: 0 });
+  const listRef = useRef(null);
   const timers = useRef([]);
   const later = (fn, ms) => {
     timers.current.push(setTimeout(fn, FAST() ? Math.min(ms, 30) : ms));
@@ -90,12 +96,14 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   useEffect(() => {
     // a phone held sideways has ONE scale, its root font (GAME_WORLD.md « On a phone »): the forge does not zoom there —
     // it has its own compact layout, and its list and its panel slide inside themselves
-    const fit = () =>
+    const fit = () => {
+      setWin(`${window.innerWidth}x${window.innerHeight}`);
       setZ(
         isShortScreen()
           ? 1
           : Math.max(0.62, Math.min(1.9, Math.min(window.innerWidth / 1280, window.innerHeight / 720))),
       );
+    };
     fit();
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);
@@ -261,10 +269,25 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const brokeIt = a && done && says !== a.held;
   const testing = phase === 'test' && run;
   // the lines on the left: his evidence — or, while a rule that builds its own cases is tested, those cases
-  const lines = testing && forge.tests ? run.marks : rows.slice(-EVIDENCE_MAX);
+  const all = testing && forge.tests ? run.marks : rows.slice(-EVIDENCE_MAX);
+  // …as many as fit its column: the oldest leave first, and the row that matters stays — the newest, or, while the mirror
+  // marks them, the row it is marking (or the one that refuted his rule)
+  const focus = testing ? (bad ?? run.marks[Math.max(0, Math.min(run.upto, run.marks.length) - 1)]) : null;
+  const fi = focus ? all.findIndex((r) => idOf(r) === idOf(focus)) : -1;
+  const logSig = `${phase}|${all.length}|${win}|${z}`;
+  const room = logRoom.sig === logSig ? logRoom.n : all.length;
+  const from = Math.max(0, (fi >= 0 ? fi : all.length - 1) - room + 1);
+  const lines = all.slice(from, from + room);
   const markOf = (row) => (testing ? run.marks.slice(0, run.upto).find((m) => idOf(m) === idOf(row)) : null);
   const inMirror = phase === 'predict' || phase === 'attack' || (phase === 'build' && help?.kind === 'experiment');
   const eq = done && c ? T.eq?.(c) : null;
+  // measured after every render, before it is painted: a list taller than its column loses its oldest row, until it fits
+  // (a phone held sideways keeps them all: its list slides inside itself)
+  useLayoutEffect(() => {
+    const ul = listRef.current;
+    if (!ul || lines.length <= 1 || isShortScreen()) return;
+    if (ul.scrollHeight > ul.clientHeight + 1) setLogRoom({ sig: logSig, n: lines.length - 1 });
+  });
 
   return (
     <div
@@ -318,7 +341,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
 
         <aside className="rf-log" data-rf-log hidden={phase === 'inquiry'}>
           <h3>📖 {T.log}</h3>
-          <ul>
+          <ul ref={listRef}>
             {lines.map((row) => {
               const m = markOf(row);
               const cmp = help?.kind === 'compare' && help.cases.some((x) => idOf(x) === idOf(row));
@@ -329,6 +352,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                   data-rf-row={idOf(row)}
                   data-rf-own={row.mirror ? '0' : '1'}
                   data-rf-mark={m ? (m.agrees ? 'agree' : 'refute') : ''}
+                  title={typeof row.text === 'string' ? row.text : undefined}
                 >
                   <Line c={row}>
                     {m && (
@@ -347,7 +371,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
           <section className={`rf-mirror ${inMirror ? '' : 'is-rule'}`} data-rf-mirror>
             {inMirror && c && (
               <>
-                <Mirror c={c} stage={show.stage} fast={FAST()} />
+                <Mirror c={c} stage={show.stage} fast={FAST()} tight={phase === 'build'} />
                 {eq && (
                   <p className="rf-eq" dir="ltr" data-rf-eq>
                     <MathText>{eq}</MathText>

@@ -1,10 +1,11 @@
 // « مختبري » — walk of the LAB of a lesson as a STUDENT (simulated session, no API).
 // Lesson 1 of 4AM (in its game world): its three instruments, the cabinet of the EARLIER lessons only, numbers that follow the
 // student from one instrument to the next, « جرّب » ticked only by what he makes. Then the PGCD lesson (mission home): its own
-// instrument and the cabinet of two grades. Nothing may scroll, at any moment.
+// instrument and the cabinet of three grades. Nothing may scroll, at any moment.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
+import { tinyText } from './lib/walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 
@@ -39,9 +40,22 @@ const shot = async (name) => {
     for (const el of root.querySelectorAll('.ll-draw > *, .ll-reading')) { const r = el.getBoundingClientRect(); if ((r.bottom > stage.bottom + 2 || r.top < stage.top - 2) && !(phone && el.parentElement.classList.contains('ll-draw'))) out.push(`out of the stage: ${el.className?.baseVal ?? el.className} (${Math.round(r.bottom - stage.bottom)}px)`); }
     for (const t of root.querySelectorAll('.ll-draw svg text')) { const r = t.getBoundingClientRect(); if (r.width > 0 && (r.left < stage.left - 1 || r.right > stage.right + 1 || r.top < stage.top - 1 || r.bottom > stage.bottom + 1)) out.push(`clipped label: ${t.textContent}`); }
     for (const el of root.querySelectorAll('.ll-quests, .ll-reading__text, .ll-sent__cards, .ll-think, .ll-cabinet__list')) if (el.scrollHeight > el.clientHeight + 3 || (el.scrollWidth > el.clientWidth + 3 && !(phone && el.classList.contains('ll-quests')))) out.push(`overflows: ${el.className}`); // on a phone the quests are ONE line that slides (GAME_WORLD.md « On a phone », rule 5)
-    if (document.documentElement.scrollHeight > window.innerHeight + 1 && !root.classList.contains('ll-root--inline') === false) out.push('the page scrolls');
+    // the lab INSIDE a game world (`ll-root--inline`) is the page: it must not make it scroll. The lab of a lesson page is a
+    // fixed portal over that page, which is the page's own walk's business.
+    if (root.classList.contains('ll-root--inline') && document.documentElement.scrollHeight > window.innerHeight + 1) out.push('the page scrolls');
+    // no raw LaTeX: no `$` and no backslash command readable on screen outside a drawn formula (`.katex`)
+    const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    for (let t = w.nextNode(); t; t = w.nextNode()) {
+      const p = t.parentElement; const v = t.nodeValue;
+      if (!p || !v.trim() || p.closest('script, style, noscript, .katex, title') || !p.getClientRects().length) continue;
+      const cs = getComputedStyle(p); if (cs.visibility === 'hidden' || Number(cs.opacity) === 0) continue;
+      const r = p.getBoundingClientRect(); if (r.width <= 1 || r.height <= 1 || r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) continue;
+      if (/\$|\\[a-zA-Z]{2,}/.test(v)) out.push(`raw LaTeX: « ${v.trim().slice(0, 50)} »`);
+    }
     return out;
   }, process.env.E2E_TOUCH === '1' && SIZE[1] <= 500);
+  // the 12 px floor (GAME_WORLD.md « 12 px floor »), the rule of lib/walk.mjs › shot, at every screenshot and every size
+  for (const t of await tinyText(page)) bad.push(`text under 12 px: ${t}`);
   if (bad.length) { console.log('FAIL at «', name, '»:', [...new Set(bad)].join(' | ')); process.exitCode = 1; if (process.env.E2E_SOFT !== '1') throw new Error(`layout at ${name}`); }
   n += 1; await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` });
 };
@@ -58,12 +72,73 @@ const dragTo = async (handle, vx, vy = null) => {
   const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }; const to = { x: ox + vx * k, y: vy == null ? from.y : oy + vy * k };
   await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move((from.x + to.x) / 2, (from.y + to.y) / 2, { steps: 6 }); await page.mouse.move(to.x, to.y, { steps: 6 }); await page.mouse.up(); await page.waitForTimeout(200);
 };
+const CYAN = '#7dfcff'; const GREEN = '#34d399'; const ROSE = '#fb7185';
+/**
+ * « مسطرة الحصر » as it is DRAWN: the plank rectangles under the length (inside: cyan or green, the one that passes: rose,
+ * what is left: a dashed rect with no fill), the product line, the bracket line, the reading chips.
+ */
+const bracketDrawn = () => page.evaluate(([CYAN, GREEN, ROSE]) => {
+  const rects = [...document.querySelectorAll('[data-ll-planks-laid] rect')]; const fill = (c) => rects.filter((r) => r.getAttribute('fill') === c).length;
+  const txt = (s) => document.querySelector(s)?.textContent.trim() ?? null; const attr = (s, a) => document.querySelector(s)?.getAttribute(a) ?? null;
+  return { cyan: fill(CYAN), green: fill(GREEN), rose: fill(ROSE), gap: fill('none'), product: txt('[data-ll-product]'), bracket: txt('[data-ll-bracket]'), found: txt('[data-ll-found]'), left: attr('[data-ll-left]', 'data-ll-left'), over: attr('[data-ll-over]', 'data-ll-over'), more: document.querySelector('[data-ll-more]')?.disabled ?? null };
+}, [CYAN, GREEN, ROSE]);
+/** What n planks of b along a length a must show — computed HERE from a, b, n, never read from the instrument. */
+const bracketWanted = (a, b, n) => {
+  const q = Math.floor(a / b); const laid = n * b; const exact = laid === a;
+  return {
+    cyan: exact ? 0 : Math.min(n, q), green: exact ? n : 0, rose: n > q ? 1 : 0, gap: laid < a ? 1 : 0,
+    product: `${n} × ${b} = ${laid} ${exact ? '=' : laid > a ? '>' : '<'} ${a}`,
+    left: laid <= a ? String(a - laid) : null, over: laid > a ? String(laid - a) : null, more: n >= q + 1,
+  };
+};
+const same = (got, want) => Object.keys(want).every((k) => got[k] === want[k]);
+const show = (o) => JSON.stringify(o);
+/** The viewBox abscissa of the end of the n-th plank: the drawing spans 190 → 900 for one plank past the full ones. */
+const plankEnd = (a, b, n) => 190 + (710 * n) / (Math.floor(a / b) + 1);
+/** « اللوح المشترك » as it is DRAWN, row by row: its label, ✓ or « يبقى r », the planks laid, where the planks and the gap end. */
+const planksDrawn = () => page.evaluate(([CYAN, GREEN]) => {
+  const num = (r, k) => Number(r.getAttribute(k));
+  const held = document.querySelector('[data-ll-planks] > rect[fill="#fbbf24"]');
+  const rows = [...document.querySelectorAll('[data-ll-row]')].map((g) => {
+    const rects = [...g.querySelectorAll('rect')]; const outline = rects[0];
+    const planks = rects.filter((r) => [CYAN, GREEN].includes(r.getAttribute('fill'))); const gap = rects.find((r) => r.getAttribute('fill') === 'none');
+    const ends = [...planks, ...(gap ? [gap] : [])].map((r) => num(r, 'x') + num(r, 'width'));
+    const [mark, name] = [...g.querySelectorAll('text')].map((t) => t.textContent.trim());
+    return { id: g.dataset.llRow, name, mark, planks: planks.length, green: planks.filter((r) => r.getAttribute('fill') === GREEN).length, gap: gap ? 1 : 0, end: ends.length ? Math.max(...ends) : null, length: num(outline, 'x') + num(outline, 'width') };
+  });
+  return { held: held ? num(held, 'width') : null, rows, filled: document.querySelector('[data-ll-filled]')?.textContent.trim() ?? null, both: document.querySelector('[data-ll-both]')?.textContent.trim() ?? null };
+}, [CYAN, GREEN]);
+/** The six lengths a plank of d is laid along, and what it must make of each — computed HERE. */
+const planksWanted = (a, b, d) => {
+  const big = Math.max(a, b); const small = Math.min(a, b); const q = Math.floor(big / small); const r = big % small;
+  const rows = [[a, `${a}`], [b, `${b}`], [a + b, `${a} + ${b} = ${a + b}`], [big - small, `${big} − ${small} = ${big - small}`], [r, `${big} = ${small} × ${q} + ${r}`], [3 * a, `3 × ${a} = ${3 * a}`]]
+    .map(([n, name]) => ({ n, name, planks: Math.floor(n / d), fits: n % d === 0, mark: n % d === 0 ? '✓' : `يبقى ${n % d}` }));
+  const filled = rows.filter((x) => x.fits).length; const both = rows[0].fits && rows[1].fits && d > 1;
+  return { rows, filled, both, u: 672 / Math.max(a + b, 3 * a, 2) };
+};
+/** Compares the drawing of the planks with what the walk computed; returns the differences (empty: the drawing is right). */
+const planksDiff = (got, want, a, b, d) => {
+  const diff = [];
+  if (got.held == null || Math.abs(got.held - d * want.u) > 0.5) diff.push(`the held plank is ${got.held} wide, not ${d * want.u}`);
+  if (got.rows.length !== 6) diff.push(`${got.rows.length} rows`);
+  want.rows.forEach((w, i) => {
+    const g = got.rows[i] ?? {};
+    if (g.name !== w.name) diff.push(`row ${i}: « ${g.name} » ≠ « ${w.name} »`);
+    if (g.mark !== w.mark) diff.push(`row ${i}: « ${g.mark} » ≠ « ${w.mark} »`);
+    if (g.planks !== w.planks || g.green !== (w.fits ? w.planks : 0)) diff.push(`row ${i}: ${g.planks} planks (${g.green} green), want ${w.planks}${w.fits ? ' green' : ''}`);
+    if (g.gap !== (w.fits ? 0 : 1)) diff.push(`row ${i}: gap ${g.gap}`);
+    if (w.n > 0 && (g.end == null || Math.abs(g.end - g.length) > 2.5)) diff.push(`row ${i}: the planks and the gap end at ${g.end}, the length at ${g.length}`);
+  });
+  if (got.filled !== `يملأ ${want.filled} من 6 أطوال`) diff.push(`chip « ${got.filled} »`);
+  if (got.both !== (want.both ? `${d} قاسم للعددين ${a} و ${b}` : null)) diff.push(`both « ${got.both} »`);
+  return diff;
+};
 
 // ══ 1. the first lesson of 4AM: the lab opens from the title screen of its game world ══
 await page.goto(`${BASE}/qasim-adad-tabii`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="qasim-adad-tabii"]'); await page.waitForSelector('[data-ll-rows]');
 expect((await page.locator('.ll-rail [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join() === 'rows,jumps,sentences', 'the bench shows the three instruments of THIS lesson');
-expect(await page.locator('[data-ll-cabinet-open]').count() === 1 && (await page.textContent('[data-ll-cabinet-open]')).includes('(2)'), '« خزانتي » holds the two instruments of the earlier lessons');
+expect(await page.locator('[data-ll-cabinet-open]').count() === 1 && (await page.textContent('[data-ll-cabinet-open]')).includes('(3)'), '« خزانتي » holds the three instruments of the earlier lessons (two of 1AM, one of 2AM)');
 console.log('    text on screen (px): tool', await px('.ll-tile strong'), '· quest', await px('.ll-quests li'), '· reading', await px('.ll-reading__text'), '· hint', await px('.ll-toolhead p'));
 // a phone held sideways has ONE scale, its root font at 13 px (GAME_WORLD.md « On a phone », rule 1): 12 px is the floor for a label there
 const PHONE = process.env.E2E_TOUCH === '1' && SIZE[1] <= 500;
@@ -106,9 +181,14 @@ await shot('sentences-swapped');
 // خزانتي: only the PAST
 await page.click('[data-ll-cabinet-open]'); await page.waitForSelector('[data-ll-cabinet]');
 {
+  // the cabinet opens on the NEAREST grade (2AM: « مسطرة الحصر », 2026-11-18); 1AM is one tap away
+  const grades = await page.locator('[data-ll-grade]').evaluateAll((els) => els.map((e) => e.dataset.llGrade));
+  const near = await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson));
+  expect(grades.join() === '1am,2am' && near.join() === 'qisma-iqlidiya-hasr' && await page.locator('[data-ll-cabinet-tool="bracket"]').count() === 1, 'the cabinet has two grades and opens on 2AM: the lesson of the bracket and its instrument');
+  await page.click('[data-ll-grade="1am"]');
   const lessons = await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson));
   const tools = await page.locator('[data-ll-cabinet-tool]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetTool));
-  expect(lessons.join() === 'qisma-iqlidiya-baqi,qawaid-qabiliyat-qisma' && tools.join() === 'paper,rules' && await page.locator('[data-ll-grade]').count() === 1, 'the cabinet lists the two lessons of 1AM with their instruments');
+  expect(lessons.join() === 'qisma-iqlidiya-baqi,qawaid-qabiliyat-qisma' && tools.join() === 'paper,rules', 'the 1AM shelf lists its two lessons with their instruments');
   expect(!(await page.textContent('.ll-root')).includes('إقليدس') && !(await page.textContent('.ll-root')).includes('قوس القواسم'), 'NOTHING of the lessons after this one is shown — not even locked');
 }
 await shot('cabinet');
@@ -121,7 +201,7 @@ expect((await page.textContent('[data-ll-quotient]')).trim() === '21' && await p
 expect((await page.textContent('[data-ll-paper-done]')).includes('36 قاسم للعدد 756') && await quest('end') === '1' && await quest('exact') === '1', 'the sheet ends on the sentence, and two missions are ticked');
 await shot('paper-756-36');
 { await page.waitForTimeout(400); const s4 = await since(); expect(s4.includes('drawer') && s4.filter((x) => x === 'pencil').length === 2 && s4.includes('fit'), `the cabinet is a drawer, each step of the division is a pencil, a remainder 0 chimes (${[...new Set(s4)].join(' ')})`); }
-await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="rules"]'); await page.waitForSelector('[data-ll-lock]');
+await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-grade="1am"]'); await page.click('[data-ll-cabinet-tool="rules"]'); await page.waitForSelector('[data-ll-lock]');
 expect(await page.getAttribute('[data-ll-lock]', 'data-ll-lock') === '756' && await page.getAttribute('[data-ll-lamp="9"]', 'data-ll-lit') === '1' && await page.getAttribute('[data-ll-lamp="5"]', 'data-ll-lit') === '0', 'كاشف قابلية القسمة takes the same 756: the lamps of 2, 3, 4, 9 are lit, 5 and 10 are dark');
 await page.click('[data-ll-lamp="9"]');
 expect(await page.locator('.ll-wheel.is-read').count() === 3 && (await page.textContent('[data-ll-reading]')).includes('مجموع الأرقام 18'), 'tapping the lamp of 9 raises the three digits its rule reads: their sum, 18');
@@ -131,6 +211,58 @@ await shot('rules-757');
 { const s5 = await since(); expect(s5.includes('lamp') && s5.includes('click') && s5.includes('lamps') === false, `the padlock clicks; 757 lights no lamp, so no lamp rings (${[...new Set(s5)].join(' ')})`); }
 await page.click('[data-ll-down="2"]'); await page.waitForTimeout(250);
 { const s6 = await since(); expect(s6.includes('click') && s6.includes('lamps'), 'back to 756: the lit lamps ring, one soft note each'); }
+// مسطرة الحصر (2AM): PLAYED — the hand lays the planks, and the drawing is read against what the walk computes itself
+await page.click('[data-ll-cabinet-open]'); await page.waitForSelector('[data-ll-cabinet]');
+await page.click('[data-ll-cabinet-tool="bracket"]'); await page.waitForSelector('[data-ll-bracket-tool]');
+await setNum('a', 100); await setNum('b', 7);
+{
+  const [a, b] = [100, 7]; const q = Math.floor(a / b); // 14 full planks, 2 left
+  const open = await bracketDrawn();
+  expect(same(open, bracketWanted(a, b, 1)) && open.bracket === null && open.found === null && await quest('over') === '0', `مسطرة الحصر on 100 and 7 opens on ONE plank: 1 × 7 = 7 < 100, 93 left, no bracket written (${show(open)})`);
+  await dragTo('[data-ll-plank-end]', plankEnd(a, b, q));
+  const full = await bracketDrawn();
+  expect(same(full, bracketWanted(a, b, q)) && full.bracket === null, `dragging the end of the planks to the 14th: 14 cyan planks, « 14 × 7 = 98 < 100 », the dashed gap of 2 — and still no bracket (${show(full)})`);
+  await page.click('[data-ll-more]'); await page.waitForTimeout(400);
+  const past = await bracketDrawn();
+  const m = /^(\d+) < (\d+) ÷ (\d+) < (\d+)$/.exec(past.bracket ?? '');
+  const [lo, hi] = m ? [Number(m[1]), Number(m[4])] : [NaN, NaN];
+  expect(same(past, bracketWanted(a, b, q + 1)) && m && Number(m[2]) === a && Number(m[3]) === b && lo === q && hi === q + 1 && lo * b <= a && a < hi * b && past.found === `الكاملة ${q} · اللازمة ${q + 1}`, `« لوح آخر + »: the 15th plank passes in rose (105 > 100 by 5), the button stops there, and the drawing writes the bracket it framed — « ${past.bracket} » with 14 × 7 ≤ 100 < 15 × 7 (${show(past)})`);
+  expect(await quest('over') === '1', '« اجعل آخر لوح وحده يتجاوز الطول » is ticked by the plank the hand laid');
+}
+await shot('bracket-100-7');
+{
+  // a length of four digits, a plank of two: 1000 ÷ 37 — 27 full planks, 28 needed
+  await setNum('a', 1000); await setNum('b', 37);
+  const [a, b] = [1000, 37]; const q = Math.floor(a / b);
+  const typed = await bracketDrawn(); const n0 = Number(await page.getAttribute('[data-ll-bracket-tool]', 'data-n'));
+  expect(Number.isInteger(n0) && n0 >= 0 && n0 <= q + 1 && same(typed, bracketWanted(a, b, n0)) && typed.bracket === null && typed.found === null, `new numbers typed (1000 and 37): the ${n0} planks on the length are drawn and counted for THESE numbers, and no bracket is written before the hand lays them (${show(typed)})`);
+  await dragTo('[data-ll-plank-end]', plankEnd(a, b, q)); await page.click('[data-ll-more]'); await page.waitForTimeout(400);
+  const past = await bracketDrawn();
+  expect(same(past, bracketWanted(a, b, q + 1)) && past.bracket === `${q} < ${a} ÷ ${b} < ${q + 1}` && q * b <= a && a < (q + 1) * b && past.found === `الكاملة ${q} · اللازمة ${q + 1}`, `the hand lays 27 then one more: « 28 × 37 = 1036 > 1000 », and the bracket « 27 < 1000 ÷ 37 < 28 » (${show(past)})`);
+  expect(await quest('big') === '1', 'the full and the needed planks of a four-digit length and a two-digit plank: the mission is ticked');
+}
+{
+  // a length the planks fill: 84 ÷ 7 = 12, nothing left — the bracket closes on ONE number
+  await setNum('a', 84); await setNum('b', 7);
+  const [a, b] = [84, 7]; const q = a / b;
+  const typed = await bracketDrawn();
+  expect(typed.bracket === null, `84 and 7 typed: no bracket before the hand lays the planks (${show(typed)})`);
+  await dragTo('[data-ll-plank-end]', plankEnd(a, b, q));
+  const exact = await bracketDrawn();
+  expect(same(exact, bracketWanted(a, b, q)) && exact.bracket === `${a} ÷ ${b} = ${q}` && exact.found === `الألواح الكاملة ${q} هي اللازمة` && (await page.textContent('[data-ll-reading]')).includes('تملأ الطول تمامًا'), `12 planks of 7 fill 84: all green, no gap, « 12 × 7 = 84 = 84 », and « 84 ÷ 7 = 12 » (${show(exact)})`);
+  expect(await quest('exact') === '1', '« املأ الطول تمامًا بأكثر من 10 ألواح » is ticked');
+}
+await shot('bracket-84-7');
+{
+  // the bracket of NEW numbers is written only once the hand has laid BOTH counts FOR THEM (LESSON_LAB.md, `bracket`): a single
+  // « − لوح » right after typing 9 is one gesture, not two. Known product issue (Bracket.jsx keeps `n` and `moved` across new
+  // numbers; only its memory `met` is stamped with them) was being fixed on 2026-11-19: this HARD check proves the fix — the 12
+  // planks of 84 ÷ 7 must not count as laid by the hand for 84 ÷ 9.
+  await setNum('b', 9);
+  await page.click('[data-ll-less]'); await page.waitForTimeout(400);
+  const one = await bracketDrawn();
+  expect(one.bracket === null && one.found === null, `84 and 9 typed, then one « − لوح »: the bracket of 84 ÷ 9 is NOT written yet — the hand has not laid both 9 and 10 planks for these numbers (${show(one)})`);
+}
 await page.click('[data-ll-close]');
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the lesson');
 
@@ -166,7 +298,7 @@ expect(await page.inputValue('[data-ll-input="a"]') === '30' && await page.input
 await page.click('[data-ll-cabinet-open]'); await page.waitForSelector('[data-ll-cabinet]');
 {
   const grades = await page.locator('[data-ll-grade]').evaluateAll((els) => els.map((e) => e.dataset.llGrade));
-  expect(grades.join() === '1am,4am', 'its cabinet has two grades: 1AM and the earlier lessons of 4AM');
+  expect(grades.join() === '1am,2am,4am', 'its cabinet has three grades: 1AM, 2AM and the earlier lessons of 4AM');
   const lessons = await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson));
   expect(lessons.join() === 'qasim-adad-tabii,qawasim-adad-tabii,khawass-qawasim,qasim-mushtarak-akbar', 'the 4AM shelf: the four earlier lessons that have instruments');
   await shot('cabinet-pgcd');
@@ -186,10 +318,23 @@ expect(await quest('all') === '1' && await quest('odd') === '1', 'an odd number 
 await shot('divisors-36');
 await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="planks"]'); await page.waitForSelector('[data-ll-planks]');
 await setNum('a', 21); await setNum('b', 35);
-await dragTo('[data-ll-plank]', 236 + 7 * (672 / 63), 34); // the span is 3 × 21 = 63 units over 672 px
-expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '7' && await page.getAttribute('[data-ll-planks]', 'data-fits') === '111111' && await page.locator('[data-ll-both]').count() === 1, 'اللوح المشترك: a plank of 7 laid along 21 and 35 fills their sum, their difference, the remainder and 3 × 21');
-expect(await quest('both') === '1' && await quest('rest') === '1', 'two missions of the planks are ticked by what was made');
-await shot('planks-21-35-7');
+{
+  const [a, b] = [21, 35]; const plankAt = (d) => 236 + d * planksWanted(a, b, d).u; // the drawing spans 236 → 908 for max(a + b, 3a) = 63 units
+  const opening = planksDiff(await planksDrawn(), planksWanted(a, b, 4), a, b, 4);
+  expect(opening.length === 0 && await quest('both') === '0' && await quest('sum') === '0', `اللوح المشترك opens on a plank of 4 along the six lengths, nothing ticked before the hand moves it (${opening.join(' | ') || 'drawn as computed'})`);
+  await dragTo('[data-ll-plank]', plankAt(7), 34);
+  const seven = planksDiff(await planksDrawn(), planksWanted(a, b, 7), a, b, 7);
+  expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '7' && seven.length === 0, `dragging the plank to 7: 3 green planks in 21, 5 in 35, 8 in 56, 2 in 14 (twice), 9 in 63 — every row ✓, « 7 قاسم للعددين 21 و 35 » (${seven.join(' | ') || 'drawn as computed'})`);
+  expect(await quest('both') === '1' && await quest('rest') === '1', 'two missions of the planks are ticked by what was made');
+  await shot('planks-21-35-7');
+  await dragTo('[data-ll-plank]', plankAt(14), 34);
+  const fourteen = planksDiff(await planksDrawn(), planksWanted(a, b, 14), a, b, 14);
+  expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '14' && fourteen.length === 0, `a plank of 14: 21 and 35 each keep a dashed 7 (as does 63), yet their sum 56 is filled by 4, the difference and the remainder by 1 (${fourteen.join(' | ') || 'drawn as computed'})`);
+  expect(await quest('sum') === '1', '« a plank that fills the sum and neither length » is ticked');
+  await dragTo('[data-ll-plank]', plankAt(5), 34);
+  const five = planksDiff(await planksDrawn(), planksWanted(a, b, 5), a, b, 5);
+  expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '5' && five.length === 0, `a plank of 5 fills 35 alone: 21 keeps 1, 56 keeps 1, 14 keeps 4, 63 keeps 3, no « قاسم » chip (${five.join(' | ') || 'drawn as computed'})`);
+}
 await setNum('a', 36); // the numbers are shared: the next instrument is read on 36
 await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="common"]'); await page.waitForSelector('[data-ll-view="common"]');
 await setNum('b', 24);

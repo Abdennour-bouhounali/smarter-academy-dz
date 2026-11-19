@@ -11,17 +11,29 @@ const POINTS = { 'jidaa-aamilayn': 'P1', 'qasim-rappel': 'P2', 'tariqa-qawasim':
 /** The evidence of this lesson. It has no real-world case yet: nothing is claimed from one. */
 export const evidence = { ...createEvidence({ grade: '4am', points: POINTS }), caseEvidence: () => null };
 
+/** A box of the answer as a number — a box left EMPTY is no number (never 0: a blank must not complete a claim). */
+const box = (value, k) => (value?.[k] == null || String(value[k]).trim() === '' ? NaN : Number(value[k]));
+
 /**
- * Evidence of a TRAINER answer, or null when it does not count.
+ * Evidence of a TRAINER answer, or null when it does not count. Its claim states the WHOLE answer: a half-wrong answer
+ * (a box left empty, one part right and one wrong) never makes a true claim.
  * ctx = { firstTry, helped } — helped: a model sheet or the rule was opened before this answer.
  */
 export function trainerEvidence(q, value, ctx) {
   if (q.format !== 'exam' || !counts(ctx)) return null;
-  const n = (k) => Number(value?.[k]);
+  const n = (k) => box(value, k);
   switch (q.kind) {
     case 'pairs': {
-      // every way of writing a as a product: all its divisors are on the sheet
-      const list = writtenPairs(q, value).flat();
+      const pairs = writtenPairs(q, value).map(([x, y], i) => [
+        Number.isNaN(box(value, `x${i}`)) ? NaN : x,
+        Number.isNaN(box(value, `y${i}`)) ? NaN : y,
+      ]);
+      // a line whose product is not a: the claim is THAT line (« a = x × y »), false — never the numbers that happen to
+      // be divisors (1 × 2 and 3 × 6 hold every divisor of 6, and neither line is 6)
+      const bad = pairs.find(([x, y]) => x * y !== q.a);
+      if (bad) return { key: q.key, claim: { kind: 'pair', a: q.a, b: bad[0], e: bad[1] } };
+      // every line is a product equal to a: all its divisors are on the sheet (the square root once: 6 × 6 for 36)
+      const list = [...new Set(pairs.flat())];
       return { key: q.key, claim: { kind: 'divisors', a: q.a, b: list.length, list } };
     }
     case 'show':
@@ -29,7 +41,7 @@ export function trainerEvidence(q, value, ctx) {
     case 'stop':
       return n('e') === n('d') + 1 ? { key: q.key, claim: { kind: 'stop', a: q.a, b: n('d') } } : null;
     case 'list': {
-      const list = writtenList(q, value);
+      const list = writtenList(q, value).map((d, i) => (Number.isNaN(box(value, `d${i}`)) ? NaN : d));
       return { key: q.key, claim: { kind: 'divisors', a: q.a, b: list.length, list } };
     }
     case 'rule':

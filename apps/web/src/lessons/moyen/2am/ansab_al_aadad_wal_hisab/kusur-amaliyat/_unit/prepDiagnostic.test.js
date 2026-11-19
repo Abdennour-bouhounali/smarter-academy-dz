@@ -11,9 +11,14 @@ import { UNIT_ID } from './unitMeta';
 const configs = import.meta.glob('../*/lesson.config.js', { eager: true });
 const contents = import.meta.glob('../*/content/textbook.js', { eager: true });
 const modules = import.meta.glob('../*/modules/Module00Astaidd.jsx', { query: '?raw', import: 'default', eager: true });
+const routes = import.meta.glob('../*/routes.jsx', { query: '?raw', import: 'default', eager: true });
 
 const lessonOf = (path) => path.split('/')[1];
 const LESSONS = Object.entries(configs).map(([path, mod]) => ({ id: lessonOf(path), config: mod.LESSON_CONFIG }));
+// A v2 lesson (LESSON_V2.md §2) has no « أستعدّ » page: its launch kit « عُدّة الانطلاق » measures what it needs. Its
+// module 0 stays in the config as DATA (progress is stored by its number).
+const isV2 = (id) => /retiredModules:\s*true/.test(routes[`../${id}/routes.jsx`] ?? '');
+const ON_PAGES = LESSONS.filter((l) => !isV2(l.id));
 const published = catalogue.lessons.filter((l) => l.unitId === UNIT_ID && l.status === 'available').map((l) => l.code).sort();
 
 describe('« أستعدّ » in every lesson of the unit', () => {
@@ -24,11 +29,15 @@ describe('« أستعدّ » in every lesson of the unit', () => {
   it.each(LESSONS.map((l) => [l.id, l]))('%s opens on module 0 « أستعدّ »', (id, { config }) => {
     const first = config.modules[0];
     expect(first).toMatchObject({ number: 0, slug: 'astaidd', title: 'أستعدّ', stage: 'prerequisite_check', style: 'diagnostic' });
-    expect(modules[`../${id}/modules/Module00Astaidd.jsx`]).toBeTruthy();
+    expect(Boolean(modules[`../${id}/modules/Module00Astaidd.jsx`])).toBe(!isV2(id));
     expect(config.priorKnowledge.length).toBeGreaterThan(0);
   });
 
-  it.each(LESSONS.map((l) => [l.id]))('%s: every item is sourced, typed and uses a declared skill', (id) => {
+  it('the v2 lesson of the unit has no « أستعدّ » page left', () => {
+    expect(LESSONS.filter((l) => isV2(l.id)).map((l) => l.id)).toEqual(['qisma-iqlidiya-hasr']);
+  });
+
+  it.each(ON_PAGES.map((l) => [l.id]))('%s: every item is sourced, typed and uses a declared skill', (id) => {
     const content = contents[`../${id}/content/textbook.js`];
     const items = [...(content.PREP_ITEMS ?? []), ...(content.PREP_PLATFORM_ITEMS ?? [])];
     const source = modules[`../${id}/modules/Module00Astaidd.jsx`];
