@@ -36,7 +36,7 @@ For the lesson:
 
 ## B. The screenshots, before the commit
 
-Run the walks at 1366×768 ONLY (owner, 2026-11-19: the one size; the right-hand column below is no longer done) on a frozen copy. Then OPEN the pictures. The list of screens:
+**Since 2026-11-19 (owner, `SKILL.md` §0bis): open about TEN chosen screens per lesson — the ones this lesson is the first to show — not every screenshot.** Run the walks at 1366×768 ONLY (owner, 2026-11-19: the one size; the right-hand column below is no longer done) on a frozen copy. Then OPEN the pictures. The list of screens:
 
 | Walk | Open at 1366×768 | Open again at 1024×768 and 1840×900 |
 |---|---|---|

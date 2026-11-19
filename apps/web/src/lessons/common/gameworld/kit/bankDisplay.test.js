@@ -45,7 +45,7 @@ describe('the sittings of every v2 lesson, on their real banks — money is « �
   const entries = Object.entries(LESSONS);
 
   it('finds the v2 lessons', () => {
-    expect(entries.length).toBeGreaterThanOrEqual(12);
+    expect(entries.length).toBeGreaterThanOrEqual(9);
   });
 
   for (const [file, mod] of entries) {

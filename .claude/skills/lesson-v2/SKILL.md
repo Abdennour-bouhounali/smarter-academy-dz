@@ -25,6 +25,21 @@ Every walk, every review, every limit of `trusted.md` is at 1366×768. No walk a
 phone; a defect that shows only at another size is not a defect of the lesson. Lines of `defects.md`, `trusted.md` and
 `review.md` that name three sizes were written before this date: read them as 1366×768.
 
+## 0bis. What the owner gave up for speed (2026-11-19 — « agree to : 1 , 2 , 3 »)
+
+Asked what a lesson of 1–2 hours costs, he was shown six losses and accepted the first three (the main session's
+reading of his answer — the three first rows of the table he was shown):
+
+1. **The eyes look at about TEN chosen screens per lesson**, not at every new one: the screens the lesson is the first
+   to show (a new world piece, a new kind of last step, its longest instruction, its final mission). The walks still
+   check every screen automatically.
+2. **No other screen size** (§0).
+3. **A change of shared code is re-walked on ONE reference lesson**, not on every lesson that uses it.
+
+NOT given up (he did not accept rows 4–6): a lesson may still need a new mechanic (it then takes longer), the design
+keeps its depth (the road checked against the bank, each wrong rule refuted by a computed case, a final mission that
+needs the lesson), and a weakness of pedagogy seen on the way is worked on, not left.
+
 ## 1. Who does what
 
 - **The main session designs, briefs, reviews, runs the walks and reports. Agents on `opus` write the code** (the 3D and a
