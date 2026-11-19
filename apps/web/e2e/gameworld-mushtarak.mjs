@@ -1,14 +1,21 @@
 // « أرخبيل القواسم: سوق الزهور » — walk of the game world of lesson `qasim-mushtarak-akbar` (lesson 4) as a STUDENT: its
-// own story in the unit's world, PLAYED through its screens from the title to the end screen. Its four forges open on four
-// experiments of their own kind (GAME_WORLD.md « استكشف », spec shapes): `common` with `crown: false` (a pile of planks
-// shelved by what each does on the twin gaps, then the count of the shelf of both), `summit` (free tries on a line of
-// lengths, the « outside the shorter gap? » prediction, the descent through the planks of the shorter gap to the crown,
-// then « must the shorter ones be tried? »), `deal` (the florist's roses and lilies dealt into vases, then the most vases
-// and what one holds), `nest` (the longest plank GIVEN; each probe judged by looking at it alone). In each: a wrong
-// prediction and right ones, what the drawing shows checked against the walk's own arithmetic, a false rule refuted by the
-// mirror on HIS evidence, the attacks, the seal, the last step typed wrong then right, the tablet.
-// The ✕ is CLICKED twice — in the world (island B) and inside a forge (the first experiment) — and each time he comes
-// back where he was: the same island with its bridge built; the same mirror, its experiment from its first plank.
+// own story in the unit's world, PLAYED through its screens from the title to the end screen. Keys 1 and 2 are found ON THE
+// ISLANDS (owner, 2026-11-19): two CONVOYS — the planks of island A build the bridges 198 and 234 (island B has none):
+// he takes the plank of the first gap only, the second gap refuses it, he WALKS BACK holding « back » (the camera turns
+// round) and takes the plank of both, and the first bridge goes back; on island C every plank fills 266 and 322 and a
+// purse pays a coin per plank: a shorter plank runs out of coins on the second bridge, he walks back, the longest builds
+// both. Forges 1 and 2 have no experiment screen and ask no prediction: they open on the TILES (the step « تنبّأ » is not
+// shown), the mirror tests his rule on the planks he fired on the islands, and every case of theirs is a PAIR — the
+// mirror draws two bridges, the plank laid on each, and the log line names both gaps. Forges 3 and 4 open on experiments of their own kind (GAME_WORLD.md
+// « استكشف », spec shapes): `deal` (the florist's roses and lilies dealt into vases, then the most vases and what one
+// holds), `nest` (the longest plank GIVEN; each probe judged by looking at it alone). In each forge: a false rule refuted by the mirror on HIS evidence, the attacks, the seal, the last step typed wrong
+// then right, the tablet. On every world screen of islands A–E: the instruction is there, big, uncovered; the « اضغط E »
+// prompt never covers a bridge's equation or its verdict.
+// The ✕ is CLICKED twice — in the world (island B, after the refusal) and inside forge 1 (a tile picked) — and each
+// time he comes back where he was: the same island with its bridge built and the planks he carries; the same mirror, on
+// its tiles. The page is RELOADED on island D (the second island of the second convoy): he still carries his planks.
+// Walking back: one press on « back » turns the camera AND the robot; then, pressed again twice, he walks back after
+// only 0.4 s and stays on the bridge's axis (once on each convoy).
 // Then the gate dash (lanes computed here from each sentence), the bridges the keys read, the stone's baskets (a wrong
 // pick, then the right set), the store of the last bridge (a wrong shelf, wrong divisions, the price, its way out) and the
 // market.
@@ -187,8 +194,15 @@ await w.run(async () => {
       const c = a.list[a.i];
       const yes = truth(c);
       await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
-      await page.waitForSelector('[data-rf-survived]');
+      const heard = await hear(async () => {
+        await page.click('[data-rf-fire]');
+        await page.waitForSelector('[data-rf-survived]');
+      });
+      // the mirror builds it in front of him, stroke by stroke, then what the world did (computed here)
+      check(
+        heard.at(-1) === (yes ? 'success' : 'crumble'),
+        `${name}: attack ${i + 1} — the mirror builds it, then ${yes ? 'success' : 'crumble'} (${[...new Set(heard)].join(', ')})`,
+      );
       if (onMirror) await onMirror(`${name}, attack ${i + 1} dealt`);
       const end = a.i + 1 >= a.list.length;
       await page.click('[data-rf-attack-next]');
@@ -432,189 +446,551 @@ await w.run(async () => {
   expect((await st()).phase === 'play', 'the game starts in play phase');
   await shot('start');
 
-  // ── island A → B: the twin 198 with the plank 11 (no prediction on the first bridge) ──
+  // ══════════════════════════ islands A–E: the two CONVOYS are the experiments of keys 1 and 2 ══════════════════════════
+  /** What the world shows of the convoys (read for the question, never for the answer). */
+  const road = () =>
+    page.evaluate(() => {
+      const g = window.__world;
+      const s = g.getState();
+      return {
+        stage: s.stage,
+        phase: s.phase,
+        held: s.held,
+        falls: s.falls,
+        facing: g.facing,
+        island: g.hero.island,
+        objective: s.objective,
+        recall: s.recall,
+        purse: s.purse,
+        say: s.say?.text ?? '',
+        verdict: s.verdict,
+        segs: g.segs.slice(0, 4).map((x) => ({ id: x.id, a: x.a, complete: x.complete, builtWith: x.builtWith })),
+        names: g.isl.slice(0, 5).map((x) => x.name),
+      };
+    });
+  /**
+   * The checks of every WORLD screen while he plays the convoys: the instruction is on screen, big (16 px at least) and
+   * nothing of the HUD covers it; while a bridge's equation is up, the floating « اضغط E » covers neither it nor its
+   * verdict. Then the screenshot.
+   */
+  /** The words of the keys not forged yet: none may be said on the islands (A1) — 🤝 then 👑. */
+  let forbid = /قاسم|مشترك|PGCD|الأكبر/;
+  const worldShot = async (label) => {
+    await page.waitForTimeout(250);
+    console.log(`  · ${label}: falls ${(await road()).falls}`);
+    const r = await page.evaluate(() => {
+      const box = (el) => el && el.getBoundingClientRect();
+      const shown = (el) => {
+        if (!el) return false;
+        const b = el.getBoundingClientRect();
+        return b.width > 0 && b.height > 0 && getComputedStyle(el).visibility !== 'hidden';
+      };
+      const ins = document.querySelector('[data-di-instruction]');
+      const out = { has: shown(ins), state: ins?.dataset.diInstruction ?? null, covered: [], px: null, overlap: [] };
+      if (out.has) {
+        const b = box(ins);
+        // five points of the instruction: the element drawn on top is the instruction itself (or inside it)
+        for (const [fx, fy] of [
+          [0.5, 0.5],
+          [0.15, 0.3],
+          [0.85, 0.3],
+          [0.15, 0.75],
+          [0.85, 0.75],
+        ]) {
+          const top = document.elementFromPoint(b.left + b.width * fx, b.top + b.height * fy);
+          if (top && !ins.contains(top) && !top.contains(ins))
+            out.covered.push(String(top.className?.baseVal ?? top.className).split(' ')[0] || top.tagName);
+        }
+        const text = ins.querySelector('.di-objective');
+        if (text) out.px = parseFloat(getComputedStyle(text).fontSize);
+      }
+      out.texts = ['[data-di-instruction]', '[data-di-recall]']
+        .map((sel) => document.querySelector(sel)?.textContent ?? '')
+        .join(' ');
+      const prompt = document.querySelector('[data-di-wprompt]');
+      if (shown(prompt)) {
+        const p = box(prompt);
+        for (const sel of ['.di-eq', '.di-verdict']) {
+          const el = document.querySelector(sel);
+          if (!shown(el)) continue;
+          const e = box(el);
+          const ox = Math.min(p.right, e.right) - Math.max(p.left, e.left);
+          const oy = Math.min(p.bottom, e.bottom) - Math.max(p.top, e.top);
+          if (ox > 1 && oy > 1) out.overlap.push(sel);
+        }
+      }
+      return out;
+    });
+    check(
+      r.has && r.covered.length === 0,
+      `${label}: the instruction is on screen (${r.state}) and nothing covers it${r.covered.length ? ' — ' + r.covered.join(', ') : ''}`,
+    );
+    if (r.state === 'open') check(r.px >= 16, `${label}: the instruction is written at 16 px at least (${r.px} px)`);
+    // what the islands SAY (the instruction, the card, Zero) names no rule before its tablet
+    const said = `${r.texts} ${(await road()).say}`;
+    check(!forbid.test(said), `${label}: the islands name no rule before its tablet (${forbid})`);
+    check(
+      r.overlap.length === 0,
+      `${label}: the « اضغط E » prompt covers neither the equation nor its verdict${r.overlap.length ? ' — ' + r.overlap.join(', ') : ''}`,
+    );
+    await shot(label);
+  };
+  /** Fires the held plank on bridge i; the convoys ask no prediction. Returns once the world is his again. */
+  const fire = async (i, during) => {
+    await toAltar(i);
+    await act();
+    expect((await st()).overlay !== 'predict', `bridge ${i}: a convoy asks no prediction before it builds`);
+    if (during) await during();
+    for (let k = 0; k < 40 && (await st()).phase !== 'play'; k += 1) await ff(1);
+    await page.waitForTimeout(250);
+  };
+  /** The bridge i stands, built with planks of b (the world's own record of it). */
+  const standsWith = async (i, b) => {
+    const s = (await road()).segs[i];
+    return s.complete && s.builtWith === b;
+  };
+  /**
+   * Standing at the altar of a bridge that stands on the planks he carries, nothing is offered: no « اضغط E » prompt
+   * over its result (2026-11-19: it covered the equation and the verdict).
+   */
+  const noPromptOnBuilt = async (label) => {
+    await ff(0.3);
+    const shown = await page.evaluate(() => {
+      const el = document.querySelector('[data-di-wprompt]');
+      if (!el) return false;
+      const b = el.getBoundingClientRect();
+      return b.width > 0 && b.height > 0 && getComputedStyle(el).visibility !== 'hidden';
+    });
+    check(!shown, `${label}: at the altar of a bridge built with the planks he carries, no « اضغط E » prompt`);
+  };
+  /** Taking planks starts something new: the equation and the verdict of the bridge before have left. */
+  const resultCleared = async (label) => {
+    const r = await page.evaluate(() => {
+      const s = window.__world.getState();
+      return { eq: s.equation, v: s.verdict, shown: document.querySelectorAll('.di-eq, .di-verdict').length };
+    });
+    check(
+      r.eq == null && r.v == null && r.shown === 0,
+      `${label}: taking planks clears the equation and the verdict of the bridge before (${JSON.stringify(r)})`,
+    );
+  };
+  /** Runs game time until `test(road)` holds (or `sec` seconds of game time have passed). */
+  const until = async (test, sec = 30) => {
+    for (let t = 0; t < sec * 4; t += 1) {
+      if (test(await road())) return true;
+      await ff(0.25);
+    }
+    return test(await road());
+  };
+  /**
+   * HE WALKS BACK, as a student does (the owner's control, 2026-11-19): ONE press on « back » (ArrowDown) turns him round
+   * — `facing` -1, the camera swings toward the previous island AND the robot turns on the spot (WorldRuntime ›
+   * `turning`: within ~1.5 s, with no other key held, its yaw is the world's `heading()`); it never walks him. A second
+   * press turns both to the road ahead again. A third turns him round once more, and only 0.4 s later — the lens still
+   * swinging — he HOLDS « forward » (ArrowUp), which walks him the way he faces, over the bridge he built, to island
+   * `to`, steering with « left » / « right » toward the bridge when he is off its line (he stands where he was: at an
+   * altar, not on the road's axis). He must stay on the bridge's axis (his keys follow the road until the lens is
+   * within ~15° of it: 2026-11-19, he drifted off before). No teleport.
+   */
+  const walkBack = async (to, label) => {
+    const before = await road();
+    /** Where he is across the bridge he walks back on (0 = its axis), and how the lens looks against the road back. */
+    const across = () =>
+      page.evaluate((k) => {
+        const g = window.__world;
+        const h = g.hero;
+        const s = g.segs[k];
+        const u = (h.pos.x - s.sx) * s.dx + (h.pos.z - s.sz) * s.dz;
+        const v = (h.pos.x - s.sx) * s.rx + (h.pos.z - s.sz) * s.rz;
+        const off = Math.atan2(g.camDir.x, g.camDir.y) - g.heading();
+        return { u, v, len: s.len, lens: Math.abs(Math.atan2(Math.sin(off), Math.cos(off))) };
+      }, to);
+    /** How far the ROBOT faces from where the world says he looks (`heading()`), in radians. */
+    const robotOff = () =>
+      page.evaluate(() => {
+        const g = window.__world;
+        const off = g.hero.yaw - g.heading();
+        return Math.abs(Math.atan2(Math.sin(off), Math.cos(off)));
+      });
+    const press = async () => {
+      await page.keyboard.down('ArrowDown');
+      await ff(0.1);
+      await page.keyboard.up('ArrowDown');
+    };
+    const yaw0 = await robotOff();
+    await press();
+    expect((await road()).facing === -1, `${label}: « back » turns him round (facing ${(await road()).facing})`);
+    await ff(1.4);
+    {
+      const a = await across();
+      expect(
+        a.lens < 0.2,
+        `${label}: the camera has swung behind him, looking back along the road (${a.lens.toFixed(2)} rad off)`,
+      );
+      const off = await robotOff();
+      expect(
+        off < 0.2,
+        `${label}: the ROBOT has turned round too, on the spot (${off.toFixed(2)} rad from the view's heading, 1.5 s after the press; ${yaw0.toFixed(2)} before)`,
+      );
+      await worldShot(`${label}-turned`);
+    }
+    // a second press: the view and the robot face the road ahead again
+    await press();
+    await ff(1.4);
+    {
+      const off = await robotOff();
+      expect(
+        (await road()).facing === 1 && off < 0.2,
+        `${label}: a second press turns the view and the robot to the road ahead (${off.toFixed(2)} rad)`,
+      );
+    }
+    // a third: he turns round and walks back at once — 0.4 s after the press, the lens still swinging
+    await press();
+    await ff(0.3);
+    expect((await road()).facing === -1, `${label}: pressed again, he faces back (walks 0.4 s after the press)`);
+    await page.keyboard.down('ArrowUp');
+    let worst = 0;
+    let shotTaken = false;
+    let steer = null;
+    // which of « left » / « right » brings him back toward the bridge's line, found by trying (as a student does)
+    let toward = { pos: 'ArrowRight', neg: 'ArrowLeft' };
+    let r = await road();
+    for (let k = 0; k < 80 && r.island !== to; k += 1) {
+      const was = await across();
+      const want = Math.abs(was.v) > 0.35 ? (was.v > 0 ? toward.pos : toward.neg) : null;
+      if (want !== steer) {
+        if (steer) await page.keyboard.up(steer);
+        if (want) await page.keyboard.down(want);
+        steer = want;
+      }
+      await ff(0.15);
+      const a = await across();
+      if (steer && Math.abs(a.v) > Math.abs(was.v) + 0.05) toward = { pos: toward.neg, neg: toward.pos }; // that key pushed him away: the other one
+      // on the bridge itself (its two ends are where he steps on and off it)
+      if (a.u > 0.6 && a.u < a.len - 0.6) worst = Math.max(worst, Math.abs(a.v));
+      if (!shotTaken && a.u < a.len * 0.6) {
+        shotTaken = true;
+        await page.keyboard.up('ArrowUp');
+        if (steer) await page.keyboard.up(steer);
+        steer = null;
+        await worldShot(label);
+        await page.keyboard.down('ArrowUp');
+      }
+      r = await road();
+    }
+    await page.keyboard.up('ArrowUp');
+    if (steer) await page.keyboard.up(steer);
+    await ff(0.3);
+    r = await road();
+    expect(
+      r.island === to && r.falls === before.falls && r.facing === -1,
+      `${label}: he walked back over his bridge to island « ${r.names[to]} » without falling (island ${r.island}, falls ${before.falls} → ${r.falls}; at most ${worst.toFixed(2)} from its axis)`,
+    );
+    // the bridge is 2 × 1.15 wide (Game.js › BRIDGE_HALF): starting to walk 0.4 s after the turn, he stays near its axis
+    expect(
+      worst <= 0.6,
+      `${label}: walking 0.4 s after the turn, he stays on the bridge's axis (at most ${worst.toFixed(2)})`,
+    );
+  };
+  /**
+   * He turns to the road ahead again — one more press on « back » (ArrowDown) swings the camera to the front, `facing` 1
+   * — lets the camera swing, then crosses bridge i without falling.
+   */
+  const crossAgain = async (i, label) => {
+    const before = (await road()).falls;
+    await page.keyboard.down('ArrowDown');
+    await ff(0.1);
+    await page.keyboard.up('ArrowDown');
+    await ff(1.6);
+    expect((await road()).facing === 1, `${label}: a second press on « back » turns him to the road ahead (facing 1)`);
+    await cross(i);
+    const after = (await road()).falls;
+    expect(after === before, `${label}: he crosses without falling (falls ${before} → ${after})`);
+  };
+  /** The instruction's fold: folds it, then opens it again (owner: he may hide it himself, and display it again). */
+  const foldAndOpen = async (label) => {
+    await page.click('[data-di-instruction-fold]');
+    await page.waitForTimeout(200);
+    expect(
+      (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'folded' &&
+        (await page.locator('[data-di-instruction] .di-objective').count()) === 0,
+      `${label}: the fold button folds the instruction — its text leaves, its button stays`,
+    );
+    await worldShot(`${label}-folded`);
+    await page.click('[data-di-instruction-fold]');
+    await page.waitForTimeout(200);
+    expect(
+      (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'open',
+      `${label}: the same button opens it again`,
+    );
+  };
+
+  // ── island A: four planks, two gaps — the instruction names both BEFORE he picks ──
+  const [T1, T2] = [198, 234];
   {
+    const r = await road();
+    expect(
+      r.segs[0].a === T1 && r.segs[1].a === T2,
+      `the road starts with two gaps, ${T1} then ${T2} (${r.segs[0].a}, ${r.segs[1].a})`,
+    );
+    expect(
+      (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'open' &&
+        r.objective.includes(String(T1)) &&
+        r.objective.includes(String(T2)),
+      `island A: the instruction is open and names both gaps (« ${r.objective} »)`,
+    );
     const m = await mouldsOf(0);
-    expect(m.join() === '11', `island A offers one mould: 11 (${m.join()})`);
+    const kinds = new Set(m.map((d) => kindOf(T1, T2, d)));
+    expect(
+      m.length === 4 && kinds.size === 4,
+      `island A offers ${m.join(', ')}: one plank fills neither gap, one the first only, one the second only, one both — computed here`,
+    );
+    expect((await mouldsOf(1)).length === 0, 'island B holds no plank: the planks of A build both bridges');
+    await worldShot('island-a');
+    await foldAndOpen('island-a');
   }
-  await bridge(0, 'g198', 198, null, 11);
-  await shot('g198');
+  // ── he takes the plank that fills the FIRST gap only (computed here): the first bridge holds ──
+  const firstOnly = (await mouldsOf(0)).find((d) => kindOf(T1, T2, d) === 'a');
+  const bothPlank = (await mouldsOf(0)).find((d) => kindOf(T1, T2, d) === 'both');
+  await take(firstOnly);
+  await fire(0, async () => {
+    await ff(0.7);
+    await worldShot('g198-building');
+  });
+  expect(await standsWith(0, firstOnly), `${T1} = ${firstOnly} × ${T1 / firstOnly}: the first bridge holds`);
+  await noPromptOnBuilt('g198 held');
+  await worldShot('g198-held');
   await cross(0);
   await page.waitForTimeout(400);
-  expect(
-    (await st()).stage === 1 && (await st()).held == null,
-    'on the second island the mould is not kept: he must choose',
-  );
-  // ── the ✕ of the WORLD, clicked on island B: he leaves, comes back, and is on island B with his bridge built ──
+  {
+    const r = await road();
+    expect(r.stage === 1 && r.held === firstOnly, `island B: he still carries the planks ${firstOnly} (${r.held})`);
+    expect((await mouldsOf(1)).length === 0, 'island B: no pedestal, no plank');
+    const card = (await page.textContent('[data-di-recall]').catch(() => '')) ?? '';
+    expect(
+      card.includes(String(T1)) && card.includes(String(firstOnly)) && card.includes(String(T2)),
+      `the card on the right recalls the first bridge (${T1} with ${firstOnly}) and the gap ahead (« ${card.trim().slice(0, 80)} »)`,
+    );
+    expect(
+      r.objective.includes(String(T2)) && r.objective.includes(String(firstOnly)),
+      `island B: the instruction names the gap ${T2} and the planks he carries (« ${r.objective} »)`,
+    );
+    await worldShot('island-b');
+  }
+  // ── the second gap refuses them: 234 = 11 × 21 + 3 ──
+  await fire(1, async () => {
+    expect(await until((r) => r.verdict != null, 12), 'the world shows its verdict on the second bridge');
+    const v = (await road()).verdict;
+    expect(
+      !v.holds && v.r === T2 % firstOnly,
+      `${T2} = ${firstOnly} × ${Math.floor(T2 / firstOnly)} + ${T2 % firstOnly}: the second bridge does not hold (${JSON.stringify(v)})`,
+    );
+    await worldShot('g234-refused');
+  });
+  {
+    const r = await road();
+    expect(!r.segs[1].complete, 'the second bridge fell');
+    expect(
+      r.objective.includes(r.names[0]),
+      `the instruction now sends him back to « ${r.names[0]} » (« ${r.objective} »)`,
+    );
+  }
+  // ── the ✕ of the WORLD, clicked on island B after the refusal: he leaves, comes back, and is where he was ──
   await leaveAndReturn('in the world, on island B', ['.di-top a.di-icon', '.di-top [data-di-exit]']);
   {
     const s = await st();
+    const r = await road();
     expect(
-      s.phase === 'play' && s.stage === 1 && s.overlay == null && s.stars.g198 >= 1 && s.held == null,
-      `he is back WHERE HE WAS: island B, the bridge of 198 still built, no mould in hand (${JSON.stringify({ phase: s.phase, stage: s.stage, overlay: s.overlay, g198: s.stars.g198 })})`,
+      s.phase === 'play' && s.stage === 1 && s.overlay == null && (await standsWith(0, firstOnly)),
+      `he is back WHERE HE WAS: island B, the first bridge still built with ${firstOnly} (${JSON.stringify({ phase: s.phase, stage: s.stage, overlay: s.overlay })})`,
+    );
+    expect(
+      s.held === firstOnly,
+      `back on island B he still carries the planks ${firstOnly} — they were saved (${s.held})`,
     );
     await ff(0.3);
     const at = await page.evaluate(() => window.__world.hero.island);
     expect(at === 1, `the hero stands on island B (island ${at})`);
-    await shot('back-on-island-b');
+    expect(r.objective.includes(r.names[0]), `the instruction still sends him back to « ${r.names[0]} »`);
+    await worldShot('back-on-island-b');
   }
-  // the twin 234: the plank 11 that filled 198 (a wrong prediction screen first), then the one that fills 234
+  // ── he WALKS BACK to island A, holding « back » ──
+  await walkBack(0, 'walk-back-to-a');
+  // ── on A he takes the plank of both: the first bridge, built with the other planks, goes back ──
+  await take(bothPlank);
   {
-    const m = await mouldsOf(1);
-    const right = m.filter((b) => 234 % b === 0);
+    const r = await road();
     expect(
-      m.includes(11) && right.length === 1,
-      `island B offers ${m.join(', ')}: ONE fills 234 (${right.join()}), and 11 is there`,
+      r.stage === 0 && !r.segs[0].complete && r.segs[0].builtWith == null,
+      `planks of ${bothPlank} taken on A: the bridge of ${firstOnly} goes back, the road starts again from A (stage ${r.stage})`,
     );
-    await take(11);
-    await toAltar(1);
-    await act();
-    expect((await st()).overlay === 'predict', 'bridge 234: the world asks his prediction before it builds');
-    await shot('predict');
-    const o = (await st()).o;
-    await page.click(`[data-di-predict="${o.a % o.b}"]`);
-    await ff(9);
-    expect(!(await st()).stars.g234, `planks of 11 leave ${234 % 11} cells over 234: the bridge crumbles`);
-    await bridge(1, 'g234', 234, null, right[0]);
-    await shot('g234');
+    await resultCleared(`planks of ${bothPlank} taken on A`);
+    await worldShot('bridge-goes-back');
   }
+  await ff(1.5);
+  await fire(0);
+  expect(await standsWith(0, bothPlank), `${T1} = ${bothPlank} × ${T1 / bothPlank}: the first bridge holds again`);
+  await crossAgain(0, 'A → B again');
+  await page.waitForTimeout(300);
+  expect((await road()).held === bothPlank, `island B: he carries the planks ${bothPlank}`);
+  await fire(1);
+  expect(await standsWith(1, bothPlank), `${T2} = ${bothPlank} × ${T2 / bothPlank}: the second bridge holds`);
+  await noPromptOnBuilt('g234 held');
+  await worldShot('g234-held');
   await cross(1);
   await page.waitForTimeout(500);
 
-  // ══════════════════════════ forge 1 🤝 « القواسم المشتركة » — COMMON ══════════════════════════
+  // ══════════════════════════ forge 1 🤝 « القواسم المشتركة » — on what he did on the islands ══════════════════════════
+  /** His planks on a pair of gaps, in the order he first fired them — computed from what the walk did. */
+  const firstForge = [firstOnly, bothPlank];
+  /**
+   * The forge opens on its TILES (no experiment screen, no prediction: the islands held them) — the step « تنبّأ » is
+   * not shown — and his evidence is what HE fired on a and b: one line per plank, none of the mirror's.
+   */
+  const opensOnTiles = async (key, a, b, mine) => {
+    const f = await fg();
+    const steps = await page.locator('.rf-steps li').allTextContents();
+    expect(
+      f.key === key &&
+        f.phase === 'build' &&
+        (await page.locator('.iq').count()) === 0 &&
+        (await page.locator('[data-rf-guess]').count()) === 0 &&
+        (await page.locator('[data-rf-tile]').count()) > 0,
+      `the forge of « ${key} » opens on its TILES — no experiment screen, no prediction: the islands were it (${f.phase})`,
+    );
+    expect(
+      steps.length === 3 && !steps.some((t) => t.includes('تنبّأ')) && steps[0].includes('اكتب قاعدتك'),
+      `the steps shown are the steps played: ${steps.map((t) => t.trim()).join(' → ')}`,
+    );
+    expect(
+      f.rows.map((r) => r.d).join() === mine.join() && f.rows.every((r) => r.A === a && r.B === b && !r.mirror),
+      `his evidence is what HE fired on ${a} and ${b}: the planks ${mine.join(', ')} (${f.rows.map((r) => r.d).join(', ')})`,
+    );
+  };
+  /**
+   * A case of forges 1 and 2 is a PAIR: the log's lines name both gaps and the plank, each on ONE line with a mini of
+   * two bars, inside the column; while the mirror shows a case (an attack), it draws TWO bridges — the plank laid on
+   * each, each holding or falling by itself (computed HERE) — fitting the mirror's box, its words at 12 px at least.
+   */
+  const pairChecks = async (where) => {
+    // a refuting line shakes for 0.4 s (ruleForge.css › rf-shake): it is measured once it stands still
+    await page.waitForTimeout(450);
+    const f = await fg();
+    const m = await page.evaluate((FLOOR) => {
+      const out = { bad: [] };
+      const log = document.querySelector('.rf-log ul').getBoundingClientRect();
+      const zoom = parseFloat(document.querySelector('.rf-fit').style.zoom) || 1;
+      const rows = [...document.querySelectorAll('.rf-root [data-rf-row]')];
+      out.rows = rows.length;
+      for (const li of rows) {
+        const head = li.querySelector(':scope > div');
+        const id = li.dataset.rfRow;
+        if (!head.classList.contains('rf-line--pair')) out.bad.push(`${id}: not a pair line`);
+        if (li.querySelectorAll('svg.rf-mini--pair > g').length !== 2) out.bad.push(`${id}: its mini is not two bars`);
+        const [A, B, d] = id.split(':');
+        const t = head.textContent;
+        if (!t.includes(A) || !t.includes(B) || !t.includes(`لوح ${d}`)) out.bad.push(`${id}: « ${t} »`);
+        // one line: no taller than one line of its biggest text (the gaps' numbers)
+        const lh = Math.max(
+          ...[...head.querySelectorAll('strong, span, em')].map((e) => e.getBoundingClientRect().height),
+        );
+        if (head.getBoundingClientRect().height > lh * 1.35) out.bad.push(`${id}: its line wraps`);
+        const r = li.getBoundingClientRect();
+        if (r.left < log.left - 1 || r.right > log.right + 1) out.bad.push(`${id}: leaves the column`);
+        if (head.scrollWidth > head.clientWidth + 1) out.bad.push(`${id}: its line is cut`);
+      }
+      const svg = document.querySelector('.rf-root [data-rf-pair]');
+      out.pair = svg?.dataset.rfPair ?? null;
+      out.bridge = document.querySelectorAll('.rf-root [data-rf-bridge]').length;
+      if (svg) {
+        out.stage = svg.dataset.rfStage;
+        out.fills = [...svg.querySelectorAll('[data-rf-pair-row]')].map((g) => [
+          Number(g.dataset.rfPairRow),
+          g.dataset.rfFills,
+          g.getAttribute('class'),
+        ]);
+        const vb = svg.viewBox.baseVal;
+        const sr = svg.getBoundingClientRect();
+        const k = Math.min(sr.width / vb.width, sr.height / vb.height);
+        const box = document.querySelector('.rf-mirror').getBoundingClientRect();
+        if (sr.top < box.top - 1 || sr.bottom > box.bottom + 1 || sr.left < box.left - 1 || sr.right > box.right + 1)
+          out.bad.push('the two bridges leave the mirror');
+        const texts = [];
+        for (const el of svg.querySelectorAll('text')) {
+          const px = parseFloat(getComputedStyle(el).fontSize) * k;
+          if (px < FLOOR) out.bad.push(`« ${el.textContent} » drawn at ${px.toFixed(1)} px`);
+          const r = el.getBoundingClientRect();
+          if (r.top < box.top - 1 || r.bottom > box.bottom + 1) out.bad.push(`« ${el.textContent} » leaves the mirror`);
+          texts.push({ t: el.textContent, r });
+        }
+        for (let i = 0; i < texts.length; i += 1)
+          for (let j = i + 1; j < texts.length; j += 1) {
+            const a = texts[i].r;
+            const b = texts[j].r;
+            if (
+              Math.min(a.right, b.right) - Math.max(a.left, b.left) > 2 &&
+              Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 2
+            )
+              out.bad.push(`« ${texts[i].t} » over « ${texts[j].t} »`);
+          }
+        out.minPx = Math.min(
+          ...[...svg.querySelectorAll('text')].map((e) => parseFloat(getComputedStyle(e).fontSize) * k),
+        );
+        out.zoom = zoom;
+      }
+      return out;
+    }, FLOOR_PX);
+    check(
+      m.rows >= 1 && m.bad.length === 0,
+      `${where}: ${m.rows} log lines and the mirror drawn as pairs, whole, in their boxes${m.bad.length ? ' — ' + m.bad.join(' | ') : ''}`,
+    );
+    if (f.phase !== 'attack') return;
+    const c = f.atk.list[f.atk.i];
+    expect(
+      m.pair === `${c.A}:${c.B}:${c.d}` && m.bridge === 0 && m.fills?.length === 2,
+      `${where}: the mirror draws TWO bridges, ${c.A} and ${c.B}, the plank ${c.d} on each (${m.pair}; min text ${m.minPx?.toFixed(1)} px)`,
+    );
+    // the first attack once dealt: two bridges, each with its own look (looked at with the eyes)
+    if (m.stage === 'done' && where.endsWith('attack 1 dealt')) await shot(`${where.split(',')[0]}-attack-dealt`);
+    if (m.stage === 'done')
+      for (const [n, f1, cls] of m.fills) {
+        const yes = n % c.d === 0;
+        check(
+          f1 === (yes ? '1' : '0') && cls.includes(yes ? 'is-held' : 'is-fell'),
+          `${where}: the bridge of ${n} ${yes ? 'holds' : 'falls'} with planks of ${c.d} — ${n} = ${c.d} × ${Math.floor(n / c.d)} + ${n % c.d} (${cls})`,
+        );
+      }
+  };
   expect(
     (await st()).stage === 2 && (await st()).overlay === 'forge',
     'island C « جزيرة الياقوت » opens the first forge',
   );
-  await opensOnQuestion('qawasim-mushtaraka', 'common');
+  await opensOnTiles('qawasim-mushtaraka', T1, T2, firstForge);
+  await forgeTools('forge 1, the tiles');
+  await pairChecks('forge 1, the tiles');
+  await shot('forge1-tiles');
+  // ── the ✕ of the FORGE, clicked after he picked a tile: he leaves; back, the same mirror waits for him ──
+  await page.click('[data-rf-tile="act:fill"]');
+  await leaveAndReturn('inside forge 1', ['.rf-root [data-di-exit]']);
+  await ff(1.5);
+  await page.waitForSelector('[data-rf="build"]', { timeout: 15000 });
   {
-    const s0 = await iq();
+    const s = await st();
     expect(
-      s0.a === 198 && s0.b === 234 && s0.crown === false && s0.stage === 'take',
-      'it starts from HIS twin gaps, 198 and 234 — the pile of planks, and no crown to mark (crown: false)',
+      s.stage === 2 && s.overlay === 'forge' && s.keys.length === 0 && (await standsWith(1, bothPlank)),
+      'he is back WHERE HE WAS: island C, in front of its mirror — the forge opens again by itself, no key skipped',
     );
-    const pile = await page.locator('[data-iq-plank]').evaluateAll((els) => els.map((e) => Number(e.dataset.iqPlank)));
-    expect(
-      pile.includes(11) && pile.includes(13) && pile.length >= 6,
-      `the pile holds the two planks he used, 11 and 13, and others (${pile.join(', ')})`,
-    );
-    await tellsNothing('common', ['القواسم المشتركة', 'قاسم مشترك', 'PGCD', 'الأكبر', 'أطول']);
-    await forgeTools('forge 1, the investigation');
-    await inquiryFits('common-start');
-    // ── the ✕ of the FORGE, clicked after his first plank: he leaves; back, the same mirror waits for him ──
-    await page.click(`[data-iq-plank="${pile[0]}"]`);
-    await page.click(`[data-iq-say-a="${fills(198, pile[0]) ? 'yes' : 'no'}"]`);
-    await page.click(`[data-iq-say-b="${fills(234, pile[0]) ? 'yes' : 'no'}"]`);
-    await page.click('[data-iq-lay]');
-    await iqAt(['take']);
-    expect((await iq()).placed === 1, 'he laid his first plank: it is on its shelf');
-    await leaveAndReturn('inside forge 1', ['.rf-root [data-di-exit]']);
-    await ff(1.5);
-    await page.waitForSelector('[data-rf="inquiry"]', { timeout: 15000 });
-    {
-      const s = await st();
-      expect(
-        s.stage === 2 && s.overlay === 'forge' && s.keys.length === 0 && s.stars.g234 >= 1,
-        'he is back WHERE HE WAS: island C, in front of its mirror — the forge opens again by itself, no key skipped',
-      );
-      await opensOnQuestion('qawasim-mushtaraka', 'common');
-      const again = await iq();
-      expect(
-        again.a === 198 &&
-          again.stage === 'take' &&
-          again.placed === 0 &&
-          (await page.locator('[data-iq-plank]').count()) === pile.length,
-        'the experiment starts again from the full pile: nothing half-done is kept, nothing is given',
-      );
-    }
-    // every plank of the pile: taken, two predictions, laid. The FIRST plank: he predicts it fills both (11 fills 198 only)
-    let n = 0;
-    for (const d of pile) {
-      await page.click(`[data-iq-plank="${d}"]`);
-      await iqAt(['guess']);
-      const [ta, tb] = [fills(198, d), fills(234, d)];
-      const [sa, sb] = n === 0 ? [true, true] : [ta, tb];
-      await page.click(`[data-iq-say-a="${sa ? 'yes' : 'no'}"]`);
-      await page.click(`[data-iq-say-b="${sb ? 'yes' : 'no'}"]`);
-      if (n === 0) await inquiryFits('common-guess');
-      const heard = await hear(async () => {
-        await page.click('[data-iq-lay]');
-        await iqAt(['take', 'say']);
-      });
-      const f = await fact();
-      const right = sa === ta && sb === tb;
-      expect(
-        f.includes(String(d)) && f.includes(right ? 'كما توقّعت' : 'لم يكن هذا توقّعك'),
-        `plank ${d}: ${ta ? 'fills' : 'does not fill'} 198, ${tb ? 'fills' : 'does not fill'} 234 — the fact beside his prediction (« ${f.trim().slice(0, 70)} »)`,
-      );
-      check(
-        heard.includes('plank') && heard.at(-1) === (right ? 'success' : 'crumble'),
-        `plank ${d}: heard — laid, then ${right ? 'success' : 'crumble'} (${[...new Set(heard)].join(', ')})`,
-      );
-      const shelf = kindOf(198, 234, d);
-      expect(
-        (await page.locator(`[data-iq-shelf="${shelf}"] .iq-chip`).allTextContents())
-          .map((x) => x.trim())
-          .includes(String(d)),
-        `plank ${d} goes to the shelf « ${shelf} »`,
-      );
-      if (n === 0) await inquiryFits('common-wrong-pick');
-      if (n === 3) await inquiryFits('common-shelves');
-      n += 1;
-    }
-    expect((await iq()).stage === 'say', 'the pile is empty: he is asked how many planks the shelf of both holds');
-    const onBoth = pile.filter((d) => both(198, 234, d));
-    {
-      const shelfBoth = (await page.locator('[data-iq-shelf="both"] .iq-chip').allTextContents()).map((x) =>
-        Number(x.trim()),
-      );
-      expect(
-        shelfBoth.length === onBoth.length && onBoth.every((d) => shelfBoth.includes(d)),
-        `the shelf of both holds ${onBoth.join(', ')} — what 198 and 234 both give, computed here`,
-      );
-      expect(
-        (await page.locator('[data-iq-long]').count()) === 0,
-        'crown: false — no chip of the shelf is marked as the longest',
-      );
-    }
-    await inquiryFits('common-count');
-    // a wrong count, then the right one
-    await page.fill('[data-iq-in="count"]', String(onBoth.length - 1));
-    await page.click('[data-iq-check]');
-    await page.waitForTimeout(250);
-    expect(
-      (await iq()).stage === 'say' && (await fact()).includes(String(onBoth.length - 1)),
-      `${onBoth.length - 1} planks: the fact says what he wrote and asks him to count them one by one — never the number`,
-    );
-    check(!(await fact()).includes(` ${onBoth.length} `), 'the miss does not give the count away');
-    await inquiryFits('common-count-miss');
-    await page.fill('[data-iq-in="count"]', String(onBoth.length));
-    await page.click('[data-iq-check]');
-    await iqAt(['seen']);
-    {
-      const f = await fact();
-      expect(
-        onBoth.every((d) => f.includes(String(d))),
-        `${onBoth.length} planks: the fact lists the shelf (« ${f.trim().slice(0, 70)} »)`,
-      );
-    }
-    await tellsNothing('common (seen)', ['القواسم المشتركة', 'قاسم مشترك', 'PGCD', 'الأكبر']);
-    await inquiryFits('common-found');
-    await page.click('[data-iq-next]');
-    await page.waitForSelector('[data-rf="build"]');
-    await ownRows(
-      pile.length,
-      `only now he WRITES his rule — the mirror will test it on the ${pile.length} planks HE laid`,
-    );
-    // a false rule: « lay each plank on the glued gap (198 + 198) » — the first plank of HIS where it says otherwise
-    const gluedSays = (d) => d <= 198 && (198 + 234) % d === 0;
-    const firstBad = pile.find((d) => gluedSays(d) !== both(198, 234, d));
+    await opensOnTiles('qawasim-mushtaraka', T1, T2, firstForge);
+  }
+  {
+    // a false rule: « it fills the first gap » — the first plank of HIS where it says otherwise, computed here
+    const bad = firstForge.find((d) => fills(T1, d) !== both(T1, T2, d));
     await mirror(
       'forge1',
-      ['pool:upto', 'on:glued', 'keep:all'],
-      `198:234:${firstBad}`,
-      `the glued gap ${198 + 234} = ${firstBad} × ${(198 + 234) / firstBad}, and 198 = ${firstBad} × ${Math.floor(198 / firstBad)} + ${198 % firstBad}`,
-      ['pool:upto', 'on:each', 'keep:all'],
+      ['act:fill', 'where:first'],
+      `${T1}:${T2}:${bad}`,
+      `${bad} fills ${T1}, and ${T2} = ${bad} × ${Math.floor(T2 / bad)} + ${T2 % bad}`,
+      ['act:fill', 'where:each'],
       (c) => both(c.A, c.B, c.d),
       async (u) => {
         const set = common(u.A, u.B);
@@ -635,213 +1011,212 @@ await w.run(async () => {
           `the planks of both ${u.A} and ${u.B}: ${set.join(', ')}, without laying one`,
         );
       },
+      pairChecks,
     );
   }
   await shot('tablet-1');
   expect(
-    (await page.textContent('[data-di-my-rule]')).includes('على كلّ هوّة وحدها') &&
+    (await page.textContent('[data-di-my-rule]')).includes('كلّ هوّة من الهوّتين') &&
       (await page.textContent('.di-card')).includes('القواسم المشتركة'),
     'the tablet names the rule after HIS own: « القواسم المشتركة »',
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
   expect((await st()).keys.length === 1, 'one key earned');
+  forbid = /PGCD|الأكبر/;
 
-  // ── 266 then 322: the plank 14 fills both ──
+  // ── island C: every plank fills both gaps; a purse of a coin per plank ──
+  const [C1, C2] = [266, 322];
+  let purseOf = 0;
   {
+    await ff(0.5);
+    const r = await road();
+    purseOf = r.purse?.of ?? 0;
     const m = await mouldsOf(2);
-    const right = m.filter((b) => 266 % b === 0);
-    expect(right.length === 1, `island C offers ${m.join(', ')}: ONE fills 266 (${right.join()})`);
-    await bridge(
-      2,
-      'g266',
-      266,
-      m.find((b) => 266 % b !== 0),
-      right[0],
+    expect(
+      r.segs[2].a === C1 && r.segs[3].a === C2 && m.length === 3 && m.every((d) => both(C1, C2, d)),
+      `island C offers ${m.join(', ')}: every one fills ${C1} and ${C2} — computed here`,
+    );
+    expect(
+      purseOf > 0 &&
+        r.purse.left === purseOf &&
+        (await page.getAttribute('[data-di-purse]', 'data-di-purse')) === String(purseOf),
+      `the purse chip shows ${purseOf} coins`,
+    );
+    // with the coins, only ONE of them builds both bridges: the walk computes which (a coin per plank)
+    const fit = m.filter((d) => C1 / d + C2 / d <= purseOf);
+    expect(fit.length === 1, `with ${purseOf} coins, ONE plank builds both bridges (${fit.join()})`);
+    expect(
+      r.objective.includes(String(C1)) && r.objective.includes(String(C2)) && r.objective.includes(String(purseOf)),
+      `island C: the instruction names both gaps and the purse (« ${r.objective} »)`,
+    );
+    expect((await mouldsOf(3)).length === 0, 'island D holds no plank');
+    await worldShot('island-c');
+  }
+  const crownPlanks = await mouldsOf(2);
+  const cheap = crownPlanks.find((d) => C1 / d + C2 / d <= purseOf);
+  // a plank of both, shorter, whose coins last the first bridge and run out on the second — computed here
+  const short = crownPlanks.find((d) => d !== cheap && C1 / d <= purseOf && C1 / d + C2 / d > purseOf);
+  expect(short != null, `a shorter plank that pays the first bridge and not the second: ${short}`);
+  await take(short);
+  await fire(2, async () => {
+    await ff(1.2);
+    await worldShot('g266-building');
+  });
+  {
+    const left = purseOf - C1 / short;
+    expect(await standsWith(2, short), `${C1} = ${short} × ${C1 / short}: the first bridge holds`);
+    await noPromptOnBuilt('g266 held');
+    expect(
+      (await page.getAttribute('[data-di-purse]', 'data-di-purse')) === String(left),
+      `${C1 / short} coins spent: ${left} left in the purse`,
     );
   }
   await cross(2);
-  await page.waitForTimeout(500);
-  expect((await st()).stage === 3, 'island D');
+  await page.waitForTimeout(400);
   {
-    const m = await mouldsOf(3);
-    const right = m.filter((b) => 322 % b === 0);
+    const r = await road();
+    const left = purseOf - C1 / short;
+    expect(r.stage === 3 && r.held === short, `island D: he carries the planks ${short}`);
+    const card = (await page.textContent('[data-di-recall]').catch(() => '')) ?? '';
     expect(
-      right.length === 1 && right[0] === 14 && 266 % 14 === 0,
-      `island D offers ${m.join(', ')}: 14 fills 322 — and 266`,
+      card.includes(String(C1 / short)) && card.includes(String(left)),
+      `the card on the right: the coins of the first bridge (${C1 / short}) and what is left (${left}) (« ${card.trim().slice(0, 90)} »)`,
     );
-    await bridge(
-      3,
-      'g322',
-      322,
-      m.find((b) => 322 % b !== 0),
-      right[0],
-    );
+    await worldShot('island-d');
   }
+  // ── the second bridge: the coins run out — the purse at 0, the sentence of the world ──
+  await fire(3, async () => {
+    expect(await until((r) => r.verdict?.purse === true, 20), 'the purse runs out before the second bridge is full');
+    const r = await road();
+    const paid = purseOf - C1 / short;
+    expect(
+      r.purse?.left === 0 && (await page.getAttribute('[data-di-purse]', 'data-di-purse')) === '0',
+      'the purse chip shows 0',
+    );
+    const v = (await page.textContent('.di-verdict__bridge')) ?? '';
+    expect(
+      v.includes(String(C2 / short)) && v.includes(String(paid)),
+      `the verdict: ${paid} planks laid of ${C2 / short} (« ${v.trim()} »)`,
+    );
+    // what is still open is not a remainder (it is longer than the plank): the legend says so, and the gap's own 3D
+    // label hides behind the result panel
+    const open = C2 - short * paid;
+    const legend = (await page.textContent('.di-eq__legend').catch(() => '')) ?? '';
+    check(
+      legend.includes(`خانات بلا ألواح: ${open}`) && !legend.includes('الباقي'),
+      `the purse out: the legend says « خانات بلا ألواح: ${open} », not « الباقي » (« ${legend.trim()} »)`,
+    );
+    const label3d = await page.evaluate(() => {
+      const seg = window.__world.segs[3];
+      return { label: seg.label ? seg.label.visible : null, count: seg.count ? seg.count.visible : null };
+    });
+    check(
+      label3d.label !== true && label3d.count !== true,
+      `the purse out: the gap's 3D label and count are hidden behind the result (${JSON.stringify(label3d)})`,
+    );
+    await worldShot('purse-out');
+  });
+  {
+    const r = await road();
+    expect(
+      !r.segs[3].complete && /انتهت القطع/.test(r.say) && r.objective.includes(r.names[2]),
+      `the second bridge goes back, Zero says the coins ran out, and the instruction sends him back to « ${r.names[2]} » (« ${r.say} »)`,
+    );
+    expect(r.purse?.left === purseOf - C1 / short, `the coins of the second bridge come back: ${r.purse?.left}`);
+  }
+  // ── the page is RELOADED on island D (the second island of the convoy): the planks he carries were saved ──
+  {
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('[data-di-start]', { timeout: 30000 });
+    await page.waitForTimeout(1200);
+    await page.click('[data-di-start]');
+    await page.waitForTimeout(1200);
+    await ff(0.5);
+    const r = await road();
+    expect(
+      r.phase === 'play' && r.stage === 3 && r.island === 3 && (await standsWith(2, short)),
+      `after a reload he is on island D, the bridge of ${short} standing behind him (stage ${r.stage}, island ${r.island})`,
+    );
+    expect(r.held === short, `after a reload on island D he still carries the planks ${short} (${r.held})`);
+    expect(
+      r.purse?.left === purseOf - C1 / short && r.objective.includes(r.names[2]),
+      `after a reload: the purse (${r.purse?.left}) and the instruction sending him back to « ${r.names[2]} » (« ${r.objective} »)`,
+    );
+    await worldShot('reload-on-d');
+  }
+  await walkBack(2, 'walk-back-to-c');
+  await take(cheap);
+  {
+    const r = await road();
+    expect(
+      r.stage === 2 && !r.segs[2].complete && r.purse?.left === purseOf,
+      `planks of ${cheap} taken on C: the bridge of ${short} goes back and the purse is full again (${r.purse?.left})`,
+    );
+    await resultCleared(`planks of ${cheap} taken on C`);
+    await worldShot('crown-goes-back');
+  }
+  await ff(1.5);
+  await fire(2);
+  expect(await standsWith(2, cheap), `${C1} = ${cheap} × ${C1 / cheap}: the first bridge holds`);
+  await noPromptOnBuilt('g266 held again');
+  await crossAgain(2, 'C → D again');
+  await page.waitForTimeout(300);
+  await fire(3, async () => {
+    expect(await until((r) => r.verdict?.holds === true, 20), 'the second bridge holds');
+    expect(
+      (await page.getAttribute('[data-di-purse]', 'data-di-purse').catch(() => null)) === '0',
+      'the last plank laid takes the last coin: the purse chip shows 0',
+    );
+    await worldShot('g322-held');
+  });
+  expect(
+    (await standsWith(3, cheap)) && (await road()).purse == null,
+    `${C2} = ${cheap} × ${C2 / cheap}: both bridges stand with ${C1 / cheap + C2 / cheap} coins — the whole purse; the chip leaves`,
+  );
   await cross(3);
   await page.waitForTimeout(500);
 
-  // ══════════════════════════ forge 2 👑 « القاسم المشترك الأكبر » — SUMMIT ══════════════════════════
+  // ══════════════════════════ forge 2 👑 « القاسم المشترك الأكبر » — on what he did on the islands ══════════════════════════
   expect(
     (await st()).stage === 4 && (await st()).overlay === 'forge',
     'island E « جزيرة التاج » opens the second forge',
   );
-  await opensOnQuestion('al-akbar', 'summit');
-  const laid = { r1: new Set(), r2: new Set() };
+  await opensOnTiles('al-akbar', C1, C2, [short, cheap]);
   {
-    const s0 = await iq();
+    const f = await fg();
+    const need = f.rows.map((r) => `${r.d}:${r.need}`).join();
     expect(
-      s0.a === 266 && s0.b === 322 && s0.stage === 'free' && s0.best === 14,
-      'it starts from the plank 14 he has just laid on 266 and 322: free tries, the best so far 14',
-    );
-    laid.r1.add(14);
-    await tellsNothing('summit', ['PGCD', 'القاسم المشترك الأكبر', 'الأكبر']);
-    await inquiryFits('summit-start');
-    // two free tries: 7 (fills both, shorter than 14) and 28 (fills neither)
-    for (const d of [7, 28]) {
-      await page.fill('[data-iq-in="free"]', String(d));
-      await page.click('[data-iq-lay]');
-      await iqAt(['free', 'outside']);
-      laid.r1.add(d);
-      const mark = await page.getAttribute(`[data-iq-mark="${d}"]`, 'data-iq-kind');
-      expect(
-        mark === kindOf(266, 322, d),
-        `free try ${d}: its mark on the line of lengths says « ${kindOf(266, 322, d)} » (${mark})`,
-      );
-      const f = await fact();
-      expect(f.includes(String(d)), `free try ${d}: the fact says what the plank did (« ${f.trim().slice(0, 70)} »)`);
-      expect((await iq()).best === 14, `free try ${d}: the best plank is still 14`);
-      if (d === 7) await inquiryFits('summit-free');
-    }
-    expect(
-      (await iq()).stage === 'outside' && (await page.locator('[data-iq-in="free"]').count()) === 0,
-      'two free tries spent: the box is gone, the world asks its one question « outside the shorter gap? »',
+      need === [short, cheap].map((d) => `${d}:${C1 / d + C2 / d}`).join(),
+      `each line says how many planks the plank needs for both bridges, computed (${need})`,
     );
   }
   {
-    await inquiryFits('summit-outside');
-    // the truth, computed here: a plank that does not fill 266 cannot fill both — he says « yes » (a wrong prediction)
-    await page.click('[data-iq-say="yes"]');
-    await iqAt(['outsideSeen']);
-    const f = await fact();
+    // each line says it in the log itself: « 24 لوحًا » — the planks the two bridges need, computed here
+    const tags = await page.locator('.rf-root [data-rf-row] em').allTextContents();
     expect(
-      f.includes('لم يكن هذا توقّعك'),
-      `he said « yes »: a plank laid answers — the fact beside his prediction (« ${f.trim().slice(0, 80)} »)`,
+      [short, cheap].every((d) => tags.some((t) => t.includes(String(C1 / d + C2 / d)))),
+      `forge 2: the log's lines write the planks each plank needs for both bridges (${tags.join(' | ')})`,
     );
-    // the plank the world laid is one of his tries that does not fill 266 (28), computed here
-    const mine = [7, 28].find((d) => 266 % d !== 0);
-    expect(
-      f.includes(String(mine)) && f.includes('جرّبتَه'),
-      `the answer is HIS own try ${mine}: it does not fill 266`,
-    );
-    await inquiryFits('summit-outside-seen');
-    await page.click('[data-iq-go]');
-    await iqAt(['descent']);
   }
-  {
-    const planks = (await page.getAttribute('[data-iq-planks]', 'data-iq-planks')).split(',').map(Number);
-    expect(
-      planks.join() === divisors(266).reverse().join(),
-      `the chips: the planks of 266, longest first (${planks.join(', ')})`,
-    );
-    let crowned = null;
-    let k = 0;
-    while ((await iq()).stage === 'descent') {
-      const d = planks[k];
-      const truth = 322 % d === 0;
-      const heard = await hear(async () => {
-        await page.click(`[data-iq-say="${truth ? 'yes' : 'no'}"]`);
-        await iqAt(['descent', 'rest', 'seen']);
-        await page.waitForTimeout(900); // the verdict sounds a beat after the plank is laid
-      });
-      laid.r1.add(d);
-      check(
-        heard.includes('plank') && heard.includes('success') && !heard.includes('crumble'),
-        `descent ${d}: the plank laid, then « كما توقّعت » is heard (${[...new Set(heard)].join(', ')})`,
-      );
-      expect(
-        (await fact()).includes(String(d)),
-        `descent ${d}: ${truth ? 'fills 322 too' : `322 = ${d} × ${Math.floor(322 / d)} + ${322 % d}`}`,
-      );
-      if (k === 1) await inquiryFits('summit-descent');
-      if (truth) crowned = d;
-      k += 1;
-    }
-    expect(
-      crowned === gcd(266, 322) && (await iq()).crown === crowned,
-      `the first plank of 266 that fills 322 is crowned: ${crowned} (computed here: ${gcd(266, 322)})`,
-    );
-    expect(
-      (await page.getAttribute(`[data-iq-chip="${crowned}"]`, 'data-iq-chip-state')) === 'crown' &&
-        (await page.locator('.iq--summit[data-iq-crown]').getAttribute('data-iq-crown')) === String(crowned),
-      'its chip and its mark on the line are gold',
-    );
-    expect((await iq()).stage === 'rest', 'then: must the shorter planks still be tried?');
-    await inquiryFits('summit-crowned');
-    const rest = divisors(266)
-      .filter((d) => d < crowned)
-      .reverse();
-    await page.click('[data-iq-rest="yes"]');
-    await iqAt(['seen']);
-    rest.forEach((d) => laid.r1.add(d));
-    expect(
-      rest.every((d) => !both(266, 322, d) || d < crowned) && (await fact()).includes(String(rest[0])),
-      `he asked for them: the world lays ${rest.join(', ')} — all shorter than ${crowned}`,
-    );
-    for (const d of rest)
-      expect(
-        (await page.locator(`[data-iq-mark="${d}"]`).count()) === 1,
-        `the shorter plank ${d} has its mark on the line`,
-      );
-    await inquiryFits('summit-rest');
-    await page.click('[data-iq-next]');
-    await iqAt(['descent']);
-  }
-  {
-    const s = await iq();
-    expect(s.a === 198 && s.b === 234 && s.ri === 1, 'round 2: the twins 198 and 234, from the top — no free try');
-    const planks = (await page.getAttribute('[data-iq-planks]', 'data-iq-planks')).split(',').map(Number);
-    let k = 0;
-    let crowned = null;
-    while ((await iq()).stage === 'descent') {
-      const d = planks[k];
-      const truth = 234 % d === 0;
-      // his second descent prediction is a wrong one (99 does not fill 234: he says it does)
-      const say = k === 1 ? !truth : truth;
-      await page.click(`[data-iq-say="${say ? 'yes' : 'no'}"]`);
-      await iqAt(['descent', 'rest', 'seen']);
-      laid.r2.add(d);
-      if (k === 1) {
-        expect(
-          (await fact()).includes('لم يكن هذا توقّعك'),
-          `descent ${d} on 234: he said « yes » — 234 = ${d} × ${Math.floor(234 / d)} + ${234 % d}`,
-        );
-        await inquiryFits('summit-twins-wrong-pick');
-      }
-      if (truth) crowned = d;
-      k += 1;
-    }
-    expect(
-      crowned === gcd(198, 234),
-      `the twins: ${crowned} is crowned after ${k} planks (computed here: ${gcd(198, 234)})`,
-    );
-    await page.click('[data-iq-rest="no"]');
-    await iqAt(['seen']);
-    expect((await page.locator('[data-iq-found] li').count()) === 2, 'two pairs found, kept on screen');
-    await inquiryFits('summit-found');
-    await page.click('[data-iq-next]');
-  }
-  await page.waitForSelector('[data-rf="build"]');
-  await ownRows(laid.r1.size + laid.r2.size, 'only now he WRITES his rule — on every plank laid in his search');
-  // a false rule: « from the shortest up, stop at the first that fills both » picks 1 — his first plank, 14, refutes it
+  await forgeTools('forge 2, the tiles');
+  await pairChecks('forge 2, the tiles');
+  await shot('forge2-tiles');
+  const noName = async (where) => {
+    const t = (await page.textContent('.rf-root')) ?? '';
+    check(!/PGCD|القاسم المشترك الأكبر/.test(t), `${where}: the mirror names nothing before the tablet`);
+  };
+  await noName('forge 2, the tiles');
+  // a false rule: « any plank of both: they all cost the same » — his shorter plank refutes it
   await mirror(
     'forge2',
-    ['list:short', 'order:up', 'stop:both'],
-    '266:322:14',
-    'from the shortest up, the first plank of both is 1 — and 14 fills 266 and 322',
-    ['list:short', 'order:down', 'stop:both'],
+    ['pick:any', 'among:both'],
+    `${C1}:${C2}:${short}`,
+    `${short} fills both, and needs ${C1 / short + C2 / short} planks — ${cheap} needs ${C1 / cheap + C2 / cheap}`,
+    ['pick:longest', 'among:both'],
     (c) => c.d === gcd(c.A, c.B),
     async (u) => {
+      await noName('forge 2, the last step');
       const g = gcd(u.A, u.B);
       const smaller = common(u.A, u.B)
         .filter((d) => d < g)
@@ -856,6 +1231,7 @@ await w.run(async () => {
         `${u.A} = ${g} × ${u.A / g} and ${u.B} = ${g} × ${u.B / g}: the longest plank, without laying one`,
       );
     },
+    pairChecks,
   );
   await shot('tablet-2');
   expect(

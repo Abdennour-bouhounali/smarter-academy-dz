@@ -1,40 +1,48 @@
 /**
  * THE FOUR FORGES of lesson « القاسم المشترك الأكبر لعددين طبيعيين » — one per key, in the order of the story; no rule
- * of this lesson is told (frame: kit/forge.js; the bridges: divisorIsles/ruleForge.js; « استكشف »: GAME_WORLD.md). Each
- * opens on an experiment of its own kind (inquiries.js), then he writes his rule with TILES and the mirror tests it on
- * what HE did, then attacks it:
- *   qawasim-mushtaraka  common (crown: false)  to find every plank of both gaps: try every length up to the shorter gap,
- *                                              lay each on each gap alone, keep it when it fills both (3 slots, 36 rules)
- *   al-akbar            summit                 the longest plank of both: among the planks of the shorter gap, from the
- *                                              longest down, the first that fills both (3 slots, 12 rules)
+ * of this lesson is told (frame: kit/forge.js; the bridges: divisorIsles/ruleForge.js; « استكشف »: GAME_WORLD.md). He
+ * writes his rule with TILES, the mirror tests it on what HE did, then attacks it:
+ *   qawasim-mushtaraka  no experiment screen: the ISLANDS A–B were it (owner, 2026-11-19) — the planks of island A build
+ *                       two bridges, 198 then 234; his evidence is every plank he fired on them. Tiles: what makes a
+ *                       plank build both bridges (2 slots, 12 rules)
+ *   al-akbar            no experiment screen: the ISLANDS C–D were it — a purse of a coin per plank, every plank of C
+ *                       fills both gaps, only one builds both bridges with the coins. Tiles: which plank builds both with
+ *                       the fewest planks (2 slots, 9 rules)
  *   baqat-mutamathila   deal                   identical vases with ALL the flowers: their number is a common divisor,
  *                                              the most is the PGCD, one vase holds each number ÷ that (3 slots, 48 rules)
  *   qawasim-al-pgcd     nest                   the common divisors of two numbers are exactly the divisors of their PGCD
  *                                              (2 slots, 12 rules)
  * In each forge exactly ONE rule holds; `forges.test.js` writes every rule the tiles allow and refutes each wrong one by
  * a computed case — on his evidence, or by the first new case the world finds where it breaks (`firstBreak`).
+ * The two forges without an experiment open on their TILES (owner, 2026-11-19: « in the mirror he only writes his rule
+ * with tiles »): the islands held the predictions, so `predictCases` returns none and the kit skips that step
+ * (kit/RuleForge.jsx). Their evidence is the world's log of bridges (`evidence(log)`), one line per plank of the pair.
  *
- * WHY NO EXPERIMENT HERE WRITES THE RULE (`inquiry.writes` is not set). `common`, `summit` and `deal` hand back what he
- * predicted and found, never a sentence. `nest` was weighed against lesson 3's `peel` (which writes): `peel` ends on a
+ * WHY NO EXPERIMENT HERE WRITES THE RULE (`inquiry.writes` is not set). `deal` hands back what he predicted and found,
+ * never a sentence. `nest` was weighed against lesson 3's `peel` (which writes): `peel` ends on a
  * claim he BUILDS from the table's columns and the table judges it — that claim is a rule. `nest` has no such step: he
  * says yes / no for each probe and the two lists stand side by side at the end. The sentence « the common divisors ARE
  * the divisors of the PGCD » is still his to write — and the tiles let him write what students really believe instead
  * (the divisors of the smaller number, of the difference, every number up to the PGCD, its multiples), each refuted.
  *
- * A case of forges 1, 2 and 4 is ONE plank on TWO gaps. The mirror draws one bridge (`divisorIsles/forgeParts.jsx`): the
- * gap the plank does not fill when there is one, else the second gap — so the bridge holds exactly when the plank fills
- * both (`fits`); `held` is what the case asks (a plank of both, the longest…). A case of forge 3 is a SHARING (`deal`:
+ * A case of forges 1, 2 and 4 is ONE plank on TWO gaps. In forges 1 and 2 it is a PAIR (`pair`, forgeParts.jsx): the
+ * mirror draws BOTH bridges, the plank laid on each, and the log line names both gaps (forge 2: and the planks the two
+ * bridges need). Forge 4 still draws one bridge: the gap the plank does not fill when there is one, else the second
+ * gap — so the bridge holds exactly when the plank fills both (`fits`). `held` is what the case asks (a plank of both,
+ * the longest…). A case of forge 3 is a SHARING (`deal`:
  * the roses and the lilies, k vases, and the claim x and y of a `lot` case): the mirror draws the flowers dealt into the
  * vases — never a bridge — and `fits` says whether every flower is shared. Both divisions are written under it
  * (`text.eq`).
- * No forge asks predictions: every one opens on its experiment, which holds them (`predictCases` returns []).
+ * No forge asks predictions (`predictCases` returns []): forges 1 and 2 open on their tiles, forges 3 and 4 on their
+ * experiment, which holds them.
  * The words « PGCD » and « القاسم المشترك الأكبر » appear only from the third forge on — after the tablet of 👑.
  */
 import { slot } from '../../../../../../common/gameworld/kit/forge';
 import { BRIDGE_TEXT, outcome, pickWith } from '../../../../../../common/gameworld/divisorIsles/ruleForge';
-import { descentOf } from '../../../../../../common/gameworld/divisorIsles/summit';
+import { planks } from '../../../../../../common/gameworld/divisorIsles/strings';
 import { LILIES, ROSES, commonDivisors, counted, divisorsOf, gcd } from './math';
-import { COMMON_INQUIRY, DEAL_INQUIRY, NEST_INQUIRY, SUMMIT_INQUIRY, VASES, inVases } from './inquiries';
+import { DEAL_INQUIRY, NEST_INQUIRY, VASES, inVases } from './inquiries';
+import { NUMBERS } from './story';
 
 const fill = (yes) => (yes ? 'يملأ' : 'لا يملأ');
 const byId = (list) => Object.fromEntries(list.map((x) => [x.id, x]));
@@ -45,7 +53,7 @@ const lazy = (make) => {
   let value = null;
   return () => (value ??= make());
 };
-/** The kit asks every forge for predictions; here the experiment of each forge has held them: none is asked again. */
+/** The kit asks every forge for predictions; here the experiment of each forge — or the islands — held them: none. */
 const noPredictions = () => [];
 /** One line per different case, in the order they came; only the cases of THIS forge (those `own` recognises). */
 const keepOwn = (own, idOf) => (rows) =>
@@ -74,6 +82,8 @@ const pairCase = (A, B, d) => {
   const fb = B % d === 0;
   return { ...outcome(fa ? B : A, d), A, B, d, fa, fb, fits: fa && fb };
 };
+/** The same case drawn as a PAIR of bridges (forgeParts.jsx › `c.pair`); `need`: the planks the two bridges take. */
+const asPair = (c, need) => ({ ...c, pair: { a: c.A, b: c.B, d: c.d, ...(need != null ? { need } : {}) } });
 /** The two divisions of a pair by a plank, as one formula: « 198 = 6 × 33 + 0     234 = 6 × 39 + 0 ». */
 const twoDivisions = (A, B, d) =>
   `${A} = ${d} \\times ${Math.floor(A / d)} + ${A % d} \\qquad ${B} = ${d} \\times ${Math.floor(B / d)} + ${B % d}`;
@@ -92,40 +102,53 @@ const checkSet = (members, vals) => {
   return new Set(typed).size === typed.length ? 'ok' : 'twice';
 };
 
-// ───────────────────────── 1. 🤝 « القواسم المشتركة » — the shelf of both twins ─────────────────────────
+// ───────────────────────── 1. 🤝 « القواسم المشتركة » — a plank that builds both bridges ─────────────────────────
+// No « استكشف » screen: the islands A and B were the experiment (the convoy « twins »). His evidence is every plank he
+// fired on the two gaps (the world's log), one line per plank: does it fill 198? 234? both?
+
+/** The planks he fired on a pair of gaps (the world's log, a bridge per line) as ONE case per plank of the pair. */
+const fromLog = (pair, make, own, idOf) => (rows) =>
+  keepOwn(
+    own,
+    idOf,
+  )(
+    rows.flatMap((row) => {
+      if (own(row)) return [row];
+      return row.kind == null && !row.mirror && pair.includes(row.a) ? [make(pair[0], pair[1], row.b)] : [];
+    }),
+  );
 
 const commonCase = (A, B, d) => {
-  const c = pairCase(A, B, d);
+  const c = asPair(pairCase(A, B, d));
   return {
     ...c,
     kind: 'common',
     held: c.fits,
     fg: (A + B) % d === 0,
-    tag: `${A} و ${B}: ${c.fits ? 'يملؤهما' : 'لا يملؤهما'}`,
+    fd: Math.abs(B - A) % d === 0,
+    // the line names both gaps and the plank itself (forgeParts.jsx › a pair): the tag is the verdict only
+    tag: c.fits ? 'يبني الجسرين' : 'لا يبنيهما',
   };
 };
 const commonId = (c) => `${c.A}:${c.B}:${c.d}`;
-const C_POOL = [
-  { id: 'upto', label: 'كلّ الأطوال من 1 إلى طول الهوّة الأقصر', has: (c) => c.d <= Math.min(c.A, c.B) },
-  { id: 'small', label: 'الأطوال من 2 إلى 9 فقط', has: (c) => c.d >= 2 && c.d <= 9 },
-  { id: 'half', label: 'الأطوال من 1 إلى نصف الهوّة الأقصر', has: (c) => 2 * c.d <= Math.min(c.A, c.B) },
+/** What the plank does to one length n: it fills it exactly, or it is shorter than it. */
+const C_ACT = [
+  { id: 'fill', label: 'يملأ تمامًا', test: (n, d) => n % d === 0 },
+  { id: 'shorter', label: 'أقصر من', test: (n, d) => d < n },
 ];
-const C_ON = [
-  { id: 'each', label: 'على كلّ هوّة وحدها', gaps: (c) => [c.fa, c.fb] },
-  { id: 'long', label: 'على الهوّة الأطول وحدها', gaps: (c) => [c.A >= c.B ? c.fa : c.fb] },
-  { id: 'short', label: 'على الهوّة الأقصر وحدها', gaps: (c) => [c.A <= c.B ? c.fa : c.fb] },
-  { id: 'glued', label: 'على هوّة لصق الهوّتين', gaps: (c) => [c.fg] },
+/** Which lengths: the two gaps each, one of them, the gap the two make glued, a gap as long as their difference. */
+const C_WHERE = [
+  { id: 'each', label: 'كلّ هوّة من الهوّتين', of: (c, t) => t(c.A) && t(c.B) },
+  { id: 'first', label: 'الهوّة الأولى', of: (c, t) => t(c.A) },
+  { id: 'second', label: 'الهوّة الثانية', of: (c, t) => t(c.B) },
+  { id: 'one', label: 'إحدى الهوّتين على الأقلّ', of: (c, t) => t(c.A) || t(c.B) },
+  { id: 'glued', label: 'هوّة لصق الهوّتين', of: (c, t) => t(c.A + c.B) },
+  { id: 'diff', label: 'هوّة طولها فرق الهوّتين', of: (c, t) => t(Math.abs(c.B - c.A)) },
 ];
-const C_KEEP = [
-  { id: 'all', label: 'إذا ملأ كلّ هوّة وضعته عليها', of: (g) => g.every(Boolean) },
-  { id: 'some', label: 'إذا ملأ هوّة واحدة على الأقلّ', of: (g) => g.some(Boolean) },
-  { id: 'none', label: 'إذا لم يملأ أيّ هوّة وضعته عليها', of: (g) => !g.some(Boolean) },
-];
-const CP = byId(C_POOL);
-const CO = byId(C_ON);
-const CK = byId(C_KEEP);
-const commonSays = (rule, c) => CP[rule.pool].has(c) && CK[rule.keep].of(CO[rule.on].gaps(c));
-const isCommonRule = (rule) => rule?.pool === 'upto' && rule?.on === 'each' && rule?.keep === 'all';
+const CA = byId(C_ACT);
+const CW = byId(C_WHERE);
+const commonSays = (rule, c) => CW[rule.where].of(c, (n) => CA[rule.act].test(n, c.d));
+const isCommonRule = (rule) => rule?.act === 'fill' && rule?.where === 'each';
 /** Planks 1 … 24 on pairs of gaps 6 … 48 — never a bridge of more than 40 planks for the mirror to lay. */
 const COMMON_POOL = lazy(() =>
   pairs(6, 40, 48).flatMap(([A, B]) =>
@@ -134,38 +157,38 @@ const COMMON_POOL = lazy(() =>
       .filter((c) => c.q <= 40),
   ),
 );
+const [TW1, TW2] = NUMBERS.twin.gaps;
+const builds = (yes) => (yes ? 'يبني الجسرين' : 'لا يبنيهما');
 
 const commonForge = {
   key: 'qawasim-mushtaraka',
-  /** He shelves the planks of the twins (inquiries.js); the mirror then tests his rule on the planks HE laid. */
-  inquiry: COMMON_INQUIRY,
-  fromInquiry: (result) => ({
-    rows: keepOwn(
-      (row) => row.kind === 'common',
-      commonId,
-    )(result.rounds.flatMap((r) => r.rows.map((x) => commonCase(r.a, r.b, x.d)))),
-  }),
   slots: [
-    { id: 'pool', label: 'أيّ الأطوال أجرّب؟', options: options(C_POOL) },
-    { id: 'on', label: 'أين أضع اللوح؟', options: options(C_ON) },
-    { id: 'keep', label: 'متى أحتفظ به؟', options: options(C_KEEP) },
+    { id: 'act', label: 'ماذا يفعل اللوح؟', options: options(C_ACT) },
+    { id: 'where', label: 'أيّ هوّة؟', options: options(C_WHERE) },
   ],
   says: commonSays,
   isTheRule: isCommonRule,
-  ruleText: (rule) =>
-    `لأجد كلّ ألواح رفّ الهوّتين: أجرّب ${CP[rule.pool].label}، وأضع كلّ لوح ${CO[rule.on].label}، وأحتفظ به ${CK[rule.keep].label}.`,
+  ruleText: (rule) => `يبني اللوح الجسرين معًا إذا كان ${CA[rule.act].label} ${CW[rule.where].label}.`,
   explain(rule, c) {
-    const glued = rule.on === 'glued' ? `، و${fill(c.fg)} هوّة لصقهما (${c.A + c.B})` : '';
-    const facts = `اللوح ${c.d} ${fill(c.fa)} ${c.A} و${fill(c.fb)} ${c.B}${glued}.`;
-    if (!CP[rule.pool].has(c)) return `${facts} طوله ليس بين الأطوال التي تجرّبها قاعدتك: لا تحتفظ به.`;
-    return `${facts} قاعدتك ${commonSays(rule, c) ? 'تحتفظ به' : 'لا تحتفظ به'}.`;
+    const extra =
+      rule.where === 'glued'
+        ? `، و${fill(c.fg)} هوّة لصقهما (${c.A + c.B})`
+        : rule.where === 'diff'
+          ? `، و${fill(c.fd)} هوّة فرقهما (${Math.abs(c.B - c.A)})`
+          : '';
+    const facts =
+      rule.act === 'shorter'
+        ? `اللوح ${c.d} ${c.d < Math.min(c.A, c.B) ? 'أقصر من الهوّتين' : 'ليس أقصر من الهوّتين'}.`
+        : `اللوح ${c.d} ${fill(c.fa)} ${c.A} و${fill(c.fb)} ${c.B}${extra}.`;
+    return `${facts} قاعدتك تقول: ${builds(commonSays(rule, c))}.`;
   },
   caseId: commonId,
-  evidence: keepOwn((row) => row.kind === 'common', commonId),
+  evidence: fromLog(NUMBERS.twin.gaps, commonCase, (row) => row.kind === 'common', commonId),
+  // the islands A and B held the predictions: the mirror opens on the tiles
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isCommonRule(rule)) return firstBreak(COMMON_POOL(), rule, rows, commonSays, commonId);
-    // the shorter gap is itself the plank of both; two gaps that only the plank 5 glued fills
+    // the shorter gap is itself a plank of both; two gaps that only the plank 5 glued fills
     return fresh(rows, commonId, [commonCase(15, 45, 15), commonCase(16, 19, 5), commonCase(14, 42, 14)]).slice(0, 2);
   },
   // never a choice between two written rules: two more planks to look at, each time
@@ -184,78 +207,78 @@ const commonForge = {
       ]);
       return { A, B, set: commonDivisors(A, B), held: true };
     },
-    lines: (c) => [setLine(c.set.length, 'لوح يملأ الهوّتين')],
+    lines: (c) => [setLine(c.set.length, 'لوح يبني الجسرين')],
     check: (c, vals) => checkSet(c.set, vals),
   },
   text: {
     ...BRIDGE_TEXT,
     title: 'مرآة جزيرة الياقوت',
-    log: 'ألواح وضعتَها',
-    yes: 'تحتفظ به',
-    no: 'لا تحتفظ به',
+    log: 'ألواح جرّبتَها',
+    yes: builds(true),
+    no: builds(false),
     eq: (c) => `$${twoDivisions(c.A, c.B, c.d)}$`,
-    frame: 'لأجد كلّ ألواح رفّ الهوّتين:',
-    buildLead: 'اختر بطاقة من كلّ عمود: كيف تجد كلّ ألواح رفّ الهوّتين؟ المرآة ستجرّب قاعدتك على الألواح التي وضعتَها.',
-    testing: 'المرآة تمرّ على الألواح التي وضعتَها، وتسأل قاعدتك عن كلّ لوح…',
-    says: (yes) => `قاعدتك: ${yes ? 'تحتفظ به' : 'لا تحتفظ به'}`,
+    frame: 'يبني اللوح الجسرين معًا إذا كان:',
+    buildLead: `اختر بطاقة من كلّ عمود: متى يبني لوح الجسرين معًا؟ المرآة ستجرّب قاعدتك على الألواح التي جرّبتَها على ${TW1} و ${TW2}.`,
+    testing: 'المرآة تمرّ على الألواح التي جرّبتَها، وتسأل قاعدتك عن كلّ لوح…',
+    says: (yes) => `قاعدتك: ${builds(yes)}`,
     refuted: (m) =>
-      `قاعدتك ${m.says ? 'تحتفظ' : 'لا تحتفظ'} باللوح ${m.d} للهوّتين ${m.A} و ${m.B} — لكنّك رأيته ${m.held ? 'يملأ كلّ واحدة منهما' : 'لا يملأ إحداهما'}.`,
-    agreed: 'قاعدتك توافق كلّ الألواح التي وضعتَها. الآن المرآة تتحدّاها بهوّتين جديدتين.',
-    attack: (c) => `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، واللوح ${c.d}. هل تحتفظ به قاعدتك؟`,
+      `قاعدتك تقول إنّ اللوح ${m.d} ${m.says ? 'يبني' : 'لا يبني'} جسري ${m.A} و ${m.B} — لكنّه ${
+        m.held ? 'يملأ كلّ واحدة منهما' : `لا يملأ ${m.fa ? m.B : m.A}`
+      }.`,
+    agreed: 'قاعدتك توافق كلّ الألواح التي جرّبتَها. الآن المرآة تتحدّاها بهوّتين جديدتين.',
+    attack: (c) => `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، واللوح ${c.d}. هل يبني الجسرين معًا؟`,
     fire: 'ضع اللوح',
     survived: 'صمدت قاعدتك: اللوح فعل ما قالته.',
     broken: (yes) =>
-      `قاعدتك انكسرت هنا: ${yes ? 'احتفظت به' : 'تركته'}، واللوح ${yes ? 'لا يملأ الهوّتين كلتيهما' : 'يملأ كلّ واحدة منهما'}.`,
-    wordsHint: 'مثال: أجرّب كلّ لوح…',
-    experiment: 'انظر جيّدًا: لوح وهوّتان. أين وُضع، وماذا فعل في كلّ هوّة؟',
-    tryKey: (c) => `الهوّتان ${c.A} و ${c.B}. المرآة لا تبني: اكتب كلّ ألواح رفّ الهوّتين، كلّ لوح في خانة.`,
+      `قاعدتك انكسرت هنا: قالت « ${builds(yes)} »، واللوح ${yes ? 'لا يملأ الهوّتين كلتيهما' : 'يملأ كلّ واحدة منهما'}.`,
+    wordsHint: 'مثال: يبني اللوح الجسرين إذا…',
+    experiment: 'انظر جيّدًا: لوح وهوّتان. ماذا فعل في كلّ هوّة؟',
+    tryKey: (c) =>
+      `الهوّتان ${c.A} و ${c.B}. المرآة لا تبني: اكتب كلّ الألواح التي تبني الجسرين معًا، كلّ لوح في خانة.`,
     use: {
       intruder: 'أحد الأعداد لا يملأ إحدى الهوّتين: اقسم كلّ هوّة عليه.',
       twice: 'كتبتَ لوحًا مرّتين: لكلّ لوح خانة واحدة.',
     },
-    useOk: 'وجدتَ كلّ ألواح الرفّ دون أن يوضع لوح واحد: مفتاحك يعمل!',
+    useOk: 'وجدتَ كلّ الألواح التي تبني الجسرين دون أن يوضع لوح واحد: مفتاحك يعمل!',
   },
 };
 
-// ───────────────────────── 2. 👑 « الأكبر » — the longest plank of both ─────────────────────────
+// ───────────────────────── 2. 👑 « الأكبر » — the plank that builds both bridges with the fewest planks ─────────────────────────
+// No « استكشف » screen: the islands C and D were the experiment (the convoy « crown » and its purse of a coin per plank).
+// His evidence: every plank he fired on 266 or 322, with the planks it needs for the two bridges (computed).
 
 const longCase = (A, B, d) => {
-  const c = pairCase(A, B, d);
+  const base = pairCase(A, B, d);
   const g = gcd(A, B);
+  const need = base.fits ? A / d + B / d : null;
+  const c = asPair(base, need);
   return {
     ...c,
     kind: 'longest',
     g,
+    need,
     held: d === g,
-    tag: `${A} و ${B}: ${d === g ? 'الأطول' : c.fits ? 'يملؤهما، وليس الأطول' : 'لا يملؤهما'}`,
+    // short: the line already names both gaps and the plank; whether it is the fewest is the line's colour (`held`)
+    tag: c.fits ? planks(need) : 'لا يملؤهما',
   };
 };
 const longId = (c) => `${c.A}:${c.B}:${c.d}`;
-const L_LIST = [
-  { id: 'short', label: 'ألواح الهوّة الأقصر كلّها', of: (A, B) => divisorsOf(Math.min(A, B)) },
-  {
-    id: 'proper',
-    label: 'ألواح الهوّة الأقصر، ما عدا طولها هي',
-    of: (A, B) => divisorsOf(Math.min(A, B)).filter((d) => d < Math.min(A, B)),
-  },
-  { id: 'upto', label: 'الأطوال من 1 إلى 20', of: () => range(1, 20) },
+/** Which plank of the list: the longest, the shortest, or any (« they all cost the same »). */
+const L_PICK = [
+  { id: 'longest', label: 'أطول لوح', says: (list, d) => d === Math.max(...list) },
+  { id: 'shortest', label: 'أقصر لوح', says: (list, d) => d === Math.min(...list) },
+  { id: 'any', label: 'أيّ لوح، فكلّها سواء', says: (list, d) => list.includes(d) },
 ];
-const L_ORDER = [
-  { id: 'down', label: 'من الأطول إلى الأقصر', sort: (xs) => [...xs].sort((x, y) => y - x) },
-  { id: 'up', label: 'من الأقصر إلى الأطول', sort: (xs) => [...xs].sort((x, y) => x - y) },
+/** Among which planks: those of both gaps, those of the shorter gap, those of the longer gap. */
+const L_AMONG = [
+  { id: 'both', label: 'تملأ الهوّتين كلتيهما', of: (A, B) => commonDivisors(A, B) },
+  { id: 'short', label: 'تملأ الهوّة الأقصر', of: (A, B) => divisorsOf(Math.min(A, B)) },
+  { id: 'long', label: 'تملأ الهوّة الأطول', of: (A, B) => divisorsOf(Math.max(A, B)) },
 ];
-const L_STOP = [
-  { id: 'both', label: 'عند أوّل لوح يملأ الهوّتين', of: (A, B, d) => A % d === 0 && B % d === 0 },
-  { id: 'not', label: 'عند أوّل لوح لا يملأ الهوّتين', of: (A, B, d) => !(A % d === 0 && B % d === 0) },
-];
-const LL = byId(L_LIST);
-const LO = byId(L_ORDER);
-const LS = byId(L_STOP);
-/** The plank his rule picks for a pair (null when its search finds none). */
-const pickOf = (rule, A, B) =>
-  LO[rule.order].sort(LL[rule.list].of(A, B)).find((d) => LS[rule.stop].of(A, B, d)) ?? null;
-const longSays = (rule, c) => pickOf(rule, c.A, c.B) === c.d;
-const isLongRule = (rule) => rule?.list === 'short' && rule?.order === 'down' && rule?.stop === 'both';
+const LP = byId(L_PICK);
+const LA = byId(L_AMONG);
+const longSays = (rule, c) => LP[rule.pick].says(LA[rule.among].of(c.A, c.B), c.d);
+const isLongRule = (rule) => rule?.pick === 'longest' && rule?.among === 'both';
 const LONG_POOL = lazy(() =>
   pairs(6, 40, 60).flatMap(([A, B]) =>
     range(1, A)
@@ -267,46 +290,29 @@ const longEq = (c) =>
   !c.held && c.fits
     ? `$${twoDivisions(c.A, c.B, c.d)} \\qquad ${c.A} = ${c.g} \\times ${c.A / c.g} \\qquad ${c.B} = ${c.g} \\times ${c.B / c.g}$`
     : `$${twoDivisions(c.A, c.B, c.d)}$`;
-const longSay = (yes) => (yes ? 'هو الأطول' : 'ليس الأطول');
+const longSay = (yes) => (yes ? 'بأقلّ عدد' : 'ليس بأقلّ عدد');
 
 const longForge = {
   key: 'al-akbar',
-  /** He searches the longest plank of two pairs (inquiries.js); every plank laid there is a line of his evidence. */
-  inquiry: SUMMIT_INQUIRY,
-  fromInquiry: (result) => ({
-    rows: keepOwn(
-      (row) => row.kind === 'longest',
-      longId,
-    )(
-      result.rounds.flatMap((r) => {
-        const spec = SUMMIT_INQUIRY.rounds.find((x) => x.a === r.a && x.b === r.b) ?? {};
-        const laid = [
-          ...(spec.start ? [spec.start] : []),
-          ...r.tries.map((t) => t.d),
-          ...(r.outside ? [r.outside.d] : []),
-          ...r.descent.map((x) => x.d),
-          ...(r.checkedRest ? descentOf(r.a, r.b).rest : []),
-        ];
-        return laid.map((d) => longCase(r.a, r.b, d));
-      }),
-    ),
-  }),
   slots: [
-    { id: 'list', label: 'أين أبحث؟', options: options(L_LIST) },
-    { id: 'order', label: 'بأيّ ترتيب؟', options: options(L_ORDER) },
-    { id: 'stop', label: 'متى أتوقّف؟', options: options(L_STOP) },
+    { id: 'pick', label: 'أيّ لوح آخذ؟', options: options(L_PICK) },
+    { id: 'among', label: 'من بين الألواح التي…', options: options(L_AMONG) },
   ],
   says: longSays,
   isTheRule: isLongRule,
   ruleText: (rule) =>
-    `لأجد أطول لوح يملأ هوّتين: أبحث في ${LL[rule.list].label}، ${LO[rule.order].label}، وأتوقّف ${LS[rule.stop].label}.`,
+    `لأبني الجسرين بأقلّ عدد من الألواح: آخذ ${LP[rule.pick].label} من بين الألواح التي ${LA[rule.among].label}.`,
   explain(rule, c) {
-    const v = pickOf(rule, c.A, c.B);
-    if (v == null) return `قاعدتك لا تجد أيّ لوح للهوّتين ${c.A} و ${c.B}: لا تقول إنّه اللوح ${c.d}.`;
-    return `قاعدتك تختار للهوّتين ${c.A} و ${c.B} اللوح ${v}: تقول إنّ اللوح ${c.d} ${v === c.d ? 'هو الأطول' : 'ليس الأطول'}.`;
+    const list = LA[rule.among].of(c.A, c.B);
+    const yes = longSays(rule, c);
+    if (rule.pick === 'any')
+      return `قاعدتك تقبل كلّ الألواح التي ${LA[rule.among].label}: تقول إنّ اللوح ${c.d} ${longSay(yes)}.`;
+    const v = LP[rule.pick].id === 'longest' ? Math.max(...list) : Math.min(...list);
+    return `قاعدتك تأخذ للهوّتين ${c.A} و ${c.B} اللوح ${v}: تقول إنّ اللوح ${c.d} ${longSay(yes)}.`;
   },
   caseId: longId,
-  evidence: keepOwn((row) => row.kind === 'longest', longId),
+  evidence: fromLog(NUMBERS.second.gaps, longCase, (row) => row.kind === 'longest', longId),
+  // the islands C and D (the purse) held the predictions: the mirror opens on the tiles
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isLongRule(rule)) return firstBreak(LONG_POOL(), rule, rows, longSays, longId);
@@ -331,7 +337,7 @@ const longForge = {
     lines: (c) => [
       {
         dir: 'ltr',
-        tokens: [String(c.A), '=', slot('g', 'طول أطول لوح', 3), '×', slot('x', 'عدد ألواحه في الهوّة الأولى', 2)],
+        tokens: [String(c.A), '=', slot('g', 'طول اللوح', 3), '×', slot('x', 'عدد ألواحه في الهوّة الأولى', 2)],
       },
       {
         dir: 'ltr',
@@ -349,40 +355,39 @@ const longForge = {
   text: {
     ...BRIDGE_TEXT,
     title: 'مرآة جزيرة التاج',
-    log: 'ألواح وضعتَها',
+    log: 'ألواح جرّبتَها',
     yes: longSay(true),
     no: longSay(false),
     eq: longEq,
-    frame: 'لأجد أطول لوح يملأ هوّتين:',
-    buildLead:
-      'اختر بطاقة من كلّ عمود: أين تبحث، وبأيّ ترتيب، ومتى تتوقّف؟ المرآة ستجرّب قاعدتك على الألواح التي وضعتَها.',
-    testing: 'المرآة تمرّ على الألواح التي وضعتَها، وتسأل قاعدتك عن كلّ لوح…',
+    frame: 'لأبني الجسرين بأقلّ عدد من الألواح:',
+    buildLead: `اختر بطاقة من كلّ عمود: أيّ لوح يبني الجسرين بأقلّ عدد من الألواح؟ المرآة ستجرّب قاعدتك على الألواح التي جرّبتَها على ${NUMBERS.second.gaps.join(' و ')}.`,
+    testing: 'المرآة تمرّ على الألواح التي جرّبتَها، وتسأل قاعدتك عن كلّ لوح…',
     says: (yes) => `قاعدتك: ${longSay(yes)}`,
     refuted: (m) =>
-      `قاعدتك تقول إنّ اللوح ${m.d} ${m.says ? 'هو' : 'ليس'} أطول لوح يملأ ${m.A} و ${m.B} — لكنّك رأيت ${
+      `قاعدتك تقول إنّ اللوح ${m.d} ${m.says ? 'يبني' : 'لا يبني'} جسري ${m.A} و ${m.B} بأقلّ عدد من الألواح — لكنّ ${
         m.held
-          ? 'أنّه يملؤهما، ولا لوح أطول منه يملؤهما'
+          ? `${planks(m.need)} أقلّ عدد يبنيهما`
           : m.fits
-            ? `اللوح ${m.g}، وهو أطول منه، يملؤهما`
-            : 'أنّه لا يملؤهما'
+            ? `اللوح ${m.g} يبنيهما بـ ${planks((m.A + m.B) / m.g)}، وهو يحتاج ${planks(m.need)}`
+            : `اللوح ${m.d} لا يملأ ${m.fa ? m.B : m.A}`
       }.`,
-    agreed: 'قاعدتك توافق كلّ الألواح التي وضعتَها. الآن المرآة تتحدّاها بهوّتين جديدتين.',
+    agreed: 'قاعدتك توافق كلّ الألواح التي جرّبتَها. الآن المرآة تتحدّاها بهوّتين جديدتين.',
     attack: (c) =>
-      `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، واللوح ${c.d}. هل هو أطول لوح يملؤهما؟ ماذا تقول قاعدتك؟`,
+      `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، واللوح ${c.d}. هل يبني الجسرين بأقلّ عدد من الألواح؟ ماذا تقول قاعدتك؟`,
     fire: 'ضع اللوح',
     survived: 'صمدت قاعدتك: الهوّتان قالتا ما قالته.',
     broken: (yes) => `قاعدتك انكسرت هنا: قالت « ${longSay(yes)} »، والهوّتان تقولان « ${longSay(!yes)} ».`,
-    wordsHint: 'مثال: أبحث في…',
-    experiment: 'انظر جيّدًا: هوّتان ولوحان. أيّهما يملؤهما، وأيّهما أطول؟',
+    wordsHint: 'مثال: آخذ اللوح…',
+    experiment: 'انظر جيّدًا: هوّتان ولوحان. كم لوحًا يحتاج كلّ واحد منهما للجسرين؟',
     tryKey: (c) =>
-      `الهوّتان ${c.A} و ${c.B}. المرآة لا تبني: ما أطول لوح يملؤهما؟ اكتب كلّ هوّة جداءً: طول اللوح × عدد ألواحه.`,
+      `الهوّتان ${c.A} و ${c.B}. المرآة لا تبني: بأيّ لوح تبني الجسرين بأقلّ عدد من الألواح؟ اكتب كلّ هوّة جداءً: طول اللوح × عدد ألواحه.`,
     use: {
       same: 'اللوح واحد للهوّتين: اكتب الطول نفسه في السطرين.',
       both: 'هذا اللوح لا يملأ الهوّتين كلتيهما: اقسم كلّ هوّة عليه.',
-      longer: 'هذا اللوح يملأ الهوّتين، لكنّ لوحًا أطول منه يملؤهما أيضًا.',
+      longer: 'هذا اللوح يملأ الهوّتين، لكنّ لوحًا أطول منه يملؤهما بألواح أقلّ.',
       count: 'الطول صحيح. احسب عدد الألواح في كلّ هوّة.',
     },
-    useOk: 'وجدتَ أطول لوح دون أن يوضع لوح واحد: مفتاحك يعمل!',
+    useOk: 'وجدتَ اللوح الذي يبني الجسرين بأقلّ عدد من الألواح دون أن يوضع لوح واحد: مفتاحك يعمل!',
   },
 };
 

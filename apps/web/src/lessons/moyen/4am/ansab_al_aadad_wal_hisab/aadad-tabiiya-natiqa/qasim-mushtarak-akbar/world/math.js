@@ -40,3 +40,5 @@ export const emptyCells = (r) =>
         ? `بقيت ${r} خانات فارغة`
         : `بقيت ${r} خانة فارغة`;
 export const FIGS = ['تينة واحدة', 'تينتان', 'تينات', 'تينة'];
+/** The coins of a purse (one per plank laid, whatever its length): « قطعة واحدة », « قطعتان », « 4 قطع », « 38 قطعة ». */
+export const COINS = ['قطعة واحدة', 'قطعتان', 'قطع', 'قطعة'];

@@ -22,21 +22,39 @@ const pgcdArgs = (s) =>
     .map(Number);
 
 describe('the numbers of « القاسم المشترك الأكبر » — every fact of the story is computed', () => {
-  it('the twins 198 and 234: 11 fills only the first, 13 only the second; the planks that fill both are 1, 2, 3, 6, 9, 18', () => {
-    const [a, b] = NUMBERS.twin.gaps;
+  it('the twins 198 and 234: island A offers 7 (neither), 11 (the first only), 13 (the second only), 9 (both)', () => {
+    const { gaps, moulds, neither, first, second, plank } = NUMBERS.twin;
+    const [a, b] = gaps;
     expect([a, b]).toEqual([198, 234]);
-    expect([divides(11, a), divides(11, b), divides(13, a), divides(13, b)]).toEqual([true, false, false, true]);
+    expect(new Set(moulds)).toEqual(new Set([neither, first, second, plank]));
+    const kind = (d) => [divides(d, a), divides(d, b)];
+    expect([kind(neither), kind(first), kind(second), kind(plank)]).toEqual([
+      [false, false],
+      [true, false],
+      [false, true],
+      [true, true],
+    ]);
+    // what the world shows of each: 198 = 7 × 28 + 2, 234 = 11 × 21 + 3, 198 = 13 × 15 + 3; 9 fills with 22 and 26
+    expect([a % neither, b % first, a % second]).toEqual([2, 3, 3]);
+    expect([a / plank, b / plank]).toEqual([22, 26]);
     expect(commonDivisors(a, b)).toEqual([1, 2, 3, 6, 9, 18]);
     expect(gcd(a, b)).toBe(18);
     expect([a / 18, b / 18, gcd(a / 18, b / 18)]).toEqual([11, 13, 1]);
   });
 
-  it('the second pair 266 and 322: 14 fills both and no longer plank does; 1, 2, 7, 14 are their common planks', () => {
-    const [a, b] = NUMBERS.second.gaps;
+  it('the second pair 266 and 322: every plank of island C fills both; the purse of 42 coins pays for 14 alone', () => {
+    const { gaps, moulds, plank, purse } = NUMBERS.second;
+    const [a, b] = gaps;
     expect([a, b]).toEqual([266, 322]);
     expect(commonDivisors(a, b)).toEqual([1, 2, 7, 14]);
-    expect(gcd(a, b)).toBe(NUMBERS.second.plank);
+    expect(gcd(a, b)).toBe(plank);
     expect([a / 14, b / 14]).toEqual([19, 23]);
+    for (const d of moulds) expect(divides(d, a) && divides(d, b), `${d}`).toBe(true);
+    // a coin per plank: 14 spends the purse exactly; 7 runs out on the second bridge (38 + 4 of 46); 2 on the first
+    expect(purse).toBe(a / plank + b / plank);
+    expect(moulds.filter((d) => a / d + b / d <= purse)).toEqual([plank]);
+    expect([a / 7, purse - a / 7, b / 7]).toEqual([38, 4, 46]);
+    expect(a / 2).toBeGreaterThan(purse);
   });
 
   it('the long gap 342 = 18 × 19 holds with the longest common plank of the twins', () => {
@@ -106,16 +124,32 @@ describe('the numbers of « القاسم المشترك الأكبر » — ever
     expect(say.bossOk).toContain('25 لوحًا طولها 26: 14 في ممرّ الورود و 11 في ممرّ الزنابق');
   });
 
-  it('every bridge holds with ONE of its moulds, the store has ONE right kind of plank, its price is in دج', () => {
-    for (const seg of STORY.segments.filter((x) => x.kind === 'bridge')) {
+  it('every bridge holds with ONE of its moulds (a convoy: ONE plank of its first island builds all of it), the store has ONE right kind of plank, its price is in دج', () => {
+    const bridges = STORY.segments.filter((x) => x.kind === 'bridge');
+    for (const seg of bridges) {
       expect(seg.a % seg.holdsWith, seg.id).toBe(0);
+      expect(seg.id).toBe(`g${seg.a}`);
       if (seg.boss) expect(seg.boss.options.filter((b) => seg.a % b === 0)).toEqual([seg.holdsWith]);
-      else
+      else if (!seg.convoy)
         expect(
           seg.moulds.filter((b) => seg.a % b === 0),
           seg.id,
         ).toEqual([seg.holdsWith]);
-      expect(seg.id).toBe(`g${seg.a}`);
+    }
+    // the two convoys: consecutive bridges, the later ones without planks and without a prediction
+    expect(Object.keys(STORY.convoys)).toEqual(['crown']);
+    for (const id of ['twins', 'crown']) {
+      const group = bridges.filter((x) => x.convoy === id);
+      expect(group).toHaveLength(2);
+      const at = STORY.segments.indexOf(group[0]);
+      expect(STORY.segments[at + 1]).toBe(group[1]);
+      expect(group[1].moulds).toEqual([]);
+      for (const seg of group) expect([seg.predict, seg.holdsWith]).toEqual([false, group[0].holdsWith]);
+      const purse = STORY.convoys[id]?.purse ?? Infinity;
+      const builds = group[0].moulds.filter(
+        (b) => group.every((seg) => seg.a % b === 0) && group.reduce((n, seg) => n + seg.a / b, 0) <= purse,
+      );
+      expect(builds, id).toEqual([group[0].holdsWith]);
     }
     const boss = STORY.segments.find((x) => x.boss);
     expect([boss.a, boss.holdsWith, boss.a / boss.holdsWith]).toEqual([650, 26, 25]);
@@ -129,6 +163,84 @@ describe('the numbers of « القاسم المشترك الأكبر » — ever
     }
     expect(T.costAsk(26, 25)).toContain('25 لوحًا');
     expect(STORY.text.subtitle).toContain('650 خانة');
+  });
+
+  it('the convoys speak before he picks: the instruction names both gaps (and the purse), the card what the last island showed', () => {
+    // a world as small as the hooks read it: its convoys (Game.js › convoyOf, convoyTail, purseOf), its log, its words
+    const segs = STORY.segments.map((s, index) => ({ ...s, index, complete: false, builtWith: null }));
+    const game = {
+      T: { objective: { ...STORY.text.objective, convoyBack: (n) => `ارجع إلى «${n}»` }, recall: STORY.text.recall },
+      state: { held: null },
+      flags: {},
+      isl: STORY.islands,
+      segs,
+      log: [],
+      convoyOf: (seg) => segs.filter((s) => s.convoy && s.convoy === seg.convoy),
+      convoyTail: (seg) => Boolean(seg.convoy) && segs.find((s) => s.convoy === seg.convoy) !== seg,
+      purseOf(seg) {
+        const of = STORY.convoys[seg.convoy]?.purse;
+        if (!of) return null;
+        const spent = this.convoyOf(seg).reduce((n, s) => n + (s.complete ? s.a / s.builtWith : 0), 0);
+        return { of, left: of - spent };
+      },
+    };
+    const [g198, g234, g266, g322] = segs;
+    // island A: both gaps, BEFORE he picks; island C: both gaps, the price and the purse
+    expect(STORY.objective(game, g198)).toContain('هوّة 198 خانة، ثمّ هوّة 234 خانة');
+    expect(STORY.objective(game, g266)).toMatch(/266 خانة ثمّ 322 خانة.*لكلّ لوح قطعة.*42 قطعة/);
+    // island B with 11 in hand; with nothing in hand, or once refused: back to island A
+    game.state.held = 11;
+    expect(STORY.objective(game, g234)).toContain('بالألواح 11 التي تحملها');
+    game.flags.convoyStuck = 'g234';
+    expect(STORY.objective(game, g234)).toBe('ارجع إلى «مرسى التوأمين»');
+    game.flags.convoyStuck = null;
+    game.state.held = null;
+    expect(STORY.objective(game, g234)).toBe('ارجع إلى «مرسى التوأمين»');
+    // the card on B: the first bridge and the gap ahead
+    Object.assign(g198, { complete: true, builtWith: 11 });
+    expect(STORY.recall(game, 1)).toEqual(['الجسر الأوّل: $198 = 11 \\times 18$', 'أمامك الهوّة 234، بالألواح نفسها']);
+    // the card on C: each plank he fired on the twins, and what it did there
+    game.log = [
+      { a: 198, b: 11 },
+      { a: 234, b: 11 },
+      { a: 198, b: 7 },
+      { a: 198, b: 9 },
+      { a: 234, b: 9 },
+    ];
+    expect(STORY.recall(game, 2)).toEqual([
+      'اللوح 11: ملأ 198، ولم يملأ 234',
+      'اللوح 7: لم يملأ 198',
+      'اللوح 9: ملأ 198 و 234',
+    ]);
+    // the card on D: the first bridge of the crown and the coins it cost, agreed
+    Object.assign(g266, { complete: true, builtWith: 7 });
+    game.state.held = 7;
+    expect(STORY.objective(game, g322)).toContain('بالألواح 7 التي تحملها، بما بقي في الكيس');
+    expect(STORY.recall(game, 3)).toEqual([
+      'الجسر الأوّل: $266 = 7 \\times 38$',
+      'دفعتَ 38 قطعة، وبقيت في الكيس 4 قطع',
+    ]);
+    Object.assign(g266, { builtWith: 14 });
+    expect(STORY.recall(game, 3)[1]).toBe('دفعتَ 19 قطعة، وبقيت في الكيس 23 قطعة');
+    // the card on E: the planks needed by each plank he tried
+    game.log.push({ a: 266, b: 2 }, { a: 266, b: 7 }, { a: 322, b: 7 }, { a: 266, b: 14 }, { a: 322, b: 14 });
+    expect(STORY.recall(game, 4)).toEqual([
+      'اللوح 2: الجسران يحتاجان 294 لوحًا',
+      'اللوح 7: الجسران يحتاجان 84 لوحًا',
+      'اللوح 14: الجسران يحتاجان 42 لوحًا',
+    ]);
+    // elsewhere: the world's own card, and its own instruction once a bridge is built
+    expect(STORY.recall(game, 5)).toBe(null);
+    expect(STORY.objective(game, g198)).toBe(null);
+    expect(STORY.objective(game, segs[4])).toBe(null);
+    // the sentences said on the way agree with their numbers
+    const S = STORY.text.say;
+    expect(S.secondFirst(7)).toBe('38 لوحًا طولها 7 تملأ 266 خانة، وبقيت في الكيس 4 قطع.');
+    expect(S.secondFirst(14)).toContain('وبقيت في الكيس 23 قطعة');
+    expect(S.first(9)).toContain('22 لوحًا طولها 9 تملأ 198 خانة');
+    expect(S.twinOk(9)).toContain('26 لوحًا طولها 9 تملأ 234 خانة');
+    expect(S.secondOk(14)).toContain('23 لوحًا طولها 14 تملأ 322 خانة');
+    for (const line of [S.pairs, STORY.text.objective.crown]) expect(line).toContain('42 قطعة');
   });
 
   it('every wave of the gate dash has exactly one gate that holds, and stays mental arithmetic', () => {
@@ -192,9 +304,16 @@ describe('the numbers of « القاسم المشترك الأكبر » — ever
       expect(island.name, island.name).not.toMatch(/مشترك|أكبر|PGCD|قواسم|\d|عشر|الأربعة/);
     // the sentences said before the forge of « القواسم المشتركة » (islands A–C) and before « PGCD » (islands C–E)
     const S = STORY.text.say;
-    for (const line of [STORY.text.subtitle, S.hello, S.first, S.b234, S.twinOk])
+    const O = STORY.text.objective;
+    const R = STORY.text.recall;
+    for (const line of [STORY.text.subtitle, S.hello, S.first(11), S.b234, S.twinOk(9), O.twins, O.tail(234, 11)])
       expect(line, line).not.toMatch(/قاسم|مشترك|PGCD|الأكبر/);
-    for (const line of [S.pairs, S.d322, S.secondOk]) expect(line, line).not.toMatch(/PGCD|الأكبر|القاسم المشترك/);
+    for (const line of [R.first(198, 11), R.ahead(234), R.twin(11, [{ a: 198, fills: true }])])
+      expect(line, line).not.toMatch(/قاسم|مشترك|PGCD|الأكبر/);
+    for (const line of [S.pairs, S.secondFirst(7), S.d322, S.secondOk(14), O.crown, O.tailPurse(322, 7)])
+      expect(line, line).not.toMatch(/PGCD|الأكبر|القاسم المشترك|أطول/);
+    for (const line of [R.first(266, 7), R.paid(38, 4), R.crown(7, 84)])
+      expect(line, line).not.toMatch(/PGCD|الأكبر|القاسم المشترك|أطول/);
     // the gate dash comes after the keys 🤝 and 👑 and before 💐: no bouquet, no basket, no « divisors of »
     for (const w of STORY.dashWaves) expect(w.say, w.say).not.toMatch(/باق|سلّ|سلال|قواسم/);
     // the stone's question comes before 🧩: it asks about baskets, never about the divisors of the greatest

@@ -4,6 +4,14 @@ Written 2026-11-19, at the end of the session that built it. Facts come from the
 was not measured is said so. Contract: `docs/architecture/LESSON_V2.md` §6; design: `BATCH_2_DESIGN.md` §3; plan:
 `LESSON_V2_MASTER_PLAN.md` §4ter-0 step 17.
 
+> **REDESIGNED the same day, after this report (owner; `LESSON_V2_MASTER_PLAN.md` §4ter-0 step 19): keys 1 and 2 are now
+> discovered ON THE ISLANDS** — one choice of planks (7, 11, 13, 9) for the two gaps 198 and 234, the island between
+> holding none; then the planks 2, 7 and 14 for 266 and 322 with a purse of 42 coins that only 14 pays — and the mirror
+> opens on the tiles (no experiment screen, no prediction), tests them on the planks he tried, attacks on other pairs
+> drawn as two bridges. The kinds `common` and `summit` are no longer played by this lesson. Everything below about
+> forges 1 and 2 (the shelves, the summit, their screenshots, the check counts) describes the lesson AS FIRST BUILT;
+> the walks' numbers after the redesign are in the plan's step 19.
+
 ## Verdict
 
 **`npm run status:lesson-v2 -- --lesson qasim-mushtarak-akbar` prints ✅ on every line but the paused phone line; its six

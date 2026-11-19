@@ -3,9 +3,13 @@
  * plays (`divisorIsles/Game.js`): its islands and gaps, the waves of its gate dash, its words, and what happens on the way.
  *
  * The idea, island after island (the textbook fixes the الكفاءات, never this road; the numbers are the platform's own):
- *   A → C — two twin gaps, 198 and 234: the plank 11 fills the first, not the second; 13 fills the second, not the first.
- *           Which planks fill BOTH? → forge 🤝 « القواسم المشتركة » (2, 3, 6, 9, 18 and 1);
- *   C → E — a second pair, 266 and 322: the plank 14 fills both. Is there a longer one? → forge 👑 « PGCD(a ; b) »;
+ *   A → C — a CONVOY (owner, 2026-11-19): the planks he takes on A build TWO bridges, 198 then 234, and island B has none.
+ *           A offers 7 (fills neither), 11 (the first only), 13 (the second only) and 9 (both). With 11 the first bridge
+ *           holds and the second refuses it: he walks back to A and picks again — the islands ARE the experiment of
+ *           forge 🤝 « القواسم المشتركة », whose evidence is the planks he fired on the two gaps (no « استكشف » screen);
+ *   C → E — a convoy with a PURSE of 42 coins, one per plank whatever its length: 266 then 322, and C offers 2, 7, 14 —
+ *           all fill both. 2 runs out of coins on the first bridge, 7 on the second (38 + 4 of 46); only 14 builds both
+ *           (19 + 23 = 42). Its evidence: the planks he tried and how many each needs → forge 👑 « PGCD(a ; b) »;
  *   E → G — the longest common plank of the twins (18) fills the gap 342; the gate dash; then the florist's flowers:
  *           identical bouquets with ALL of them → forge 💐 « الباقات المتماثلة »;
  *   H     — the stone: the dates and the figs of the island, shared into identical baskets — every number of baskets that
@@ -22,6 +26,7 @@
 import { planks } from '../../../../../../common/gameworld/divisorIsles/strings';
 import {
   BOUQUETS,
+  COINS,
   DATES,
   FIGS,
   LILIES,
@@ -36,17 +41,16 @@ import {
 
 /** The numbers of the story — ONE place: the segments, the sentences, the tablets and the tests read them from here. */
 export const NUMBERS = {
-  /** Islands A–C: the twin gaps; the plank of the first gap, the moulds of the second (only 13 fills it). */
-  twin: { gaps: [198, 234], first: 11, moulds: [11, 13, 5], plank: 13 },
-  /** Islands C–E: a second pair; the moulds of each gap (14 fills both, alone among them). */
-  second: {
-    gaps: [266, 322],
-    moulds: [
-      [4, 6, 14],
-      [4, 14, 9],
-    ],
-    plank: 14,
-  },
+  /**
+   * Islands A–C, the convoy « twins »: the planks of island A build both gaps (island B has none) — 7 fills neither, 11
+   * the first only, 13 the second only, 9 both.
+   */
+  twin: { gaps: [198, 234], moulds: [11, 7, 9, 13], neither: 7, first: 11, second: 13, plank: 9 },
+  /**
+   * Islands C–E, the convoy « crown »: every plank of island C fills both gaps; the purse pays one coin per plank, and
+   * only the longest plank builds both bridges with its coins (19 + 23 = 42).
+   */
+  second: { gaps: [266, 322], moulds: [2, 7, 14], plank: 14, purse: 42 },
   /** Island E–F: the longest common plank of the twins fills another gap. */
   long: { gap: 342, moulds: [8, 12, 18], plank: 18 },
   /** Island G: the florist's flowers — the numbers of the bouquets' forge. */
@@ -139,11 +143,15 @@ const ISLANDS = [
   { id: 'H', name: 'جزيرة السلال', R: 8.5, theme: 'autumn', turn: 0.3, feature: 'stone' },
   { id: 'I', name: 'سوق الزهور', R: 12, theme: 'snow', turn: 0 },
 ];
+// the two convoys: the bridges of one are built with the planks of its FIRST island (Game.js › « convoy »); no remainder
+// is predicted on them — the choice of the plank, made for two gaps at once, is what he predicts there
+const TWINS = { convoy: 'twins', predict: false };
+const CROWN = { convoy: 'crown', predict: false };
 const SEGMENTS = [
-  bridge(`g${W1}`, W1, 14, [W.first], W.first, { predict: false }),
-  bridge(`g${W2}`, W2, 15, W.moulds, W.plank),
-  bridge(`g${S1}`, S1, 15.5, S.moulds[0], S.plank),
-  bridge(`g${S2}`, S2, 16.5, S.moulds[1], S.plank),
+  bridge(`g${W1}`, W1, 14, W.moulds, W.plank, TWINS),
+  bridge(`g${W2}`, W2, 15, [], W.plank, TWINS),
+  bridge(`g${S1}`, S1, 15.5, S.moulds, S.plank, CROWN),
+  bridge(`g${S2}`, S2, 16.5, [], S.plank, CROWN),
   bridge(`g${L.gap}`, L.gap, 18, L.moulds, L.plank),
   { id: 'dash', kind: 'rail', len: 300 },
   bridge(`g${K.dates}`, K.dates, 18.5, K.moulds, K.plank),
@@ -196,7 +204,9 @@ export const TABLETS = {
       'نرمز له بـ $\\mathrm{PGCD}(a ; b)$.',
     ],
     math: [`${pgcd(W1, W2)} = ${TWIN_PGCD}`, `${pgcd(S1, S2)} = ${SECOND_PGCD}`],
-    notes: [`القاسم 1 مشترك بين كلّ عددين، و ${TWIN_PGCD} أطول لوح يملأ الهوّتين ${W1} و ${W2}`],
+    notes: [
+      `${SECOND_PGCD} أطول لوح يملأ الهوّتين ${S1} و ${S2}: يبني الجسرين بأقلّ عدد من الألواح، ${planks((S1 + S2) / SECOND_PGCD)}`,
+    ],
   },
   'baqat-mutamathila': {
     icon: '💐',
@@ -230,18 +240,26 @@ const TEXT = {
   title: 'أرخبيل القواسم: سوق الزهور',
   subtitle: `سوق الزهور ينتظر جسرًا من ${BOSS_A} خانة. ابحث مع «زيرو» عن الألواح التي تملأ هوّتين معًا، وعن أطولها.`,
   objective: {
+    // the two convoys: what the planks of the first island build, said BEFORE he picks (owner, 2026-11-19)
+    twins: `الألواح التي تأخذها هنا تبني جسرين: هوّة ${W1} خانة، ثمّ هوّة ${W2} خانة. لا ألواح على الجزيرة التالية: اختر لوحًا يبني الجسرين.`,
+    crown: `الألواح التي تأخذها هنا تبني جسرين: ${S1} خانة ثمّ ${S2} خانة. لكلّ لوح قطعة من الكيس مهما كان طوله، وفي الكيس ${counted(S.purse, COINS)} فقط.`,
+    // the second gap of a convoy, with the planks he carries
+    tail: (a, b) => `الهوّة ${a} خانة. ابنِ جسرها بالألواح ${b} التي تحملها: لا ألواح على هذه الجزيرة.`,
+    tailPurse: (a, b) => `الهوّة ${a} خانة. ابنِ جسرها بالألواح ${b} التي تحملها، بما بقي في الكيس.`,
     board: 'اركب لوح الضوء نحو جزيرة الباقات',
     bossGo: `اذهب إلى المنصّة المضيئة واختر أطول لوح يملأ الممرّين ${B.roses} و ${B.lilies}`,
     bossCross: 'جسر السوق ثابت — اعبر إلى سوق الزهور!',
   },
   say: {
-    hello: `أنا زيرو! أمامنا هوّتان توأمان: ${W1} خانة ثمّ ${W2} خانة. خذ القالب ${W.first} وتعال إلى منصّة الضوء.`,
-    first: `${planks(W1 / W.first)} طولها ${W.first} تملأ ${W1} خانة. احفظ هذا اللوح.`,
-    b234: `الهوّة التوأم: ${W2} خانة، وثلاثة قوالب. هل يملؤها اللوح ${W.first} أيضًا؟`,
-    twinOk: `${planks(W2 / W.plank)} طولها ${W.plank} تملأ ${W2} خانة. لكنّ ${W.plank} لا يملأ ${W1}، و ${W.first} لا يملأ ${W2}.`,
-    pairs: `هوّتان جديدتان: ${S1} ثمّ ${S2}. جرّب القوالب على كلّ واحدة.`,
-    d322: `الهوّة الثانية: ${S2} خانة. هل يملؤها اللوح الذي ملأ ${S1}؟`,
-    secondOk: `اللوح ${S.plank} يملأ الهوّتين ${S1} و ${S2} معًا. هل يوجد لوح أطول يملؤهما؟`,
+    hello: `أنا زيرو! أمامنا هوّتان: ${W1} خانة ثمّ ${W2} خانة، ولا ألواح إلّا على هذه الجزيرة. اختر لوحًا، ثمّ تعال إلى منصّة الضوء.`,
+    first: (b) => `${planks(W1 / b)} طولها ${b} تملأ ${W1} خانة. اعبر: الهوّة ${W2} تنتظر الألواح نفسها.`,
+    b234: `لا ألواح على هذه الجزيرة. الهوّة ${W2} خانة: هل تملؤها الألواح التي تحملها؟`,
+    twinOk: (b) => `${planks(W2 / b)} طولها ${b} تملأ ${W2} خانة: الألواح ${b} بنت الجسرين معًا.`,
+    pairs: `هوّتان جديدتان: ${S1} خانة ثمّ ${S2} خانة. كلّ ألواح الجزيرة تملؤهما، لكنّ لكلّ لوح قطعة من الكيس، وفي الكيس ${counted(S.purse, COINS)}.`,
+    secondFirst: (b) =>
+      `${planks(S1 / b)} طولها ${b} تملأ ${S1} خانة، وبقيت في الكيس ${counted(S.purse - S1 / b, COINS)}.`,
+    d322: `لا ألواح على هذه الجزيرة. الهوّة ${S2} خانة: هل بقي في الكيس ما يبني جسرها؟`,
+    secondOk: (b) => `${planks(S2 / b)} طولها ${b} تملأ ${S2} خانة: الجسران ثابتان، وقطع الكيس كلّها في الجسرين.`,
     long: `هوّة من ${L.gap} خانة. أطول لوح يملأ ${W1} و ${W2} معًا ينتظر في القوالب.`,
     longOk: `${planks(L.gap / L.plank)} طولها ${L.plank}: الهوّة ${L.gap} ثابتة.`,
     f: 'لوح الضوء جاهز. اقرأ الجملة واعبر من البوّابة التي تحقّقها.',
@@ -252,6 +270,21 @@ const TEXT = {
     bossFail: (b) => `${stretchesWith(b)}. جرّب النوع الآخر.`,
     bossOk: `${planks(BOSS_Q)} طولها ${B.plank}: ${B.roses / B.plank} في ممرّ الورود و ${B.lilies / B.plank} في ممرّ الزنابق، ولا خانة فارغة. جسر السوق ثابت!`,
     end: 'وصل الجسر إلى سوق الزهور، وكلّ الباقات متماثلة. شكرًا لك!',
+  },
+  /** The card on the right (kit/Instruction.jsx › Recall): what matters from the island before. */
+  recall: {
+    first: (a, b) => `الجسر الأوّل: $${times(a, b)}$`,
+    ahead: (a) => `أمامك الهوّة ${a}، بالألواح نفسها`,
+    // what a plank of the twins did on the gaps it was laid on (`on`: [{ a, fills }], in the order of the road)
+    twin: (b, on) =>
+      on.length === 1
+        ? `اللوح ${b}: ${on[0].fills ? 'ملأ' : 'لم يملأ'} ${on[0].a}`
+        : on[1].fills
+          ? `اللوح ${b}: ملأ ${on[0].a} و ${on[1].a}`
+          : `اللوح ${b}: ملأ ${on[0].a}، ولم يملأ ${on[1].a}`,
+    paid: (q, left) => `دفعتَ ${counted(q, COINS)}، وبقيت في الكيس ${counted(left, COINS)}`,
+    // the planks of the crown: what each needs for the two bridges
+    crown: (b, need) => `اللوح ${b}: الجسران يحتاجان ${planks(need)}`,
   },
   quiz: {
     baskets: {
@@ -299,6 +332,46 @@ export const STORY = {
   segments: SEGMENTS,
   dashWaves: DASH_WAVES,
   text: TEXT,
+  /** The convoy « crown » pays a coin per plank: only the longest plank of both gaps builds its two bridges. */
+  convoys: { crown: { purse: S.purse } },
+
+  /**
+   * The instruction of the moment on the two convoys: the gaps the planks of the first island build, before he picks;
+   * on the second island, the plank he carries. null: the world's own (a bridge built, « go back » once refused).
+   */
+  objective(game, seg) {
+    const o = game.T.objective;
+    if (seg.complete || !seg.convoy) return null;
+    if (!game.convoyTail(seg)) return seg.convoy === 'crown' ? o.crown : o.twins;
+    const b = game.state.held;
+    // nothing in hand on an island without planks (a page opened again there): the world's « go back »
+    if (game.flags.convoyStuck || b == null) return o.convoyBack(game.isl[game.convoyOf(seg)[0].index].name);
+    return game.purseOf(seg) ? o.tailPurse(seg.a, b) : o.tail(seg.a, b);
+  },
+  /** The card on the right, on the islands of the two convoys; elsewhere the world's (the gap just crossed). */
+  recall(game, k) {
+    const R = game.T.recall;
+    const tried = (gaps) => {
+      const order = [];
+      for (const x of game.log) if (gaps.includes(x.a) && !x.mirror && !order.includes(x.b)) order.push(x.b);
+      return order.slice(-3);
+    };
+    if (k === 1 || k === 3) {
+      const first = game.segs[k - 1];
+      const b = first.builtWith ?? first.holdsWith;
+      const purse = game.purseOf(first);
+      return [R.first(first.a, b), purse ? R.paid(first.a / b, purse.left) : R.ahead(game.segs[k].a)];
+    }
+    if (k === 2)
+      return tried(W.gaps).map((b) =>
+        R.twin(
+          b,
+          W.gaps.filter((a) => game.log.some((x) => x.a === a && x.b === b)).map((a) => ({ a, fills: a % b === 0 })),
+        ),
+      );
+    if (k === 4) return tried(S.gaps).map((b) => R.crown(b, (S1 + S2) / b));
+    return null;
+  },
 
   /** What the story does on arriving at island k. No rule is told: each one is forged in the mirror of an island. */
   onArrive(game, k) {
@@ -344,11 +417,12 @@ export const STORY = {
     return null;
   },
   /** A bridge held: the story's own sentence for it (true), or nothing — the world then says how many planks it took. */
-  onHold(game, seg) {
+  onHold(game, seg, b) {
     const { say } = game.T;
-    if (seg.id === `g${W1}`) game.say(say.first, 7);
-    else if (seg.id === `g${W2}`) game.say(say.twinOk, 9);
-    else if (seg.id === `g${S2}`) game.say(say.secondOk, 9);
+    if (seg.id === `g${W1}`) game.say(say.first(b), 7);
+    else if (seg.id === `g${W2}`) game.say(say.twinOk(b), 9);
+    else if (seg.id === `g${S1}`) game.say(say.secondFirst(b), 8);
+    else if (seg.id === `g${S2}`) game.say(say.secondOk(b), 9);
     else if (seg.id === `g${L.gap}`) game.say(say.longOk, 7);
     else return false;
     return true;

@@ -214,7 +214,7 @@ export const LESSON_KNOWLEDGE = {
           quiz: [
             {
               q: `أيّ هذه الأعداد قاسم مشترك للعددين $${W1}$ و $${W2}$؟`,
-              options: [`$${W.first}$`, `$${W.plank}$`, '$9$'],
+              options: [`$${W.first}$`, `$${W.second}$`, `$${W.plank}$`],
               correct: 2,
             },
             {

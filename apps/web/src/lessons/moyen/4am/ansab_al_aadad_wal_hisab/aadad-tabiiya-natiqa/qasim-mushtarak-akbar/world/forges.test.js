@@ -3,12 +3,11 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { complete, runOn, testsOf, ruleKey } from '../../../../../../common/gameworld/kit/forge';
-import { commonOf, nestOf } from '../../../../../../common/gameworld/divisorIsles/inquiry';
-import { initSummit, summitReducer, summitResult } from '../../../../../../common/gameworld/divisorIsles/summit';
+import { nestOf } from '../../../../../../common/gameworld/divisorIsles/inquiry';
 import { dealReducer, dealResult, initDeal } from '../../../../../../common/gameworld/divisorIsles/deal';
 import { FORGES } from './forges';
 import { KEYS } from './journey';
-import { COMMON_INQUIRY, DEAL_INQUIRY, NEST_INQUIRY, SUMMIT_INQUIRY } from './inquiries';
+import { DEAL_INQUIRY, NEST_INQUIRY } from './inquiries';
 import { commonDivisors, divisorsOf, gcd } from './math';
 import { NUMBERS } from './story';
 
@@ -29,42 +28,62 @@ const plain = (text) => {
   expect(text, text).not.toMatch(/\$|\\/);
 };
 
-// ───────── what each experiment hands back when a student plays it through (played on the world's own logic) ─────────
-const commonResult = {
-  rounds: COMMON_INQUIRY.rounds.map(({ a, b, candidates }) => {
-    const c = commonOf(a, b, candidates);
-    return {
-      a,
-      b,
-      rows: c.rows.map((r) => ({ d: r.d, guessA: true, guessB: true, both: r.both })),
-      common: c.common,
-      longest: c.longest,
-      said: { longest: null, count: c.common.length },
-    };
-  }),
+// ───────── keys 1 and 2: what the WORLD logs while he plays the islands (a bridge per line: the gap, the plank) ─────────
+const [W1, W2] = NUMBERS.twin.gaps;
+const [S1, S2] = NUMBERS.second.gaps;
+const fired = (list) => list.map(([a, b]) => ({ a, b }));
+/**
+ * The story walk's road: 11 holds on 198 and is refused by 234, he walks back, 9 builds both; on the crown 7 holds on 266
+ * and runs out of coins on 322, he walks back, 14 builds both. Earlier bridges of the road are in the log too.
+ */
+const WALKED = {
+  'qawasim-mushtaraka': fired([
+    [W1, 11],
+    [W2, 11],
+    [W1, 9],
+    [W2, 9],
+  ]),
+  'al-akbar': fired([
+    [W1, 9],
+    [W2, 9],
+    [S1, 7],
+    [S2, 7],
+    [S1, 14],
+    [S2, 14],
+  ]),
 };
-/** The summit played: two free tries (28, then 7), « no » outside, the descent said right, the shorter planks tried. */
-const summitPlayed = (() => {
-  const go = (s, a) => summitReducer(SUMMIT_INQUIRY, s, a);
-  let s = initSummit(SUMMIT_INQUIRY);
-  for (const d of [28, 7]) s = go(go(s, { type: 'try', d }), { type: 'shown' });
-  s = go(go(go(s, { type: 'say', v: false }), { type: 'shown' }), { type: 'go' });
-  while (s.stage === 'descent') {
-    const now = SUMMIT_INQUIRY.rounds[s.ri];
-    const d = divisorsOf(Math.min(now.a, now.b)).reverse()[s.descent.length];
-    s = go(go(s, { type: 'say', v: Math.max(now.a, now.b) % d === 0 }), { type: 'shown' });
-  }
-  s = go(s, { type: 'say', v: true }); // round 1: « must the shorter ones be tried? » — yes
-  while (s.stage === 'restRun') s = go(s, { type: 'tick' });
-  s = go(s, { type: 'next' });
-  while (s.stage === 'descent') {
-    const d = [198, 99, 66, 33, 22, 18][s.descent.length];
-    s = go(go(s, { type: 'say', v: d === 18 }), { type: 'shown' });
-  }
-  s = go(s, { type: 'say', v: false }); // round 2: no
-  expect(s.stage).toBe('seen');
-  return summitResult(go(s, { type: 'next' }));
-})();
+/** The shortest road: he picked right at once — ONE plank on the two gaps. */
+const AT_ONCE = {
+  'qawasim-mushtaraka': fired([
+    [W1, 9],
+    [W2, 9],
+  ]),
+  'al-akbar': fired([
+    [S1, 14],
+    [S2, 14],
+  ]),
+};
+/** The longest road: every plank of the island tried. */
+const EVERY = {
+  'qawasim-mushtaraka': fired([
+    [W1, 7],
+    [W1, 13],
+    [W1, 11],
+    [W2, 11],
+    [W1, 9],
+    [W2, 9],
+  ]),
+  'al-akbar': fired([
+    [S1, 2],
+    [S1, 7],
+    [S2, 7],
+    [S1, 14],
+    [S2, 14],
+  ]),
+};
+const ON_ISLANDS = new Set(Object.keys(WALKED));
+
+// ───────── keys 3 and 4: what each experiment hands back when a student plays it through (the world's own logic) ─────────
 /** The deal played: 5, 7, 3 and 4 vases, then « 4 vases » (a bigger one is open), then 8 tried and the answer. */
 const dealPlayed = (() => {
   const go = (s, a) => dealReducer(DEAL_INQUIRY, s, a);
@@ -88,13 +107,11 @@ const nestResult = {
   }),
 };
 const RESULTS = {
-  'qawasim-mushtaraka': commonResult,
-  'al-akbar': summitPlayed,
   'baqat-mutamathila': dealPlayed,
   'qawasim-al-pgcd': nestResult,
 };
 /** How many rules the tiles of each forge allow. */
-const TILES = { 'qawasim-mushtaraka': 36, 'al-akbar': 12, 'baqat-mutamathila': 48, 'qawasim-al-pgcd': 12 };
+const TILES = { 'qawasim-mushtaraka': 12, 'al-akbar': 9, 'baqat-mutamathila': 48, 'qawasim-al-pgcd': 12 };
 /** What a student who holds the rule writes at the last step of each forge. */
 const asSet = (xs) => Object.fromEntries(xs.map((d, i) => [`d${i + 1}`, d]));
 const SOLVE = {
@@ -103,19 +120,71 @@ const SOLVE = {
   'baqat-mutamathila': (c) => ({ k: c.g, x: c.nA / c.g, y: c.nB / c.g }),
   'qawasim-al-pgcd': (c) => asSet([...divisorsOf(c.g)].reverse()), // a set: any order
 };
-const rowsOf = (key) => FORGES[key].fromInquiry(RESULTS[key]).rows;
+/** His evidence when the forge opens: the world's log read by the forge (keys 1, 2), or what the experiment handed back. */
+const rowsOf = (key, log = WALKED[key]) =>
+  ON_ISLANDS.has(key) ? FORGES[key].evidence(log) : FORGES[key].fromInquiry(RESULTS[key]).rows;
 /** The rule is refuted in front of him: on his evidence, or by the first attack. */
-const refutedBy = (key, rule) => {
+const refutedBy = (key, rule, log) => {
   const F = FORGES[key];
-  const rows = rowsOf(key);
+  const rows = rowsOf(key, log);
   const run = runOn(F, rule, testsOf(F, rule, rows));
   return run.bad >= 0 ? { on: 'evidence', c: run.marks[run.bad] } : { on: 'attack', c: F.attacks(rule, rows)[0] };
 };
 
 describe('the four forges of « القاسم المشترك الأكبر » — no rule is told', () => {
-  it('there is one forge per key, each opening on an experiment that holds the predictions, then tiles', () => {
+  it('keys 1 and 2: no experiment screen — the evidence is the world’s log, a line per plank fired on the two gaps', () => {
     expect(Object.keys(FORGES)).toEqual(KEYS);
-    for (const key of KEYS) {
+    for (const key of ON_ISLANDS) {
+      const F = FORGES[key];
+      expect(F.key).toBe(key);
+      expect(F.inquiry).toBeUndefined();
+      const rows = rowsOf(key);
+      // one line per plank, whatever the number of gaps it was fired on; the other bridges of the road are not his here
+      const pair = key === 'qawasim-mushtaraka' ? [W1, W2] : [S1, S2];
+      const planksFired = [...new Set(WALKED[key].filter((x) => pair.includes(x.a)).map((x) => x.b))];
+      expect(rows.map((r) => r.d)).toEqual(planksFired);
+      for (const row of rows) {
+        expect([row.A, row.B]).toEqual(pair);
+        expect(typeof row.held).toBe('boolean');
+      }
+      // nothing he did is lost, nothing counted twice — the log read again over his rows changes nothing
+      expect(F.evidence(rows)).toHaveLength(rows.length);
+      expect(F.evidence([...rows, ...WALKED[key]])).toHaveLength(rows.length);
+      // a bridge the mirror built in front of him (an attack) joins his lines (marked as the mirror's), never as a log line
+      const [p] = F.attacks(allRules(F).find(F.isTheRule), rows);
+      expect(F.evidence([...rows, { ...p, mirror: true }])).toHaveLength(rows.length + 1);
+      // the islands held the predictions: none is asked, the kit opens such a forge on its TILES (RuleForge.jsx)
+      expect(F.predictCases(rows)).toEqual([]);
+      expect(F.predictCases([])).toEqual([]);
+    }
+  });
+
+  it('keys 1 and 2: every case is a PAIR of gaps — the mirror draws two bridges, the line names both gaps', () => {
+    for (const key of ON_ISLANDS) {
+      const F = FORGES[key];
+      const rows = rowsOf(key, EVERY[key]);
+      const cases = [
+        ...rows,
+        ...allRules(F).flatMap((rule) => F.attacks(rule, rows)),
+        ...[1, 2, 3].flatMap((n) => F.nudge(n, rows).cases),
+      ];
+      for (const c of cases) {
+        const need = key === 'al-akbar' && c.fits ? c.A / c.d + c.B / c.d : undefined;
+        // forgeParts.jsx › c.pair: the two gaps, the plank, and (👑) the planks the two bridges take
+        expect(c.pair, F.caseId(c)).toEqual({ a: c.A, b: c.B, d: c.d, ...(need != null ? { need } : {}) });
+        if (key === 'al-akbar') expect(c.need ?? undefined).toBe(need);
+        // the line names the gaps and the plank itself: the tag is the verdict, short (a log line stays on one line)
+        expect(c.tag).not.toContain(String(c.A));
+        expect(c.tag.length, c.tag).toBeLessThanOrEqual(12);
+      }
+    }
+    // keys 3 and 4 keep their own drawing: a sharing, one bridge
+    for (const key of ['baqat-mutamathila', 'qawasim-al-pgcd'])
+      for (const c of rowsOf(key)) expect(c.pair, key).toBeUndefined();
+  });
+
+  it('keys 3 and 4 open on an experiment that holds the predictions, then tiles', () => {
+    for (const key of KEYS.filter((k) => !ON_ISLANDS.has(k))) {
       const F = FORGES[key];
       expect(F.key).toBe(key);
       expect(F.inquiry?.kind, key).toBeTruthy();
@@ -129,6 +198,23 @@ describe('the four forges of « القاسم المشترك الأكبر » — 
       expect(new Set(out.rows.map(F.caseId)).size).toBe(out.rows.length);
       expect(F.evidence([{ a: 198, b: 11 }, ...out.rows])).toHaveLength(out.rows.length);
       for (const row of out.rows) expect(typeof row.held).toBe('boolean');
+    }
+  });
+
+  it('keys 1 and 2: on ANY road — one plank at once, the walk’s, every plank — every false rule falls in front of him', () => {
+    for (const key of ON_ISLANDS) {
+      const F = FORGES[key];
+      const rules = allRules(F);
+      for (const log of [AT_ONCE[key], WALKED[key], EVERY[key]]) {
+        const rows = rowsOf(key, log);
+        const right = rules.find(F.isTheRule);
+        expect(runOn(F, right, rows).bad, `${key}: the right rule agrees with what he did`).toBe(-1);
+        for (const rule of rules.filter((r) => !F.isTheRule(r))) {
+          const { on, c } = refutedBy(key, rule, log);
+          expect(c, `${key} ${ruleKey(F, rule)}`).toBeTruthy();
+          expect(F.says(rule, c), `${key} ${ruleKey(F, rule)} ${on}`).not.toBe(c.held);
+        }
+      }
     }
   });
 
@@ -179,7 +265,8 @@ describe('the four forges of « القاسم المشترك الأكبر » — 
       it('the right rule agrees with all his evidence and survives two hard attacks', () => {
         const run = runOn(F, THE[0], testsOf(F, THE[0], rows));
         expect(run.bad).toBe(-1);
-        expect(run.marks.length).toBeGreaterThanOrEqual(4);
+        // keys 1 and 2: a line per plank he fired on the islands (the walk: two); keys 3 and 4: the experiment's
+        expect(run.marks.length).toBeGreaterThanOrEqual(ON_ISLANDS.has(key) ? 2 : 4);
         const hard = F.attacks(THE[0], rows);
         expect(hard).toHaveLength(2);
         expect(new Set(hard.map(F.caseId)).size).toBe(2);
@@ -293,41 +380,48 @@ describe('the four forges of « القاسم المشترك الأكبر » — 
 });
 
 describe('the false rules students really hold can be written — and the world refutes each', () => {
-  it('🤝 « it fills the glued gap » falls on the plank 4: it fills 432, and neither twin', () => {
-    const { on, c } = refutedBy('qawasim-mushtaraka', { pool: 'upto', on: 'glued', keep: 'all' });
-    expect(on).toBe('evidence');
-    expect([c.d, c.fa, c.fb, c.fg, c.held]).toEqual([4, false, false, true, false]);
-    expect((198 + 234) % 4).toBe(0);
-  });
-
-  it('🤝 « it fills the longer gap » falls on 13, « the shorter » on 11, « one of them » on 11', () => {
-    expect(refutedBy('qawasim-mushtaraka', { pool: 'upto', on: 'long', keep: 'all' }).c.d).toBe(13);
-    expect(refutedBy('qawasim-mushtaraka', { pool: 'upto', on: 'short', keep: 'all' }).c.d).toBe(11);
-    expect(refutedBy('qawasim-mushtaraka', { pool: 'upto', on: 'each', keep: 'some' }).c.d).toBe(11);
-  });
-
-  it('🤝 « 2 to 9 only » forgets 1 and 18; « up to half the shorter gap » holds on the twins — a new pair breaks it', () => {
-    expect(refutedBy('qawasim-mushtaraka', { pool: 'small', on: 'each', keep: 'all' }).c.held).toBe(true);
-    const { on, c } = refutedBy('qawasim-mushtaraka', { pool: 'half', on: 'each', keep: 'all' });
-    expect(on).toBe('attack');
-    expect(c.d).toBe(Math.min(c.A, c.B)); // the shorter gap is a plank of both
-    expect(c.held).toBe(true);
-  });
-
-  it('👑 « the shorter gap’s planks except itself » and « 1 to 20 » hold on his two pairs — a new pair breaks each', () => {
+  it('🤝 « it fills the first gap », « one of them », « it is shorter than both » fall on 11 — the plank 234 refused', () => {
     for (const rule of [
-      { list: 'proper', order: 'down', stop: 'both' },
-      { list: 'upto', order: 'down', stop: 'both' },
+      { act: 'fill', where: 'first' },
+      { act: 'fill', where: 'one' },
+      { act: 'shorter', where: 'each' },
+    ]) {
+      const { on, c } = refutedBy('qawasim-mushtaraka', rule);
+      expect([on, c.d, c.fa, c.fb, c.held], rule.where).toEqual(['evidence', 11, true, false, false]);
+    }
+    expect(W2 % 11).toBe(3);
+  });
+
+  it('🤝 « the glued gap », « the difference », « the second gap » agree with 11 and 9 — a new pair breaks each', () => {
+    for (const where of ['glued', 'diff', 'second']) {
+      const { on, c } = refutedBy('qawasim-mushtaraka', { act: 'fill', where });
+      expect(on, where).toBe('attack');
+      expect(FORGES['qawasim-mushtaraka'].says({ act: 'fill', where }, c), where).toBe(true);
+      expect(c.held, where).toBe(false); // a plank of that length, and not of both gaps
+    }
+    // on the longest road, « the second gap » falls on 13: it fills 234, and not 198
+    const { on, c } = refutedBy('qawasim-mushtaraka', { act: 'fill', where: 'second' }, EVERY['qawasim-mushtaraka']);
+    expect([on, c.d]).toEqual(['evidence', 13]);
+    // 7 fills neither, and is shorter than both: on the longest road it refutes « shorter »
+    expect(refutedBy('qawasim-mushtaraka', { act: 'shorter', where: 'each' }, EVERY['qawasim-mushtaraka']).c.d).toBe(7);
+  });
+
+  it('👑 « any plank of both, they cost the same » falls on 7; « the longest of a gap », « the shortest » fall on 14', () => {
+    const any = refutedBy('al-akbar', { pick: 'any', among: 'both' });
+    expect([any.on, any.c.d, any.c.fits, any.c.held, any.c.need]).toEqual(['evidence', 7, true, false, 84]);
+    for (const rule of [
+      { pick: 'longest', among: 'short' }, // the shorter gap itself, 266
+      { pick: 'longest', among: 'long' },
+      { pick: 'shortest', among: 'both' }, // 1
     ]) {
       const { on, c } = refutedBy('al-akbar', rule);
-      expect(on, rule.list).toBe('attack');
-      expect(FORGES['al-akbar'].says(rule, c)).toBe(true);
-      expect(c.held).toBe(false);
-      expect(c.fits).toBe(true); // a plank of both — and a longer one fills both too
-      expect(c.g).toBeGreaterThan(c.d);
+      expect([on, c.d, c.held, c.need], `${rule.pick} ${rule.among}`).toEqual(['evidence', 14, true, 42]);
     }
-    // from the shortest up, the first plank of both is always 1: his crown row refutes it
-    expect(refutedBy('al-akbar', { list: 'short', order: 'up', stop: 'both' }).c).toMatchObject({ d: 14, held: true });
+    // he built both at once with 14: « any plank » agrees with him — a new pair breaks it on a shorter plank of both
+    const once = refutedBy('al-akbar', { pick: 'any', among: 'both' }, AT_ONCE['al-akbar']);
+    expect(once.on).toBe('attack');
+    expect([once.c.fits, once.c.held]).toEqual([true, false]);
+    expect(once.c.g).toBeGreaterThan(once.c.d);
   });
 
   it('💐 « it divides one of them » falls on a number of vases that leaves flowers; « the smaller number » on 8', () => {
@@ -380,9 +474,17 @@ describe('the words and the numbers of the forges', () => {
   /** Every sentence a forge can show, for a set of cases. */
   const sentences = (F, rules) => {
     const rows = rowsOf(F.key);
-    const cases = [...rows, ...rules.flatMap((r) => F.attacks(r, rows)), ...[1, 2, 3].flatMap((n) => F.nudge(n).cases)];
+    const predicted = F.predictCases(rows);
+    const cases = [
+      ...rows,
+      ...predicted,
+      ...rules.flatMap((r) => F.attacks(r, rows)),
+      ...[1, 2, 3].flatMap((n) => F.nudge(n).cases),
+    ];
     const T = F.text;
     return [
+      ...predicted.flatMap((c) => [T.ask(c), T.fact(c)]),
+      T.next,
       T.title,
       T.log,
       T.frame,
