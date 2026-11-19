@@ -61,7 +61,8 @@ code. Nothing scrolls (designed 1280 × 720, and 1000 × 740 for a 4:3 screen, z
 Score = lit segments / (2 × tools measured). The kit screen names ONE lesson to revise first (`priorities`: « نبدأ منها », then
 « تحتاج تثبيتًا » not repaired, then repaired) and offers, for the tool shown:
 
-- **« بطاقة المراجعة »** — the family's `memo` (three or four lines);
+- **« بطاقة المراجعة »** — the family's `memo` (three or four lines), on a veil over the launch; the launch's ✕ and sound
+  button stay ABOVE that veil (`launchKit.css › .lk-head__end`, 2026-11-19: the veil had covered them);
 - **« جرّب الأداة في مختبري »** — the lab opened ON the family's instrument (`LessonLab initialTool`), `earlierOnly`: the kit is played BEFORE the lesson, so the lab lists no « أدوات هذا الدرس » (the lesson's own instrument names what it will make him discover) — only the cabinet of the earlier lessons (`LESSON_LAB.md` §2);
 - **« أعد فحص الأداة »** — that tool alone is asked again (no workshop; the try is not counted twice);
 - **« الدرس كاملًا »** — the earlier lesson, with the existing one-click return (`mission/returnToLesson.js`); « الدرس قريبًا »

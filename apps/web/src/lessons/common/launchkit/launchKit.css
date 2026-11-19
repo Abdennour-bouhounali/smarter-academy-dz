@@ -94,6 +94,10 @@
 .lk-head__end {
   display: flex;
   gap: 0.5rem;
+  /* the ✕ and the sound button stay ABOVE a card opened over the launch (the tool's revision card, `.lk-veil` at z 8):
+     a way out at every screen (GAME_WORLD.md, defects B2/B15) — the veil had covered them */
+  position: relative;
+  z-index: 9;
 }
 .lk-icon {
   width: 2.7rem;

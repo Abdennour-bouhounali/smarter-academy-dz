@@ -89,10 +89,11 @@ export default function KnowledgePage({ s, game, sel }) {
   const node = byId(id);
   const open = isOpen(node);
   const item = node.notebook ? ITEMS[node.requires] : null;
-  const [tab, setTab] = useState('card');
-  useEffect(() => {
-    setTab('card');
-  }, [id]);
+  // the tab belongs to the card it was chosen on: another card opens on « البطاقة » in the SAME render (an effect reset it
+  // one frame late — the new card was first drawn on the previous card's tab, and a walk read it then)
+  const [tabOf, setTabOf] = useState({ id, tab: 'card' });
+  const tab = tabOf.id === id ? tabOf.tab : 'card';
+  const setTab = (t) => setTabOf({ id, tab: t });
   // a card counts as read once it is opened — a common mistake only once its error is uncovered
   useEffect(() => {
     if (open && !node.context?.parts) game.markRead(id);
@@ -462,7 +463,8 @@ function CardBody({ node, open, item, tab, setTab, id, read, sealed, trained, ga
           </button>
         ))}
       </div>
-      <Fit className="di-kpanel__body" data-di-kbody>
+      {/* floor: the panel's box shrinks a long card (a mistake once uncovered: four parts), its labels stay at 12 px */}
+      <Fit className="di-kpanel__body" floor={12} data-di-kbody>
         {tab === 'card' && (
           <Context ctx={node.context} onUncover={() => game.markRead(id)} uncovered={read.includes(id)} />
         )}
@@ -492,10 +494,11 @@ function CardBody({ node, open, item, tab, setTab, id, read, sealed, trained, ga
 
 /** The card of a node, as the lesson wrote it. A common mistake shows the wrong sentence first: the student uncovers the rest. */
 function Context({ ctx, onUncover, uncovered }) {
-  const [shown, setShown] = useState(uncovered);
-  useEffect(() => {
-    setShown(uncovered);
-  }, [ctx]); // eslint-disable-line react-hooks/exhaustive-deps
+  // uncovered by HIM on THIS card: another card is drawn covered (or uncovered when already read) in the same render — an
+  // effect reset it one frame late, and the correction of the card before flashed on a new mistake card
+  const [shownOn, setShownOn] = useState(uncovered ? ctx : null);
+  const shown = uncovered || shownOn === ctx;
+  const setShown = () => setShownOn(ctx);
   if (!ctx) return null;
   if (ctx.parts) {
     const [wrong, ...rest] = ctx.parts;
@@ -512,7 +515,7 @@ function Context({ ctx, onUncover, uncovered }) {
             type="button"
             className="di-btn di-btn--primary"
             onClick={() => {
-              setShown(true);
+              setShown();
               onUncover();
             }}
             data-di-uncover

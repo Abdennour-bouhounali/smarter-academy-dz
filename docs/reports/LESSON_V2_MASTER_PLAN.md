@@ -534,7 +534,16 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      - not yet explained: `launch-kit` (the pilot: waits for « return to the lesson »), `gameworld-khawass-trainer`
        (a card read is not ticked on the map), `gameworld-baqi-trainer` (the mistake card's correction), two hint
        lines the sitting walk of lesson 2 does not find.
-     Owed still: these 15 sorted to the end and fixed; the same walks at 1024×768 and 1840×900.
+     **FIXED the same evening and re-measured on a frozen copy: 37 of 38 pass at 1366×768** (two of them on a second
+     run, after a 30 s timeout of the page or of a screenshot). Of the 15: 6 were real defects of a screen (the mistake
+     card's labels, a bank table under 12 px, sheets scrolling sideways, the launch memo's ✕ under its veil, a panel
+     drawn one frame with the card before's state, « العودة إلى درس » hidden under the world) and 9 were faults of the
+     walks themselves (ledger lines B19–B23, C10–C12 of `.claude/skills/lesson-v2/defects.md`). STILL FAILING, not
+     explained: `gameworld-qawasim` (lesson 2's story) — intermittently, the third test of the chart experiment on the
+     next hundred is read before its division is written (a different plank each run; it passed in the measure
+     before). OPEN in shared code: `utils/bidi.js` isolates only part of an equality with an Arabic operand
+     (« العرض × 14 = 56 » reads « العرض × 56 = 14 » on a bank hint). Owed still: the same walks at 1024×768 and
+     1840×900.
   17. [x] LESSON 4 `qasim-mushtarak-akbar` — v2, 2026-11-19 (`LESSON_4_GATE_REPORT.md`): the first lesson of
      `BATCH_2_DESIGN.md`. Four keys on four kinds (`common` without the longest, `summit`, `deal`, `nest`); the old
      version deleted; its six walks pass at 1366×768, 1024×768 and 1840×900 (18 of 18 runs, then the six again at

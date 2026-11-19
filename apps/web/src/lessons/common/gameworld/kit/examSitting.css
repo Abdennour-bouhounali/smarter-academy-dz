@@ -174,6 +174,21 @@
   /* the bank writes its lists line by line (« • … ») inside one paragraph: each stays on its own line */
   white-space: pre-line;
 }
+/* A TABLE of the bank on the paper (`problems/ProblemTable`): drawn as the bank wrote it, but on the paper's rules — its
+   text keeps the 12 px floor while the sheet shrinks (it was a fixed `text-sm`: 10.5 px once fitted, l5-005 of
+   qawasim-adad-tabii), and a long header wraps inside its column so the table is never wider than the paper (it slid
+   sideways in its own scrolling frame: l1-006, l3-001, l4-001 of qawaid-qabiliyat-qisma). Nothing scrolls. */
+.xs-root [data-problem-table] > div {
+  overflow: visible;
+}
+.xs-root [data-problem-table] table {
+  width: 100%;
+  font-size: max(var(--di-min-font, 12px), 0.95rem);
+  line-height: 1.35;
+}
+.xs-root [data-problem-table] th {
+  white-space: normal;
+}
 .xs-ex ol {
   margin: 0;
   padding-inline-start: 1.4rem;

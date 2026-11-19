@@ -48,6 +48,11 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B16 | A sum written in a plain Arabic sentence drawn reversed (« 8 + 11 = 19 » shown « 19 = 11 + 8 ») | L5 | `L5 world/story.test.js` (every equality of a note is LTR-isolated); eye on a zoomed crop | An equality inside Arabic text is a formula, or is wrapped in LTR isolates. |
 | B17 | A tablet too tall for the board's naming card once a reader is picked; a trainer sheet whose answer boxes wrap one alone onto a line | L5 | `L5 world/trainer.test.js` (at most three boxes a line); eye on the board's naming stations | A tablet is at most a method line, a short list and one note; a typed set of more than three numbers is laid on two lines by the lesson. |
 | B18 | The 3D number agreement of the world's own labels (« 1 خانات » in the mirror) | L5 | `divisorIsles/forgeParts.jsx › cells` (fixed in the world) | — |
+| B19 | A card opened on a veil covered the ✕ and the sound button (the launch kit's memo) | older lessons, clean measure | `e2e/lib/launchKitTwoTools.mjs` (the ✕ reachable at the memo) | The ✕ and the sound stay above every veil of their screen. |
+| B20 | A table of the bank drawn in a fixed small size with one-line headers: 10.5 px once the sitting fitted the sheet, and a frame that slid sideways | clean measure | `e2e/lib/sittingWalk.mjs` (every sheet: 12 px, no sideways scroll); `kit/examSitting.css` floors it | Content drawn by a shared component inside a fitted frame takes `max(var(--di-min-font), …)`, and its long labels wrap. |
+| B21 | A panel's state reset by an effect one frame late: a new card was drawn with the card before's tab, a correction could flash | clean measure | the trainers' walks read right after the panel appears | State that belongs to a card is keyed to its id in the render, never reset in a `useEffect`. |
+| B22 | A button of the old shell hidden UNDER a v2 world (« العودة إلى درس », z 60 under 1200) | clean measure | `e2e/launch-kit.mjs` | Anything shown over a world sits above its z-index (1200) and below the lab's (1300). |
+| B23 | An equality with an Arabic operand in plain text, scrambled by a partial bidi isolate (« العرض × 14 = 56 » read « العرض × 56 = 14 ») — OPEN in `utils/bidi.js` | clean measure | eye only | — |
 
 ## C. The walks themselves — how a check lies
 
@@ -63,6 +68,9 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | C7 | « All walks pass » reported for sizes or screens that were not run or not looked at | L3, R | the report's fixed shape (`briefs.md` §0) | Say what was NOT run and which screenshots were NOT looked at. |
 | C8 | The status script does not see the lesson's walk (it wants the lesson's id as a literal and `data-di-start` in one walk) | L4 | `npm run status:lesson-v2 -- --lesson <id>` | The story walk names its lesson by a literal id, as `gameworld-khawass.mjs` does. |
 | C9 | A walk's own expectation of where the world reopens (after an overlay's ✕ the world reopens on the save's island, not where he stood) | L5 | — | Read where the world really puts him before asserting it; say NOTE, not FAIL, for a behaviour that is by design. |
+| C10 | A walk read the page in the same instant the address changed (the world not yet unmounted) | clean measure | — | After a navigation, wait for the element to detach, and print how long it took. |
+| C11 | A walk compared text that held invisible bidi marks, or measured text hidden under a full-screen layer | clean measure | `sittingWalk.mjs › readBox`, `walk.mjs › tinyText` | Compare what is SEEN. |
+| C12 | A walk's own tables lagged the kit (a new claim kind, the cabinet's pager, a foreign-word list holding the launch's own tool, an authored two-row formula taken for a broken one) | clean measure | — | Read kinds and names from the kit, never from a hand-written table in the walk. |
 
 ## D. The tree
 
@@ -82,6 +90,23 @@ Checks that exist in lesson 4's walks only, and that every lesson needs: nothing
 (A1), no key name before its naming station on the board (A2), SVG text at its real size (B3), the subtitle whole (B5),
 the map and the hub laid out (B8), a bidi check on plain text in the trainer, the launch kit and the board (B7 — none
 exists yet), the mirror and the board speak the key's language (A10).
+
+## Time of a lesson (measured — the skill exists to make these numbers fall; owner, 2026-11-19)
+
+Wall clock = from the commit before to the lesson's commit (`git log --date=format:%H:%M`). Critical path = the longest
+agent of each wave, plus the walks, plus the main session's own run and checks — what the lesson would take with no
+waiting. Fill a line at every lesson's commit; if a number does not fall, say why in the last column.
+
+| Lesson | Wall clock | Critical path | The walks (agent) | Agent tokens | What weighed |
+|---|---|---|---|---|---|
+| L4, first build | 4 h 14 (10:27 → 14:41) | not measured | 73 min | 2.9 M | two new experiment kinds; one fix batch after the screenshot review; the skill did not exist |
+| L4, redesigned on the islands | 2 h 06 (14:41 → 16:47) | not measured | (two agents walked: 53 + 25 min) | 1.2 M | the kit's three new rules and two mechanics, coded the same hours |
+| L5, through the skill | 4 h 16 (16:47 → 21:03) | about 3 h 25 | 83 min | 2.3 M | about 50 min of the wall clock went to other work (a new-world study, the older lessons' walks, a session restart); the walks grew (four world pieces seen for the first time); `trusted.md` did not exist yet |
+
+**Reading, 2026-11-19:** tokens fell by a fifth from L4 to L5; time did NOT fall. The walks are the bottleneck both
+times (73 then 83 minutes of one agent, then about 35 more for the main session's three-size run). Nothing in the skill
+attacked that until §6 and `trusted.md`, written after L5: lesson 6 is their first test. The target for L6: a walks
+agent under 45 minutes, by not walking the sitting, the board frame and the forge frame again.
 
 ## Cost of a lesson (agents only; the main session's own tokens are not measured)
 

@@ -124,9 +124,12 @@ const readBox = (page, sel) =>
       if (!p.closest('.katex')) plain += `${t.nodeValue} `;
     }
     const tb = box.querySelector('[data-problem-table] table');
+    // the bidi isolates MathText puts around an equality written in the words (utils/bidi.js › isolateMathRuns: « العرض ×
+    // 14 = 56 ») are invisible: they are not part of what the student reads, and a bank sentence is compared without them
+    const bare = (x) => x.replace(/[\u2066-\u2069\u200e\u200f]/g, '').replace(/\s+/g, ' ');
     return {
-      text: text.replace(/\s+/g, ' '),
-      plain: plain.replace(/\s+/g, ' '),
+      text: bare(text),
+      plain: bare(plain),
       katex: box.querySelectorAll('.katex').length,
       errors: box.querySelectorAll('.katex-error').length,
       table: tb ? { head: tb.querySelectorAll('thead th').length, rows: tb.querySelectorAll('tbody tr').length } : null,
@@ -626,8 +629,14 @@ export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) 
   const t0 = Date.now();
   let first = true;
   let n = 0;
+  // `E2E_SHEETS=l5-005,l3-001` opens only those sheets (a debugging aid, like E2E_PARTS: it prints a NOTE and is not a full run)
+  const only = (process.env.E2E_SHEETS || '').split(',').filter(Boolean);
+  if (only.length) console.log(`NOTE: only the sheet(s) ${only.join(', ')} of the bank — NOT a full run`);
+  const wanted = (s) => !only.length || only.some((o) => s.id.endsWith(`-${o}`));
   for (let level = 1; level <= 5; level += 1) {
-    const all = [...bank.values()].filter((s) => s.level === level).sort((a, b) => (a.id < b.id ? -1 : 1));
+    const all = [...bank.values()]
+      .filter((s) => s.level === level && wanted(s))
+      .sort((a, b) => (a.id < b.id ? -1 : 1));
     const can = sittableOnDisk(bank, level);
     for (const sheet of all) {
       const tag = short(sheet.id);
@@ -656,7 +665,8 @@ export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) 
       await quitSitting(page);
     }
   }
-  check(n === bank.size, `every sheet of the bank was opened and read (${n} of ${bank.size}) in ${Math.round((Date.now() - t0) / 1000)} s`);
+  if (only.length) console.log(`NOTE: ${n} sheet(s) opened of the ${bank.size} of the bank`);
+  else check(n === bank.size, `every sheet of the bank was opened and read (${n} of ${bank.size}) in ${Math.round((Date.now() - t0) / 1000)} s`);
   await page.evaluate(() => localStorage.removeItem('di.dev.sheet'));
   await ctx.close();
 }

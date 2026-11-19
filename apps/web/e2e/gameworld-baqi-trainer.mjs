@@ -284,11 +284,14 @@ await w.run(async () => {
     await knode('khata-masala');
     await page.waitForSelector('[data-di-kpanel="khata-masala"]');
     const read0 = Number(await page.getAttribute('[data-di-know-read]', 'data-di-know-read'));
+    const alone = {
+      uncover: await page.locator('[data-di-uncover]').count(),
+      wrong: await page.locator('.di-parts .is-wrong').count(),
+      right: await page.locator('.di-parts .is-right').count(),
+    };
     expect(
-      (await page.locator('[data-di-uncover]').count()) === 1 &&
-        (await page.locator('.di-parts .is-wrong').count()) === 1 &&
-        (await page.locator('.di-parts .is-right').count()) === 0,
-      'the card of the mistake shows the wrong sentence alone: the correction is his to uncover',
+      alone.uncover === 1 && alone.wrong === 1 && alone.right === 0,
+      `the card of the mistake shows the wrong sentence alone: the correction is his to uncover (${JSON.stringify(alone)})`,
     );
     await page.click('[data-di-uncover]');
     await page.waitForTimeout(250);

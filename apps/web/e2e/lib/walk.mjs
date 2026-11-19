@@ -11,7 +11,8 @@
 //               sideways, GAME_WORLD.md « On a phone » rule 3 — or `data-di-slides` may slide inside itself);
 //   cut         no text of the game is cut by the edge of the window (except inside a box that slides on a phone);
 //   rawLatex    no `$` and no backslash command readable on screen outside a drawn formula (`.katex`);
-//   formulas    every drawn formula reads left to right (KaTeX's atoms in order) and keeps ONE line;
+//   formulas    every drawn formula reads left to right (KaTeX's atoms in order) and keeps ONE line — a formula laid in
+//               rows by its author (`\begin{array}`) is checked row by row, and an Arabic `\text{…}` in it reads right to left;
 //   fontFloor   no visible text under 12 px (computed size × every CSS zoom above it), at EVERY size, for every walk — a
 //               drawn formula is measured at its own size (the `.katex` box: its exponents and indices are KaTeX's), nothing
 //               else is exempt (the knowledge map included, since 2026-11-19);
@@ -66,6 +67,23 @@ export const FLOOR_PX = 11.95;
 export const tinyText = (page) =>
   page.evaluate((FLOOR) => {
     const tiny = [];
+    // a text UNDER a layer that fills the window (a lab or a world opened over a page: fixed, the whole window) is not seen:
+    // the point at its middle belongs to that layer. Measured there, the page below was reported (« أدواتي » of a lesson's
+    // home, under the lab opened from it). A layer that lets the pointer through is not hit, so the text stays checked.
+    const coverOf = (el) => {
+      for (let x = el; x && x !== document.body; x = x.parentElement) {
+        if (getComputedStyle(x).position !== 'fixed') continue;
+        const b = x.getBoundingClientRect();
+        if (b.left <= 1 && b.top <= 1 && b.right >= window.innerWidth - 1 && b.bottom >= window.innerHeight - 1) return x;
+      }
+      return null;
+    };
+    const underLayer = (p, r) => {
+      const hit = document.elementFromPoint(Math.min(window.innerWidth - 1, Math.max(0, r.left + r.width / 2)), Math.min(window.innerHeight - 1, Math.max(0, r.top + r.height / 2)));
+      if (!hit || hit === p || p.contains(hit) || hit.contains(p)) return false;
+      const c = coverOf(hit);
+      return Boolean(c && !c.contains(p));
+    };
     const zoomOf = (el) => {
       let z = 1;
       for (let x = el; x && x.nodeType === 1; x = x.parentElement) z *= parseFloat(getComputedStyle(x).zoom) || 1;
@@ -82,7 +100,7 @@ export const tinyText = (page) =>
       if (r.width <= 1 || r.height <= 1 || r.bottom < 0 || r.top > window.innerHeight || r.right < 0 || r.left > window.innerWidth) continue;
       const el = p.closest('.katex') ?? p;
       const px = parseFloat(getComputedStyle(el).fontSize) * zoomOf(el);
-      if (px < FLOOR) tiny.push(`${el.tagName.toLowerCase()}.${String(el.className?.baseVal ?? el.className).split(' ')[0]} ${px.toFixed(1)}px « ${t.nodeValue.trim().slice(0, 24)} »`);
+      if (px < FLOOR && !underLayer(p, r)) tiny.push(`${el.tagName.toLowerCase()}.${String(el.className?.baseVal ?? el.className).split(' ')[0]} ${px.toFixed(1)}px « ${t.nodeValue.trim().slice(0, 24)} »`);
     }
     return [...new Set(tiny)];
   }, FLOOR_PX);
@@ -294,15 +312,29 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
         for (const k of document.querySelectorAll('.katex-html')) {
           const r0 = k.getBoundingClientRect();
           if (r0.width < 2 || r0.bottom < 0 || r0.top > window.innerHeight) continue;
-          const atoms = [...k.querySelectorAll('.mord, .mrel, .mbin, .mpunct')].filter((a) => !a.querySelector('.mord, .mrel, .mbin, .mpunct')).map((a) => a.getBoundingClientRect()).filter((r) => r.width > 0);
-          if (atoms.length < 3) continue;
-          // the atoms of one line (a wrapped formula is a different defect)
-          const line = atoms.filter((r) => Math.abs(r.top - atoms[0].top) < r.height);
-          let back = 0;
-          for (let i = 1; i < line.length; i += 1) if (line[i].left < line[i - 1].left - 1) back += 1;
-          if (back > line.length / 2) mirrored.push((k.parentElement.querySelector('annotation')?.textContent ?? k.textContent).slice(0, 40));
-          // a formula never breaks across two lines: no atom starts below the bottom of the one before it
-          if (atoms.some((r, i) => i > 0 && r.top >= atoms[i - 1].bottom - 1)) mirrored.push(`broken across two lines: ${(k.parentElement.querySelector('annotation')?.textContent ?? k.textContent).slice(0, 40)}`);
+          const leaves = [...k.querySelectorAll('.mord, .mrel, .mbin, .mpunct')].filter((a) => !a.querySelector('.mord, .mrel, .mbin, .mpunct'));
+          // A formula laid in ROWS by its author (`\begin{array}` … `\\`, KaTeX's `.mtable`: a memo rule written as two
+          // sentences, one under the other) is not a formula broken by the width: each row (the cell of a column) is checked
+          // as one line of its own. Anything else is ONE group: the whole formula on one line.
+          const rowOf = (a) => { for (let x = a; x && x !== k; x = x.parentElement) if (x.parentElement?.classList.contains('vlist') && x.parentElement.closest('.mtable') && k.contains(x.parentElement.closest('.mtable'))) return x; return k; };
+          const groups = new Map();
+          for (const a of leaves) { const r = a.getBoundingClientRect(); if (r.width <= 0) continue; const g = rowOf(a); if (!groups.has(g)) groups.set(g, []); groups.get(g).push({ r, arabic: /[\u0600-\u06FF]/.test(a.textContent) }); }
+          const label = (k.parentElement.querySelector('annotation')?.textContent ?? k.textContent).slice(0, 40);
+          for (const group of groups.values()) {
+            const atoms = group.map((x) => x.r);
+            if (atoms.length < 3) continue;
+            // a formula never breaks across two lines: no atom starts below the bottom of the one before it
+            if (atoms.some((r, i) => i > 0 && r.top >= atoms[i - 1].bottom - 1)) mirrored.push(`broken across two lines: ${label}`);
+            // its atoms in order stand left to right — an Arabic \text{…} inside it reads right to left by design: the order
+            // is checked on the mathematical atoms only (the lesson's own walk checks its Arabic rows read right to left)
+            const math = group.filter((x) => !x.arabic).map((x) => x.r);
+            if (math.length < 3) continue;
+            // the atoms of one line (a wrapped formula is a different defect)
+            const line = math.filter((r) => Math.abs(r.top - math[0].top) < r.height);
+            let back = 0;
+            for (let i = 1; i < line.length; i += 1) if (line[i].left < line[i - 1].left - 1) back += 1;
+            if (back > line.length / 2) mirrored.push(label);
+          }
         }
         for (const f of foreign) if (text.includes(f)) words.push(f);
         if (checkNumbers) for (const k of foreignNumbers) if (new RegExp(`(^|[^0-9])${k}([^0-9]|$)`).test(text)) words.push(String(k));

@@ -32,6 +32,7 @@
 // (the run still fails): no raw formula, no word of another lesson, no text under 12 px (`lib/walk.mjs › tinyText`, the same
 // floor as every walk), the launch's ✕ reachable. The lab opened from a capsule gets the same floor and its own ✕.
 import { FAMILIES, makeQuestion } from '../../src/lessons/common/launchkit/families.js';
+import { homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
 import { tinyText } from './walk.mjs';
@@ -63,6 +64,17 @@ const norm = (s) =>
   String(s ?? '')
     .replace(/\s+/g, ' ')
     .trim();
+/** A formula as KaTeX annotates it: it may keep the style it drew in (« \displaystyle 43 - 7 »): the formula is what follows. */
+const texOf = (s) => norm(s).replace(/^\\displaystyle\s*/, '');
+/**
+ * The foreign words of a launch walk, less what the launch SHOWS ON PURPOSE: each of its tools is named by its family and
+ * sends to its home lesson (« راجع أوّلًا: القسمة الإقليدية وحصر حاصل القسمة », the 2AM lesson that is also a lesson of the
+ * world). A word of another lesson that is part of one of those names is the launch's own here, not a leak.
+ */
+const ownToolsAside = (alien, items) => {
+  const shown = items.flatMap((i) => [FAMILIES[i]?.name, homeLessonOf(i)?.titleAr]).filter(Boolean);
+  return alien.filter((w) => !shown.some((s) => s.includes(w)));
+};
 
 /**
  * The shared machinery of a launch walk. `url`: the lesson page; `grade`: the student's year (the lesson's own);
@@ -375,7 +387,7 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
   const boxOf = (card, plain) => {
     if (card.tex) {
       // KaTeX may keep the style it drew in (« \displaystyle 210 = 24 \times 7 + 42 »): the equality is what follows it
-      const tex = norm(card.tex).replace(/^\\displaystyle\s*/, '');
+      const tex = texOf(card.tex);
       let m = /^(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)$/.exec(tex);
       if (m) {
         const [a, b, k, r] = [m[1], m[2], m[3], m[5]].map(Number);
@@ -482,7 +494,7 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
       let wrong;
       if (sc.tex.length) {
         // « العدد a مثبَّت … ناتج $a - d$ »: the flag counts back d from a
-        const m = /^(\d+) - (\d+)$/.exec(norm(sc.tex[0]));
+        const m = /^(\d+) - (\d+)$/.exec(texOf(sc.tex[0]));
         expect(Boolean(m), `the walk can read the difference « ${sc.tex[0]} »`);
         target = Number(m[1]) - Number(m[2]);
         wrong = Number(m[1]); // wrong: the flag left on the number itself
@@ -640,7 +652,7 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
 /** Lessons 2 and 3: `ids`: four student ids; `alien`: words of another lesson that must never show; `alienLabel`: that lesson. */
 export async function walkLaunch({ id, outName, ids, alien = [], alienLabel = 'another lesson' }) {
   const url = `${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/4am/ansab_al_aadad_wal_hisab/${id}`;
-  const H = harness({ id, url, grade: '4am', outName, alien, alienLabel });
+  const H = harness({ id, url, grade: '4am', outName, alien: ownToolsAside(alien, [A, B]), alienLabel });
   const { PHONE, expect, shot, px, cur, tool, same, bands, kcard, kit, sortOne, fill, hand, settle, answer } = H;
   const seenB = new Set(); // the forms of B the walk met: the 2AM level-2 sort must come up
   const note = async () => {
@@ -1093,7 +1105,7 @@ export async function walkLaunchOne({
   // belongs to the lesson being launched and must not be shown before it — and then the capsule has no lab step and no
   // « مختبري » button (LaunchKit.jsx)
   const T = { ...given, labTool: FAMILIES[given.item]?.labTool ?? null };
-  const H = harness({ id, url, grade, outName, alien, alienLabel });
+  const H = harness({ id, url, grade, outName, alien: ownToolsAside(alien, [given.item]), alienLabel });
   const { PHONE, expect, shot, px, cur, tool, same, bands, kcard, kit, fill, hand, settle, answer } = H;
   const I = T.item;
   const forms = new Set(); // every form of the tool the walk met

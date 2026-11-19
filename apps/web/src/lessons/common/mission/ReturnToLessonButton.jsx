@@ -25,7 +25,7 @@ export default function ReturnToLessonButton() {
 
   if (!target || !isAwayFrom(target, pathname) || typeof document === 'undefined') return null;
   return createPortal(
-    <div className="fixed inset-x-0 bottom-6 z-[60] flex justify-center px-4" data-return-to-lesson>
+    <div className="fixed inset-x-0 bottom-6 z-[1250] flex justify-center px-4" data-return-to-lesson>
       <div className="flex items-center gap-1 rounded-2xl bg-indigo-700 p-1.5 shadow-2xl ring-4 ring-indigo-200">
         <Link to={target.path} onClick={() => clearReturnTo(session())} data-return-to-lesson-go
           className="inline-flex min-h-[48px] items-center gap-2 rounded-xl px-5 text-base font-black text-white hover:bg-indigo-600">

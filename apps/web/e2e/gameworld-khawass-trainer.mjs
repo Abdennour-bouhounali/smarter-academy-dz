@@ -221,6 +221,10 @@ await w.run(async () => {
       'the reason and the right sentence are NOT shown before he asks: the card is not read yet',
     );
     await shot(page, 'know-card-mistake', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
+    // what is read before he uncovers it: opening « خريطة المعارف » reads the card it opens on (the root, since the journey of
+    // the knowledge page): this card adds ONE to it
+    const readBefore = (await kstate()).read;
+    const countedBefore = Number(await page.getAttribute('[data-di-know-read]', 'data-di-know-read'));
     await page.click(`${P} [data-di-uncover]`);
     await page.waitForSelector(`${P} .di-parts .is-right`);
     const why = await texIn(`${P} .di-parts .is-why`);
@@ -228,13 +232,20 @@ await w.run(async () => {
       why.some((f) => f.replace(/\s/g, '') === `22=7\\times${Math.floor(22 / 7)}+${22 % 7}`),
       `uncovered, the card proves it with the division, computed here: 22 = 7 × ${Math.floor(22 / 7)} + ${22 % 7} (${why.join(' · ')})`,
     );
+    const nowRead = {
+      uncover: await page.locator(`${P} [data-di-uncover]`).count(),
+      right: await page.locator(`${P} .di-parts .is-right`).count(),
+      ticked: await page.getAttribute('[data-di-knode="khata-aks"]', 'data-read'),
+      saved: (await kstate()).read.join(),
+      counted: await page.getAttribute('[data-di-know-read]', 'data-di-know-read'),
+    };
     expect(
-      (await page.locator(`${P} [data-di-uncover]`).count()) === 0 &&
-        (await page.locator(`${P} .di-parts .is-right`).count()) === 1 &&
-        (await page.getAttribute('[data-di-knode="khata-aks"]', 'data-read')) === 'true' &&
-        (await kstate()).read.join() === 'khata-aks' &&
-        (await page.getAttribute('[data-di-know-read]', 'data-di-know-read')) === '1',
-      'the card is now READ: ticked on the map, counted at the top of the page, saved',
+      nowRead.uncover === 0 &&
+        nowRead.right === 1 &&
+        nowRead.ticked === 'true' &&
+        nowRead.saved === [...readBefore, 'khata-aks'].join() &&
+        Number(nowRead.counted) === countedBefore + 1,
+      `the card is now READ: ticked on the map, counted at the top of the page, saved — one more than before (${readBefore.join() || 'none'}): ${JSON.stringify(nowRead)}`,
     );
     await shot(page, 'know-card-mistake-read', { exit: ['[data-di-know-close]'], sound: true, numbers: true });
 

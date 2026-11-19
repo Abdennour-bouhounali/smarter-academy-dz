@@ -25,7 +25,7 @@ import { createWalk, FLOOR_PX } from './lib/walk.mjs';
 import { GRADE, pageOf, QAWAID_FOREIGN, QAWAID_FOREIGN_NUMBERS, digitSum } from './lib/qawaid.mjs';
 
 const ID = 'qawaid-qabiliyat-qisma';
-const URL = pageOf(ID);
+const LESSON_URL = pageOf(ID);
 const w = createWalk('gameworld-qawaid', { foreign: QAWAID_FOREIGN, foreignNumbers: QAWAID_FOREIGN_NUMBERS });
 const { expect, check } = w;
 /** The way out of any screen of the world: the top bar's ✕, the forge's own ✕, the ✕ drawn over a dialog. */
@@ -52,7 +52,7 @@ const intrudersOf = (b, lens, link, picked) =>
 const sentenceTrue = (c) => (c.form === 'yaqsim' ? c.y % c.x === 0 : c.x % c.y === 0);
 
 await w.run(async () => {
-  const { page } = await w.student({ uid: 9851, lessonId: ID, url: URL, grade: GRADE });
+  const { page } = await w.student({ uid: 9851, lessonId: ID, url: LESSON_URL, grade: GRADE });
   const shot = (label, opts = OUT) => w.shot(page, label, opts);
   const ff = (sec) => w.ff(page, sec);
   const st = () =>
@@ -302,11 +302,13 @@ await w.run(async () => {
     expect((await w.reachable(page, [sel])) !== null, `${where}: its ✕ is on screen and a click reaches it`);
     await page.click(sel);
     await page.waitForURL((u) => !u.pathname.includes(ID), { timeout: 15000 });
+    // the address changes first; the game is unmounted once the catalogue (a lazy page) has arrived
+    await page.waitForSelector('.rf-root, .di-root canvas', { state: 'detached', timeout: 10000 }).catch(() => {});
     expect(
       (await page.locator('.rf-root, .di-root canvas').count()) === 0,
       `${where}: the ✕ LEAVES the game — the page is the catalogue (${new URL(page.url()).pathname})`,
     );
-    await page.goto(URL, { waitUntil: 'domcontentloaded' });
+    await page.goto(LESSON_URL, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
     await page.waitForTimeout(1200);
     expect(
