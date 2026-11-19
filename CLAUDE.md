@@ -52,8 +52,7 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
 - **The LAST lesson of each unit** (« أدمج تعلّماتي ») is not a lesson of keys: it is three missions on the BEM's
   integration situation, a recap of the unit and the bank as training exams. It is built after the unit's other lessons,
   by `docs/reports/INTEGRATION_LESSON_PLAN.md` (owner, 2026-11-19; PLAN, not built), and it is designed and coded by Fable.
-- A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768,
-  1024×768 and 1840×900 pass AND its screenshots were looked at with the eyes.
+- A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768 pass AND its screenshots were looked at with the eyes.
 - Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
   forge, the phone rules), `LAUNCH_KIT.md`, `LESSON_LAB.md`, `CLASS_SESSION.md`.
 
@@ -124,6 +123,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 
 **Screens and writing**
 
+- **ONE SCREEN SIZE: 1366×768, alone (owner, 2026-11-19, after a council; « all the lessons must work for this size only: 1366×768, alone, no other size is needed »).** A lesson is built, walked and looked at at 1366×768 and at no other size: no walk at 1024×768 or 1840×900, no tablet, no phone. An older document that names three sizes or « laptop and tablet » describes the rule before this date. Known and NOT measured: the real window of such a laptop is shorter than 768 px (the browser's bars), and no lesson has been tried on a weak school machine.
 - **PHONES ARE PAUSED (owner, 2026-11-18): lessons are built for the laptop and the tablet only; every pack says `phone: false`, the phone walk is not part of « done ». The phone rules below are kept for when phones resume (known phone debt of `qawasim-adad-tabii`: `docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0 step 8).**
 - **Laptop first, then tablet, then phone.** Lessons are behind `components/auth/RequireLargeScreen.jsx`; a phone opens
   only the HOME of a lesson whose pack says `phone: true` (its world, played sideways) and the pages listed as
@@ -163,7 +163,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 | `npm run check:lessons` | lesson and exercise validators, the generated indexes, the calendar, the entry budget |
 | `npm run check:entry-budget` | the entry bundle: 212 KB gzip (measured 197.8). No entry module imports a catalogue name; lessons mount through ONE lazy boundary |
 | `npm test` (core, web, scripts) — or `npx vitest run` in `apps/web` / `packages/core` | unit tests |
-| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`; a sitting walk opens every sheet of the bank (`E2E_PARTS=<part>` runs one part, not a full run); `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
+| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`; the ONE size is `E2E_SIZE=1366x768`, the default; a sitting walk opens every sheet of the bank (`E2E_PARTS=<part>` runs one part, not a full run); `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
 
 Generators to run after a change: `generate:lesson-index` (a lesson, its modules or its pack), `generate:lab-order`
 (a lesson added or re-ordered), `generate:learning-net` (a link of the net), `generate:compass-index`.

@@ -290,6 +290,11 @@ const SHORTER = ['subtract', 'divide', 'same'];
 // stage  say → run → seen
 const bothRound = (ri) => ({ ri, stage: 'say', said: null, shown: 0 });
 export const initBoth = () => ({ ...bothRound(0), rounds: [], done: false });
+/** Where it starts: empty, or — on a workshop's bench — the state it kept (`spec.from`); a run goes on from its row. */
+export const bothStart = (spec) => {
+  const s = spec.from;
+  return s && Number.isInteger(s.ri) && s.ri < spec.rounds.length && Array.isArray(s.rounds) ? s : initBoth();
+};
 
 export function bothNow(spec, s) {
   const { a, b } = spec.rounds[s.ri];

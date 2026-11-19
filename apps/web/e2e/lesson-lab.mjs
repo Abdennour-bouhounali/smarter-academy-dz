@@ -1,7 +1,7 @@
 // « مختبري » — walk of the LAB of a lesson as a STUDENT (simulated session, no API).
 // Lesson 1 of 4AM (in its game world): its three instruments, the cabinet of the EARLIER lessons only, numbers that follow the
 // student from one instrument to the next, « جرّب » ticked only by what he makes. Then lesson 5 (in its game world): its
-// « مِنضدة القائمتين » played until both lists close. Then the PGCD lesson (mission home): its own
+// « مِنضدة القائمتين » played until both lists close. Then lesson 6, the PGCD algorithms (in its game world): its own
 // instrument and the cabinet of three grades. Nothing may scroll, at any moment.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
@@ -19,7 +19,6 @@ const browser = await chromium.launch({ args: GL_ARGS });
 const ctx = await browser.newContext({ viewport: { width: SIZE[0], height: SIZE[1] }, ...(process.env.E2E_TOUCH === '1' ? { hasTouch: true, isMobile: true } : {}) });
 await ctx.addInitScript(() => {
   localStorage.setItem('token', 'qa-fake-token');
-  localStorage.setItem('u_9402_smarter_mission_bahth-pgcd', JSON.stringify({ opened: true, seen: {}, answered: {} })); // the returning home (the first view is the opening scene)
   const real = window.fetch.bind(window);
   window.fetch = async (input, init) => {
     const url = typeof input === 'string' ? input : input.url;
@@ -271,7 +270,7 @@ expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data
 if (PHONE) {
   await page.goto(`${BASE}/bahth-pgcd?lab=1`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[role="alert"]');
-  expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-mission-lab]').count() === 0 && (await page.textContent('[role="alert"]')).includes('الحاسوب'), 'on a phone a lesson that is not designed for it is closed with its lab: the message names the computer, no lab opens behind it');
+  expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-mission-lab], [data-di-lab-open]').count() === 0 && (await page.textContent('[role="alert"]')).includes('الحاسوب'), 'on a phone a lesson that is not designed for it is closed with its lab: the message names the computer, no lab opens behind it');
   expect(errors.length === 0, 'no page error');
   await browser.close();
   process.exit(process.exitCode ?? 0);
@@ -313,10 +312,13 @@ await page.waitForSelector('svg[data-ll-lists]');
 await page.click('[data-ll-close]');
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 5');
 
-// ══ 2. another lesson — the PGCD: its own instrument, and the cabinet of everything before it ══
+// ══ 2. another lesson — the PGCD (lesson 6, in its game world since 2026-11-19): its own instrument, and the cabinet of everything before it ══
 await page.goto(`${BASE}/bahth-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
-await page.waitForSelector('[data-mission-lab]'); await page.click('[data-mission-lab]'); await page.waitForSelector('[data-lesson-lab="bahth-pgcd"]'); await page.waitForSelector('[data-ll-euclid]');
-expect((await page.locator('.ll-rail [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).slice(0, 1).join() === 'euclid' && page.url().includes('lab=1'), 'the PGCD lesson opens the SAME lab from its home: its instrument is مربّعات إقليدس');
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="bahth-pgcd"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]'); // the rail is drawn once the lab has loaded its instruments
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'euclid', `the PGCD lesson opens the SAME lab from its world: its one instrument is مربّعات إقليدس (${mine})`); }
+if (await page.locator('[data-ll-euclid]').count() === 0) await page.click('[data-ll-tool="euclid"]');
+await page.waitForSelector('[data-ll-euclid]');
 expect(await page.getAttribute('[data-ll-stars]', 'data-ll-stars') !== '0', 'the missions made in the other lesson are still counted: one toolbox for the student');
 await setNum('a', 48); await setNum('b', 18);
 const squares = Number(await page.getAttribute('[data-ll-euclid]', 'data-squares'));
@@ -381,12 +383,15 @@ await setNum('a', 21); await setNum('b', 35);
   expect(await page.getAttribute('[data-ll-planks]', 'data-d') === '5' && five.length === 0, `a plank of 5 fills 35 alone: 21 keeps 1, 56 keeps 1, 14 keeps 4, 63 keeps 3, no « قاسم » chip (${five.join(' | ') || 'drawn as computed'})`);
 }
 await setNum('a', 36); // the numbers are shared: the next instrument is read on 36
-await page.click('[data-ll-cabinet-open]'); await page.click('[data-ll-cabinet-tool="common"]'); await page.waitForSelector('[data-ll-view="common"]');
+await page.click('[data-ll-cabinet-open]');
+// the 4AM shelf has five lessons since lesson 5: three a page, « القواسم المشتركة » (lesson 4) is on its second page
+for (let k = 0; k < 3 && !(await page.locator('[data-ll-cabinet-tool="common"]').count()); k += 1) { await page.locator('[data-ll-cabinet] footer button').last().click(); await page.waitForTimeout(250); }
+await page.click('[data-ll-cabinet-tool="common"]'); await page.waitForSelector('[data-ll-view="common"]');
 await setNum('b', 24);
 expect(await page.getAttribute('[data-ll-pgcd]', 'data-ll-pgcd') === '12' && await page.locator('[data-ll-zone="both"] .ll-dchip.is-top').count() === 1 && (await page.locator('[data-ll-zone="both"] [data-ll-d]').evaluateAll((els) => els.map((e) => e.dataset.llD))).join() === '1,2,3,4,6,12', 'القواسم المشتركة of 36 and 24: 1, 2, 3, 4, 6, 12 — the 12 wears the crown');
 await shot('common-36-24');
-await page.keyboard.press('Escape'); await page.waitForTimeout(500);
-expect(await page.locator('.ll-root').count() === 0 && !page.url().includes('lab=1') && await page.locator('[data-mission-lab]').count() === 1, 'Escape closes the lab and returns to the lesson home');
+await page.click('[data-ll-close]'); await page.waitForTimeout(500);
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 6');
 
 // ══ 3. a lesson with nothing before it has no lab door ══
 await page.goto(`${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-adad-tabii?lab=1`, { waitUntil: 'networkidle' }); heard = 0;

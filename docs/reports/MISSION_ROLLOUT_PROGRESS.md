@@ -14,6 +14,9 @@
 > pages deleted (`OLD_VERSION_TRACE_2026-11-18.md` §11); its row and section below are history.
 > **2026-11-19: lesson 5 (`tayin-pgcd`) too** — v2, its mission player, its scene `school-bags` and its module pages
 > deleted (`OLD_VERSION_TRACE_2026-11-18.md` §12); its row and section below are history.
+> **2026-11-19: lesson 6 (`bahth-pgcd`) too** — v2, its mission player, its scene `sewing-workshop` and its module pages
+> deleted (`OLD_VERSION_TRACE_2026-11-18.md` §13); its row and section below are history. The unit's lessons still on the
+> mission player: `awwaliyan-fima-baynahuma`, `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.
 
 ## The table
 

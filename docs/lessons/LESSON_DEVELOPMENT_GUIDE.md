@@ -45,6 +45,7 @@ stale, and when the entry exceeds its budget). Never import something heavy from
 
 ---
 
+> **SUPERSEDED 2026-11-19 (owner): ONE size, 1366×768, alone — root `CLAUDE.md` « Screens and writing ».** What follows is the rule before that date.
 > **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
 > **Enforced since 2026-10-27 (owner):** every lesson route (index and modules) and every practice route (`/espace/pratique/*`, `/espace/tashih/:id`, the teacher's `/enseignant/pratique/*`) sits behind the layout route `components/auth/RequireLargeScreen.jsx`. On a phone (`(max-width: 767px)`, or a touch screen under 500 px high = a phone held landscape) it renders « محتوى الدروس يظهر فقط في شاشة الحاسوب — رجاء افتح المنصة في الحاسوب لاستفادة قصوى » (`common.json › largeScreenOnly*`) instead of the content, and nothing of the lesson loads. **Generate for tablet and laptop ONLY** (owner, 2026-10-27): no `sm:` / `md:` Tailwind variant, no `@media (max-width: <768px)`, no phone-only element, no lab width branch under the 354 px lab-box floor. The phone code of every existing lesson was removed the same day. The rule, the measured floor and the exceptions are in `MANIPULATION_CONTRACT.md` §8bis « Screen floor ». Branches from 360 px up stay: a tablet in portrait, or the map column at 1024 px, really gives a lab that width. Test: `RequireLargeScreen.test.jsx`.
 
@@ -1319,7 +1320,7 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 
 - **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab (these four DELETED with their lessons' mission player — v2, LESSON_V2.md §2), `'school-bags'` = identical school bags filling on a table + a
-  `KidFigure` volunteer (DELETED with `tayin-pgcd`'s mission player, 2026-11-19), `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
+  `KidFigure` volunteer (DELETED with `tayin-pgcd`'s mission player, 2026-11-19), `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab (DELETED with `bahth-pgcd`'s mission player, 2026-11-19), `'bakery'` = identical dough portions on a tray + a
   `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
   hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom, `'fold-strip'` = a paper strip folded in a V at a school science fair (two halves
   coloured symmetrically, a rosette on the fold; a `KidFigure` girl in hijab and a boy), `'courtyard-slabs'` = a square school courtyard paved slab by slab (`slabs` sets the slabs per side; a `KidFigure` girl in hijab and a boy),

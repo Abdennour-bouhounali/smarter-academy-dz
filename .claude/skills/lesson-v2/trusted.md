@@ -1,6 +1,6 @@
 # Proven screens — what a new lesson does not walk again
 
-Read with `SKILL.md` §6. A line is added when a screen passed at 1366×768, 1024×768 and 1840×900 AND was looked at with
+Read with `SKILL.md` §6. Since 2026-11-19 the ONE size is 1366×768 (owner). A line is added when a screen passed at 1366×768 AND was looked at with
 the eyes; it gives the commit, the lesson that proved it, and the LIMITS it was proved for. A lesson whose data stays
 inside the limits checks that data by a unit test and does not walk the screen; a lesson that exceeds a limit walks it.
 A line is REMOVED when the screen's code changes after its commit (`git log <commit>..HEAD -- <files>`) or a lesson
@@ -16,3 +16,16 @@ Not yet proven (walk them for every lesson): the story of each lesson (always ne
 (positions are the lesson's); the knowledge map (positions are the lesson's); « تدرّب » (its sheets are generated: a
 random draw can exceed a line — lesson 5); the launch kit (cards drawn at random); the workshop and its bench (one
 lesson only); a gap of 0 cells (one lesson only); the lab's instruments.
+
+## Added by lesson 6 (`bahth-pgcd`, 2026-11-19 — passed at 1366×768, 1024×768 and 1840×900; the main session looked at eight screens)
+
+| Screen | Proven for | Data test |
+|---|---|---|
+| The workshop's `ladder` bench, `plain` (`InquiryGcd.jsx › LadderRows`, `inquiry.css`) and mode `both` (`InquiryGcdModes.jsx`) | a notebook of ≤ 5 rows; `both` with 31 rows against 2; numbers up to 1833; rows kept on reopening | the lesson's `limits.test.js` |
+| The fold experiment inside a mirror (`ladder/fold`) | 962 and 296, a run of 3 rows | — |
+| The forge frame, extended | headings ≤ 35 characters, chips ≤ 54, attack questions ≤ 155, last steps of 4 lines in two columns with 4 boxes a line, a last-step question ≤ 146, mirror pairs up to 1833 cells | `bahth-pgcd/world/limits.test.js` |
+| A convoy of THREE bridges, the walk back after a refusal, the restore on reload | planks offered on the first island only | — (walked) |
+| Long gaps drawn as strips | 1833 cells; 61 planks laid in 11.7 s | — |
+| The practice map | 7 nodes with long names at the positions of `bahth-pgcd/world/practice.js` | — |
+| The knowledge map | 15 cards on rows 5/23/41/59/76/93, two-line titles in the middle column | the lesson's `journey.test.js` |
+| The board | 14 stations, 5 keys, `single`-answer asks, the copybook as ONE group, naming rows ≤ 32 characters | the lesson's `board.test.js`, `limits.test.js` |

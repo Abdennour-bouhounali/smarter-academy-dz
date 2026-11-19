@@ -11,6 +11,7 @@
  *                     the world finishes the ladder in folded lines.
  *   ladder · both     the subtraction and the division ladders of one pair, side by side, drawn as bars that shrink to fit
  *                     ONE screen however many rows; he predicts which is shorter and by how many rows before they run.
+ *                     On a workshop's bench it starts where he left it (`spec.from` / `spec.onState`).
  *
  * `spec.text` is the lesson's wording (GAME_WORLD.md « استكشف », spec shapes of `common`, `ladder`, `nest`). Nothing
  * here states a rule: every sentence says what the strips, the shelves or the ladders have just done.
@@ -32,7 +33,7 @@ import {
   foldNow,
   foldReducer,
   foldResult,
-  initBoth,
+  bothStart,
   bothNow,
   bothReducer,
   bothResult,
@@ -727,7 +728,11 @@ export function BothView({ spec, state: s, act, input = { shorter: null, by: '' 
 }
 
 export function Both({ spec, play, onDone }) {
-  const [state, dispatch] = useReducer((s, a) => bothReducer(spec, s, a), spec, initBoth);
+  // empty, or where a workshop's bench was left (`spec.from`); the bench hears every move to keep it (`spec.onState`)
+  const [state, dispatch] = useReducer((s, a) => bothReducer(spec, s, a), spec, bothStart);
+  useEffect(() => {
+    spec.onState?.(state);
+  }, [spec, state]);
   const [input, setInput] = useState({ shorter: null, by: '' });
   const now = bothNow(spec, state);
   expose({

@@ -11,11 +11,11 @@ const WITH_PACK = getBuiltLessons()
 
 describe('the pack of a lesson — the ONE place where it says what it gives the platform', () => {
   it('a lesson without a pack has no flag and no part: nothing is loaded for it', async () => {
-    expect(lessonPackFlags('bahth-pgcd')).toEqual({});
+    expect(lessonPackFlags('jidhr-tarbii')).toEqual({});
     expect(lessonPackFlags('no-such-lesson')).toEqual({});
-    expect(await loadLessonPack('bahth-pgcd')).toBe(null);
-    expect(hasPackPart('bahth-pgcd', 'script')).toBe(false);
-    expect(await loadPackPart('bahth-pgcd', 'world')).toBe(null);
+    expect(await loadLessonPack('jidhr-tarbii')).toBe(null);
+    expect(hasPackPart('jidhr-tarbii', 'script')).toBe(false);
+    expect(await loadPackPart('jidhr-tarbii', 'world')).toBe(null);
   });
 
   it('the generated flags say exactly what each pack holds, and every part named really loads', async () => {

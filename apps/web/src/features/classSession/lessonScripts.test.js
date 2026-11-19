@@ -186,6 +186,10 @@ describe('حصّة القسم — the script of the lesson', () => {
     expect(groupsOf(script).map((g) => g.steps.length)).toEqual([4, 2, 2, 2, 1]);
     expect(groupsOf(script).map((g) => g.kind)).toEqual(['name', 'name', 'name', 'name', 'trace']);
     expect(groupsOf(script).flatMap((g) => g.steps)).toEqual(script.steps.map((_, k) => k)); // every step is on the rail, once
+    // the copybook is ONE group, whatever its number of pages
+    const pages = { steps: [...script.steps, { id: 'trace-x', kind: 'trace', chapter: 'نكتب' }] };
+    expect(groupsOf(pages).map((g) => g.kind)).toEqual(['name', 'name', 'name', 'name', 'trace']);
+    expect(groupsOf(pages).at(-1).steps).toHaveLength(2);
     let long = [];
     for (let b = 2; b <= 12; b += 1) long = classLog(long, { a: 60, b });
     expect(long).toHaveLength(LOG_MAX);

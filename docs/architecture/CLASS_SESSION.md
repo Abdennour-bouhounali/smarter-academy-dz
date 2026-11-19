@@ -217,6 +217,13 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   bank; the end test weighs the three الكفاءات as the bank does (four questions on listing, two on the direct results,
   two on the smaller dividing the greater). New `check` type: `pgcdIs` (true / false: the sentence « $\mathrm{PGCD}(a ;
   b) = g$ », written as such in the question, judged by Euclid — 0 and equal numbers included).
+  **Lesson 6 « البحث عن القاسم المشترك الأكبر » (2026-11-19)**: `4am/bahth-pgcd.json` — no pair of the lesson's exercise
+  bank nor of its story; the end test weighs the five الكفاءات as the bank does (Euclid and the choice of the algorithm
+  first). New `check` types: `pgcdEqual` (true / false: « $\mathrm{PGCD}(a ; b) = \mathrm{PGCD}(c ; d)$ » — the remainder
+  and the difference that keep the PGCD, the quotient taken for the remainder as the trap; a Euclidean division written
+  beside it is checked too), `pgcdSame` (choice: the option « $\mathrm{PGCD}(x ; y)$ » that keeps the PGCD of the pair),
+  `subtractions` / `divisions` (the steps of each algorithm down to 0, each algorithm RUN by the test), `fewerSteps`
+  (which algorithm is shorter, each option written as its form says).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -304,7 +311,7 @@ Rules of this screen:
   so (its five `ask` stations: `count`, `grow`, `rebuild`, `scope`, `cable`) and its `board.test.js` checks every `ask` against the world's
   `ruleForge.js › outcome(a, plank).held`: the planks drawn as holding are exactly the `answer`.
 - **A name never comes before the action**: every `name` step follows a `forge`, an `ask` or a `statements` step (tested).
-- **An adult's board**: the rail (one group per key of the lesson, then the copybook) jumps to any station; ← / → and
+- **An adult's board**: the rail (one group per key of the lesson, then ONE group for the copybook, however many `trace` pages — `lessonScripts.js › groupsOf`) jumps to any station; ← / → and
   PageDown / PageUp work for a presenter remote; « التالي » is never disabled — it is only quieter while the class has
   not enough evidence or no sealed rule.
 - **The board remembers the hour** (station, the class's bridges, its rule, who spoke) in the browser tab

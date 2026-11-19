@@ -36,7 +36,7 @@ For the lesson:
 
 ## B. The screenshots, before the commit
 
-Run the six walks at 1366×768, 1024×768 and 1840×900 on a frozen copy. Then OPEN the pictures. The list of screens:
+Run the walks at 1366×768 ONLY (owner, 2026-11-19: the one size; the right-hand column below is no longer done) on a frozen copy. Then OPEN the pictures. The list of screens:
 
 | Walk | Open at 1366×768 | Open again at 1024×768 and 1840×900 |
 |---|---|---|

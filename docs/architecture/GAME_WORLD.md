@@ -6,6 +6,10 @@
 for « without limiting it with the docs or what is already built ». Sections still marked « NOT validated » describe parts
 he has not judged one by one; they are binding all the same, as built.
 
+> **ONE SCREEN SIZE since 2026-11-19 (owner): 1366×768, alone.** A world, a forge, an experiment, a sitting are built,
+> walked and reviewed at 1366×768 only. Measures and rules below that name 1024×768 or 1840×900 are the record of what
+> was verified before that date; nothing new is checked at those sizes.
+
 ## 1. What it is
 
 A student who opens the lesson enters **« أرخبيل القواسم »**: a chain of nine floating islands in a three.js scene, played in a
@@ -465,8 +469,8 @@ attacks, the seal, the last step and the tablet. Two mechanics of the world « �
   covers the top bar, so its header draws the sound button and the ✕ again; leaving the lesson by that ✕ keeps the
   bench as it stands (`closeBench` first; 2026-11-19, lesson 5's walk). What
   he did STAYS: the experiment's state per segment id in `flags.benches` (saved with the world; `Game.benchKept(i)`),
-  given back to the screen as `spec.from` — reopened, it shows his lists, not an empty bench (only `lists` reads
-  `spec.from` / `spec.onState` today). The bench gives facts; it never says which plank to make. Test:
+  given back to the screen as `spec.from` — reopened, it shows his lists, not an empty bench (`lists`, `ladder` in the
+  modes `subtract`, `divide` and `both` read `spec.from` / `spec.onState`; a `ladder` bench is `plain`: its rows only). The bench gives facts; it never says which plank to make. Test:
   `divisorIsles/workshop.render.test.jsx`.
 
 First used by lesson 4 `qasim-mushtarak-akbar` (keys 1 and 2: one choice of planks for two gaps; then planks that all
@@ -572,10 +576,15 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
   (edge labels, a card's kind and title, the legend, the stars) is floored in `kit/styles/knowledge.css`; below 1101 px a
   card gives back the room with a smaller icon and padding. A `Fit` given a `floor` keeps 12 px while it shrinks: the exam sitting
   (§2quater) and, since 2026-11-19, every pop-up card of the world (`parts › Card` — a tablet with the student's own rule
-  above a long list was shrunk to ×0.87 and its labels drawn at 11.4 px, lesson `qisma-iqlidiya-hasr`). The walks check it
+  above a long list was shrunk to ×0.87 and its labels drawn at 11.4 px, lesson `qisma-iqlidiya-hasr`), the card panel of
+  the knowledge page (`KnowledgePage › di-kpanel__body`, 2026-11-19 — a common mistake once uncovered, four parts, shrank
+  to ×0.975 and its labels « الخطأ … مثال » were drawn at 11.7 px) and, in the sitting, a TABLE of the bank: drawn by
+  `problems/ProblemTable` in a fixed `text-sm`, it is floored on the paper and its long headers wrap inside their column
+  (`examSitting.css`): it never slides sideways in a frame of its own. The walks check it
   at every screenshot (`e2e/lib/walk.mjs`): `fontFloor` is ON by default since 2026-11-19 (it was opt-in, at 11.5 px), the
   threshold is 12 px less only the rounding a zoom leaves (`FLOOR_PX = 11.95`), the knowledge map is no longer exempt, and a
-  walk that switches it off (`fontFloor: false`) must say why in a comment; walks with their own `shot` call `tinyText(page)`.
+  walk that switches it off (`fontFloor: false`) must say why in a comment; walks with their own `shot` call `tinyText(page)`, which does not measure a text hidden
+  UNDER a layer that fills the window (a lab or a world opened over a page: the point at its middle belongs to that layer).
 - **The panel fits under the mirror** (2026-11-19: the « اختبر قاعدتي » button ran below the window at 720 units of height —
   1366×768, 1840×900 — in builds with three slots or with long two-line tiles plus the robot's experiment). The mirror row
   is `minmax(min-content, 15.5rem)`: it gives way, down to what it holds, when the panel needs the room (never cut,
@@ -606,7 +615,8 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
   `Line` names no plank: the two counts with their item glyphs, the case's `tag`, and a mini of k small lots plus an amber
   block when something is left. Hooks: `data-rf-deal="nA:nB:k"`, `data-rf-stage`, `data-iq-lot` / `data-iq-holds`,
   `data-iq-pile` / `data-iq-count`, `data-rf-claim`. A case with no `deal` is a bridge, drawn as before. Tested:
-  `divisorIsles/forgeParts.render.test.jsx`.
+  `divisorIsles/forgeParts.render.test.jsx`. A case drawn as a bridge that is NOT about a plank (lesson 6's ⏱️: a pair of
+  numbers and their two notebooks) carries `head` (« 1003 و 34 »): its log line names it so, never « a لوح b » (A10).
 - **A list never starts a line with its comma** (2026-11-19: the rule card of lesson 4's race wrapped « … 9 ، 6 ، 3 ، 2 ، 1 »
   and left « ، 18 » alone on the next line). A list of numbers is joined with a no-break space BEFORE each « ، » and a
   normal space after it (`'\u00a0، '`), so a line can break only after a comma: `world/math.js › listAr` of
@@ -991,6 +1001,15 @@ rule, `data-iq`, `data-iq-stage`, `data-iq-goal`, `data-iq-calc`, `data-iq-fact`
 { kind: 'ladder', mode: 'subtract' | 'divide',
   manual?: 2,                                          // rows whose next pair he predicts before the count (default 2;
                                                        //   capped at steps − 1: a ladder of one row asks the count at once)
+  plain?: true,                                        // (also per round) a workshop's BENCH (2026-11-19, lesson 6): the
+                                                       //   rows and their calculations only — no ✓ column of the planks
+                                                       //   common to each row's pair and no last value lit gold (on a
+                                                       //   bench they show which plank to make); `T.planks` is not shown;
+                                                       //   hook data-iq-plain. Without it the screen is exactly as before
+  from?, onState?,                                     // set by the bench (Workshop.jsx › Bench): it starts where he left
+                                                       //   it (inquiry.js › ladderStart: a row being written is written, a
+                                                       //   ladder being finished is finished) and hears every move.
+                                                       //   Mode `both` keeps its state the same way (gcdModes.js › bothStart)
   rounds: [{ a, b, mode? }],                           // a, b > 0; `mode` overrides spec.mode for one round — the same
                                                        //   pair in both modes lets the lesson compare the rows. Keep a
                                                        //   subtract ladder short (≤ 10 rows): past six rows the screen folds

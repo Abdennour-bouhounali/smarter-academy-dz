@@ -216,6 +216,13 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
 
 ## 4ter-0. State of the « today » items (2026-11-16)
 
+> **ONE SCREEN SIZE since 2026-11-19 (owner, after a council of five advisors and three reviewers): 1366×768, alone.**
+> His words: « all the lessons must work for this size only: 1366×768, alone, no other size is needed ». « Done » is
+> the walks at 1366×768 and the screenshots looked at; the walks owed below at 1024×768 and 1840×900 (the six older
+> lessons, lesson 5's sitting) are NO LONGER OWED. Raised by the council and NOT decided: the real window of such a
+> laptop is shorter than 768 px (about 650 with the browser's bars); the 3D world has never been tried on a weak school
+> machine; an old 4:3 projector may force the teacher's board to 1024×768; nobody has measured which device families own.
+
 - **C6 — DONE.** The work is committed on `dev` (`402e8087` code, `ab22f63f` plans). Not pushed, not merged: the owner
   tests over Wi-Fi first.
 - **C4 — DECIDED** (owner accepted the advice, 2026-11-16): the exam-sheet practice, the answer templates and « دج » are
@@ -599,6 +606,19 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      runtime); at 1024×768 a four-line instruction covers part of the island until he folds it or walks on; at
      1840×900 two pedestal numbers print over island A's name label; walking back, the road is his to steer (from an
      altar the straight line back misses the bridge).
+
+  20. [x] **Lesson 6 `bahth-pgcd` — v2 (2026-11-19, 2 h 25 against 4 h 16 for lesson 5).** Five keys: ➖ `farq-yabqi`
+     (a convoy of THREE bridges 152, 95, 57), 🪜 `khawarizmiyat-al-tarh` and 🔁 `iqlidis` (a workshop whose bench is the
+     procedure's notebook, rows only), 🧮 `baqi-yabqi` (the fold, in its mirror), ⏱️ `aqall-khutuwat` (two notebooks,
+     31 rows against 2); the store: lanes of 1176 and 868 cells. Walks on a frozen copy: story 819 checks, hub 238,
+     trainer 478–496, board 181, launch kit 227 — pass at 1366×768, 1024×768 and 1840×900; the sitting (1,983 checks,
+     every sheet) at 1366×768 only, run before the « تقدّمي » change. Reference lessons after the five shared changes
+     (the bench's columns, a case's `head`, « تقدّمي » in 4 columns, the launch title that wraps, the board's rail):
+     lesson 5's story, hub, board, launch kit and lesson 2's board pass. Looked at by the main session: eight screens.
+     NOT done: the sitting's screenshots; the other older lessons after the shared changes. Seen and left: the hub's
+     rule card of key 🪜 reads « 12 = 5 + 7 » where « 7 + 5 = 12 » was written (true either way); the workshop still
+     says « قالب ». The repository checks ran on a worktree of the commit (result in the commit after this one if
+     anything failed).
 
 ## 4ter. When each item of 4bis is done
 

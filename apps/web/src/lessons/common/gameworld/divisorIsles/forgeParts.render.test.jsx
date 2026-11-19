@@ -99,6 +99,14 @@ describe('a case of a forge that is a SHARING — drawn as the experiment draws 
     expect(renderToString(<Line c={c} />)).toContain('لوح 5');
     expect(beats(c)).toBe(c.q);
   });
+
+  it('a bridge that is not about a plank names itself by its `head` in its line — never « لوح » (A10)', () => {
+    const c = { ...outcome(1003, 34), head: '1003 و 34', tag: '31 مقابل 2' };
+    const line = renderToString(<Line c={c} />);
+    expect(line).toContain('1003 و 34');
+    expect(line).toContain('31 مقابل 2');
+    expect(line).not.toContain('لوح');
+  });
 });
 
 /** A pair case as a lesson writes it (forgeParts.jsx › `c.pair`): one plank d on the gaps a and b. */

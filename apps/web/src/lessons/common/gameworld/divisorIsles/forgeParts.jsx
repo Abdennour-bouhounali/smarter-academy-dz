@@ -20,6 +20,9 @@
  *     need   the planks the two bridges take together, when the case counts them (written in its line)
  * Each bridge has its own held / fell look (does d fill IT?), what is left of each in amber. Whether the case holds is
  * still `held` (what the case asks); `fits` says whether the plank fills both.
+ *
+ * A case drawn as a bridge that is NOT about a plank (a pair of numbers and their notebooks) carries `head`: its line
+ * then names it in those words (« 1003 و 34 ») instead of « a لوح b » (defects.md A10).
  */
 import Inquiry from './Inquiry';
 import { dealOf } from './deal';
@@ -490,6 +493,9 @@ function Line({ c, children }) {
           <>
             <PairHead pair={c.pair} /> <span>{L.plank(c.pair.d)}</span>
           </>
+        ) : c.head ? (
+          // a case that is not a bridge names itself in its own words (defects.md A10): « 1003 و 34 », never « لوح »
+          <span className="rf-line__head">{c.head}</span>
         ) : (
           <>
             <strong dir="ltr">{c.a}</strong> <span>{L.plank(c.b)}</span>

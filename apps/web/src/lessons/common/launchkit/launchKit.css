@@ -86,9 +86,10 @@
   font-size: 0.95rem;
   color: #a5b4fc;
   font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* the lesson's title is WHOLE, on two lines when the head is narrow — never cut by an ellipsis (defects.md B5: lesson
+     6's « البحث عن القاسم المشترك الأكبر لعددين طبيعيين » lost its last word at 1024 × 768) */
+  line-height: 1.35;
+  text-wrap: balance;
   max-width: 26rem;
 }
 .lk-head__end {

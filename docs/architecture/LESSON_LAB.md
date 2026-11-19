@@ -158,7 +158,8 @@ Everything is inside the lazy lesson boundary: `LessonIndex` imports only `regis
 - Walk: `node apps/web/e2e/lesson-lab.mjs [outDir]` (dev server up; also `E2E_SIZE=1024x768` and `1840x900`): lesson 1 of 4AM
   from its game world, then lesson 5 `tayin-pgcd` from its game world (`lists` PLAYED: 40 and 56, « جرّب » pressed until both
   lists close — ⌊√56⌋ = 7 presses —, each list against the divisors the walk computes, the links 1, 2, 4, 8 and the one crown
-  on 8, « من جديد » clears the sheet), then the PGCD lesson from its mission home (its 4AM shelf: five earlier lessons), then
+  on 8, « من جديد » clears the sheet), then lesson 6 `bahth-pgcd` from its game world since 2026-11-19 (its one instrument `euclid`; its 4AM shelf: five earlier
+  lessons; the lab closed by its ✕), then
   a lesson with no lab. Real pointer drags on the wall,
   the flag, the corner and the lens. At every screenshot: nothing scrolls, nothing leaves the screen, no label is clipped. The walk also LISTENS (in dev `sound.js`
   writes each sound it has really played into `window.__labSounds`): the opening chime, the ticks of the wall and the one

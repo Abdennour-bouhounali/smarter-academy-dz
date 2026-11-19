@@ -110,6 +110,30 @@ const bracketHolds = (option, a, b) => {
   const eqm = String(option).match(/^\$(\d+) \\div (\d+) = (\d+)\$$/);
   return Boolean(eqm) && +eqm[1] === a && +eqm[2] === b && a === b * +eqm[3];
 };
+/** The algorithm of successive differences, run here: the smaller taken from the greater, down to 0 — its subtractions. */
+const subtractionsOf = (a, b) => {
+  let [x, y, n] = [Math.max(a, b), Math.min(a, b), 0];
+  while (y > 0) {
+    n += 1;
+    [x, y] = [Math.max(y, x - y), Math.min(y, x - y)];
+  }
+  return n;
+};
+/** Euclid's algorithm, run here: the divisor by the remainder, down to the remainder 0 — its divisions. */
+const divisionsOf = (a, b) => {
+  let [x, y, n] = [Math.max(a, b), Math.min(a, b), 0];
+  while (y > 0) {
+    n += 1;
+    [x, y] = [y, x % y];
+  }
+  return n;
+};
+/** Which algorithm takes fewer steps — each option is one of these forms, written as such. */
+const FEWER = {
+  euclid: { text: 'خوارزمية إقليدس', holds: (a, b) => divisionsOf(a, b) < subtractionsOf(a, b) },
+  differences: { text: 'خوارزمية الفروق المتتابعة', holds: (a, b) => subtractionsOf(a, b) < divisionsOf(a, b) },
+  same: { text: 'تأخذان عدد الخطوات نفسه', holds: (a, b) => subtractionsOf(a, b) === divisionsOf(a, b) },
+};
 const shows = (q, ...nums) => {
   for (const n of nums) expect(q.text, `${q.id}: the question shows ${n}`).toContain(String(n));
 };
@@ -299,6 +323,36 @@ function truth(q) {
       // a sentence « PGCD(a ; b) = g », true or false (4AM lesson 5: the direct results, the smaller dividing the greater)
       expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b}) = ${c.g}$`);
       return gcd(c.a, c.b) === c.g;
+    // ── the two algorithms (4AM lesson 6): the PGCD kept by a difference or a remainder, the steps of each algorithm ──
+    case 'pgcdEqual': {
+      // « PGCD(a ; b) = PGCD(c ; d) », true or false; a Euclidean division the question writes beside it is true
+      expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b}) = \\mathrm{PGCD}(${c.c} ; ${c.d})$`);
+      for (const m of q.text.matchAll(/\$(\d+) = (\d+) \\times (\d+) \+ (\d+)\$/g)) {
+        const [a, b, k, r] = m.slice(1).map(Number);
+        expect(b * k + r === a && r < b, `${q.id}: « ${m[0]} » is a Euclidean division`).toBe(true);
+      }
+      return gcd(c.a, c.b) === gcd(c.c, c.d);
+    }
+    case 'pgcdSame':
+      // a pair that keeps the PGCD of (a ; b): each option « $\mathrm{PGCD}(x ; y)$ », judged by Euclid
+      shows(q, c.a, c.b);
+      return q.options.map((o) => {
+        const m = String(o).match(/^\$\\mathrm\{PGCD\}\((\d+) ; (\d+)\)\$$/);
+        return Boolean(m) && gcd(+m[1], +m[2]) === gcd(c.a, c.b);
+      });
+    case 'subtractions':
+      shows(q, c.a, c.b);
+      return subtractionsOf(c.a, c.b);
+    case 'divisions':
+      shows(q, c.a, c.b);
+      return divisionsOf(c.a, c.b);
+    case 'fewerSteps':
+      shows(q, c.a, c.b);
+      return q.options.map((o, i) => {
+        const f = FEWER[c.forms[i]];
+        expect(o, `${q.id}: the option is written as its form says`).toBe(f.text);
+        return f.holds(c.a, c.b);
+      });
     case 'perLot':
       // the lots the question gives share both collections: the greatest number of lots, so one lot is a / PGCD
       expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
@@ -322,6 +376,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/khawass-qawasim.json'); // lesson 3: written before its board
     expect(files.map((f) => f.name)).toContain('4am/qasim-mushtarak-akbar.json'); // lesson 4: the PGCD (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/tayin-pgcd.json'); // lesson 5: finding the PGCD (2026-11-19)
+    expect(files.map((f) => f.name)).toContain('4am/bahth-pgcd.json'); // lesson 6: the two algorithms (2026-11-19)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -354,6 +409,15 @@ describe('حصّة القسم — the default tests', () => {
     expect(sentence(0, 64, 0)).toBe(false);
     expect(sentence(17, 17, 17)).toBe(true);
     expect(sentence(24, 60, 24)).toBe(false);
+    // the steps of the two algorithms, counted on pairs worked by hand: 152 − 95 = 57, 95 − 57 = 38, 57 − 38 = 19,
+    // 38 − 19 = 19, 19 − 19 = 0 (five subtractions); 152 = 95 × 1 + 57, 95 = 57 × 1 + 38, 57 = 38 × 1 + 19,
+    // 38 = 19 × 2 + 0 (four divisions)
+    expect([subtractionsOf(152, 95), divisionsOf(152, 95)]).toEqual([5, 4]);
+    expect([subtractionsOf(1003, 34), divisionsOf(1003, 34)]).toEqual([31, 2]);
+    expect([subtractionsOf(9, 9), divisionsOf(9, 9)]).toEqual([1, 1]); // equal numbers: one step each
+    // Euclid never takes more steps: the count of subtractions is the sum of the quotients
+    for (let a = 1; a <= 120; a += 1)
+      for (let b = 1; b < a; b += 1) expect(divisionsOf(a, b)).toBeLessThan(subtractionsOf(a, b));
   });
 
   for (const { name, data } of files) {

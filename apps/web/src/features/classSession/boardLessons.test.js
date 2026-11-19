@@ -18,6 +18,8 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('qasim-mushtarak-akbar')).toBe(true);
     expect(BOARD_LESSONS).toContain('tayin-pgcd'); // lesson 5 joined with its script and memo (2026-11-19)
     expect(hasClassBoard('tayin-pgcd')).toBe(true);
+    expect(BOARD_LESSONS).toContain('bahth-pgcd'); // lesson 6 joined with its script and memo (2026-11-19)
+    expect(hasClassBoard('bahth-pgcd')).toBe(true);
     expect(hasClassBoard('jidhr-tarbii')).toBe(false); // a lesson still on the mission player: no board yet
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
@@ -60,6 +62,11 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       state: undefined,
       session: true,
     });
+    expect(classDoor('bahth-pgcd', `${base}/bahth-pgcd`)).toEqual({
+      to: '/enseignant/hissa/bahth-pgcd',
+      state: undefined,
+      session: true,
+    });
     expect(classDoor('jidhr-tarbii', `${base}/jidhr-tarbii`)).toEqual({
       to: `${base}/jidhr-tarbii`,
       state: CLASSROOM_START_STATE,
@@ -71,12 +78,14 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(boardLessonOfPath(`${base}/khawass-qawasim/2`)).toBe('khawass-qawasim');
     expect(boardLessonOfPath(`${base}/qasim-mushtarak-akbar/2`)).toBe('qasim-mushtarak-akbar');
     expect(boardLessonOfPath(`${base}/tayin-pgcd/2`)).toBe('tayin-pgcd');
+    expect(boardLessonOfPath(`${base}/bahth-pgcd/2`)).toBe('bahth-pgcd');
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/khawass-qawasim/2`)).toBe(false);
     expect(canPresentPath(`${base}/qasim-mushtarak-akbar/2`)).toBe(false);
     expect(canPresentPath(`${base}/tayin-pgcd/2`)).toBe(false);
+    expect(canPresentPath(`${base}/bahth-pgcd/2`)).toBe(false);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

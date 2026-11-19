@@ -9,7 +9,7 @@ const QUESTIONS = readdirSync(DIR).filter((d) => d.startsWith('level-')).flatMap
 describe('مدرّب الامتحان — the exam coach of the exercise bank', () => {
   it('is a pilot on one lesson, with two modes', () => {
     expect(isCoachLesson('qasim-adad-tabii')).toBe(true);
-    expect(isCoachLesson('bahth-pgcd')).toBe(false);
+    expect(isCoachLesson('jidhr-tarbii')).toBe(false); // a lesson with no pack (bahth-pgcd has one since 2026-11-19)
     expect(MODES).toEqual(['guide', 'explain']);
   });
 
@@ -23,7 +23,7 @@ describe('مدرّب الامتحان — the exam coach of the exercise bank', 
       seen.add(rule.id);
     }
     expect(seen.size).toBe(4);
-    expect(await loadRule('bahth-pgcd', '4am_bahth-pgcd_P1')).toBe(null);
+    expect(await loadRule('jidhr-tarbii', '4am_jidhr-tarbii_P1')).toBe(null);
   });
 
   it('GUIDE mode never contains the answer: no solution line, no result', async () => {

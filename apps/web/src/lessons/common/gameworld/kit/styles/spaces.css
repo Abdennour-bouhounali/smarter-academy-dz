@@ -283,9 +283,15 @@
 .di-ptable__head,
 .di-ptable__row {
   display: grid;
-  grid-template-columns: 2fr 1.4fr 1fr 1.5fr 1fr;
+  /* four columns; the fifth (the server's status) only when it is shown — an empty fifth column squeezed the names of
+     lesson 6's five keys onto three lines and pushed the last row off a 1024 × 768 screen (2026-11-19) */
+  grid-template-columns: 2.4fr 1.3fr 1fr 1.4fr;
   align-items: center;
   gap: 0.6rem;
+}
+.di-ptable--server .di-ptable__head,
+.di-ptable--server .di-ptable__row {
+  grid-template-columns: 2.2fr 1.3fr 1fr 1.4fr 1fr;
 }
 .di-ptable__head {
   font-size: 0.85rem;

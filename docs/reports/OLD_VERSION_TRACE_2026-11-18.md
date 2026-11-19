@@ -542,3 +542,112 @@ world agent's) · `status:lesson-v2 --lesson tayin-pgcd`: ✅ every part but « 
 the paused phone · `check:unreached` and `check:unused`: nothing of this lesson (the four batch-2 `world/` drafts, and
 20.) · `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`, `boardLessons.test.js` ✅.
 NOT run: `validate-lessons.mjs`, `check-textbook-coverage.mjs`, the whole suite, a build, `check:lessons`, any walk.
+
+## 13. Lesson 6 — `bahth-pgcd` (2026-11-19, NOT committed)
+
+Lesson: 4AM `bahth-pgcd` (`…/aadad-tabiiya-natiqa/bahth-pgcd/`), lesson 6 of the unit. Same job and shape as §12. Its new
+version — `world/` (another agent was rewriting `world/forges.js` and `world/inquiries.js` during this change), `board/` —
+was not touched; its pack `lesson.pack.js` was written in this change (world `divisor-isles`, `knowledge` =
+`world/knowledge.js › LESSON_KNOWLEDGE`, `coach` P1 `farq-yabqi` · P2 `khawarizmiyat-al-tarh` · P3 `baqi-yabqi` · P4
+`iqlidis` · P5 `aqall-khutuwat`, as `world/evidence.js › POINTS`, `board` script and memo, `phone: false`).
+`board/script.js › KEYS` equals the world's keys (`board.test.js` checks `KEYS` against `lesson.keys`, and passes). This
+lesson was on the MISSION PLAYER (scene `sewing-workshop`).
+
+### 13.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1 and rows h, l of §11.1 hold unchanged. What is specific to this lesson:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge: () => import('./knowledge')`) | pages + the 🧠 map | **changed** as §12 (`retiredModules: true`, no `loadKnowledge`): the 9 module addresses redirect home |
+| b | `moduleContext.js` | data, for the pages only | **deleted** |
+| c | `lesson.config.js › studentView`, `mission` (scene `sewing-workshop`, five tools, four checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef` | the mission player, `LessonProblemCard`, the old 🧠 provider | **deleted**; the header (the textbook's activity 6, its pages, the French design notes) rewritten |
+| d | `common/mission/MissionScene.jsx › 'sewing-workshop'` → `SewingWorkshopScene.jsx` | this config only | **deleted** |
+| e | `content/ribbons.js`, `peerSheet.js`, `prep.js`, `problems.js` (+ their 4 tests), `exercises.js`, `textbook.js` | the module pages only (`world/` imports the kit, `divisorIsles/` and its own files; `board/` imports `features/classSession/*`) | **deleted** |
+| f | root `knowledge.jsx`, `knowledgeGraph.js` | the home's 🧠 map, `validate:lessons`' graph check, the globs of `lessonGraphs.test.js` / `wadiya…/mission.test.js` | **deleted** |
+| g | **`check-textbook-coverage.mjs`**: the textbook elements the deleted files cited. `act-6a`, `act-6b`, `know-4-props`, `method-differences`, `method-euclid`, `challenge`, `ex-19`–`ex-21` are still cited by the bank and/or `resources › sourceElementIds`; **`qcm`** (destination bahth-pgcd, item 9 of the deleted « إختبار أولي ») and **`now-13-1`** (« دوري الآن » p. 13, destination bahth-pgcd module 4) were not | coverage | `qcm`: destination **moved** to `awwaliyan-fima-baynahuma` (module 7, item 8 — the only lesson still citing it), noted in `docs/sources/4am/unit1/extraction.json`, as §1's follow-up 3. **`now-13-1`: NOT fixed — `check-textbook-coverage.mjs` fails on it** (follow-up 22) |
+| h | `wadiya-idmajiya-aadad`: (1) `mission.tools` `pgcd-baqi`, `khwarizmiyat-iqlidus` (ids of this lesson's deleted `knowledge.jsx`; `mission.test.js › knowledgeOf` wants each in a sibling's knowledge); (2) `mission.test.js › lessonPairs.has('140/252')` (a pair of this lesson's deleted `content/`) | ids, pairs | (1) **re-pointed** to this lesson's world keys `baqi-yabqi`, `iqlidis`, as §11's follow-up 14 did (`pgcd-taarif` → `al-akbar`); (2) the sentinel **re-pointed** to `65/91` (ikhtizal-kasr's `content/prep.js`) — it moves again when that lesson converts (follow-up 18 still holds) |
+| i | the synthesis' and lessons 7–8's `priorKnowledge` and `requires` (`pgcd-baqi`, `khwarizmiyat-iqlidus`), `ikhtizal-kasr`/`awwaliyan-fima-baynahuma`/`wadiya` « أستعدّ » (`lesson: 'bahth-pgcd'`), `PREP_LESSON`, `unitMissions.js` (🧵, « خوارزمية إقليدس »), `lessonlab/registry.js` (its instrument `euclid`), `moduleLayoutMigrations.js` (`{ 5: 8 }`), the learning net, the launch kit, `content/practice`, `content/class-tests/4am/bahth-pgcd.json`, the API's tests and seeders, `scripts/practice-oracle/bahth-pgcd.mjs` | ids as data; nothing checks that a `priorKnowledge` id exists | unchanged (as §11 left `pgcd-taarif`); `khwarizmiyat-iqlidus` still exists in the synthesis' own `knowledge.jsx` |
+| j | this lesson's `priorKnowledge: ['khassiya-1', 'khassiya-2', 'pgcd-taarif', 'nataij-mubashira']` — the first three existed only in deleted root files | the brief, the audit | **re-pointed** to the worlds' keys `jam-wal-farq`, `baqi-qisma` (khawass-qawasim), `al-akbar` (lesson 4); `nataij-mubashira` is lesson 5's world key |
+| k | the labs `pgcd-differences` (`DifferenceAlgorithm.jsx`) and `euclidean-algorithm` (`resources` of this config) | `resources` | **kept** as data. `euclidean-algorithm` is still mounted by `wadiya-idmajiya-aadad` (module 7); **`pgcd-differences` is now mounted by no page** — reached through `manipulationRegistry.js`, so `check:unreached` does not flag it (follow-up 23) |
+| l | `lessonPack.test.js`, `examCoach.test.js` used `bahth-pgcd` as « a lesson with no pack » | the example | **re-pointed** to `jidhr-tarbii` (still on the mission player, no pack) |
+| m | `docs/reports/knowledge-contracts/4am_bahth-pgcd.json` | the audit's stale report | **deleted** |
+| n | e2e walks | pages | §13.4 |
+
+### 13.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط 6 أ, معارف, نشاط 6 ب, أوظّف, three مسائل, « إختبار أولي ») | 9 | 425 |
+| `moduleContext.js` | 1 | 3 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 285 |
+| `content/` — `ribbons`, `peerSheet`, `prep`, `problems` (+ their tests), `textbook`, `exercises` | 10 | 885 |
+| **lesson folder, total** | **22** | **1,598** |
+| mission scene `SewingWorkshopScene.jsx` | 1 | 69 |
+| stale audit report `docs/reports/knowledge-contracts/4am_bahth-pgcd.json` | 1 | 359 |
+| **total** | **24** | **2,026** |
+
+Also edited: `lesson.config.js` (keys of 13.1 c removed; `teachingScope` without the textbook's numbers; module titles and
+`desc` neutral as §10.2 — 0 « أستعدّ », 1 « الفرق، ثمّ الفروق المتتابعة », 2 « الفرق والباقي », 3 « القسمات المتتابعة، وأقصر
+طريق », 4 « أتمرّن », 5 « مسألة 1 », 6 « مسألة 2 », 7 « مسألة الدرس » (the store of the world's last bridge,
+`world/story.js › PROBLEM_MODULE = '7'`), 8 « التقويم »; ids, numbers, slugs, stages, `teachesLearningPointIds` unchanged —
+`world/journey.test.js` and `world/evidence.test.js` check them; the resources' titles and autonomy lines no longer name
+the textbook's numbers (252 و 140, 117 و 91, 765 و 135, 836 و 1938, 936 و 845) nor « أعداد الكتاب »; `masala-1` no longer
+titled « مسألة الدرس »; `priorKnowledge` 13.1 j); `routes.jsx`; `MissionScene.jsx` (import, entry, comment);
+`wadiya-idmajiya-aadad/lesson.config.js` (13.1 h); `docs/sources/4am/unit1/extraction.json` (`qcm`); `package.json`
+(`format:v2`, `check:format`: the lesson's `world`, `board`, `lesson.pack.js`); the generated `lessonIndex.generated.json`
+(the lesson's `pack` flags); `e2e/lesson-lab.mjs` (the PGCD step opens the lab from the world: `[data-di-lab-open]`, its rail
+`[data-ll-mine]` = `euclid`, closed by `[data-ll-close]`; the dead mission-home seed removed — `LESSON_LAB.md`);
+`LESSON_V2.md`, `LESSON_DEVELOPMENT_GUIDE.md`, `MISSION_ROLLOUT_PROGRESS.md`. `generate:lab-order` / `generate:compass-index`
+not run: they read the catalogue, the instruments and the bank, unchanged.
+
+### 13.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (door « حصّة القسم », its module addresses
+  belong to its board, « present » refused on them).
+- `4am …/_unit/prepDiagnostic.test.js`: six v2 lessons have no « أستعدّ » page.
+- `knowledge/finalSynthesis.test.js`: 69 → 68 evaluation modules (unit 1: 4 → 3).
+- `lessonPack.test.js`, `features/practice/exam/examCoach.test.js`: « a lesson with no pack » is `jidhr-tarbii` (13.1 l).
+- `wadiya-idmajiya-aadad/content/mission.test.js`: the pairs' sentinel (13.1 h).
+- Unchanged and passing: `registry.test.js`, `common/lessonlab` (the 4AM shelf of this lesson's lab is still the five
+  earlier lessons), `common/mission`, `common/knowledge`, `_unit`, the lesson's `board/board.test.js`.
+
+### 13.4 Walks (NONE was run)
+
+Changed: the PGCD step of `lesson-lab.mjs` (13.2). **Opening this lesson's deleted pages or its old home** (follow-up 4
+extends to them): `lesson-kit/manipulations.mjs` (`bahth-pgcd/al-furuq`, `bahth-pgcd/khwarizmiyat-iqlidus` — the browser
+suites of the `pgcd-differences` and `euclidean-algorithm` labs), `lesson-kit/4am-aadad-tabiiya-natiqa.mjs` (the same two
+pages, and the unit's lessons and modules), `lesson-kit/moyen-retrofit-phase1.mjs` (this lesson's modules 1–3 and their
+bricks `pgcd-farq`, `khwarizmiyat-al-furuq`, `pgcd-baqi`, `khwarizmiyat-iqlidus`, `ikhtiyar-al-tariqa`), `knowledge-map.mjs`
+(its `ALL` list opens the 🧠 map of this lesson's page — gone). To re-check, lesson level only: `lesson-kit/practice-exam-sheet.mjs`
+and `lesson-kit/practice-image-answers.mjs` (default `LESSON=bahth-pgcd`: the practice page, whose address is unchanged).
+`lesson-route-boundary.mjs` picks its module lesson by the index (`!pack.world`): it moves on by itself.
+
+### 13.5 Follow-ups NOT done
+
+22. **`now-13-1` (« دوري الآن » p. 13) is cited by no content any more: `check-textbook-coverage.mjs` (hence
+    `check:lessons`) FAILS.** Its only citer was the deleted `content/textbook.js` (module 4). The bank does not cite it.
+    Needs a decision: a destination that cites it, or `notIntegrated` with the owner's reason.
+23. The lab `pgcd-differences` (`DifferenceAlgorithm.jsx`, its i18n, its tests) is mounted by no lesson page now; its
+    browser suites are the walks of 13.4.
+24. **6 final-test items retired at the next deploy** (`E1…E6` of the deleted « إختبار أولي »), as follow-ups 1, 10,
+    13, 17.
+25. Still in the config as identifiers (ids and slugs stay, §10.2): the slug `khwarizmiyat-iqlidus` of module 3, the resource
+    codes `pgcd-differences-252-140`, `method-differences-117-91`, `euclid-765-135`, `method-euclid-1938-836`,
+    `challenge-936-845` carry the textbook's numbers; the resources `masala-1` (« ورشة الخياطة »), `masala-2` (« التعاونية
+    الحليبية »), `masala-3` still name the old problems' contexts — as §10.4, with follow-up 2.
+26. The legacy mission home (`mission/MissionHome.jsx`, its ring « أدواتي » / « مفاتيحي » at 10 px) is still mounted in this
+    unit by `awwaliyan-fima-baynahuma`, `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.
+27. `check:unused` flags `bahth-pgcd/world/math.js › divisorsOf` (imported by a test only) — the world agent's file.
+
+### 13.6 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/lessons/registry.test.js src/features/classSession
+src/lessons/common/lessonlab <lesson>/board <unit>/_unit <unit>/wadiya-idmajiya-aadad src/lessons/common/knowledge
+src/lessons/common/mission src/features/practice/exam/examCoach.test.js` — 35 files, 4,195 tests: 1 ❌ (13.1 h (2)), then
+fixed and the two folders re-run ✅ (58 tests) · `status:lesson-v2 --lesson bahth-pgcd`: ✅ pack, world, knowledge, coach,
+board, old version deleted; ❌ « every rule is forged, never told » (the forges' agent, in progress) and ❌ « a walk plays its
+world » (the orchestrator) · `check:unreached`: nothing of this lesson (the three batch-2 `world/` drafts) · `check:unused`:
+27. only, besides those drafts · `validate-lessons.mjs`: 5/5 الكفاءات covered · `check-textbook-coverage.mjs`: ❌ 22. ·
+`eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`, `world/`, `boardLessons.test.js`,
+`lessonPack.test.js` ✅. NOT run: the lesson's `world/` tests, the whole suite, a build, `check:lessons`, any walk.

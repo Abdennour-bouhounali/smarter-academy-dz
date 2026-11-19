@@ -33,7 +33,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B1 | Raw LaTeX on screen; a formula broken across two lines | P | `e2e/lib/walk.mjs` at every screenshot | `$…$` only where the text goes through `MathText`; plain strings (SVG, labels) hold no `$`; two backslashes in a JS string. |
 | B2 | No way out of a screen (a forge, a store, a sitting) | P | `e2e/lib/walk.mjs` (a way out at every screenshot); each story walk clicks ✕ in the world and in a forge | — |
 | B3 | Text under 12 px — also SVG text scaled down by its viewBox | P, D, R | `e2e/lib/walk.mjs` (floor 11.95, ON by default, the map included); one lesson's walk (L4: drawn text measured at its real size) | Size SVG text for the SMALLEST frame (1024×768): compute `font × frame / viewBox`. |
-| B4 | A screen scrolls or is cut at one of the three sizes | every lesson | `e2e/lib/walk.mjs` | One screen at 1366×768, 1024×768, 1840×900: say the longest content the screen can hold and test that one. |
+| B4 | A screen scrolls or is cut at one of the three sizes | every lesson | `e2e/lib/walk.mjs` | One screen at 1366×768 (the ONE size since 2026-11-19): say the longest content the screen can hold and test that one. |
 | B5 | A sentence cut by an ellipsis (`nowrap` + `text-overflow`) at ONE size only | L4 (1840×900) | one lesson's walk (L4 trainer walk: the subtitle is whole) | No `text-overflow: ellipsis` on a sentence. Wide screens show longer labels: check 1840×900 too. |
 | B6 | A list wraps and a line starts with its comma; a list card on three lines | L4 | `launchkit/launchkit.test.js` (the joiner); `e2e/lib/launchKitTwoTools.mjs` (the LONGEST list card is measured at every run) | Join a list with a no-break space BEFORE the comma (`' ، '`). For anything drawn at random, the walk measures the longest case, not the one dealt. |
 | B7 | Mixed Arabic and Latin text scrambled by the bidi algorithm (« PGCD(252 ; 36 = (180 ») | L4 | `kit/bankSitting.js › namesAsMath` + `kit/bankDisplay.test.js` (the bank's « PGCD(a ; b) » drawn as a formula); elsewhere: eye, with a ZOOMED crop | A Latin name with brackets inside an Arabic sentence is a formula (`$\\mathrm{PGCD}(a ; b)$`) or is isolated. Never judge the order at screenshot size: crop and enlarge. |
@@ -53,6 +53,10 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B21 | A panel's state reset by an effect one frame late: a new card was drawn with the card before's tab, a correction could flash | clean measure | the trainers' walks read right after the panel appears | State that belongs to a card is keyed to its id in the render, never reset in a `useEffect`. |
 | B22 | A button of the old shell hidden UNDER a v2 world (« العودة إلى درس », z 60 under 1200) | clean measure | `e2e/launch-kit.mjs` | Anything shown over a world sits above its z-index (1200) and below the lab's (1300). |
 | B23 | An equality with an Arabic operand in plain text, scrambled by a partial bidi isolate (« العرض × 14 = 56 » read « العرض × 56 = 14 ») — OPEN in `utils/bidi.js` | clean measure | eye only | — |
+| B24 | A grid that kept an empty column when its content is optional (the bench without its planks column; « تقدّمي » without the server's status: five names on three lines, the last row off screen) | L6 | `e2e/gameworld-bahth.mjs` (space on each side of the rows), the hub walk | When a column is optional, the template drops it. |
+| B25 | The board's rail overflowed with 14 stations: each copybook page made a group | L6 | `features/classSession/lessonScripts.test.js` (`groupsOf`: ONE copybook group) | — (fixed in the kit) |
+| B26 | A generated reason of « علّل » chained five divisions and shrank its panel under 12 px | L6 | the lesson's `trainer.test.js` (≤ 3 divisions); to move to the shared suites | Every generated sentence is bounded in a test — length is data. |
+| B27 | A bench showed, on every row, the planks common to the pair — the answer the student was to find | L6 (seen by the world's agent, before any walk) | `inquiryGcd.render.test.jsx` (`plain`) | A bench gives facts and stops there: ask of every column « does this tell the plank to make? ». |
 
 ## C. The walks themselves — how a check lies
 
@@ -90,6 +94,7 @@ Checks that exist in lesson 4's walks only, and that every lesson needs: nothing
 (A1), no key name before its naming station on the board (A2), SVG text at its real size (B3), the subtitle whole (B5),
 the map and the hub laid out (B8), a bidi check on plain text in the trainer, the launch kit and the board (B7 — none
 exists yet), the mirror and the board speak the key's language (A10).
+| D8 | Deleting an old version orphaned a textbook element in `scripts/check-textbook-coverage.mjs`, and the question went to the owner (« دوري الآن » p. 13) | L6 | `node scripts/check-textbook-coverage.mjs` (in `check:lessons`) | **Owner, 2026-11-19: the textbook is NOT read to generate a lesson, nor its extraction, nor the old version — only the learning points (`lesson:brief`) and some exercises of the bank.** An orphaned element is marked `notIntegrated` in `docs/sources/<grade>/<unit>/extraction.json` with the reason « rebuilt from scratch, owner 2026-11-19 »; never moved to another lesson, never asked. |
 
 ## Time of a lesson (measured — the skill exists to make these numbers fall; owner, 2026-11-19)
 
@@ -102,6 +107,13 @@ waiting. Fill a line at every lesson's commit; if a number does not fall, say wh
 | L4, first build | 4 h 14 (10:27 → 14:41) | not measured | 73 min | 2.9 M | two new experiment kinds; one fix batch after the screenshot review; the skill did not exist |
 | L4, redesigned on the islands | 2 h 06 (14:41 → 16:47) | not measured | (two agents walked: 53 + 25 min) | 1.2 M | the kit's three new rules and two mechanics, coded the same hours |
 | L5, through the skill | 4 h 16 (16:47 → 21:03) | about 3 h 25 | 83 min | 2.3 M | about 50 min of the wall clock went to other work (a new-world study, the older lessons' walks, a session restart); the walks grew (four world pieces seen for the first time); `trusted.md` did not exist yet |
+
+| L6, skill + « do not walk what is proven » | 2 h 25 (21:05 → 23:30, the commit; the repository checks ran after it, on a worktree) | wave 1: 31 min; wave 2: 39; walks: 47; three-size review run: 35 | 47 min | 2.4 M | the walks fell from 83 to 47 min (limits tested as data, the sitting and the frames not re-walked); about 40 min of the clock went to the owner's questions and a council; waves waited on nothing |
+
+**After L6 (owner, 2026-11-19): ONE size, 1366×768 — the three-size review run (35 min) is gone; and the five cuts he
+asked for are being built: walks as data (`apps/web/e2e/lib/lessonWalk/`), an authoring kit
+(`gameworld/kit/authoring/`), no weak drafts, checks on a worktree of the commit, no waiting between waves. Target for
+L7: under 2 h.**
 
 **Reading, 2026-11-19:** tokens fell by a fifth from L4 to L5; time did NOT fall. The walks are the bottleneck both
 times (73 then 83 minutes of one agent, then about 35 more for the main session's three-size run). Nothing in the skill

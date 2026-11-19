@@ -17,6 +17,9 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > orchestrates, reads your diff and runs the browser walks.
 > The lesson: `<grade>` `<id>` « `<Arabic title>` » (`<place in its unit>`), folder `<L>`. It is rebuilt from scratch:
 > DO NOT read its old version (`modules/`, `content/`, the root `knowledge.jsx`, `moduleContext.js`).
+> DO NOT read the textbook either, nor its extraction `docs/sources/**` (owner, 2026-11-19): what the lesson must
+> teach is `npm run -s lesson:brief -- <id>` (its learning points) and some exercises of its bank
+> `content/practice/<grade>/<id>/` — nothing else.
 
 **Limits**
 
@@ -27,7 +30,7 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 >   is missing.
 > - Checks you run: `cd apps/web && npx vitest run <your files> --maxWorkers=2`, `npx eslint` and `npx prettier --check`
 >   on your files. Do NOT run a walk, a build, the whole suite or `check:lessons`. Do NOT commit, do not touch git state.
-> - One screen, no scroll, at 1366×768, 1024×768 and 1840×900; text (SVG text included) at least 12 px at its real size;
+> - One screen, no scroll, at 1366×768 — the ONE size (owner, 2026-11-19; no other size is built or checked); text (SVG text included) at least 12 px at its real size;
 >   a formula never breaks across two lines (LaTeX in a JS string takes two backslashes; a plain string holds no `$`);
 >   a typed answer in its own shape, with printed units; money « دج », no thousands space; brand blue shapes, never
 >   black; drawn in code, never an image; a list is joined with a no-break space before its comma.
@@ -63,7 +66,7 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > - Re-compute every answer key, distractor and hint from the numbers in a test; never trust a written key.
 > - `sitting.js` is one call to `createBankSittings`. Knowledge cards use only kinds of `kit/text.js`. The map's
 >   `POSITIONS`: no card cut by the box, no two cards overlapping, no link label under a card, with the panel open, at
->   the three sizes — compute it from the kit's CSS and give your margins.
+>   1366×768 — compute it from the kit's CSS and give your margins.
 > Report also, for the forges' agent: what the student HOLDS when each key's island is reached (the bridges he crossed,
 > with which planks, the last sentence he heard).
 
@@ -154,7 +157,7 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > - The story walk names its lesson by a literal id (the status script looks for it).
 > Running: the dev server is up on :5173 (do not start or stop it). `E2E_SIZE=1366x768 node apps/web/e2e/<walk>.mjs <outDir>`,
 > output kept in a `.log`. ONE walk at a time; never edit a source file while a walk runs. When a walk passes at
-> 1366×768, run it ONCE at 1024×768. Do not run 1840×900.
+> 1366×768, do NOT run any other size (owner, 2026-11-19: 1366×768 alone).
 > LOOK at the screenshots (`review.md` §B gives the list and what to look for). Read mixed Arabic and Latin lines on a
 > zoomed crop, never at full size.
 > Fix real defects where they are: this lesson's folder, the kit screens that are new for this lesson, and — with care

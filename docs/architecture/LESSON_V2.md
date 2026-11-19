@@ -206,7 +206,7 @@ for a lesson whose pack has a world (`LessonModuleChips`), and « واصل » / 
 **The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
 gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
 `khawass-qawasim`, then (same day) the 1AM `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` and the 2AM
-`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) and `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
+`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
 still has a module page (1AM `darb-qisma-ashriya`); the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
 commit as the conversion:
 
@@ -260,7 +260,7 @@ npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1
 1. the status script prints ✅ for it;
 2. its unit tests pass — in particular `world/forges.test.js`: for every forge exactly one rule holds and every other is
    refuted in front of the student;
-3. its walk passes at 1366×768, 1024×768 and 1840×900 (**the phone walk, `E2E_TOUCH=1 E2E_SIZE=800x370`, is PAUSED since 2026-11-18** — phones are built later, see `GAME_WORLD.md` « On a phone »);
+3. its walk passes at 1366×768 — the ONE size since 2026-11-19 (owner: « 1366×768, alone, no other size is needed »; 1024×768 and 1840×900 are no longer walked) (**the phone walk, `E2E_TOUCH=1 E2E_SIZE=800x370`, is PAUSED since 2026-11-18** — phones are built later, see `GAME_WORLD.md` « On a phone »);
 4. its screenshots were looked at with the eyes, student and teacher;
 5. `check:lessons`, the entry budget, lint, `check:unused`, `check:unreached` and `check:format` pass;
 6. what it replaced is deleted in the same change (§2 « The old version is deleted »; the status script checks it); its

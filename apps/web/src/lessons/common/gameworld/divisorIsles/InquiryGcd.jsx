@@ -9,7 +9,8 @@
  *   ladder  « a pair of gaps replaced by a simpler pair with the same common planks » — a PROCEDURE (subtract or divide):
  *           he predicts the next pair, the world writes the row with its calculation and, beside every row, the planks
  *           that hold both gaps (the same list on every row). He says how many rows the ladder will have; the world
- *           finishes it; the last value that is not 0 is lit.
+ *           finishes it; the last value that is not 0 is lit. With `plain` (a workshop's bench) the column of planks and
+ *           the gold are left out: only the rows. On a bench it starts where he left it (`spec.from` / `spec.onState`).
  *   nest    « the common planks are the planks of the longest one » — a SET EQUALITY: the world shows a, b, g and the
  *           planks of g; for each probe he says, looking at g only, whether it holds both gaps; the world lays it on the
  *           three strips. At the end the two lists stand side by side.
@@ -20,10 +21,10 @@
  * `spec.text` is the lesson's wording (GAME_WORLD.md « استكشف », spec shapes). Nothing here states a rule: every sentence
  * says what the strips, the shelves or the ladder have just done.
  */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MathText from '../../components/MathText';
 import { Num } from '../kit/parts';
-import { commonOf, commonSays, ladderOf, commonPlanks, nestOf } from './inquiry';
+import { commonOf, commonSays, ladderOf, ladderAsk, ladderStart, commonPlanks, nestOf } from './inquiry';
 import { Span, Calc, restTex } from './InquiryCombine';
 import { Head, Found, asNumber, onEnter } from './InquiryDivision';
 import { INQUIRY_TEXT } from './strings';
@@ -339,22 +340,31 @@ export function RungBar({ r, written, scale, end }) {
 
 function LadderRows({ spec, play, onDone }) {
   const T = spec.text;
-  const [ri, setRi] = useState(0);
+  // empty, or where a workshop's bench was left (`spec.from`, inquiry.js › ladderStart)
+  const [start] = useState(() => ladderStart(spec));
+  const [ri, setRi] = useState(start.ri);
   const { a, b } = spec.rounds[ri];
   const mode = spec.rounds[ri].mode ?? spec.mode;
+  // `plain` (spec or round — a workshop's bench): the rows and their calculations only, no column of the planks common
+  // to each row's pair and no value lit gold at the end — on a bench they would show which plank to make
+  const plain = Boolean(spec.rounds[ri].plain ?? spec.plain);
   const L = ladderOf(a, b, mode);
-  const askAt = Math.min(spec.manual ?? 2, L.steps - 1);
-  const [written, setWritten] = useState(0); // rows whose calculation is written
-  const [stage, setStage] = useState(askAt > 0 ? 'guess' : 'count'); // guess | write | count | finish | seen
+  const askAt = ladderAsk(spec, ri);
+  const [written, setWritten] = useState(start.written); // rows whose calculation is written
+  const [stage, setStage] = useState(start.stage); // guess | write | count | finish | seen
   const [xIn, setXIn] = useState('');
   const [yIn, setYIn] = useState('');
-  const [guesses, setGuesses] = useState([]);
-  const [last, setLast] = useState(null);
+  const [guesses, setGuesses] = useState(start.guesses);
+  const [last, setLast] = useState(start.last);
   const [countIn, setCountIn] = useState('');
-  const [guessed, setGuessed] = useState(null);
-  const [found, setFound] = useState([]);
+  const [guessed, setGuessed] = useState(start.guessed);
+  const [found, setFound] = useState(start.found);
   const later = useLater();
-  expose({ kind: 'ladder', ri, a, b, mode, steps: L.steps, gcd: L.gcd, stage, written, guessed, found });
+  // the bench hears every move, to keep it (`spec.onState`, as InquiryLists.jsx)
+  useEffect(() => {
+    spec.onState?.({ ri, written, stage, guesses, last, guessed, found });
+  }, [spec, ri, written, stage, guesses, last, guessed, found]);
+  expose({ kind: 'ladder', ri, a, b, mode, plain, steps: L.steps, gcd: L.gcd, stage, written, guessed, found });
 
   const open = written < L.steps ? L.rows[written] : null; // the row whose pair is shown, calculation not yet
   const end = { a, b, mode, steps: L.steps, guessed, gcd: L.gcd };
@@ -410,11 +420,9 @@ function LadderRows({ spec, play, onDone }) {
       });
       return;
     }
-    const nr = spec.rounds[ri + 1];
-    const nl = ladderOf(nr.a, nr.b, nr.mode ?? spec.mode);
     setRi(ri + 1);
     setWritten(0);
-    setStage(Math.min(spec.manual ?? 2, nl.steps - 1) > 0 ? 'guess' : 'count');
+    setStage(ladderAsk(spec, ri + 1) > 0 ? 'guess' : 'count');
     setGuesses([]);
     setLast(null);
     setCountIn('');
@@ -427,9 +435,16 @@ function LadderRows({ spec, play, onDone }) {
   const scale = 400 / L.rows[0].a;
   const ticks = commonPlanks(a, b);
   const newest = written > 0 ? L.rows[written - 1] : null;
+  const lit = stage === 'seen' && !plain; // the last value that is not 0, gold
 
   return (
-    <section className="iq iq--div iq--ladder" data-iq="ladder" data-iq-stage={stage} data-iq-mode={mode}>
+    <section
+      className="iq iq--div iq--ladder"
+      data-iq="ladder"
+      data-iq-stage={stage}
+      data-iq-mode={mode}
+      {...(plain ? { 'data-iq-plain': '' } : {})}
+    >
       <Head i={ri} n={spec.rounds.length} lead={T.lead(a, b, mode)} goal={T.goal(a, b, mode)} />
 
       <div className="iq-ladder" dir="ltr" data-iq-ladder>
@@ -437,7 +452,7 @@ function LadderRows({ spec, play, onDone }) {
           <span />
           <span />
           <span />
-          <small dir="rtl">{T.planks}</small>
+          {!plain && <small dir="rtl">{T.planks}</small>}
         </div>
         {view.map((v) =>
           v == null ? (
@@ -452,21 +467,21 @@ function LadderRows({ spec, play, onDone }) {
               data-iq-row={v.i + 1}
             >
               <span className="iq-rung__n">{v.i + 1}</span>
-              <RungBar r={v.r} written={v.i < written} scale={scale} end={stage === 'seen' && v.i === L.steps - 1} />
+              <RungBar r={v.r} written={v.i < written} scale={scale} end={lit && v.i === L.steps - 1} />
               <span className="iq-rung__tex">
                 <MathText>
-                  {`$(${v.r.a}\\,;\\,${
-                    stage === 'seen' && v.i === L.steps - 1 ? `\\textcolor{#fbbf24}{${v.r.b}}` : v.r.b
-                  })$`}
+                  {`$(${v.r.a}\\,;\\,${lit && v.i === L.steps - 1 ? `\\textcolor{#fbbf24}{${v.r.b}}` : v.r.b})$`}
                 </MathText>
                 {v.i < written && <MathText>{`$${rowTex(v.r, mode)}$`}</MathText>}
               </span>
-              <span className="iq-rung__ticks" data-iq-ticks={commonPlanks(v.r.a, v.r.b).join(',')}>
-                {commonPlanks(v.r.a, v.r.b).map((d) => (
-                  <b key={d}>{d}</b>
-                ))}
-                <i aria-hidden="true">{same(commonPlanks(v.r.a, v.r.b), ticks) ? '✓' : ''}</i>
-              </span>
+              {!plain && (
+                <span className="iq-rung__ticks" data-iq-ticks={commonPlanks(v.r.a, v.r.b).join(',')}>
+                  {commonPlanks(v.r.a, v.r.b).map((d) => (
+                    <b key={d}>{d}</b>
+                  ))}
+                  <i aria-hidden="true">{same(commonPlanks(v.r.a, v.r.b), ticks) ? '✓' : ''}</i>
+                </span>
+              )}
             </div>
           ),
         )}

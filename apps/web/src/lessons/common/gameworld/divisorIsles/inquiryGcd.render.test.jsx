@@ -112,6 +112,36 @@ describe('the investigation screens — common, ladder, nest open on their quest
     expect(l).toContain('data-iq-ticks="1,2,3,4,6,12"');
   });
 
+  it('a ladder `plain` (a workshop’s bench) shows its rows, no column of common planks and no gold at the end', () => {
+    for (const plain of [{ plain: true }, { rounds: SPECS.ladder.rounds.map((r) => ({ ...r, plain: true })) }]) {
+      const html = renderToString(<Inquiry spec={{ ...SPECS.ladder, ...plain }} onDone={() => {}} />);
+      expect(html).toContain('data-iq-plain');
+      expect(html).toContain('data-iq-row="1"');
+      expect(html).not.toContain('data-iq-ticks');
+      expect(html).not.toContain('>planks<');
+    }
+    // finished, kept on the bench: every row written, the last value not lit
+    const from = { ri: 0, written: 5, stage: 'seen', guesses: [], last: null, guessed: 5, found: [] };
+    const seen = renderToString(<Inquiry spec={{ ...SPECS.ladder, plain: true, from }} onDone={() => {}} />);
+    expect(seen).toContain('data-iq-row="5"');
+    expect(seen).toContain('data-iq-stage="seen"');
+    expect(seen).not.toContain('fbbf24');
+    expect(seen).not.toContain('is-end');
+    const lit = renderToString(<Inquiry spec={{ ...SPECS.ladder, from }} onDone={() => {}} />);
+    expect(lit).toContain('fbbf24');
+    expect(lit).toContain('data-iq-ticks="1,2,3,4,6,12"');
+    // without `plain`, as before
+    expect(renderToString(<Inquiry spec={SPECS.ladder} onDone={() => {}} />)).not.toContain('data-iq-plain');
+  });
+
+  it('a ladder reopened on its bench (`spec.from`) shows the rows he had and waits where he stopped', () => {
+    const from = { ri: 0, written: 2, stage: 'count', guesses: [], last: null, guessed: null, found: [] };
+    const html = renderToString(<Inquiry spec={{ ...SPECS.ladder, from }} onDone={() => {}} />);
+    expect(html).toContain('data-iq-row="3"');
+    expect(html).toContain('data-iq-in="count"');
+    expect(html).toContain('data-iq-stage="count"');
+  });
+
   it('a ladder of one row asks for the count at once (b fills a)', () => {
     const one = { ...SPECS.ladder, mode: 'divide', rounds: [{ a: 36, b: 12 }] };
     const html = renderToString(<Inquiry spec={one} onDone={() => {}} />);

@@ -108,14 +108,16 @@ export const railOf = (script) =>
 
 /**
  * The rail as the class understands it: one group per KEY of the lesson — what the class does, then the name it earns —
- * and a last group for the copybook. `steps` are indices in the script.
+ * and ONE last group for the copybook, however many pages it has (2026-11-19: each page made its own group, and lesson 6's
+ * five keys and three pages overflowed the rail at 1024 × 768, under the board's tools). `steps` are indices in the script.
  */
 export function groupsOf(script) {
   const out = [];
   let cur = [];
   script.steps.forEach((s, i) => {
     cur.push(i);
-    if (s.kind === 'name' || s.kind === 'trace' || i === script.steps.length - 1) {
+    const next = script.steps[i + 1];
+    if (s.kind === 'name' || (s.kind === 'trace' && next?.kind !== 'trace') || i === script.steps.length - 1) {
       out.push({ steps: cur, kind: s.kind, tablet: s.tablet ?? null });
       cur = [];
     }

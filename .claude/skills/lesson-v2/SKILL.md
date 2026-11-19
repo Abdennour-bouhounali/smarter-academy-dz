@@ -18,6 +18,13 @@ the definition of done), `GAME_WORLD.md` (the kit, a world, the forge, « است
 restates those documents: it says how to WORK with them. If the skill and a contract disagree, the contract wins and the
 skill is corrected in the same task.
 
+## 0. ONE screen size: 1366×768, alone (owner, 2026-11-19)
+
+His words: « from now on, all the lessons must work for this size only: 1366×768, alone, no other size is needed ».
+Every walk, every review, every limit of `trusted.md` is at 1366×768. No walk at 1024×768 or 1840×900, no tablet, no
+phone; a defect that shows only at another size is not a defect of the lesson. Lines of `defects.md`, `trusted.md` and
+`review.md` that name three sizes were written before this date: read them as 1366×768.
+
 ## 1. Who does what
 
 - **The main session designs, briefs, reviews, runs the walks and reports. Agents on `opus` write the code** (the 3D and a
@@ -36,14 +43,14 @@ skill is corrected in the same task.
 | 2 | Kit work, only if a kind or a mode is missing — brief `briefs.md` §K | agent(s) | new files in the world's folder, registered LAST |
 | 3 | **Wave 1, in parallel**: the written world (§W) ∥ the board, the class test, the launch-kit family (§B) | 2 agents | `world/` without forges, `board/`, `content/class-tests/…`, the family |
 | 4 | **Wave 2, in parallel**: the forges and their experiments (§F) ∥ the pack, the satellites, the old version deleted (§P) | 2 agents | `world/forges.js`, `inquiries.js`, `lesson.pack.js`, the generated index |
-| 5 | **The walks**, written and run at 1366×768 then 1024×768 by ONE agent that is alone in the tree (§X) | 1 agent | six walks, the defects they find fixed |
-| 6 | **Review**: a frozen copy; the six walks at 1366×768, 1024×768, 1840×900; EVERY new screen looked at with the eyes (`review.md` §B) | main | a list of defects |
+| 5 | **The walks**, written and run at 1366×768 (the ONE size — owner, 2026-11-19) by ONE agent that is alone in the tree (§X) | 1 agent | six walks, the defects they find fixed |
+| 6 | **Review**: a frozen copy; the walks at 1366×768 only; EVERY new screen looked at with the eyes (`review.md` §B) | main | a list of defects |
 | 7 | **Fix batches** by agents that do not run walks (§R), then step 6 again on a new frozen copy, until nothing is left | agents, main | — |
 | 8 | Repo checks, one at a time: `npm run lint`, `check:format`, `check:unused`, `check:unreached`, `check:lessons`, the web unit suite; published locally (lesson `available`, modules and exercises `published`) | main | — |
 | 9 | Docs (`GAME_WORLD.md`, the design page, the master plan §4ter-0, a gate report), then the commit `feat(lessons): <id> — v2` on `dev`. **Never push, never touch `main`, without the owner's word** | main | the commit |
 | 10 | **Write back into this skill** — §5 | main | `defects.md`, `briefs.md`, `review.md` updated in the same commit |
 
-A lesson is done when its status line prints ✅, its tests pass, its walks pass at the three sizes and its screenshots
+A lesson is done when its status line prints ✅, its tests pass, its walks pass at 1366×768 (the one size) and its screenshots
 were looked at — and step 10 is made.
 
 ## 3. Briefing an agent
@@ -97,12 +104,12 @@ future when you generate a lesson you do not check what 100 % works ». A walk i
 
 | | What it is | How it is checked |
 |---|---|---|
-| **Proven kit** | a screen of the kit or of the world that the lesson only fills with data, already walked at the three sizes by earlier lessons and unchanged since (`trusted.md` lists them, with the commit that last changed each) | NOT walked again for this lesson. Its DATA is checked by a unit test that runs in seconds: the lesson's longest sentence, list and number against the limits the walks measured (`trusted.md` gives each limit) |
+| **Proven kit** | a screen of the kit or of the world that the lesson only fills with data, already walked by earlier lessons and unchanged since (`trusted.md` lists them, with the commit that last changed each) | NOT walked again for this lesson. Its DATA is checked by a unit test that runs in seconds: the lesson's longest sentence, list and number against the limits the walks measured (`trusted.md` gives each limit) |
 | **Changed kit** | a proven screen whose code changed since its last walk (`git log` on its files against the commit in `trusted.md`) | walked once, on ONE reference lesson, at the three sizes — not once per lesson |
-| **New** | the lesson's own story, its forges' content, a world piece or an experiment kind used for the first time | walked at the three sizes and looked at with the eyes, as today |
+| **New** | the lesson's own story, its forges' content, a world piece or an experiment kind used for the first time | walked at 1366×768 and looked at with the eyes, as today |
 
 **After every lesson, the closing step (§5) also feeds this:**
-1. Every screen that passed at the three sizes and was looked at goes into `trusted.md`, with the commit, the lesson
+1. Every screen that passed at 1366×768 and was looked at goes into `trusted.md`, with the commit, the lesson
    that proved it, and the LIMITS it was proved for (how long a sentence, how many items, how large a number).
 2. Every failure a walk found that depended only on the lesson's DATA (a sentence too long for its card, a list on
    three lines, a tablet too tall) becomes a unit test over the lesson's data — so the next lesson learns it in seconds,

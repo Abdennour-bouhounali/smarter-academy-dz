@@ -701,7 +701,7 @@ built to the highest finish the agent can produce — never the first version th
    and stops under `prefers-reduced-motion`.
 4. **Feedback is immediate, visual and in the student's own numbers** — a pill, a ghost, a remainder circled, a bulb that lights — and
    NEVER states the rule to discover (« discover, don't be told »; §16).
-5. **One screen at the tablet and laptop sizes (phones are not supported, 2026-10-15).** 1024×768, 1280×800, 1366×768, 1920×1080 (the old 390×844 / 320×640 are retired), both levels: the glance fits, no overflow, controls
+5. **One screen at 1366×768 — the ONE size since 2026-11-19 (owner); the sizes listed next are the rule before that date.** 1024×768, 1280×800, 1366×768, 1920×1080 (the old 390×844 / 320×640 are retired), both levels: the glance fits, no overflow, controls
    inside the stage on narrow widths, type large and bold (the sentence ≥ 18 px, numbers big), contrast high, Arabic DOM text,
    numbers in LTR islands.
 6. **Honest drawing.** The picture IS the argument: sizes to scale, a child's crown on its height, counts exact — beauty never bends

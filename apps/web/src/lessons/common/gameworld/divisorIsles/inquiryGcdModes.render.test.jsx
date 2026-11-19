@@ -11,6 +11,7 @@ import {
   initFold,
   foldReducer,
   initBoth,
+  bothStart,
   bothReducer,
 } from './gcdModes';
 
@@ -269,6 +270,17 @@ describe('ladder · both — the prediction, the two ladders in step, the counts
     expect(html).toContain('count-divide-2');
     expect(html).toContain('end[31:2:divide]');
     clean(html);
+  });
+});
+
+describe('ladder · both on a workshop’s bench — it starts where he left it (`spec.from`)', () => {
+  it('empty without a kept state; a kept state is given back, a run goes on from its row', () => {
+    expect(bothStart(BOTH)).toEqual(initBoth());
+    expect(bothStart({ ...BOTH, from: { ri: 4, rounds: [] } })).toEqual(initBoth());
+    const s = bothReducer(BOTH, initBoth(), { type: 'say', shorter: 'divide', by: 29 });
+    const kept = bothStart({ ...BOTH, from: s });
+    expect(kept).toBe(s);
+    expect(bothReducer(BOTH, kept, { type: 'tick' }).shown).toBe(1);
   });
 });
 

@@ -287,7 +287,7 @@ export function ProgressPage({ s, game, mastery = null, lessonId, lessonTitle })
               <ArrowLeft size={17} /> {P.next} {label}
             </button>
           </section>
-          <section className="di-ptable">
+          <section className={`di-ptable ${mastery ? 'di-ptable--server' : ''}`}>
             <div className="di-ptable__head">
               <span>{P.cols.key}</span>
               <span>{P.cols.game}</span>

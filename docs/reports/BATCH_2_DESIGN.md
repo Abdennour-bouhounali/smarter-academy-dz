@@ -216,7 +216,7 @@ to make — and the workshop's bench is that procedure (the experiment `ladder`,
 |---|---|---|
 | A → B → C → D | convoy « diff » of THREE gaps, planks offered (no workshop): the third gap is announced as « the first minus the second » | 152, 95, 57; planks 19 (the three), 8 (152 only), 5 (95 only), 3 (57 only) |
 | D: the mirror | forge ➖ `farq-yabqi` — a plank that builds two gaps builds the gap of their difference | — |
-| D (workshop, bench `ladder/subtract`) → E → F | convoy « tarh » with a purse: he makes his plank; the bench takes the shorter gap away from the longer, again and again | a pair of his own, e.g. 119 and 85 (17: 7 + 5 = 12 coins) |
+| D (workshop, bench `ladder/subtract`) → E → F | convoy « tarh » with a purse: he makes his plank; the bench takes the shorter gap away from the longer, again and again | 259 and 185 (37: 7 + 5 = 12 coins; the design's 119 and 85 is lesson 7's trap pair, 161 and 115 stands in the bank) |
 | F: the mirror | forge 🪜 `khawarizmiyat-al-tarh`; then forge 🧮 `baqi-yabqi`, which KEEPS its experiment in the mirror (`ladder/fold`: the rows that take away the same gap folded into one division) | 962 and 296 for the fold |
 | F (workshop, bench `ladder/divide`) → G → H | convoy « iqlidis » with a purse, long gaps | 1833 and 546 (39: 47 + 14 = 61 coins) |
 | H: the mirror | forge 🔁 `iqlidis` | — |

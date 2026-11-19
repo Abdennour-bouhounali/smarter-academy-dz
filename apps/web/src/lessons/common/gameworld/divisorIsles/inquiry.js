@@ -351,6 +351,56 @@ export function ladderOf(a0, b0, mode) {
   return { rows, gcd: rows.at(-1).b, steps: rows.length };
 }
 
+/** The rows of round `ri` whose next pair he predicts before the count (`manual`, default 2; capped at steps − 1). */
+export const ladderAsk = (spec, ri) => {
+  const r = spec.rounds[ri];
+  return Math.min(spec.manual ?? 2, ladderOf(r.a, r.b, r.mode ?? spec.mode).steps - 1);
+};
+/** A round of the ladder (subtract | divide) as it opens; `found` = the rounds done before it. */
+export const ladderRound = (spec, ri, found = []) => ({
+  ri,
+  written: 0,
+  stage: ladderAsk(spec, ri) > 0 ? 'guess' : 'count',
+  guesses: [],
+  last: null,
+  guessed: null,
+  found,
+});
+/**
+ * Where a ladder (subtract | divide) starts: empty, or — on a workshop's bench (`Workshop.jsx › Bench`) — the state it
+ * kept (`spec.from`, as `spec.onState` heard it). A row the world was still writing when he left is written now; a
+ * ladder the world was finishing is finished (its timers died with the screen).
+ */
+export function ladderStart(spec) {
+  const s = spec.from;
+  if (!s || !Number.isInteger(s.ri) || s.ri >= spec.rounds.length || !Array.isArray(s.found))
+    return ladderRound(spec, 0);
+  const r = spec.rounds[s.ri];
+  const mode = r.mode ?? spec.mode;
+  const L = ladderOf(r.a, r.b, mode);
+  if (s.stage === 'write') {
+    const open = L.rows[s.written];
+    const g = s.guesses.at(-1);
+    const written = s.written + 1;
+    const last = {
+      a: open.a,
+      b: open.b,
+      mode,
+      value: open.value,
+      q: open.q,
+      next: open.next,
+      said: g.said,
+      hit: g.hit,
+    };
+    return { ...s, written, last, stage: written < ladderAsk(spec, s.ri) ? 'guess' : 'count' };
+  }
+  if (s.stage === 'finish') {
+    const f = { a: r.a, b: r.b, mode, steps: L.steps, guessed: s.guessed, gcd: L.gcd, guesses: s.guesses };
+    return { ...s, written: L.steps, stage: 'seen', found: [...s.found, f] };
+  }
+  return s;
+}
+
 /**
  * nest — g = the longest plank of both gaps, and probes put in front of it: `inG` = the probe holds g, `both` = it holds
  * a and b. `common` = every plank of both gaps, `divisorsOfG` = every plank of g; `equal` says the two lists are the same.

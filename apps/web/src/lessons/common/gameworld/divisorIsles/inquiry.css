@@ -1292,6 +1292,10 @@
   border-radius: 0.8rem;
   animation: iq-drop 0.35s ease-out backwards;
 }
+/* a PLAIN ladder (a workshop's bench) has no column of common planks: three columns, not an empty fourth on the right */
+.iq[data-iq-plain] .iq-rung {
+  grid-template-columns: 2rem minmax(6rem, 1fr) minmax(0, 1.4fr);
+}
 .iq-rung.is-written {
   background: rgba(125, 252, 255, 0.06);
 }

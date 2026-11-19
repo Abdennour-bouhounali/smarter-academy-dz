@@ -158,7 +158,8 @@ const key = ({ a, b }) => [a, b].sort((m, n) => m - n).join('/');
 describe('module 7 — the collision rule against the unit\'s lessons', () => {
   it('the lessons\' pairs are read', () => {
     expect(lessonPairs.size).toBeGreaterThan(20);
-    expect(lessonPairs.has('140/252')).toBe(true);
+    // a pair of ikhtizal-kasr's « أستعدّ » (its content/prep.js); bahth-pgcd's « 140/252 » went with its content/ (v2, 2026-11-19)
+    expect(lessonPairs.has('65/91')).toBe(true);
   });
   it('no round, free or ladder pair is a pair of a lesson, and the rounds are all distinct', () => {
     const ours = [...ALL.map(({ id, props }) => ({ id, ...props })), ...FREE_PAIRS.map((p) => ({ id: 'free', ...p })), ...PREP_PAIRS.map((p) => ({ id: `prep-${p.n}`, ...p }))];

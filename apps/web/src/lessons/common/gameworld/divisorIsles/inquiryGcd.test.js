@@ -1,5 +1,15 @@
 import { describe, it, expect } from 'vitest';
-import { gcd, commonPlanks, commonOf, commonSays, ladderOf, nestOf } from './inquiry';
+import {
+  gcd,
+  commonPlanks,
+  commonOf,
+  commonSays,
+  ladderOf,
+  ladderAsk,
+  ladderRound,
+  ladderStart,
+  nestOf,
+} from './inquiry';
 
 /**
  * Every experiment of the greatest common divisor is TRUE for every number it may show. The loops collect what does not
@@ -138,6 +148,54 @@ describe('ladder — a pair replaced by a simpler pair with the same common plan
     ]);
     expect(() => ladderOf(12, 0, 'divide')).toThrow(RangeError);
     expect(() => ladderOf(12, 4, 'other')).toThrow(RangeError);
+  });
+
+  describe('a ladder kept on a workshop’s bench (`spec.from`) starts where he left it', () => {
+    const spec = { kind: 'ladder', mode: 'subtract', rounds: [{ a: 259, b: 185 }] };
+    it('empty without `from`, or with a state of another round count', () => {
+      expect(ladderStart(spec)).toEqual(ladderRound(spec, 0));
+      expect(ladderStart(spec)).toMatchObject({ ri: 0, written: 0, stage: 'guess', found: [] });
+      expect(ladderStart({ ...spec, from: { ri: 3, found: [] } })).toEqual(ladderRound(spec, 0));
+      expect(ladderStart({ ...spec, from: { lists: [] } })).toEqual(ladderRound(spec, 0));
+      // a ladder of one row asks the count at once; `manual` is capped at steps − 1
+      expect(ladderAsk({ ...spec, rounds: [{ a: 36, b: 12, mode: 'divide' }] }, 0)).toBe(0);
+      expect(ladderAsk({ ...spec, manual: 9 }, 0)).toBe(4);
+    });
+    it('a state that waits for him is given back as it is', () => {
+      const s = {
+        ri: 0,
+        written: 1,
+        stage: 'guess',
+        guesses: [{ row: 1, said: [185, 74], hit: true }],
+        last: null,
+        guessed: null,
+        found: [],
+      };
+      expect(ladderStart({ ...spec, from: s })).toBe(s);
+    });
+    it('a row the world was writing is written; a ladder it was finishing is finished', () => {
+      const g = { row: 2, said: [111, 74], hit: true };
+      const writing = {
+        ri: 0,
+        written: 1,
+        stage: 'write',
+        guesses: [{ row: 1, said: [185, 74], hit: true }, g],
+        last: null,
+        guessed: null,
+        found: [],
+      };
+      expect(ladderStart({ ...spec, from: writing })).toMatchObject({
+        written: 2,
+        stage: 'count',
+        last: { a: 185, b: 74, mode: 'subtract', value: 111, next: [111, 74], said: [111, 74], hit: true },
+      });
+      const finishing = { ...writing, written: 2, stage: 'finish', guessed: 5 };
+      const done = ladderStart({ ...spec, from: finishing });
+      expect(done).toMatchObject({ written: 5, stage: 'seen' });
+      expect(done.found).toEqual([
+        { a: 259, b: 185, mode: 'subtract', steps: 5, guessed: 5, gcd: 37, guesses: writing.guesses },
+      ]);
+    });
   });
 });
 
