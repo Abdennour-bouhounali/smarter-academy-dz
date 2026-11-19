@@ -516,16 +516,25 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        hundred writes no division), `gameworld-khawass-trainer` (a card read is not ticked), the sittings of `hasr`,
        `khawass`, `qawasim` and the pilot (a sentence of the bank missing from the paper, 30 s click timeouts), the six
        launch walks (they stop on reading a card).
-     **A second, clean measure was started on 2026-11-19 afternoon** — the same walks at 1366×768, one at a time, on a
-     FROZEN copy of the pushed commit (`git archive HEAD`, its own server): 17 of the 38 were run before the run was
-     paused for lesson 4. Pass: the pilot's world, practice, sync and board, `gameworld-qawasim` and its hub and board,
-     `gameworld-khawass` and its hub. Fail, already explained: the sittings of the pilot and of `qawasim` (26–27 lines
-     each — a fault of the WALK, which expected « 15دج » where the screen rightly shows « 15 دج »; corrected in
-     `lib/sittingWalk.mjs` with lesson 4), `launch-kit-qawasim` (the walk's card reader did not read `\displaystyle`;
-     corrected the same way). Fail, real: `gameworld-field` (11.5 px on the mistake card), `lesson-lab` (11.3 px
-     « أدواتي »). Fail, not yet explained: `gameworld-qawasim-trainer` (« [c.kind] is not a function »),
-     `gameworld-khawass-trainer` (a card read is not ticked), `launch-kit` (a 30 s wait on « return to the lesson »).
-     The 21 walks left (`khawass` sitting, board, launch; the three division lessons) and the other two sizes are owed.
+     **THE CLEAN MEASURE, 2026-11-19 evening** — the 38 walks of the six older lessons at 1366×768, one at a time, on a
+     FROZEN copy of the commit `919e2307` (the new kit: the instruction that stays, the card of the island before,
+     turning round): **23 pass, 15 fail** (two more failed for reasons outside the lessons — the copy's server not yet
+     up, a 30 s screenshot timeout — and pass when run again). None of the 15 comes from the new kit's three rules.
+     Pass: the pilot's world, practice, sync, board and exam sitting (2,159 checks); lesson 2's world, hub, board and
+     launch kit; lesson 3's world, hub, sitting (2,026) and board; `baqi`'s hub, sitting (2,121) and board; `qawaid`'s
+     hub and board; the five walks of `hasr` but its launch kit. Fail:
+     - REAL defects of a screen: four labels at 11.7 px on the pilot's mistake card (`gameworld-field`); « أدواتي » at
+       11.3 px in « مختبري » (`lesson-lab`); a table of lesson 2's sheet `l5-005` drawn at 10.5–11 px in the sitting;
+       three sheets of `qawaid` that scroll sideways (`l1-006`, `l3-001`); a formula broken across two lines on a
+       knowledge card of `qawaid` (`know-card-ahad-memo`); the ✕ of the launch kit's memo not reachable (`baqi`,
+       `qawaid`, `hasr`); the ✕ of `baqi`'s first forge leaving the world for `/espace/cours`.
+     - faults of a WALK: `gameworld-qawaid` (« URL is not a constructor »), `gameworld-qawasim-trainer`
+       (« [c.kind] is not a function »), `launch-kit-baqi` (it cannot read `\displaystyle 43 - 7`),
+       `launch-kit-khawass` (it calls the 2AM lesson's title, a prerequisite shown on purpose, a foreign word).
+     - not yet explained: `launch-kit` (the pilot: waits for « return to the lesson »), `gameworld-khawass-trainer`
+       (a card read is not ticked on the map), `gameworld-baqi-trainer` (the mistake card's correction), two hint
+       lines the sitting walk of lesson 2 does not find.
+     Owed still: these 15 sorted to the end and fixed; the same walks at 1024×768 and 1840×900.
   17. [x] LESSON 4 `qasim-mushtarak-akbar` — v2, 2026-11-19 (`LESSON_4_GATE_REPORT.md`): the first lesson of
      `BATCH_2_DESIGN.md`. Four keys on four kinds (`common` without the longest, `summit`, `deal`, `nest`); the old
      version deleted; its six walks pass at 1366×768, 1024×768 and 1840×900 (18 of 18 runs, then the six again at

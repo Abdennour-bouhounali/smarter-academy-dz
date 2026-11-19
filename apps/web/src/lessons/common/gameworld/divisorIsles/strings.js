@@ -262,7 +262,31 @@ export const T = {
     ask: 'كم خانة ستبقى فارغة في آخر الجسر؟',
     cancel: 'أغيّر القالب',
   },
-  workshop: { title: 'ورشة القوالب', ask: 'اختر طول القالب الذي تريد صنعه', make: 'اصنع القالب', close: 'إغلاق' },
+  workshop: {
+    title: 'ورشة القوالب',
+    ask: 'اختر طول القالب الذي تريد صنعه',
+    make: 'اصنع القالب',
+    close: 'إغلاق',
+    // the typed form (`workshop.typed`): he writes the length, in its own shape — a box and the printed unit
+    typedAsk: 'اكتب طول القالب الذي تريد صنعه',
+    unit: 'خانة',
+    lengthLabel: 'طول القالب',
+    // the gaps the plank must build (the whole convoy): « القالب للهوّتين 32 و 44 »
+    forGaps: (gaps) =>
+      gaps.length === 1
+        ? `القالب للهوّة ${gaps[0]}`
+        : gaps.length === 2
+          ? `القالب للهوّتين ${gaps[0]} و ${gaps[1]}`
+          : `القالب للهوّات ${gaps.slice(0, -1).join(' ، ')} و ${gaps.at(-1)}`,
+    empty: 'اكتب طول القالب أوّلًا.',
+    tooShort: 'أقصر قالب طوله خانة واحدة.',
+    tooLong: (b, max, n) =>
+      n === 1 ? `قالب طوله ${b} أطول من الهوّة كلّها (${max}).` : `قالب طوله ${b} أطول من كلّ هوّة هنا: أطولها ${max}.`,
+    // the bench (`workshop.bench`): an experiment beside the workshop — it gives facts, never the plank to make
+    bench: 'دفتر القوائم',
+    benchSub: 'ما تكتبه هنا يبقى في دفترك',
+    benchBack: 'رجوع إلى الورشة',
+  },
   quiz: {
     check: 'تحقّق',
     back: 'أغلق اللوح',

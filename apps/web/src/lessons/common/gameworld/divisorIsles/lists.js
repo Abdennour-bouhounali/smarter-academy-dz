@@ -12,6 +12,8 @@
  *            link) or it does not (its division written). He says when he has linked them all; a link missing is
  *            answered by ONE missing plank shown on both gaps.
  *   longest  LAST, he taps the longest linked plank; a shorter one is answered by a longer linked plank, shown.
+ *            A round (or the spec) with `crown: false` has no such step: it ends on the two lists and their links — a
+ *            bench that gives facts and stops there, never pointing at a plank (lesson 5's workshop bench).
  *
  * The screen is a pure view of this file's reducer, so the whole experiment is played and tested without a browser.
  */
@@ -56,9 +58,13 @@ export const longerLinked = (links, d) =>
 
 // ───────────────────────── the state machine of the screen ─────────────────────────
 // stage  build → buildLay → build … → closed → (gap b) build … → closed → link → linkLay → link … → longest → seen
+//        (`crown: false`: link … → seen)
 //        a refused length, « complete » said early, « all linked » said early: a fact, the stage stays
 
 const SIDES = ['a', 'b'];
+
+/** Does the round end by asking the longest linked plank? Not when it (or the spec) says `crown: false`. */
+const crowns = (spec, ri) => (spec.rounds[ri]?.crown ?? spec.crown) !== false;
 
 /** The round the screen is on, with its numbers and its truth. */
 export function listsNow(spec, s) {
@@ -191,7 +197,11 @@ export function listsReducer(spec, s, action) {
       const d = now.common.find((x) => !s.links.includes(x));
       if (d != null)
         return { ...s, earlyLinks: [...s.earlyLinks, d], last: { kind: 'linkMissing', d, ...both(now, d) } };
-      return { ...s, stage: 'longest', last: { kind: 'linksDone', links: s.links } };
+      const last = { kind: 'linksDone', links: s.links };
+      if (crowns(spec, s.ri)) return { ...s, stage: 'longest', last };
+      // no crown: the round ends on the links — nothing is picked, nothing is crowned
+      const seen = { ...s, stage: 'seen', last };
+      return { ...seen, rounds: [...s.rounds, roundResult(now, seen)] };
     }
     case 'pick': {
       if (s.stage !== 'longest' || !s.links.includes(action.d)) return s;

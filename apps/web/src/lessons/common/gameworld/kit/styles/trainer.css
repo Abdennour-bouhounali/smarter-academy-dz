@@ -40,7 +40,7 @@
   gap: 0.35rem;
   padding: 0.15rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.82rem;
+  font-size: 0.9rem; /* 12 px or more also when a full sheet is fitted ×0.96 at 1024×768 (2026-11-19) */
   font-weight: 800;
 }
 .di-trainer__badge.is-game {
@@ -84,7 +84,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 .di-tap {
   display: flex;
@@ -183,7 +183,7 @@
   border-radius: 0.3rem;
   background: #1e293b;
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 .di-sheet__statement {
   margin: 0;

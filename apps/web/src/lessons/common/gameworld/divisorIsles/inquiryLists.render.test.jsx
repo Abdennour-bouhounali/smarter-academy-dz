@@ -180,6 +180,31 @@ describe('the investigation screen `lists`', () => {
     expect(out).toContain('>done<');
   });
 
+  it('`crown: false`: the round ends on the two lists and their links — no question of the longest, no crown', () => {
+    const spec = { ...SPEC, crown: false, rounds: [{ a: 32, b: 44 }] };
+    const s = [
+      ...lay(1, 2, 4),
+      { type: 'go' },
+      ...lay(1, 2, 4),
+      { type: 'go' },
+      ...[1, 2, 4].flatMap((d) => [{ type: 'tap', side: 'a', d }, { type: 'shown' }]),
+      { type: 'allLinked' },
+    ].reduce((st, a) => listsReducer(spec, st, a), initLists(spec));
+    const out = renderToString(<ListsView spec={spec} state={s} act={act} />);
+    expect(out).toContain('data-iq-stage="seen"');
+    expect(out).toContain('linksDone[1 2 4]');
+    expect(out).toContain('data-iq-links="1,2,4"');
+    expect(out).not.toContain('data-iq-crown');
+    expect(out).not.toContain('is-crown');
+    expect(out).not.toMatch(/longAsk|crowned|longer\[/);
+    expect(out).not.toMatch(/data-iq-chip-state="(crown|picked|longer)"/);
+    expect(out).toContain('line[32:4]');
+    expect(out).toContain('>done<');
+    // the links stay drawn, tapped from no list any more
+    expect(out.match(/class="iq-li-link "/g)).toHaveLength(3);
+    expect(out).not.toContain('is-tap');
+  });
+
   it('the widest pair up to 120 (84 and 120, 22 columns) draws every plank with readable SVG text', () => {
     const spec = { ...SPEC, rounds: [{ a: 84, b: 120 }] };
     const lay2 = (n) => {

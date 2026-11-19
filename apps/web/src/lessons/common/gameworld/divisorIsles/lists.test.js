@@ -229,6 +229,37 @@ describe('lists — the state machine, wrong moves included', () => {
     });
   });
 
+  it('`crown: false` (spec or round): the round ends on its links — no longest asked, nothing crowned', () => {
+    const upToLinks = [
+      ...buildAll(32),
+      { type: 'go' },
+      ...buildAll(44),
+      { type: 'go' },
+      { type: 'tap', side: 'a', d: 4 },
+      { type: 'shown' },
+    ];
+    const links = [1, 2].flatMap((d) => [{ type: 'tap', side: 'b', d }, { type: 'shown' }]);
+    for (const spec of [{ crown: false, rounds: [{ a: 32, b: 44 }] }, { rounds: [{ a: 32, b: 44, crown: false }] }]) {
+      let s = run(spec, [...upToLinks, { type: 'allLinked' }]);
+      expect(s.stage).toBe('link'); // a link missing is still answered by a fact
+      expect(s.last).toMatchObject({ kind: 'linkMissing', d: 1 });
+      s = run(spec, [...links, { type: 'allLinked' }], s);
+      expect(s.stage).toBe('seen');
+      expect(s.crown).toBeNull();
+      expect(s.last).toEqual({ kind: 'linksDone', links: [1, 2, 4] });
+      expect(run(spec, [{ type: 'pick', d: 4 }], s)).toBe(s); // nothing to pick
+      expect(s.rounds).toHaveLength(1);
+      expect(s.rounds[0]).toMatchObject({ links: [1, 2, 4], common: [1, 2, 4], picks: [], firstPick: null });
+      s = run(spec, [{ type: 'next' }], s);
+      expect(s.done).toBe(true);
+      expect(listsResult(s).rounds).toHaveLength(1);
+    }
+    // a round may keep its crown while another drops it; a spec without the option plays as before
+    const mixed = { crown: false, rounds: [{ a: 32, b: 44, crown: true }] };
+    expect(run(mixed, [...upToLinks, ...links, { type: 'allLinked' }]).stage).toBe('longest');
+    expect(run(SPEC, [...upToLinks, ...links, { type: 'allLinked' }]).stage).toBe('longest');
+  });
+
   it('the next round starts empty; the last one ends the experiment with every round', () => {
     let s = run(SPEC, playRound(32, 44));
     expect(listsNow(SPEC, s)).toMatchObject({ a: 32, b: 44, longest: 4 });

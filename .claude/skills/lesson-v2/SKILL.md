@@ -9,7 +9,7 @@ This skill is the project's memory of lesson generation. A session remembers not
 learned exists only if it is written HERE (or is a test in the code). So the skill has two halves that matter equally:
 
 - **Before and during a lesson**: follow the pipeline below; build every agent brief from `briefs.md`; give every agent
-  the ledger `defects.md`; review the screenshots with `review.md`.
+  the ledger `defects.md`; review the screenshots with `review.md`; walk only what `trusted.md` does not already cover (§6).
 - **After a lesson** (part of « done »): write back — §5.
 
 The binding rules are the repository's: root `CLAUDE.md`, then `docs/architecture/LESSON_V2.md` (the pack, the folder,
@@ -86,3 +86,30 @@ Before the lesson's commit, for EVERY defect met in the lesson (by a walk, by th
 4. Record the lesson's cost in `defects.md` §« Cost » (agents, tokens, minutes — the task notifications give them).
 
 A defect that comes back although its line is in the ledger is the ledger's failure: the line is rewritten as a check.
+
+## 6. What a new lesson does NOT check again (owner, 2026-11-19)
+
+His words: « always enhance and improve the skill of building lessons by the feedback you get on the walk, so in the
+future when you generate a lesson you do not check what 100 % works ». A walk is the most expensive part of a lesson
+(`defects.md` « Cost »): it must be spent on what is NEW, never on re-proving what earlier lessons already proved.
+
+**Every screen of a lesson is one of three things — say which in the walks' brief:**
+
+| | What it is | How it is checked |
+|---|---|---|
+| **Proven kit** | a screen of the kit or of the world that the lesson only fills with data, already walked at the three sizes by earlier lessons and unchanged since (`trusted.md` lists them, with the commit that last changed each) | NOT walked again for this lesson. Its DATA is checked by a unit test that runs in seconds: the lesson's longest sentence, list and number against the limits the walks measured (`trusted.md` gives each limit) |
+| **Changed kit** | a proven screen whose code changed since its last walk (`git log` on its files against the commit in `trusted.md`) | walked once, on ONE reference lesson, at the three sizes — not once per lesson |
+| **New** | the lesson's own story, its forges' content, a world piece or an experiment kind used for the first time | walked at the three sizes and looked at with the eyes, as today |
+
+**After every lesson, the closing step (§5) also feeds this:**
+1. Every screen that passed at the three sizes and was looked at goes into `trusted.md`, with the commit, the lesson
+   that proved it, and the LIMITS it was proved for (how long a sentence, how many items, how large a number).
+2. Every failure a walk found that depended only on the lesson's DATA (a sentence too long for its card, a list on
+   three lines, a tablet too tall) becomes a unit test over the lesson's data — so the next lesson learns it in seconds,
+   without a browser.
+3. A screen leaves `trusted.md` the moment its code changes or a lesson breaks it; it comes back after one walk.
+
+**What is never trusted without a walk:** anything a student does for the first time in this lesson (its story from
+the first island to the end), and any screen whose content exceeds the limits it was proved for. « It worked in the
+last lesson » is not a proof for content of another size: the gate dash worked for five lessons and sent the hero to
+the wrong island in the first lesson with a longer road (`defects.md` D6).

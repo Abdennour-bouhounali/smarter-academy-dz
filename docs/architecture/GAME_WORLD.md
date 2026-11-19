@@ -451,6 +451,23 @@ attacks, the seal, the last step and the tablet. Two mechanics of the world « �
   while a bridge of the convoy is still to build. When the coins run out the bridge stops where they did: the equation
   shows what is laid and what is still open, the verdict says so (`T.verdict.purse`), everything goes back
   (`T.say.purseOut(laid, need)`) — on a later bridge of the convoy he is sent back, as above.
+- **A WORKSHOP — he MAKES the plank** (every island with `feature: 'anvil'` has its own). The segment leaving that island
+  declares `workshop: { min, max, open?, typed?, bench? }`: `open` — it works from the start (else after two refusals,
+  `flags.anvil`); `Game.actAnvil(i)` opens the overlay `{ type: 'workshop', a, seg, gaps, … }` (`gaps`: every gap of the
+  convoy still to build) and `craft(b)` gives him the plank. Its screen is `divisorIsles/Workshop.jsx` (words
+  `T.workshop`): without `typed`, the pilot's stepper (`data-di-minus`, `data-di-plus`, `data-di-craft`); with `typed`,
+  he TYPES the length in one box with the printed unit « خانة » (`data-di-workshop="typed"`, `data-di-in="plank"`; Enter
+  or `data-di-craft` makes it), the card names the gaps (`data-di-gaps`, « القالب للهوّتين 32 و 44 »), and an empty box
+  or a length outside 1 … the longest gap is answered by a sentence (`data-di-workshop-error`). **The BENCH** (`bench`:
+  an inquiry spec, e.g. `{ kind: 'lists', rounds: [{ a: 32, b: 44 }], text }`): the button `data-di-bench-open`
+  (`new` | `kept`) → `Game.openBench()` plays the experiment with the world's `Inquiry` in the forge's frame
+  (`data-di-bench=<kind>`); `data-di-bench-back`, or finishing it, → `Game.closeBench(state)` back to the workshop. It
+  covers the top bar, so its header draws the sound button and the ✕ again; leaving the lesson by that ✕ keeps the
+  bench as it stands (`closeBench` first; 2026-11-19, lesson 5's walk). What
+  he did STAYS: the experiment's state per segment id in `flags.benches` (saved with the world; `Game.benchKept(i)`),
+  given back to the screen as `spec.from` — reopened, it shows his lists, not an empty bench (only `lists` reads
+  `spec.from` / `spec.onState` today). The bench gives facts; it never says which plank to make. Test:
+  `divisorIsles/workshop.render.test.jsx`.
 
 First used by lesson 4 `qasim-mushtarak-akbar` (keys 1 and 2: one choice of planks for two gaps; then planks that all
 fill both, and a purse that only the longest pays). NOT yet unit-tested: the mechanic lives in the 3D runtime
@@ -1261,7 +1278,12 @@ a reducer and a pure view like `cycle`):
 //         commonPlanks(a, b); longerLinked(links, d) → the shortest linked plank longer than d;
 //         state machine listsReducer / initLists / listsNow / listsResult
 { kind: 'lists',
-  rounds: [{ a, b }],                                  // a, b ≥ 1, up to ~120 (≤ 16 planks a list, ≤ 22 columns: 84 and 120)
+  crown?: false,                                       // false: no round asks the longest — it ends on the links
+  rounds: [{ a, b, crown? }],                          // a, b ≥ 1, up to ~120 (≤ 16 planks a list, ≤ 22 columns: 84 and 120);
+                                                       //   a round's `crown` overrides the spec's. `crown: false` makes a
+                                                       //   bench that gives facts and stops (lesson 5's workshop): « all
+                                                       //   linked » → `seen` (linksDone is its last fact), no longAsk /
+                                                       //   longer / crowned, picks [] and no data-iq-crown
   text: {
     lead: (a, b) => …, goal: (a, b) => …,              // the question of the round; the goal (plain)
     listLabel: (n) => …,                               // plain — the label of a list (SVG: above the first, under the second)
@@ -1307,9 +1329,10 @@ link; `pick` + `plank` + `gate` / `fail` on the longest. Tests: `lists.test.js` 
 up to √n is complete, every missing plank shown is a real plank with its partner missing too; for every pair up to 120
 the planks that link from either list are exactly the common planks and the longest is the gcd, a shorter pick always
 has a longer linked plank; the widest pair, 84 and 120, gives 22 columns ≥ 40 units; the state machine played through
-pairs up to 120 and through every wrong move), `inquiryLists.render.test.jsx` (a round PLAYED through the view: partner
-in gold, a piece, « complete » early, the closed list, the aligned columns, a wrong link, a missing link, a shorter pick,
-the crown; the widest pair drawn with SVG text ≥ 18 units).
+pairs up to 120 and through every wrong move; `crown: false` on the spec or a round), `inquiryLists.render.test.jsx` (a
+round PLAYED through the view: partner in gold, a piece, « complete » early, the closed list, the aligned columns, a wrong
+link, a missing link, a shorter pick, the crown; a round with `crown: false` ending on its links; the widest pair drawn
+with SVG text ≥ 18 units).
 
 **Spec shape of `sort`** (2026-11-19, for lesson 7 `awwaliyan-fima-baynahuma` key 1 and lesson 8 `ikhtizal-kasr` key 2 —
 the same conventions: `T` = `spec.text`, `$…$` allowed unless « plain », no sentence states the rule, and the baskets are

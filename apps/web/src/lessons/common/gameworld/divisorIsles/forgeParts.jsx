@@ -30,7 +30,8 @@ import './forgeParts.css';
 const WHICH = 'أيّ جسر تعنيه؟ المرآة ستبنيه بعد جوابك.';
 /** Does the BRIDGE of the case hold? (its own `fits`, or the truth of the case when they are the same thing) */
 const fitsOf = (c) => c.fits ?? c.held;
-const cells = (n) => (n <= 10 ? `${n} خانات` : `${n} خانة`);
+/** A gap's length with its agreement: « خانة واحدة », « خانتان », « 3 خانات », « 27 خانة », « 0 خانة » (defects.md B11). */
+const cells = (n) => (n === 1 ? 'خانة واحدة' : n === 2 ? 'خانتان' : n >= 3 && n <= 10 ? `${n} خانات` : `${n} خانة`);
 
 /** The bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
 function Mirror({ c, stage, fast, tight = false }) {
@@ -464,7 +465,7 @@ const L = {
         ? 'انهار: بقيت خانة'
         : c.r === 2
           ? 'انهار: بقيت خانتان'
-          : `انهار: بقيت ${c.r} خانات`,
+          : `انهار: بقيت ${cells(c.r)}`,
   true: 'صحيحة',
   false: 'خاطئة',
   /** a pair with no tag of its own: the planks the two bridges take, or whether the plank builds both */

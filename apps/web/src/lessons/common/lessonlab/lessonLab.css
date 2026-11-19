@@ -479,6 +479,27 @@
   box-shadow: none;
   border: 1.5px solid rgba(255, 255, 255, 0.3);
 }
+/* a button that was never pressed calls the hand (« مِنضدة القائمتين »: the first try) */
+.ll-btn--call {
+  animation: ll-call 1.4s ease-in-out infinite;
+}
+@keyframes ll-call {
+  0%,
+  100% {
+    box-shadow:
+      0 4px 0 #3aa7ad,
+      0 0 0 0 rgba(125, 252, 255, 0.55);
+  }
+  50% {
+    box-shadow:
+      0 4px 0 #3aa7ad,
+      0 0 0 10px rgba(125, 252, 255, 0);
+  }
+}
+/* the two lists: a written divisor is tapped to see the equalities that place it */
+.ll-lchip {
+  cursor: pointer;
+}
 
 .ll-quests {
   display: flex;

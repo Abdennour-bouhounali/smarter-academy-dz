@@ -14,6 +14,39 @@ export const divisorPairs = (a) =>
     .map((d) => [d, a / d]);
 export const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
 
+/**
+ * « مِنضدة القائمتين »: the divisors of a and of b written by PAIRS, after the numbers 1, 2, … `tried` were tried on both.
+ * The list of n stops once a number whose square passes n was reached (`last` = its biggest number to try): it is then
+ * complete. For each list: `smalls` (the divisors tried, d × d ≤ n), `partners` (n / d, the pair's other end, never the
+ * divisor itself again), `done`. Once BOTH lists are complete: `common` (in both) and `g`, the greatest of them.
+ * `step` = what the last try said on each number (null for a number whose list was already complete).
+ */
+export function twoLists(a, b, tried) {
+  const one = (n) => {
+    const last = Math.floor(Math.sqrt(n));
+    const upTo = Math.min(tried, last);
+    const smalls = [];
+    for (let d = 1; d <= upTo; d += 1) if (n % d === 0) smalls.push(d);
+    const partners = smalls.map((d) => n / d).filter((p, i) => p !== smalls[i]);
+    return { n, last, smalls, partners, done: tried >= last, all: [...smalls, ...[...partners].reverse()] };
+  };
+  const A = one(a);
+  const B = one(b);
+  const steps = Math.max(A.last, B.last);
+  const done = A.done && B.done;
+  const common = done ? A.all.filter((d) => b % d === 0).sort((x, y) => x - y) : [];
+  const at = (L, d) => (d > L.last ? null : { d, ...divide(L.n, d) });
+  return {
+    A,
+    B,
+    steps,
+    done,
+    common,
+    g: done ? common.at(-1) : null,
+    step: tried > 0 && tried <= steps ? { d: tried, a: at(A, tried), b: at(B, tried) } : null,
+  };
+}
+
 /** صفوف القسمة: where each of the a counters sits (column, row) in rows of b; the counters of the incomplete row are `rest`. */
 export function rowsLayout(a, b) {
   const { q, r } = divide(a, b);
@@ -217,6 +250,11 @@ export const QUESTS = {
     { id: 'self', text: 'اجعل القاسم المشترك الأكبر يساوي أحد العددين.' },
     { id: 'six', text: 'جد عددين مختلفين قاسمهما المشترك الأكبر 6.' },
   ],
+  lists: [
+    { id: 'full', text: 'أكمل القائمتين لعددين أكبر من 50.' },
+    { id: 'inside', text: 'جد عددين مختلفين يلتقيان في كلّ قائمة أصغرهما.' },
+    { id: 'six', text: 'أكمل القائمتين لعددين يلتقيان في 6 أعداد على الأقلّ.' },
+  ],
   euclid: [
     { id: 'one', text: 'اقطع مستطيلًا حتى النهاية.' },
     { id: 'unit', text: 'جد مستطيلًا آخر مربّع فيه ضلعه 1.' },
@@ -290,6 +328,14 @@ export function observe(tool, st, seen) {
     if (a > 1 && b > 1 && g === 1) put('one');
     if (a !== b && (g === a || g === b) && g > 1) put('self');
     if (a !== b && g === 6) put('six');
+  } else if (tool === 'lists') {
+    // reported by the instrument once BOTH lists were written to their end for these numbers
+    if (st.done) {
+      if (a > 50 && b > 50) put('full');
+      const [lo, hi] = [Math.min(a, b), Math.max(a, b)];
+      if (a !== b && lo > 1 && hi % lo === 0) put('inside');
+      if (divisorsOf(lo).filter((d) => hi % d === 0).length >= 6) put('six');
+    }
   } else if (tool === 'euclid') {
     const e = euclidSquares(a, b);
     if (st.cut >= e.squares.length && a !== b) {
@@ -334,6 +380,11 @@ export function luckyPair(tool, rand = Math.random) {
     // two lengths that share a plank longer than 1: something happens as soon as the plank is moved
     const g = int(2, 9);
     return { a: g * int(2, 6), b: g * int(1, 6) };
+  }
+  if (tool.id === 'lists') {
+    // two numbers that share a divisor bigger than 1: the two lists meet in more than 1
+    const g = int(2, 12);
+    return { a: g * int(2, 9), b: g * int(1, 9) };
   }
   if (tool.id === 'divisors' || tool.id === 'common')
     return { a: Math.min(ah, int(12, 72)), b: Math.min(bh, int(8, 60)) };

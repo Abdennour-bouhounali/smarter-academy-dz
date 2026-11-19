@@ -213,6 +213,10 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   AND b — also a sharing into d identical lots), `commonSet` (« 1 ، 3 ، 9 »: the list of the common divisors, exactly),
   `pgcdDivisors` (the PGCD the question gives is checked true, and the right list is its divisors), `perLot` (the lots
   given ARE the PGCD; one lot holds a ÷ PGCD).
+  **Lesson 5 « تعيين القاسم المشترك الأكبر » (2026-11-19)**: `4am/tayin-pgcd.json` — no pair of the lesson's exercise
+  bank; the end test weighs the three الكفاءات as the bank does (four questions on listing, two on the direct results,
+  two on the smaller dividing the greater). New `check` type: `pgcdIs` (true / false: the sentence « $\mathrm{PGCD}(a ;
+  b) = g$ », written as such in the question, judged by Euclid — 0 and equal numbers included).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.

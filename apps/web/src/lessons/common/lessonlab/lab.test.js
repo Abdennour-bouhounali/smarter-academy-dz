@@ -17,6 +17,7 @@ import {
   gcd,
   plankRows,
   bracketOf,
+  twoLists,
   QUESTS,
   observe,
   luckyPair,
@@ -83,8 +84,23 @@ describe('مختبري — the instruments a lesson may show', () => {
       'qawasim-adad-tabii',
       'khawass-qawasim',
       'qasim-mushtarak-akbar',
+      'tayin-pgcd',
     ]);
     expect(lab.all.length).toBe(TOOLS.length);
+  });
+
+  it('« تعيين القاسم المشترك الأكبر »: its own instrument (the two lists BUILT), lesson 4’s beside it in the cabinet', () => {
+    const lab = toolsFor('tayin-pgcd');
+    expect(lab.mine.map((t) => t.id)).toEqual(['lists']);
+    expect(lab.cabinet.find((g) => g.grade === '4am').lessons.map((l) => l.code)).toContain('qasim-mushtarak-akbar');
+    expect(lab.all.map((t) => t.id)).not.toContain('euclid'); // lesson 6
+    expect(toolsFor('qasim-mushtarak-akbar').all.map((t) => t.id)).not.toContain('lists');
+    const before = toolsFor('tayin-pgcd', { earlierOnly: true });
+    expect(before.all.map((t) => t.id)).not.toContain('lists'); // never before the lesson: it does what the lesson finds
+    expect(before.all.map((t) => t.id)).toContain('common');
+    // its tile names no key of the lesson (BATCH_2_DESIGN.md §7)
+    const tile = TOOLS.find((t) => t.id === 'lists');
+    expect(`${tile.name} ${tile.hint}`).not.toMatch(/احصر|قاطع|نتائج مباشرة|يقسم الأصغر/);
   });
 
   it('« خواص قواسم عدد طبيعي »: its own instrument, and the instruments of the two 4AM lessons before it', () => {
@@ -254,6 +270,42 @@ describe('مختبري — the mathematics the instruments draw', () => {
     expect(bracketOf(9, 14, 5)).toMatchObject({ q: 0, top: 1, n: 1, over: 5, need: 1 }); // a shorter than one plank
     expect(bracketOf(9999, 2, 4999).left).toBe(1);
   });
+  it('the two lists: written by pairs up to the last number to try, then what is in both and the greatest', () => {
+    const open = twoLists(40, 56, 0);
+    expect([open.A.all, open.B.all, open.done, open.step]).toEqual([[], [], false, null]);
+    expect(open.steps).toBe(7); // 7 × 7 = 49 ≤ 56; 8 × 8 = 64 > 56
+    const four = twoLists(40, 56, 4);
+    expect(four.A.smalls).toEqual([1, 2, 4]);
+    expect(four.A.partners).toEqual([40, 20, 10]);
+    expect(four.A.all).toEqual([1, 2, 4, 10, 20, 40]);
+    expect(four.step).toEqual({ d: 4, a: { d: 4, q: 10, r: 0 }, b: { d: 4, q: 14, r: 0 } });
+    expect(four.common).toEqual([]); // nothing is read before both lists are closed
+    const six = twoLists(40, 56, 6);
+    expect(six.A.done).toBe(true); // 7 × 7 > 40
+    expect(six.B.done).toBe(false);
+    const seven = twoLists(40, 56, 7);
+    expect(seven.step).toEqual({ d: 7, a: null, b: { d: 7, q: 8, r: 0 } }); // 40 is no longer tried
+    expect(seven.done).toBe(true);
+    expect(seven.A.all).toEqual([1, 2, 4, 5, 8, 10, 20, 40]);
+    expect(seven.B.all).toEqual([1, 2, 4, 7, 8, 14, 28, 56]);
+    expect([seven.common, seven.g]).toEqual([[1, 2, 4, 8], 8]);
+    // a square root is its own partner: written once
+    expect(twoLists(36, 36, 6).A.all).toEqual([1, 2, 3, 4, 6, 9, 12, 18, 36]);
+    expect(twoLists(1, 1, 1)).toMatchObject({ done: true, common: [1], g: 1 });
+    // for every pair the instrument can show: closed lists ARE the divisors, the greatest in both IS the PGCD, and the
+    // lists close at the last number whose square does not pass the greater
+    for (let a = 1; a <= 120; a += 1)
+      for (let b = 1; b <= 120; b += 7) {
+        const L = twoLists(a, b, Math.floor(Math.sqrt(Math.max(a, b))));
+        expect(L.done).toBe(true);
+        expect(L.A.all).toEqual(divisorsOf(a));
+        expect(L.B.all).toEqual(divisorsOf(b));
+        expect(L.g).toBe(gcd(a, b));
+        expect(L.A.all.length).toBeLessThanOrEqual(16); // 16 slots in the drawing
+        expect(twoLists(a, b, L.steps - 1).done).toBe(false); // one number fewer: a list is still open
+      }
+  });
+
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -285,6 +337,12 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('rules', { a: 180 }, new Set())).toEqual(['three', 'nine', 'all']);
     expect(observe('paper', { a: 612, b: 6, done: true }, new Set())).toEqual(['end', 'zero', 'exact']);
     expect(observe('common', { a: 18, b: 12 }, new Set())).toEqual(['six']);
+    expect(observe('lists', { a: 60, b: 90 }, new Set())).toEqual([]); // the lists were not written: nothing reported
+    expect(observe('lists', { a: 60, b: 90, done: false }, new Set())).toEqual([]);
+    expect(observe('lists', { a: 60, b: 90, done: true }, new Set())).toEqual(['full', 'six']); // 1, 2, 3, 5, 6, 10, 15, 30
+    expect(observe('lists', { a: 14, b: 70, done: true }, new Set())).toEqual(['inside']);
+    expect(observe('lists', { a: 1, b: 70, done: true }, new Set())).toEqual([]); // 1 is in every list: proves nothing
+    expect(observe('lists', { a: 35, b: 35, done: true }, new Set())).toEqual([]); // the same number twice
     expect(observe('planks', { a: 21, b: 35, d: 7 }, new Set())).toEqual(['both', 'rest']);
     expect(observe('planks', { a: 22, b: 20, d: 7 }, new Set())).toEqual(['sum']);
     expect(observe('planks', { a: 24, b: 12, d: 6 }, new Set())).toEqual(['both']); // 24 = 12 × 2: no remainder
@@ -327,6 +385,7 @@ describe('مختبري — the sounds', () => {
       'Divisors',
       'Planks',
       'Common',
+      'Lists',
       'Euclid',
       'PaperDivision',
       'Rules',

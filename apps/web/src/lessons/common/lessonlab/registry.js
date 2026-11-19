@@ -84,6 +84,18 @@ export const TOOLS = [
     load: () => import('./tools/Common'),
   },
   {
+    id: 'lists',
+    lesson: 'tayin-pgcd',
+    lessonTitle: 'تعيين القاسم المشترك الأكبر لعددين طبيعيين',
+    icon: '📋',
+    name: 'مِنضدة القائمتين',
+    hint: 'اكتب قواسم عددين زوجًا زوجًا، جنبًا إلى جنب: أين تلتقي القائمتان؟',
+    needs: 'ab',
+    labels: { a: 'العدد الأوّل', b: 'العدد الثاني' },
+    range: { a: [1, 120], b: [1, 120] },
+    load: () => import('./tools/Lists'),
+  },
+  {
     id: 'euclid',
     lesson: 'bahth-pgcd',
     lessonTitle: 'البحث عن القاسم المشترك الأكبر لعددين طبيعيين',

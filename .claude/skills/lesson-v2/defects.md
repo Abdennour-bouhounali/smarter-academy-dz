@@ -44,6 +44,10 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B12 | A shape drawn black; a person drawn locally; a raster image | — | eye; `CLAUDE.md` | Brand blue shapes; `primitives/KidFigure.jsx`; SVG and DOM only. |
 | B13 | Money written « DA », or with a thousands space | D | `kit/bankSitting.js › cashDj`; eye elsewhere | « دج », no thousands space. |
 | B14 | In the world, the instruction was a small line that left the screen, the only full sentence was the robot's and vanished after seconds; nothing recalled the island before; « back » walked him blind towards the camera | every lesson until 2026-11-19 | `kit/Instruction.jsx` (the instruction stays, folds; the card on the right), `kit/WorldRuntime.js` (walking back turns the camera); one lesson's walk (L4 story walk: the instruction present and uncovered at every world screenshot) | The story's `objective` hook gives the WHOLE instruction of each step; `recall` gives the card; never rely on `game.say` for what he must do. |
+| B15 | An overlay that covers the top bar with no way out of its own (the workshop's bench had no ✕ and no sound button) | L5 | one lesson's walk (L5 story walk clicks the ✕ in the world, a workshop, the bench, a forge) | Every full-screen overlay carries its own ✕ and sound button; leaving it keeps what he did. |
+| B16 | A sum written in a plain Arabic sentence drawn reversed (« 8 + 11 = 19 » shown « 19 = 11 + 8 ») | L5 | `L5 world/story.test.js` (every equality of a note is LTR-isolated); eye on a zoomed crop | An equality inside Arabic text is a formula, or is wrapped in LTR isolates. |
+| B17 | A tablet too tall for the board's naming card once a reader is picked; a trainer sheet whose answer boxes wrap one alone onto a line | L5 | `L5 world/trainer.test.js` (at most three boxes a line); eye on the board's naming stations | A tablet is at most a method line, a short list and one note; a typed set of more than three numbers is laid on two lines by the lesson. |
+| B18 | The 3D number agreement of the world's own labels (« 1 خانات » in the mirror) | L5 | `divisorIsles/forgeParts.jsx › cells` (fixed in the world) | — |
 
 ## C. The walks themselves — how a check lies
 
@@ -58,6 +62,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | C6 | A walk run while source was edited, or two heavy checks at once: failures that mean nothing | D | the frozen copy (`SKILL.md` §4) | — |
 | C7 | « All walks pass » reported for sizes or screens that were not run or not looked at | L3, R | the report's fixed shape (`briefs.md` §0) | Say what was NOT run and which screenshots were NOT looked at. |
 | C8 | The status script does not see the lesson's walk (it wants the lesson's id as a literal and `data-di-start` in one walk) | L4 | `npm run status:lesson-v2 -- --lesson <id>` | The story walk names its lesson by a literal id, as `gameworld-khawass.mjs` does. |
+| C9 | A walk's own expectation of where the world reopens (after an overlay's ✕ the world reopens on the save's island, not where he stood) | L5 | — | Read where the world really puts him before asserting it; say NOTE, not FAIL, for a behaviour that is by design. |
 
 ## D. The tree
 
@@ -68,6 +73,8 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | D3 | The generated index is stale after a pack changed | L3 | `npm run check:lessons` | `npm run generate:lesson-index` after any pack change. |
 | D4 | A test that passes alone times out among the whole suite | L4 | — | A test that imports every pack or every lesson gets its own time limit, with the measure in a comment. |
 | D5 | Two agents edit the same file, or one rewrites a shared document whole | L4 | the brief names each agent's files | Shared documents are edited by small anchored replacements only; a registration in a shared file is made LAST. |
+| D6 | Kit code that assumed the pilot's road (the island after the rail was hard-coded as island 6: in a lesson with a longer road he landed on the wrong island and the story stopped) | L5 | `Game.js › finishDash` (fixed: the island after the rail's segment); the story walk plays the dash to the end | Search the world's code for a literal island or segment index before a lesson with a different road uses it. |
+| D7 | A headline pair of the lesson's own bank used in the design page (39 ; 65, 84 ; 21) | L5 | each lesson's `story.test.js` and `forges.test.js` read the bank's pairs | The design's numbers are proposals: the world's agent checks every pair against the bank before using it. |
 
 ## To move into the shared walk library (`apps/web/e2e/lib/`)
 
@@ -80,4 +87,5 @@ exists yet), the mirror and the board speak the key's language (A10).
 
 | Lesson | Agents | Tokens | The longest block | Notes |
 |---|---|---|---|---|
+| L5 `tayin-pgcd` (2026-11-19, through this skill) | 6, plus the kit's workshop | about 2.3 million | the walks: 542,000 tokens, 83 minutes | world 447k · mirrors 343k · board, class test, lab instrument 311k · pack 253k · walks 542k · workshop and bench (kit) 206k. Agents for lesson 4's first build: 2.9 million; its redesign the same day added about 1.2 million. The walks are still the largest block. |
 | L4 `qasim-mushtarak-akbar` (2026-11-19) | 9 | about 2.9 million | the walks: 690,000 tokens, 73 minutes | walks 690k · forges 377k · student-world fixes 346k · board 342k · two new kinds 268k · pack 245k · world repair 235k · board fixes 230k · hidden names on the hub 166k. The world's content had been drafted the day before (not counted). |

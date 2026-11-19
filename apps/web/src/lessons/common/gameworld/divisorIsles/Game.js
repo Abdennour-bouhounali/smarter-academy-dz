@@ -301,10 +301,11 @@ export class DivisorIslesGame extends WorldRuntime {
       if (on) this.stoneBeacon.userData.animate(this.time, dt, this.activeIt === this.stoneIt);
     }
     if (this.gapPulse) this.gapPulse.material.opacity = 0.35 + Math.abs(Math.sin(this.time * 7)) * 0.45;
-    if (this.anvil) {
-      this.anvil.userData.spark.rotation.y += dt * 2;
-      this.anvil.userData.spark.visible = Boolean(this.flags.anvil);
-    }
+    for (const isl of this.isl)
+      if (isl.anvil) {
+        isl.anvil.userData.spark.rotation.y += dt * 2;
+        isl.anvil.userData.spark.visible = this.anvilOpen(isl.index);
+      }
     if (this.statueRing) this.statueRing.visible = !this.flags.statues;
     if (this.board && !this.dash && !this.rail.complete)
       this.board.position.y = 0.35 + Math.sin(this.time * 2.4) * 0.07;
@@ -396,13 +397,14 @@ export class DivisorIslesGame extends WorldRuntime {
       anvil.position.set(p.x, 0, p.z);
       g.add(anvil);
       this.anvil = anvil;
+      isl.anvil = anvil; // an island's own workshop (a world may have several: 2026-11-19)
       reserved.push({ ...p, r: 2 });
       this.colliders.push({ x: isl.x + p.x, z: isl.z + p.z, r: 1.0 });
       this.addInteract(
         isl.x + p.x,
         isl.z + p.z,
-        () => (this.flags.anvil ? this.T.prompt.anvil : this.T.prompt.anvilLocked),
-        () => this.actAnvil(),
+        () => (this.anvilOpen(i) ? this.T.prompt.anvil : this.T.prompt.anvilLocked),
+        () => this.actAnvil(i),
         2.6,
       );
     }
@@ -645,6 +647,16 @@ export class DivisorIslesGame extends WorldRuntime {
       const p = this.segPoint(seg, (seg.len * k) / 4);
       this.addGem(`${seg.id}-${k}`, p.x, 1.0, p.z);
     }
+    // A GAP OF 0 CELLS (`standing: true`, a: 0): nothing is open, so the bridge stands from the start and costs no plank
+    // — every plank « fills » it (`0 = d × 0`). It is drawn as one deck; he just walks across.
+    if (seg.standing) {
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.22, seg.len + 0.5), glow(0x2fe37a, 0.35));
+      deck.position.copy(this.segPoint(seg, seg.len / 2, 0, 0.05));
+      deck.quaternion.copy(q);
+      g.add(deck);
+      seg.deck = deck;
+      this.markComplete(seg, true);
+    }
   }
 
   buildRail(seg) {
@@ -730,7 +742,7 @@ export class DivisorIslesGame extends WorldRuntime {
     const stage = this.state.stage;
     this.segs.forEach((seg, i) => {
       if (i >= stage) return;
-      if (seg.kind === 'bridge') {
+      if (seg.kind === 'bridge' && !seg.standing) {
         seg.builtWith = this.built[seg.id] ?? seg.holdsWith;
         this.layPlanksInstant(seg, seg.builtWith);
       }
@@ -796,7 +808,7 @@ export class DivisorIslesGame extends WorldRuntime {
     const told = this.story.recall?.(this, k);
     if (told) return told;
     const seg = this.segs[k - 1];
-    if (!seg || seg.kind !== 'bridge' || !seg.complete) return [];
+    if (!seg || seg.kind !== 'bridge' || !seg.complete || seg.standing) return [];
     const b = seg.builtWith ?? seg.holdsWith;
     return [this.T.recall.bridge(seg.a, b, seg.a / b)];
   }
@@ -822,6 +834,7 @@ export class DivisorIslesGame extends WorldRuntime {
   altarPrompt(seg) {
     // the store of the last bridge opens only once the island's question is answered: never a prompt that does nothing
     if (seg.boss) return !this.flags.key4 || (seg.complete && this.flags.bossPaid) ? null : this.T.prompt.boss;
+    if (seg.standing) return null; // a gap of 0 cells: nothing to build
     if (this.state.held == null) return seg.complete ? null : this.T.prompt.needMould;
     // a bridge that stands on the planks he carries has nothing to offer: no prompt over its result
     if (seg.complete && this.state.held === seg.builtWith) return null;
@@ -835,7 +848,7 @@ export class DivisorIslesGame extends WorldRuntime {
       if (!seg.complete || !this.flags.bossPaid) this.openBoss();
       return;
     }
-    if (this.state.held == null) {
+    if (seg.standing || this.state.held == null) {
       this.say(seg.complete ? this.T.say.done : this.T.prompt.needMould, 3);
       return;
     }
@@ -1373,15 +1386,52 @@ export class DivisorIslesGame extends WorldRuntime {
     return res;
   }
 
-  actAnvil() {
+  /**
+   * The segment a workshop makes planks for: the one that leaves ITS island when it declares a `workshop`, else the
+   * world's one workshop segment (the pilot's stubborn island). `workshop: { min, max, open?, typed?, bench? }`:
+   * `open` — it works from the start (else it opens after two refusals, `flags.anvil`); `typed` and `bench` are read by
+   * the workshop's screen (he types the length; a bench — an inquiry spec — opens beside it).
+   */
+  workshopOf(i) {
+    const own = this.segs[i];
+    return own?.workshop ? own : (this.segs.find((x) => x.workshop) ?? null);
+  }
+  anvilOpen(i) {
+    const seg = this.workshopOf(i);
+    return Boolean(seg && (seg.workshop.open || this.flags.anvil));
+  }
+  actAnvil(i = this.hero?.island ?? this.state.stage) {
     if (this.state.phase !== 'play') return;
-    if (!this.flags.anvil) {
+    if (!this.anvilOpen(i)) {
       this.say(this.T.prompt.anvilLocked, 3);
       return;
     }
     this.audio.play('ui');
-    const seg = this.segs.find((x) => x.workshop);
-    this.set({ phase: 'dialog', overlay: { type: 'workshop', a: seg.a, ...seg.workshop } });
+    const seg = this.workshopOf(i);
+    // the gaps his plank must build: the whole convoy of that segment, or the segment alone
+    const gaps = (this.convoyOf(seg) ?? [seg]).filter((s) => !s.standing).map((s) => s.a);
+    this.set({ phase: 'dialog', overlay: { type: 'workshop', a: seg.a, seg: seg.index, gaps, ...seg.workshop } });
+  }
+
+  /**
+   * The workshop's BENCH (`workshop.bench`, an inquiry spec): it opens over the workshop and closes back to it, and what
+   * he did there is KEPT — the experiment's own state, per segment, in `flags.benches` (saved with the world).
+   */
+  benchKept(i) {
+    return this.flags.benches?.[this.segs[i]?.id] ?? null;
+  }
+  openBench() {
+    const o = this.state.overlay;
+    if (o?.type !== 'workshop' || !o.bench) return;
+    this.audio.play('ui');
+    this.set({ overlay: { ...o, benchOpen: true } });
+  }
+  closeBench(kept) {
+    const o = this.state.overlay;
+    if (o?.type !== 'workshop') return;
+    if (kept) this.flags.benches = { ...this.flags.benches, [this.segs[o.seg].id]: kept };
+    this.set({ overlay: { ...o, benchOpen: false } });
+    this.save();
   }
 
   craft(b) {
@@ -1649,7 +1699,9 @@ export class DivisorIslesGame extends WorldRuntime {
     this.audio.fast = false;
     this.set({ phase: 'forge', dash: null });
     const from = this.hero.pos.clone();
-    const to = this.spawnOf(6);
+    // the island at the rail's end (lesson 4: 6; lesson 5's rail runs from island I to J: 9)
+    const next = seg.index + 1;
+    const to = this.spawnOf(next);
     this.audio.play('jump');
     await this.tween(
       0.7,
@@ -1669,8 +1721,8 @@ export class DivisorIslesGame extends WorldRuntime {
       stars: { ...this.state.stars, [seg.id]: Math.max(this.state.stars[seg.id] ?? 0, stars) },
     });
     this.audio.play('success');
-    this.hero.island = 6;
-    this.arrive(6);
+    this.hero.island = next;
+    this.arrive(next);
   }
 
   // ───────────────────────────── « خريطة المعرفة » and the practice game ─────────────────────────────

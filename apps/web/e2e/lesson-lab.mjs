@@ -1,6 +1,7 @@
 // « مختبري » — walk of the LAB of a lesson as a STUDENT (simulated session, no API).
 // Lesson 1 of 4AM (in its game world): its three instruments, the cabinet of the EARLIER lessons only, numbers that follow the
-// student from one instrument to the next, « جرّب » ticked only by what he makes. Then the PGCD lesson (mission home): its own
+// student from one instrument to the next, « جرّب » ticked only by what he makes. Then lesson 5 (in its game world): its
+// « مِنضدة القائمتين » played until both lists close. Then the PGCD lesson (mission home): its own
 // instrument and the cabinet of three grades. Nothing may scroll, at any moment.
 // Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
@@ -276,6 +277,42 @@ if (PHONE) {
   process.exit(process.exitCode ?? 0);
 }
 
+// ══ 1bis. lesson 5 of 4AM (in its game world): « مِنضدة القائمتين », PLAYED — « جرّب » until both lists close ══
+await page.goto(`${BASE}/tayin-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="tayin-pgcd"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]'); // the rail is drawn once the lab has loaded its instruments
+// « mine » only: the rail also keeps, under it, the instruments this student picked from the cabinet earlier in the walk
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'lists', `the bench of lesson 5 shows its one instrument: مِنضدة القائمتين (${mine})`); }
+if (await page.locator('svg[data-ll-lists]').count() === 0) await page.click('[data-ll-tool="lists"]');
+await page.waitForSelector('svg[data-ll-lists]');
+{
+  const [a, b] = [40, 56];
+  await setNum('a', a); await setNum('b', b);
+  // what the sheet must hold — computed HERE from a and b, never read from the instrument
+  const divs = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((d) => n % d === 0);
+  const common = divs(a).filter((d) => b % d === 0);
+  const g = Math.max(...common);
+  const steps = Math.max(Math.floor(Math.sqrt(a)), Math.floor(Math.sqrt(b))); // a list closes once (d + 1)² passes its number
+  expect(await page.getAttribute('svg[data-ll-lists]', 'data-tried') === '0' && await page.getAttribute('[data-ll-try]', 'data-ll-try') === '1', `new numbers open a blank sheet: nothing tried, « جرّب 1 » (${a} and ${b})`);
+  let presses = 0;
+  while ((await page.getAttribute('[data-ll-try]', 'data-ll-try')) && presses < 20) { await page.click('[data-ll-try]'); presses += 1; await page.waitForTimeout(120); }
+  await page.waitForTimeout(700); // the links and the crown are drawn after the lists close
+  const lists = await page.evaluate(() => Object.fromEntries([...document.querySelectorAll('g[data-ll-list]')].map((el) => [el.dataset.llList, { n: Number(el.dataset.llN), done: el.dataset.llDone, all: el.dataset.all }])));
+  expect(presses === steps && await page.getAttribute('svg[data-ll-lists]', 'data-done') === 'true', `« جرّب » pressed ${presses} times — ${steps} tries close both lists (${steps + 1} × ${steps + 1} > ${b})`);
+  expect(lists.A?.n === a && lists.A.done === 'true' && lists.A.all.split(',').map(Number).sort((x, y) => x - y).join() === divs(a).join()
+    && lists.B?.n === b && lists.B.done === 'true' && lists.B.all.split(',').map(Number).sort((x, y) => x - y).join() === divs(b).join(),
+  `the two lists are closed and whole: ${a} → ${divs(a).join(' ، ')} · ${b} → ${divs(b).join(' ، ')} (${JSON.stringify(lists)})`);
+  const links = await page.locator('g[data-ll-link]').evaluateAll((els) => els.map((e) => Number(e.dataset.llLink)));
+  const crowned = await page.locator('g[data-ll-link] [data-ll-crown]').evaluateAll((els) => els.map((e) => Number(e.closest('g[data-ll-link]').dataset.llLink)));
+  expect(links.sort((x, y) => x - y).join() === common.join() && crowned.join() === String(g), `a line joins ${common.join(' ، ')} — the numbers in both lists — and ${g} wears the crown (links ${links.join()}, crown ${crowned.join()})`);
+  expect(await page.getAttribute('[data-ll-common]', 'data-ll-common') === common.join() && await page.getAttribute('[data-ll-g]', 'data-ll-g') === String(g), `the reading writes them: « في القائمتين: ${common.join('، ')} — أكبرها ${g} »`);
+  await shot(`lists-${a}-${b}`);
+  await page.click('[data-ll-reset]'); await page.waitForTimeout(200);
+  expect(await page.getAttribute('svg[data-ll-lists]', 'data-tried') === '0' && await page.locator('g[data-ll-link]').count() === 0, '« من جديد » clears the sheet: nothing tried, no link');
+}
+await page.click('[data-ll-close]');
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 5');
+
 // ══ 2. another lesson — the PGCD: its own instrument, and the cabinet of everything before it ══
 await page.goto(`${BASE}/bahth-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-mission-lab]'); await page.click('[data-mission-lab]'); await page.waitForSelector('[data-lesson-lab="bahth-pgcd"]'); await page.waitForSelector('[data-ll-euclid]');
@@ -299,8 +336,16 @@ await page.click('[data-ll-cabinet-open]'); await page.waitForSelector('[data-ll
 {
   const grades = await page.locator('[data-ll-grade]').evaluateAll((els) => els.map((e) => e.dataset.llGrade));
   expect(grades.join() === '1am,2am,4am', 'its cabinet has three grades: 1AM, 2AM and the earlier lessons of 4AM');
-  const lessons = await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson));
-  expect(lessons.join() === 'qasim-adad-tabii,qawasim-adad-tabii,khawass-qawasim,qasim-mushtarak-akbar', 'the 4AM shelf: the four earlier lessons that have instruments');
+  // the shelf may hold more lessons than a page shows: every page is read, through the pager (« ‹ 1 / 2 › »)
+  const lessons = [];
+  for (let k = 0; k < 4; k += 1) {
+    lessons.push(...(await page.locator('[data-ll-cabinet-lesson]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetLesson))));
+    const next = page.locator('[data-ll-cabinet] footer button').last();
+    if (!(await next.count()) || (await next.isDisabled())) break;
+    if (k === 0) await shot('cabinet-pgcd-page-1');
+    await next.click(); await page.waitForTimeout(250);
+  }
+  expect(lessons.join() === 'qasim-adad-tabii,qawasim-adad-tabii,khawass-qawasim,qasim-mushtarak-akbar,tayin-pgcd', 'the 4AM shelf: the five earlier lessons that have instruments (lesson 5 « مِنضدة القائمتين » since 2026-11-19)');
   await shot('cabinet-pgcd');
   await page.click('[data-ll-grade="1am"]');
   expect((await page.locator('[data-ll-cabinet-tool]').evaluateAll((els) => els.map((e) => e.dataset.llCabinetTool))).join() === 'paper,rules', 'the 1AM shelf is one tap away');

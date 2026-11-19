@@ -8,12 +8,13 @@
  *   link     the two lists stand one above the other, plank under plank; he taps a plank « in both »: the world lays it on
  *            both gaps — a link drawn, or the division that leaves a piece. « all linked » said too early: one missing
  *            link is shown.
- *   longest  he taps the longest linked plank; a shorter one is answered by a longer linked plank, shown.
+ *   longest  he taps the longest linked plank; a shorter one is answered by a longer linked plank, shown. Not played
+ *            with `crown: false` (the round, or the spec): the round ends on the two lists and their links.
  *
  * `spec.text` is the lesson's wording (GAME_WORLD.md « استكشف », spec shape of `lists`). Nothing here states a rule:
  * every sentence says what the strips have just done. The screen is a pure VIEW of the reducer's state (`ListsView`).
  */
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import MathText from '../../components/MathText';
 import { Num } from '../kit/parts';
 import { initLists, listsNow, listsReducer, listsResult, columnsOf, plankFill } from './lists';
@@ -317,8 +318,22 @@ export function ListsView({ spec, state, act, input = '' }) {
   );
 }
 
+/**
+ * Where the experiment starts: empty, or — on the workshop's bench (`Workshop.jsx › Bench`) — the state it kept
+ * (`spec.from`); a plank the world was still laying when he left is laid now.
+ */
+function startOf(spec) {
+  const s = spec.from;
+  if (!s || !(s.ri < spec.rounds.length)) return initLists(spec);
+  return s.stage === 'buildLay' || s.stage === 'linkLay' ? listsReducer(spec, s, { type: 'shown' }) : s;
+}
+
 export function Lists({ spec, play, onDone }) {
-  const [state, dispatch] = useReducer((s, a) => listsReducer(spec, s, a), spec, initLists);
+  const [state, dispatch] = useReducer((s, a) => listsReducer(spec, s, a), spec, startOf);
+  // the bench hears every move, to keep it (`spec.onState`)
+  useEffect(() => {
+    spec.onState?.(state);
+  }, [spec, state]);
   const [input, setInput] = useState('');
   const later = useLater();
   const now = listsNow(spec, state);
@@ -388,8 +403,10 @@ export function Lists({ spec, play, onDone }) {
     allLinked() {
       if (state.stage !== 'link') return;
       const after = listsReducer(spec, state, { type: 'allLinked' });
-      play(after.stage === 'longest' ? 'key' : 'fail');
-      if (after.stage !== 'longest') later(250, () => play('plank'));
+      // every link made: on to the longest — or, with `crown: false`, the round ends on its links
+      const allMade = after.stage !== 'link';
+      play(allMade ? 'key' : 'fail');
+      if (!allMade) later(250, () => play('plank'));
       dispatch({ type: 'allLinked' });
     },
     pick(d) {

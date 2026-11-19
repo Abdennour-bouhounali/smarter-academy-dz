@@ -14,6 +14,7 @@ import { answerOf, simUnit } from './cases';
 import { divisionTip, ruleTip } from '../kit/tips';
 import RuleForge from '../kit/RuleForge';
 import { FORGE_PARTS } from './forgeParts';
+import Workshop from './Workshop';
 
 import Fit, { stepRoom } from '../kit/Fit';
 import { PaperGate, PaperModel, PT } from '../kit/Paper';
@@ -616,39 +617,6 @@ function Statues({ game }) {
           data-di-check
         >
           {T.statues.go}
-        </button>
-        <button type="button" className="di-link" onClick={() => game.closeOverlay()}>
-          {T.workshop.close}
-        </button>
-      </div>
-    </Card>
-  );
-}
-
-function Workshop({ o, game }) {
-  const T = game.T;
-  const [b, setB] = useState(1 + Math.floor((o.max - o.min) / 2));
-  return (
-    <Card>
-      <p className="di-card__eyebrow">{T.workshop.title}</p>
-      <h2>{T.workshop.ask}</h2>
-      <div className="di-stepper" dir="ltr">
-        <button type="button" onClick={() => setB((v) => Math.max(o.min, v - 1))} aria-label="−" data-di-minus>
-          −
-        </button>
-        <output>{b}</output>
-        <button type="button" onClick={() => setB((v) => Math.min(o.max, v + 1))} aria-label="+" data-di-plus>
-          +
-        </button>
-      </div>
-      <div className="di-plankbar" dir="ltr" aria-hidden="true">
-        {Array.from({ length: o.max }, (_, i) => (
-          <span key={i} className={i < b ? 'is-on' : ''} />
-        ))}
-      </div>
-      <div className="di-row">
-        <button type="button" className="di-btn di-btn--primary" onClick={() => game.craft(b)} data-di-craft>
-          {T.workshop.make}
         </button>
         <button type="button" className="di-link" onClick={() => game.closeOverlay()}>
           {T.workshop.close}

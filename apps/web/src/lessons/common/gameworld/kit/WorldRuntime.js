@@ -719,7 +719,17 @@ export class WorldRuntime {
     const w = this.canvas.clientWidth;
     const hgt = this.canvas.clientHeight;
     const x = Math.max(150, Math.min(w - 150, (v.x * 0.5 + 0.5) * w));
-    const y = Math.max(150, Math.min(hgt - 150, (-v.y * 0.5 + 0.5) * hgt));
+    let y = Math.max(150, Math.min(hgt - 150, (-v.y * 0.5 + 0.5) * hgt));
+    // the bubble never covers THE INSTRUCTION (it stays on screen, GAME_WORLD.md §2ter-1): when the thing to use stands
+    // behind it — a tall instruction at 1024×768 — the bubble drops just under it
+    const ins = el.ownerDocument.querySelector('[data-di-instruction]');
+    if (ins) {
+      const box = ins.getBoundingClientRect();
+      const base = this.canvas.getBoundingClientRect();
+      const half = el.offsetWidth / 2;
+      const under = box.bottom - base.top + 8 + el.offsetHeight;
+      if (x + half > box.left - base.left && x - half < box.right - base.left && y < under) y = under;
+    }
     el.style.visibility = v.z < 1 ? 'visible' : 'hidden';
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
   }

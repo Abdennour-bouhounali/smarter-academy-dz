@@ -180,6 +180,22 @@ honest situation on the islands for it — a procedure or a proof is not a const
 | ⚡ نتائج مباشرة | three short convoys with the workshop, where the purse says it all: twins 27 and 27 (2 coins); 27 and 1 (28 coins); 27 and a gap already full, 0 cells (1 coin) | tiles | a gap of 0 cells drawn as a bridge already standing |
 | 🎯 عندما يقسم الأصغر الأكبر | 76 and 19 with 5 coins — the shorter gap's own length is the plank; against 90 and 36 (7 coins: 18, not 36) | tiles | — |
 
+**Lesson 5 — the road as it is built (2026-11-19, the story « مرفأ الرصيفين » of the draft kept where it fits)**
+
+| Islands | What happens | Numbers |
+|---|---|---|
+| A (a workshop) → B (no planks) → C | convoy « lists », key 📋: no plank is offered — he MAKES one in the workshop (he types its length); the workshop's bench holds the two lists; a purse | gaps 32 and 44; 19 coins = 8 + 11 planks of 4 (with 2: 16 + 22; with 1: 76) |
+| C: the mirror | forge 📋 — tiles: the procedure in his words; its last step: PGCD of a new pair, the lists typed | 39 and 65 → 13 |
+| C (a workshop) → D → E | convoy « same », key ⚡: two gaps of the same length | 27 and 27; 2 coins |
+| E (a workshop) → F → G | convoy « full », key ⚡: the second gap is already full (0 cells: its bridge stands) | 27 and 0; 1 coin |
+| G: the mirror | forge ⚡ — tiles; the mirror's attacks hold (27 ; 1) and a pair turned round (44 ; 32) | — |
+| G (a workshop) → H → I | convoy « nest », key 🎯: the shorter gap's own length builds both | 19 and 76; 5 coins = 1 + 4 |
+| I: the mirror | forge 🎯 — tiles; the mirror's attacks hold 90 and 36, where the shorter gap does NOT build the longer (18) | — |
+| I → the dash → J → the last bridge → K | the gate dash on the three keys; the store of the last bridge: the two piers, the longest plank that fills both, the price | 154 and 238: 14 (22 fills 154 only), 90 دج a plank |
+
+New pieces of the world used: a workshop on any island that works from the start, where he types the plank's
+length and opens a bench (the `lists` kind); a gap of 0 cells (a bridge that stands).
+
 **Lesson 6 `bahth-pgcd`**
 
 | Key | The situation on the islands | Stays in the mirror | New piece |
@@ -190,6 +206,27 @@ honest situation on the islands for it — a procedure or a proof is not a const
 | 🔁 خوارزمية إقليدس | — | mirror (`ladder/divide`) | — |
 | ⏱️ أيّ الخوارزميتين أسرع | two workshops on one island, the subtractions' and the divisions'; a step costs a coin; the purse (2 coins for 1003 and 34) pays only the divisions (31 steps against 2) | tiles | the purse counting steps instead of planks |
 
+**Lesson 6 — the road as it is built (2026-11-19; it SUPERSEDES the table above for 🪜, 🔁 and ⏱️)**
+
+No new piece of the world: lesson 5's workshop and its BENCH carry the three procedures. Where the gaps are too long
+for two lists, no plank is offered, and the purse pays only the longest plank, he NEEDS a procedure to know which plank
+to make — and the workshop's bench is that procedure (the experiment `ladder`, played on the island, facts only).
+
+| Islands | What happens | Numbers (to check against the bank) |
+|---|---|---|
+| A → B → C → D | convoy « diff » of THREE gaps, planks offered (no workshop): the third gap is announced as « the first minus the second » | 152, 95, 57; planks 19 (the three), 8 (152 only), 5 (95 only), 3 (57 only) |
+| D: the mirror | forge ➖ `farq-yabqi` — a plank that builds two gaps builds the gap of their difference | — |
+| D (workshop, bench `ladder/subtract`) → E → F | convoy « tarh » with a purse: he makes his plank; the bench takes the shorter gap away from the longer, again and again | a pair of his own, e.g. 119 and 85 (17: 7 + 5 = 12 coins) |
+| F: the mirror | forge 🪜 `khawarizmiyat-al-tarh`; then forge 🧮 `baqi-yabqi`, which KEEPS its experiment in the mirror (`ladder/fold`: the rows that take away the same gap folded into one division) | 962 and 296 for the fold |
+| F (workshop, bench `ladder/divide`) → G → H | convoy « iqlidis » with a purse, long gaps | 1833 and 546 (39: 47 + 14 = 61 coins) |
+| H: the mirror | forge 🔁 `iqlidis` | — |
+| H (workshop, bench `ladder/both`) → I → J | convoy « sibaq » with a purse: on the bench he says first which procedure will be shorter, then both run | 1003 and 34 (17: 59 + 2 = 61 coins; 31 rows against 2) |
+| J: the mirror | forge ⏱️ `aqall-khutuwat` — which procedure to choose (57 of the bank's 125 questions) | — |
+| J → the dash → K → the last bridge → L | the dash on the five keys; the store: two lanes, the longest plank that fills both, the price | 1176 and 868: 28 (56 fills 1176 only), 85 دج a plank |
+
+The storm that cuts a gap and the purse of steps (§7's « new pieces » for this lesson) are NOT built: the bench does
+their work with what exists.
+
 **Lesson 7 `awwaliyan-fima-baynahuma`**
 
 | Key | The situation on the islands | Stays in the mirror | New piece |
@@ -198,7 +235,22 @@ honest situation on the islands for it — a procedure or a proof is not a const
 | ✅ أثبت أنّهما أوّليان فيما بينهما (113 questions) | — | mirror (`ladder/divide` ending on 1, then the sentence of the proof) | — |
 | ❌ أثبت أنّهما ليسا أوّليين فيما بينهما | a convoy 645 and 410 with the planks the divisibility rules give (2, 3, 5, 9, 10): ONE plank that builds both ends it; then 85 and 119, where none of them does — and the bridges still stand with 17, made in the workshop | tiles (one witness is enough; no witness seen proves nothing) | — |
 
-**Lesson 8 `ikhtizal-kasr`** (two gaps one after the other are one fraction: the first the numerator, the second the denominator)
+**Lesson 8 — DECIDED 2026-11-19 (the owner, after a council of five advisors): it stays on the islands, with ONE bridge
+and a marked stretch; the table below it is SUPERSEDED.** The gap is the whole; a stretch of it is marked (roofed,
+lit); the fraction is that stretch over the whole bridge and a sign writes it. He builds with one kind of plank, and a
+joint between two planks must fall exactly where the stretch ends — which happens only when the plank fills both
+numbers. The sign then counts in planks (66 of 78 → 33 of 39 with planks of 2 → 11 of 13 with 6): the stretch has not
+moved, only the writing. The four keys on that one situation: 🪜 in stages (a longer plank, the sign shortens again);
+🔒 irreducible (25 of 27: every joint misses the mark but the plank 1's); 🎯 by the PGCD at once (a purse that only the
+longest plank pays); 🧾 the result of a calculation (the stretch marked in two strokes, 5 then 8 of 39). New piece of the
+world: a bridge with a marked stretch, the joint rule and the sign. NOT yet checked against the lesson's bank and board.
+A new world for fractions (« أَحيِ الواحة », an oasis fed by a foggara — sketches in `mockups/oasis-world.html` with
+three other ideas) was proposed and NOT retained: the council (four of five) found it unproven for fun, broken by large
+numbers (a comb of 78 teeth), and a second world to maintain; no other fractions lesson is committed to either world,
+and adding and multiplying fractions are expected to need a lighter representation (a number line, an area), to be
+decided on evidence. First evidence wanted: a built lesson played by five or more real students.
+
+**Lesson 8 `ikhtizal-kasr` — SUPERSEDED table** (two gaps one after the other are one fraction: the first the numerator, the second the denominator)
 
 | Key | The situation on the islands | Stays in the mirror | New piece |
 |---|---|---|---|

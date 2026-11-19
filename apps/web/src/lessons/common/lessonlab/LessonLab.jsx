@@ -111,12 +111,16 @@ const ToolTile = ({ tool, on, done, onPick }) => (
   </button>
 );
 
-/** The cabinet: the instruments of the earlier lessons, grade by grade. Never scrolls: four lessons a page. */
+/**
+ * The cabinet: the instruments of the earlier lessons, grade by grade. Never scrolls: four lessons a page — three when
+ * the grade needs the pager, which takes the room of a row (2026-11-19: with lesson 5, the 4AM shelf of lesson 6 had five
+ * lessons and its fourth row ran under the pager at 1366 × 768).
+ */
 function Cabinet({ cabinet, onPick, onClose, play }) {
   const [g, setG] = useState(cabinet.length - 1);
   const [page, setPage] = useState(0);
-  const PER = 4;
   const grade = cabinet[g];
+  const PER = grade.lessons.length > 4 ? 3 : 4;
   const pages = Math.max(1, Math.ceil(grade.lessons.length / PER));
   const shown = grade.lessons.slice(page * PER, page * PER + PER);
   return (
