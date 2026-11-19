@@ -548,7 +548,8 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      taught is written back into it. Its first test is lesson 5. Not built yet: the shared walk library that would turn
      a lesson's six walks into data (the walks are the largest cost of a lesson: 690,000 of 2.9 million agent tokens and
      73 minutes for lesson 4) — planned after unit 1's lessons.
-  19. [ ] OWNER'S REDESIGN of 2026-11-19 (after lesson 4 was built; decisions taken the same day):
+  19. [~] OWNER'S REDESIGN of 2026-11-19 (after lesson 4 was built; decisions taken the same day) — **the kit and
+     lesson 4 are DONE (below); lessons 5–8 and the re-walk of the six older lessons are not**:
      - **For every game world (the kit)**: the current instruction is BIG and stays on screen until it is done — he may
        fold it and open it again; what matters from the previous island (the gaps crossed, the planks used, what was
        found) is shown on the RIGHT of the game; he can walk BACK — the camera turns with him (today the camera always
@@ -559,9 +560,27 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
        plank fills neither, one only the first, one both; with the wrong one he walks back and picks again. Key 2 — the
        same with planks that all fill both; every plank costs the same and his purse only pays for the longest: with a
        shorter one the coins run out before the second bridge is finished.
-     - **Lessons 5–8 are redesigned the same way** (a situation lived on the islands wherever one exists): the design
-       page is rewritten and shown to the owner BEFORE they are built.
+     - **Lessons 5–8 are redesigned the same way** (a situation lived on the islands wherever one exists):
+       `BATCH_2_DESIGN.md` §7, ACCEPTED by the owner the same day — the same gesture (a convoy with a purse) may carry
+       several keys; seven keys (procedures, proofs) stay in the mirror; six new pieces of the world are to be built
+       (the workshop's lists bench, a gap of 0 cells, a three-bridge convoy, the storm that cuts a gap, the sign of a
+       fraction, a purse of steps).
      The six lessons already built change with the kit and are re-walked.
+     **Built 2026-11-19 (contract: `GAME_WORLD.md` §2ter-1)** — the kit: `kit/Instruction.jsx` (the instruction, its fold
+     button; the card « من الجزيرة السابقة »), turning round (`kit/WorldRuntime.js`: each press of « back » turns the
+     view AND the robot, « forward » walks him the way he faces — the owner's control), the world's convoys and purse
+     (`divisorIsles/Game.js`), a forge that opens on its tiles when its evidence comes from the world
+     (`kit/RuleForge.jsx`), a pair of gaps drawn as two bridges in the mirror (`forgeParts.jsx`). Lesson 4: keys 1 and
+     2 on the islands (planks 7, 11, 13, 9 for 198 and 234; planks 2, 7, 14 and 42 coins for 266 and 322), their
+     forges without experiment or prediction, the walk playing the refusal, the turn, the walk back, the bridge going
+     back, the purse running out and a reload on the island with no planks. **Measured**: the six walks of lesson 4 at
+     1366×768, 1024×768 and 1840×900 on a frozen copy — 18 of 18 runs pass (the story 984 checks, hub 226, « تدرّب »
+     542, the sitting 2,023, the board 184, the launch kit 227); `gameworld-khawass` passes at 1366×768 on the new kit
+     (763 checks); `gameworld-baqi` fails at its first forge (the ✕ leaving the world — the failure already listed in
+     step 16, not sorted). Known limits: the convoy and the purse are played only by the walks (no unit test of the 3D
+     runtime); at 1024×768 a four-line instruction covers part of the island until he folds it or walks on; at
+     1840×900 two pedestal numbers print over island A's name label; walking back, the road is his to steer (from an
+     altar the straight line back misses the bridge).
 
 ## 4ter. When each item of 4bis is done
 

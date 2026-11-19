@@ -21,7 +21,8 @@
  *   lanesLive(phase)       does this phase read « left » / « right » as gestures?
  *   stepWorld(dt, phase)   its animations of each step
  *   robotPose(phase)       { lift, speed, sad }: how the robot holds itself now
- *   heading()              the angle the camera should look along
+ *   heading()              the angle the camera should look along — it reads `this.facing` (1 forward, -1 when the
+ *                          student has turned ROUND with « back »: the camera then looks back along the road)
  *   cameraShot(phase)      { pos, look, k } when the camera is not following the robot (a cinematic `this.cine` by default)
  *   followsHero(phase), fov(), skyTarget()
  *   busy()                 is the student in the middle of something the hub must not interrupt?
@@ -221,6 +222,15 @@ export class WorldRuntime {
     this.camPos = new THREE.Vector3(0, 9, 14);
     this.camLook = new THREE.Vector3();
     this.camDir = new THREE.Vector2(0, -1);
+    // TURNING ROUND (owner, 2026-11-19: « the student must be able to return »; the control is his: « click the bottom
+    // arrow → the camera view turns toward the previous island → then the top arrow to start walking toward it; the
+    // bottom arrow again → the camera moves to the front »). « back » is a TOGGLE on its press: `facing` flips between 1
+    // and -1, the world's `heading()` then points back along the road and the camera swings behind him. « back » never
+    // walks him; « forward » walks him the way he faces. `moveDir` is the frame his keys are read in (`updateHero`).
+    this.facing = 1;
+    this.backHeld = false;
+    this.turning = false;
+    this.moveDir = new THREE.Vector2(0, -1);
     this.camera.position.copy(this.camPos);
 
     this.sky = makeSky();
@@ -471,11 +481,27 @@ export class WorldRuntime {
   updateHero(dt) {
     const h = this.hero;
     const ax = this.input.axis();
-    const f = this.camDir;
+    // each PRESS of « back » (a key, or the stick pulled down) turns him round; it is read once, on its way down
+    const back = ax.y < -0.5;
+    if (back && !this.backHeld && this.state.phase === 'play') {
+      this.facing = -this.facing;
+      this.turning = true; // the ROBOT turns round too, on the spot, with the view (owner, 2026-11-19)
+    }
+    this.backHeld = back;
+    const to = this.heading();
+    const tx = Math.sin(to);
+    const tz = Math.cos(to);
+    // the frame of his keys: the ROAD he faces (the direction the lens is turning to) — and the lens's own direction only
+    // once it is within ~15° of it, a blend from ~30° (2026-11-19: with a wider blend he walked off a bridge while the
+    // lens swung round)
+    const c = this.camDir;
+    const s = Math.max(0, Math.min(1, (c.x * tx + c.y * tz - 0.86) / 0.11));
+    const f = this.moveDir.set(tx + (c.x - tx) * s, tz + (c.y - tz) * s).normalize();
+    const along = Math.max(0, ax.y); // « forward » walks him the way he faces; « back » only turns him
     const rx = -f.y;
     const rz = f.x;
-    const mx = f.x * ax.y + rx * ax.x;
-    const mz = f.y * ax.y + rz * ax.x;
+    const mx = f.x * along + rx * ax.x;
+    const mz = f.y * along + rz * ax.x;
     const k = damp(h.grounded ? 12 : 4, dt);
     h.vel.x += (mx * SPEED - h.vel.x) * k;
     h.vel.z += (mz * SPEED - h.vel.z) * k;
@@ -516,6 +542,13 @@ export class WorldRuntime {
       let dy = target - h.yaw;
       dy = Math.atan2(Math.sin(dy), Math.cos(dy));
       h.yaw += dy * damp(12, dt);
+      this.turning = false;
+    } else if (this.turning) {
+      // he has just turned round and stands still: the robot turns on the spot to face the road the view now shows
+      let dy = this.heading() - h.yaw;
+      dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+      h.yaw += dy * damp(7, dt);
+      if (Math.abs(dy) < 0.03) this.turning = false;
     }
     if (h.grounded) this.onGround();
   }
@@ -524,6 +557,7 @@ export class WorldRuntime {
     const h = this.hero;
     h.pos.copy(this.respawnPoint()).setY(6);
     h.vel.set(0, 0, 0);
+    this.facing = 1;
     h.grounded = false;
     this.set({ falls: this.state.falls + 1 });
     this.onFall();
@@ -578,7 +612,8 @@ export class WorldRuntime {
     const cur = Math.atan2(this.camDir.x, this.camDir.y);
     let dy = this.heading() - cur;
     dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-    const ny = cur + dy * damp(1.6, dt);
+    // a turn round (he walks back, or forward again) is quicker than the slow swing from one island's road to the next
+    const ny = cur + dy * damp(Math.abs(dy) > 1.3 ? 4.2 : 1.6, dt);
     this.camDir.set(Math.sin(ny), Math.cos(ny));
     const want = new THREE.Vector3();
     const look = new THREE.Vector3();

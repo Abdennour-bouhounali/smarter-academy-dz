@@ -11,10 +11,21 @@
  *     k      the number of identical lots, `lot` their kind (vase, basket — `dealParts.jsx › LOTS`)
  *     claim  [x, y] when the case asks « does each lot hold x and y? »: drawn, faint, in the empty lots before the deal
  * Whether everything is shared is `fits` (or `held`), as for a bridge: the held / fell look follows it.
+ *
+ * A case may be a PAIR of gaps (`pair`): ONE plank asked of TWO gaps (« does the plank 5 build both bridges, 16 and
+ * 19? »). It is drawn as two bridges, one above the other, the same plank laid on each:
+ *   c.pair = { a, b, d, need? }
+ *     a, b   the two gaps (cells), the first drawn on top
+ *     d      the plank (cells), laid on both
+ *     need   the planks the two bridges take together, when the case counts them (written in its line)
+ * Each bridge has its own held / fell look (does d fill IT?), what is left of each in amber. Whether the case holds is
+ * still `held` (what the case asks); `fits` says whether the plank fills both.
  */
 import Inquiry from './Inquiry';
 import { dealOf } from './deal';
 import { Glyph, GlyphDefs, LOTS, Lot, LotShape, Pile, grid } from './dealParts';
+import { planks } from './strings';
+import './forgeParts.css';
 
 const WHICH = 'أيّ جسر تعنيه؟ المرآة ستبنيه بعد جوابك.';
 /** Does the BRIDGE of the case hold? (its own `fits`, or the truth of the case when they are the same thing) */
@@ -24,6 +35,7 @@ const cells = (n) => (n <= 10 ? `${n} خانات` : `${n} خانة`);
 /** The bridge in the mirror: `a` cells, planks of `b`, what is left in amber. `stage`: ask (the gap and one plank) | build | done. */
 function Mirror({ c, stage, fast, tight = false }) {
   if (c.deal) return <DealMirror c={c} stage={stage} fast={fast} tight={tight} />;
+  if (c.pair) return <PairMirror c={c} stage={stage} fast={fast} tight={tight} />;
   const W = 720;
   const cell = Math.min(34, W / Math.max(c.a, c.b));
   const x0 = (W - cell * c.a) / 2;
@@ -102,6 +114,7 @@ function Mirror({ c, stage, fast, tight = false }) {
 
 const Mini = ({ c }) => {
   if (c.deal) return <DealMini c={c} />;
+  if (c.pair) return <PairMini pair={c.pair} />;
   const W = 150;
   const cell = W / Math.max(c.a, 1);
   return (
@@ -130,6 +143,136 @@ const Mini = ({ c }) => {
     </svg>
   );
 };
+
+// ───────────────────────────── a case that is a PAIR of gaps (`c.pair`) ─────────────────────────────
+// Two bridges in a 720 × 150 scene (the single bridge's width: the same box in the mirror, also `tight`): the plank
+// and its name on top, then gap a, then gap b, each with its banks, both drawn at ONE scale and from the same left edge
+// (the shorter gap is the shorter bridge), its number of cells on the right. The plank is laid on both at once.
+const PW = 720;
+const PH = 150;
+const P_X0 = 40; // the left edge of both gaps (after the left bank)
+const P_ROOM = 548; // the longest gap (or the plank) takes this width; its right bank and the labels come after
+const P_LABEL = 662; // the centre of the labels « 16 خانة »
+const P_ROWS = [58, 110]; // the top of each bridge
+const P_TIGHT = 50; // tight: the band of the plank is left out once the planks are laid
+/** One gap of a pair: n cells, the plank d laid on it, what is left in amber. */
+const pairRow = (n, d) => {
+  const q = d <= n ? Math.floor(n / d) : 0;
+  return { n, q, r: n - q * d, fills: n % d === 0 };
+};
+
+function PairMirror({ c, stage, fast, tight }) {
+  const { a, b, d } = c.pair;
+  const built = stage !== 'ask';
+  const done = stage === 'done';
+  const rows = [pairRow(a, d), pairRow(b, d)];
+  const cell = Math.min(34, P_ROOM / Math.max(a, b, d));
+  // the plank and its name stay above the bridges until it is laid — or when it is longer than one of the gaps
+  const sample = !built || d > Math.min(a, b);
+  const top = tight && !sample ? P_TIGHT : 0;
+  return (
+    <svg
+      viewBox={`0 ${top} ${PW} ${PH - top}`}
+      className={`rf-bridge rf-pair is-${stage} ${tight ? 'is-tight' : ''}`}
+      data-rf-pair={`${a}:${b}:${d}`}
+      data-rf-stage={stage}
+      role="img"
+      aria-label={`${a} · ${b} · ${d}`}
+    >
+      {sample && (
+        <g>
+          <text x={P_X0 + (cell * d) / 2} y="20" textAnchor="middle" className="rf-cap">
+            {L.plank(d)}
+          </text>
+          <rect x={P_X0} y="28" width={cell * d - 2} height="20" rx="6" className="rf-plank rf-plank--sample" />
+        </g>
+      )}
+      {rows.map((row, j) => {
+        const y = P_ROWS[j];
+        const look = done ? (row.fills ? 'is-held' : 'is-fell') : '';
+        return (
+          <g key={j} className={`rf-pairrow ${look}`} data-rf-pair-row={row.n} data-rf-fills={row.fills ? '1' : '0'}>
+            <rect x={P_X0 - 26} y={y} width="26" height="32" rx="6" className="rf-bank" />
+            <rect x={P_X0 + cell * row.n} y={y} width="26" height="32" rx="6" className="rf-bank" />
+            {Array.from({ length: row.n }, (_, i) => (
+              <rect
+                key={i}
+                x={P_X0 + i * cell + 1}
+                y={y + 6}
+                width={Math.max(1, cell - 2)}
+                height="20"
+                rx="3"
+                className={`rf-cell ${built && i >= row.q * d ? 'is-left' : ''}`}
+              />
+            ))}
+            {built &&
+              Array.from({ length: row.q }, (_, k) => (
+                <rect
+                  key={k}
+                  x={P_X0 + k * d * cell + 1.5}
+                  y={y + 4}
+                  width={cell * d - 3}
+                  height="24"
+                  rx="6"
+                  className={`rf-plank ${k % 2 ? 'is-alt' : ''}`}
+                  style={{ animationDelay: `${k * (fast ? 8 : 110)}ms` }}
+                />
+              ))}
+            <text x={P_LABEL} y={y + 23} textAnchor="middle" className="rf-cap rf-cap--a">
+              {cells(row.n)}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/** The mini of a pair: two bars, gap a above gap b, at one scale — the planks laid, what is left in amber. */
+const PairMini = ({ pair }) => {
+  const W = 150;
+  const cell = W / Math.max(pair.a, pair.b, 1);
+  return (
+    <svg viewBox={`0 0 ${W} 14`} className="rf-mini rf-mini--pair" aria-hidden="true">
+      {[pair.a, pair.b].map((n, j) => {
+        const row = pairRow(n, pair.d);
+        const y = j ? 7.5 : 0.5;
+        return (
+          <g key={j}>
+            {Array.from({ length: row.q }, (_, k) => (
+              <rect
+                key={k}
+                x={k * pair.d * cell + 0.25}
+                y={y}
+                width={Math.max(0.6, cell * pair.d - 0.5)}
+                height="6"
+                rx="1.5"
+                className={row.fills ? 'is-held' : ''}
+              />
+            ))}
+            {row.r > 0 && (
+              <rect
+                x={row.q * pair.d * cell + 0.25}
+                y={y}
+                width={Math.max(0.6, cell * row.r - 0.5)}
+                height="6"
+                rx="1.5"
+                className="is-left"
+              />
+            )}
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
+
+/** The head of a pair's line: its two gaps, then the plank. */
+const PairHead = ({ pair }) => (
+  <span className="rf-pairhead">
+    <strong dir="ltr">{pair.a}</strong> و <strong dir="ltr">{pair.b}</strong>
+  </span>
+);
 
 // ───────────────────────────── a case that is a SHARING (`c.deal`) ─────────────────────────────
 // The mirror draws it in a 1000 × 230 scene (the bridge's own proportions: the same box in the mirror, also `tight`):
@@ -324,13 +467,15 @@ const L = {
           : `انهار: بقيت ${c.r} خانات`,
   true: 'صحيحة',
   false: 'خاطئة',
+  /** a pair with no tag of its own: the planks the two bridges take, or whether the plank builds both */
+  pair: (c) => (c.pair.need != null ? planks(c.pair.need) : fitsOf(c) ? 'يبني الجسرين' : 'لا يبنيهما'),
 };
 
 /** A bridge as one line of the evidence; `children` = what the student's rule says of it, while it is tested. */
 function Line({ c, children }) {
   return (
     <>
-      <div className={c.text ? 'rf-line--sentence' : ''}>
+      <div className={c.text ? 'rf-line--sentence' : c.pair ? 'rf-line--pair' : ''}>
         {c.mirror && (
           <i className="rf-inmirror" title={L.mirror}>
             🪞
@@ -340,12 +485,16 @@ function Line({ c, children }) {
           <span>{c.text}</span>
         ) : c.deal ? (
           <DealHead deal={c.deal} />
+        ) : c.pair ? (
+          <>
+            <PairHead pair={c.pair} /> <span>{L.plank(c.pair.d)}</span>
+          </>
         ) : (
           <>
             <strong dir="ltr">{c.a}</strong> <span>{L.plank(c.b)}</span>
           </>
         )}
-        <em>{c.tag ?? (c.text ? (c.held ? L.true : L.false) : fitsOf(c) ? L.held : L.fell(c))}</em>
+        <em>{c.tag ?? (c.text ? (c.held ? L.true : L.false) : c.pair ? L.pair(c) : fitsOf(c) ? L.held : L.fell(c))}</em>
       </div>
       <div className="rf-line2">
         <Mini c={c} />
@@ -359,5 +508,11 @@ export const FORGE_PARTS = {
   Mirror,
   Line,
   Inquiry,
-  beats: (c) => (c.deal ? dealOf(c.deal.a.n, c.deal.b.n, c.deal.k).rounds : c.q),
+  // a pair: the plank is laid on both gaps at once, one stroke per plank of the longer row
+  beats: (c) =>
+    c.deal
+      ? dealOf(c.deal.a.n, c.deal.b.n, c.deal.k).rounds
+      : c.pair
+        ? Math.max(pairRow(c.pair.a, c.pair.d).q, pairRow(c.pair.b, c.pair.d).q)
+        : c.q,
 };

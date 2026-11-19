@@ -83,6 +83,7 @@ export class DivisorIslesGame extends WorldRuntime {
       planks: [],
       builtLen: 0,
       complete: false,
+      builtWith: null, // the plank that holds it (a bridge may hold with more than one: the one HE laid)
       stat: { firstPrediction: null, falls: 0, fails: 0 },
     }));
     this.rail = this.segs.find((seg) => seg.kind === 'rail');
@@ -90,6 +91,14 @@ export class DivisorIslesGame extends WorldRuntime {
     this.stoneAt = this.isl.findIndex((isl) => isl.feature === 'stone');
     // the student's crossing as evidence for the rule forge (every bridge fired)
     this.log = [...(sv?.log ?? [])];
+    // the plank each standing bridge was built with (segment id → b)
+    this.built = { ...(sv?.built ?? {}) };
+    this.heldSaved = sv?.held ?? null;
+    // CONVOYS (owner, 2026-11-19): consecutive bridges that carry the same `convoy` id are built with the planks of ONE
+    // island — the first one's. The islands in between hold no planks and he keeps the plank he carries; if a later gap
+    // refuses it he WALKS BACK and picks again, and every bridge of the convoy is rebuilt with the new planks. A convoy
+    // may have a PURSE (`story.convoys[id].purse`): a coin per plank laid, whatever its length.
+    this.convoys = this.story.convoys ?? {};
   }
   worldState(sv) {
     return {
@@ -103,10 +112,12 @@ export class DivisorIslesGame extends WorldRuntime {
       hasSave: Boolean(sv && (sv.stage > 0 || Object.keys(sv.stars ?? {}).length)),
       islandName: this.isl[sv?.stage ?? 0].name,
       depot: null,
+      recall: [],
+      purse: null,
     };
   }
   worldSave() {
-    return { stars: this.state.stars, log: this.log };
+    return { stars: this.state.stars, log: this.log, built: this.built, held: this.state.held };
   }
   worldCentre() {
     return this.isl[Math.floor(this.isl.length / 2)];
@@ -143,9 +154,31 @@ export class DivisorIslesGame extends WorldRuntime {
   skyTarget() {
     return this.caseRun ? SKIES[1] : SKIES[Math.min(this.state.finished ? 8 : this.state.stage, 8)];
   }
+  /**
+   * Where he stands on the road: the bridge under him, or the island he is on — never past the island he has reached.
+   * `ahead` is the segment that leaves that place, `behind` the one that led to it.
+   */
+  place() {
+    const h = this.hero;
+    const last = this.segs.length - 1;
+    if (!h)
+      return { ahead: Math.min(this.state.stage, last), behind: Math.max(0, Math.min(this.state.stage, last) - 1) };
+    for (const seg of this.segs) {
+      if (seg.kind !== 'bridge' || seg.builtLen <= 0) continue;
+      const u = (h.pos.x - seg.sx) * seg.dx + (h.pos.z - seg.sz) * seg.dz;
+      const v = (h.pos.x - seg.sx) * seg.rx + (h.pos.z - seg.sz) * seg.rz;
+      if (Math.abs(v) <= BRIDGE_HALF + 0.4 && u > 0.6 && u < seg.len - 0.6)
+        return { ahead: seg.index, behind: seg.index };
+    }
+    const i = Math.min(h?.island ?? this.state.stage, this.state.stage, last);
+    return { ahead: i, behind: Math.max(0, i - 1) };
+  }
+  /** The road ahead of where he stands — or, when he has turned round (`facing` -1), the road back. */
   heading() {
-    const seg = this.segs[Math.min(this.state.stage, this.segs.length - 1)];
-    return Math.atan2(seg.dx, seg.dz);
+    const at = this.place();
+    const back = this.facing < 0;
+    const seg = this.segs[back ? at.behind : at.ahead];
+    return Math.atan2(seg.dx, seg.dz) + (back ? Math.PI : 0);
   }
   cameraShot(ph) {
     const h = this.hero;
@@ -698,7 +731,8 @@ export class DivisorIslesGame extends WorldRuntime {
     this.segs.forEach((seg, i) => {
       if (i >= stage) return;
       if (seg.kind === 'bridge') {
-        this.layPlanksInstant(seg, seg.holdsWith);
+        seg.builtWith = this.built[seg.id] ?? seg.holdsWith;
+        this.layPlanksInstant(seg, seg.builtWith);
       }
       this.markComplete(seg, true);
     });
@@ -707,7 +741,64 @@ export class DivisorIslesGame extends WorldRuntime {
     if (this.rail.complete) this.board.position.copy(this.segPoint(this.rail, this.rail.len - 3, 0, 0.35));
     if (this.state.finished) this.lightUp(true);
     this.skyNow = SKIES[Math.min(this.state.finished ? 8 : stage, 8)].slice();
+    // the planks he carried when he left (kept only inside a convoy: elsewhere the island gives them again)
+    if (this.heldSaved != null && this.convoyOf(this.segs[stage])) {
+      this.heldMesh = makeMould(this.heldSaved);
+      this.heldMesh.scale.setScalar(0.72);
+      this.scene.add(this.heldMesh);
+      this.state = { ...this.state, held: this.heldSaved };
+    }
+    this.state = { ...this.state, recall: this.recallOf(stage) };
     this.refreshObjective();
+  }
+
+  // ───────────────────────────── convoys: two bridges, the planks of one island ─────────────────────────────
+  /** The bridges built with the same planks as `seg` (its convoy, the first one first) — null when it stands alone. */
+  convoyOf(seg) {
+    return seg?.convoy ? this.segs.filter((s) => s.convoy === seg.convoy) : null;
+  }
+  /** Is `seg` a bridge of a convoy AFTER its first one — a gap whose island holds no planks? */
+  convoyTail(seg) {
+    const group = this.convoyOf(seg);
+    return Boolean(group && group[0] !== seg);
+  }
+  /** The purse of the convoy of `seg`: { of, left } — a coin per plank of its standing bridges; null without a purse. */
+  purseOf(seg) {
+    const of = seg?.convoy ? this.convoys[seg.convoy]?.purse : null;
+    if (!of) return null;
+    const spent = this.convoyOf(seg).reduce((n, s) => n + (s.complete && s.builtWith ? s.a / s.builtWith : 0), 0);
+    return { of, left: of - spent };
+  }
+  /**
+   * He takes planks on the FIRST island of a convoy: they build every bridge of it. Bridges standing on other planks go
+   * back to their pedestal (and their coins to the purse), and the road starts again from this island.
+   */
+  convoyChoice(b) {
+    const seg = this.segs[this.hero?.island ?? -1];
+    const group = this.convoyOf(seg);
+    if (!group || group[0] !== seg) return;
+    this.flags.convoyStuck = null;
+    const stale = group.filter((s) => s.builtWith != null && s.builtWith !== b);
+    for (const s of stale) {
+      s.builtWith = null;
+      delete this.built[s.id];
+      this.crumble(s);
+    }
+    if (stale.length) {
+      this.set({ stage: seg.index, islandName: this.isl[seg.index].name });
+      this.say(this.T.say.convoyReset(b), 7);
+    }
+    this.refreshObjective();
+    this.save();
+  }
+  /** What matters from the island before, for the card on the right: the story's words, or the gap he has just crossed. */
+  recallOf(k) {
+    const told = this.story.recall?.(this, k);
+    if (told) return told;
+    const seg = this.segs[k - 1];
+    if (!seg || seg.kind !== 'bridge' || !seg.complete) return [];
+    const b = seg.builtWith ?? seg.holdsWith;
+    return [this.T.recall.bridge(seg.a, b, seg.a / b)];
   }
 
   // ───────────────────────────── moulds & forge ─────────────────────────────
@@ -719,7 +810,9 @@ export class DivisorIslesGame extends WorldRuntime {
       this.heldMesh.scale.setScalar(0.72);
       this.scene.add(this.heldMesh);
     }
-    this.set({ held: b });
+    // taking planks starts something new: the result of the bridge before leaves the screen
+    this.set(b == null ? { held: b } : { held: b, equation: null, verdict: null });
+    if (b != null) this.convoyChoice(b);
     if (b != null && this.state.stage === 0 && !this.segs[0].complete && !this.toldAltar) {
       this.toldAltar = true;
       this.say(this.T.say.goAltar, 9);
@@ -730,6 +823,8 @@ export class DivisorIslesGame extends WorldRuntime {
     // the store of the last bridge opens only once the island's question is answered: never a prompt that does nothing
     if (seg.boss) return !this.flags.key4 || (seg.complete && this.flags.bossPaid) ? null : this.T.prompt.boss;
     if (this.state.held == null) return seg.complete ? null : this.T.prompt.needMould;
+    // a bridge that stands on the planks he carries has nothing to offer: no prompt over its result
+    if (seg.complete && this.state.held === seg.builtWith) return null;
     return this.T.prompt.forge(this.state.held);
   }
 
@@ -745,6 +840,11 @@ export class DivisorIslesGame extends WorldRuntime {
       return;
     }
     const b = this.state.held;
+    // a later bridge of a convoy takes only the planks that hold the bridge before it
+    if (this.convoyTail(seg) && b !== this.segs[seg.index - 1].builtWith) {
+      this.say(this.T.say.convoyOnly, 6);
+      return;
+    }
     if (seg.predict) {
       this.audio.play('ui');
       this.set({
@@ -892,6 +992,12 @@ export class DivisorIslesGame extends WorldRuntime {
     };
     if (seg.planks.length) await this.crumble(seg);
     this.clearPlanks(seg);
+    seg.builtWith = null;
+    delete this.built[seg.id];
+    // the purse of a convoy pays a coin per plank: with too few coins the bridge stops where they run out
+    const purse = this.purseOf(seg);
+    const paid = purse ? Math.min(q, purse.left) : q;
+    if (purse) this.set({ purse });
     this.robot.setChest('…');
     await this.wait(0.9);
     const from = seg.altarWorld.clone().setY(1.6);
@@ -918,7 +1024,7 @@ export class DivisorIslesGame extends WorldRuntime {
       });
       seg.group.remove(m);
     }
-    for (let k = 0; k < q; k += 1) {
+    for (let k = 0; k < paid; k += 1) {
       if (this.dead) return;
       const m = this.plankMesh(seg, b, k);
       m.position.copy(from);
@@ -939,10 +1045,52 @@ export class DivisorIslesGame extends WorldRuntime {
       this.particles.burst(home.clone().setY(0.2), mouldColor(b), 6, 2, 1.5, 0.5);
       seg.count.userData.setText(String(k + 1));
       seg.count.position.copy(this.segPoint(seg, (k + 0.5) * b * seg.cell, 0, 1.6));
-      this.set({ equation: { a, b, q: k + 1, r: a - b * (k + 1), live: true } });
+      this.set({
+        equation: { a, b, q: k + 1, r: a - b * (k + 1), live: true },
+        ...(purse ? { purse: { of: purse.of, left: purse.left - (k + 1) } } : {}),
+      });
     }
     await this.wait(0.35);
     if (this.dead) return;
+    if (paid < q) {
+      // THE PURSE IS EMPTY before the gap is filled: what is laid is shown, with what is still open, then it all goes back
+      const open = a - b * paid;
+      this.set({
+        equation: { a, b, q: paid, r: open, live: false, unpaid: true },
+        verdict: {
+          right: null,
+          first: false,
+          predicted: null,
+          a,
+          b,
+          r: open,
+          holds: false,
+          purse: true,
+          q: paid,
+          need: q,
+        },
+      });
+      seg.count.visible = false;
+      if (seg.label) seg.label.visible = false; // the result panel takes its place; crumble() brings it back
+      seg.stat.fails += 1;
+      this.audio.play('fail');
+      this.shake = 0.15;
+      const gl = open * seg.cell;
+      seg.gap.scale.z = gl;
+      seg.gap.position.copy(this.segPoint(seg, seg.len - gl / 2, 0, 0));
+      seg.gap.visible = true;
+      this.gapPulse = seg.gap;
+      await this.wait(2.2);
+      this.gapPulse = null;
+      await this.crumble(seg);
+      this.cine = null;
+      this.set({ phase: 'play' });
+      if (this.convoyTail(seg)) this.flags.convoyStuck = seg.id;
+      this.say(this.T.say.purseOut(paid, q), 9);
+      this.refreshObjective();
+      this.save();
+      return;
+    }
     this.set({ equation: { a, b, q, r, live: false } });
     this.robot.setChest(String(r), r === 0 ? true : null);
     seg.count.visible = false;
@@ -997,6 +1145,8 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   finishBridge(seg, b, q) {
+    seg.builtWith = b;
+    this.built[seg.id] = b;
     this.markComplete(seg);
     this.cine = null;
     if (seg.boss) {
@@ -1022,6 +1172,14 @@ export class DivisorIslesGame extends WorldRuntime {
       this.flags.bossTried = { ...(this.flags.bossTried ?? {}), [b]: r };
       this.say(this.T.say.bossFail(b, r), 8);
       this.set({ phase: 'dialog', overlay: this.bossOverlay('choose') });
+      this.save();
+      return;
+    }
+    if (this.convoyTail(seg)) {
+      // the island of this gap holds no planks: he walks back to the first island of the convoy and picks again
+      this.flags.convoyStuck = seg.id;
+      this.say(this.T.say.convoyBack(this.isl[this.convoyOf(seg)[0].index].name, r), 10);
+      this.refreshObjective();
       this.save();
       return;
     }
@@ -1077,6 +1235,8 @@ export class DivisorIslesGame extends WorldRuntime {
     if (seg) {
       const told = this.story.objective?.(this, seg, i);
       if (told) o = told;
+      else if (this.flags.convoyStuck && this.convoyTail(seg) && !seg.complete)
+        o = this.T.objective.convoyBack(this.isl[this.convoyOf(seg)[0].index].name);
       else if (i === this.stoneAt && !this.flags.key4) o = this.T.objective.stone;
       else if (seg.boss) o = seg.complete && this.flags.bossPaid ? this.T.objective.bossCross : this.T.objective.bossGo;
       else if (seg.complete) o = this.T.objective.cross;
@@ -1084,13 +1244,20 @@ export class DivisorIslesGame extends WorldRuntime {
       else o = this.T.objective.bridge(seg.a);
     }
     if (this.state.objective !== o) this.set({ objective: o });
+    // the purse of the convoy he is building (shown while one of its bridges is still to build)
+    const group = this.convoyOf(seg);
+    const purse = group && group.some((s) => !s.complete) ? this.purseOf(seg) : null;
+    if ((this.state.purse?.left ?? null) !== (purse?.left ?? null)) this.set({ purse });
   }
 
   arrive(k) {
+    this.facing = 1;
     this.set({ stage: k, islandName: this.isl[k].name, equation: null, pinned: null, verdict: null });
+    this.set({ recall: this.recallOf(k) });
     this.robot.setChest('•');
     this.audio.mood = Math.min(1, k / 8);
-    if (this.state.held != null && !this.isl[k].keepMould) this.take(null);
+    // inside a convoy he keeps the planks he carries: the next bridge is built with them
+    if (this.state.held != null && !this.isl[k].keepMould && !this.convoyTail(this.segs[k])) this.take(null);
     this.refreshObjective();
     this.save();
     // what the story does on this island: a sentence, a forge (no rule is told), a module marked, the stone…

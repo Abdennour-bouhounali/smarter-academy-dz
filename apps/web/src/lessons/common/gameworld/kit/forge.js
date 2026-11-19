@@ -22,6 +22,8 @@
  *   evidence(rows)     the lines of evidence — from the world's log and from the cases the mirror showed (`mirror: true`)
  *   tests?(rule, rows) the cases the rule is run on (default: the evidence itself)
  *   predictCases(rows, rand), attacks(rule, rows), nudge(n, rows)
+ *                      `predictCases` returning [] skips the prediction step: a forge without an `inquiry` then opens
+ *                      on its tiles (its evidence came from the world, which held the predictions)
  *   use                { make(rand) → case, lines(case) → lines of tokens, verdict?: true, check(case, values, verdict) }
  *                      a token is a string or `slot(name, label, w)`; `check` returns 'ok' or a key of `text.use`
  *   logs?              true when a case the mirror shows joins the world's own log (`game.logMirror`)

@@ -141,6 +141,10 @@ export const KT = {
   hidden: '؟ ؟ ؟',
   noWebgl: 'هذا الجهاز لا يعرض العالم ثلاثيّ الأبعاد. افتح الدرس بمتصفّح آخر أو على جهاز آخر.',
   controls: { move: 'تحرّك', jump: 'اقفز', act: 'افعل', space: 'المسافة' },
+  /** The instruction of the moment (kit/Instruction.jsx): it stays until it is done; he may fold it and open it again. */
+  instruction: { label: 'المهمّة', hide: 'أخفِ المهمّة', show: 'أظهر المهمّة' },
+  /** What matters from the island before, shown on the right of the game. */
+  recall: { title: 'من الجزيرة السابقة' },
   hud: {
     stars: 'نجوم',
     gems: 'بلّورات',

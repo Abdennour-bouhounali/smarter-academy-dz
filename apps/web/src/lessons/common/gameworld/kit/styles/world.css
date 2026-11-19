@@ -189,16 +189,114 @@
   z-index: 4;
   width: min(92vw, 44rem);
 }
-.di-objective {
-  padding: 0.5rem 1.3rem;
+/* …and when the recall card stands on the right, the middle column leaves it its room (and the same on the left) */
+.di-center:has(~ .di-recall) {
+  width: min(92vw, 44rem, calc(100vw - 2 * (min(17rem, 24vw) + 2rem)));
+}
+/* THE INSTRUCTION of the moment (kit/Instruction.jsx): big, on screen until it is done; he may fold it and open it again */
+.di-instruction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  max-width: 100%;
+  padding: 0.5rem 1.2rem 0.7rem;
+  border-radius: 1.3rem;
+  background: rgba(9, 22, 52, 0.86);
+  border: 2px solid rgba(125, 252, 255, 0.6);
+  box-shadow: 0 10px 28px rgba(3, 10, 30, 0.42);
+  backdrop-filter: blur(10px);
+  pointer-events: auto;
+  animation: di-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+.di-instruction.is-folded {
+  padding: 0.3rem 0.5rem;
   border-radius: 999px;
-  background: rgba(9, 22, 52, 0.7);
-  border: 1px solid rgba(125, 252, 255, 0.45);
+}
+.di-instruction__fold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.7rem;
+  border-radius: 999px;
+  color: #7dfcff;
+  font-weight: 800;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+.di-instruction__fold:hover,
+.di-instruction__fold:focus-visible {
+  background: rgba(125, 252, 255, 0.14);
+}
+/* one line while a bridge is built under it: the equation and its verdict keep their place above the world */
+.di-instruction.is-compact {
+  flex-direction: row-reverse;
+  gap: 0.5rem;
+  padding: 0.3rem 0.6rem 0.3rem 1rem;
+  border-radius: 999px;
+}
+.di-instruction.is-compact .di-instruction__fold span {
+  display: none;
+}
+.di-instruction.is-compact .di-objective {
+  font-size: 1.08rem;
+}
+.di-objective {
+  margin: 0;
+  font-weight: 800;
+  font-size: 1.4rem;
+  line-height: 1.55;
+  text-align: center;
+  text-wrap: balance;
+}
+/* what matters from the island before, on the RIGHT of the game (kit/Instruction.jsx › Recall) */
+.di-recall {
+  position: absolute;
+  top: 4.4rem;
+  right: 1rem;
+  z-index: 4;
+  width: min(17rem, 24vw);
+  padding: 0.6rem 0.85rem 0.7rem;
+  border-radius: 1.1rem;
+  background: rgba(255, 244, 214, 0.96);
+  color: #3b2a06;
+  box-shadow: 0 8px 22px rgba(3, 10, 30, 0.32);
+  pointer-events: none;
+}
+.di-recall h3 {
+  margin: 0 0 0.3rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #8a5a00;
+}
+.di-recall ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.25rem;
+}
+.di-recall li {
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+/* the purse of two bridges built with ONE kind of plank: a coin per plank */
+.di-purse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 1rem;
+  border-radius: 999px;
+  background: rgba(255, 244, 214, 0.96);
+  color: #3b2a06;
   font-weight: 800;
   font-size: 1.05rem;
-  backdrop-filter: blur(8px);
-  animation: di-pop 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
-  text-align: center;
+  box-shadow: 0 6px 18px rgba(3, 10, 30, 0.3);
+}
+.di-purse.is-empty {
+  background: #fde2e2;
+  color: #7a1212;
 }
 .di-pinned {
   display: inline-flex;

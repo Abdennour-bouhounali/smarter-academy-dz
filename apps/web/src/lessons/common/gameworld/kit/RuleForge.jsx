@@ -68,8 +68,14 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const inquiry = forge.inquiry && parts.Inquiry ? forge.inquiry : null;
   // …and the investigation takes the place of the predictions; when it also WRITES the rule (`inquiry.writes`: what the
   // student claimed and the world accepted is his rule), no tile is offered either: the mirror attacks that rule at once
-  const phases = inquiry ? ['inquiry', ...(inquiry.writes ? [] : ['build']), 'test', 'seal'] : PHASES;
-  const [phase, setPhase] = useState(inquiry ? 'inquiry' : 'predict');
+  // …and a forge with no investigation and no case to predict (its evidence is what he did in the WORLD, which held the
+  // predictions) opens directly on its tiles: no « تنبّأ » step is shown, since none is played
+  const phases = inquiry
+    ? ['inquiry', ...(inquiry.writes ? [] : ['build']), 'test', 'seal']
+    : cases.length
+      ? PHASES
+      : PHASES.filter((p) => p !== 'predict');
+  const [phase, setPhase] = useState(inquiry ? 'inquiry' : cases.length ? 'predict' : 'build');
   const [pi, setPi] = useState(0);
   const [results, setResults] = useState([]);
   const [show, setShow] = useState(() => ({ c: cases[0], stage: 'ask', guess: null }));

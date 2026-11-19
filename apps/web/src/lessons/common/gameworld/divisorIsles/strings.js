@@ -174,6 +174,7 @@ export const T = {
   subtitle: 'عاصفة كسرت جسور الضوء بين الجزر، والمنارة انطفأت. أعد بناء الجسور مع الروبوت «زيرو» وأنِر المنارة.',
   hud: {
     remainder: 'الباقي',
+    unpaid: 'خانات بلا ألواح',
   },
   prompt: {
     take: (b) => `خذ القالب ${b}`,
@@ -198,13 +199,25 @@ export const T = {
     bossGo: 'اذهب إلى المنصّة المضيئة واختر القالب الذي يملأ 756 خانة',
     bossCross: 'الجسر الأعظم ثابت — اعبر إلى المنارة!',
     end: 'أنِر المنارة',
+    // a CONVOY (two bridges built with the planks of ONE island): the second gap refused his planks, and its island has none
+    convoyBack: (name) => `لا ألواح على هذه الجزيرة. ارجع إلى «${name}» واختر ألواحًا تبني الجسرين معًا`,
   },
+  /** What matters from the island before (kit/Instruction.jsx › Recall): the gap he has just crossed. */
+  recall: { bridge: (a, b, q) => `الهوّة السابقة: $${a} = ${b} \\times ${q}$` },
+  /** The purse of a convoy: a coin per plank, whatever its length. */
+  purse: { label: 'قطع الجسرين' },
   say: {
     hello: 'أنا زيرو! العاصفة كسرت جسور الضوء. خذ القالب 3 ثم تعال إلى منصّة الضوء عند الهوّة.',
     goAltar: 'ممتاز! الآن اذهب إلى المنصّة المضيئة عند الهوّة: السهم الأصفر يدلّك عليها.',
     first: 'خمسة ألواح ولا خانة فارغة: الجسر ثابت. هيا نعبر!',
     carry3: 'ما زال معي القالب 3. الهوّة هنا 16 خانة… ماذا تتوقّع؟',
     gap: (r) => `بقيت ${cells(r)}، فانهار الجسر! جرّب قالبًا آخر.`,
+    convoyBack: (name, r) =>
+      `بقيت ${cells(r)}، فانهار الجسر الثاني. لا ألواح هنا: ارجع إلى «${name}» واختر ألواحًا تبني الجسرين معًا.`,
+    convoyReset: (b) => `الألواح ${b} تبني الجسرين معًا: الألواح القديمة عادت إلى أماكنها.`,
+    convoyOnly: 'الجسران يُبنيان بالألواح نفسها: خذها من الجزيرة السابقة.',
+    purseOut: (laid, need) =>
+      `انتهت القطع! وُضع ${planks(laid)}، والجسر يحتاج ${planks(need)}. لكلّ لوح قطعة، مهما كان طوله.`,
     gapRight: (r) => `كما توقّعتَ: بقيت ${cells(r)}. إذن هذا القالب لا يصلح — جرّب قالبًا آخر.`,
     gapShort: (r) => `بقي ${r}… الجسر لا يثبت إلا إذا امتلأ تمامًا.`,
     tooLong: (b, a) => `لوح طوله ${b} أطول من الهوّة كلّها (${a})! لم يدخل أيّ لوح.`,
@@ -237,6 +250,7 @@ export const T = {
   },
   // Two SEPARATE results after a forge: the student's prediction (right or not), then what the mould does to the gap.
   verdict: {
+    purse: (laid, need) => `وُضع ${planks(laid)} من ${need}: انتهت القطع قبل أن يمتلئ الجسر`,
     right: (r) => (r === 0 ? 'توقّعك صحيح: لم تبقَ أيّ خانة فارغة' : `توقّعك صحيح: بقيت ${cells(r)}`),
     wrong: (p, r) => `توقّعتَ ${p}، والباقي ${r}`,
     star: 'نجمة التوقّع',

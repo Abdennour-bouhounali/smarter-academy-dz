@@ -100,3 +100,104 @@ describe('a case of a forge that is a SHARING — drawn as the experiment draws 
     expect(beats(c)).toBe(c.q);
   });
 });
+
+/** A pair case as a lesson writes it (forgeParts.jsx › `c.pair`): one plank d on the gaps a and b. */
+const pairOf = (a, b, d, extra = {}) => {
+  const fits = a % d === 0 && b % d === 0;
+  return { ...outcome(a % d ? a : b, d), fits, held: fits, pair: { a, b, d }, ...extra };
+};
+
+describe('a case that is a PAIR of gaps — two bridges, the same plank laid on each', () => {
+  it('ask: the plank and its name once, then the two gaps one above the other, nothing laid', () => {
+    const out = renderToString(<Mirror c={pairOf(16, 19, 5)} stage="ask" fast />);
+    expect(out).toContain('data-rf-pair="16:19:5"');
+    expect(out).not.toContain('data-rf-bridge=');
+    expect(out).toContain('data-rf-stage="ask"');
+    expect(count(out, /data-rf-pair-row="/g)).toBe(2);
+    expect(count(out, /class="rf-cell /g)).toBe(16 + 19);
+    expect(count(out, /rf-plank--sample/g)).toBe(1);
+    expect(count(out, /class="rf-plank (is-alt)?"/g)).toBe(0);
+    expect(count(out, /لوح 5/g)).toBe(1);
+    expect(out).toContain('16 خانة');
+    expect(out).toContain('19 خانة');
+    expect(out).not.toMatch(/\$|\\/); // drawn text: no formula
+  });
+
+  it('build and done: 3 planks on each gap at once; each bridge holds or falls by itself, what is left in amber', () => {
+    const c = pairOf(16, 19, 5);
+    expect(beats(c)).toBe(3); // both rows laid together: max(3, 3)
+    const building = renderToString(<Mirror c={c} stage="build" fast={false} />);
+    expect(count(building, /class="rf-plank (is-alt)?"/g)).toBe(6);
+    expect(building).toContain('animation-delay:220ms');
+    expect(building).not.toMatch(/rf-pairrow is-(held|fell)/);
+    const done = renderToString(<Mirror c={c} stage="done" fast />);
+    // 16 = 5 × 3 + 1, 19 = 5 × 3 + 4: neither is filled, 1 + 4 cells left
+    expect(count(done, /rf-pairrow is-fell/g)).toBe(2);
+    expect(count(done, /rf-cell is-left/g)).toBe(1 + 4);
+    expect(done).toContain('data-rf-fills="0"');
+
+    const half = renderToString(<Mirror c={pairOf(15, 20, 3)} stage="done" fast />);
+    // 15 = 3 × 5: held; 20 = 3 × 6 + 2: falls
+    expect(half).toMatch(/class="rf-pairrow is-held" data-rf-pair-row="15" data-rf-fills="1"/);
+    expect(half).toMatch(/class="rf-pairrow is-fell" data-rf-pair-row="20" data-rf-fills="0"/);
+    expect(count(half, /rf-cell is-left/g)).toBe(2);
+    expect(count(half, /class="rf-plank (is-alt)?"/g)).toBe(5 + 6);
+
+    const both = renderToString(<Mirror c={pairOf(14, 21, 7)} stage="done" fast />);
+    expect(count(both, /rf-pairrow is-held/g)).toBe(2);
+    expect(both).not.toContain('is-left');
+  });
+
+  it('a plank longer than one gap: nothing is laid on it, the whole gap stays open, the plank stays shown', () => {
+    const out = renderToString(<Mirror c={pairOf(15, 45, 20)} stage="done" fast />);
+    expect(count(out, /rf-cell is-left/g)).toBe(15 + 5);
+    expect(count(out, /rf-plank--sample/g)).toBe(1);
+    expect(count(out, /class="rf-plank (is-alt)?"/g)).toBe(2);
+  });
+
+  it('tight (beside the tiles): once laid, the band of the plank is left out — same width, less height', () => {
+    const tight = renderToString(<Mirror c={pairOf(12, 18, 6)} stage="done" fast tight />);
+    expect(tight).toContain('viewBox="0 50 720 100"');
+    expect(tight).toContain('is-tight');
+    expect(renderToString(<Mirror c={pairOf(12, 18, 6)} stage="done" fast />)).toContain('viewBox="0 0 720 150"');
+    // asked: the plank is still shown, even tight
+    expect(renderToString(<Mirror c={pairOf(12, 18, 6)} stage="ask" fast tight />)).toContain('viewBox="0 0 720 150"');
+  });
+
+  it('its line: both gaps, the plank, the planks the two bridges need (when counted), and a mini of two bars', () => {
+    const counted = renderToString(<Line c={pairOf(198, 234, 18, { pair: { a: 198, b: 234, d: 18, need: 24 } })} />);
+    expect(counted).toContain('rf-line--pair');
+    expect(counted).toMatch(/<strong dir="ltr">198<\/strong> و <strong dir="ltr">234<\/strong>/);
+    expect(counted).toContain('لوح 18');
+    expect(counted).toContain('24 لوحًا');
+    expect(counted).toContain('rf-mini--pair');
+    expect(count(counted, /<rect/g)).toBe(11 + 13); // 198 = 18 × 11, 234 = 18 × 13
+    expect(count(counted, /class="is-held"/g)).toBe(24);
+
+    const refused = renderToString(<Line c={pairOf(198, 234, 11)} />);
+    expect(refused).toContain('لا يبنيهما');
+    // 198 = 11 × 18 (green), 234 = 11 × 21 + 3 (blue planks and an amber rest)
+    expect(count(refused, /class="is-held"/g)).toBe(18);
+    expect(count(refused, /class="is-left"/g)).toBe(1);
+    expect(count(refused, /<rect/g)).toBe(18 + 21 + 1);
+    // the lesson's own tag wins over the default
+    expect(renderToString(<Line c={pairOf(16, 19, 5, { tag: 'tag[p]' })} />)).toContain('tag[p]');
+  });
+
+  it('a case that is not a pair is drawn exactly as before: one bridge, its own box, its own line', () => {
+    const c = { ...outcome(16, 5), fits: false };
+    for (const stage of ['ask', 'build', 'done']) {
+      const out = renderToString(<Mirror c={c} stage={stage} fast />);
+      expect(out).toContain('data-rf-bridge="16:5"');
+      expect(out).toContain('viewBox="0 0 720 150"');
+      expect(out).not.toMatch(/data-rf-pair|rf-pairrow/);
+      expect(count(out, /class="rf-cell /g)).toBe(16);
+      expect(count(out, /class="rf-plank (is-alt)?"/g)).toBe(stage === 'ask' ? 0 : 3);
+    }
+    expect(renderToString(<Mirror c={c} stage="done" fast tight />)).toContain('viewBox="0 48 720 102"');
+    const line = renderToString(<Line c={c} />);
+    expect(line).not.toMatch(/rf-line--pair|rf-mini--pair/);
+    expect(line).toContain('انهار: بقيت خانة');
+    expect(count(line, /<rect/g)).toBe(3 + 1);
+  });
+});

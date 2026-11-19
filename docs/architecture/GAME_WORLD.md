@@ -405,6 +405,57 @@ walks of the game world seed the launch as already played.
    in the forge (while he writes his rule, and on the chart) the ✕ and the sound button are on screen, uncovered, beside
    the steps, and the sound is turned off and on from there.
 
+## 2ter-1. Three more rules for EVERY game world (owner, 2026-11-19 — « a very important update for all the games »)
+
+1. **The instruction of the moment is BIG and stays on screen until it is done.** He may fold it and open it again; a new
+   instruction always opens. `kit/Instruction.jsx › Instruction` (the world's `Hud` renders it from `state.objective`,
+   keyed by its text): 1.4 rem, the fold button « المهمّة » (`data-di-instruction="open|folded"`,
+   `data-di-instruction-fold`). While a bridge is being built (`state.equation`) it is `compact` — one line — so the
+   equation and its verdict keep their place above the world; it is never removed. **So the instruction must be whole:**
+   what the robot SAYS disappears after a few seconds (`game.say`), the instruction does not — a story gives the full
+   sentence through its hook `objective(game, seg, i)` (the world's default is one short line per kind of segment).
+2. **What matters from the island before is shown on the RIGHT of the game**, so that he connects one island to the
+   next: `kit/Instruction.jsx › Recall` — the card « من الجزيرة السابقة » (`data-di-recall`, three lines at most, `$…$`
+   allowed), rendered by the world's `Under` from `state.recall`. The world fills it on arrival (`Game.js › recallOf`):
+   the story's hook `recall(game, k)`, or by default the gap he has just crossed (`198 = 11 × 18`). The middle column
+   narrows to leave the card its room (`.di-center:has(~ .di-recall)`).
+3. **He can turn ROUND and walk back.** Before, the camera always looked along the road ahead: « back » walked him
+   towards the lens, blind. The control is the owner's (2026-11-19): **each PRESS of « back »** (ArrowDown / S / the
+   stick pulled down) **turns him round** — `game.facing` flips between 1 and -1 (`kit/WorldRuntime.js › updateHero`),
+   the world's `heading()` points back along the road (`Game.js › place()` — the bridge under him, or the island he is
+   on — and `heading()`) and the camera swings behind him (a quicker damping for a turn round than for the bend from
+   one island to the next), and **the ROBOT turns round on the spot with the view** (`turning`: its yaw follows
+   `heading()` while it stands still); **« forward » then walks him the way he faces**, towards the island before; « back » again
+   turns the camera to the road ahead. « back » never walks him. His keys are read in a frame blended from the lens's
+   direction and the direction it is turning TO, so he never walks an arc towards the gap while it swings. `facing`
+   goes back to 1 on arrival at a new island and after a fall.
+
+### A situation lived on the islands may REPLACE the experiment screen of a forge (owner, 2026-11-19)
+
+The need for a rule may come from the world itself — a constraint he carries from one island to the next — instead of
+the mirror's « استكشف ». The forge then has no `inquiry`: its evidence is the world's log of bridges
+(`forge.evidence(log)`, every bridge fired, held or not), and the mirror keeps the tiles, the test on what he did, the
+attacks, the seal, the last step and the tablet. Two mechanics of the world « أرخبيل القواسم » serve it:
+
+- **A CONVOY — two (or more) bridges built with the planks of ONE island.** Consecutive bridge segments that carry the
+  same `convoy: '<id>'` (the story's `segments`): the first holds the `moulds`; the later ones have `moulds: []`, their
+  islands hold no planks, and he keeps the plank he carries on arriving there. A later bridge takes only the planks
+  that hold the bridge before it (`T.say.convoyOnly`). When a later gap refuses them: `flags.convoyStuck`, and the
+  instruction sends him back to the first island (`T.objective.convoyBack(name)`, `T.say.convoyBack(name, r)`). Taking
+  OTHER planks there sends every standing bridge of the convoy back to its pedestal (`convoyChoice`,
+  `T.say.convoyReset(b)`): the road starts again from that island (`state.stage` goes back to it, so `onArrive` of the
+  islands after it runs again — a story's `onArrive` must bear being run twice). `seg.builtWith` is the plank that
+  holds a bridge (saved as `built` in the world's save; `restore` lays it again).
+- **A PURSE** — `story.convoys = { <id>: { purse: n } }`: a coin per plank laid, WHATEVER ITS LENGTH. `purseOf(seg)`
+  = `{ of, left }`, derived from the convoy's standing bridges (never stored); the chip `data-di-purse=<left>` shows it
+  while a bridge of the convoy is still to build. When the coins run out the bridge stops where they did: the equation
+  shows what is laid and what is still open, the verdict says so (`T.verdict.purse`), everything goes back
+  (`T.say.purseOut(laid, need)`) — on a later bridge of the convoy he is sent back, as above.
+
+First used by lesson 4 `qasim-mushtarak-akbar` (keys 1 and 2: one choice of planks for two gaps; then planks that all
+fill both, and a purse that only the longest pays). NOT yet unit-tested: the mechanic lives in the 3D runtime
+(`Game.js`), which only the walks play.
+
 ## 2ter. No scrolling anywhere (owner rule; restated 2026-11-15: « the student must never scroll »)
 
 Nothing in the game world scrolls — not the page, not a card, not a panel — and nothing is cut.
@@ -428,7 +479,10 @@ him whether his rule is right, and « it must be integrated in the game of the l
 
 On island D the game used to ask one multiple-choice question, then a tablet TOLD the rule. Now **the student defends his rule,
 and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, frame `kit/forge.js`, overlay
-`{ type: 'forge', key }`). The table below is the FIRST forge; the three others follow the same six steps (« The four forges »):
+`{ type: 'forge', key }`). The table below is the FIRST forge; the three others follow the same six steps (« The four forges »).
+A forge with no `inquiry` whose `predictCases` returns no case — its evidence came from the WORLD, which held the
+predictions (§2ter-1 « A situation lived on the islands ») — opens directly on ② its tiles, and its steps shown are
+« اكتب قاعدتك → المرآة تختبرها → اختم » (`kit/RuleForge.jsx`, since 2026-11-19):
 
 | Step | What happens | Never |
 |---|---|---|
@@ -512,6 +566,12 @@ and the island's mirror judges it with bridges** (screen `kit/RuleForge.jsx`, fr
   a tile wraps on a compact line (1.45) and the build panel keeps tighter gaps; while he builds, `RuleForge` passes
   `tight` to the world's `Mirror` (`parts.Mirror({ c, stage, fast, tight })`) — the bridge world then leaves out the empty
   band above a built bridge (same scale, less height: `divisorIsles/forgeParts.jsx`, `.rf-bridge.is-tight`).
+- **A case that is a PAIR of gaps is drawn as two bridges** (2026-11-19, lesson 4's keys 1 and 2: the question named
+  two gaps and one plank, the mirror drew one bridge). A case may carry `c.pair = { a, b, d, need? }`
+  (`divisorIsles/forgeParts.jsx › PairMirror`): gap a above gap b at one scale, the plank laid on both at once, each
+  bridge with its own held / fell look and what is left in amber (`data-rf-pair="A:B:d"`, `data-rf-pair-row`,
+  `data-rf-fills`); its log line names both gaps and the plank on ONE line, with a mini of two bars and the lesson's
+  tag (or `need` planks). A case that is neither a pair nor a sharing is a single bridge, as before.
 - **A case that is a SHARING is drawn as a sharing, never as a bridge** (2026-11-19: the vases' forge of
   `qasim-mushtarak-akbar` drew « 36 وردة و 60 زنبقة في 12 مزهرية » as « لوح 12 » over « 60 خانة », and its log read
   « 56 لوح 5 »). A case of this world may carry `deal` (`divisorIsles/forgeParts.jsx`):
@@ -1462,14 +1522,19 @@ per row. The exam sheet of « تدرّب » (`kit/Trainer.jsx › Marked`) print
 underlined; a prompt that contains `$…$` is rendered through `MathText` instead, so a formula in a prompt is allowed.
 `rf-says`, the labels of `RuleForge` and a tablet's `notes` stay plain text: no `$` in them.
 
-**Lesson 4 (`qasim-mushtarak-akbar`, 2026-11-19) — four keys, four kinds** (design: `docs/reports/BATCH_2_DESIGN.md` §3):
-`qawasim-mushtaraka` on `common` with `crown: false` (the twin gaps 198 and 234 and a pile of nine planks: he shelves
-each one, the longest is NOT asked — that is the next key's question); `al-akbar` on `summit` (266 and 322 from the plank
-14, then 198 and 234 without help: the planks of the shorter gap tried from the longest down, the first that fills the
-other gap stops the search); `baqat-mutamathila` on `deal` (40 roses and 56 lilies into identical vases: the numbers of
+**Lesson 4 (`qasim-mushtarak-akbar`, 2026-11-19) — two keys found on the islands, two on experiments** (design:
+`docs/reports/BATCH_2_DESIGN.md` §3 and §7): `qawasim-mushtaraka` on the CONVOY « twins » (the planks of island A — 7, 11,
+13, 9 — build 198 then 234, island B has none; the instruction names both gaps before he picks, the card on B recalls the
+first bridge, the card on C what each plank he fired did) and `al-akbar` on the convoy « crown » with a PURSE of 42 coins
+(the planks 2, 7, 14 of island C all fill 266 and 322; only 14 pays for both bridges, 19 + 23). Their forges have NO
+`inquiry`: `evidence(log)` turns the world's log of bridges into one line per plank fired on the pair, the kit opens them
+on predictions of new pairs (`predictCases`, five each), then the tiles (12 and 9 rules); every wrong rule falls on his
+lines or by an attack, whatever road he took (one plank at once, or every plank) — `world/forges.test.js`.
+`baqat-mutamathila` on `deal` (40 roses and 56 lilies into identical vases: the numbers of
 vases that work, the most, what one vase holds); `qawasim-al-pgcd` on `nest` (228 and 276 against 12: the planks of both
-gaps are the planks of their longest). Its `world/inquiries.test.js` fails if two keys share a (kind, mode). What its
-walks taught, now in the kit: the forge's log offers EVERY row while the mirror tests (a refuting row older than the last
+gaps are the planks of their longest). Its `world/inquiries.test.js` fails if the two experiments share a (kind, mode) or
+an island's sentence names a rule before its tablet. What its walks taught, now in the kit: the forge's log offers EVERY
+row while the mirror tests (a refuting row older than the last
 `EVIDENCE_MAX` had left the screen); the summit's chips run right to left like the line above them; a « PGCD(a ; b) »
 written in the words of a bank line is drawn as a formula at display (`kit/bankSitting.js › namesAsMath`); the mirror of
 `baqat-mutamathila` draws every case as a SHARING (`c.deal`, §2sexies « A case that is a SHARING »), never a bridge — its

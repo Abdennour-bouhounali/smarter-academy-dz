@@ -8,6 +8,11 @@ any commit (§B). Each question below was learned from a defect that passed ever
 
 For each key:
 
+0. **Is there a situation IN THE WORLD that makes the rule necessary?** (owner, 2026-11-19) — a constraint he carries
+   from one island to the next (one choice of planks for two bridges, an island with none), a cost (a purse that only
+   the right plank pays). If there is one, it REPLACES the experiment screen of the mirror: the forge has no
+   `inquiry`, its evidence is what he did on the islands. Only a rule with no honest situation (a procedure, a proof)
+   keeps an experiment in the mirror. `GAME_WORLD.md` §2ter-1; first case: lesson 4, keys 1 and 2. [A11]
 1. **What is the NATURE of this rule** — a condition on one case, a search, a maximum with a reason to stop, a procedure,
    a sharing, a classification, a change of unit, an equality of two sets, a proof? The experiment is of that nature.
 2. **Is its (kind, mode) used by another key of this lesson?** By the lesson before, on the same idea with easier
@@ -45,6 +50,10 @@ Run the six walks at 1366×768, 1024×768 and 1840×900 on a frozen copy. Then O
 A screenshot that an agent says it looked at still counts as NOT looked at.
 
 On each picture, in this order:
+
+0. **In the world: is the instruction there, whole, and enough to act on without the robot's sentence?** Is the card
+   « من الجزيرة السابقة » there with what he needs to connect the two islands? Can he walk back, the camera behind
+   him? (`GAME_WORLD.md` §2ter-1) [B14]
 
 1. **Does the drawing say what the sentence says?** Vases for a sharing, not planks; the count on the picture equal to
    the count in the words; the thing the question names visible on the question's screen. [A10]

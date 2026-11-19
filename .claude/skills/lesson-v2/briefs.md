@@ -50,7 +50,10 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > Read first: `npm run -s lesson:brief -- <id>`; `docs/architecture/LESSON_V2.md` (the folder, evidence §1bis);
 > the lesson's section of `<the design page>`; `<REF>/world/` — every file and its test; `kit/claims.js`,
 > `kit/bankSitting.js`, `guardEvidence`.
-> - The story is the design's: `<islands, gaps, keys with their ids, what happens between them>`. Check every new number
+> - The story is the design's: `<islands, gaps, keys with their ids, what happens between them>`. Its hook `objective`
+>   gives the WHOLE instruction of each step (it stays on screen; the robot's sentence does not), `recall` the card of
+>   the island before; a situation that makes a rule necessary is declared with `convoy` / `convoys` (`GAME_WORLD.md`
+>   §2ter-1) — `onArrive` must bear being run twice. Check every new number
 >   with `story.test.js` (no number of another lesson, no headline pair of the lesson's bank) BEFORE using it elsewhere.
 > - **The final mission must need the lesson**: `<the mission, its right plank and its distractor — the error the lesson fights>`.
 > - Nothing states a rule or names a key before its forge: the story's `say`, the dash, the stone, the trainer's
@@ -101,6 +104,9 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > - Every sentence of an experiment is a FACT; `inquiries.test.js` lists the forbidden words of each key and fails if
 >   two keys share a (kind, mode). `forges.test.js` enumerates EVERY rule the tiles can write and refutes each wrong one,
 >   and checks each `use` accepts its solution and refuses near misses.
+> - **A key discovered ON THE ISLANDS** (`review.md` §A.0): no `inquiry`; `evidence(log)` builds the rows from the
+>   world's log of bridges; `predictCases` returns none (the forge opens on its tiles); a case about two gaps carries
+>   `pair`. He may have tried ONE plank only: the mirror's tests and attacks must still refute every wrong rule.
 > - **A key that is not about a bridge** (a sharing, a fraction …): its cases carry what the world's `forgeParts.jsx`
 >   needs to draw them in their own language (a sharing: `deal`); no tag, attack or refutation says « لوح », « هوّة »,
 >   « جسر » — test it.

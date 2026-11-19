@@ -23,6 +23,8 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | A8 | Look-alike exercises generated instead of the bank; a « DA » of the bank; a line that sends to the textbook | D, R | `kit/bankSitting.js` (the sitting IS the bank; « DA » shown « دج »); `kit/bankDisplay.test.js` | The sitting is one call to `createBankSittings`. A defect of the bank is reported to the owner, never rewritten. |
 | A9 | A number, an island or a word of ANOTHER lesson on screen | P | `e2e/lib/walk.mjs` (foreign words, from `lib/lessonWords.mjs`); each lesson's `world/story.test.js` (numbers against the other lessons' and the bank's headline pairs) | New numbers are checked against `story.test.js` BEFORE they are used anywhere else. |
 | A10 | A sharing, a fraction or any non-bridge idea is drawn and worded as a plank bridge (« لوح 5 » for five vases — in the forge's mirror, its log, the board's cards) | L4 | `L4 world/forges.test.js` (no plank word in a sharing case); one lesson's walks (L4 story walk: forge 3 shows `data-rf-deal`, no « لوح »; board walk: the bouquet station's own words) | When a key is not about a bridge, EVERY surface must speak its language: the mirror (`forgeParts.jsx`: a case's `deal`), the log line, the board's `ask` step (`words`), the trainer. |
+| A10b | A question about TWO gaps drawn as one bridge in the mirror and logged as one gap | L4 | `divisorIsles/forgeParts.render.test.jsx`; one lesson's walk (L4: `data-rf-pair` at every attack of forges 1–2) | A case says what it is — a bridge, a pair (`pair`), a sharing (`deal`) — and the mirror and the log draw THAT. |
+| A11 | A rule met only on an experiment SCREEN of the mirror, when a situation in the world could make it necessary (lesson 4 as first built: the owner redesigned keys 1 and 2 the same day) | L4 | eye (`review.md` §A.0) | First look for a constraint he carries across islands (a convoy, a purse); the mirror's experiment is for rules that have none. |
 
 ## B. Screens — what the student sees
 
@@ -41,6 +43,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B11 | Arabic number agreement and definiteness (« 6 خانة », « 12 مزهريات », « في الأكياس متماثلة », « في مزهريتين متماثلة ») | D, L4 | eye (`review.md` §B.6); the lesson's `counted` helpers | Never glue a number to a noun by hand: use `counted` / `planks` / `cells`. Re-read every sentence built from a template with 1, 2, 3–10, 11+. |
 | B12 | A shape drawn black; a person drawn locally; a raster image | — | eye; `CLAUDE.md` | Brand blue shapes; `primitives/KidFigure.jsx`; SVG and DOM only. |
 | B13 | Money written « DA », or with a thousands space | D | `kit/bankSitting.js › cashDj`; eye elsewhere | « دج », no thousands space. |
+| B14 | In the world, the instruction was a small line that left the screen, the only full sentence was the robot's and vanished after seconds; nothing recalled the island before; « back » walked him blind towards the camera | every lesson until 2026-11-19 | `kit/Instruction.jsx` (the instruction stays, folds; the card on the right), `kit/WorldRuntime.js` (walking back turns the camera); one lesson's walk (L4 story walk: the instruction present and uncovered at every world screenshot) | The story's `objective` hook gives the WHOLE instruction of each step; `recall` gives the card; never rely on `game.say` for what he must do. |
 
 ## C. The walks themselves — how a check lies
 
@@ -50,6 +53,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | C2 | A sitting walk opened ONE random sheet | R | `e2e/lib/sittingWalk.mjs` (every sheet of the bank) | — |
 | C3 | A check weakened to make a walk pass (a font floor lowered, a screen exempted) | R | review of the walk's diff | Never weaken a check: fix the screen, or report. |
 | C4 | The walk's own expectation was wrong (« 45دج » expected, « 45 دج » shown; a height compared to the pixel when Arabic glyphs overhang) | L4 | — | A check that fails with equal numbers, or on text that is whole on the screenshot, is a fault of the check: fix the check, say so in the report. |
+| C4b | A check measured an element WHILE it moved (a log line shaking for 0.4 s on a refutation « left its column ») | L4 | — | Measure a box after its animation: wait for it, or read the element's rest position. |
 | C5 | A random draw makes a walk pass or fail by luck | L4 | `e2e/lib/launchKitTwoTools.mjs` (the longest card probed at every run) | When the app draws at random, the walk tests the worst case deliberately. |
 | C6 | A walk run while source was edited, or two heavy checks at once: failures that mean nothing | D | the frozen copy (`SKILL.md` §4) | — |
 | C7 | « All walks pass » reported for sizes or screens that were not run or not looked at | L3, R | the report's fixed shape (`briefs.md` §0) | Say what was NOT run and which screenshots were NOT looked at. |

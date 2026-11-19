@@ -21,10 +21,11 @@ import { twin } from '../kit/longDivision';
 import LessonWorld from '../kit/LessonWorld';
 import { M, Card, Num } from '../kit/parts';
 import { KT, TX } from '../kit/text';
+import { Instruction, Recall } from '../kit/Instruction';
 import { useLesson } from '../kit/LessonContext';
 
 function Equation({ eq, unit = planks }) {
-  const { a, b, q, r, live } = eq;
+  const { a, b, q, r, live, unpaid } = eq;
   // a remainder that is not 0 is a FACT about the mould, not a mistake: amber, never the red of an error
   const col = live ? '#fbbf24' : r === 0 ? '#34d399' : '#fb923c';
   return (
@@ -32,7 +33,8 @@ function Equation({ eq, unit = planks }) {
       <M>{`${a} = ${b} \\times ${q} + \\textcolor{${col}}{${r}}`}</M>
       <div className="di-eq__legend">
         <span>{unit(q)}</span>
-        <span style={{ color: col }}>{`${T.hud.remainder}: ${r}`}</span>
+        {/* `unpaid`: the purse ran out — what is still open is not a remainder (it is not smaller than the plank) */}
+        <span style={{ color: col }}>{`${unpaid ? T.hud.unpaid : T.hud.remainder}: ${r}`}</span>
       </div>
     </div>
   );
@@ -50,7 +52,7 @@ function Verdict({ v }) {
       )}
       {v.right === false && <p className="di-verdict__pred is-wrong">{T.verdict.wrong(v.predicted, v.r)}</p>}
       <p className={`di-verdict__bridge ${v.holds ? 'is-holds' : ''}`}>
-        {v.holds ? T.verdict.holds(v.b, v.a) : T.verdict.open(v.b, v.a)}
+        {v.purse ? T.verdict.purse(v.q, v.need) : v.holds ? T.verdict.holds(v.b, v.a) : T.verdict.open(v.b, v.a)}
       </p>
     </div>
   );
@@ -827,9 +829,17 @@ function Boss({ o, game }) {
 function Hud({ s }) {
   return (
     <>
-      {s.objective && !s.equation && (
-        <div className="di-objective" key={s.objective}>
-          {s.objective}
+      {/* the instruction of the moment stays until it is done — he may fold it (owner, 2026-11-19) */}
+      {s.objective && <Instruction key={s.objective} text={s.objective} compact={Boolean(s.equation)} />}
+      {s.purse && (
+        <div className={`di-purse ${s.purse.left === 0 ? 'is-empty' : ''}`} data-di-purse={s.purse.left}>
+          <Coins size={18} aria-hidden="true" />
+          <span>{T.purse.label}</span>
+          <b dir="ltr">
+            {s.purse.left}
+            {'\u00a0/\u00a0'}
+            {s.purse.of}
+          </b>
         </div>
       )}
       {s.pinned && !s.equation && (
@@ -858,7 +868,12 @@ const WORLD = {
     Boolean(s.depot && s.phase === 'depot' && !s.depot.busy && s.depot.step?.type === 'number'),
   held: (s) => (s.held != null ? `القالب ${s.held}` : null),
   Hud,
-  Under: ({ s, game }) => (s.dash ? <DashHud dash={s.dash} game={game} paused={s.phase !== 'dash'} /> : null),
+  Under: ({ s, game }) =>
+    s.dash ? (
+      <DashHud dash={s.dash} game={game} paused={s.phase !== 'dash'} />
+    ) : !s.overlay && (s.phase === 'play' || s.phase === 'dialog' || s.phase === 'forge') ? (
+      <Recall lines={s.recall} />
+    ) : null,
   Over: ({ s, game }) =>
     s.depot ? <DepotHud d={s.depot} eq={s.equation} game={game} paused={s.phase !== 'depot'} /> : null,
   overlay(o, s, game) {

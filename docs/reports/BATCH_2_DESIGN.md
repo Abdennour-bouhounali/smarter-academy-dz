@@ -57,8 +57,8 @@ The stories written on 2026-11-18 are kept (islands, gaps, the last bridge's pro
 
 | Key | Nature | Experiment | Numbers |
 |---|---|---|---|
-| 🤝 القواسم المشتركة (P1, 19) | a search over two gaps | `common`, `crown: false`: each plank of the tray is said twice (holds a? holds b?), laid, shelved | the twins 198 and 234; tray 2, 3, 6, 9, 11, 13, 18 |
-| 👑 القاسم المشترك الأكبر (P2, 56) | the longest, and why the search may stop | `summit` | 266 and 322, from the plank 14 he has just used; then 198 and 234 from the top (18) |
+| 🤝 القواسم المشتركة (P1, 19) | a plank that must fill two gaps | BUILT 2026-11-19 (§7, replaces `common`): the convoy « twins » — the planks of island A build 198 then 234, island B has none; a refused second gap sends him back to A. Forge without experiment: 5 predictions on new pairs, then tiles « يبني اللوح الجسرين معًا إذا كان [يملأ تمامًا · أقصر من] [كلّ هوّة من الهوّتين · الأولى · الثانية · إحداهما على الأقلّ · هوّة لصقهما · هوّة طولها فرقهما] » (12 rules), tested on the planks he fired; `use` unchanged (the common planks of a new pair, as a set) | 198 and 234; island A: 7 (neither), 11 (the first only), 13 (the second only), 9 (both) |
+| 👑 القاسم المشترك الأكبر (P2, 56) | the plank that builds both bridges with the fewest planks | BUILT 2026-11-19 (§7, replaces `summit`): the convoy « crown » with a purse of 42 coins, one per plank — 2 runs out on the first bridge, 7 on the second (38 + 4 of 46), only 14 builds both (19 + 23). Forge without experiment: 5 predictions, then tiles « آخذ [أطول لوح · أقصر لوح · أيّ لوح، فكلّها سواء] من بين الألواح التي [تملأ الهوّتين كلتيهما · تملأ الهوّة الأقصر · تملأ الهوّة الأطول] » (9 rules), tested on the planks he fired with the planks each needs; `use` unchanged (A = g × x, B = g × y) | 266 and 322; island C: 2, 7, 14 |
 | 💐 الباقات المتماثلة (P3, 53 — 38 of them at level 5) | a sharing read with common divisors | `deal` | 40 roses and 56 lilies: 8 bouquets at most, 5 and 7 in each |
 | 🧩 قواسم القاسم المشترك الأكبر (P4, 23) | an equality of two sets | `nest` (as written) | 228 dates, 276 figs, 12 |
 
@@ -145,3 +145,80 @@ its screenshots looked at. (The walks of the six lessons already v2 are still ow
 2. The fraction read as two gaps (lesson 8): accepted as the draft wrote it, or another reading.
 3. The 1AM lesson `ikhtizal-kitaba-kasriya` (core prerequisite of lesson 8): proposed AFTER the five lessons, with a
    design of its own (equal writings, decimal fractions, reducing by the divisibility rules — no PGCD).
+
+## 7. THE OWNER'S REDESIGN of 2026-11-19 — a situation lived on the islands (ACCEPTED for lessons 5–8; lesson 4 in work)
+
+After lesson 4 was built the owner changed how a rule is met (`LESSON_V2_MASTER_PLAN.md` §4ter-0 step 19; the contract:
+`GAME_WORLD.md` §2ter-1): **the need for the rule comes from the world itself** — a constraint he carries from one
+island to the next — and that situation REPLACES the experiment screen of the mirror. The mirror keeps the tiles, the
+test on what he did on the islands, the attacks, the seal, the last step and the tablet. Three rules hold in every
+world: the instruction is big and stays, the facts of the island before stand on the right, he can walk back.
+
+The world has two mechanics for it (built 2026-11-19): **a convoy** (two bridges built with the planks of ONE island;
+the island between holds none; a gap that refuses sends him back) and **a purse** (a coin per plank, whatever its
+length). §3 above stays the record of the experiment kinds; where this section gives a key an island situation, that
+situation replaces the experiment named in §3.
+
+### Lesson 4 — decided, in work
+
+| Key | The situation on the islands | In the mirror |
+|---|---|---|
+| 🤝 القواسم المشتركة | he is told the two gaps (198, 234) and that the planks he picks build BOTH bridges, the next island having none: 7 fills neither, 11 only the first, 13 only the second, 9 both | tiles (what makes a plank build both), tested on the planks he tried |
+| 👑 القاسم المشترك الأكبر | 266 and 322, planks 2, 7 and 14 that ALL fill both; a plank costs one coin whatever its length; 42 coins: only 14 pays for both bridges (19 + 23) | tiles (which plank costs least), tested on the planks he tried |
+| 💐 الباقات المتماثلة · 🧩 قواسم القاسم المشترك الأكبر | unchanged (`deal`, `nest` — a sharing and an equality of two sets have no bridge to carry) | as built |
+
+### Lessons 5–8 — ACCEPTED by the owner on 2026-11-19 (« 1-accept, 2-agree, 3-yes »); nothing of it is built yet
+
+« New piece » = something the world does not have yet. A key marked « mirror » keeps its experiment of §3: I found no
+honest situation on the islands for it — a procedure or a proof is not a constraint one carries.
+
+**Lesson 5 `tayin-pgcd`**
+
+| Key | The situation on the islands | Stays in the mirror | New piece |
+|---|---|---|---|
+| 📋 احصر القواسم ثم قاطعها (116 questions — the heart of the lesson) | a convoy with NO plank offered: the island has a workshop where he MAKES the plank he wants; gaps 32 and 44, a purse of 19 coins (8 + 11 planks of 4). To know which plank to make he fills the workshop's two lists (the planks of each gap, by pairs) and links those in both | tiles: the procedure in his words | the workshop opens the `lists` bench on the island (the kind exists; today it opens in the mirror) |
+| ⚡ نتائج مباشرة | three short convoys with the workshop, where the purse says it all: twins 27 and 27 (2 coins); 27 and 1 (28 coins); 27 and a gap already full, 0 cells (1 coin) | tiles | a gap of 0 cells drawn as a bridge already standing |
+| 🎯 عندما يقسم الأصغر الأكبر | 76 and 19 with 5 coins — the shorter gap's own length is the plank; against 90 and 36 (7 coins: 18, not 36) | tiles | — |
+
+**Lesson 6 `bahth-pgcd`**
+
+| Key | The situation on the islands | Stays in the mirror | New piece |
+|---|---|---|---|
+| ➖ الفرق يحفظ الألواح المشتركة | a convoy of THREE gaps: 152, 95, then 57 — announced as « the first minus the second »; planks 19 (fills the three), 8 (152 only), 5 (95 only), 3 (57 only): a plank that builds the first two always builds the third | tiles | a convoy of three bridges (the mechanic allows it; not tried) |
+| 🪜 خوارزمية الفروق | the first two steps lived: after each crossing a storm cuts the longer gap by the shorter one (152 ; 95 → 95 ; 57 → 57 ; 38) | the `ladder/subtract` experiment carries the procedure to its end | the storm that cuts a gap (a storm exists; this use is new) |
+| 🧮 الباقي يحفظ الألواح المشتركة | — | mirror (`ladder/fold`) | — |
+| 🔁 خوارزمية إقليدس | — | mirror (`ladder/divide`) | — |
+| ⏱️ أيّ الخوارزميتين أسرع | two workshops on one island, the subtractions' and the divisions'; a step costs a coin; the purse (2 coins for 1003 and 34) pays only the divisions (31 steps against 2) | tiles | the purse counting steps instead of planks |
+
+**Lesson 7 `awwaliyan-fima-baynahuma`**
+
+| Key | The situation on the islands | Stays in the mirror | New piece |
+|---|---|---|---|
+| 🤝 عددان أوّليان فيما بينهما | a convoy 25 and 27 with planks 3, 5, 9 and 1: only the plank 1 builds both (52 coins); then 26 and 39, where 13 does | tiles; the pairs of §3 (44 ; 45, 85 ; 119, 13 ; 39) are the mirror's attacks | — |
+| ✅ أثبت أنّهما أوّليان فيما بينهما (113 questions) | — | mirror (`ladder/divide` ending on 1, then the sentence of the proof) | — |
+| ❌ أثبت أنّهما ليسا أوّليين فيما بينهما | a convoy 645 and 410 with the planks the divisibility rules give (2, 3, 5, 9, 10): ONE plank that builds both ends it; then 85 and 119, where none of them does — and the bridges still stand with 17, made in the workshop | tiles (one witness is enough; no witness seen proves nothing) | — |
+
+**Lesson 8 `ikhtizal-kasr`** (two gaps one after the other are one fraction: the first the numerator, the second the denominator)
+
+| Key | The situation on the islands | Stays in the mirror | New piece |
+|---|---|---|---|
+| 🪜 الاختزال على مراحل | a convoy 66 and 78; a sign over the two bridges writes the fraction counted in the planks laid: 66/78, with planks of 2 → 33/39; the next island shows the same two gaps counted in those planks, he picks again (3) → 11/13 | tiles; the second road (3 then 2, or 6 at once) is the mirror's test | the sign that re-writes the fraction in planks |
+| 🔒 الكسر غير القابل للاختزال | — (the situation would be lesson 7's first key again) | mirror (`sort`, fraction cards) | — |
+| 🎯 الاختزال بالقاسم المشترك الأكبر | a convoy 66 and 99 with a purse of 5 coins (2 + 3 planks of 33): one choice, the fewest planks, the sign writes 2/3 at once | tiles | the sign |
+| 🧾 نتيجة حساب | — | mirror (`part`) | — |
+
+### The three questions put to the owner, and his answers (2026-11-19)
+
+**Answers: 1 — accepted (the same gesture may carry several keys, lesson 5's three included); 2 — agreed (the seven
+keys stay in the mirror); 3 — yes (the six new pieces of the world are to be built).** Question 4 stays open.
+
+1. **The same mechanic carries several keys** (a convoy with a purse: lesson 4 key 2, lesson 5's three keys, lesson 7
+   key 1, lesson 8 key 3). What he discovers differs each time, but the gesture is the same. To accept, or to ask for
+   a different situation where it repeats inside one lesson (lesson 5).
+2. **Seven keys stay in the mirror** (the two algorithms and their comparison's ladders, the proof, the two
+   classifications of fractions, the calculation): a procedure or a proof is not a constraint carried over two islands.
+3. **Six new pieces** of the world would be built (the workshop's lists bench, a gap of 0 cells, a three-bridge
+   convoy, the storm that cuts a gap, the sign of a fraction; a purse of steps): each is the owner's « go ».
+4. The kinds written on 2026-11-19 for the keys that move to the islands (`summit`, `measure`, `common/witness`,
+   `nest/pair`, `ladder/both`) would have no lesson to play them: kept for the mirror's tests where they fit, or
+   deleted — to decide once the lessons are built.
