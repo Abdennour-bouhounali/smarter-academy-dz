@@ -439,3 +439,106 @@ board, old version deleted; ❌ « a test per part » (no `forges` test yet — 
 world » (the orchestrator) · `validate-lessons.mjs` ✅ · `check-textbook-coverage.mjs` ✅ · `check:unreached` and
 `check:unused`: nothing of this lesson (the other batch-2 lessons' `world/` only) · `eslint` and `prettier --check` on the
 touched files ✅. NOT run: the whole suite, a build, `check:lessons`, any walk.
+
+## 12. Lesson 5 — `tayin-pgcd` (2026-11-19, NOT committed)
+
+Lesson: 4AM `tayin-pgcd` (`…/aadad-tabiiya-natiqa/tayin-pgcd/`), lesson 5 of the unit. Same job and shape as §11. Its new
+version — `world/` (another agent was rewriting `world/forges.js` and `world/inquiries.js`: their two tests failed during
+this change, its work in progress), `board/` — was not touched; its pack `lesson.pack.js` was written in this change (world
+`divisor-isles`, `knowledge` = `world/knowledge.js › LESSON_KNOWLEDGE`, `coach` P1 `hasr-wa-taqatu` · P2 `nataij-mubashira`
+· P3 `b-yaqsim-a`, as `world/evidence.js › POINTS`, `board` script and memo, `phone: false`). `board/script.js › KEYS`
+already equals `world/journey.js › KEYS`; `board/board.test.js` passes. This lesson was on the MISSION PLAYER (scene
+`school-bags`).
+
+### 12.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1 and rows h, l of §11.1 hold unchanged. What is specific to this lesson:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge: () => import('./knowledge')`) | pages + the 🧠 map | **changed** as §11 (`retiredModules: true`, no `loadKnowledge`): the 8 module addresses redirect home |
+| b | `moduleContext.js` | data, for the pages only | **deleted** |
+| c | `lesson.config.js › studentView`, `mission` (scene `school-bags`, tools `tayin-bil-hasr`, `nataij-mubashira`, `pgcd-idha-qasim`, three checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef` | the mission player, `LessonProblemCard`, the old 🧠 provider; `textbookRef` read by nothing | **deleted**; the header (the textbook's activity 5 and pages) and the French design comments rewritten |
+| d | `lessons/common/mission/MissionScene.jsx` › `'school-bags'` → `SchoolBagsScene.jsx` | `mission.scene` of this config only (grep: no other config, no test) | **deleted** |
+| e | `content/bags.js` (`M1_ROUNDS`), `peerSheet.js`, `prep.js`, `problems.js`, `exercises.js`, `textbook.js` (+ the 4 tests of the first four) | the module pages only (verified: `world/` imports only the kit, `divisorIsles/` and its own files; `board/` imports `features/classSession/lessonScripts`) | **deleted** |
+| f | root `knowledge.jsx`, `knowledgeGraph.js` | the home's 🧠 map, `validate:lessons`' graph check, `check:textbook`, the pages, the globs of `lessonGraphs.test.js` / `memoContent` / `wadiya…/mission.test.js` | **deleted**. Every textbook element they and `content/` cited (`act-5`, `know-4-results`, `ex-17`, `ex-18`, `ex-22`) is still cited by the practice bank (`content/practice/4am/tayin-pgcd/`) and `resources › sourceElementIds` (verified by grep; `check:textbook` NOT run) |
+| g | `wadiya-idmajiya-aadad/content/mission.test.js` — (1) `knowledgeOf` (the synthesis' tools must exist in a sibling's knowledge): none of its five tools is a key of this lesson (`qawasim-mushtaraka`, `al-akbar` are lesson 4's world; `pgcd-baqi`, `khwarizmiyat-iqlidus` bahth-pgcd's; `jidaa-aamilayn` the pilot's); (2) `lessonContent` (`../../*/content/*.js`: the pairs of the unit's lessons for the collision rule) loses this lesson's old pairs; (3) `peerSheets` loses « ياسين » | ids, pairs, names | **unchanged, and passing** (follow-up 18 for (2)) |
+| h | `wadiya-idmajiya-aadad` « أستعدّ » (`pgcd: { lesson: 'tayin-pgcd' }`), `content/prep.js › PREP_LESSON`, `bahth-pgcd/modules/Module00Astaidd.jsx` (`lesson: 'tayin-pgcd'`), `unitMissions.js` (🎒, « تعيين PGCD »), `lessonlab/registry.js` (its instrument `lists`), `moduleLayoutMigrations.js`, the learning net, the launch kit, the API's tests and seeders, `content/practice`, `content/class-tests/4am/tayin-pgcd.json` | lesson ids, module numbers as data | unchanged |
+| i | the `common-divisors` lab (`resources` of this config: `common-divisors-8-12`, `common-divisors-42-60`) | `resources` | **kept** as data; the lab is NOT orphaned: `wadiya-idmajiya-aadad` (module 7) still mounts it |
+| j | `lesson.config.js › priorKnowledge: ['pgcd-taarif', …]` | `audit-knowledge-dependencies.mjs` (skips a v2 lesson), the lesson brief | `pgcd-taarif` existed only in lesson 4's deleted `knowledge.jsx` → **re-pointed to `al-akbar`** (lesson 4's world key), as §11's follow-up 14 did for the synthesis |
+| k | `docs/reports/knowledge-contracts/4am_tayin-pgcd.json` | the audit's stale report (it lists the module pages) | **deleted** |
+| l | e2e walks | pages | §12.4 |
+
+### 12.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط 5, معارف, أوظّف, three مسائل, « إختبار أولي ») | 8 | 326 |
+| `moduleContext.js` | 1 | 3 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 187 |
+| `content/` — `bags`, `peerSheet`, `prep`, `problems` (+ their tests), `textbook`, `exercises` | 10 | 791 |
+| **lesson folder, total** | **21** | **1,307** |
+| mission scene `SchoolBagsScene.jsx` | 1 | 59 |
+| stale audit report `docs/reports/knowledge-contracts/4am_tayin-pgcd.json` | 1 | 264 |
+| **total** | **23** | **1,630** |
+
+Also edited: `lesson.config.js` (keys of 12.1 c removed; `teachingScope` without the textbook's numbers; module titles and
+`desc` neutral as §10.2 — 0 « أستعدّ », 1 « تعيين PGCD بحصر القواسم », 2 « نتائج مباشرة، وعدد يقسم الآخر », 3 « أتمرّن »,
+4 « مسألة الدرس » (the store of the world's last bridge, `world/story.js › PROBLEM_MODULE = '4'`), 5 « مسألة 2 », 6 « مسألة 3 »,
+7 « التقويم »; ids, numbers, slugs, stages, `teachesLearningPointIds` unchanged — `world/journey.test.js` and
+`world/evidence.test.js` check them against `MODULE_KEYS` and `POINTS`; the resource `common-divisors-42-60` retitled
+« قائمتا قواسم عددين: من القائمتين إلى PGCD » (its autonomy line no longer names 60), the resource `masala-1` no longer titled
+« مسألة الدرس »); `routes.jsx`; `MissionScene.jsx` (import, entry, comment); `package.json` (`format:v2`, `check:format`:
+the lesson's `world`, `board`, `lesson.pack.js`); the generated `lessonIndex.generated.json` (the lesson's `pack` flags);
+`e2e/lesson-lab.mjs` (a `lists` step, and the PGCD lesson's 4AM shelf now has five lessons — `LESSON_LAB.md`).
+`generate:lab-order` / `generate:compass-index` not run: they read the catalogue, the instruments and the bank, unchanged.
+
+### 12.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (its door is « حصّة القسم », its module
+  addresses belong to its board, « present » refused on them).
+- `4am …/_unit/prepDiagnostic.test.js`: five v2 lessons have no « أستعدّ » page (the list names this one).
+- `knowledge/finalSynthesis.test.js`: 70 → 69 evaluation modules (unit 1: 5 → 4).
+- Unchanged and passing: `registry.test.js`, `lessonPack.test.js`, `lessonGraphs.test.js` (the lesson is now among the
+  world-only maps), `common/mission`, `teacher/lessonMemo`, `lessonlab`, the unit's `_unit` and `wadiya-idmajiya-aadad`, the
+  lesson's `board/board.test.js` and `world/` tests except the two below.
+- **Failing, not mine**: `world/forges.test.js` (« Cannot read properties of undefined (reading 'gaps') ») and one case of
+  `world/inquiries.test.js` — the world agent's rewrite in progress.
+
+### 12.4 Walks (NONE was run)
+
+Added: the `lists` step of `lesson-lab.mjs` (open the lab from the world of `tayin-pgcd`, 40 and 56, « جرّب » until both
+lists close, the links and the crown computed in the walk). **Opening this lesson's deleted pages or its old home**
+(follow-up 4 extends to them): `lesson-kit/lab-coach.mjs` (`tayin-pgcd/42-wa-60`, the `common-divisors` lab),
+`lesson-kit/manipulations.mjs` (`tayin-pgcd/42-wa-60`), `lesson-kit/moyen-retrofit-phase1.mjs` (this lesson's module 1 and
+its brick `tayin-bil-hasr`), `lesson-kit/4am-aadad-tabiiya-natiqa.mjs` (walks the unit's lessons and their modules),
+`knowledge-map.mjs` (its `ALL` list opens the 🧠 map of this lesson's page — gone), `mathlab-labs-scope.mjs` (its default
+`QA_LESSON` is this lesson's home, where it looks for the old home's « المختبر » button — give it a lesson still on the old
+home), `page-tours.mjs:204` (navigates through this lesson's home between two module pages of another lesson — to re-check).
+To re-check, lesson level only: `progression.mjs` (the CTA « ابدأ » of a never-opened lesson is this one's home: the address
+is unchanged). `lesson-route-boundary.mjs` picks its module lesson by the index (`!pack.world`): it moves on by itself.
+
+### 12.5 Follow-ups NOT done
+
+17. **4 final-test items retired at the next deploy** (`E1…E4` of the deleted « إختبار أولي »), as follow-ups 1, 10, 13.
+18. **The synthesis' collision rule reads only `content/*.js`** (`wadiya…/content/mission.test.js › lessonContent`): the
+    pairs of the v2 lessons' worlds (here 32/44, 27/27, 19/76, 154/238 in `world/math.js › NUMBERS`) are not in it, and the
+    old pairs of lessons 4 and 5 dropped out. The test passes, but it no longer guards against the worlds' numbers — the
+    synthesis' owner should read `world/math.js` too (or the rule goes with the integration lesson's rebuild).
+19. Still in the config as identifiers (ids and slugs stay, §10.2): module 1's slug `42-wa-60` and the resource code
+    `common-divisors-42-60` (`experience.type: 'textbook'`) carry the textbook's activity numbers; the resources
+    `common-divisors-8-12` (8 pens, 12 notebooks), `masala-1` (90 pens, 126 notebooks), `masala-2` (« قفة رمضان »), `masala-3`
+    (« تربّص النادي ») still name the old labs' and problems' contexts — as §10.4, with follow-up 2 (the unit page lists them).
+20. `check:unused` flags one export of shared code not of this lesson: `gameworld/divisorIsles/Workshop.jsx › Bench` (the
+    world agent's new file) — for that agent.
+21. Follow-up 15's `tayin-pgcd/content/bags.js` mention is gone with the file.
+
+### 12.6 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/lessons/registry.test.js src/features/classSession
+src/lessons/common/lessonlab <lesson>/board <unit>/_unit <unit>/wadiya-idmajiya-aadad` ✅ (21 files, 333 tests) ·
+`common/knowledge`, `common/mission`, `teacher/lessonMemo`, `<lesson>/world`: 4,194 ✅, 1 ❌ + 1 file not loading (12.3, the
+world agent's) · `status:lesson-v2 --lesson tayin-pgcd`: ✅ every part but « a walk plays its world » (the orchestrator) and
+the paused phone · `check:unreached` and `check:unused`: nothing of this lesson (the four batch-2 `world/` drafts, and
+20.) · `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`, `boardLessons.test.js` ✅.
+NOT run: `validate-lessons.mjs`, `check-textbook-coverage.mjs`, the whole suite, a build, `check:lessons`, any walk.

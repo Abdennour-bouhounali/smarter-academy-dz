@@ -295,6 +295,10 @@ function truth(q) {
       expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b}) = ${c.g}$`);
       expect(divisorsOf(c.g).join()).toBe(commonOf(c.a, c.b).join());
       return q.options.map((o) => listOf(o).join() === divisorsOf(c.g).join());
+    case 'pgcdIs':
+      // a sentence « PGCD(a ; b) = g », true or false (4AM lesson 5: the direct results, the smaller dividing the greater)
+      expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b}) = ${c.g}$`);
+      return gcd(c.a, c.b) === c.g;
     case 'perLot':
       // the lots the question gives share both collections: the greatest number of lots, so one lot is a / PGCD
       expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
@@ -317,6 +321,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/qawasim-adad-tabii.json');
     expect(files.map((f) => f.name)).toContain('4am/khawass-qawasim.json'); // lesson 3: written before its board
     expect(files.map((f) => f.name)).toContain('4am/qasim-mushtarak-akbar.json'); // lesson 4: the PGCD (2026-11-19)
+    expect(files.map((f) => f.name)).toContain('4am/tayin-pgcd.json'); // lesson 5: finding the PGCD (2026-11-19)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -342,6 +347,13 @@ describe('حصّة القسم — the default tests', () => {
     expect(bracketHolds('$527 \\div 23 = 22$', 527, 23)).toBe(false);
     expect(bracketHolds('$936 \\div 26 = 36$', 936, 26)).toBe(true);
     expect(READS.lastTwo.text(5728)).toBe('العدد 28 المكوَّن من رقميه الأخيرين');
+    // « PGCD(a ; b) = g » judged by the gcd, the direct results included
+    const sentence = (a, b, g) =>
+      truth({ id: 't', text: `$\\mathrm{PGCD}(${a} ; ${b}) = ${g}$.`, check: { type: 'pgcdIs', a, b, g } });
+    expect(sentence(58, 0, 58)).toBe(true);
+    expect(sentence(0, 64, 0)).toBe(false);
+    expect(sentence(17, 17, 17)).toBe(true);
+    expect(sentence(24, 60, 24)).toBe(false);
   });
 
   for (const { name, data } of files) {

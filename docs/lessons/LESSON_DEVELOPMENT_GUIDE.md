@@ -1319,7 +1319,7 @@ The owner validated the pilot on 2026-11-08; lessons are converted one by one (`
 
 - **The mission scene is per lesson.** `mission.scene` in the config picks a drawn SVG from `mission/MissionScene.jsx` (a registry:
   `'library'` = 756 books, `'library-wall'` = 96 books + a `KidFigure` librarian, `'construction-wall'` = a brick wall that rises + a `KidFigure` apprentice, `'flower-shop'` = identical bouquets on a counter + a `KidFigure` florist in hijab (these four DELETED with their lessons' mission player — v2, LESSON_V2.md §2), `'school-bags'` = identical school bags filling on a table + a
-  `KidFigure` volunteer, `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
+  `KidFigure` volunteer (DELETED with `tayin-pgcd`'s mission player, 2026-11-19), `'sewing-workshop'` = two ribbons cut into equal pieces + a `KidFigure` seamstress in hijab, `'bakery'` = identical dough portions on a tray + a
   `KidFigure` baker, `'math-club'` = pairs of numbered tiles judged « ✓ » + a `KidFigure` in hijab, `'garden-bed'` = a square flower bed on the
   hypotenuse of a right-triangle corner, filling with rows of flowers + a `KidFigure` gardener, `'carpet-loom'` = a square carpet woven row by row on a loom, `'fold-strip'` = a paper strip folded in a V at a school science fair (two halves
   coloured symmetrically, a rosette on the fold; a `KidFigure` girl in hijab and a boy), `'courtyard-slabs'` = a square school courtyard paved slab by slab (`slabs` sets the slabs per side; a `KidFigure` girl in hijab and a boy),
