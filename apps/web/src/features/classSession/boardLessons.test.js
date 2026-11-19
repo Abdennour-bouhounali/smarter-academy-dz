@@ -14,7 +14,9 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('qawasim-adad-tabii')).toBe(true);
     expect(BOARD_LESSONS).toContain('khawass-qawasim'); // lesson 3 joined with its script and memo (2026-11-18)
     expect(hasClassBoard('khawass-qawasim')).toBe(true);
-    expect(hasClassBoard('qasim-mushtarak-akbar')).toBe(false);
+    expect(BOARD_LESSONS).toContain('qasim-mushtarak-akbar'); // lesson 4 joined with its script and memo (2026-11-19)
+    expect(hasClassBoard('qasim-mushtarak-akbar')).toBe(true);
+    expect(hasClassBoard('jidhr-tarbii')).toBe(false); // a lesson still on the mission player: no board yet
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
     expect(config.id).toBe('qasim-adad-tabii');
@@ -47,7 +49,12 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       session: true,
     });
     expect(classDoor('qasim-mushtarak-akbar', `${base}/qasim-mushtarak-akbar`)).toEqual({
-      to: `${base}/qasim-mushtarak-akbar`,
+      to: '/enseignant/hissa/qasim-mushtarak-akbar',
+      state: undefined,
+      session: true,
+    });
+    expect(classDoor('jidhr-tarbii', `${base}/jidhr-tarbii`)).toEqual({
+      to: `${base}/jidhr-tarbii`,
       state: CLASSROOM_START_STATE,
       session: false,
     });
@@ -55,10 +62,12 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(boardLessonOfPath(`${base}/qasim-adad-tabii?view=classic`)).toBe('qasim-adad-tabii');
     expect(boardLessonOfPath(`${base}/qawasim-adad-tabii/2`)).toBe('qawasim-adad-tabii');
     expect(boardLessonOfPath(`${base}/khawass-qawasim/2`)).toBe('khawass-qawasim');
+    expect(boardLessonOfPath(`${base}/qasim-mushtarak-akbar/2`)).toBe('qasim-mushtarak-akbar');
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/khawass-qawasim/2`)).toBe(false);
+    expect(canPresentPath(`${base}/qasim-mushtarak-akbar/2`)).toBe(false);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

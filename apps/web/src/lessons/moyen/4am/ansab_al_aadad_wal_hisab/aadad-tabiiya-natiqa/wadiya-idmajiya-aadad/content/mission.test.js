@@ -14,7 +14,8 @@ import { emptyLog, logEvent, roundWon, starsFor, easierProps } from '../../../..
 import module7Src from '../modules/Module07TahlilWadiya.jsx?raw';
 import module8Src from '../modules/Module08Ahill.jsx?raw';
 
-const knowledgeOf = import.meta.glob('../../*/knowledge.jsx', { eager: true });
+// a sibling's knowledge: its root `knowledge.jsx`, or `world/knowledge.js` once it is a v2 lesson (its root file is deleted)
+const knowledgeOf = import.meta.glob(['../../*/knowledge.jsx', '../../*/world/knowledge.js'], { eager: true });
 const lessonContent = import.meta.glob(['../../*/content/*.js', '!../../*/content/*.test.js', '!../../wadiya-idmajiya-aadad/**'], { eager: true });
 const peerSheets = import.meta.glob('../../../../../../**/content/peerSheet.js', { eager: true });
 

@@ -30,6 +30,14 @@ const FACTOR_FORMS = {
   reversed: { text: (a, b, q) => `${a} قاسم للعددين ${b} و ${q}`, holds: false },
 };
 const divisorsOf = (a) => Array.from({ length: a }, (_, i) => i + 1).filter((d) => a % d === 0);
+const gcd = (x, y) => (y ? gcd(y, x % y) : x);
+/** The divisors two numbers share, smallest first. */
+const commonOf = (a, b) => divisorsOf(Math.min(a, b)).filter((d) => a % d === 0 && b % d === 0);
+/** « 1 ، 3 ، 9 » → [1, 3, 9]. */
+const listOf = (text) =>
+  String(text)
+    .split('،')
+    .map((x) => Number(x.trim()));
 /** The last number to try when listing the divisors of a: the biggest one whose square does not pass a. */
 const lastToTry = (a) => Math.floor(Math.sqrt(a));
 /** The facts « d divides a and b » that a property question stands on. */
@@ -268,6 +276,30 @@ function truth(q) {
     case 'letterProof':
       expect(q.text, q.id).toContain(`$${c.expr}$`);
       return q.options.map((o) => letterProof(o, c));
+    // ── the PGCD (4AM lesson 4): common divisors, the greatest, a sharing into identical lots ──
+    case 'pgcd':
+      shows(q, c.a, c.b);
+      return gcd(c.a, c.b);
+    case 'pgcdPick':
+      expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b})$`);
+      return q.options.map((o) => Number(o) === gcd(c.a, c.b));
+    case 'commonDivisor':
+      shows(q, c.d, c.a, c.b);
+      return c.a % c.d === 0 && c.b % c.d === 0;
+    case 'commonSet':
+      shows(q, c.a, c.b);
+      return q.options.map((o) => listOf(o).join() === commonOf(c.a, c.b).join());
+    case 'pgcdDivisors':
+      // the PGCD the question gives is true, and the right list is its divisors — which ARE the common divisors
+      expect(gcd(c.a, c.b), `${q.id}: PGCD(${c.a} ; ${c.b})`).toBe(c.g);
+      expect(q.text, q.id).toContain(`$\\mathrm{PGCD}(${c.a} ; ${c.b}) = ${c.g}$`);
+      expect(divisorsOf(c.g).join()).toBe(commonOf(c.a, c.b).join());
+      return q.options.map((o) => listOf(o).join() === divisorsOf(c.g).join());
+    case 'perLot':
+      // the lots the question gives share both collections: the greatest number of lots, so one lot is a / PGCD
+      expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
+      shows(q, c.a, c.b, c.lots);
+      return (c.of === 'a' ? c.a : c.b) / c.lots;
     case 'phrase':
       return q.options.map((o, i) => {
         const f = FORMS[c.forms[i]];
@@ -284,6 +316,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/qasim-adad-tabii.json');
     expect(files.map((f) => f.name)).toContain('4am/qawasim-adad-tabii.json');
     expect(files.map((f) => f.name)).toContain('4am/khawass-qawasim.json'); // lesson 3: written before its board
+    expect(files.map((f) => f.name)).toContain('4am/qasim-mushtarak-akbar.json'); // lesson 4: the PGCD (2026-11-19)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',

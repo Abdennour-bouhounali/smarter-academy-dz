@@ -340,3 +340,102 @@ carries no `loadKnowledge`).
   `qasim-adad-tabii` (now 0); `e2e/teacher-memo.mjs` is on `qasim-mushtarak-akbar` (no pack: unchanged) until that lesson
   gets a world; `e2e/knowledge-map.mjs` opens the 🧠 map of the lesson page for `qasim-adad-tabii`, `qawasim-adad-tabii`,
   `khawass-qawasim` (its `ALL` list) — those three must leave it (their map is the world's).
+
+## 11. Lesson 4 — `qasim-mushtarak-akbar` (2026-11-19, NOT committed)
+
+Lesson: 4AM `qasim-mushtarak-akbar` (`…/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/`), the first of the unit's batch 2.
+Same job and shape as §8, with §10's rules applied at once (one knowledge source, neutral module titles). Its new version
+— `world/` (another agent was still writing `world/forges.js` and `world/inquiries.js`), `board/` — was not touched; its
+pack `lesson.pack.js` was written in this change (world `divisor-isles`, `knowledge` = `world/knowledge.js ›
+LESSON_KNOWLEDGE`, `coach` P1 `qawasim-mushtaraka` · P2 `al-akbar` · P3 `baqat-mutamathila` · P4 `qawasim-al-pgcd`, as
+`world/evidence.js › POINTS`, `board` script and memo, `phone: false`). This lesson was on the MISSION PLAYER (like
+lessons 1–3, unlike §8's three).
+
+### 11.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1 hold unchanged. What is specific to this lesson:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge: () => import('./knowledge')`) | pages + the 🧠 map | **changed** as the reference (`retiredModules: true`, no `loadKnowledge`): the 8 module addresses redirect home |
+| b | `moduleContext.js` | data, for the pages only | **deleted** |
+| c | `lesson.config.js › studentView`, `mission` (scene `flower-shop`, tools, three checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef` | the mission player, `LessonProblemCard`, the old 🧠 provider; `textbookRef` read by nothing | **deleted**; the header and comments that described the textbook's activity and pages rewritten (§8.7) |
+| d | `lessons/common/mission/MissionScene.jsx` › `'flower-shop'` → `FlowerShopScene.jsx` | `mission.scene` of this config only | **deleted** (no other lesson names it) |
+| e | `content/bouquets.js`, `peerSheet.js`, `prep.js`, `problems.js` (+ their 4 tests) | the module pages only | **deleted** |
+| f | root `knowledge.jsx`, `knowledgeGraph.js`, `content/textbook.js`, `content/exercises.js` | the home's 🧠 map, `validate:lessons`' graph check, `check:textbook`, the pages; nothing of `world/` or `board/` imports them (verified: `world/` imports only `../lesson.config` and the kit) | **deleted** (§10.1). Every textbook element they cited (`act-4`, `know-3`, `know-4-def`, `now-11-1`, `ex-10`) is still cited by the lesson's practice bank (`content/practice/4am/qasim-mushtarak-akbar/`) and/or `resources › sourceElementIds`: `check:textbook` ✅ with no destination moved |
+| g | `lessons/common/textbook/index.js › IntegerSetQuestion` (re-export) | its only importer was the deleted `Module02Maarif.jsx` | the re-export **removed** (`check:unused`); the component stays (`TextbookExercise` imports it by file) |
+| h | `packages/core/curriculum/exportContentRegistry.mjs` (deploy) | data + page files | modules and resources unchanged (8 modules, 6 resources); **the 5 items of the deleted « إختبار أولي » (`E1…E5`, P1–P4) disappear** — follow-up 13 |
+| i | the `common-divisors` lab (`resources` of this config) | `resources` | **kept**, and NOT orphaned: `tayin-pgcd` and `wadiya-idmajiya-aadad` still mount it |
+| j | other lessons naming this one: `tayin-pgcd` and `wadiya-idmajiya-aadad` « أستعدّ » (`lesson: 'qasim-mushtarak-akbar'`), `wadiya-idmajiya-aadad/content/prep.js › PREP_LESSON`, `unitMissions.js` (icon, short name), `lessonlab/registry.js` (its instrument `common`), `moduleLayoutMigrations.js` (`{ 4: 7 }`), the learning net, the launch kit | lesson ids, module numbers as data | unchanged |
+| k | **`wadiya-idmajiya-aadad/content/mission.test.js`** (« owned keys from the unit's lessons, each id exists there ») — globs the siblings' ROOT `knowledge.jsx`; its tools `qawasim-mushtaraka`, `pgcd-taarif` existed only in this lesson's deleted `knowledge.jsx` | knowledge ids | **NOT changed** (another lesson's folder): **this test now FAILS** — follow-up 14 |
+| l | `scripts/audit-knowledge-dependencies.mjs`, `validate-lessons.mjs`, `lesson-v2-status.mjs` | page files | skip / adapt by `retiredModules` (no change); `validate:lessons`: 4/4 الكفاءات covered from `world/evidence.js`; its stale report `docs/reports/knowledge-contracts/4am_qasim-mushtarak-akbar.json` **deleted** |
+| m | `docs/sources/4am/masail-rollout/audit-locked-leaks.mjs` (walks lessons that have `content/problems.js`) | page data | the lesson drops out; its allow-list line `'qasim-mushtarak-akbar masala-2 1) 6'` is now stale (a doc-sources script, not run by CI) |
+| n | e2e walks | pages | §11.4 |
+
+### 11.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط, معارف, أوظّف, three مسائل, « إختبار أولي ») | 8 | 416 |
+| `moduleContext.js` | 1 | 3 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 194 |
+| `content/` — `bouquets`, `peerSheet`, `prep`, `problems` (+ their tests), `textbook`, `exercises` | 10 | 850 |
+| **lesson folder, total** | **21** | **1,463** |
+| mission scene `FlowerShopScene.jsx` | 1 | 89 |
+| stale audit report `docs/reports/knowledge-contracts/4am_qasim-mushtarak-akbar.json` | 1 | 330 |
+| **total** | **23** | **1,882** |
+
+Also edited: `lesson.config.js` (keys of 11.1 c removed; module titles and `desc` neutral as §10.2 — 1
+« القواسم المشتركة والباقات المتماثلة », 2 « القاسم المشترك الأكبر وقواسمه », 3 « أتمرّن », 4 « مسألة 1 », 5 « مسألة 2 »,
+6 « مسألة الدرس » (the store of the world's last bridge, `world/story.js › PROBLEM_MODULE`), 7 « التقويم »; ids, numbers,
+slugs, stages, `teachesLearningPointIds` unchanged — `world/journey.test.js` checks them against `MODULE_KEYS`; the
+resource autonomy « أعداد الكتاب » → « أعداد كبيرة », the resource `masala-1` no longer titled « مسألة الدرس »);
+`MissionScene.jsx` (import, entry, comment); `common/textbook/index.js`; `package.json` (`format:v2`, `check:format`: the
+lesson's `world`, `board`, `lesson.pack.js`); the generated `lessonIndex.generated.json` (the lesson's `pack` flags).
+`generate:lab-order` / `generate:compass-index` not run: they read the catalogue, the instruments and the bank, unchanged.
+
+### 11.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (its door is « حصّة القسم »); the
+  « no board yet » example is now `jidhr-tarbii` (still on the mission player).
+- `4am …/_unit/prepDiagnostic.test.js`: four v2 lessons have no « أستعدّ » page (the list names this one).
+- `knowledge/finalSynthesis.test.js`: 71 → 70 evaluation modules (unit 1: 6 → 5).
+- Unchanged and passing: `registry.test.js`, `lessonPack.test.js` (generic), `lessonGraphs.test.js` (the lesson is now
+  found among the world-only maps), the lesson's own `world/*.test.js` and `board/board.test.js`.
+- **Failing, not changed**: `wadiya-idmajiya-aadad/content/mission.test.js` (11.1 k).
+
+### 11.4 Walks (NONE was run)
+
+None deleted, none changed. **Opening the deleted pages or the old home's tools** (follow-up 4 extends to them):
+`lesson-kit/lab-coach.mjs` and `lesson-kit/manipulations.mjs` (the `common-divisors` lab on `/baqat` — they were its
+browser suites; `tayin-pgcd` still mounts the lab), `lesson-kit/moyen-retrofit-phase1.mjs` (this lesson's modules),
+`lesson-kit/4am-aadad-tabiiya-natiqa.mjs` (walks the unit's lessons and their modules), `knowledge-map.mjs` (its `ALL`
+list opens the 🧠 map of this lesson's page — gone), `notebook-lesson.mjs` (`/baqat`, the 🧠 card, the knowledge brick),
+`teacher-memo.mjs` (« وضع القسم » from the teacher's card — that door now opens « حصّة القسم »). To re-check, lesson
+level only: `notebook.mjs`, `notebook-space.mjs`, `progression.mjs`, `lesson-kit/classroom.mjs` (practice of this lesson),
+`lesson-lab.mjs` (the 4AM shelf — unchanged registry). `lesson-route-boundary.mjs` picks its module lesson by the index
+(`!pack.world`): it moves on by itself.
+
+### 11.5 Follow-ups NOT done
+
+13. **5 final-test items retired at the next deploy** (as follow-ups 1 and 10).
+14. **`wadiya-idmajiya-aadad/content/mission.test.js` fails**: the synthesis' `mission.tools` ids (`qawasim-mushtaraka`,
+    `pgcd-taarif`) must exist in a sibling lesson's ROOT `knowledge.jsx`; lesson 4's is gone (its world names the keys
+    `qawasim-mushtaraka`, `al-akbar`, …), and `bahth-pgcd`'s (`pgcd-baqi`, `khwarizmiyat-iqlidus`) will go the same way.
+    Fix belongs to that lesson's owner: read the siblings' `world/knowledge.js` too and re-point `pgcd-taarif` → `al-akbar`
+    (or rebuild the synthesis — `INTEGRATION_LESSON_PLAN.md`).
+15. Stale mentions in other lessons' folders (not this change's scope): `tayin-pgcd/content/bags.js` cites
+    « qasim-mushtarak-akbar › content/bouquets.js »; `wadiya-idmajiya-aadad/lesson.config.js` comment; the allow-list of
+    `audit-locked-leaks.mjs` (11.1 m).
+16. The `resources` titles still name the old labs' and problems' contexts (« 90 زهرة حمراء و 54 زهرة بيضاء », « صناديق
+    السمك », « تبليط قاعة المطالعة ») — as §10.4, with follow-up 2.
+
+### 11.6 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/lessons/registry.test.js src/features/classSession <lesson>`
+✅ (18 files, 270 tests) · `_unit`, `common/knowledge`, `common/mission`, `wadiya-idmajiya-aadad`, `teacher/lessonMemo`,
+`lessonlab`, `launchkit`: 4,297 ✅, **1 ❌ (follow-up 14)** · `status:lesson-v2 --lesson`: ✅ pack, world, knowledge, coach,
+board, old version deleted; ❌ « a test per part » (no `forges` test yet — the world's agent) and ❌ « a walk plays its
+world » (the orchestrator) · `validate-lessons.mjs` ✅ · `check-textbook-coverage.mjs` ✅ · `check:unreached` and
+`check:unused`: nothing of this lesson (the other batch-2 lessons' `world/` only) · `eslint` and `prettier --check` on the
+touched files ✅. NOT run: the whole suite, a build, `check:lessons`, any walk.

@@ -32,7 +32,7 @@ export const LESSON_CONFIG = {
     tools: [
       // les ids sont des connaissances des leçons de l'unité (qasim-mushtarak-akbar, bahth-pgcd, qawasim-adad-tabii) ; `usedIn` : les modules qui s'en servent
       { id: 'qawasim-mushtaraka', icon: '🤝', label: 'القواسم المشتركة', usedIn: [1, 2, 7] },
-      { id: 'pgcd-taarif', icon: '🎯', label: 'القاسم المشترك الأكبر', usedIn: [1, 2, 3, 4, 5, 6, 7] },
+      { id: 'al-akbar', icon: '🎯', label: 'القاسم المشترك الأكبر', usedIn: [1, 2, 3, 4, 5, 6, 7] },
       { id: 'pgcd-baqi', icon: '➗', label: 'الباقي يحفظ القاسم المشترك الأكبر', usedIn: [1, 2, 3, 4, 5, 6] },
       { id: 'khwarizmiyat-iqlidus', icon: '🔁', label: 'خوارزمية إقليدس', usedIn: [1, 2, 3, 4, 5, 6, 7] },
       { id: 'jidaa-aamilayn', icon: '✖️', label: 'عدد على شكل جداء عاملين', usedIn: [1, 2, 5, 6, 7] },
