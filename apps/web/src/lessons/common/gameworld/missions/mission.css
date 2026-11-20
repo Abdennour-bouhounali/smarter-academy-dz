@@ -590,3 +590,275 @@
 .ms-pen.is-on {
   box-shadow: 0 0 0 3px #fbbf24;
 }
+
+/* A RIGHT ANSWER IS CELEBRATED: a word and its coins rise and fade; the end of the mission gets the big one */
+@keyframes ms-rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20px) scale(0.6);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.12);
+  }
+  30% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -46px) scale(1);
+  }
+}
+.ms-win {
+  position: absolute;
+  top: 34%;
+  left: 50%;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1.6rem;
+  border-radius: 1.2rem;
+  background: #fbbf24;
+  color: #072042;
+  box-shadow: 0 14px 34px rgba(3, 10, 30, 0.45);
+  pointer-events: none;
+  animation: ms-rise 1.5s ease-out both;
+}
+.ms-win b {
+  font-size: 2rem;
+}
+.ms-win span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+.ms-finale {
+  position: absolute;
+  inset: 0;
+  z-index: 46;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 14, 36, 0.7);
+  overflow: hidden;
+}
+@keyframes ms-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.ms-finale__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: min(92%, 36rem);
+  padding: 1.6rem 2rem;
+  border-radius: 1.4rem;
+  border: 2px solid #fbbf24;
+  background: #0b1b3f;
+  text-align: center;
+  animation: ms-pop 0.5s ease-out both;
+}
+.ms-finale__card > svg {
+  color: #fbbf24;
+}
+.ms-root .ms-finale__card h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+.ms-root .ms-finale__card p {
+  margin: 0;
+  color: #eef5ff;
+  font-size: 1.3rem;
+  line-height: 1.7;
+}
+.ms-finale__stars {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.ms-finale__stars svg {
+  color: rgba(255, 255, 255, 0.25);
+}
+@keyframes ms-star {
+  0% {
+    transform: scale(0) rotate(-40deg);
+  }
+  70% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.ms-finale__stars svg.is-on {
+  color: #fbbf24;
+  fill: #fbbf24;
+  animation: ms-star 0.5s ease-out both;
+}
+.ms-finale__stars svg.is-on:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.ms-finale__stars svg.is-on:nth-child(3) {
+  animation-delay: 0.5s;
+}
+.ms-root .ms-finale__card .ms-finale__coins {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.3rem 1.2rem;
+  border-radius: 999px;
+  background: rgba(255, 244, 214, 0.96);
+  color: #3b2a06;
+  font-weight: 800;
+}
+.ms-finale__card .ms-btn {
+  font-size: 1.3rem;
+  padding: 0.6rem 1.6rem;
+}
+@keyframes ms-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(540deg);
+    opacity: 0.9;
+  }
+}
+.ms-confetti i {
+  position: absolute;
+  top: 0;
+  left: var(--x);
+  width: 0.7rem;
+  height: 1.1rem;
+  border-radius: 0.15rem;
+  background: var(--c);
+  animation: ms-fall 2.6s linear var(--d) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ms-win,
+  .ms-finale__card,
+  .ms-finale__stars svg.is-on,
+  .ms-confetti i,
+  .ms-readcall__arrow {
+    animation: none;
+  }
+  .ms-win {
+    transform: translate(-50%, 0);
+  }
+}
+
+/* « اضغط هنا » (owner, 2026-11-20): what must be TAPPED and does not look like a button — a number or a question in the
+   exam text, a datum to connect, a number to try again — carries a flashing sign, from the first second */
+@keyframes ms-flash {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+}
+.ms-paper .ms-num.ms-target::after,
+.ms-connect__items:not(:has(.is-on)) .ms-chip:first-child::after,
+[data-ms-test]:first-of-type::after {
+  content: '👆 اضغط هنا';
+  display: inline-block;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1.7;
+  white-space: nowrap;
+  animation: ms-flash 0.9s ease-in-out infinite;
+}
+.ms-paper .ms-num.ms-target::after {
+  margin-inline-start: 0.4rem;
+}
+.ms-connect__items .ms-chip,
+[data-ms-test] {
+  position: relative;
+}
+.ms-connect__items:not(:has(.is-on)) .ms-chip:first-child::after,
+[data-ms-test]:first-of-type::after {
+  position: absolute;
+  bottom: calc(100% + 0.3rem);
+  left: 50%;
+  translate: -50% 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ms-paper .ms-num.ms-target::after,
+  .ms-connect__items .ms-chip::after,
+  [data-ms-test]::after {
+    animation: none;
+  }
+}
+/* on a question (a long phrase) the sign is pinned to its corner: it never adds a line to the exam text */
+.ms-paper .ms-num.is-goal.ms-target {
+  position: relative;
+}
+.ms-paper .ms-num.is-goal.ms-target::after {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% - 0.5rem);
+  margin: 0;
+}
+
+/* THE CALL TO READ SITS ON THE EXERCISE ITSELF (owner, 2026-11-20): a flashing band at the top of the exam text, and
+   the border of the text flashes */
+@keyframes ms-border-flash {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 5px #dc2626,
+      0 10px 30px rgba(3, 10, 30, 0.45);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px #fbbf24,
+      0 10px 30px rgba(3, 10, 30, 0.45);
+  }
+}
+.ms-root.is-reading .ms-paper {
+  animation: ms-border-flash 0.9s ease-in-out infinite;
+}
+.ms-root.is-reading .ms-paper::before {
+  content: '📖 اقرأ التمرين كلّه';
+  display: block;
+  margin-bottom: 0.3rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 0.5rem;
+  background: #dc2626;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  text-align: center;
+  animation: ms-flash 0.9s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ms-root.is-reading .ms-paper,
+  .ms-root.is-reading .ms-paper::before {
+    animation: none;
+  }
+}

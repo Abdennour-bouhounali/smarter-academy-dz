@@ -247,6 +247,16 @@ depot plays every line); what changes is WHERE he works.
 > « أربط » draws each line to the datum he tapped. Played end to end in a browser at 1366×768: 27 screens, no text
 > under 18 px, none overflows, no page error; eight looked at. NOT built: hearts, the save, missions 2 and 3, the
 > photo of the sheet; the end of the clock stops nothing.
+>
+> **Successes and « اضغط هنا » (owner, 2026-11-20, built).** Each right answer is celebrated: a word (« أحسنت! »,
+> « صحيح! »…) with its coins rises in the middle of the depot, the robot cheers, a star rings and sparks fly
+> (`MissionPlayer › bravo`, `Game.js › missionCheer`); a right division of the PGCD earns 5, a finished step 10, a wrong
+> operation nothing. **The end of the mission gets the big one**: a trophy, « أنهيتَ المهمّة! », one to three stars
+> (3 with one slip at most, 2 up to three, else 1 — his free tries are never slips; MY scale, not the owner's), the
+> coins, the time left, confetti, then « أقارن ورقتي بالحلّ ». **What must be tapped and does not look like a button
+> carries a flashing red sign « 👆 اضغط هنا » from the first second**: a number and a question in the exam text, the
+> first datum to connect, the number to try again. The call to read is ON the exercise: a flashing band « 📖 اقرأ التمرين كلّه »
+> at the top of the exam text, whose border flashes red and amber. The coins and stars are not saved and buy nothing yet.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,

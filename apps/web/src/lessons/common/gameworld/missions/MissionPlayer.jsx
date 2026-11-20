@@ -13,7 +13,7 @@
  * The situation is DATA (`situation`); this file names no lesson. Not built: the save, hearts, missions 2 and 3.
  */
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, Check, Clock, Coins, PenLine, Play, X } from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import { PaperModel } from '../kit/Paper';
 import { deal, euclid, fill, gcd, line, slip } from './lots';
@@ -36,12 +36,13 @@ const leftOf = (left, kinds) =>
     .map((k) => `${counted(left[k], CRATES)} من ${kinds[k].name}`)
     .join(' و');
 /** An equality or an operation inside an Arabic sentence reads left to right, whatever stands around it. */
-const ltr = (s) => `\u2066${s}\u2069`;
+const ltr = (s) => `\u2066${s.replace(/ /g, '\u00a0')}\u2069`; // …and never breaks across two lines
 const num = (v) => (/^\d+$/.test(String(v ?? '').trim()) ? Number(v) : null);
 const tex = (l) => `${l.a} = ${l.b} \\times ${l.q} + ${l.r}`;
 const clock = (s) =>
   `${String(Math.floor(Math.max(0, s) / 60)).padStart(2, '0')}:${String(Math.max(0, s) % 60).padStart(2, '0')}`;
 const STEPS = 10;
+const BRAVO = ['أحسنت!', 'ممتاز!', 'رائع!', 'صحيح!', 'هكذا!'];
 const WARN = 5; // seconds the « the clock is about to start » message stays — it cannot be closed
 
 function Box({ value, onChange, label, name, w = 4, onEnter }) {
@@ -246,6 +247,9 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
   const [read, setRead] = useState(false); // he read the whole exercise before anything else
   const [reading, setReading] = useState(8); // seconds before « قرأتُ » can be pressed
   const [pen, setPen] = useState(false);
+  const [win, setWin] = useState(null); // the small success of a right answer: { id, pay, word }
+  const [finale, setFinale] = useState(false); // the big one, at the end of the mission
+  const [slips, setSlips] = useState(0); // operations typed that were not the right ones (his free tries are not slips)
   const acts = useRef(0);
   const set = (patch) => setV((s) => ({ ...s, ...patch }));
   const act = () => {
@@ -257,6 +261,13 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
   useEffect(() => {
     depot.stock?.(known.a ? a : null, known.b ? b : null);
   }, [depot, known.a, known.b, a, b]);
+
+  // the small success leaves by itself
+  useEffect(() => {
+    if (!win) return undefined;
+    const t = setTimeout(() => setWin(null), 1500);
+    return () => clearTimeout(t);
+  }, [win]);
 
   // the message « the clock is about to start »: 5 seconds, then the mission — nothing closes it
   useEffect(() => {
@@ -307,12 +318,22 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     await depot.run(spec, opts);
     setBusy(false);
   };
+  // A RIGHT ANSWER IS CELEBRATED (owner, 2026-11-20): coins fly, a word, the robot cheers; the end of the mission more
+  const bravo = (pay) => {
+    setCoins((c) => c + pay);
+    setWin({ id: Date.now(), pay, word: BRAVO[Math.floor(Math.random() * BRAVO.length)] });
+    depot.cheer?.(false);
+  };
   const next = (n, pay = 10) => {
     act();
     setStep(n);
-    setCoins((c) => c + pay);
     setV({});
     setPicked([]);
+    if (n >= STEPS) {
+      setCoins((c) => c + pay);
+      setFinale(true);
+      depot.cheer?.(true);
+    } else bravo(pay);
   };
   const wrote = (id) => {
     act();
@@ -380,6 +401,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     const miss = need.must.find((id) => !picked.includes(id));
     if (miss) {
       act();
+      setSlips((x) => x + 1);
       setFact(need.without[miss]);
       return;
     }
@@ -394,6 +416,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     const r = num(v.r);
     const s = slip(row.a, row.b, q, r);
     if (s) {
+      setSlips((x) => x + 1);
       setFact(
         s.kind === 'sum'
           ? `${ltr(`${row.b} × ${q} + ${r} = ${s.value}`)}، وليس ${row.a}. راجع قسمتك على ورقتك.`
@@ -410,6 +433,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
           : { big: sit.kinds.b.color, small: sit.kinds.a.color },
     });
     write([{ id, tex: tex(row), tone: 'key' }]);
+    bravo(5);
     return true;
   };
   const test = async (n) => {
@@ -951,6 +975,59 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
         </div>
         <Copy sit={sit} data={data} goals={goals} lines={lines} ans={ans} keep={step < 7 ? 2 : 0} />
       </div>
+      {win && !finale && (
+        <div key={win.id} className="ms-win" data-ms-win={win.pay} aria-live="polite">
+          <b>{win.word}</b>
+          <span dir="ltr">
+            +{win.pay}
+            <Coins size={26} aria-hidden="true" />
+          </span>
+        </div>
+      )}
+      {finale && (
+        <div className="ms-finale" data-ms-finale role="status">
+          <div className="ms-confetti" aria-hidden="true">
+            {Array.from({ length: 36 }, (_, i) => (
+              <i
+                key={i}
+                style={{
+                  '--x': `${(i * 37) % 100}%`,
+                  '--d': `${(i % 9) * 0.12}s`,
+                  '--c': ['#fbbf24', '#34d399', '#a5f3fc', '#f472b6'][i % 4],
+                }}
+              />
+            ))}
+          </div>
+          <div className="ms-finale__card">
+            <Trophy size={76} aria-hidden="true" />
+            <h2>أنهيتَ المهمّة!</h2>
+            <p className="ms-finale__stars" data-ms-stars={slips <= 1 ? 3 : slips <= 3 ? 2 : 1}>
+              {[0, 1, 2].map((i) => (
+                <Star
+                  key={i}
+                  size={46}
+                  className={i < (slips <= 1 ? 3 : slips <= 3 ? 2 : 1) ? 'is-on' : ''}
+                  aria-hidden="true"
+                />
+              ))}
+            </p>
+            <p>حللتَ وضعية إدماجية من {sit.session}، بورقتك وقلمك.</p>
+            <p className="ms-finale__coins">
+              <Coins size={30} aria-hidden="true" /> {coins} قطعة
+              <Clock size={30} aria-hidden="true" /> بقي {clock(left)}
+            </p>
+            <button
+              type="button"
+              className="ms-btn ms-btn--go ms-target"
+              data-ms-finale-next
+              onClick={() => setFinale(false)}
+            >
+              أقارن ورقتي بالحلّ
+              <ArrowLeft size={20} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      )}
       <Ink open={pen} onClose={() => setPen(false)} />
       {model && <PaperModel a={model.a} b={model.b} own onClose={() => setModel(null)} />}
     </div>

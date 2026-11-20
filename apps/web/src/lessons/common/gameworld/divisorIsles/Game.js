@@ -2255,6 +2255,35 @@ export class DivisorIslesGame extends WorldRuntime {
     this.depot?.stockLabel(a, b, this.state.mission?.stock ?? null);
   }
 
+  /** A right answer of a mission: the robot cheers, stars ring, sparks fly — more of each at the end (`big`). */
+  missionCheer(big = false) {
+    if (this.dead || !this.state.mission) return;
+    this.robot.cheer();
+    const at = this.hero.pos.clone().setY(1.4);
+    if (!big) {
+      this.audio.play('star', 1);
+      this.particles.burst(at, 0xfbbf24, 18, 3, 3, 0.9);
+      return;
+    }
+    this.audio.play('success');
+    [0, 1, 2].forEach((k) => setTimeout(() => !this.dead && this.audio.play('star', k), 250 + k * 240));
+    for (let i = 0; i < 7; i += 1)
+      setTimeout(
+        () =>
+          !this.dead &&
+          this.particles.burst(
+            at.clone().add(new THREE.Vector3((i - 3) * 2.2, 1, 0)),
+            [0xfbbf24, 0x34d399, 0xa5f3fc][i % 3],
+            26,
+            4,
+            5,
+            1.4,
+          ),
+        i * 160,
+      );
+    this.shake = 0.1;
+  }
+
   leaveMission() {
     this.set({ mission: null });
     this.leaveDepot();
