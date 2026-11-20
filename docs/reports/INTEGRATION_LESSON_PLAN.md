@@ -283,6 +283,17 @@ depot plays every line); what changes is WHERE he works.
 > a success after a wrong answer, on a page error. Both missions pass it; 9 screens of mission 2 looked at.
 > NOT built: mission 3, the home of the lesson, the save, hearts; mission 2's « classmate's copy » episode of §3.
 
+> **TWO DEBTS PAID (2026-11-20, after the merge).** (1) **A mission left half-way is kept** — for a mission played
+> from data (`MissionRunner`: `world.keep(snapshot)` at each step forward, `resume` given back; `missionIsle/Game.js ›
+> missionKeep`, in his world save, private): the home says « توقّفتَ في منتصفها », the card offers « أكمل من حيث
+> توقّفت (الخطوة n من N) » or « أبدأ من جديد »; the clock goes on from where it was; nothing is kept from the class
+> board. NOT for mission 1, whose own player holds a state this does not cover. (2) **« ورقة زميلك »**, the episode of
+> the plan's §3, is a step kind `review` of the engine: a classmate's copy of the same mission, ONE faulty line (he
+> added the four corner trees: 204 ÷ 6 + 4 = 38); a sound line he suspects is answered by why it holds, the faulty one
+> by its fact while the plot counts 34; then he corrects it on the copy. Mission 2 has 11 stages. Both are walked by
+> `e2e/mission.mjs` (`VIA_HOME=1`). STILL OWED: mission 1 rewritten as data (its free tries, its « أربط », the pairing
+> scene need step kinds the engine does not have yet).
+>
 > **ITS BOARD AND ITS CLASS TEST ARE BUILT (2026-11-20): `status:lesson-v2 -- --lesson wadiya-idmajiya-aadad` prints ✅.**
 > The hour on the board IS a mission: `board/script.js` holds two stations of a NEW kind, `mission`
 > (`features/classSession/LessonBoard.jsx › MissionStation`): the station says what the class needs (a sheet each, a

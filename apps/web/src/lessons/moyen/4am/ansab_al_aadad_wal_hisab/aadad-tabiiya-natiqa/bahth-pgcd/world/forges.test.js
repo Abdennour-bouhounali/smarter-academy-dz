@@ -318,35 +318,41 @@ describe('the five forges of « البحث عن القاسم المشترك ال
     }
   });
 
-  it('a case of ➖, 🪜, 🧮, 🔁 is a PAIR of gaps and one plank; the world’s answer is what the drawing shows', () => {
-    for (const key of PAIRED) {
-      const F = FORGES[key];
-      for (const c of shownCases(F)) {
-        const id = F.caseId(c);
-        const fillsBoth = c.A % c.d === 0 && c.B % c.d === 0;
-        expect(c.pair.a, id).toBe(c.A);
-        expect(c.pair.b, id).toBe(c.B);
-        expect(c.pair.d, id).toBe(c.d);
-        expect(c.fits, id).toBe(fillsBoth);
-        expect(c.deal).toBeUndefined();
-        if (key === 'farq-yabqi' || key === 'baqi-yabqi') expect(c.held, id).toBe(fillsBoth);
-        else {
-          // the purse holds the planks of the longest plank of both: only that plank is paid
-          expect(c.purse).toBe(c.A / gcd(c.A, c.B) + c.B / gcd(c.A, c.B));
-          expect(c.held, id).toBe(fillsBoth && c.A / c.d + c.B / c.d <= c.purse);
-          expect(c.held).toBe(c.d === gcd(c.A, c.B));
+  // every shown and built case of four forges: seconds of pure computing — on a loaded CI runner it passed the default
+  // 5 s and stopped a production deploy (2026-11-20)
+  it(
+    'a case of ➖, 🪜, 🧮, 🔁 is a PAIR of gaps and one plank; the world’s answer is what the drawing shows',
+    { timeout: 60000 },
+    () => {
+      for (const key of PAIRED) {
+        const F = FORGES[key];
+        for (const c of shownCases(F)) {
+          const id = F.caseId(c);
+          const fillsBoth = c.A % c.d === 0 && c.B % c.d === 0;
+          expect(c.pair.a, id).toBe(c.A);
+          expect(c.pair.b, id).toBe(c.B);
+          expect(c.pair.d, id).toBe(c.d);
+          expect(c.fits, id).toBe(fillsBoth);
+          expect(c.deal).toBeUndefined();
+          if (key === 'farq-yabqi' || key === 'baqi-yabqi') expect(c.held, id).toBe(fillsBoth);
+          else {
+            // the purse holds the planks of the longest plank of both: only that plank is paid
+            expect(c.purse).toBe(c.A / gcd(c.A, c.B) + c.B / gcd(c.A, c.B));
+            expect(c.held, id).toBe(fillsBoth && c.A / c.d + c.B / c.d <= c.purse);
+            expect(c.held).toBe(c.d === gcd(c.A, c.B));
+          }
+          // the tag is short (a log line stays on one line)
+          expect(c.tag.length, c.tag).toBeLessThanOrEqual(12);
+          expect(BANK_PAIRS.has(pairKey(c.A, c.B)), id).toBe(false);
         }
-        // the tag is short (a log line stays on one line)
-        expect(c.tag.length, c.tag).toBeLessThanOrEqual(12);
-        expect(BANK_PAIRS.has(pairKey(c.A, c.B)), id).toBe(false);
+        // what the mirror builds: a pair it can draw and lay plank by plank (his own rows are only drawn small)
+        for (const c of builtCases(F)) {
+          expect(Math.max(c.A, c.B), F.caseId(c)).toBeLessThanOrEqual(90);
+          expect(c.laid, F.caseId(c)).toBeLessThanOrEqual(40);
+        }
       }
-      // what the mirror builds: a pair it can draw and lay plank by plank (his own rows are only drawn small)
-      for (const c of builtCases(F)) {
-        expect(Math.max(c.A, c.B), F.caseId(c)).toBeLessThanOrEqual(90);
-        expect(c.laid, F.caseId(c)).toBeLessThanOrEqual(40);
-      }
-    }
-  });
+    },
+  );
 
   it('a case of ⏱️ is a pair of numbers and its two notebooks, drawn as its first row (a gap and the planks of the other)', () => {
     const F = FORGES['aqall-khutuwat'];

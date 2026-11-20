@@ -184,6 +184,28 @@ if (which === '1') {
       await win(`${id}-wrong`, 0);
     }
   };
+  if (viaHome) {
+    // LEFT HALF-WAY: the mission is closed after its plan; the home says so, and the card gives the step back
+    await p.waitForSelector('[data-ms-at="e0"]', { timeout: 20000 });
+    await p.click('[data-ms-close]');
+    await p.waitForSelector('[data-mi-home]', { timeout: 20000 });
+    await p.screenshot({ path: `${out}/home-half-way.png` });
+    const said = await p.locator(`[data-mi-card="${cardId}"]`).innerText();
+    if (!said.includes('توقّفتَ في منتصفها')) bad.push('the home does not say the mission was left half-way');
+    await p.click(`[data-mi-open="${cardId}"]`);
+    await p.waitForSelector('[data-ms-resume]', { timeout: 20000 });
+    await shot('resume-card');
+    await p.click('[data-ms-resume]');
+    await p
+      .waitForSelector('[data-ms-at="e0"]', { timeout: 20000 })
+      .catch(() => bad.push('the step was not given back'));
+    await p.click('[data-ms-open="data"]');
+    const kept = await p.locator('[data-ms-data] li').count();
+    const planned = (await p.getAttribute('[data-ms-book]', 'data-ms-book')) ?? '';
+    console.log('   resumed at the first division; data kept in his copy:', kept, '| lines of his solution:', planned);
+    if (kept !== 9) bad.push(`the copy lost its data on the way back (${kept} of 9)`);
+    await p.click('[data-ms-open="work"]');
+  }
   await work('e0', { q: 1, r: 8 }, { wrong: true, name: 'division-wrong' });
   await work('e0', { q: 1, r: 18 });
   await work('e1', { q: 2, r: 6 });
@@ -206,6 +228,18 @@ if (which === '1') {
   await type('x', 400);
   await shot('sentence');
   await p.click('[data-ms-check]');
+  // a classmate's copy: a sound line he suspects is answered by why it holds; the faulty one is counted by the plot
+  await p.waitForSelector('[data-ms-review="open"]', { timeout: 20000 });
+  await p.waitForTimeout(1700);
+  await p.click('[data-ms-suspect="c5"]');
+  await shot('copy-sound-line');
+  if (!(await p.locator('[data-ms-fact]').count())) bad.push('a sound line suspected gets no answer');
+  await win('copy-sound-line', 0);
+  await p.click('[data-ms-suspect="c3"]');
+  await idle();
+  await shot('copy-faulty-line');
+  if ((await p.getAttribute('[data-ms-review]', 'data-ms-review')) !== 'c3') bad.push('the faulty line is not marked');
+  await written();
 }
 
 await p.waitForSelector('[data-ms-finale]', { timeout: 30000 });

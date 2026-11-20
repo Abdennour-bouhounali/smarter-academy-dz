@@ -337,7 +337,9 @@ function Home({ s, game }) {
             {c.done ? (
               <Stars n={c.done.stars} />
             ) : (
-              <span className="mi-card__new">{c.id === next ? 'ابدأ من هنا' : 'لم تُلعب بعد'}</span>
+              <span className="mi-card__new">
+                {s.partial[c.id] ? 'توقّفتَ في منتصفها' : c.id === next ? 'ابدأ من هنا' : 'لم تُلعب بعد'}
+              </span>
             )}
             <button type="button" className="mi-btn" data-mi-open={c.id} onClick={c.open}>
               {c.done ? 'ألعبها من جديد' : 'أبدأ المهمّة'}
@@ -382,7 +384,9 @@ const WORLD = {
             stock: (a, b) => game.missionStock(a, b),
             cheer: (big) => game.missionCheer(big),
             done: (result) => game.missionDone(result),
+            keep: (snapshot) => game.missionKeep(snapshot),
           }}
+          resume={s.partial[s.mission.id] ?? null}
           onClose={() => game.leaveMission()}
         />
       );

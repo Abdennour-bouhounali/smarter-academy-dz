@@ -112,6 +112,9 @@ exists yet), the mirror and the board speak the key's language (A10).
 | D16 | « build what he typed » was skipped for wrong values: the world must carry out a misreading (`scene` returned with `ok: false`) | L9 | `bem2020.test.js › a spacing is planted whatever it is` | unit test |
 | D17 | Deleting a lesson's old pages left: a shared scene of the old player, two unit helpers, a shared test whose fixtures were the old content, the teacher's page still listing the modules | L9 | after a deletion run `check:unused`, `check:unreached`, the WHOLE web suite, and open the lesson's address as student AND as teacher (`e2e/missionLesson.mjs`) | checks + walk |
 | D18 | A local name shadowed a parameter (`where`) inside the block that still read the parameter: a silent crash of the handler, no page error shown | L9 | play every new branch in the browser once; the walk checks the guidance box exists | walk |
+| D19 | A production deploy stopped on a test that takes 3 s on a laptop and passed vitest's 5 s limit on a loaded runner, though the same suite had just passed in the CI job | L9 | `testTimeout: 30000` for the three suites (`apps/web/vite.config.js`, core, scripts); a test that computes every case of a lesson is normal, a limit of 5 s is not | config |
+| D20 | A world closed while paper mode was on left the page BLANK: the shell's cleanup called the audio after its context was gone | L9 | `engine/audio.js` guards `ctx`; `e2e/missionBoard.mjs` closes a world mounted over a page and checks the page is still there | walk |
+| D21 | A check run on PART of the suite hid a failure of another test (`unbreakableCounters` on a new file): committed, found only before the merge | L9 | before a commit that adds a file under `lessons/`, run the WHOLE web suite once — not only the folder's tests | habit |
 
 ## Time of a lesson (measured — the skill exists to make these numbers fall; owner, 2026-11-19)
 

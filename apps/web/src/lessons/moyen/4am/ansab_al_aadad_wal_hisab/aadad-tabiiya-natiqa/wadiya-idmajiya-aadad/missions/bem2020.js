@@ -309,6 +309,31 @@ export const BEM_2020 = {
             }
           : { ok: false, fact: 'انقل إلى جملتك الثمن الذي وجدتَه في آخر سطر من حلّك.' },
     },
+    {
+      // A CLASSMATE'S COPY of the same mission (plan §3): one line is wrong — the corner trees added to a count that
+      // already holds them. The line after it is a right computation on a wrong number.
+      kind: 'review',
+      id: 'copy',
+      stage: 10,
+      title: 'ورقة زميلك',
+      ask: 'هذه ورقة زميلك في المهمّة نفسها. في أيّ سطر أخطأ؟',
+      lines: [
+        { id: 'c1', tex: `\\mathrm{PGCD}(${L} ; ${W}) = ${D}`, holds: `قسماته صحيحة: آخر باقٍ غير معدوم هو ${D}.` },
+        { id: 'c2', tex: `(${L} + ${W}) \\times 2 = ${P}`, holds: `المحيط: طولان وعرضان، ${P} م.` },
+        { id: 'c3', tex: `${P} \\div ${D} + 4 = ${N + 4}` },
+        { id: 'c4', tex: `${BUDGET} - ${MOVE} = ${LEFT}`, holds: 'النقل يُطرح من المبلغ مرّة واحدة: هذا السطر صحيح.' },
+        {
+          id: 'c5',
+          tex: `${LEFT} \\div ${N + 4} \\approx ${Math.round(LEFT / (N + 4))}`,
+          holds: 'القسمة نفسها صحيحة، لكنّها تستعمل عددًا جاء من سطر قبلها. ابحث قبل هذا السطر.',
+        },
+      ],
+      wrong: 'c3',
+      scene: { ring: { d: D, count: true } },
+      why: `أضاف زميلك أشجار الأركان الأربعة، وهي محسوبة من قبل في ${ltr(`${P} ÷ ${D}`)}: القطعة تحمل ${N} شجرة، لا ${N + 4}.`,
+      fix: `صحّح السطر على ورقة زميلك: ${ltr(`${P} ÷ ${D} = ${N}`)}، ثمّ ما يأتي بعده.`,
+      line: { text: `ورقة زميلي: ${N} شجرة، لا ${N + 4}.` },
+    },
   ],
 
   model: [
