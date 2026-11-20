@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\AdminBookController;
 use App\Http\Controllers\Admin\AdminBookManagerController;
 use App\Http\Controllers\Admin\AdminBookMessageController;
 use App\Http\Controllers\Admin\AdminBookOrderController;
-use App\Http\Controllers\Admin\AdminPushController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\Admin\AdminManualSubscriptionController;
 use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
+use App\Http\Controllers\Admin\AdminPushController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\Admin\AdminStudentController;
@@ -33,10 +33,10 @@ use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
 use App\Http\Controllers\BookStoreController;
 use App\Http\Controllers\ClassJoinLinkController;
+use App\Http\Controllers\CompassController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
 use App\Http\Controllers\CurriculumController;
-use App\Http\Controllers\CompassController;
 use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
@@ -44,6 +44,7 @@ use App\Http\Controllers\Family\ParentController;
 use App\Http\Controllers\Family\ParentLinkController;
 use App\Http\Controllers\Family\StudentFamilyController;
 use App\Http\Controllers\FeatureAccessController;
+use App\Http\Controllers\GameEvidenceController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
@@ -51,7 +52,6 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
-use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
@@ -70,6 +70,7 @@ use App\Http\Controllers\School\SchoolReportController;
 use App\Http\Controllers\School\SchoolStructureController;
 use App\Http\Controllers\School\SchoolStudentController;
 use App\Http\Controllers\StudentClassroomController;
+use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherAnswerReviewController;
@@ -79,10 +80,10 @@ use App\Http\Controllers\Teacher\TeacherClassroomInsightController;
 use App\Http\Controllers\Teacher\TeacherClassroomInterventionController;
 use App\Http\Controllers\Teacher\TeacherClassroomLearningPointController;
 use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
-use App\Http\Controllers\Teacher\TeacherClassSessionController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
+use App\Http\Controllers\Teacher\TeacherClassSessionController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use App\Http\Controllers\Teacher\TeacherLabSettingsController;
 use App\Http\Controllers\Teacher\TeacherMadarPlayController;
@@ -91,6 +92,7 @@ use App\Http\Controllers\Teacher\TeacherSchoolController;
 use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherThinkingLabController;
 use App\Http\Controllers\ThinkingLabController;
+use App\Http\Controllers\WaitlistController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
@@ -100,6 +102,10 @@ use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 Route::prefix('v1')->group(function () {
     // Public routes
     Route::post('/contact', [ContactController::class, 'store']);
+
+    // Les inscriptions sont-elles ouvertes ? Et, fermées, la liste d'attente (config/registration.php).
+    Route::get('/registration', [WaitlistController::class, 'status'])->middleware('throttle:60,1');
+    Route::post('/waitlist', [WaitlistController::class, 'store'])->middleware('throttle:6,1');
 
     // ── La LIBRAIRIE : vitrine publique (livres papier, commande sans paiement
     // en ligne). Voir docs/architecture/BOOKS_STORE.md.
@@ -255,7 +261,7 @@ Route::prefix('v1')->group(function () {
             Route::middleware('learner')->group(function () {
                 Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
                 // le monde de jeu d'une leçon : le serveur RECALCULE le verdict (GameEvidenceController, 2026-11-15)
-                Route::post('/lessons/{lessonCode}/game-evidence', [\App\Http\Controllers\GameEvidenceController::class, 'store']);
+                Route::post('/lessons/{lessonCode}/game-evidence', [GameEvidenceController::class, 'store']);
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
                 // les réponses de l'élève pendant la leçon : à LUI seul (StudentLessonAnswersController, pilote 2026-11-07)
                 Route::get('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'show']);
@@ -935,7 +941,6 @@ Route::prefix('v1')->group(function () {
             // ── « التحدّي اليومي » : barème et défauts globaux ──
             Route::get('/daily-challenge/config', [AdminDailyChallengeController::class, 'show']);
             Route::put('/daily-challenge/config', [AdminDailyChallengeController::class, 'update']);
-
 
             Route::get('/activity-log', [AdminActivityLogController::class, 'index']);
 

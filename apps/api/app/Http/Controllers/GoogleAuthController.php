@@ -9,6 +9,7 @@ use App\Domain\Identity\GoogleLinkOutcome;
 use App\Domain\Identity\LegalConsent;
 use App\Domain\Identity\PendingGoogleSignup;
 use App\Domain\Identity\PersonName;
+use App\Domain\Registration\RegistrationGate;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -117,6 +118,11 @@ class GoogleAuthController extends Controller
         // de consentement, munie d'un jeton d'attente (§22) qui porte aussi le
         // type de compte demandé au départ.
         if ($outcome->kind === GoogleLinkOutcome::NEEDS_CONSENT) {
+            // Inscriptions fermées (config/registration.php) : un compte Google NEUF n'est pas créé ; les comptes
+            // existants, eux, se connectent (plus bas).
+            if (! app(RegistrationGate::class)->isOpen()) {
+                return $this->back(['erreur' => RegistrationGate::CLOSED_CODE]);
+            }
             $role = $this->requestedRole(self::roleFromState((string) $request->query('state', '')));
 
             // `prenom`/`nom` : ce que Google SUGGÈRE, pour pré-remplir l'écran
@@ -145,6 +151,14 @@ class GoogleAuthController extends Controller
      */
     public function complete(Request $request): JsonResponse
     {
+        if (! app(RegistrationGate::class)->isOpen()) {
+            return response()->json([
+                'success' => false,
+                'code' => RegistrationGate::CLOSED_CODE,
+                'message' => RegistrationGate::CLOSED_MESSAGE,
+            ], 403);
+        }
+
         PersonName::normalizeRequest($request);
 
         $validated = $request->validate([

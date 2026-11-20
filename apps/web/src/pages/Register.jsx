@@ -3,7 +3,8 @@ import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
 import { Eye, EyeOff, GraduationCap, Presentation } from 'lucide-react';
-import { register as registerRequest } from '../services/authService';
+import { register as registerRequest, registrationStatus } from '../services/authService';
+import Waitlist from '../components/auth/Waitlist';
 import { postAuthPath, readPendingClassJoin } from '../features/classJoin/pendingClassJoin';
 import ClassJoinNotice from '../components/auth/ClassJoinNotice';
 import LegalConsentCheckbox from '../components/auth/LegalConsentCheckbox';
@@ -35,6 +36,14 @@ export default function Register() {
   // (`?type=enseignant`). Un seul formulaire, une seule vérification
   // d'adresse ; le serveur tient la liste blanche. Le parent n'a PAS de compte
   // à créer : il lit par le « رابط الوليّ » (PARENT_SPACE.md §2, 2026-10-23).
+  const [registration, setRegistration] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    registrationStatus().then((s) => alive && setRegistration(s));
+    return () => {
+      alive = false;
+    };
+  }, []);
   const [searchParams, setSearchParams] = useSearchParams();
   const isTeacher = searchParams.get('type') === 'enseignant';
   const accountType = isTeacher ? 'teacher' : 'student';
@@ -121,6 +130,11 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  // REGISTRATIONS CLOSED (owner, 2026-11-20): the platform is under test — this page shows the waiting list instead of
+  // the form. A student who comes from the link of his teacher's class still signs up (the server checks the link).
+  if (registration === null) return null;
+  if (!registration.open && !(registration.classLinks && pendingJoin)) return <Waitlist />;
 
   const tone = isTeacher ? 'teacher' : 'student';
   const typeButton = (type, Icon, label) => {

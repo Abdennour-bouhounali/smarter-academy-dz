@@ -22,7 +22,16 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1';
  * @throws {ApiError} On network failure or a non-2xx response (e.g. a
  *   duplicate email or a weak password come back as 422).
  */
-export async function register({ firstName, lastName, email, password, acceptLegal, accountType = 'student', classJoinLink, classJoinConsent }) {
+export async function register({
+  firstName,
+  lastName,
+  email,
+  password,
+  acceptLegal,
+  accountType = 'student',
+  classJoinLink,
+  classJoinConsent,
+}) {
   // `accountType` : 'student' (défaut) ou 'teacher'. Le serveur tient la
   // liste blanche ; le client ne fait que transmettre le choix.
   // `classJoinLink` + `classJoinConsent` : l'élève vient du lien d'une classe
@@ -40,11 +49,7 @@ export async function register({ firstName, lastName, email, password, acceptLeg
   });
 
   if (!ok) {
-    throw new ApiError(
-      apiMessage('register', data, status),
-      classifyStatus(status),
-      status,
-    );
+    throw new ApiError(apiMessage('register', data, status), classifyStatus(status), status);
   }
 
   return data;
@@ -143,7 +148,6 @@ export async function updateGrade(token, grade) {
   return data.user;
 }
 
-
 /**
  * Redemande l'e-mail de vérification pour l'élève CONNECTÉ.
  *
@@ -162,11 +166,7 @@ export async function resendVerificationEmail(token) {
   if (!ok) {
     // apiMessage() traite lui-même le 429 (voir apiMessage.js) : la branche
     // explicite n'avait plus de raison d'être, et elle était française.
-    throw new ApiError(
-      apiMessage('sendEmail', data, status),
-      classifyStatus(status),
-      status,
-    );
+    throw new ApiError(apiMessage('sendEmail', data, status), classifyStatus(status), status);
   }
 
   return data;
@@ -240,7 +240,14 @@ export function googleRedirectUrl(accountType = 'student') {
  * `handoff` est le jeton d'attente opaque rendu par le serveur au retour de
  * Google. Il est chiffré : ni lisible ni falsifiable ici.
  */
-export async function completeGoogleSignup({ handoff, firstName, lastName, password, acceptLegal, accountType = 'student' }) {
+export async function completeGoogleSignup({
+  handoff,
+  firstName,
+  lastName,
+  password,
+  acceptLegal,
+  accountType = 'student',
+}) {
   const { ok, status, data } = await apiRequest('/auth/google/complete', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -248,12 +255,29 @@ export async function completeGoogleSignup({ handoff, firstName, lastName, passw
   });
 
   if (!ok) {
-    throw new ApiError(
-      apiMessage('google', data, status),
-      classifyStatus(status),
-      status,
-    );
+    throw new ApiError(apiMessage('google', data, status), classifyStatus(status), status);
   }
 
+  return data;
+}
+
+/** Are registrations open? (apps/api › config/registration.php) — `{ open, classLinks }`; unreachable = open (the server decides anyway). */
+export async function registrationStatus() {
+  try {
+    const { ok, data } = await apiRequest('/registration', { method: 'GET' });
+    return ok ? { open: Boolean(data.open), classLinks: Boolean(data.classLinks) } : { open: true, classLinks: true };
+  } catch {
+    return { open: true, classLinks: true };
+  }
+}
+
+/** The waiting list while registrations are closed: a phone number, a name if given, who he is. */
+export async function joinWaitlist({ phone, name, role }) {
+  const { ok, data } = await apiRequest('/waitlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ phone, ...(name ? { name } : {}), role }),
+  });
+  if (!ok) throw new Error(data?.errors?.phone?.[0] ?? data?.message ?? 'تعذّر الإرسال. حاول من جديد.');
   return data;
 }

@@ -6,6 +6,7 @@ use App\Domain\Classroom\PendingClassJoin;
 use App\Domain\Identity\LegalConsent;
 use App\Domain\Identity\PersonName;
 use App\Domain\Push\AdminPush;
+use App\Domain\Registration\RegistrationGate;
 use App\Models\User;
 use App\Notifications\VerifyEmailAddress;
 use Illuminate\Http\Request;
@@ -17,6 +18,17 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        // LES INSCRIPTIONS FERMÉES (config/registration.php) : aucun compte ne naît ici, sauf l'élève invité par le
+        // lien valide d'une classe. Décidé AVANT toute validation : la page n'a rien à corriger, elle a un message à lire.
+        $gate = app(RegistrationGate::class);
+        if (! $gate->allows($request->input('accountType'), $request->input('classJoinLink'), $request->boolean('classJoinConsent'))) {
+            return response()->json([
+                'success' => false,
+                'code' => RegistrationGate::CLOSED_CODE,
+                'message' => RegistrationGate::CLOSED_MESSAGE,
+            ], 403);
+        }
+
         PersonName::normalizeRequest($request);
 
         $validated = $request->validate([
