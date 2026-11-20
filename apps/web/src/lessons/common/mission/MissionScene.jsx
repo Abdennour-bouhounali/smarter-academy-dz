@@ -17,7 +17,6 @@ import CivilRegistryScene from './CivilRegistryScene';
 import KioskCardsScene from './KioskCardsScene';
 import MuseumDeskScene from './MuseumDeskScene';
 import PartyTableScene from './PartyTableScene';
-import ApronStoreScene from './ApronStoreScene';
 import RugMarketScene from './RugMarketScene';
 import FountainPlazaScene from './FountainPlazaScene';
 import ClubCounterScene from './ClubCounterScene';
@@ -63,8 +62,6 @@ const SCENES = {
   'museum-desk': MuseumDeskScene,
   // unité 5, la synthèse wadiya-idmajiya-jumal (2026-11-12) : la table du goûter de l'école — rangées ÉGALES de jus et de gâteaux, un plateau de restes
   'party-table': PartyTableScene,
-  // unité 1, la synthèse wadiya-idmajiya-aadad (2026-11-12) : le magasin de la commune — deux piles de tabliers, des caisses d'école identiques
-  'apron-store': ApronStoreScene,
   // unité 2, la synthèse wadiya-idmajiya-judhur (2026-11-12) : le marché des tapis — un tapis deux fois plus long que large, un ruban à mesurer
   'rug-market': RugMarketScene,
   // unité 3, la synthèse wadiya-idmajiya-harfi (2026-11-12) : la place à la fontaine — une نافورة carrée et son ممرّ dallé de même largeur tout autour

@@ -231,6 +231,18 @@ dots are buttons, an earlier one shows the statement, the answers given (`answer
 produces** (« بسعة 9: 96 = 9 × 10 + 6، تبقى 6 علب على الأرض »), never by giving the answer. An order pays 1200 دج, less 300 per mistake;
 three mistakes end the day. Money is written « دج », without a thousands space.
 
+## 2ter-2. A second world: « جزيرة المهمّات » (`gameworld/missionIsle/`, 2026-11-20)
+
+The world of a unit's LAST lesson (`docs/reports/INTEGRATION_LESSON_PLAN.md`). It extends the same runtime
+(`kit/WorldRuntime.js`) and the same shell (`kit/LessonWorld.jsx`), and is registered in `LessonGameWorld.jsx › WORLDS`
+as `mission-isle`. What differs from « أرخبيل القواسم »: one island (the oasis depot, `divisorIsles/Depot.js`, the
+only file it takes from the other world), no road, no key, no title screen, the robot does not walk — the phase is
+`home` (the lesson's missions, the exam door, the recap, drawn by `MissionIsle.jsx › Home`) or `mission`. The kit's
+doors it has no use for lead home (`openMap`, `closeMap`, `roam`, `quitSitting`). A mission is DATA of the lesson and
+is played by `gameworld/missions/` (`MissionRunner.jsx` from steps; `MissionPlayer.jsx` for the first mission); the
+scenes are the depot's (`runLots`, `runPairing`, `setPlot` / `runRing`). A new SCENE is added to the depot only when a
+family of situations needs it (the plan's §6 table). Text on this world's screens is never under 18 px.
+
 ## 2quater. « الامتحان الأبيض » — the exam sitting (PROTOTYPE, 2026-11-16)
 
 **Status: a prototype of the SITTING, to judge the feel, not validated. Since 2026-11-18 its sheets are the lesson's EXERCISE

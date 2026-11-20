@@ -29,8 +29,12 @@ describe('the pack of a lesson — the ONE place where it says what it gives the
       if (flags.world) {
         expect(flags.world, id).toBe(pack.world.id);
         const lesson = await loadPackPart(id, 'world');
-        for (const key of ['keys', 'ladder', 'trainer', 'sittings', 'journey', 'evidence', 'knowledge', 'text'])
-          expect(lesson[key], `${id} world.${key}`).toBeTruthy();
+        // a unit's last lesson is not a lesson of keys: its island asks missions and a bank, no ladder and no trainer
+        const parts =
+          flags.world === 'mission-isle'
+            ? ['keys', 'missions', 'bank', 'recap', 'sittings', 'journey', 'evidence', 'text']
+            : ['keys', 'ladder', 'trainer', 'sittings', 'journey', 'evidence', 'knowledge', 'text'];
+        for (const key of parts) expect(lesson[key], `${id} world.${key}`).toBeTruthy();
       }
       if (flags.knowledge)
         expect(Object.keys((await loadPackPart(id, 'knowledge')).modules).length, id).toBeGreaterThan(0);

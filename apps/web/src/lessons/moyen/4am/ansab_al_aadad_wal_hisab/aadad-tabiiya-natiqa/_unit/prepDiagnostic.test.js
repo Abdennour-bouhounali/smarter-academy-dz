@@ -35,8 +35,8 @@ describe('« أستعدّ » in every lesson of the unit', () => {
     expect(config.priorKnowledge.length).toBeGreaterThan(0);
   });
 
-  it('the eight v2 lessons have no « أستعدّ » page left', () => {
-    expect(LESSONS.filter((l) => isV2(l.id)).map((l) => l.id).sort()).toEqual(['awwaliyan-fima-baynahuma', 'bahth-pgcd', 'ikhtizal-kasr', 'khawass-qawasim', 'qasim-adad-tabii', 'qasim-mushtarak-akbar', 'qawasim-adad-tabii', 'tayin-pgcd']);
+  it('the nine lessons of the unit are v2: none has an « أستعدّ » page left', () => {
+    expect(LESSONS.filter((l) => isV2(l.id)).map((l) => l.id).sort()).toEqual(['awwaliyan-fima-baynahuma', 'bahth-pgcd', 'ikhtizal-kasr', 'khawass-qawasim', 'qasim-adad-tabii', 'qasim-mushtarak-akbar', 'qawasim-adad-tabii', 'tayin-pgcd', 'wadiya-idmajiya-aadad']);
   });
 
   it.each(ON_PAGES.map((l) => [l.id]))('%s: every item is sourced, typed and uses a declared skill', (id) => {

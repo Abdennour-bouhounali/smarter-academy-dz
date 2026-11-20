@@ -21,7 +21,7 @@
 //
 // Usage: node scripts/validate-lessons.mjs [--strict]
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { relative, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { validateProblem } from '../apps/web/src/lessons/common/problems/guidedProblem.js';
@@ -480,6 +480,20 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
   // `world/evidence.js` names, for each key, the الكفاءة it proves (`const POINTS = { <key>: 'P<n>' }`). A الكفاءة that no
   // key proves stays uncovered below — the same error as a lesson whose final test forgets it.
   if (existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'))) {
+    // A UNIT'S LAST LESSON (world « mission-isle », docs/reports/INTEGRATION_LESSON_PLAN.md §5) forges no key: what proves
+    // its الكفاءة is its BANK in exam form (the sitting, mission 3 with it) — the server re-computes each answer from the
+    // sheet. Its coverage is read from the bank: the learning points the questions of `content/practice/` carry.
+    const packFile = join(lessonDir, 'lesson.pack.js');
+    if (existsSync(packFile) && /world:\s*\{\s*id:\s*'mission-isle'/.test(readFileSync(packFile, 'utf-8'))) {
+      const bank = join(repoRoot, 'content', 'practice', gradeId, code);
+      const codes = new Set();
+      if (existsSync(bank))
+        for (const f of readdirSync(bank, { recursive: true }))
+          if (String(f).endsWith('.json'))
+            for (const m of readFileSync(join(bank, String(f)), 'utf-8').matchAll(/"code":\s*"([^"]+)"/g)) codes.add(m[1]);
+      migratedCoverage.set(indexKey, codes);
+      continue;
+    }
     const evidenceFile = join(lessonDir, 'world', 'evidence.js');
     const points = existsSync(evidenceFile) ? readFileSync(evidenceFile, 'utf-8').match(/const POINTS = \{([^}]*)\}/)?.[1] ?? '' : '';
     migratedCoverage.set(indexKey, new Set([...points.matchAll(/'(P\d+)'/g)].map((m) => `${gradeId}_${code}_${m[1]}`)));

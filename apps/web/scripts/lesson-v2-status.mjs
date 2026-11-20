@@ -73,31 +73,67 @@ async function statusOf(entry) {
 
   add('pack: lesson.pack.js, its flags in the generated index', has('lesson.pack.js') && Boolean(entry.pack));
   add('S2 world: named in the pack', Boolean(flags.world), flags.world ?? 'no world');
-  const missing = WORLD_FILES.filter((f) => !fs.existsSync(path.join(world, `${f}.js`)));
-  add(
-    'S2–S7 world content: every part',
-    missing.length === 0,
-    missing.length ? `missing ${missing.join(', ')}` : WORLD_FILES.length + ' files',
-  );
-  const untested = WORLD_TESTED.filter((f) => !fs.existsSync(path.join(world, `${f}.test.js`)));
-  add(
-    'world content: a test per part',
-    untested.length === 0,
-    untested.length ? `no test for ${untested.join(', ')}` : '',
-  );
+  // THE LAST LESSON OF A UNIT (« أدمج تعلّماتي », world « mission-isle », docs/reports/INTEGRATION_LESSON_PLAN.md) is not a
+  // lesson of keys: no forge, no trainer, no knowledge map, no instrument. It is judged on its missions (data files of
+  // `missions/`, each with its test), its island's content, its bank, its walk — and, like every lesson, on the board
+  // and the class test.
+  const missions = flags.world === 'mission-isle';
+  const notHere = (part) => add(part, null, "not for a unit's last lesson", true);
+  if (missions) {
+    const files = has('missions') ? fs.readdirSync(path.join(dir, 'missions')).filter((f) => /\.js$/.test(f)) : [];
+    const data = files.filter((f) => !f.endsWith('.test.js'));
+    const bare = data.filter((f) => !files.includes(f.replace(/\.js$/, '.test.js')));
+    const parts = ['index', 'sitting', 'text'].filter((f) => !fs.existsSync(path.join(world, `${f}.js`)));
+    add(
+      'M1 missions: two situations as data, each with its test',
+      data.length >= 2 && bare.length === 0,
+      bare.length ? `no test for ${bare.join(', ')}` : `${data.length} situation(s)`,
+    );
+    add(
+      'M2 island content: index, sitting, text — and its test',
+      parts.length === 0 && fs.existsSync(path.join(world, 'index.test.js')),
+      parts.length ? `missing ${parts.join(', ')}` : '',
+    );
+    const index = read(path.join(world, 'index.js')) ?? '';
+    add(
+      "M3 the bank mission and the unit's recap are declared",
+      /\bbank:\s*\{/.test(index) && /\brecap:\s*\[/.test(index),
+    );
+  }
+  const missing = missions ? [] : WORLD_FILES.filter((f) => !fs.existsSync(path.join(world, `${f}.js`)));
+  if (!missions)
+    add(
+      'S2–S7 world content: every part',
+      missing.length === 0,
+      missing.length ? `missing ${missing.join(', ')}` : WORLD_FILES.length + ' files',
+    );
+  const untested = missions ? [] : WORLD_TESTED.filter((f) => !fs.existsSync(path.join(world, `${f}.test.js`)));
+  if (!missions)
+    add(
+      'world content: a test per part',
+      untested.length === 0,
+      untested.length ? `no test for ${untested.join(', ')}` : '',
+    );
   // every rule is forged, never told
   const keys = [
     ...(/KEYS\s*=\s*\[([^\]]*)\]/.exec(read(path.join(world, 'journey.js')) ?? '')?.[1] ?? '').matchAll(/'([^']+)'/g),
   ].map((m) => m[1]);
   const forges = read(path.join(world, 'forges.js')) ?? '';
   const told = keys.filter((k) => !forges.includes(`'${k}'`));
-  add(
-    'S2 every rule is forged, never told',
-    keys.length > 0 && told.length === 0,
-    keys.length ? (told.length ? `told: ${told.join(', ')}` : `${keys.length} forges`) : 'no keys found',
-  );
-  add('S3 knowledge: named in the pack', Boolean(flags.knowledge));
-  add('S6 exam coach: named in the pack', Boolean(flags.coach));
+  if (missions) notHere('S2 every rule is forged, never told');
+  else
+    add(
+      'S2 every rule is forged, never told',
+      keys.length > 0 && told.length === 0,
+      keys.length ? (told.length ? `told: ${told.join(', ')}` : `${keys.length} forges`) : 'no keys found',
+    );
+  if (missions) {
+    notHere('S3 knowledge: named in the pack');
+    notHere('S6 exam coach: named in the pack');
+  } else {
+    add('S3 knowledge: named in the pack', Boolean(flags.knowledge));
+    add('S6 exam coach: named in the pack', Boolean(flags.coach));
+  }
   add('S4 practice bank is the BEM exam sheet', examStyle.includes(entry.id), 'content/practice/exam-style.json');
   // the exam sittings serve the lesson's bank AS IT IS (owner, 2026-11-18): its world/sitting.js goes through the kit's adapter
   const sitting = read(path.join(world, 'sitting.js')) ?? '';
@@ -106,7 +142,8 @@ async function statusOf(entry) {
     /createBankSittings\(/.test(sitting) && !/createSittings\(/.test(sitting),
     'world/sitting.js › createBankSittings (kit/bankSitting.js)',
   );
-  add('S8 « مختبري »: an instrument of its own', labRegistry.includes(`lesson: '${entry.id}'`));
+  if (missions) notHere('S8 « مختبري »: an instrument of its own');
+  else add('S8 « مختبري »: an instrument of its own', labRegistry.includes(`lesson: '${entry.id}'`));
   const tools = await coreTools(entry.id);
   if (tools === null)
     add('S1 launch kit: a family per core tool', null, 'the learning net could not be read from this script');
@@ -138,14 +175,19 @@ async function statusOf(entry) {
   );
   // a lesson walked through the shared library has ONE descriptor, `e2e/lessons/<id>.walk.mjs` (`e2e/lib/lessonWalk/`)
   const descriptor = fs.existsSync(path.join(WEB, 'e2e', 'lessons', `${entry.id}.walk.mjs`));
+  // a unit's last lesson is walked by the two walks of the mission island (they open it at its preview address)
+  const missionWalks =
+    missions && ['missionHome.mjs', 'mission.mjs'].every((f) => fs.existsSync(path.join(WEB, 'e2e', f)));
   add(
     'a walk plays its world',
-    descriptor || mine.some((w) => w.text.includes('data-di-start')),
-    descriptor
-      ? 'its descriptor for the shared walk'
-      : mine.length
-        ? `${mine.length} walk(s) name it`
-        : 'no walk names it',
+    descriptor || mine.some((w) => w.text.includes('data-di-start')) || missionWalks,
+    missionWalks
+      ? 'e2e/missionHome.mjs (its home) and e2e/mission.mjs (its missions)'
+      : descriptor
+        ? 'its descriptor for the shared walk'
+        : mine.length
+          ? `${mine.length} walk(s) name it`
+          : 'no walk names it',
   );
   const cat = catalogue.get(entry.id);
   add(
@@ -184,9 +226,7 @@ if (one) {
     console.log(
       `\n${s.done ? '✅ every part of a v2 lesson is in its place' : `❌ ${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}.`,
     );
-    console.log(
-      '   Not judged here: its tests, its walk at 1366×768 (the ONE size), the screenshots.\n',
-    );
+    console.log('   Not judged here: its tests, its walk at 1366×768 (the ONE size), the screenshots.\n');
   }
   process.exit(s.done ? 0 : 1);
 }

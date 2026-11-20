@@ -244,6 +244,15 @@ npm run status:lesson-v2                      # every lesson that has a pack, th
 npm run status:lesson-v2 -- --lesson <id>     # one lesson, part by part; exit 1 unless it prints ✅
 ```
 
+**A unit's LAST lesson (« أدمج تعلّماتي ») is a v2 lesson of another kind** (2026-11-20, `INTEGRATION_LESSON_PLAN.md`):
+its pack names the world `mission-isle` and nothing else is asked of the pack yet. Its `world/` holds `index.js`
+(`keys: []`, `missions`, `bank`, `recap`, `sittings`, `journey`, `text`), `sitting.js` (the bank, as it is) and
+`text.js`; its situations are data files of `missions/`, each with its test. No forge, no trainer, no knowledge map,
+no instrument: the status script prints those parts ➖ and judges M1 (two situations with their tests), M2 (the
+island's content and its test), M3 (the bank mission and the recap declared), the bank, the walks
+(`e2e/missionHome.mjs`, `e2e/mission.mjs`), the board, the class test, the deletion of the old version.
+`scripts/validate-lessons.mjs` reads its الكفاءات coverage from its bank.
+
 `apps/web/scripts/lesson-v2-status.mjs` reads files and markers and judges nothing. Its parts, for one lesson:
 
 | Part | What it looks at |

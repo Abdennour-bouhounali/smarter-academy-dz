@@ -217,6 +217,7 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
     if (step) setOpen(step.kind === 'data' ? 'data' : step.kind === 'work' ? 'work' : 'goal');
   }, [step]);
 
+  const stars = slips <= 2 ? 3 : slips <= 5 ? 2 : 1;
   const bravo = (pay) => {
     setCoins((c) => c + pay);
     setWin({ id: Date.now(), pay, word: BRAVO[Math.floor(Math.random() * BRAVO.length)] });
@@ -227,6 +228,7 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
     setV({});
     if (i + 1 >= steps.length) {
       setCoins((c) => c + pay);
+      world.done?.({ stars, coins: coins + pay });
       setPhase('model');
       setFinale(true);
       world.cheer?.(true);
@@ -283,7 +285,6 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
     return advance(step.pay ?? 10);
   };
 
-  const stars = slips <= 2 ? 3 : slips <= 5 ? 2 : 1;
   const stage = phase === 'play' ? step.stage : STAGES;
   const nextMark = sit.data.find((d) => !data.includes(d.id))?.id;
   const ASK = !read

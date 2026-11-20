@@ -1,0 +1,218 @@
+/**
+ * « جزيرة المهمّات » on screen — the world of a unit's last lesson (`Game.js`): its HOME over the island (the missions
+ * of the lesson, the door of the exam sitting, the unit's recap), and the mission he opened (`missions/`).
+ * Everything said here comes from the lesson (`lesson.text`, `lesson.missions`, `lesson.bank`, `lesson.recap`).
+ */
+import { useEffect, useMemo, useState } from 'react';
+import { ArrowLeft, BookOpen, Clock, FileText, PenLine, Star, Trophy, X } from 'lucide-react';
+import LessonWorld from '../kit/LessonWorld';
+import { useLesson } from '../kit/LessonContext';
+import { examLevelOpen } from '../kit/journey';
+import { readSave } from '../kit/saveSync';
+import { loadPackPart } from '../../../lessonPack';
+import MissionPlayer from '../missions/MissionPlayer';
+import MissionRunner from '../missions/MissionRunner';
+import { MissionIsleGame } from './Game';
+import './missionIsle.css';
+
+const Stars = ({ n }) => (
+  <span className="mi-stars" data-mi-stars={n}>
+    {[0, 1, 2].map((k) => (
+      <Star key={k} size={24} className={k < n ? 'is-on' : ''} aria-hidden="true" />
+    ))}
+  </span>
+);
+
+/** The unit's recap: each lesson of the unit and its rules. A rule he has not forged yet keeps its name hidden. */
+function Recap({ lessons: list, onClose }) {
+  const [lessons, setLessons] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    Promise.all(
+      list.map(({ id, title }) =>
+        loadPackPart(id, 'world').then(
+          (l) => (l ? { id, title, keys: l.keys, rules: l.rules, held: readSave(id)?.keysEver ?? [] } : null),
+          () => null,
+        ),
+      ),
+    ).then((all) => alive && setLessons(all.filter(Boolean)));
+    return () => {
+      alive = false;
+    };
+  }, [list]);
+  return (
+    <section className="mi-panel mi-panel--recap" data-mi-recap={lessons?.length ?? 'loading'}>
+      <header>
+        <h2>
+          <BookOpen size={24} aria-hidden="true" /> ملخّص الوحدة: قواعدك
+        </h2>
+        <button type="button" className="mi-x" aria-label="إغلاق" data-mi-recap-close onClick={onClose}>
+          <X size={22} aria-hidden="true" />
+        </button>
+      </header>
+      {!lessons ? (
+        <p>نجمع قواعدك…</p>
+      ) : (
+        <div className="mi-recap">
+          {lessons.map((l) => (
+            <article key={l.id} data-mi-recap-lesson={l.id}>
+              <h3>{l.title}</h3>
+              <ul>
+                {l.keys.map((k) => {
+                  const mine = l.held.includes(k);
+                  return (
+                    <li key={k} className={mine ? 'is-mine' : ''}>
+                      <span aria-hidden="true">{mine ? l.rules[k].icon : '🔒'}</span>
+                      {mine ? l.rules[k].title : 'قاعدة لم تصنعها بعد'}
+                    </li>
+                  );
+                })}
+              </ul>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/** The home of the lesson: its missions in order, the exam sitting, the recap. */
+function Home({ s, game }) {
+  const lesson = useLesson();
+  const { missions, bank, text, sittings } = lesson;
+  const [panel, setPanel] = useState(null); // null | 'exam' | 'recap'
+  const bankDone = s.missions[bank.id];
+  const cards = [
+    ...missions.map((m) => ({
+      id: m.id,
+      title: m.title,
+      sub: m.session,
+      minutes: m.minutes,
+      done: s.missions[m.id],
+      open: () => game.startMission(m),
+    })),
+    { id: bank.id, title: bank.title, sub: bank.sub, minutes: null, done: bankDone, open: () => game.openBank() },
+  ];
+  const next = cards.find((c) => !c.done)?.id ?? null;
+  if (panel === 'recap') return <Recap lessons={lesson.recap} onClose={() => setPanel(null)} />;
+  if (panel === 'exam')
+    return (
+      <section className="mi-panel" data-mi-exam>
+        <header>
+          <h2>
+            <FileText size={24} aria-hidden="true" /> {text.exam}
+          </h2>
+          <button type="button" className="mi-x" aria-label="إغلاق" data-mi-exam-close onClick={() => setPanel(null)}>
+            <X size={22} aria-hidden="true" />
+          </button>
+        </header>
+        <p>{text.examSay}</p>
+        <div className="mi-levels">
+          {sittings.levels.map((l) => {
+            const open = examLevelOpen(s.exam, l.n);
+            return (
+              <button
+                key={l.n}
+                type="button"
+                className="mi-level"
+                disabled={!open}
+                data-mi-level={l.n}
+                onClick={() => game.openSitting(l.n)}
+              >
+                <b>المستوى {l.n}</b>
+                <span>{l.title}</span>
+                {open ? <Stars n={s.exam.best?.[l.n]?.stars ?? 0} /> : <small>يُفتح بعد المستوى {l.n - 1}</small>}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+    );
+  return (
+    <section className="mi-home" data-mi-home>
+      <header>
+        <h1>{text.title}</h1>
+        <p>{text.subtitle}</p>
+      </header>
+      <div className="mi-cards">
+        {cards.map((c, i) => (
+          <article
+            key={c.id}
+            className={`mi-card ${c.done ? 'is-done' : ''} ${c.id === next ? 'is-next' : ''}`}
+            data-mi-card={c.id}
+          >
+            <b className="mi-card__n">{i + 1}</b>
+            <h2>{c.title}</h2>
+            <p>{c.sub}</p>
+            <p className="mi-card__need">
+              <PenLine size={20} aria-hidden="true" /> ورقة · قلم
+              {c.minutes && (
+                <>
+                  <Clock size={20} aria-hidden="true" /> {c.minutes} دقيقة
+                </>
+              )}
+            </p>
+            {c.done ? (
+              <Stars n={c.done.stars} />
+            ) : (
+              <span className="mi-card__new">{c.id === next ? 'ابدأ من هنا' : 'لم تُلعب بعد'}</span>
+            )}
+            <button type="button" className="mi-btn" data-mi-open={c.id} onClick={c.open}>
+              {c.done ? 'ألعبها من جديد' : 'أبدأ المهمّة'}
+              <ArrowLeft size={20} aria-hidden="true" />
+            </button>
+          </article>
+        ))}
+      </div>
+      <div className="mi-doors">
+        <button type="button" className="mi-door" data-mi-door="exam" onClick={() => setPanel('exam')}>
+          <Trophy size={24} aria-hidden="true" /> {text.exam}
+        </button>
+        <button type="button" className="mi-door" data-mi-door="recap" onClick={() => setPanel('recap')}>
+          <BookOpen size={24} aria-hidden="true" /> ملخّص الوحدة
+        </button>
+      </div>
+    </section>
+  );
+}
+
+const WORLD = {
+  id: 'mission-isle',
+  Game: MissionIsleGame,
+  playing: () => false,
+  busy: (s) => Boolean(s.mission),
+  quiet: () => true,
+  paperOn: (s) => Boolean(s.mission),
+  Over: ({ s, game }) => {
+    if (s.mission) {
+      const Screen = s.mission.steps ? MissionRunner : MissionPlayer;
+      return (
+        <Screen
+          key={s.mission.id}
+          situation={s.mission}
+          world={{
+            run: (spec, opts) => game.missionRun(spec, opts),
+            stock: (a, b) => game.missionStock(a, b),
+            cheer: (big) => game.missionCheer(big),
+            done: (result) => game.missionDone(result),
+          }}
+          onClose={() => game.leaveMission()}
+        />
+      );
+    }
+    return s.phase === 'home' && !s.overlay ? <Home s={s} game={game} /> : null;
+  },
+};
+
+export default function MissionIsle({ lesson, ...props }) {
+  const world = useMemo(
+    () => ({
+      ...WORLD,
+      stages: lesson.missions.length + 1,
+      maxStars: (lesson.missions.length + 1) * 3,
+      text: { title: lesson.text.title, subtitle: lesson.text.subtitle, turn: lesson.text.turn, end: {} },
+    }),
+    [lesson],
+  );
+  return <LessonWorld world={world} lesson={lesson} {...props} />;
+}

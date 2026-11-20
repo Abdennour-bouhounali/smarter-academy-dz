@@ -1,5 +1,6 @@
 /**
- * The walk of an integration mission (dev server on :5173): `node e2e/mission.mjs <1|2> <out dir>`.
+ * The walk of an integration mission (dev server on :5173): `node e2e/mission.mjs <1|2> <out dir>`
+ * (`VIA_HOME=1`: opened from the lesson's home, and back to it).
  * Plays the mission END TO END THROUGH ITS UI at 1366×768, with a wrong answer on the way (its guidance must show and
  * no success with it), and checks on every screen it photographs: no text of the mission under 18 px, nothing of the
  * mission beyond the screen, no page error; then the big success at the end.
@@ -63,7 +64,14 @@ const win = async (label, want = 1) => {
   if (w !== want) bad.push(`success ${label}`);
 };
 
-await p.goto(`http://localhost:5173/__qa/mission-${which}`);
+// VIA_HOME=1: the mission is opened from the lesson's home (`/__qa/missions`), and must come back to it marked as done
+const viaHome = process.env.VIA_HOME === '1';
+const cardId = which === '1' ? 'bem-2022-lots' : 'bem-2020-trees';
+await p.goto(viaHome ? 'http://localhost:5173/__qa/missions' : `http://localhost:5173/__qa/mission-${which}`);
+if (viaHome) {
+  await p.waitForSelector(`[data-mi-open="${cardId}"]`, { timeout: 60000 });
+  await p.click(`[data-mi-open="${cardId}"]`);
+}
 await p.waitForSelector('[data-ms-start]', { timeout: 60000 });
 await shot('card');
 await p.click('[data-ms-start]');
@@ -222,6 +230,19 @@ if (which !== '1') {
     await p.click(`[data-ms-open="${id}"]`);
     await shot(`copy-${id}`);
   }
+}
+if (viaHome) {
+  await p.click(which === '1' ? '[data-ms-close]' : '[data-ms-done]');
+  await p.waitForSelector('[data-mi-home]', { timeout: 20000 });
+  await p.waitForTimeout(600);
+  await p.screenshot({ path: `${out}/home-after.png` });
+  const done = await p.locator(`[data-mi-card="${cardId}"].is-done`).count();
+  const stars = await p
+    .locator(`[data-mi-card="${cardId}"] [data-mi-stars]`)
+    .getAttribute('data-mi-stars')
+    .catch(() => null);
+  console.log('back home: card done', done, '| stars on the card', stars);
+  if (!done || !(Number(stars) >= 1)) bad.push('the mission is not marked done on the home');
 }
 console.log('small successes:', wins.join(' '));
 console.log('page errors:', errors.length, errors);

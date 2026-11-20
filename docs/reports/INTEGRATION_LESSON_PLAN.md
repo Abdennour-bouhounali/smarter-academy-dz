@@ -283,6 +283,31 @@ depot plays every line); what changes is WHERE he works.
 > a success after a wrong answer, on a page error. Both missions pass it; 9 screens of mission 2 looked at.
 > NOT built: mission 3, the home of the lesson, the save, hearts; mission 2's « classmate's copy » episode of §3.
 
+> **THE LESSON IS BUILT (2026-11-20) — except its board and its class test.** The owner said yes to the home (« 1-yes »).
+> « أدمج تعلّماتي » of 4AM unit 1 is a v2 lesson of its own kind: its world is **« جزيرة المهمّات »**
+> (`gameworld/missionIsle/`: `Game.js` on the shared runtime, `MissionIsle.jsx`), the oasis island alone — no road, no
+> key, no title screen. Its HOME over the island: three mission cards in order (the next one is marked « ابدأ من هنا »,
+> a finished one shows its stars and « ألعبها من جديد »; all three are open), the door « الامتحان الأبيض » (the bank's
+> five levels, each opening the next) and « ملخّص الوحدة » (the eight lessons of the unit and their rules, read from
+> their worlds — a rule he has not forged shows « 🔒 قاعدة لم تصنعها بعد », never its name). **Mission 3** is a sheet of
+> the bank's level 5 (« الوضعيّة الإدماجيّة ») in the kit's exam sitting, whatever the ladder; its answers are evidence,
+> re-judged by the server. A finished mission is kept in his save (best stars and coins); the three done finish the
+> lesson (`save.finished` → every module marked, kit/storyEnd.js). Missions 1 and 2 are never evidence.
+> The lesson's content is `wadiya-idmajiya-aadad/world/` (`index.js`, `sitting.js`, `text.js`, tested) and
+> `missions/`; its pack names the world `mission-isle`. **Its old version is deleted**: the nine module pages, the old
+> content, its knowledge map, the old mission player's scene `ApronStoreScene`, two unit helpers nothing reached any
+> more; its module addresses redirect to the home; the teacher's page of a lesson that has a world no longer lists
+> the deleted modules (board or not). `status:lesson-v2` and `validate-lessons` know the kind (its الكفاءة is proved
+> by its bank). Walks kept: `e2e/missionHome.mjs` (every door), `e2e/mission.mjs` (`VIA_HOME=1`: a mission opened
+> from the home comes back marked done), `e2e/missionLesson.mjs` (the real address as a student, two old module
+> addresses, the teacher's page). All pass at 1366×768; the home, the recap, the exam door, mission 3's sheet and
+> the teacher's page were looked at. Preview: `http://localhost:5173/__qa/missions`.
+> NOT built: the board script and memo, the class test (status prints ❌ 2 parts), the save of a mission left
+> half-way, hearts, the « classmate's copy » episode, the film of mission 3. The teacher's tabs « حصّة القسم » and
+> « المذكّرة » still run on the old derived memo. NEXT (owner, 2026-11-20): **an endless game reached from this
+> home** — the robot runs sideways, three lanes, up/down keys, an order on a sign (divisors, PGCD, equal fractions…),
+> starting VERY easy with 1AM content and getting harder; a game, never evidence. Not designed in detail, not built.
+
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,
 « المطلوب », « الحلّ »), and the depot is what proves each line. Every step has the same three beats, always shown in

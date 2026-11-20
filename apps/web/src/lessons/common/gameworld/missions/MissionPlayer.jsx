@@ -294,6 +294,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     setPicked([]);
     if (n >= STEPS) {
       setCoins((c) => c + pay);
+      depot.done?.({ stars: slips <= 1 ? 3 : slips <= 3 ? 2 : 1, coins: coins + pay });
       setFinale(true);
       depot.cheer?.(true);
     } else bravo(pay);

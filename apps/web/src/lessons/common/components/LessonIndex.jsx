@@ -390,7 +390,9 @@ export default function LessonIndex({ config, basePath }) {
   // The TEACHER of a lesson that has its board (owner, 2026-11-18: « no need for these any more »): his page is the title and
   // his card « للأستاذ » — the old sections of the lesson home (progress, الكفاءات / المتطلبات / المناولات, مسألة الدرس,
   // مسار المحاور) are not shown to him. The other lessons are untouched; a v2 lesson's module addresses redirect to this page (its module pages are deleted).
-  const teacherBoard = teacherCard && hasClassBoard(config.id);
+  // …and the TEACHER of a lesson that has a WORLD, board or not (owner, 2026-11-20, on the unit's last lesson: « the old lesson
+  // still exists »): its module pages are deleted, so their list, the old situations and the progress by module are not shown.
+  const teacherBoard = teacherCard && (hasClassBoard(config.id) || Boolean(pack.world));
   const previewAsStudent = viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(pack.world);
   const studentWorld = !viewer.freeNavigation && !presenting;
   const worldId = studentWorld || previewAsStudent ? (pack.world ?? null) : null;

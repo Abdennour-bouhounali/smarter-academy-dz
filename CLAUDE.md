@@ -51,7 +51,7 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
   never narrows to a choice between written rules. `GAME_WORLD.md` « استكشف »; reference: `qawasim-adad-tabii`.
 - **The LAST lesson of each unit** (« أدمج تعلّماتي ») is not a lesson of keys: it is three missions on the BEM's
   integration situation, a recap of the unit and the bank as training exams. It is built after the unit's other lessons,
-  by `docs/reports/INTEGRATION_LESSON_PLAN.md` (owner, 2026-11-19; PLAN, not built), and it is designed and coded by Fable.
+  by `docs/reports/INTEGRATION_LESSON_PLAN.md` (owner, 2026-11-19; BUILT for 4AM unit 1 on 2026-11-20: world « جزيرة المهمّات » `gameworld/missionIsle/`, missions as data played by `gameworld/missions/MissionRunner.jsx`; its board and class test are not), and it is designed and coded by Fable.
 - A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768 pass AND its screenshots were looked at with the eyes.
 - Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
   forge, the phone rules), `LAUNCH_KIT.md`, `LESSON_LAB.md`, `CLASS_SESSION.md`.

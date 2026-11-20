@@ -657,6 +657,10 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
      1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
 
+  23bis. [x] **The integration lesson `wadiya-idmajiya-aadad` is v2 (2026-11-20)** — three missions on « جزيرة
+     المهمّات », the exam door, the unit's recap; old version deleted. `status:lesson-v2` prints ❌ 2 parts: **its board
+     (script, memo) and its class test are NOT built.** State and limits: `INTEGRATION_LESSON_PLAN.md` §9, first block.
+     UNIT 1 OF 4AM HAS NO LESSON LEFT ON AN OLD SYSTEM. Next asked by the owner: the endless game on this home.
   23. [~] **The integration lesson `wadiya-idmajiya-aadad` — step 1 of its plan: mission 1 as a playable PROTOTYPE
      (2026-11-20). STOP: the owner plays it** (`INTEGRATION_LESSON_PLAN.md` §6) — `http://localhost:5173/__qa/mission-1`.
      BEM 2022 (first written here as 2021 — a misreading of the annals' columns), the identical lots, in five stations: the story without its numbers (he sends the robot to count), his
