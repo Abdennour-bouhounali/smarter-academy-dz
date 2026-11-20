@@ -871,7 +871,7 @@ const WORLD = {
     s.mission ? (
       <MissionPlayer
         situation={s.mission}
-        world={{ run: (spec, opts) => game.missionRun(spec, opts) }}
+        world={{ run: (spec, opts) => game.missionRun(spec, opts), stock: (a, b) => game.missionStock(a, b) }}
         onClose={() => game.leaveMission()}
       />
     ) : s.depot ? (

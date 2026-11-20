@@ -14,7 +14,7 @@
  * The situation is DATA (`situation`); this file names no lesson. The verdict is what the depot does, never « wrong ».
  * Not built yet (prototype): the save, the replay with other numbers, missions 2 and 3.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Check, Flag, Play, RotateCcw, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import { euclid, fill, MISREADINGS, NEEDED, pack, rehearse } from './lots';
@@ -499,6 +499,13 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
       setBusy(false);
     },
   };
+
+  // the quay shows a stock's count only once the robot was sent to count it
+  const knownA = asked.includes('a');
+  const knownB = asked.includes('b');
+  useEffect(() => {
+    depot.stock?.(knownA ? sit.stock.a : null, knownB ? sit.stock.b : null);
+  }, [depot, knownA, knownB, sit.stock.a, sit.stock.b]);
 
   const [f1, f2] = sit.flags;
   const ready = [

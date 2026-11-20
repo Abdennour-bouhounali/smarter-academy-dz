@@ -499,11 +499,16 @@ export class Depot {
     }
   }
 
+  /** The label of the quay: each count, or « ؟ » while the robot has not counted that stock (`null`). */
+  stockLabel(a, b) {
+    this.palletLabel.userData.setText(`\u202a${a ?? '؟'} + ${b ?? '؟'}\u202c`);
+  }
+
   /** The two stocks of a mission on the quay: the pile takes the first kind's colour, its label counts both. */
   setStock({ a, b }, kinds) {
     this.clearSim();
     this.goodsMat.color.set(kinds.a.color);
-    this.palletLabel.userData.setText(`\u202a${a} + ${b}\u202c`);
+    this.stockLabel(a, b);
   }
 
   /** The order is right: the containers go on the truck, the truck leaves, an empty one comes back. */

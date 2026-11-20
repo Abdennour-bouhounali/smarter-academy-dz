@@ -241,12 +241,6 @@ export class DivisorIslesGame extends WorldRuntime {
     return page === 'forge' || super.pausesWorld(page);
   }
   onStart() {
-    // PROTOTYPE (dev builds only): the QA page `/__qa/mission-1` hands a mission over and opens a v2 lesson to host it
-    if (import.meta.env.DEV && typeof window !== 'undefined' && window.__qaMission) {
-      const sit = window.__qaMission;
-      window.__qaMission = null;
-      setTimeout(() => !this.dead && this.startMission(sit), 400);
-    }
     if (this.state.stage === 0 && !this.segs[0].complete) this.say(this.T.say.hello, 10);
     // a forge left unfinished (the page was closed in front of a mirror) opens again: a key cannot be skipped
     const pending = this.pendingForge();
@@ -809,7 +803,26 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   /** Puts the world in the state of the save: earlier bridges rebuilt, flags applied. */
+  /**
+   * PROTOTYPE (dev builds only): the QA page `/__qa/mission-1` hands a mission over (its data, in the session's storage)
+   * and opens a v2 lesson to host it. The mission starts by itself — no title screen, no launch kit — and is handed over
+   * ONCE: leaving it gives the host lesson back as it is.
+   */
+  qaMission() {
+    if (!import.meta.env.DEV || typeof sessionStorage === 'undefined') return;
+    const raw = sessionStorage.getItem('qa-mission');
+    if (!raw) return;
+    setTimeout(() => {
+      // a world built and thrown away at once (React mounts twice in dev) must not take the mission with it
+      if (this.dead || !sessionStorage.getItem('qa-mission')) return;
+      sessionStorage.removeItem('qa-mission');
+      this.start();
+      this.startMission(JSON.parse(raw));
+    }, 900);
+  }
+
   restore() {
+    this.qaMission();
     const stage = this.state.stage;
     this.segs.forEach((seg, i) => {
       if (i >= stage) return;
@@ -2207,7 +2220,7 @@ export class DivisorIslesGame extends WorldRuntime {
     h.yaw = 1.9;
     this.camPos.copy(this.depot.camPos).add(new THREE.Vector3(0, 6, 8));
     this.camLook.copy(this.depot.camLook);
-    this.depot.setStock(sit.stock, sit.kinds);
+    this.depot.setStock({ a: null, b: null }, sit.kinds); // the story opens without its numbers
     this.skyNow = SKIES[1].slice();
     this.input.clear();
     this.set({
@@ -2234,6 +2247,11 @@ export class DivisorIslesGame extends WorldRuntime {
       await this.wait(0.9);
       await this.depot.ship();
     }
+  }
+
+  /** What the robot has counted so far shows on the quay (`null` = not counted yet). */
+  missionStock(a, b) {
+    this.depot?.stockLabel(a, b);
   }
 
   leaveMission() {

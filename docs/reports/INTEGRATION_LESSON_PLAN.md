@@ -1,7 +1,8 @@
 # The last lesson of each unit — « أدمج تعلّماتي » as three missions
 
 **Status: PLAN, accepted by the owner on 2026-11-19. Step 1 of §6 is BUILT (2026-11-20): mission 1 as a playable
-prototype — `http://localhost:5173/__qa/mission-1` (dev builds only), then « ابدأ ». STOP: the owner plays it.**
+prototype — `http://localhost:5173/__qa/mission-1` (dev builds only; it opens the host lesson and the mission starts by
+itself). STOP: the owner plays it.**
 A first version, a flat 2D screen, was refused the same day (owner: « there is no game feeling here » — it must be like
 the situation-game of the pilot's training, « تعاونية الواحة »). **The mission is now played IN THAT 3D DEPOT**: the
 farmer's two stocks stand on the quay; whatever the student decides, the depot packs for real — pallets fly onto the
