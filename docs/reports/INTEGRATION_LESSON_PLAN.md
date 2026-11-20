@@ -287,7 +287,8 @@ depot plays every line); what changes is WHERE he works.
 > from data (`MissionRunner`: `world.keep(snapshot)` at each step forward, `resume` given back; `missionIsle/Game.js ›
 > missionKeep`, in his world save, private): the home says « توقّفتَ في منتصفها », the card offers « أكمل من حيث
 > توقّفت (الخطوة n من N) » or « أبدأ من جديد »; the clock goes on from where it was; nothing is kept from the class
-> board. NOT for mission 1, whose own player holds a state this does not cover. (2) **« ورقة زميلك »**, the episode of
+> board. Mission 1 keeps its place the same way (`MissionPlayer › snapshot / takeBack`; the depot's floor is not kept,
+> his next gesture builds it again). (2) **« ورقة زميلك »**, the episode of
 > the plan's §3, is a step kind `review` of the engine: a classmate's copy of the same mission, ONE faulty line (he
 > added the four corner trees: 204 ÷ 6 + 4 = 38); a sound line he suspects is answered by why it holds, the faulty one
 > by its fact while the plot counts 34; then he corrects it on the copy. Mission 2 has 11 stages. Both are walked by

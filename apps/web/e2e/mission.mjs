@@ -94,6 +94,24 @@ if (which === '1') {
   await p.click('[data-ms-goal="most"]');
   await p.click('[data-ms-goal="content"]');
   await written();
+  if (viaHome) {
+    // LEFT HALF-WAY: closed after the goals; the home says so and the card gives the step back, with his copy
+    await p.waitForSelector('[data-ms-try]', { timeout: 20000 });
+    await p.click('[data-ms-close]');
+    await p.waitForSelector('[data-mi-home]', { timeout: 20000 });
+    if (!(await p.locator(`[data-mi-card="${cardId}"]`).innerText()).includes('توقّفتَ في منتصفها'))
+      bad.push('the home does not say mission 1 was left half-way');
+    await p.click(`[data-mi-open="${cardId}"]`);
+    await p.waitForSelector('[data-ms-resume]', { timeout: 20000 });
+    await shot('resume-card');
+    await p.click('[data-ms-resume]');
+    await p
+      .waitForSelector('[data-ms-try]', { timeout: 20000 })
+      .catch(() => bad.push('mission 1: the step was not given back'));
+    const kept = await p.locator('[data-ms-data] li').count();
+    console.log('   mission 1 resumed at the free tries; data kept in his copy:', kept);
+    if (kept < 2) bad.push(`mission 1: the copy lost its data on the way back (${kept})`);
+  }
   await type('n', 7);
   await p.click('[data-ms-try]');
   await idle();

@@ -181,7 +181,7 @@ function Connect({ goal, items, picked, onPick }) {
   );
 }
 
-export default function MissionPlayer({ situation: sit, world: depot, onClose }) {
+export default function MissionPlayer({ situation: sit, world: depot, onClose, resume = null }) {
   const { a, b } = sit.stock;
   const g = gcd(a, b);
   const [first, second] = euclid(a, b);
@@ -273,6 +273,35 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     const t = setTimeout(() => setReading((s) => s - 1), 1000);
     return () => clearTimeout(t);
   }, [step, read, reading]);
+
+  // A MISSION LEFT HALF-WAY IS KEPT (his world save, private; the same contract as MissionRunner): at each step forward
+  // what his copy holds is handed to the world, and the card offers « أكمل من حيث توقّفت ». The depot's floor is not
+  // kept: his next gesture builds it again. The clock goes on from where it was.
+  const snapshot = { step, left, known, data, goals, lines, lit, worked, fails, tested, written, owed, coins, slips };
+  const kept = useRef(snapshot);
+  kept.current = snapshot;
+  useEffect(() => {
+    if (step >= 1 && step < STEPS && read && (step > 1 || data.length > 0)) depot.keep?.(kept.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, read, data.length, goals.length, lines.length]);
+  const takeBack = () => {
+    const s = resume;
+    setKnown(s.known ?? { a: false, b: false });
+    setData(s.data ?? []);
+    setGoals(s.goals ?? []);
+    setLines(s.lines ?? []);
+    setLit(s.lit ?? {});
+    setWorked(s.worked ?? []);
+    setFails(s.fails ?? []);
+    setTested(s.tested ?? []);
+    setWritten(s.written ?? {});
+    setOwed(s.owed ?? null);
+    setCoins(s.coins ?? 0);
+    setSlips(s.slips ?? 0);
+    setLeft(s.left ?? sit.minutes * 60);
+    setRead(true);
+    setStep(Math.min(Math.max(s.step ?? 1, 1), STEPS - 1));
+  };
 
   const write = (fresh, drop = () => false) =>
     setLines((ls) => [...ls.filter((l) => !drop(l) && !fresh.some((f) => f.id === l.id)), ...fresh]);
@@ -480,8 +509,19 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
               <PenLine size={24} aria-hidden="true" /> ورقة · قلم
               <Clock size={24} aria-hidden="true" /> {sit.minutes} دقيقة
             </p>
-            <button type="button" className="ms-btn ms-btn--go ms-target" data-ms-start onClick={() => setWarn(WARN)}>
-              ورقتي وقلمي أمامي — أبدأ
+            {resume && (
+              <button type="button" className="ms-btn ms-btn--go ms-target" data-ms-resume onClick={takeBack}>
+                أكمل من حيث توقّفت (الخطوة {Math.min(resume.step ?? 1, STEPS)} من {STEPS})
+                <ArrowLeft size={20} aria-hidden="true" />
+              </button>
+            )}
+            <button
+              type="button"
+              className={`ms-btn ${resume ? 'ms-btn--ghost' : 'ms-btn--go ms-target'}`}
+              data-ms-start
+              onClick={() => setWarn(WARN)}
+            >
+              {resume ? 'أبدأ من جديد' : 'ورقتي وقلمي أمامي — أبدأ'}
               <ArrowLeft size={20} aria-hidden="true" />
             </button>
             <button type="button" className="ms-btn ms-btn--ghost" data-ms-close onClick={onClose}>
