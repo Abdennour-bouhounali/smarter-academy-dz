@@ -10,11 +10,15 @@
  *   { kind: 'goal' }   he taps the question(s) (`paper[].goal`)
  *   { kind: 'plan' }   the question hides steps: he orders them (`items`, `order`); a step taken too early is answered
  *                      by what it needs (`item.needs`)
+ *   { kind: 'review' } A CLASSMATE'S COPY: its lines (`lines`), one of them wrong (`wrong`); he taps the faulty one —
+ *                      a sound line he suspects is answered by why it holds (`line.holds`), the faulty one by its fact
+ *                      (`why`) while the world carries out what that copy wrote (`scene`); then he corrects it (`fix`)
  *   { kind: 'work' }   one operation: what to write on the sheet (`sheet`), then its boxes (`shape`), then `check`:
  *                      `check(values, ctx) → { ok, fact, line, scene }`. The WORLD carries out `scene` whatever he
  *                      typed (a misreading is built, never « wrong »); `fact` may be a function of what the world
  *                      built. A wrong answer ALWAYS gets a guidance (`fact`), never the next question.
  * then the model copy and the marker's list. `stage` groups steps under one number of « الخطوة n من N ».
+ * A mission left half-way is KEPT: `world.keep(snapshot)` at each step forward, `resume` given back next time.
  * Each right answer is celebrated, the end of the mission more; what must be tapped carries « اضغط هنا ».
  */
 import { useEffect, useRef, useState } from 'react';
@@ -138,7 +142,7 @@ function Copy({ sit, data, goals, plan, lines, open, onOpen }) {
   );
 }
 
-export default function MissionRunner({ situation: sit, world, onClose }) {
+export default function MissionRunner({ situation: sit, world, onClose, resume = null }) {
   const steps = sit.steps;
   const STAGES = Math.max(...steps.map((s) => s.stage)) + 1; // the last one is the model copy
   const [phase, setPhase] = useState('card'); // 'card' | 'play' | 'model' | 'marker'
@@ -165,6 +169,7 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
   const [pen, setPen] = useState(false);
   const [idle, setIdle] = useState(false);
   const [open, setOpen] = useState('data');
+  const [found, setFound] = useState(null); // the faulty line he found in a classmate's copy (a `review` step)
   const acts = useRef(0);
   const act = () => {
     acts.current += 1;
@@ -214,10 +219,35 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
   }, [playing, step?.kind]);
   // « ورقتي » opens on the section he is working on
   useEffect(() => {
-    if (step) setOpen(step.kind === 'data' ? 'data' : step.kind === 'work' ? 'work' : 'goal');
+    if (step) setOpen(step.kind === 'data' ? 'data' : step.kind === 'work' || step.kind === 'review' ? 'work' : 'goal');
   }, [step]);
 
   const stars = slips <= 2 ? 3 : slips <= 5 ? 2 : 1;
+  // A MISSION LEFT HALF-WAY IS KEPT (his world save, private): at each step forward what his copy holds is handed to the
+  // world; the card offers « أكمل من حيث توقّفت » next time. The clock goes on from where it was.
+  const snapshot = { i, data, goals, plan, vals, lines, written, coins, slips, left, found };
+  const keep = useRef(snapshot);
+  keep.current = snapshot;
+  useEffect(() => {
+    if (phase === 'play' && read && (i > 0 || data.length > 0)) world.keep?.(keep.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase, read, i, data.length, goals.length, plan.length, lines.length]);
+  const takeBack = () => {
+    const s = resume;
+    setI(Math.min(s.i ?? 0, steps.length - 1));
+    setData(s.data ?? []);
+    setGoals(s.goals ?? []);
+    setPlan(s.plan ?? []);
+    setVals(s.vals ?? {});
+    setLines(s.lines ?? []);
+    setWritten(s.written ?? {});
+    setCoins(s.coins ?? 0);
+    setSlips(s.slips ?? 0);
+    setLeft(s.left ?? sit.minutes * 60);
+    setFound(s.found ?? null);
+    setRead(true);
+    setPhase('play');
+  };
   const bravo = (pay) => {
     setCoins((c) => c + pay);
     setWin({ id: Date.now(), pay, word: BRAVO[Math.floor(Math.random() * BRAVO.length)] });
@@ -267,6 +297,22 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
     setPlan((p) => [...p, id]);
     return undefined;
   };
+  // A CLASSMATE'S COPY (`review`): he taps the line that is wrong. A sound line he suspects is answered by why it holds;
+  // the faulty one by its fact, and the world carries out what THAT copy wrote.
+  const suspect = async (id) => {
+    if (found || busy) return;
+    const line = step.lines.find((l) => l.id === id);
+    if (id !== step.wrong) return slipped(step.id, line.holds);
+    act();
+    setFound(id);
+    if (step.scene) {
+      setBusy(true);
+      await world.run(step.scene);
+      setBusy(false);
+    }
+    setFact(step.why);
+    return undefined;
+  };
   const submit = async () => {
     const r = step.check(Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])), ctx);
     act();
@@ -303,7 +349,11 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
               ? plan.length < step.order.length
                 ? `السؤال يخفي خطوات. ما الذي تبحث عنه ${plan.length ? 'بعد ذلك' : 'أوّلًا'}؟`
                 : 'هذه خطّتك. اكتبها على ورقتك.'
-              : val(step.ask, ctx);
+              : step.kind === 'review'
+                ? found
+                  ? 'هذا هو السطر. صحّحه على ورقة زميلك.'
+                  : step.ask
+                : val(step.ask, ctx);
 
   if (phase === 'card')
     return (
@@ -317,8 +367,19 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
               <PenLine size={24} aria-hidden="true" /> ورقة · قلم
               <Clock size={24} aria-hidden="true" /> {sit.minutes} دقيقة
             </p>
-            <button type="button" className="ms-btn ms-btn--go ms-target" data-ms-start onClick={() => setWarn(WARN)}>
-              ورقتي وقلمي أمامي — أبدأ
+            {resume && (
+              <button type="button" className="ms-btn ms-btn--go ms-target" data-ms-resume onClick={takeBack}>
+                أكمل من حيث توقّفت (الخطوة {steps[Math.min(resume.i ?? 0, steps.length - 1)].stage} من {STAGES})
+                <ArrowLeft size={20} aria-hidden="true" />
+              </button>
+            )}
+            <button
+              type="button"
+              className={`ms-btn ${resume ? 'ms-btn--ghost' : 'ms-btn--go ms-target'}`}
+              data-ms-start
+              onClick={() => setWarn(WARN)}
+            >
+              {resume ? 'أبدأ من جديد' : 'ورقتي وقلمي أمامي — أبدأ'}
               <ArrowLeft size={20} aria-hidden="true" />
             </button>
             <button type="button" className="ms-btn ms-btn--ghost" data-ms-close onClick={onClose}>
@@ -407,6 +468,26 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
               </div>
             </div>
           )}
+          {playing && step.kind === 'review' && (
+            <div className="ms-model ms-review" data-ms-review={found ?? 'open'}>
+              <h3>{step.title}</h3>
+              <ol>
+                {step.lines.map((l) => (
+                  <li key={l.id}>
+                    <button
+                      type="button"
+                      className={`ms-review__line ${found && l.id === step.wrong ? 'is-wrong' : ''} ${!found ? 'ms-target' : ''}`}
+                      disabled={Boolean(found) || busy}
+                      data-ms-suspect={l.id}
+                      onClick={() => suspect(l.id)}
+                    >
+                      {l.tex ? <M>{l.tex}</M> : l.t}
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
           {phase === 'model' && (
             <div className="ms-model" data-ms-copy>
               <h3>{sit.session} — الحلّ</h3>
@@ -472,6 +553,21 @@ export default function MissionRunner({ situation: sit, world, onClose }) {
                 written={false}
                 onWritten={() => advance()}
                 text="اكتب خطّتك تحت « المطلوب »: الخطوات بترتيبها."
+              />
+            )}
+            {playing && step.kind === 'review' && !found && (
+              <span className="ms-hint">اضغط على السطر الذي فيه الخطأ.</span>
+            )}
+            {playing && step.kind === 'review' && found && (
+              <Sheet
+                id="review"
+                written={false}
+                onWritten={() => {
+                  setLines((ls) => [...ls.filter((l) => l.id !== step.id), { id: step.id, ...step.line }]);
+                  setFound(null);
+                  advance(step.pay ?? 10);
+                }}
+                text={step.fix}
               />
             )}
             {playing && step.kind === 'work' && (

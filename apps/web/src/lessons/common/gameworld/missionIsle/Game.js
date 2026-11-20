@@ -24,12 +24,20 @@ export class MissionIsleGame extends WorldRuntime {
   initWorld(sv) {
     this.done = { ...(sv?.missions ?? {}) };
     this.best = sv?.endless?.best ?? 0;
+    this.partial = { ...(sv?.partial ?? {}) }; // a mission left half-way: what his copy held (private, like the save)
   }
   worldState() {
-    return { mission: null, missions: this.done, stars: {}, islandName: this.lesson.text.island, run: null };
+    return {
+      mission: null,
+      missions: this.done,
+      stars: {},
+      islandName: this.lesson.text.island,
+      run: null,
+      partial: this.partial,
+    };
   }
   worldSave() {
-    return { missions: this.done, endless: { best: this.best } };
+    return { missions: this.done, endless: { best: this.best }, partial: this.partial };
   }
   worldCentre() {
     return CENTRE;
@@ -531,9 +539,19 @@ export class MissionIsleGame extends WorldRuntime {
     this.shake = 0.1;
   }
   /** A mission reached its end: what he earned is kept (his best). All done = the lesson is finished (`save.finished`: the shell then marks every module, kit/storyEnd.js). */
+  /** What his copy holds, at each step forward of a mission: kept until the mission is finished. */
+  missionKeep(snapshot) {
+    const sit = this.state.mission;
+    if (!sit || this.lesson.board) return;
+    this.partial = { ...this.partial, [sit.id]: snapshot };
+    this.set({ partial: this.partial });
+    this.save();
+  }
   missionDone(result) {
     const sit = this.state.mission;
     if (!sit) return;
+    const { [sit.id]: _finished, ...rest } = this.partial;
+    this.partial = rest;
     const before = this.done[sit.id];
     this.done = {
       ...this.done,
@@ -544,7 +562,13 @@ export class MissionIsleGame extends WorldRuntime {
       },
     };
     const all = this.allDone();
-    this.set({ missions: this.done, stars: this.starsOf(), stage: this.stageOf(), finished: all });
+    this.set({
+      missions: this.done,
+      stars: this.starsOf(),
+      stage: this.stageOf(),
+      finished: all,
+      partial: this.partial,
+    });
     this.save();
   }
   leaveMission() {

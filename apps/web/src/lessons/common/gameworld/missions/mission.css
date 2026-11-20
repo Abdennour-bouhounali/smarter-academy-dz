@@ -870,3 +870,34 @@
   justify-content: center;
   margin-top: 2.6rem; /* room for « اضغط هنا » above the first step */
 }
+
+/* a classmate's copy: its lines are tapped; the faulty one turns red once found */
+.ms-review ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.ms-review__line {
+  width: 100%;
+  padding: 0.2rem 0.8rem;
+  border: 2px solid transparent;
+  border-radius: 0.6rem;
+  background: #f4efe0;
+  color: #1c2437;
+  font: inherit;
+  font-size: 1.2rem;
+  text-align: start;
+  cursor: pointer;
+}
+.ms-review__line:hover:not(:disabled) {
+  border-color: #f59e0b;
+}
+.ms-review__line.is-wrong {
+  border-color: #dc2626;
+  background: #fee2e2;
+  text-decoration: line-through;
+  text-decoration-color: #dc2626;
+}

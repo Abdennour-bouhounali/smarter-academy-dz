@@ -57,5 +57,14 @@ describe('BEM 2020 — the trees (mission 2)', () => {
     expect(step('gap').check({ d: 5 }, {}).scene).toEqual({ ring: { d: 5 } });
     expect(step('gap').check({ d: 3 }, {})).toMatchObject({ ok: false, scene: { ring: { d: 3 } } });
   });
+  it("the classmate's copy has ONE faulty line, every sound line says why it holds, and the plot counts for him", () => {
+    const copy = step('copy');
+    expect(copy.kind).toBe('review');
+    expect(copy.lines.filter((l) => !l.holds).map((l) => l.id)).toEqual([copy.wrong]);
+    expect(copy.lines.find((l) => l.id === copy.wrong).tex).toContain('+ 4 = 38');
+    expect(copy.scene).toEqual({ ring: { d: 6, count: true } });
+    expect(copy.why).toContain('34');
+    expect(copy.lines.find((l) => l.id === 'c5').tex).toContain(String(Math.round(30600 / 38)));
+  });
   it('money is « دج », never « DA »', () => expect(JSON.stringify(BEM_2020)).not.toMatch(/DA/));
 });
