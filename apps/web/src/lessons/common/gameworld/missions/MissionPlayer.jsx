@@ -153,7 +153,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
   const tryLots = async (n, where) => {
     const d = deal(n, sit.stock);
     setFact(null);
-    await run({ lots: Array(n).fill(d.per), left: d.left }, { cheer: d.outcome === 'most' });
+    await run({ lots: Array(n).fill(d.per), left: d.left, stock: sit.stock }, { cheer: d.outcome === 'most' });
     const tone = d.outcome === 'left' ? 'left' : 'ok';
     const id = d.outcome === 'left' ? 'try' : `ok-${n}`;
     write(
@@ -451,8 +451,8 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
                     setFact(null);
                     await run(
                       f.outcome === 'short'
-                        ? { lots: Array(f.full).fill(per), left: { a: 0, b: 0 }, empty: f.empty }
-                        : { lots: Array(g).fill(per), left: f.left },
+                        ? { lots: Array(f.full).fill(per), left: { a: 0, b: 0 }, empty: f.empty, stock: sit.stock }
+                        : { lots: Array(g).fill(per), left: f.left, stock: sit.stock },
                       { ship: f.outcome === 'exact', cheer: f.outcome === 'exact' },
                     );
                     if (f.outcome === 'short')

@@ -2238,8 +2238,10 @@ export class DivisorIslesGame extends WorldRuntime {
     const { ship = false } = opts;
     const sit = this.state.mission;
     if (!sit) return;
-    if (spec.pairing) await this.depot.runPairing(spec.pairing, spec.colors);
-    else await this.depot.runLots(spec, sit.kinds, { cheer: Boolean(opts.cheer) });
+    if (spec.pairing) {
+      this.depot.stockLabel(sit.stock.a, sit.stock.b, sit.stock); // the two stocks stand whole while one is laid along the other
+      await this.depot.runPairing(spec.pairing, spec.colors);
+    } else await this.depot.runLots(spec, sit.kinds, { cheer: Boolean(opts.cheer), stock: spec.stock ?? null });
     if (ship && !this.dead && this.state.mission === sit) {
       this.robot.cheer();
       await this.wait(0.9);
@@ -2249,7 +2251,7 @@ export class DivisorIslesGame extends WorldRuntime {
 
   /** What the robot has counted so far shows on the quay (`null` = not counted yet). */
   missionStock(a, b) {
-    this.depot?.stockLabel(a, b);
+    this.depot?.stockLabel(a, b, this.state.mission?.stock ?? null);
   }
 
   leaveMission() {

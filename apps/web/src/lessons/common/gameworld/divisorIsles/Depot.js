@@ -195,6 +195,7 @@ export class Depot {
           k += 1;
         }
     pallet.add(pile);
+    this.pile = pile;
     this.palletLabel = textSprite('0', { h: 1.5, bg: 'rgba(10,26,60,0.9)', stroke: null, color: '#fff7d6' });
     this.palletLabel.position.set(0, 3.5, 0);
     pallet.add(this.palletLabel);
@@ -226,6 +227,8 @@ export class Depot {
     this.clearSim();
     this.goodsMat.color.set(order.good.color);
     this.palletLabel.userData.setText(String(order.n));
+    this.pile.scale.y = 1;
+    if (this.second) this.second.group.visible = false;
   }
 
   clearSim() {
@@ -370,7 +373,11 @@ export class Depot {
    * small pallet with two bands whose lengths are its two counts. What was not packed stays on the red mat, in its
    * two colours; a lot that could not be filled is an empty frame. `onStep(k)` follows the count of lots laid.
    */
-  async runLots({ lots, left = { a: 0, b: 0 }, empty = 0 }, kinds, { cheer = false, onStep = () => {} } = {}) {
+  async runLots(
+    { lots, left = { a: 0, b: 0 }, empty = 0 },
+    kinds,
+    { cheer = false, stock = null, onStep = () => {} } = {},
+  ) {
     const game = this.game;
     this.clearSim();
     const total = lots.length + empty;
@@ -424,6 +431,10 @@ export class Depot {
       return g;
     };
     const from = new THREE.Vector3(this.pallet.position.x, 2.2, this.pallet.position.z);
+    // THE QUAY GOES DOWN AS THE LOTS ARE MADE (owner, 2026-11-20): each lot laid takes its crates from the two piles,
+    // whose counts follow — what the lots did not take is what stays, and goes to the red mat
+    const rest = stock ? { ...stock } : null;
+    if (rest) this.stockLabel(rest.a, rest.b, stock);
     this.counter.visible = lots.length > 0;
     const per = game.instantSim ? 0.001 : Math.min(0.32, Math.max(0.03, 3.2 / Math.max(1, lots.length)));
     // past 140 lots they land several at a time: 1188 lots are dealt in the time of 140, never in half a minute
@@ -434,10 +445,15 @@ export class Depot {
       this.group.add(c);
       this.items.push(c);
       const home = slot(k);
+      if (rest) {
+        rest.a -= lots[k].a;
+        rest.b -= lots[k].b;
+      }
       if (k % batch) {
         c.position.copy(home);
         continue;
       }
+      if (rest) this.stockLabel(rest.a, rest.b);
       c.position.copy(from);
       c.scale.setScalar(0.2);
       await game.tween(
@@ -454,6 +470,7 @@ export class Depot {
       this.counter.position.set(home.x, size * 0.6 + 1.4, home.z);
       onStep(k + 1);
     }
+    if (rest) this.stockLabel(rest.a, rest.b);
     await game.wait(game.instantSim ? 0.001 : 0.3);
     this.counter.visible = false;
     for (let k = 0; k < empty; k += 1) {
@@ -561,16 +578,52 @@ export class Depot {
     }
   }
 
-  /** The label of the quay: each count, or « ؟ » while the robot has not counted that stock (`null`). */
-  stockLabel(a, b) {
-    this.palletLabel.userData.setText(`\u202a${a ?? '؟'} + ${b ?? '؟'}\u202c`);
-  }
-
-  /** The two stocks of a mission on the quay: the pile takes the first kind's colour, its label counts both. */
+  /**
+   * The TWO stocks of a mission stand apart on the quay, each pile under its own count (owner, 2026-11-20). The first
+   * is the depot's pile; the second is built beside it the first time a mission asks for it.
+   */
   setStock({ a, b }, kinds) {
     this.clearSim();
     this.goodsMat.color.set(kinds.a.color);
+    if (!this.second) {
+      const g = new THREE.Group();
+      g.position.set(this.pallet.position.x, 0, this.pallet.position.z + 4.1);
+      const base = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.3, 3), std(0x8a6239));
+      base.position.y = 0.15;
+      base.castShadow = true;
+      g.add(base);
+      this.secondMat = std(kinds.b.color);
+      const pile = new THREE.InstancedMesh(this.pile.geometry, this.secondMat, 60);
+      pile.castShadow = true;
+      const m = new THREE.Matrix4();
+      for (let k = 0; k < 60; k += 1) {
+        this.pile.getMatrixAt(k, m);
+        pile.setMatrixAt(k, m);
+      }
+      g.add(pile);
+      const label = textSprite('0', { h: 1.5, bg: 'rgba(10,26,60,0.9)', stroke: null, color: '#fff7d6' });
+      label.position.set(0, 3.5, 0);
+      g.add(label);
+      this.group.add(g);
+      this.second = { group: g, pile, label };
+    }
+    this.secondMat.color.set(kinds.b.color);
+    this.second.group.visible = true;
+    this.full = { a: 1, b: 1 };
     this.stockLabel(a, b);
+  }
+
+  /**
+   * What stands on the quay NOW: each pile's count (« ؟ » while the robot has not counted that stock — `null`), and
+   * each pile as tall as what is left of it. `full` (the stocks whole) is given when a dealing starts.
+   */
+  stockLabel(a, b, full = null) {
+    if (full) this.full = full;
+    this.palletLabel.userData.setText(`${a ?? '؟'}`);
+    this.second?.label.userData.setText(`${b ?? '؟'}`);
+    const tall = (n, whole) => (n == null ? 1 : Math.max(0.03, n / Math.max(1, whole)));
+    this.pile.scale.y = tall(a, this.full?.a);
+    if (this.second) this.second.pile.scale.y = tall(b, this.full?.b);
   }
 
   /** The order is right: the containers go on the truck, the truck leaves, an empty one comes back. */
