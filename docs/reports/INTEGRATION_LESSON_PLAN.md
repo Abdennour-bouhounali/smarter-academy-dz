@@ -156,3 +156,55 @@ a new scene is added only when a family of §1 needs it.
 - BEM 2019 ends with a percentage and a budget limit taught in other chapters. It can be solved by arithmetic; a teacher
   should confirm it fits the week of the lesson.
 - Not verified: that every story exercise of the bank (22 of the 50 of `wadiya-idmajiya-aadad`) fits one of the three scenes.
+
+
+## 8. The mission, redesigned (council of 2026-11-20 — PROPOSED, awaiting the owner; nothing of it is coded)
+
+The owner played the prototype of §6 step 1 and said: « it is not clear at all […] the student must never feel lost,
+everything that happens in the game should be translated to numbers as an operation ». A council of five advisors and
+three reviewers (a BEM marker, a game designer, a mathematician), all on Fable 5.2, was run on that sentence. Its
+verdict replaces §3 (the five stations) for the missions.
+
+**The one rule: one sentence of the exam text ↔ one line of numbers.** One gesture all along (he types a number or
+fills an operation in its shape), the depot carries it out, and ONE line is added to a notebook that stays on screen.
+The exam text is on screen from the first second, with its numbers; each of its phrases lights when his act has
+produced its line. At the end the notebook IS his exam copy.
+
+**The screen never changes:** the exam paper (labelled with its session), the 3D depot, ONE instruction at the top
+(the question of the moment, in plain words: « كم تشكيلة؟ »), the notebook, a progress strip « 2 من 6 ».
+
+**Mission 1 — BEM 2021, the lots (the world helps a lot):**
+
+| # | He does | The depot does | The line written | The phrase that lights |
+|---|---|---|---|---|
+| 1 | taps each number of the text and the stock it counts | the two stocks land on the quay | `1188 صندوق بطاطا` · `528 صندوق جزر` | the two quantities |
+| 2 | types a number of lots — any | deals the crates into that many lots; what does not fit stays on the red mat | `1188 = 5 × 237 + 3` · `528 = 5 × 105 + 3` | « كلّ الصناديق » turns red while crates are left |
+| 3 | tries again until nothing is left | lots identical, mat empty | `1188 = 4 × 297 + 0` · `528 = 4 × 132 + 0` | « متماثلة », « كلّ » |
+| 4 | « دور أكثر؟ » — fills `1188 = 528 × □ + □` | lays the carrots against the potatoes, twice: 132 potato crates stand alone | `1188 = 528 × 2 + 132` | — |
+| 5 | tries the numbers that worked on those 132 crates, then fills `528 = 132 × □ + □` | every number of lots that worked splits the 132; 132 itself splits both stocks | `132 = 4 × 33 + 0` … `528 = 132 × 4 + 0` | « أكبر » |
+| 6 | types a number greater than 132 — any | it cannot split the 132 crates: they stay on the mat | `1188 = 264 × 4 + 132` | « أكبر » stays lit |
+| 7 | fills the content of a lot | packs the 132 lots; the truck leaves | `1188 = 132 × 9` · `528 = 132 × 4` | question (ب) |
+| 8 | completes the sentence of his copy with his numbers and the name of the key he forged in the unit | the notebook folds into the exam copy | « العدد 132 يقسم 1188 و 528 وهو الأكبر: PGCD(1188 ; 528) = 132 » | the whole text |
+
+Steps 4–6 are the answer to the mathematician's objection: a refuted 264 does not prove « the greatest »; what
+proves it is that a number of lots which splits both stocks must split the 132 crates left alone — which is what
+Euclid's first line MEANS in the depot.
+
+**Removed from the prototype:** the hidden numbers and the robot sent to count; the useless data (mission 1); the
+ticked conditions; the rehearsal on 12 and 8 crates (his own tries on the real stock are the rehearsal); the goal
+sentences built from tiles; the choice of a key in a menu; the four named habits; the names « الوضعية », « الأعلام »,
+« الجسور », « الختم ».
+
+**Missions 2 and 3 — ONE thing fades: who writes the line.**
+- Mission 2 (BEM 2019, the trees): HE writes each line first, in its shape, then the plot plays it — a corner without
+  a tree, a spacing that does not close. The trap of the text is his to meet (the perimeter, « في كل ركن »). The
+  notebook carries the 34 trees into the budget line.
+- Mission 3 (an unseen exercise of the bank): the paper and a blank notebook — no shape is given any more. The world
+  is dark until he hands in, then plays his own lines once.
+
+**Never lost:** one instruction, one thing to touch, one live line. After a third try that leaves crates, the depot
+puts his tries side by side (facts, no hint of the answer). Hearts and coins as in the order game of the pilot.
+
+**What the council could not settle, for the owner:** no mark out of 8 on the notebook (a BEM copy is marked on its
+justification too — a score would lie, and it feeds the fear); the engine for the other families (offers, plots) is
+extracted AFTER mission 2 exists, not before; one real student plays mission 1 before missions 2 and 3 are built.
