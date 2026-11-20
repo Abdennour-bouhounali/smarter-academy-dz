@@ -12,12 +12,14 @@ import { Brain, ClipboardList, FileText, Home, NotebookPen, Presentation, Users 
 import { getLessonById, getLessonPath } from '@smarter-academy/core';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import { teacherBankPath } from '../practice/teacherBank';
-import { classCardPath, classSessionPath, classTrackingPath } from './boardLessons';
+import { classCardPath, classSessionPath, classTrackingPath, toolHasContent } from './boardLessons';
 import { lessonFilePagePath } from './lessonFileDoc';
 import './teacherPanel.css';
 
-/** The tools of a lesson, in the order of the teacher's card. */
-export const lessonTools = (lessonId) => [
+/** The tools of a lesson, in the order of the teacher's card — only those that have content for it (`toolHasContent`). */
+export const lessonTools = (lessonId) => ALL_TOOLS(lessonId).filter((tool) => toolHasContent(lessonId, tool.id));
+
+const ALL_TOOLS = (lessonId) => [
   { id: 'lesson', label: 'الدرس', icon: Home, to: getLessonPath(lessonId) ?? '/enseignant/cours' },
   { id: 'session', label: 'حصّة القسم', icon: Presentation, to: classSessionPath(lessonId), main: true },
   { id: 'memo', label: 'المذكّرة', icon: FileText, to: `/enseignant/cours/${encodeURIComponent(lessonId)}/memoire` },

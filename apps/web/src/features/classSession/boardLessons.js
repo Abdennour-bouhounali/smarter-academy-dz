@@ -16,6 +16,25 @@ export const BOARD_LESSONS = Object.freeze(lessonsWithPack('board'));
 
 export const hasClassBoard = (lessonId) => BOARD_LESSONS.includes(lessonId);
 
+/**
+ * The lessons that are v2 (a game world in their pack) — board or not. Their module pages are deleted, so nothing of the
+ * old lesson page may be offered to their teacher (owner, 2026-11-20, on a unit's last lesson, which has its world before
+ * its board): the teacher's own bank instead of the old hub, and only the tools that have content.
+ */
+const WORLD_LESSONS = Object.freeze(lessonsWithPack('world'));
+const hasWorld = (lessonId) => WORLD_LESSONS.includes(lessonId);
+
+/** The teacher's own exercise bank (read, show on the board, print): every lesson that has its board or its world. */
+export const hasTeacherBank = (lessonId) => hasClassBoard(lessonId) || hasWorld(lessonId);
+
+/**
+ * Which tools of the common header have CONTENT for this lesson (owner, 2026-11-20: « display only the buttons that
+ * has the content »). A v2 lesson without its board has no script, no memo, no lesson file, no knowledge card and no
+ * tracking of its own yet: its header is the lesson and its bank. Every other lesson keeps every tool.
+ */
+export const toolHasContent = (lessonId, toolId) =>
+  !hasWorld(lessonId) || hasClassBoard(lessonId) || toolId === 'lesson' || toolId === 'bank';
+
 /** The four moments of the hour, in order (the set-up screen and the teacher's card show them the same way). */
 export const MOMENTS = Object.freeze(['start', 'revise', 'lesson', 'end']);
 

@@ -3,7 +3,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import {
-  teacherBankPath, teacherOverview, checkLocally, localHint, expectedAnswerText, formatStudentAnswer,
+  teacherBankPath,
+  teacherOverview,
+  checkLocally,
+  localHint,
+  expectedAnswerText,
+  formatStudentAnswer,
 } from './teacherBank';
 import { PRACTICE_ACTIVE_LESSONS } from './practiceCapability';
 import { loadExercise, exerciseIdsFor, levelCounts } from './practiceContent';
@@ -27,7 +32,13 @@ describe('teacherOverview — la MÊME forme que l’aperçu de l’élève, san
   const overview = teacherOverview(code);
 
   it('porte les clés que PracticeHub lit', () => {
-    expect(Object.keys(overview).sort()).toEqual(['learningPoints', 'lesson', 'levels', 'openSession', 'recommendedLevel']);
+    expect(Object.keys(overview).sort()).toEqual([
+      'learningPoints',
+      'lesson',
+      'levels',
+      'openSession',
+      'recommendedLevel',
+    ]);
     expect(overview.lesson.code).toBe(code);
     expect(overview.lesson.title).toBeTruthy();
     expect(overview.openSession).toBeNull();
@@ -36,7 +47,11 @@ describe('teacherOverview — la MÊME forme que l’aperçu de l’élève, san
 
   it('tous les niveaux du contenu, ouverts, dans l’ordre, aucune progression', () => {
     const counts = levelCounts(code);
-    expect(overview.levels.map((l) => l.level)).toEqual(Object.keys(counts).map(Number).sort((a, b) => a - b));
+    expect(overview.levels.map((l) => l.level)).toEqual(
+      Object.keys(counts)
+        .map(Number)
+        .sort((a, b) => a - b),
+    );
     for (const level of overview.levels) {
       expect(level.unlocked).toBe(true);
       expect(level.completedCount).toBe(0);
@@ -46,7 +61,12 @@ describe('teacherOverview — la MÊME forme que l’aperçu de l’élève, san
 });
 
 describe('formatStudentAnswer — la réponse d’un élève, lisible', () => {
-  const choice = { choices: [{ id: 'A', content: '1 ، 2 ، 7 ، 14' }, { id: 'B', content: '14 فقط' }] };
+  const choice = {
+    choices: [
+      { id: 'A', content: '1 ، 2 ، 7 ، 14' },
+      { id: 'B', content: '14 فقط' },
+    ],
+  };
 
   it('un choix : son CONTENU, pas sa lettre', () => {
     expect(formatStudentAnswer(choice, { choiceId: 'B' })).toBe('14 فقط');
@@ -95,7 +115,14 @@ describe('les indices, sous la forme du serveur', () => {
 
 describe('expectedAnswerText — lisible par l’enseignant', () => {
   it('choix : le CONTENU des bonnes options, pas leur lettre', () => {
-    const q = { answerType: 'multiChoice', choices: [{ id: 'A', content: 'x', isCorrect: true }, { id: 'B', content: 'y', isCorrect: false }, { id: 'C', content: 'z', isCorrect: true }] };
+    const q = {
+      answerType: 'multiChoice',
+      choices: [
+        { id: 'A', content: 'x', isCorrect: true },
+        { id: 'B', content: 'y', isCorrect: false },
+        { id: 'C', content: 'z', isCorrect: true },
+      ],
+    };
     expect(expectedAnswerText(q)).toBe('x ؛ z');
   });
 
@@ -133,7 +160,9 @@ describe('aucun suivi — garanties de structure', () => {
   it('le lecteur n’appelle aucun service d’écriture de la pratique', () => {
     for (const source of [player, panel]) {
       expect(source).not.toContain('practiceService');
-      expect(source).not.toMatch(/submitAnswer|openQuestion|requestHint|startPracticeSession|completeExercise|completeSession|createNote/);
+      expect(source).not.toMatch(
+        /submitAnswer|openQuestion|requestHint|startPracticeSession|completeExercise|completeSession|createNote/,
+      );
     }
   });
 
@@ -149,7 +178,14 @@ describe('aucun suivi — garanties de structure', () => {
 
   it('le lecteur reprend la mise en page de l’élève', () => {
     const session = read('src/pages/student/practice/PracticeSession.jsx');
-    for (const marker of ['data-practice-side', 'data-exercise-header', 'data-exercise-workspace', 'data-current-question', '<SessionProgress', '<ClassroomPresentation']) {
+    for (const marker of [
+      'data-practice-side',
+      'data-exercise-header',
+      'data-exercise-workspace',
+      'data-current-question',
+      '<SessionProgress',
+      '<ClassroomPresentation',
+    ]) {
       expect(session, marker).toContain(marker);
       expect(player, marker).toContain(marker);
     }
@@ -166,7 +202,8 @@ describe('aucun suivi — garanties de structure', () => {
     expect(app).toContain('path="pratique/:lessonCode" element={<TeacherBankGate />}');
     expect(app).toContain('path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />}');
     const gate = read('src/pages/teacher/practice/TeacherBankGate.jsx');
-    expect(gate).toContain('hasClassBoard(lessonCode)');
+    // since 2026-11-20 the door is the same for a lesson that has its WORLD without its board yet (boardLessons.js › hasTeacherBank)
+    expect(gate).toContain('hasTeacherBank(lessonCode)');
     expect(gate).toMatch(/player \? <TeacherPracticePlayer \/> : <PracticeHub \/>/);
     expect(gate).toContain('<TeacherExerciseBank lessonCode={lessonCode} />');
     expect(gate).toContain('exerciseBoardPath(lessonCode, level, exerciseId)');
@@ -179,8 +216,19 @@ describe('aucun suivi — garanties de structure', () => {
 describe('réponses de feuille d’examen relues par l’enseignant (2026-10-06)', () => {
   it('montre la formule MathLive, puis la démonstration écrite', async () => {
     const { formatStudentAnswer } = await import('./teacherBank');
-    expect(formatStudentAnswer({ answerType: 'rational' }, { value: '7/9', latex: '\\frac{7}{9}', work: '$1215=945\\times1+270$', seconds: 40 })).toBe('$\\frac{7}{9}$');
+    expect(
+      formatStudentAnswer(
+        { answerType: 'rational' },
+        { value: '7/9', latex: '\\frac{7}{9}', work: '$1215=945\\times1+270$', seconds: 40 },
+      ),
+    ).toBe('$\\frac{7}{9}$');
     expect(formatStudentAnswer({ answerType: 'rational' }, { value: '135' })).toBe('135');
-    expect(formatStudentAnswer({ answerType: 'selfCheck' }, { text: 'لأن 21 − 14 = 7', selfMark: 'correct' }, 'self:correct')).toBe('لأن 21 − 14 = 7');
+    expect(
+      formatStudentAnswer(
+        { answerType: 'selfCheck' },
+        { text: 'لأن 21 − 14 = 7', selfMark: 'correct' },
+        'self:correct',
+      ),
+    ).toBe('لأن 21 − 14 = 7');
   });
 });

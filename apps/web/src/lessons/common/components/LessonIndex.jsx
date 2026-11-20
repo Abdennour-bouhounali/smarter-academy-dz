@@ -924,9 +924,10 @@ export default function LessonIndex({ config, basePath }) {
         {teacherBoard && <div className="flex justify-center pt-2" data-teacher-report><ReportButton source="lesson" variant="prominent" context={{ lessonCode: config.id, grade: config.grade, step: 'sommaire' }} /></div>}
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
+      {/* the teacher's page of a lesson that has its board or its world is his card alone: no site footer under it (owner, 2026-11-20) */}
+      {!teacherBoard && <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500 mt-12">
         <p>© {new Date().getFullYear()} Abdennour BOUHOUNALI — {t('common:footerRole')}</p>
-      </footer>
+      </footer>}
       {labLayer}
     </div>
     </StudentFocusProvider>

@@ -302,6 +302,12 @@ depot plays every line); what changes is WHERE he works.
 > from the home comes back marked done), `e2e/missionLesson.mjs` (the real address as a student, two old module
 > addresses, the teacher's page). All pass at 1366×768; the home, the recap, the exam door, mission 3's sheet and
 > the teacher's page were looked at. Preview: `http://localhost:5173/__qa/missions`.
+> **The teacher's page of this lesson (owner, 2026-11-20).** A v2 lesson that has its world before its board gets, like
+> the others: the teacher's OWN bank behind « بنك التمارين » (read, show on the class board, print —
+> `boardLessons.js › hasTeacherBank`, `TeacherBankGate`); a header with ONLY the tools that have content (« الدرس »,
+> « بنك التمارين » — `toolHasContent`); no « المذكّرة الكاملة » door (its memo comes with its board); no site footer and
+> no floating « كرّاسي » on the page (`LessonIndex`, `LessonNotebookAnchor`). Checked by `e2e/missionLesson.mjs` and
+> `boardLessons.test.js`.
 > NOT built: the board script and memo, the class test (status prints ❌ 2 parts), the save of a mission left
 > half-way, hearts, the « classmate's copy » episode, the film of mission 3. The teacher's tabs « حصّة القسم » and
 > « المذكّرة » still run on the old derived memo. NEXT (owner, 2026-11-20): **an endless game reached from this

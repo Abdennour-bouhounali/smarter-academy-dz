@@ -50,7 +50,7 @@ for (const [name, address] of [
     window.fetch = async (input, init) => {
       const u = typeof input === 'string' ? input : input.url;
       if (!u.includes('/api/')) return real(input, init);
-      const res = u.includes('/auth/me') ? { success: true, user } : { success: true, data: [] };
+      const res = u.includes('/auth/me') ? { success: true, user } : { success: true, data: [], classrooms: [] };
       return new Response(JSON.stringify(res), { status: 200, headers: { 'Content-Type': 'application/json' } });
     };
   });
@@ -69,6 +69,51 @@ for (const [name, address] of [
     text.includes('للأستاذ'),
   );
   if (old.length) bad.push(`the teacher's page still shows: ${old.join(' ، ')}`);
+  // his header shows only the tools that have content; no memo door, no site footer, no floating notebook
+  const tabs = await page.locator('[data-lesson-tool]').evaluateAll((els) => els.map((e) => e.dataset.lessonTool));
+  console.log(
+    'header tabs:',
+    tabs.join(', '),
+    '| memo door',
+    await page.locator('[data-teacher-memo]').count(),
+    '| footer',
+    text.includes('Abdennour'),
+    '| « كرّاسي »',
+    text.includes('كرّاسي'),
+  );
+  if (tabs.join() !== 'lesson,bank') bad.push(`header tabs: ${tabs.join(', ')}`);
+  if (await page.locator('[data-teacher-memo]').count()) bad.push('the memo door is still there');
+  if (text.includes('Abdennour') || text.includes('كرّاسي'))
+    bad.push('the footer or the floating notebook is still on the page');
+  // « بنك التمارين » is the teacher's own bank (read, show on the board, print), as for the other v2 lessons
+  await page.click('[data-teacher-bank]');
+  await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
+  await page.waitForTimeout(2500);
+  await page.screenshot({ path: `${walk.out}/teacher-bank.png` });
+  const bank = await page.evaluate(() => ({
+    own: document.querySelectorAll('[data-teacher-exercise-bank], [data-teb], .teb').length,
+    text: document.body.innerText.replace(/\s+/g, ' ').slice(0, 260),
+  }));
+  console.log('bank page:', bank.text.slice(90, 200));
+  if (!bank.text.includes('بنك تمارين الدرس')) bad.push("the teacher's own bank did not open");
+  // an exercise goes to the board of the class even though the lesson has no board script yet
+  const errs = [];
+  page.on('pageerror', (e) => errs.push(String(e).slice(0, 160)));
+  await page.getByText('على السبّورة').first().click();
+  await page.waitForTimeout(4000);
+  await page.screenshot({ path: `${walk.out}/teacher-exercise-on-board.png` });
+  const board = (await page.evaluate(() => document.body.innerText)).replace(/\s+/g, ' ');
+  console.log(
+    'exercise on the board | chars',
+    board.length,
+    '| errors',
+    errs.length,
+    errs[0] ?? '',
+    '|',
+    board.slice(0, 120),
+  );
+  if (errs.length || board.length < 80 || board.includes('Cannot read'))
+    bad.push('the exercise did not open on the board');
   await browser.close();
 }
 console.log(bad.length ? `DEFECTS: ${bad.join(' | ')}` : 'NO DEFECT');

@@ -250,13 +250,16 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
               data-teacher-preview
             />
           )}
-          <Door
-            icon={FileText}
-            title={L.memo}
-            say={L.memoSay}
-            to={`/enseignant/cours/${config.id}/memoire`}
-            data-teacher-memo
-          />
+          {/* the memo of a v2 lesson is written with its board: without one there is nothing to read (owner, 2026-11-20) */}
+          {(board || !hasWorld) && (
+            <Door
+              icon={FileText}
+              title={L.memo}
+              say={L.memoSay}
+              to={`/enseignant/cours/${config.id}/memoire`}
+              data-teacher-memo
+            />
+          )}
           {board && (
             <Door
               icon={NotebookPen}
