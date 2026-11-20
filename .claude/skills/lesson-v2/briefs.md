@@ -49,8 +49,9 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 
 > **Build on the authoring kit (since lesson 7): `apps/web/src/lessons/common/gameworld/kit/authoring/README.md` — read it
 > first.** Before any number is used: `node scripts/lesson-bank-numbers.mjs <id> --check a,b c,d …` must print CLEAR for
-> every pair of the road, and `buildersOf(gaps, purse)` must give exactly the convoy's plank. `math.js` re-exports what
-> it needs from `authoring/numbers.js` and holds only `NUMBERS`. Each test file calls its shared suite in three lines
+> every pair of the road, and `buildersOf(gaps, purse)` (`authoring/test/suites.js`) must give exactly the convoy's
+> plank. `math.js` re-exports what it needs from `authoring/numbers.js` (never a copy) and holds only `NUMBERS` and the
+> words of its own world. Each test file calls its shared suite in three lines
 > (`describeStory`, `describeEvidence`, `describeTrainer`, `describeKnowledge`, `describeLimits`, `describeSitting`, from
 > `authoring/test/suites.js`), then adds ONLY the lesson's own checks. Never re-write a helper or a check the kit has. If
 > a suite fails on a limit, that screen is walked; the limit is never raised to make the test pass.
@@ -102,7 +103,7 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 
 > **Assemble each forge from `authoring/forgeBlocks.js`** (the README's skeleton; `proof.bahth.test.js` rebuilds lesson
 > 6's 🔁 that way): `judge({ slots, right, says })` for the tiles; `fromLog` / `gather` / `fromRounds` for the evidence;
-> `attacksOf({ pool: pairPool({… exclude: BANK_PAIRS }), hard })`; `plankCase` / `pairCase` / `sharingCase`; `makerOf`,
+> `attacksOf({ pool: pairPool({… exclude: BANK_PAIRS }), hard })`; `plankCase` / `pairCase`; `makerOf`,
 > the template lines and `firstWrong` for the last step. `BANK_PAIRS` is pasted from
 > `node scripts/lesson-bank-numbers.mjs <id> --js`. The lesson writes only what the tiles mean, the words, the hard
 > cases and the last step's numbers. `forges.test.js` calls `describeForges(...)`, `inquiries.test.js` calls

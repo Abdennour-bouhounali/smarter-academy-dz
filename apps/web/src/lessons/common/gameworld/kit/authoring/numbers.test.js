@@ -9,7 +9,6 @@ import {
   ROWS_ACC,
   SUBTRACTIONS,
   SUBTRACTIONS_GEN,
-  buildersOf,
   coinsLeft,
   commonDivisors,
   counted,
@@ -66,11 +65,7 @@ describe('authoring/numbers.js — the arithmetic', () => {
     ]);
   });
 
-  it('a convoy: which planks build every gap with the purse, and what a plank does gap after gap', () => {
-    expect(buildersOf([259, 185], 12)).toEqual([37]);
-    expect(buildersOf([152, 95, 57])).toEqual([1, 19]);
-    expect(buildersOf([152, 95, 57], Infinity, [8, 19, 5, 3])).toEqual([19]);
-    expect(buildersOf([27, 0], 1)).toEqual([27]);
+  it('a convoy: what a plank does gap after gap', () => {
     expect(roadOf([152, 95, 57], Infinity, 8)).toEqual([
       { a: 152, did: 'fills' },
       { a: 95, did: 'open' },

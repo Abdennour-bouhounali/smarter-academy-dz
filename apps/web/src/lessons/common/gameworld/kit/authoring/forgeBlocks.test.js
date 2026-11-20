@@ -2,7 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { complete, runOn } from '../forge';
 import { rng } from '../random';
 import {
-  allRules,
   attacksOf,
   byId,
   differenceBox,
@@ -27,11 +26,11 @@ import {
   pgcdBox,
   pgcdPairBox,
   plankCase,
-  sharingCase,
   subtractionRow,
   makerOf,
 } from './forgeBlocks';
 import { euclid } from './numbers';
+import { allRules } from './test/suites.js';
 
 /**
  * A small forge assembled from the blocks alone — « a plank builds the longer and the shorter gap together when it
@@ -167,14 +166,6 @@ describe('authoring/forgeBlocks.js — the cases', () => {
     expect(plankCase('tarh', 259, 185, 74)).toMatchObject({ fits: false, need: null, tag: 'لا يملؤهما' });
     expect(plankCase('tarh', 259, 185, 74).pair).toEqual({ a: 259, b: 185, d: 74 });
     expect(fills(0, 27)).toBe(true);
-  });
-
-  it('a sharing is no bridge: it carries what the mirror deals, never a pair', () => {
-    const c = sharingCase(40, 56, 8, { a: 'rose', b: 'lily', lot: 'vase' });
-    expect(c).toMatchObject({ A: 40, B: 56, d: 8, fits: true, held: true, g: 8 });
-    expect(c.pair).toBeUndefined();
-    expect(c.deal).toEqual({ a: { n: 40, item: 'rose' }, b: { n: 56, item: 'lily' }, k: 8, lot: 'vase' });
-    expect(sharingCase(40, 56, 6, { a: 'rose', b: 'lily', lot: 'vase', claim: [7, 9] }).deal.claim).toEqual([7, 9]);
   });
 });
 

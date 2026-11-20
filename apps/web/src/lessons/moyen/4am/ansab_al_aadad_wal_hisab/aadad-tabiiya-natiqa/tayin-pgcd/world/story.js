@@ -34,10 +34,12 @@ import {
   pgcdTex as pgcd,
   planksFill,
   planksOf,
+  roadOf,
 } from './math';
 import { LISTS_BENCH } from './inquiries';
 
-export { NUMBERS };
+/** What a plank b did on the road of a convoy, as the world plays it (the kit's `roadOf`, re-exported by `math.js`). */
+export { NUMBERS, roadOf };
 const { lists: LS, same: SM, full: FL, nest: NS, boss: B } = NUMBERS;
 const [L1, L2] = LS.gaps;
 const [S1, S2] = SM.gaps;
@@ -214,31 +216,6 @@ function piersWith(b) {
   return filled.length
     ? `الألواح ${b} تملأ ${filled[0].name} (${filled[0].n} خانة)، لكن ${left}`
     : `الألواح ${b}: ${left}`;
-}
-
-/**
- * What a plank b did on the road of a convoy (`gaps`, a purse of `purse` coins), gap after gap, as the world plays it:
- * the coins run out first (a coin per plank laid), else a piece is left, else it fills and the next gap is tried. `laid(a)`
- * says whether he really laid b on the gap a (the world's log): the road stops at the first gap he did not try.
- */
-export function roadOf(gaps, purse, b, laid) {
-  const on = [];
-  let left = purse;
-  for (const a of gaps) {
-    if (!laid(a)) break;
-    const q = Math.floor(a / b);
-    if (q > left) {
-      on.push({ a, did: 'coins' });
-      break;
-    }
-    if (a % b) {
-      on.push({ a, did: 'open' });
-      break;
-    }
-    on.push({ a, did: 'fills' });
-    left -= q;
-  }
-  return on;
 }
 
 /** The story's own words, laid over the world's (`divisorIsles/strings.js`). */

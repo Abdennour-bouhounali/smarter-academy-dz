@@ -1,8 +1,8 @@
 /**
  * PROOF of the authoring kit on a second real lesson — determining the PGCD (lesson 5 of unit 1, 4AM: three keys met on
- * four convoys with a purse, one of them a gap of 0 cells), WITHOUT touching it: the shared suites run on its world and
- * pass, and `numbers.js` computes what its `math.js` computes. What its data does past the limits lesson 6 proved is
- * listed in `describeLimits` with the number ITS walks measured.
+ * four convoys with a purse, one of them a gap of 0 cells): the shared suites run on its world and pass, and its
+ * `math.js` re-exports `numbers.js` (since 2026-11-20: the copies it held are gone). What its data does past the limits
+ * lesson 6 proved is listed in `describeLimits` with the number ITS walks measured.
  */
 import { describe, it, expect } from 'vitest';
 import * as N from './numbers';
@@ -194,31 +194,11 @@ describeLimits({
 });
 describeSitting({ id: ID, lesson, sittings, levels: LEVELS });
 
-describe('numbers.js = the lesson’s math.js', () => {
-  it('the PGCD, the divisors, the list, the agreement, a convoy’s road', () => {
-    for (let a = 1; a <= 120; a += 1) {
-      expect(N.divisorsOf(a)).toEqual(M.divisorsOf(a));
-      for (let b = 1; b <= 60; b += 1) {
-        expect(N.gcd(a, b)).toBe(M.gcd(a, b));
-        expect(N.commonDivisors(a, b)).toEqual(M.commonDivisors(a, b));
-      }
-    }
-    expect(N.gcd(27, 0)).toBe(M.gcd(27, 0));
-    expect(N.listAr([1, 2, 4])).toBe(M.listAr([1, 2, 4]));
-    expect(N.pgcdTex(32, 44)).toBe(M.pgcdTex(32, 44));
-    for (let n = 0; n <= 99; n += 1) {
-      expect(N.counted(n, N.COINS)).toBe(M.counted(n, M.COINS));
-      expect(N.coinsLeft(n)).toBe(M.coinsLeft(n));
-      expect(N.emptyCells(n)).toBe(M.emptyCells(n));
-      expect(N.planksFill(n, 4)).toBe(M.planksFill(n, 4));
-      expect(N.planksOf(n, 14)).toBe(M.planksOf(n, 14));
-    }
-    for (const [gaps, purse] of [
-      [NUMBERS.lists.gaps, NUMBERS.lists.purse],
-      [NUMBERS.full.gaps, NUMBERS.full.purse],
-      [NUMBERS.nest.gaps, NUMBERS.nest.purse],
-    ])
-      for (const b of [1, 2, 4, 8, 9, 19, 27, 38])
-        expect(N.roadOf(gaps, purse, b)).toEqual(roadOf(gaps, purse, b, () => true));
+describe('the lesson’s math.js is numbers.js', () => {
+  it('every helper it gives the lesson is the kit’s own, and so is the story’s road', () => {
+    const shared = Object.keys(M).filter((name) => name !== 'NUMBERS');
+    expect(shared.length).toBeGreaterThan(10);
+    for (const name of shared) expect(M[name], name).toBe(N[name]);
+    expect(roadOf).toBe(N.roadOf);
   });
 });

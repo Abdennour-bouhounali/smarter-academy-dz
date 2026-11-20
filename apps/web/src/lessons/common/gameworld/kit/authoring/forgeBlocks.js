@@ -2,7 +2,7 @@
  * THE AUTHORING KIT — the building blocks a lesson's `world/forges.js` is assembled from (PURE; it names no lesson).
  * The frame of a forge is `kit/forge.js` (read its header first: what a forge IS); this file gives what every forge of
  * the three lessons on « أرخبيل القواسم » re-derived: the tiles and the judge, the evidence read from the world's log,
- * the attacks, the cases (a plank on a pair of gaps, a sharing), the pools the mirror draws from, and the last step.
+ * the attacks, the cases (a plank on a pair of gaps), the pools the mirror draws from, and the last step.
  * The lesson keeps what is ITS OWN: the procedure or the rule a case is judged by, the wording (`text`, `ruleText`,
  * `explain`), the hard cases and the nudges, the numbers of the last step.
  *
@@ -34,9 +34,6 @@ import { gcd, planks, range } from './numbers';
 export const byId = (list) => Object.fromEntries(list.map((x) => [x.id, x]));
 /** The tiles as the screen takes them: an id and a label (the rest of a tile — its test, its `of` — stays here). */
 export const options = (list) => list.map(({ id, label }) => ({ id, label }));
-/** Every rule the tiles of a forge can write: the product of its slots' options. */
-export const allRules = (forge) =>
-  forge.slots.reduce((rules, s) => rules.flatMap((rule) => s.options.map((o) => ({ ...rule, [s.id]: o.id }))), [{}]);
 
 /**
  * THE JUDGE of a forge, from its declared tiles: `slots` = [{ id, label, options: [{ id, label, …what the tile means }] }],
@@ -136,36 +133,6 @@ export function plankCase(of, A, B, d) {
     held: d === g,
     pair: { a: A, b: B, d, ...(need != null ? { need } : {}) },
     tag: c.fits ? planks(need) : 'لا يملؤهما',
-  };
-}
-
-/**
- * A SHARING, not a bridge: two collections of nA and nB items dealt into k identical lots (`deal`, drawn by
- * forgeParts.jsx with the pieces of the experiment `deal`). `held` is « k shares everything »; a lesson whose question
- * is another (« the most lots », « each lot holds x and y ») sets its own `held`. No word of it is a plank (defects.md A10).
- *
- *   const dealCase = (nA, nB, k) => {
- *     const c = sharingCase(nA, nB, k, { a: 'rose', b: 'lily', lot: 'vase' });
- *     return { ...c, tag: `${counted(k, VASES)}: ${c.fits ? 'لا تبقى زهرة' : 'تبقى زهور'}` };
- *   };
- */
-export function sharingCase(nA, nB, k, { a, b, lot, claim = null }) {
-  const fa = fills(nA, k);
-  const fb = fills(nB, k);
-  return {
-    of: 'deal',
-    A: nA,
-    B: nB,
-    d: k,
-    fa,
-    fb,
-    fits: fa && fb,
-    held: fa && fb,
-    nA,
-    nB,
-    k,
-    g: gcd(nA, nB),
-    deal: { a: { n: nA, item: a }, b: { n: nB, item: b }, k, lot, ...(claim ? { claim } : {}) },
   };
 }
 

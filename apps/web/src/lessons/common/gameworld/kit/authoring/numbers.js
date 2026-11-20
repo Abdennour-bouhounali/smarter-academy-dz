@@ -53,17 +53,6 @@ export function differences(a, b) {
 // ───────────────────────── a convoy of the islands: which planks build its road ─────────────────────────
 
 /**
- * The plank lengths among `candidates` (default 1 … the longest gap) that build EVERY gap of a road with the coins of
- * its purse — a coin per plank laid, whatever its length (GAME_WORLD.md §2ter-1). A gap of 0 cells costs nothing.
- * A road is solvable for the student when this list holds exactly the plank the story expects.
- */
-export function buildersOf(gaps, purse = Infinity, candidates = range(1, Math.max(...gaps))) {
-  return candidates.filter(
-    (b) => b >= 1 && gaps.every((a) => a % b === 0) && gaps.reduce((n, a) => n + a / b, 0) <= purse,
-  );
-}
-
-/**
  * What a plank b does on the road of a convoy, gap after gap, as the world plays it: the coins run out first (a coin per
  * plank laid), else a piece is left, else it fills and the next gap is tried. `laid(a)` says whether he really laid b on
  * the gap a (from the world's log): the road stops at the first gap he did not try. → [{ a, did: 'fills'|'open'|'coins' }]

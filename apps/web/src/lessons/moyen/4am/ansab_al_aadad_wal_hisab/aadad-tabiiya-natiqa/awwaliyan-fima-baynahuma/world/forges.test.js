@@ -6,8 +6,8 @@
 import { describe, it, expect } from 'vitest';
 import { runOn } from '../../../../../../common/gameworld/kit/forge';
 import { rng } from '../../../../../../common/gameworld/kit/random';
-import { allRules, pairKey } from '../../../../../../common/gameworld/kit/authoring/forgeBlocks';
-import { describeForges } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
+import { pairKey } from '../../../../../../common/gameworld/kit/authoring/forgeBlocks';
+import { allRules, describeForges } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
 import { bankPairs, collisions, readBank } from '../../../../../../common/gameworld/kit/authoring/test/bank.js';
 import { ladderOf } from '../../../../../../common/gameworld/divisorIsles/inquiry';
 import { BANK_PAIRS, FORGES } from './forges';

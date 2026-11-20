@@ -9,6 +9,7 @@ import {
   PROVEN_LIMITS,
   agreementErrors,
   answersOf,
+  buildersOf,
   equalitiesHold,
   looseComma,
   plain,
@@ -20,6 +21,12 @@ import {
 import { alone, bankPairs, collisions, gradeOf, islandNamesIn, pairLines, readBank } from './test/bank.js';
 
 describe('the shared suites’ helpers', () => {
+  it('a convoy: which planks build every gap with the purse', () => {
+    expect(buildersOf([259, 185], 12)).toEqual([37]);
+    expect(buildersOf([152, 95, 57])).toEqual([1, 19]);
+    expect(buildersOf([152, 95, 57], Infinity, [8, 19, 5, 3])).toEqual([19]);
+    expect(buildersOf([27, 0], 1)).toEqual([27]);
+  });
   it('reads an arithmetic side, a PGCD of numbers — and nothing with a letter or a box', () => {
     expect(valueOf('19 \\times 4 + 3')).toBe(79);
     expect(valueOf('152 - 95')).toBe(57);

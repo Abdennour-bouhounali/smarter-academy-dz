@@ -39,10 +39,12 @@ import {
   pgcdTex as pgcd,
   planksFill,
   planksOf,
+  roadOf,
 } from './math';
 import { IQLIDIS_BENCH, SIBAQ_BENCH, TARH_BENCH } from './inquiries';
 
-export { NUMBERS };
+/** What a plank b did on the road of a convoy, as the world plays it (the kit's `roadOf`, re-exported by `math.js`). */
+export { NUMBERS, roadOf };
 const { diff: DF, tarh: TR, fold: FD, iqlidis: IQ, sibaq: SB, boss: B } = NUMBERS;
 const [D1, D2, D3] = DF.gaps;
 const [T1, T2] = TR.gaps;
@@ -246,32 +248,6 @@ function lanesWith(b) {
   return filled.length
     ? `الألواح ${b} تملأ ${filled[0].name} (${filled[0].n} خانة)، لكن ${left}`
     : `الألواح ${b}: ${left}`;
-}
-
-/**
- * What a plank b did on the road of a convoy (`gaps`; a purse of `purse` coins, Infinity without one), gap after gap, as
- * the world plays it: the coins run out first (a coin per plank laid), else a piece is left, else it fills and the next
- * gap is tried. `laid(a)` says whether he really laid b on the gap a (the world's log): the road stops at the first gap
- * he did not try.
- */
-export function roadOf(gaps, purse, b, laid) {
-  const on = [];
-  let left = purse;
-  for (const a of gaps) {
-    if (!laid(a)) break;
-    const q = Math.floor(a / b);
-    if (q > left) {
-      on.push({ a, did: 'coins' });
-      break;
-    }
-    if (a % b) {
-      on.push({ a, did: 'open' });
-      break;
-    }
-    on.push({ a, did: 'fills' });
-    left -= q;
-  }
-  return on;
 }
 
 const A_NAME = ISLANDS[0].name;

@@ -1,7 +1,8 @@
 /**
- * The arithmetic of lesson `tayin-pgcd` — PURE. ONE definition of a divisor list, the common divisors and the PGCD, read
- * by the story, the practice ladder, the trainer, the knowledge page and their tests: no number of the lesson is typed
- * where it can be computed.
+ * The arithmetic of lesson `tayin-pgcd` — PURE. A divisor list, the common divisors, the PGCD (used to JUDGE, never shown
+ * as a method), a convoy's road and the Arabic agreement are the authoring kit's (`kit/authoring/numbers.js`),
+ * re-exported here for the story, the practice ladder, the trainer, the knowledge page and their tests: no number of the
+ * lesson is typed where it can be computed.
  *
  * The story's NUMBERS live here too (and `story.js` re-exports them): the bench of the first workshop (`inquiries.js ›
  * LISTS_BENCH`) is a part of the story's first segment, so `story.js` imports `inquiries.js` — which must then read the
@@ -34,58 +35,17 @@ export const NUMBERS = {
   boss: { piers: [154, 238], options: [22, 14], plank: 14, price: 90 },
 };
 
-/** PGCD(x ; y) by Euclid's remainders (x, y natural numbers, not both 0) — used to JUDGE, never shown as a method. */
-export const gcd = (x, y) => (y ? gcd(y, x % y) : x);
-
-/** Every divisor of n (n ≥ 1), smallest first. */
-export function divisorsOf(n) {
-  const out = [];
-  for (let d = 1; d <= n; d += 1) if (n % d === 0) out.push(d);
-  return out;
-}
-
-/** The divisors that x and y share, smallest first (x, y ≥ 1). */
-export const commonDivisors = (x, y) => divisorsOf(Math.min(x, y)).filter((d) => x % d === 0 && y % d === 0);
-
-/** « PGCD(a ; b) » as LaTeX (inside `$…$`). */
-export const pgcdTex = (a, b) => `\\mathrm{PGCD}(${a} ; ${b})`;
-
-/**
- * « 1 ، 2 ، 4 » — a list of numbers as an Arabic sentence writes it. A no-break space BEFORE each comma: a list that wraps
- * breaks only after a comma, never starts a line with « ، » (defects.md B6).
- */
-export const listAr = (xs) => xs.join(' ، ');
-
-/** Arabic number agreement: forms = [one, two, three to ten, eleven and more]. « قطعة واحدة », « قطعتان », « 5 قطع ». */
-export const counted = (n, [one, two, few, many]) =>
-  n === 1 ? one : n === 2 ? two : n >= 3 && n <= 10 ? `${n} ${few}` : `${n} ${many}`;
-/** The coins of a purse (one per plank laid, whatever its length). */
-export const COINS = ['قطعة واحدة', 'قطعتان', 'قطع', 'قطعة'];
-/** What is left in the purse: « وبقيت في الكيس 11 قطعة », « ولم يبقَ في الكيس شيء ». */
-export const coinsLeft = (n) => (n > 0 ? `وبقيت في الكيس ${counted(n, COINS)}` : 'ولم يبقَ في الكيس شيء');
-
-/** « بقيت خانتان فارغتان », « بقيت 18 خانة فارغة »: the empty cells a plank leaves, with their agreement. */
-export const emptyCells = (r) =>
-  r === 1
-    ? 'بقيت خانة واحدة فارغة'
-    : r === 2
-      ? 'بقيت خانتان فارغتان'
-      : r >= 3 && r <= 10
-        ? `بقيت ${r} خانات فارغة`
-        : `بقيت ${r} خانة فارغة`;
-
-/**
- * q planks of length b, with the verb that agrees: « لوح واحد طوله 27 يملأ », « لوحان طولهما 38 يملآن »,
- * « 4 ألواح طولها 19 تملأ », « 11 لوحًا طولها 4 تملأ ».
- */
-export function planksFill(q, b) {
-  if (q === 1) return `لوح واحد طوله ${b} يملأ`;
-  if (q === 2) return `لوحان طولهما ${b} يملآن`;
-  return `${q >= 3 && q <= 10 ? `${q} ألواح` : `${q} لوحًا`} طولها ${b} تملأ`;
-}
-/** q planks of length b, without a verb: « لوح واحد طوله 14 », « لوحان طولهما 14 », « 28 لوحًا طولها 14 ». */
-export function planksOf(q, b) {
-  if (q === 1) return `لوح واحد طوله ${b}`;
-  if (q === 2) return `لوحان طولهما ${b}`;
-  return `${q >= 3 && q <= 10 ? `${q} ألواح` : `${q} لوحًا`} طولها ${b}`;
-}
+export {
+  COINS,
+  coinsLeft,
+  commonDivisors,
+  counted,
+  divisorsOf,
+  emptyCells,
+  gcd,
+  listAr,
+  pgcdTex,
+  planksFill,
+  planksOf,
+  roadOf,
+} from '../../../../../../common/gameworld/kit/authoring/numbers';

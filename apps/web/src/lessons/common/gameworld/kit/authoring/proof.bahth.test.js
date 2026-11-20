@@ -1,7 +1,7 @@
 /**
- * PROOF of the authoring kit on a real lesson — the PGCD search (lesson 6 of unit 1, 4AM), WITHOUT touching it:
+ * PROOF of the authoring kit on a real lesson — the PGCD search (lesson 6 of unit 1, 4AM):
  *   1. the shared suites of `test/suites.js` run on its world and pass (what its own tests hand-wrote, in a few lines);
- *   2. `numbers.js` computes what its `math.js` computes;
+ *   2. its `math.js` re-exports `numbers.js` (since 2026-11-20: the copies it held are gone);
  *   3. ONE of its forges (🔁, Euclid's procedure) is REBUILT from `forgeBlocks.js` and behaves exactly like its own:
  *      the same tiles, the same verdict of every rule on every case, the same evidence for a log, the same attacks,
  *      the same last step.
@@ -13,7 +13,6 @@ import { ladderOf } from '../../divisorIsles/inquiry';
 import { rng } from '../random';
 import { runOn } from '../forge';
 import {
-  allRules,
   attacksOf,
   divisionRow,
   firstWrong,
@@ -28,6 +27,8 @@ import {
 } from './forgeBlocks';
 import * as N from './numbers';
 import {
+  allRules,
+  buildersOf,
   describeEvidence,
   describeExperiments,
   describeForges,
@@ -314,49 +315,23 @@ describeLimits({
 });
 describeSitting({ id: ID, lesson, sittings, levels: LEVELS });
 
-// ───────── 2. numbers.js computes what the lesson's math.js computes ─────────
+// ───────── 2. the lesson's math.js IS numbers.js (it re-exports it: no copy left to drift) ─────────
 
-describe('numbers.js = the lesson’s math.js', () => {
-  it('the PGCD, the two algorithms, the formulas, the list and the isolate', () => {
-    for (let a = 1; a <= 120; a += 1)
-      for (let b = 1; b <= 60; b += 1) {
-        expect(N.gcd(a, b)).toBe(M.gcd(a, b));
-        expect(N.euclid(a, b)).toEqual(M.euclid(a, b));
-        expect(N.differences(a, b)).toEqual(M.differences(a, b));
-      }
-    for (const s of M.euclid(1833, 546)) expect(N.divTex(s)).toBe(M.divTex(s));
-    for (const s of M.differences(259, 185)) expect(N.subTex(s)).toBe(M.subTex(s));
-    expect(N.pgcdTex(152, 95)).toBe(M.pgcdTex(152, 95));
-    expect(N.listAr([1, 2, 4])).toBe(M.listAr([1, 2, 4]));
-    expect(N.ltr('7 + 5 = 12')).toBe(M.ltr('7 + 5 = 12'));
+describe('the lesson’s math.js is numbers.js', () => {
+  it('every helper it gives the lesson is the kit’s own, and so is the story’s road', () => {
+    const shared = Object.keys(M).filter((name) => name !== 'NUMBERS');
+    expect(shared.length).toBeGreaterThan(20);
+    for (const name of shared) expect(M[name], name).toBe(N[name]);
+    expect(roadOf).toBe(N.roadOf);
   });
-  it('the Arabic agreement, word for word, from 0 to 99', () => {
-    for (let n = 0; n <= 99; n += 1) {
-      for (const t of ['COINS', 'DIVISIONS', 'SUBTRACTIONS', 'ROWS', 'ROWS_ACC'])
-        expect(N.counted(n, N[t]), `${t} ${n}`).toBe(M.counted(n, M[t]));
-      expect(N.coinsLeft(n)).toBe(M.coinsLeft(n));
-      expect(N.emptyCells(n)).toBe(M.emptyCells(n));
-      expect(N.planksFill(n, 19)).toBe(M.planksFill(n, 19));
-      expect(N.planksOf(n, 28)).toBe(M.planksOf(n, 28));
-    }
-    // past 100 the kit lets the last two digits decide (the lesson glued « 103 لوحًا »)
-    expect(N.planksOf(103, 4)).toBe('103 ألواح طولها 4');
-    expect(M.planksOf(103, 4)).toBe('103 لوحًا طولها 4');
-    expect(N.planksOf(144, 4)).toBe(M.planksOf(144, 4));
+  it('past 100 the last two digits decide the noun (the lesson glued « 103 لوحًا » before it used the kit)', () => {
+    expect(M.planksOf(103, 4)).toBe('103 ألواح طولها 4');
+    expect(M.planksOf(144, 4)).toBe('144 لوحًا طولها 4');
+    expect(M.emptyCells(106)).toBe('بقيت 106 خانات فارغة');
   });
-  it('a convoy’s road, as the story’s card tells it', () => {
-    const laid = (set) => (a) => set.includes(a);
-    for (const [gaps, purse] of [
-      [[152, 95, 57], Infinity],
-      [[259, 185], 12],
-      [[1833, 546], 61],
-      [[1003, 34], 61],
-    ])
-      for (const b of [1, 2, 3, 5, 8, 13, 17, 19, 34, 37, 39, 74, 259])
-        for (const set of [gaps, gaps.slice(0, 1)])
-          expect(N.roadOf(gaps, purse, b, laid(set))).toEqual(roadOf(gaps, purse, b, laid(set)));
-    expect(N.buildersOf(NUMBERS.tarh.gaps, NUMBERS.tarh.purse)).toEqual([37]);
-    expect(N.buildersOf(NUMBERS.diff.gaps, Infinity, NUMBERS.diff.moulds)).toEqual([19]);
+  it('every convoy of the road is solvable with exactly its plank', () => {
+    expect(buildersOf(NUMBERS.tarh.gaps, NUMBERS.tarh.purse)).toEqual([37]);
+    expect(buildersOf(NUMBERS.diff.gaps, Infinity, NUMBERS.diff.moulds)).toEqual([19]);
   });
 });
 

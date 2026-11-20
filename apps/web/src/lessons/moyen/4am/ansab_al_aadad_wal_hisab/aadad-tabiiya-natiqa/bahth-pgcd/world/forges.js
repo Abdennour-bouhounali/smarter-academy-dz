@@ -30,30 +30,44 @@
  * plank at once. The words of a key's name never appear in its forge before its last step (tested).
  */
 import { slot } from '../../../../../../common/gameworld/kit/forge';
+import {
+  byId,
+  differenceBox,
+  divisionRow,
+  fills,
+  firstBreak,
+  fromLog,
+  gather,
+  givenDivision,
+  hard,
+  lazy,
+  noPredictions,
+  options,
+  pairKey,
+  pairPool,
+  pgcdBox,
+  pgcdPairBox,
+  plankCase,
+  subtractionRow,
+} from '../../../../../../common/gameworld/kit/authoring/forgeBlocks';
 import { BRIDGE_TEXT, outcome, pickWith } from '../../../../../../common/gameworld/divisorIsles/ruleForge';
-import { planks } from '../../../../../../common/gameworld/divisorIsles/strings';
 import { FOLD_INQUIRY } from './inquiries';
-import { COINS, NUMBERS, ROWS_ACC, counted, differences, euclid, gcd } from './math';
+import {
+  COINS,
+  DIVISIONS_GEN,
+  NUMBERS,
+  PLANKS_ACC,
+  ROWS_ACC,
+  SUBTRACTIONS_GEN,
+  counted,
+  differences,
+  divisionTex,
+  euclid,
+  gcd,
+  range,
+} from './math';
 
-const byId = (list) => Object.fromEntries(list.map((x) => [x.id, x]));
-const options = (list) => list.map(({ id, label }) => ({ id, label }));
-const range = (from, to) => Array.from({ length: Math.max(0, to - from + 1) }, (_, i) => from + i);
-/** Computed once, when a forge first needs it (the pools of the attacks are not built at import). */
-const lazy = (make) => {
-  let value = null;
-  return () => (value ??= make());
-};
-/** The islands (or the mirror's own experiment) held the predictions: none is asked, the forge opens on its tiles. */
-const noPredictions = () => [];
 const coins = (n) => counted(n, COINS);
-/** Planks as the object of a verb: « يحتاج لوحين », « 10 ألواح », « 38 لوحًا ». */
-const PLANKS_OBJ = ['لوحًا واحدًا', 'لوحين', 'ألواح', 'لوحًا'];
-/** After « بعد »: « بعد عملية طرح واحدة », « بعد عمليتي طرح », « بعد 5 عمليات طرح ». */
-const SUBS_GEN = ['عملية طرح واحدة', 'عمليتي طرح', 'عمليات طرح', 'عملية طرح'];
-/** After « بعد »: « بعد قسمة واحدة », « بعد قسمتين », « بعد 4 قسمات ». */
-const DIVS_GEN = ['قسمة واحدة', 'قسمتين', 'قسمات', 'قسمة'];
-/** Does a plank of d fill a gap of n cells? A gap of 0 cells is filled by every plank (its bridge stands). */
-const fills = (n, d) => n % d === 0;
 const fillWord = (yes) => (yes ? 'يملأ' : 'لا يملأ');
 
 /**
@@ -68,38 +82,7 @@ export const BANK_PAIRS = new Set(
     '945;1386 5858;6767 19251;22816 21957;43351'
   ).split(' '),
 );
-const pairKey = (x, y) => [x, y].sort((p, q) => p - q).join(';');
 const notInBank = (A, B) => !BANK_PAIRS.has(pairKey(A, B));
-
-/**
- * His evidence from the world's log: every plank he fired on the gaps of the convoy is ONE case of the pair (`fromRow`),
- * his own lines first (oldest first, one per plank), then the cases the story guarantees he lived — he cannot stand at
- * this mirror otherwise — when the log no longer holds them, then the cases the mirror built in front of him.
- */
-const gather = (own, fromRow, facts, caseId) => (rows) => {
-  const list = rows.flatMap((row) => (own(row) ? [row] : row.of == null && !row.mirror ? fromRow(row) : []));
-  const uniq = list.filter((c, i) => list.findIndex((x) => caseId(x) === caseId(c)) === i);
-  const his = uniq.filter((c) => !c.mirror);
-  const lived = facts.filter((f) => !his.some((c) => caseId(c) === caseId(f)));
-  return [...his, ...lived, ...uniq.filter((c) => c.mirror)];
-};
-/**
- * THE ATTACK of a wrong rule: among the cases he has not seen, the first one where the world does not do what the rule
- * says — one where the rule says « yes » and the world says « no » is shown first.
- */
-function firstBreak(pool, rule, rows, says, caseId) {
-  const seen = new Set(rows.map(caseId));
-  const free = pool.filter((c) => !seen.has(caseId(c)) && says(rule, c) !== c.held);
-  const best = free.find((c) => says(rule, c)) ?? free[0];
-  return best ? [best] : [];
-}
-/** The right rule: its hard cases, those he has not seen (each list holds one the world says « no » to and one « yes »). */
-const hard = (rows, list, caseId) => {
-  const seen = new Set(rows.map(caseId));
-  return list.filter((c) => !seen.has(caseId(c)));
-};
-/** A gap's two divisions by a plank, as one formula: « 152 = 8 × 19 + 0     95 = 8 × 11 + 7 ». */
-const divTex = (n, d) => `${n} = ${d} \\times ${Math.floor(n / d)} + ${n % d}`;
 
 // ───────────────────────── the words of a plank asked of two gaps (➖, 🧮) ─────────────────────────
 
@@ -168,17 +151,13 @@ const FL = byId(F_LOOK);
 const farqSays = (rule, c) => FH[rule.how].test(FL[rule.look].of(c), (n) => fills(n, c.d));
 const isFarqRule = (rule) => rule?.how === 'all' && rule?.look === 'pair';
 /** Small pairs A > B a mirror can draw (A ≤ 60), every plank whose two bridges it can lay; never a pair of the bank. */
-const FARQ_POOL = lazy(() =>
-  range(12, 60).flatMap((A) =>
-    range(4, A - 1)
-      .filter((B) => notInBank(A, B))
-      .flatMap((B) =>
-        range(2, A)
-          .map((d) => farqCase(A, B, d))
-          .filter((c) => c.laid <= 40),
-      ),
-  ),
-);
+const FARQ_POOL = pairPool({
+  A: [12, 60],
+  B: (a) => [4, a - 1],
+  d: (a) => [2, a],
+  make: farqCase,
+  exclude: BANK_PAIRS,
+});
 /** The last step: a new pair whose shorter number is a multiple of the difference (its plank is then the difference). */
 const FARQ_USE = [
   [92, 69],
@@ -202,13 +181,15 @@ const farqForge = {
     return `هوّة الفرق ${c.D}. اللوح ${c.d} ${facts}: قاعدتك تقول إنّه ${both(c, farqSays(rule, c))}.`;
   },
   caseId: farqId,
-  evidence: gather(
-    (row) => row.of === 'farq',
-    (row) => (NUMBERS.diff.gaps.includes(row.a) ? [farqCase(D1, D2, row.b)] : []),
-    // he crossed the three gaps with the plank 19: island D cannot be reached otherwise
-    [farqCase(D1, D2, NUMBERS.diff.plank)],
-    farqId,
-  ),
+  // every plank he fired on the three gaps is one case of 152 and 95; he crossed the three with the plank 19: island D
+  // cannot be reached otherwise
+  evidence: fromLog({
+    of: 'farq',
+    gaps: NUMBERS.diff.gaps,
+    make: farqCase,
+    lived: [NUMBERS.diff.plank],
+    caseId: farqId,
+  }),
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isFarqRule(rule)) return firstBreak(FARQ_POOL(), rule, rows, farqSays, farqId);
@@ -226,11 +207,7 @@ const farqForge = {
       const [A, B] = pickWith(rand)(FARQ_USE);
       return { A, B, D: A - B, g: gcd(A, B), held: true };
     },
-    lines: (c) => [
-      { dir: 'ltr', tokens: [`${c.A} − ${c.B}`, '=', slot('d', 'الفرق', 2)] },
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', `PGCD(${c.B} ;`, slot('p', 'العدد', 2), ')'] },
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', slot('g', 'PGCD', 2)] },
-    ],
+    lines: (c) => [differenceBox(c.A, c.B), pgcdPairBox(c.A, c.B), pgcdBox(c.A, c.B)],
     check(c, vals) {
       if (Number(vals.d) !== c.D) return 'diff';
       if (Number(vals.p) !== c.D) return 'pair';
@@ -246,7 +223,8 @@ const farqForge = {
     agreed: 'قاعدتك توافق الألواح التي جرّبتَها. الآن المرآة تتحدّاها بهوّتين أخريين.',
     attack: (c) =>
       `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، وهوّة فرقهما ${c.D}. اللوح ${c.d}: هل يبني ${c.A} و ${c.B} معًا؟ ماذا تقول قاعدتك؟`,
-    eq: (c) => `$${divTex(c.A, c.d)} \\qquad ${divTex(c.B, c.d)} \\qquad ${c.A} - ${c.B} = ${divTex(c.D, c.d)}$`,
+    eq: (c) =>
+      `$${divisionTex(c.A, c.d)} \\qquad ${divisionTex(c.B, c.d)} \\qquad ${c.A} - ${c.B} = ${divisionTex(c.D, c.d)}$`,
     wordsHint: 'مثال: يبني اللوح الهوّتين عندما…',
     experiment: 'انظر جيّدًا: هوّتان وهوّة فرقهما، ولوحان. ماذا يفعل كلّ لوح في الهوّات الثلاث؟',
     tryKey: (c) => `المرآة لا تبني: اكتب فرق العددين ${c.A} و ${c.B}، ثمّ أكمل المساواتين.`,
@@ -261,33 +239,9 @@ const farqForge = {
 
 // ───────────────────────── a plank, a pair of gaps and a purse (🪜, 🔁 — as lesson 5) ─────────────────────────
 
-/** The plank d on the gaps A and B with the coins of the purse: `held` is d = the longest plank that fills both. */
-const plankCase = (of, A, B, d) => {
-  const fa = fills(A, d);
-  const fb = fills(B, d);
-  const fits = fa && fb;
-  const g = gcd(A, B);
-  const need = fits ? A / d + B / d : null;
-  return {
-    of,
-    A,
-    B,
-    d,
-    fa,
-    fb,
-    fits,
-    g,
-    need,
-    purse: A / g + B / g,
-    held: d === g,
-    laid: Math.max(Math.floor(A / d), Math.floor(B / d)),
-    pair: { a: A, b: B, d, ...(need != null ? { need } : {}) },
-    // the line names both gaps and the plank: the tag is what the two bridges take, short (one line of the log)
-    tag: fits ? planks(need) : 'لا يملؤهما',
-  };
-};
+/** A case of 🪜 and 🔁: the plank d on the gaps A and B with the coins of the purse (`plankCase`: `held` is d = PGCD). */
 const plankId = (c) => `${c.of}:${c.A}:${c.B}:${c.d}`;
-const twoDivisions = (A, B, d) => `${divTex(A, d)} \\qquad ${divTex(B, d)}`;
+const twoDivisions = (A, B, d) => `${divisionTex(A, d)} \\qquad ${divisionTex(B, d)}`;
 /** What the world answers, in words: does the plank build both bridges with the coins of the purse? */
 const builds = (yes) => (yes ? 'يبنيهما بقطع الكيس' : 'لا يبنيهما بقطع الكيس');
 /** Why the world did what it did with a case (a plain sentence: the screen does not render it as a formula). */
@@ -296,18 +250,16 @@ const why = (c) =>
     ? `اللوح ${c.d} بناهما بقطع الكيس كلّها: ${coins(c.need)}`
     : !c.fits
       ? `اللوح ${c.d} لا يملأ ${c.fa ? c.B : c.A}`
-      : `اللوح ${c.d} يحتاج ${counted(c.need, PLANKS_OBJ)}، وفي الكيس ${coins(c.purse)}`;
+      : `اللوح ${c.d} يحتاج ${counted(c.need, PLANKS_ACC)}، وفي الكيس ${coins(c.purse)}`;
 /** Small pairs A < B ≤ 60 a mirror can draw (never a pair of the bank), every plank whose bridges it can lay. */
 const pursePool = (of) =>
-  range(6, 40).flatMap((A) =>
-    range(A + 1, 60)
-      .filter((B) => notInBank(A, B))
-      .flatMap((B) =>
-        range(1, B)
-          .map((d) => plankCase(of, A, B, d))
-          .filter((c) => c.laid <= 40),
-      ),
-  );
+  pairPool({
+    A: [6, 40],
+    B: (a) => [a + 1, 60],
+    d: (a, b) => [1, b],
+    make: (A, B, d) => plankCase(of, A, B, d),
+    exclude: BANK_PAIRS,
+  });
 /** The words of a procedure forge (a plank on two gaps, with a purse). */
 const PURSE_TEXT = {
   ...BRIDGE_TEXT,
@@ -378,7 +330,7 @@ const TS = byId(T_STOP);
 const TM = byId(T_MAKE);
 const tarhSays = (rule, c) => tarhRun(rule, c.A, c.B).made === c.d;
 const isTarhRule = (rule) => rule?.next === 'sd' && rule?.stop === 'zero' && rule?.make === 'last';
-const TARH_POOL = lazy(() => pursePool('tarh'));
+const TARH_POOL = pursePool('tarh');
 const TARH_CHIP = { next: 'الزوج التالي:', stop: 'أتوقّف', make: 'اللوح:' };
 /** The last step: a new pair whose notebook of subtractions has three rows (3g ; 2g) or (3g ; g). */
 const TARH_USE = [
@@ -387,11 +339,6 @@ const TARH_USE = [
   [213, 71],
   [219, 73],
 ];
-/** A row typed whole in its template: □ − □ = □. */
-const subLine = (i) => ({
-  dir: 'ltr',
-  tokens: [slot(`x${i}`, 'العدد الأكبر', 3), '−', slot(`y${i}`, 'العدد الأصغر', 3), '=', slot(`d${i}`, 'الفرق', 3)],
-});
 
 const tarhForge = {
   key: 'khawarizmiyat-al-tarh',
@@ -408,16 +355,17 @@ const tarhForge = {
   explain(rule, c) {
     const { diffs, made } = tarhRun(rule, c.A, c.B);
     const says = made === c.d;
-    return `${madeText(c.A, c.B, made, diffs.length, SUBS_GEN)}: تقول إنّ اللوح ${c.d} ${builds(says)}.`;
+    return `${madeText(c.A, c.B, made, diffs.length, SUBTRACTIONS_GEN)}: تقول إنّ اللوح ${c.d} ${builds(says)}.`;
   },
   caseId: plankId,
-  evidence: gather(
-    (row) => row.of === 'tarh',
-    (row) => (NUMBERS.tarh.gaps.includes(row.a) ? [tarhCase(T1, T2, row.b)] : []),
-    // he crossed both gaps with the plank 37: island F cannot be reached otherwise
-    [tarhCase(T1, T2, NUMBERS.tarh.plank)],
-    plankId,
-  ),
+  // he crossed both gaps with the plank 37: island F cannot be reached otherwise
+  evidence: fromLog({
+    of: 'tarh',
+    gaps: NUMBERS.tarh.gaps,
+    make: tarhCase,
+    lived: [NUMBERS.tarh.plank],
+    caseId: plankId,
+  }),
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isTarhRule(rule)) return firstBreak(TARH_POOL(), rule, rows, tarhSays, plankId);
@@ -435,10 +383,10 @@ const tarhForge = {
       return { A, B, rows: differences(A, B), g: gcd(A, B), held: true };
     },
     lines: (c) => [
-      { dir: 'ltr', tokens: [`${c.A} − ${c.B}`, '=', slot('d1', 'الفرق', 3)] },
-      subLine(2),
-      subLine(3),
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', slot('g', 'PGCD', 2)] },
+      differenceBox(c.A, c.B, { name: 'd1', w: 3 }),
+      subtractionRow(2),
+      subtractionRow(3),
+      pgcdBox(c.A, c.B),
     ],
     check(c, vals) {
       const v = (k) => Number(vals[k]);
@@ -521,17 +469,13 @@ const longestTwo = (A, B) =>
     .slice(-2)
     .reverse();
 /** Small pairs A > B a mirror can draw (A ≤ 60), every plank whose two bridges it can lay; never a pair of the bank. */
-const BAQI_POOL = lazy(() =>
-  range(10, 60).flatMap((A) =>
-    range(3, A - 1)
-      .filter((B) => notInBank(A, B))
-      .flatMap((B) =>
-        range(2, A)
-          .map((d) => baqiCase(A, B, d))
-          .filter((c) => c.laid <= 40),
-      ),
-  ),
-);
+const BAQI_POOL = pairPool({
+  A: [10, 60],
+  B: (a) => [3, a - 1],
+  d: (a) => [2, a],
+  make: baqiCase,
+  exclude: BANK_PAIRS,
+});
 /** The last step: A = B × q + r with r a plank of B (the new pair's plank is then r). */
 const BAQI_USE = [
   [483, 92],
@@ -571,12 +515,7 @@ const baqiForge = {
     return `$${remTex(c)}$. اللوح ${c.d} ${facts}: قاعدتك تقول إنّه ${both(c, baqiSays(rule, c))}.`;
   },
   caseId: baqiId,
-  evidence: gather(
-    (row) => row.of === 'baqi',
-    () => [],
-    [],
-    baqiId,
-  ),
+  evidence: gather({ own: (row) => row.of === 'baqi', fromRow: () => [], caseId: baqiId }),
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isBaqiRule(rule)) return firstBreak(BAQI_POOL(), rule, rows, baqiSays, baqiId);
@@ -593,11 +532,7 @@ const baqiForge = {
       const [A, B] = pickWith(rand)(BAQI_USE);
       return { A, B, q: Math.floor(A / B), rem: A % B, g: gcd(A, B), held: true };
     },
-    lines: (c) => [
-      { dir: 'ltr', tokens: [String(c.A), '=', String(c.B), '×', slot('q', 'الحاصل', 2), '+', slot('r', 'الباقي', 2)] },
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', `PGCD(${c.B} ;`, slot('p', 'العدد', 2), ')'] },
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', slot('g', 'PGCD', 2)] },
-    ],
+    lines: (c) => [givenDivision(c.A, c.B), pgcdPairBox(c.A, c.B), pgcdBox(c.A, c.B)],
     check(c, vals) {
       if (Number(vals.q) !== c.q || Number(vals.r) !== c.rem) return 'div';
       if (Number(vals.p) !== c.rem) return 'pair';
@@ -615,7 +550,7 @@ const baqiForge = {
     agreed: 'قاعدتك توافق أسطر الدفتر. الآن المرآة تتحدّاها بهوّتين أخريين.',
     attack: (c) =>
       `المرآة تتحدّى قاعدتك: الهوّتان ${c.A} و ${c.B}، و $${remTex(c)}$. اللوح ${c.d}: هل يبني ${c.A} و ${c.B} معًا؟ ماذا تقول قاعدتك؟`,
-    eq: (c) => `$${divTex(c.A, c.d)} \\qquad ${divTex(c.B, c.d)} \\qquad ${remTex(c)}$`,
+    eq: (c) => `$${divisionTex(c.A, c.d)} \\qquad ${divisionTex(c.B, c.d)} \\qquad ${remTex(c)}$`,
     wordsHint: 'مثال: يبني اللوح الهوّتين عندما…',
     experiment: 'انظر جيّدًا: هوّتان، وقسمة الأطول على الأقصر، ولوحان. ماذا يفعل كلّ لوح؟',
     tryKey: (c) => `المرآة لا تبني: اقسم ${c.A} على ${c.B}، ثمّ أكمل المساواتين.`,
@@ -669,7 +604,7 @@ const IS = byId(I_STOP);
 const IM = byId(I_MAKE);
 const iqSays = (rule, c) => iqRun(rule, c.A, c.B).made === c.d;
 const isIqRule = (rule) => rule?.next === 'sr' && rule?.stop === 'zero' && rule?.make === 'last';
-const IQ_POOL = lazy(() => pursePool('iqlidis'));
+const IQ_POOL = pursePool('iqlidis');
 const IQ_CHIP = { next: 'الزوج التالي:', stop: 'أتوقّف', make: 'اللوح:' };
 /** The last step: a new pair whose notebook of divisions has three rows, the last one ending on 0. */
 const IQ_USE = [
@@ -678,19 +613,6 @@ const IQ_USE = [
   [1288, 207],
   [1411, 272],
 ];
-/** A row typed whole in its template: □ = □ × □ + □. */
-const divLine = (i) => ({
-  dir: 'ltr',
-  tokens: [
-    slot(`a${i}`, 'المقسوم', 3),
-    '=',
-    slot(`b${i}`, 'العدد الأصغر', 3),
-    '×',
-    slot(`q${i}`, 'الحاصل', 2),
-    '+',
-    slot(`r${i}`, 'الباقي', 3),
-  ],
-});
 
 const iqForge = {
   key: 'iqlidis',
@@ -706,16 +628,17 @@ const iqForge = {
     `لأعرف أيّ لوح أصنع: أقسم الأكبر على الأصغر، والزوج التالي ${IN[rule.next].label}، وأتوقّف ${IS[rule.stop].label}، وأصنع لوحًا طوله ${IM[rule.make].label}.`,
   explain(rule, c) {
     const { rows, made } = iqRun(rule, c.A, c.B);
-    return `${madeText(c.A, c.B, made, rows.length, DIVS_GEN)}: تقول إنّ اللوح ${c.d} ${builds(made === c.d)}.`;
+    return `${madeText(c.A, c.B, made, rows.length, DIVISIONS_GEN)}: تقول إنّ اللوح ${c.d} ${builds(made === c.d)}.`;
   },
   caseId: plankId,
-  evidence: gather(
-    (row) => row.of === 'iqlidis',
-    (row) => (NUMBERS.iqlidis.gaps.includes(row.a) ? [iqCase(I1, I2, row.b)] : []),
-    // he crossed both gaps with the plank 39: island H cannot be reached otherwise
-    [iqCase(I1, I2, NUMBERS.iqlidis.plank)],
-    plankId,
-  ),
+  // he crossed both gaps with the plank 39: island H cannot be reached otherwise
+  evidence: fromLog({
+    of: 'iqlidis',
+    gaps: NUMBERS.iqlidis.gaps,
+    make: iqCase,
+    lived: [NUMBERS.iqlidis.plank],
+    caseId: plankId,
+  }),
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isIqRule(rule)) return firstBreak(IQ_POOL(), rule, rows, iqSays, plankId);
@@ -733,13 +656,10 @@ const iqForge = {
       return { A, B, rows: euclid(A, B), g: gcd(A, B), held: true };
     },
     lines: (c) => [
-      {
-        dir: 'ltr',
-        tokens: [String(c.A), '=', String(c.B), '×', slot('q1', 'الحاصل', 2), '+', slot('r1', 'الباقي', 3)],
-      },
-      divLine(2),
-      divLine(3),
-      { dir: 'ltr', tokens: [`PGCD(${c.A} ; ${c.B})`, '=', slot('g', 'PGCD', 2)] },
+      givenDivision(c.A, c.B, { q: 'q1', r: 'r1', rw: 3 }),
+      divisionRow(2),
+      divisionRow(3),
+      pgcdBox(c.A, c.B),
     ],
     check(c, vals) {
       const v = (k) => Number(vals[k]);
@@ -882,13 +802,13 @@ const aqallForge = {
     return `دفتر القسمة: $${rowsTex(c.divs)}$. قاعدتك تعدّ لدفتر الطرح ${counted(sumOf(rule, c), ROWS_ACC)}، ولدفتر القسمة ${counted(c.D, ROWS_ACC)}: تقول « ${yesNo(yes)} ».`;
   },
   caseId: aqallId,
-  evidence: gather(
-    (row) => row.of === 'aqall',
-    () => [],
+  evidence: gather({
+    own: (row) => row.of === 'aqall',
+    fromRow: () => [],
     // the three pairs he crossed by a notebook: island J cannot be reached otherwise
-    [NUMBERS.tarh.gaps, NUMBERS.iqlidis.gaps, SIBAQ].map(([A, B]) => truth(A, B)),
-    aqallId,
-  ),
+    lived: [NUMBERS.tarh.gaps, NUMBERS.iqlidis.gaps, SIBAQ].map(([A, B]) => truth(A, B)),
+    caseId: aqallId,
+  }),
   predictCases: noPredictions,
   attacks(rule, rows) {
     if (!isAqallRule(rule)) return firstBreak(AQALL_POOL(), rule, rows, aqallSays, aqallId);
@@ -907,10 +827,7 @@ const aqallForge = {
       return { A, B, divs, S: differences(A, B).length, g: gcd(A, B), held: true };
     },
     lines: (c) => [
-      {
-        dir: 'ltr',
-        tokens: [String(c.A), '=', String(c.B), '×', slot('q1', 'الحاصل', 2), '+', slot('r1', 'الباقي', 2)],
-      },
+      givenDivision(c.A, c.B, { q: 'q1', r: 'r1' }),
       {
         dir: 'ltr',
         tokens: [String(c.B), '=', slot('b2', 'العدد', 2), '×', slot('q2', 'الحاصل', 1), '+', slot('r2', 'الباقي', 2)],

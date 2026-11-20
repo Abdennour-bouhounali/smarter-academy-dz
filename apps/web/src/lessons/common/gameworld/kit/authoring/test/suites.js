@@ -23,9 +23,26 @@ import { guardEvidence } from '../../evidence';
 import { rng } from '../../random';
 import { keysOfPoints } from '../../bankSitting';
 import { allQuestions, forgotten } from '../../sitting';
-import { allRules, pairKey } from '../forgeBlocks';
-import { COINS, DIVISIONS, PLANKS, ROWS, SUBTRACTIONS, buildersOf, gcd, range } from '../numbers';
+import { pairKey } from '../forgeBlocks';
+import { COINS, DIVISIONS, PLANKS, ROWS, SUBTRACTIONS, gcd, range } from '../numbers';
 import { alone, bankPairs, islandNamesIn, linesWithBoth, pairLines, readBank, storiesOf } from './bank.js';
+
+// ───────────────────────── what a test asks of a forge and of a road (never needed by the app) ─────────────────────────
+
+/** Every rule the tiles of a forge can write: the product of its slots' options. */
+export const allRules = (forge) =>
+  forge.slots.reduce((rules, s) => rules.flatMap((rule) => s.options.map((o) => ({ ...rule, [s.id]: o.id }))), [{}]);
+
+/**
+ * The plank lengths among `candidates` (default 1 … the longest gap) that build EVERY gap of a road with the coins of
+ * its purse — a coin per plank laid, whatever its length (GAME_WORLD.md §2ter-1). A gap of 0 cells costs nothing.
+ * A road is solvable for the student when this list holds exactly the plank the story expects.
+ */
+export function buildersOf(gaps, purse = Infinity, candidates = range(1, Math.max(...gaps))) {
+  return candidates.filter(
+    (b) => b >= 1 && gaps.every((a) => a % b === 0) && gaps.reduce((n, a) => n + a / b, 0) <= purse,
+  );
+}
 
 // ───────────────────────── what every sentence must be ─────────────────────────
 
