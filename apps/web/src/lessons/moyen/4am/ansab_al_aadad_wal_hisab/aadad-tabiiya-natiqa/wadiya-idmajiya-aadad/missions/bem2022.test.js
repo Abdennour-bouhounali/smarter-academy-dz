@@ -30,6 +30,19 @@ describe('mission 1 — BEM 2022, the identical lots: every number of the situat
     expect(1188 % 528).toBe(132);
   });
 
+  it('his copy: the data, the two goals, what each question needs — and the second needs the answer of the first', () => {
+    expect(S.data.map((d) => d.id)).toEqual(['a', 'b', 'all', 'same']);
+    expect(S.data.filter((d) => d.phrase).map((d) => d.phrase)).toEqual(['all', 'same']);
+    expect(S.goals.map((g) => g.id)).toEqual(['most', 'content']);
+    for (const g of S.goals) {
+      const need = S.needs[g.id];
+      expect(Object.keys(need.without).sort()).toEqual([...need.must].sort());
+    }
+    expect(S.needs.content.must).toContain('ans');
+    expect(S.minutes).toBeGreaterThanOrEqual(20);
+    expect(S.marker.length).toBeGreaterThanOrEqual(5);
+  });
+
   it('money is « دج » and nothing sends to a book', () => {
     const all = JSON.stringify(S);
     expect(all).not.toMatch(/\bDA\b/);

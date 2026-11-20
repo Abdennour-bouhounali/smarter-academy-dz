@@ -225,12 +225,28 @@ justification too — a score would lie, and it feeds the fear); the engine for 
 extracted AFTER mission 2 exists, not before; one real student plays mission 1 before missions 2 and 3 are built.
 
 
-## 9. The mission prepares for the EXAM: paper and pen first (2026-11-20 — PROPOSED, awaiting the owner; not coded)
+## 9. The mission prepares for the EXAM: paper and pen first (2026-11-20 — ACCEPTED by the owner the same day)
+
+> **The owner's four answers (« 1-yes 2-yes 3-optional 4-the clock must be applied to all of them »):** this is the
+> mission he wants; 18 px is the smallest text of a mission; the photo of the sheet in mission 3 is optional; **a clock
+> runs in EVERY mission**, not only the third (the platform's choice of length: 25 minutes; in missions 1 and 2 the
+> clock reaching 0 is shown and stops nothing — my reading; in mission 3 it ends the sitting).
 
 The owner, after playing §8's mission: « at the beginning the student will not know that he has to click on the numbers
 to start; also the mission must prepare the student for the exam — to use the paper and pen to write down data, connect
 the dots, make operations of calculation in the paper ». §8 stays (one sentence of the text ↔ one line of numbers, the
 depot plays every line); what changes is WHERE he works.
+
+> **MISSION 1 IS BUILT on this plan (2026-11-20, `http://localhost:5173/__qa/mission-1`)**, with what the owner asked
+> while it was being built: the message « الساعة ستبدأ الآن » stays 5 seconds and cannot be closed; **the first step is
+> to READ the whole exercise** (the paper stands out, a call moves toward it, « قرأتُ التمرين كلّه » opens after 8
+> seconds; nothing else can be touched before); **the student has a PEN over the screen, as the teacher has on the
+> board** (`missions/Ink.jsx`: three colours, undo, « امسح »; what he drew stays when the pen is closed); **every
+> division of the PGCD is guided** (« القسمة الأولى », « الباقي 132 ليس 0: القسمة التالية », « الباقي 0: توقّفت
+> القسمات », then he writes the PGCD) and the method's lines always show in « الحلّ » of his copy (his tries fold);
+> « أربط » draws each line to the datum he tapped. Played end to end in a browser at 1366×768: 27 screens, no text
+> under 18 px, none overflows, no page error; eight looked at. NOT built: hearts, the save, missions 2 and 3, the
+> photo of the sheet; the end of the clock stops nothing.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,
