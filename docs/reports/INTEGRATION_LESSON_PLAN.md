@@ -276,6 +276,13 @@ looks for.
 | Mission 2 (BEM 2020, the trees) | only its three headings; he writes whole lines on paper first, then types them | after each QUESTION | data he must not use yet (prices), a condition in words (« في كل ركن شجرة »), a chain of four |
 | Mission 3 (an unseen exercise of the bank) | nothing: the exam paper, a clock, and his sheet | once, after he hands in: the film of his own lines | exam conditions; then the marker's list; a photo of his sheet may be attached (the bank already allows it: `work: optional`) |
 
+**Nothing is read by leaning toward the screen (owner, 2026-11-20: « the size of the text must not be at a point
+where the student has to get closer to the screen, never »).** In a mission every text he must read — the exam text,
+the question, the lines of « ورقتي », the depot's sentence, the labels in the scene — is at least 18 px at 1366×768
+(the platform's general floor of 12 px is a floor against unreadable text, not a reading size). Today's build is under
+it in the notebook (15 px) and the depot's sentence (17 px); the exam text is at 19 px. With eleven screens instead of
+one crowded screen there is room: a step shows only its own lines of « ورقتي », the others fold above it.
+
 **What it costs.** Mission 1 becomes eleven short screens, about twelve minutes — the time such an exercise takes
 in the exam. Steps 4 and 7 (« أربط ») are new screens to build; the rest re-uses what §8 built and the kit's paper mode.
 
