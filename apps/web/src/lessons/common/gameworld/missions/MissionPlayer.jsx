@@ -13,7 +13,7 @@
  * The situation is DATA (`situation`); this file names no lesson. Not built: the save, hearts, missions 2 and 3.
  */
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
+import { ArrowLeft, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import { PaperModel } from '../kit/Paper';
 import { deal, euclid, fill, gcd, line, slip } from './lots';
@@ -627,11 +627,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
             )}
             {step === 1 && !read && (
               <>
-                <span className="ms-readcall" data-ms-readcall>
-                  <BookOpen size={24} aria-hidden="true" />
-                  نصّ التمرين على اليمين: اقرأه كلّه
-                  <ArrowLeft size={24} aria-hidden="true" className="ms-readcall__arrow" />
-                </span>
+                {reading > 0 && <span className="ms-hint">خذ وقتك في القراءة…</span>}
                 {reading <= 0 && (
                   <button
                     type="button"

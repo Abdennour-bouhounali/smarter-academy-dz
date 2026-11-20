@@ -513,21 +513,6 @@
 .ms-root.is-reading .ms-book {
   opacity: 0.35;
 }
-.ms-readcall {
-  color: #fde9b0;
-  font-size: 1.3rem;
-  font-weight: 800;
-}
-@keyframes ms-toward {
-  50% {
-    translate: 14px 0;
-  }
-}
-/* the paper is on the RIGHT: the arrow is turned to point at it and moves toward it */
-.ms-readcall__arrow {
-  transform: scaleX(-1);
-  animation: ms-toward 0.9s ease-in-out infinite;
-}
 /* the student's pen */
 .ms-tool {
   display: inline-flex;
@@ -756,8 +741,7 @@
   .ms-win,
   .ms-finale__card,
   .ms-finale__stars svg.is-on,
-  .ms-confetti i,
-  .ms-readcall__arrow {
+  .ms-confetti i {
     animation: none;
   }
   .ms-win {

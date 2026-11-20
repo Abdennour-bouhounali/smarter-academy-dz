@@ -255,7 +255,7 @@ depot plays every line); what changes is WHERE he works.
 > (3 with one slip at most, 2 up to three, else 1 — his free tries are never slips; MY scale, not the owner's), the
 > coins, the time left, confetti, then « أقارن ورقتي بالحلّ ». **What must be tapped and does not look like a button
 > carries a flashing red sign « 👆 اضغط هنا » from the first second**: a number and a question in the exam text, the
-> first datum to connect, the number to try again. The call to read is ON the exercise: a flashing band « 📖 اقرأ التمرين كلّه »
+> first datum to connect, the number to try again. The call to read is ON the exercise, and nowhere else (the line at the bottom of the screen was removed): a flashing band « 📖 اقرأ التمرين كلّه »
 > at the top of the exam text, whose border flashes red and amber. The coins and stars are not saved and buy nothing yet.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
