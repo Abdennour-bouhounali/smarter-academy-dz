@@ -7,7 +7,8 @@
  * This screen names no lesson. It draws three shapes of question, and the lesson (`useLesson().trainer`) says which:
  *   tap   { options: [n, n, n] }                      — one sentence, gates to tap;
  *   tf    { statement, truth, reasons? }              — true / false; with `reasons` on the exam sheet;
- *   form  { tip, model?, single?, review?, lines }    — an exam answer in its own shape (see trainer.js › « a form »).
+ *   form  { tip, model?, single?, review?, lines }    — an exam answer in its own shape (see trainer.js › « a form »);
+ *                                                       its tokens, a fraction template among them: `FormLines` below.
  */
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
@@ -289,6 +290,87 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
   );
 }
 
+/** A token of a form line that is answered: a box `{ num }` or a choice `{ choice }`. */
+const isBox = (t) => Boolean(t && typeof t === 'object' && (t.num || t.choice));
+/** A fraction template `{ frac: { n, d } }`. */
+const isFrac = (t) => Boolean(t && typeof t === 'object' && t.frac && typeof t.frac === 'object');
+/** The answer boxes a token holds: itself, the boxes of a fraction template, or none. */
+const boxesOf = (t) => (isFrac(t) ? [t.frac.n, t.frac.d].filter(isBox) : isBox(t) ? [t] : []);
+
+/**
+ * The lines of an exam FORM, in their own shape (the lesson describes them — kit/trainer.js › « a form »). A token is:
+ *   'text'                       a sign or words (on an `ltr` line: a sign of the formula);
+ *   { strong } · { text, rtl? }  a printed number · a printed piece;
+ *   { num, label }               a box to type a whole number in (`data-di-tr=<num>`);
+ *   { choice, options }          a list to choose from (`data-di-tr=<choice>`);
+ *   { frac: { n, d } }           a FRACTION in its own shape: n stacked over a real bar over d, each a box `{ num, label }`
+ *                                (typed — the same hook `data-di-tr=<num>`, numerator first in the keyboard order) or a
+ *                                printed number / string (a fraction GIVEN by the statement). It is one answer in its
+ *                                shape: on a line it counts as ONE (describeTrainer, defects.md B17).
+ */
+export function FormLines({ lines, v, set, locked }) {
+  const box = (t, key) => (
+    <Num
+      key={key}
+      value={v[t.num] ?? ''}
+      onChange={set(t.num)}
+      disabled={locked}
+      aria-label={t.label}
+      data-di-tr={t.num}
+    />
+  );
+  const part = (x, key) => (isBox(x) ? box(x, key) : <b key={key}>{x}</b>);
+  const token = (t, i, ltr) => {
+    if (typeof t === 'string') return ltr ? <span key={i}>{t}</span> : <Fragment key={i}>{t} </Fragment>;
+    if (isFrac(t)) {
+      const typed = isBox(t.frac.n) || isBox(t.frac.d);
+      const el = (
+        <span key={i} className={`di-frac${typed ? ' di-frac--typed' : ''}`} dir="ltr" data-di-frac>
+          {part(t.frac.n, 'n')}
+          <span className="di-frac__bar" aria-hidden="true" />
+          {part(t.frac.d, 'd')}
+        </span>
+      );
+      return ltr ? el : <Fragment key={i}>{el} </Fragment>;
+    }
+    if (t.strong != null)
+      return (
+        <b key={i} dir="ltr">
+          {t.strong}
+        </b>
+      );
+    if (t.text != null)
+      return (
+        <span key={i} dir={t.rtl ? 'rtl' : undefined}>
+          {t.text}
+        </span>
+      );
+    if (t.num) return box(t, i);
+    const chosen = t.options.find((o) => o.value === v[t.choice]);
+    return (
+      <select
+        key={i}
+        value={chosen ? idOf(chosen) : ''}
+        onChange={(e) => set(t.choice)(t.options.find((o) => idOf(o) === e.target.value)?.value ?? null)}
+        disabled={locked}
+        data-di-tr={t.choice}
+      >
+        <option value="">{L.pick}</option>
+        {t.options.map((o) => (
+          <option key={idOf(o)} value={idOf(o)}>
+            {o.text}
+          </option>
+        ))}
+      </select>
+    );
+  };
+  return lines.map((line, k) => (
+    <div key={k} className="di-sheet__line" dir={line.ltr ? 'ltr' : undefined}>
+      {line.tokens.map((t, i) => token(t, i, line.ltr))}
+    </div>
+  ));
+}
+
 /** One question, drawn in the look of its format. Every exam question is a <form>: Enter checks, as on any answer sheet. */
 function Question({ q, index, locked, onSubmit, onModel }) {
   const [v, setV] = useState({});
@@ -381,53 +463,10 @@ function Question({ q, index, locked, onSubmit, onModel }) {
       </form>
     );
   }
-  // every other exam question is a FORM the lesson describes: lines of signs, boxes and choices
+  // every other exam question is a FORM the lesson describes: lines of signs, boxes, choices and fractions
   const { form } = q;
-  const slots = form.lines.flatMap((line) => line.tokens.filter((t) => t.num || t.choice));
+  const slots = form.lines.flatMap((line) => line.tokens.flatMap(boxesOf));
   const ready = slots.every((t) => (t.num ? (v[t.num] ?? '') !== '' : v[t.choice] != null));
-  const token = (t, i, ltr) => {
-    if (typeof t === 'string') return ltr ? <span key={i}>{t}</span> : <Fragment key={i}>{t} </Fragment>;
-    if (t.strong != null)
-      return (
-        <b key={i} dir="ltr">
-          {t.strong}
-        </b>
-      );
-    if (t.text != null)
-      return (
-        <span key={i} dir={t.rtl ? 'rtl' : undefined}>
-          {t.text}
-        </span>
-      );
-    if (t.num)
-      return (
-        <Num
-          key={i}
-          value={v[t.num] ?? ''}
-          onChange={set(t.num)}
-          disabled={locked}
-          aria-label={t.label}
-          data-di-tr={t.num}
-        />
-      );
-    const chosen = t.options.find((o) => o.value === v[t.choice]);
-    return (
-      <select
-        key={i}
-        value={chosen ? idOf(chosen) : ''}
-        onChange={(e) => set(t.choice)(t.options.find((o) => idOf(o) === e.target.value)?.value ?? null)}
-        disabled={locked}
-        data-di-tr={t.choice}
-      >
-        <option value="">{L.pick}</option>
-        {t.options.map((o) => (
-          <option key={idOf(o)} value={idOf(o)}>
-            {o.text}
-          </option>
-        ))}
-      </select>
-    );
-  };
   return (
     <form
       className="di-sheet"
@@ -438,11 +477,7 @@ function Question({ q, index, locked, onSubmit, onModel }) {
     >
       {head}
       <PaperGate tip={PT[form.tip]} onModel={form.model ? onModel : undefined}>
-        {form.lines.map((line, k) => (
-          <div key={k} className="di-sheet__line" dir={line.ltr ? 'ltr' : undefined}>
-            {line.tokens.map((t, i) => token(t, i, line.ltr))}
-          </div>
-        ))}
+        <FormLines lines={form.lines} v={v} set={set} locked={locked} />
         {checkBtn(ready)}
       </PaperGate>
     </form>

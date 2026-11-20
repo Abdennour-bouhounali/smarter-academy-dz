@@ -28,6 +28,7 @@ import {
   streak,
   sealRecord,
 } from './forge';
+import { boxesOf } from './authoring/forgeBlocks';
 import './ruleForge.css';
 
 /** The words of the forge itself — the same in every lesson. What speaks of a case is the forge's own `text`. */
@@ -236,7 +237,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
     setPhase('use');
   };
   const useLines = use ? forge.use.lines(use.c) : [];
-  const useSlots = useLines.flatMap((line) => line.tokens.filter((t) => typeof t === 'object'));
+  const useSlots = useLines.flatMap((line) => boxesOf(line.tokens));
   const useFilled =
     use && useSlots.every((t) => (use.vals[t.slot] ?? '') !== '') && (!forge.use.verdict || use.verdict !== null);
   const checkUse = () => {
@@ -644,35 +645,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                 <p className="rf-q">
                   <MathText>{T.tryKey(use.c)}</MathText>
                 </p>
-                <div className="rf-uselines" data-rf-lines={useLines.length}>
-                  {useLines.map((line, i) => (
-                    <div key={i} className="rf-use" dir={line.dir ?? 'ltr'}>
-                      {line.tokens.map((t, k) =>
-                        typeof t === 'object' ? (
-                          <label key={k}>
-                            <input
-                              inputMode="numeric"
-                              style={{ width: `${(t.w ?? 3) * 0.7 + 0.9}em` }}
-                              value={use.vals[t.slot] ?? ''}
-                              onChange={(e) =>
-                                setUse({
-                                  ...use,
-                                  vals: { ...use.vals, [t.slot]: digits(e.target.value, t.w ?? 3) },
-                                  fb: null,
-                                })
-                              }
-                              aria-label={t.label}
-                              data-rf-use={t.slot}
-                            />
-                            {useLines.length === 1 && <small>{t.label}</small>}
-                          </label>
-                        ) : (
-                          <b key={k}>{t}</b>
-                        ),
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <UseLines
+                  lines={useLines}
+                  vals={use.vals}
+                  onType={(name, value) => setUse({ ...use, vals: { ...use.vals, [name]: value }, fb: null })}
+                />
                 <div className="rf-row">
                   {forge.use.verdict && (
                     <>
@@ -716,6 +693,56 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
           </section>
         </main>
       </div>
+    </div>
+  );
+}
+
+/**
+ * The lines of the last step: tokens read left to right — a printed string, a box `slot(name, label, w)` (its label under
+ * it when the step is one line), or a FRACTION `{ frac: { n, d } }` drawn in its own shape: numerator, a real bar,
+ * denominator, each printed or typed (forgeBlocks.js › fractionBox / givenFraction; the look `di-frac`,
+ * styles/trainer.css). `onType(name, digits)` receives what a box now holds.
+ */
+export function UseLines({ lines, vals, onType }) {
+  const named = lines.length === 1;
+  const token = (t, key, label) =>
+    typeof t === 'object' ? (
+      <label key={key}>
+        <input
+          inputMode="numeric"
+          style={{ width: `${(t.w ?? 3) * 0.7 + 0.9}em` }}
+          value={vals[t.slot] ?? ''}
+          onChange={(e) => onType(t.slot, digits(e.target.value, t.w ?? 3))}
+          aria-label={t.label}
+          data-rf-use={t.slot}
+        />
+        {label && <small>{t.label}</small>}
+      </label>
+    ) : (
+      <b key={key}>{t}</b>
+    );
+  return (
+    <div className="rf-uselines" data-rf-lines={lines.length}>
+      {lines.map((line, i) => (
+        <div key={i} className="rf-use" dir={line.dir ?? 'ltr'}>
+          {line.tokens.map((t, k) =>
+            t?.frac ? (
+              <span
+                key={k}
+                className={`di-frac rf-frac${boxesOf([t]).length ? ' di-frac--typed' : ''}`}
+                dir="ltr"
+                data-rf-frac={[t.frac.n, t.frac.d].map((x) => x.slot ?? x).join('/')}
+              >
+                {token(t.frac.n, 'n', false)}
+                <span className="di-frac__bar" aria-hidden="true" />
+                {token(t.frac.d, 'd', false)}
+              </span>
+            ) : (
+              token(t, k, named)
+            ),
+          )}
+        </div>
+      ))}
     </div>
   );
 }

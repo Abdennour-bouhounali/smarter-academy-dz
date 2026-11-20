@@ -64,6 +64,8 @@ export const MISTAKES = {
   'common-not-greatest': 'انتبه: نبحث عن أكبر القواسم المشتركة، لا عن أيّ قاسم مشترك.',
   'divisor-of-one': 'انتبه: القاسم المشترك يقسم العددين معًا — تحقّق بالقسمة على كلّ واحد منهما.',
   'smaller-not-divisor': 'انتبه: العدد الأصغر ليس قاسمًا مشتركًا إذا ترك باقيًا في قسمة الأكبر عليه.',
+  'subtract-not-divide': 'انتبه: نقسم البسط والمقام على العدد نفسه — لا نطرح منهما العدد نفسه.',
+  'one-term-only': 'انتبه: نقسم البسط والمقام معًا على العدد نفسه، لا أحدهما فقط.',
 };
 
 // ───────────────────────── 1am.m1.r01 — الجمع والطرح والضرب ─────────────────────────
@@ -76,6 +78,8 @@ const CALC = {
   minus: (c) => c.x - c.y,
   timesPlus: (c) => c.x * c.y + c.z,
   pgcd: (c) => gcdOf(c.x, c.y), // « 4am.m1.r03 »: PGCD(x ; y) = ▢
+  // « 1am.m5.r02 »: n/d = m/▢ (side 'bottom') or n/d = ▢/m (side 'top') — the term that keeps the value
+  frac: (c) => (c.side === 'bottom' ? (c.d * c.m) / c.n : (c.n * c.m) / c.d),
 };
 const calcValue = (c) => CALC[c.op](c);
 /** The difference written digit by digit, the small digit taken from the big one (the borrow forgotten). */
@@ -268,6 +272,7 @@ function gradeCalc(q, answer) {
   if (v === calcValue(c)) return { correct: true, mistake: null };
   if (!Number.isFinite(v)) return { correct: false, mistake: null };
   if (c.op === 'pgcd') return { correct: false, mistake: pgcdSlip(c.x, c.y, v) };
+  if (c.op === 'frac') return { correct: false, mistake: fracSlip(c, v) };
   const p = c.x * c.y;
   const slip = (w) => [c.x * (c.y - 1), c.x * (c.y + 1), (c.x - 1) * c.y, (c.x + 1) * c.y].includes(w) && w !== p;
   if (c.op === 'times') return { correct: false, mistake: slip(v) ? 'table-slip' : null };
@@ -1069,6 +1074,121 @@ function pgcdExample(rand, level, { mistake = null } = {}) {
   };
 }
 
+// ───────────────────────── 1am.m5.r02 — اختزال كتابة كسرية (كسر) ─────────────────────────
+// What the reduction of a fraction (4AM) stands on, from 1AM: two fractions are EQUAL when both terms are divided (or
+// multiplied) by the same number. Its slips: the same number SUBTRACTED from both terms, one term divided and not the
+// other. A fraction is written with a real bar: a token `{ frac: [top, bottom] }`, one of the two a box (`S`). The given
+// fractions are the platform's own: never a fraction the banks of the lessons that use this family write
+// (`launchkit.test.js` reads them). The kit is played just before « اختزال كسر »: nothing here names one of its keys —
+// no stages, no fraction that « cannot » be rewritten, no greatest divisor; ONE number divides both terms.
+/** The fractions (numerator < denominator, denominator ≤ 180) the two banks write (`launchkit.test.js` re-reads them). */
+const FRAC_AVOID = new Set(
+  '2/3 3/4 2/5 3/5 4/5 3/6 4/6 5/6 2/7 3/7 4/7 5/7 6/7 2/8 3/8 5/8 6/8 7/8 2/9 4/9 5/9 6/9 7/9 3/10 4/10 5/10 6/10 7/10 8/10 9/10 7/11 2/12 3/12 5/12 7/12 8/12 9/12 10/12 11/12 6/13 9/13 6/14 7/14 11/14 2/15 4/15 9/15 10/15 11/15 5/16 6/16 8/16 9/16 12/16 12/17 13/17 2/18 12/18 11/19 17/19 2/20 3/20 6/20 7/20 8/20 12/20 13/20 14/20 15/20 16/20 8/21 9/21 12/21 14/21 15/21 14/22 15/22 5/24 6/24 9/24 14/24 15/24 18/24 20/24 3/25 5/25 12/25 15/25 12/27 18/27 16/28 24/28 2/30 8/30 18/30 20/30 21/30 27/30 29/30 18/32 22/33 15/35 21/35 27/35 6/36 24/36 27/36 10/40 12/40 13/40 15/40 21/40 24/40 37/40 6/42 18/42 28/42 30/42 35/42 25/43 30/43 10/45 25/45 27/45 30/45 35/45 35/48 6/49 8/49 14/49 30/50 42/54 22/55 24/56 32/56 10/60 20/60 28/63 42/63 24/64 52/65 51/68 35/70 48/72 45/75 54/81 36/84 17/86 60/86 63/99 7/100 12/100 20/100 25/100 35/100 45/100 60/100 70/100 75/100 63/110 87/116 91/119 88/120 100/120 111/120 50/125 116/125 84/126 99/135 24/147 117/156 66/165 119/170 133/171'.split(
+    ' ',
+  ),
+);
+/** Where a level draws its fraction n/d = (k × p)/(k × q), 1 ≤ p < q: k the number that divides both terms. */
+const FRAC_FROM = {
+  first: { k: [2, 2], q: [3, 5], low: 0 },
+  1: { k: [2, 5], q: [3, 9], low: 0 },
+  2: { k: [3, 12], q: [4, 15], low: 30 },
+};
+function fracPair(rand, level, { first = false } = {}) {
+  const R = FRAC_FROM[first ? 'first' : level];
+  for (let i = 0; i < 500; i += 1) {
+    const k = int(rand, R.k[0], R.k[1]);
+    const q = int(rand, R.q[0], R.q[1]);
+    const p = int(rand, 1, q - 1);
+    const [n, d] = [k * p, k * q];
+    if (d < R.low || FRAC_AVOID.has(`${n}/${d}`)) continue;
+    return { n, d, k, p, q };
+  }
+  return level === 2 ? { n: 52, d: 91, k: 13, p: 4, q: 7 } : { n: 10, d: 16, k: 2, p: 5, q: 8 };
+}
+const fracTex = (n, d) => `\\frac{${n}}{${d}}`;
+/** The slip an answer v to « n/d = m/▢ » (or « ▢/m ») shows: the same number subtracted, or one term left as it was. */
+function fracSlip(c, v) {
+  const [given, other] = c.side === 'bottom' ? [c.d, c.n] : [c.n, c.d];
+  if (v === given - (other - c.m)) return 'subtract-not-divide';
+  if (v === given) return 'one-term-only';
+  return null;
+}
+
+/** « n/d = p/▢ » or « n/d = ▢/q », written with two fraction bars: the student writes the missing term. */
+function fracWrite(rand, level, first) {
+  const { n, d, p, q } = fracPair(rand, level, { first: first && level === 1 });
+  const side = first || rand() < 0.5 ? 'bottom' : 'top';
+  const c = { op: 'frac', n, d, m: side === 'bottom' ? p : q, side };
+  const w = String(calcValue(c)).length;
+  return {
+    gesture: 'write',
+    calc: c,
+    prompt: 'أكمل لتحصل على كسر يساوي الكسر الأوّل.',
+    tokens: [
+      { frac: [String(n), String(d)] },
+      '=',
+      { frac: side === 'bottom' ? [String(p), S('v', 'المقام', w)] : [S('v', 'البسط', w), String(q)] },
+    ],
+  };
+}
+
+/** Three equalities « n/d = x/y », each on its own fraction: divided, multiplied, a number subtracted, one term divided. */
+function fracSort(rand, level) {
+  const make = (kind, id) => {
+    const { n, d, k, p, q } = fracPair(rand, level);
+    const j = k === 2 ? 3 : 2;
+    const [x, y] =
+      kind === 'divide' ? [p, q] : kind === 'times' ? [p * j, q * j] : kind === 'subtract' ? [p, d - (n - p)] : [p, d];
+    const trap = kind === 'subtract' ? 'subtract-not-divide' : kind === 'one' ? 'one-term-only' : null;
+    return { id, text: `$${fracTex(n, d)} = ${fracTex(x, y)}$`, n, d, x, y, bin: n * y === d * x ? 'yes' : 'no', trap };
+  };
+  const kinds = shuffle(
+    rand,
+    pick(rand, [
+      ['divide', 'subtract', 'one'],
+      ['divide', 'times', 'subtract'],
+      ['one', 'divide', 'times'],
+      ['subtract', 'divide', 'one'],
+    ]),
+  );
+  const cards = [];
+  for (const kind of kinds) {
+    let c = make(kind, `c${cards.length + 1}`);
+    for (let i = 0; i < 30 && cards.some((o) => o.text === c.text || (o.n === c.n && o.d === c.d)); i += 1)
+      c = make(kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ مساواة صحيحة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'صحيحة' },
+      { id: 'no', label: 'خاطئة' },
+    ],
+    cards,
+  };
+}
+
+/** The worked example: a number that divides both terms, the two divisions, the equal fraction. Its first step answers the mistake shown. */
+function fracExample(rand, level, { mistake = null } = {}) {
+  const { n, d, k, p, q } = fracPair(rand, level === 2 ? 2 : 1);
+  let first;
+  if (mistake === 'subtract-not-divide')
+    first = `نطرح ${n - p} من البسط والمقام فنحصل على $${fracTex(p, d - (n - p))}$، وهو لا يساوي $${fracTex(n, d)}$: نقسم ولا نطرح.`;
+  else if (mistake === 'one-term-only')
+    first = `نقسم البسط وحده فنحصل على $${fracTex(p, d)}$، وهو لا يساوي $${fracTex(n, d)}$: نقسم البسط والمقام معًا.`;
+  else first = 'نبحث عن عدد يقسم البسط والمقام معًا.';
+  return {
+    title: `كسر يساوي الكسر ${n} على ${d}`,
+    steps: [
+      first,
+      `العدد ${k} يقسم ${n} و ${d}: $${n} = ${k} \\times ${p}$ و $${d} = ${k} \\times ${q}$.`,
+      `نقسم البسط والمقام على ${k}: $${fracTex(n, d)} = ${fracTex(`${n} \\div ${k}`, `${d} \\div ${k}`)} = ${fracTex(p, q)}$.`,
+      `الكسران $${fracTex(n, d)}$ و $${fracTex(p, q)}$ متساويان.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
   '1am.m1.r01': {
     item: '1am.m1.r01',
@@ -1235,6 +1355,43 @@ export const FAMILIES = {
       `مثال: قواسم 30: ${listText([1, 2, 3, 5, 6, 10, 15, 30])}، وقواسم 45: ${listText([1, 3, 5, 9, 15, 45])}، إذن $\\mathrm{PGCD}(30 ; 45) = 15$.`,
     ],
   },
+  '1am.m5.r02': {
+    item: '1am.m5.r02',
+    // the name of the gesture (two fractions that are equal); its home lesson is read from the net
+    name: 'الكسور المتساوية',
+    icon: '🍰',
+    // an instrument of a lesson before its home lesson: « كاشف قابلية القسمة » finds a number that divides both terms
+    labTool: 'rules',
+    mistakes: ['subtract-not-divide', 'one-term-only'],
+    forms: { 1: ['write', 'equal'], 2: ['sort', 'write'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'write' ? fracWrite(rand, level, first) : fracSort(rand, form === 'equal' ? 1 : 2),
+    example: fracExample,
+    rules: [
+      {
+        id: 'equal',
+        title: 'كسران متساويان',
+        text: 'إذا قسمنا بسط كسر ومقامه على العدد نفسه، أو ضربناهما في العدد نفسه، نحصل على كسر يساويه.',
+        example:
+          '$\\frac{12}{20} = \\frac{12 \\div 4}{20 \\div 4} = \\frac{3}{5}$ و $\\frac{3}{5} = \\frac{3 \\times 7}{5 \\times 7} = \\frac{21}{35}$.',
+        check: { a: 12, b: 4, q: 3, r: 0 },
+      },
+      {
+        id: 'divide',
+        title: 'نقسم البسط والمقام معًا',
+        text: 'لنكتب كسرًا بعددين أصغر نقسم بسطه ومقامه معًا على عدد يقسمهما، ولا نطرح منهما العدد نفسه.',
+        example:
+          'العدد 3 يقسم 9 و 15: $\\frac{9}{15} = \\frac{3}{5}$؛ أمّا إذا طرحنا 6 فنحصل على $\\frac{3}{9}$، وهو لا يساويه.',
+        check: { a: 15, b: 3, q: 5, r: 0 },
+      },
+    ],
+    memo: [
+      'نقسم بسط كسر ومقامه على العدد نفسه، أو نضربهما في العدد نفسه: نحصل على كسر يساويه.',
+      'لنكتب كسرًا بعددين أصغر نقسم بسطه ومقامه على عدد يقسمهما معًا.',
+      'لا نطرح العدد نفسه من البسط والمقام، ولا نقسم أحدهما وحده.',
+      'مثال: $\\frac{12}{20} = \\frac{3}{5}$، بقسمة البسط والمقام على 4.',
+    ],
+  },
   '1am.m3.r01': {
     item: '1am.m3.r01',
     name: 'القسمة الإقليدية',
@@ -1386,11 +1543,17 @@ export function nextForm(step, answers, used = []) {
 
 const num = (x) => (x === '' || x == null ? NaN : Number(x));
 
+/**
+ * The boxes of a « write » question, in reading order: a token is a string (drawn as it is), a box (`S`), or a fraction
+ * `{ frac: [top, bottom] }` whose terms are each a string or a box.
+ */
+export const slotsOf = (tokens) =>
+  tokens.flatMap((t) => (typeof t !== 'object' ? [] : t.frac ? t.frac.filter((x) => typeof x === 'object') : [t]));
+
 /** Is the answer complete enough to be handed in? (every box written, every card sent, the flag moved) */
 export function complete(q, answer) {
   if (!answer) return false;
-  if (q.gesture === 'write')
-    return q.tokens.filter((t) => typeof t === 'object').every((t) => answer[t.slot] !== '' && answer[t.slot] != null);
+  if (q.gesture === 'write') return slotsOf(q.tokens).every((t) => answer[t.slot] !== '' && answer[t.slot] != null);
   if (q.gesture === 'sort') return q.cards.every((c) => answer[c.id] === 'yes' || answer[c.id] === 'no');
   return Number.isFinite(answer.x) && answer.moved === true;
 }

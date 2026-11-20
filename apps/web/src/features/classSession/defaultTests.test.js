@@ -134,6 +134,26 @@ const FEWER = {
   differences: { text: 'خوارزمية الفروق المتتابعة', holds: (a, b) => subtractionsOf(a, b) < divisionsOf(a, b) },
   same: { text: 'تأخذان عدد الخطوات نفسه', holds: (a, b) => subtractionsOf(a, b) === divisionsOf(a, b) },
 };
+/** « $\frac{p}{q}$ » → [p, q], or null. */
+const fracOf = (text) => {
+  const m = String(text).match(/^\$\\frac\{(\d+)\}\{(\d+)\}\$$/);
+  return m ? [+m[1], +m[2]] : null;
+};
+/** Two fractions of the same value (cross products), computed here. */
+const sameValue = ([p, q], [n, d]) => p * d === q * n;
+/** « \frac{a}{b} + \frac{c}{d} » (one operator: +, −, ×) → [numerator, denominator], computed here, never reduced. */
+const fracExpr = (expr) => {
+  const m = String(expr).match(/^\\frac\{(\d+)\}\{(\d+)\} (\+|-|\\times) \\frac\{(\d+)\}\{(\d+)\}$/);
+  if (!m) return null;
+  const [a, b, op, c, d] = [+m[1], +m[2], m[3], +m[4], +m[5]];
+  if (op === '\\times') return [a * c, b * d];
+  return [op === '+' ? a * d + c * b : a * d - c * b, b * d];
+};
+/** Is this option the irreducible form of [n, d]? Equal in value AND its terms share only 1. */
+const isReducedOf = (option, nd) => {
+  const f = fracOf(option);
+  return Boolean(f) && sameValue(f, nd) && gcd(f[0], f[1]) === 1;
+};
 const shows = (q, ...nums) => {
   for (const n of nums) expect(q.text, `${q.id}: the question shows ${n}`).toContain(String(n));
 };
@@ -375,6 +395,54 @@ function truth(q) {
       for (const d of c.tried) expect(c.a % d === 0 && c.b % d === 0, `${q.id}: ${d} divides both`).toBe(false);
       expect(gcd(c.a, c.b), `${q.id}: a common divisor other than 1 exists`).toBeGreaterThan(1);
       return false;
+    // ── reducing a fraction (4AM lesson 8; 1AM's equal fractions): a fraction is written « $\frac{n}{d}$ » ──
+    case 'equalFraction':
+      // each option a fraction; the right one has the value of n/d (1AM: the same number divides both terms)
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      return q.options.map((o) => Boolean(fracOf(o)) && sameValue(fracOf(o), [c.n, c.d]));
+    case 'missingTerm': {
+      // « n/d = m/… »: the denominator that keeps the value, a whole number
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}} = \\frac{${c.m}}{\\dots}$`);
+      const v = (c.d * c.m) / c.n;
+      expect(Number.isInteger(v), `${q.id}: a whole denominator`).toBe(true);
+      return v;
+    }
+    case 'irreducible':
+      // « the fraction n/d cannot be reduced », judged by its PGCD
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      return gcd(c.n, c.d) === 1;
+    case 'irreduciblePick':
+      return q.options.map((o) => Boolean(fracOf(o)) && gcd(...fracOf(o)) === 1);
+    case 'oneStep':
+      // the number that gives the irreducible form in ONE division: the PGCD (never 1: the fraction can be reduced)
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      expect(gcd(c.n, c.d), `${q.id}: the fraction can be reduced`).toBeGreaterThan(1);
+      return gcd(c.n, c.d);
+    case 'reduced':
+      // each option a fraction; the right one is equal to n/d AND irreducible — an equal fraction still reducible is wrong
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      return q.options.map((o) => isReducedOf(o, [c.n, c.d]));
+    case 'reducedIs':
+      // « the irreducible form of n/d is p/q », true or false
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      expect(q.text, q.id).toContain(`$\\frac{${c.p}}{${c.q}}$`);
+      return isReducedOf(`$\\frac{${c.p}}{${c.q}}$`, [c.n, c.d]);
+    case 'stage':
+      // ONE stage: both terms divided by k, a common divisor (subtracting k, or dividing one term only, are wrong)
+      expect(q.text, q.id).toContain(`$\\frac{${c.n}}{${c.d}}$`);
+      expect(q.text, q.id).toContain(` ${c.k}.`);
+      expect(c.n % c.k === 0 && c.d % c.k === 0, `${q.id}: ${c.k} divides both terms`).toBe(true);
+      return q.options.map((o) => {
+        const f = fracOf(o);
+        return Boolean(f) && f[0] === c.n / c.k && f[1] === c.d / c.k;
+      });
+    case 'resultReduced': {
+      // a calculation on two fractions, its result computed here; the right option is that value, irreducible
+      expect(q.text, q.id).toContain(`$${c.expr}$`);
+      const v = fracExpr(c.expr);
+      expect(v, `${q.id}: « ${c.expr} » is read`).not.toBe(null);
+      return q.options.map((o) => isReducedOf(o, v));
+    }
     case 'perLot':
       // the lots the question gives share both collections: the greatest number of lots, so one lot is a / PGCD
       expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
@@ -400,6 +468,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/tayin-pgcd.json'); // lesson 5: finding the PGCD (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/bahth-pgcd.json'); // lesson 6: the two algorithms (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/awwaliyan-fima-baynahuma.json'); // lesson 7: coprime numbers (2026-11-19)
+    expect(files.map((f) => f.name)).toContain('4am/ikhtizal-kasr.json'); // lesson 8: reducing a fraction (2026-11-20)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -454,6 +523,17 @@ describe('حصّة القسم — the default tests', () => {
     expect(proves(77, 49)).toBe(false);
     expect(() => proves(77, 13)).toThrow(); // 77 and 13 ARE coprime: the sentence would teach a false proof by a true end
     expect(() => proves(70, 55)).toThrow(); // 5 divides both: the sentence's premise would be false
+    // reducing a fraction: an equal fraction still reducible is NOT the irreducible form; a result is computed exactly
+    expect(isReducedOf('$\\frac{5}{7}$', [195, 273])).toBe(true);
+    expect(isReducedOf('$\\frac{65}{91}$', [195, 273])).toBe(false); // equal, but 13 still divides both
+    expect(isReducedOf('$\\frac{5}{8}$', [195, 273])).toBe(false);
+    expect(fracExpr('\\frac{11}{36} + \\frac{13}{36}')).toEqual([24 * 36, 36 * 36]);
+    expect(fracExpr('\\frac{10}{21} \\times \\frac{9}{25}')).toEqual([90, 525]);
+    expect(fracExpr('\\frac{29}{45} - \\frac{11}{45}')).toEqual([18 * 45, 45 * 45]);
+    expect(fracExpr('\\frac{1}{2} \\div \\frac{1}{3}')).toBe(null); // a shape the check does not read is refused
+    const one = (n, d) => truth({ id: 't', text: `$\\frac{${n}}{${d}}$`, check: { type: 'oneStep', n, d } });
+    expect(one(54, 72)).toBe(18);
+    expect(() => one(55, 72)).toThrow(); // a fraction that cannot be reduced has no « one step »
   });
 
   for (const { name, data } of files) {

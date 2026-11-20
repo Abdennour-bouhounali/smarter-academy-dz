@@ -22,6 +22,7 @@ import IntegerSetInput from '../../../../features/practice/inputs/IntegerSetInpu
 import TemplateInput from '../../../../features/practice/answerTemplates/TemplateInput';
 import { templateFor } from '../../../../features/practice/answerTemplates/templateFor';
 import Fit from './Fit';
+import Leaves from './ExamSittingLeaves';
 import { useLesson } from './LessonContext';
 import { keysOfPoints } from './bankSitting';
 import { allQuestions, answered, forgotten, pace, appreciation, tick, timeUp } from './sitting';
@@ -175,6 +176,16 @@ function Field({ q, value, onChange }) {
       )}
     </div>
   );
+}
+
+/**
+ * The line a fraction box writes under itself (« كسر لا يقبل الاختزال — اترك المقام فارغًا… ») is the same for every fraction
+ * answer of a sheet: it is said once per leaf of the answer sheet (ExamSittingLeaves › quiet), not under each box.
+ */
+function quietKey(q) {
+  if (q.paper || q.answerType === 'choice' || q.answerType === 'integerSet') return null;
+  const t = templateFor(q.shown);
+  return t.kind === 'fraction' ? `fraction:${t.irreducible ? 'irreducible' : 'whole'}` : null;
 }
 
 /** What the student wrote, in blue ink. */
@@ -422,16 +433,25 @@ function Sitting({ game, subject, onFinish, onQuit, onHandIn }) {
                 <Fit floor={FLOOR} className="xs-paper">
                   <Paper e={e} marks={marks} toggle={toggleMark} />
                 </Fit>
-                <Fit floor={FLOOR} className={`xs-sheet ${forgot && i === page ? 'is-forgot' : ''}`}>
-                  <h3>
-                    {L.sheet} — {e.title}
-                  </h3>
-                  <p className="xs-tip xs-tip--in">
-                    <PenLine size={15} /> {L.paper}
-                  </p>
-                  <ol>
-                    {e.questions.map((q) => (
-                      <li key={q.id} className={flags[q.id] ? 'is-flagged' : ''}>
+                <Leaves
+                  floor={FLOOR}
+                  className={`xs-sheet ${forgot && i === page ? 'is-forgot' : ''}`}
+                  head={
+                    <>
+                      <h3>
+                        {L.sheet} — {e.title}
+                      </h3>
+                      <p className="xs-tip xs-tip--in">
+                        <PenLine size={15} /> {L.paper}
+                      </p>
+                    </>
+                  }
+                  items={e.questions.map((q) => ({
+                    id: q.id,
+                    className: flags[q.id] ? 'is-flagged' : '',
+                    quiet: quietKey(q),
+                    node: (
+                      <>
                         <Num q={q} />
                         <div className="xs-step">
                           <span className="xs-step__ask">
@@ -457,10 +477,10 @@ function Sitting({ game, subject, onFinish, onQuit, onHandIn }) {
                             <Flag size={16} />
                           </button>
                         )}
-                      </li>
-                    ))}
-                  </ol>
-                </Fit>
+                      </>
+                    ),
+                  }))}
+                />
               </div>
             ))}
             {left <= 60 && left > 0 && (

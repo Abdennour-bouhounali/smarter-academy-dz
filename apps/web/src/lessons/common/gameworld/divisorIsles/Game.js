@@ -246,7 +246,10 @@ export class DivisorIslesGame extends WorldRuntime {
     const h = this.hero;
     const i = this.isl.findIndex((isl) => Math.hypot(h.pos.x - isl.x, h.pos.z - isl.z) <= isl.R - 0.12);
     if (i >= 0) {
-      h.island = i;
+      if (h.island !== i) {
+        h.island = i;
+        this.syncSign(); // the sign shown is the one of the bridge that leaves THIS island
+      } else h.island = i;
       if (i === this.state.stage + 1 && this.segs[this.state.stage]?.complete) this.arrive(i);
     }
   }
@@ -707,7 +710,7 @@ export class DivisorIslesGame extends WorldRuntime {
 
   /** The sign of the marked bridge he stands before: the fraction in cells, then once per plank that held. */
   syncSign() {
-    const seg = this.segs[this.state.stage];
+    const seg = this.segs[this.hero?.island ?? this.state.stage];
     const sign = seg?.mark
       ? { chain: signChain(seg.a, seg.mark, this.markSigns[seg.id] ?? []), strokes: seg.strokes ?? null }
       : null;
@@ -829,12 +832,14 @@ export class DivisorIslesGame extends WorldRuntime {
     const group = this.convoyOf(seg);
     return Boolean(group && group[0] !== seg);
   }
-  /** The purse of the convoy of `seg`: { of, left } — a coin per plank of its standing bridges; null without a purse. */
+  /** The purse of the convoy of `seg`: { of, left, n } — a coin per plank of its standing bridges; null without a purse. */
   purseOf(seg) {
     const of = seg?.convoy ? this.convoys[seg.convoy]?.purse : null;
     if (!of) return null;
-    const spent = this.convoyOf(seg).reduce((n, s) => n + (s.complete && s.builtWith ? s.a / s.builtWith : 0), 0);
-    return { of, left: of - spent };
+    const group = this.convoyOf(seg);
+    const spent = group.reduce((n, s) => n + (s.complete && s.builtWith ? s.a / s.builtWith : 0), 0);
+    // `n`: the bridges it pays — the chip says « the purse of the bridge » for a convoy of one (lesson 8)
+    return { of, left: of - spent, n: group.length };
   }
   /**
    * He takes planks on the FIRST island of a convoy: they build every bridge of it. Bridges standing on other planks go
@@ -1063,6 +1068,15 @@ export class DivisorIslesGame extends WorldRuntime {
       ),
       look: new THREE.Vector3(mid.x, 0.4, mid.z),
     };
+    // a MARKED bridge that stands is rebuilt to write its sign shorter: if the new planks fail, it stands again as it was
+    const stood = seg.mark && seg.complete ? seg.builtWith : null;
+    const standAgain = () => {
+      if (stood == null) return;
+      this.layPlanksInstant(seg, stood);
+      seg.builtWith = stood;
+      this.built[seg.id] = stood;
+      this.markComplete(seg, true);
+    };
     if (seg.planks.length) await this.crumble(seg);
     this.clearPlanks(seg);
     seg.builtWith = null;
@@ -1121,7 +1135,7 @@ export class DivisorIslesGame extends WorldRuntime {
       seg.count.position.copy(this.segPoint(seg, (k + 0.5) * b * seg.cell, 0, 1.6));
       this.set({
         equation: { a, b, q: k + 1, r: a - b * (k + 1), live: true, ...eqMark(k + 1) },
-        ...(purse ? { purse: { of: purse.of, left: purse.left - (k + 1) } } : {}),
+        ...(purse ? { purse: { ...purse, left: purse.left - (k + 1) } } : {}),
       });
     }
     await this.wait(0.35);
@@ -1157,10 +1171,12 @@ export class DivisorIslesGame extends WorldRuntime {
       await this.wait(2.2);
       this.gapPulse = null;
       await this.crumble(seg);
+      standAgain();
       this.cine = null;
       this.set({ phase: 'play' });
       if (this.convoyTail(seg)) this.flags.convoyStuck = seg.id;
       this.say(this.T.say.purseOut(paid, q), 9);
+      if (seg.boss) this.bossRefused(b, { purse: true, laid: paid, need: q });
       this.refreshObjective();
       this.save();
       return;
@@ -1199,10 +1215,12 @@ export class DivisorIslesGame extends WorldRuntime {
       await this.wait(2.4);
       this.gapPulse = null;
       await this.crumble(seg);
+      standAgain();
       this.cine = null;
       this.set({ phase: 'play' });
       if (this.convoyTail(seg)) this.flags.convoyStuck = seg.id;
       this.say(this.T.say.markMiss(b, mv.mark), 10);
+      if (seg.boss) this.bossRefused(b, { mark: mv.mark.r });
       this.refreshObjective();
       this.save();
       return;
@@ -1234,6 +1252,7 @@ export class DivisorIslesGame extends WorldRuntime {
       await this.wait(q > 0 ? 1.9 : 0.4);
       this.gapPulse = null;
       await this.crumble(seg);
+      standAgain();
       this.cine = null;
       this.set({ phase: 'play' });
       this.afterFail(seg, b, q, r, right);
@@ -1262,6 +1281,17 @@ export class DivisorIslesGame extends WorldRuntime {
     this.set({ phase: 'play' });
     if (!this.story.onHold?.(this, seg, b, q)) this.say(this.T.say.ok(b, q));
     this.save();
+  }
+
+  /**
+   * The store's planks were refused for another reason than cells left open — the purse ran out, or the post of a marked
+   * stretch missed its joint: the try is remembered (`flags.bossTried[b]` = what happened), it counts against the
+   * store's stars, and the store opens again so he chooses once more (the sentence was already said).
+   */
+  bossRefused(b, why) {
+    this.flags.bossTried = { ...(this.flags.bossTried ?? {}), [b]: why };
+    this.flags.bossWrong = (this.flags.bossWrong ?? 0) + 1;
+    this.set({ phase: 'dialog', overlay: this.bossOverlay('choose') });
   }
 
   afterFail(seg, b, q, r, right = null) {

@@ -42,6 +42,9 @@ const arithmetic = (text) => {
 /** Every divisor of n, computed here. */
 const divisorsApart = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((d) => n % d === 0);
 const accepts = (q, c) => {
+  // « n/d = x/y » (1am.m5.r02): two fractions of the same value, judged by the cross products computed here
+  const fr = String(c.text).match(/^\$\\frac\{(\d+)\}\{(\d+)\} = \\frac\{(\d+)\}\{(\d+)\}\$/);
+  if (fr) return Number(fr[1]) * Number(fr[4]) === Number(fr[2]) * Number(fr[3]);
   if (c.list) return c.list.join() === divisorsApart(c.n).join(); // « قواسم 12: 1 ، 2 ، … »: the whole list, nothing else
   if (arithmetic(c.text) !== null) return arithmetic(c.text);
   const pg = String(c.text).match(/^\$\\mathrm\{PGCD\}\((\d+) ; (\d+)\) = (\d+)\$$/); // « PGCD(x ; y) = v »
@@ -58,8 +61,16 @@ const accepts = (q, c) => {
 /** The value of a question that carries its operation, computed here from its operands: « x × y », « x − y », « x × y + z ». */
 /** The greatest number that divides x and y, found by trying every number — never Euclid, never the family's helper. */
 const pgcdApart = (x, y) => Math.max(...divisorsApart(Math.min(x, y)).filter((d) => x % d === 0 && y % d === 0));
-const calcApart = ({ op, x, y, z }) =>
-  op === 'pgcd' ? pgcdApart(x, y) : op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z;
+/** The missing term of « n/d = m/▢ » (or « ▢/m »), found by trying every whole number — never the family's formula. */
+const termApart = ({ n, d, m, side }) => {
+  for (let t = 1; t <= 1000; t += 1) if (side === 'bottom' ? n * t === d * m : t * d === n * m) return t;
+  return NaN;
+};
+const calcApart = (c) => {
+  const { op, x, y, z } = c;
+  if (op === 'frac') return termApart(c);
+  return op === 'pgcd' ? pgcdApart(x, y) : op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z;
+};
 const right = (q) =>
   q.calc
     ? q.gesture === 'write'
@@ -138,6 +149,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       if (f.item === '2am.m1.r04') return; // the 2AM division has its own ranges (a two-digit divisor), checked below
       if (f.item === '1am.m1.r01') return; // the operations are not a division: their own ranges, checked below
       if (f.item === '4am.m1.r03') return; // a PGCD, not a division: its own ranges, checked below
+      if (f.item === '1am.m5.r02') return; // a fraction, not a division: its own ranges, checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -541,6 +553,139 @@ describe('عُدّة الانطلاق — the question families', () => {
     expect(toolsFor('awwaliyan-fima-baynahuma', { earlierOnly: true }).all.map((t) => t.id)).toContain('common');
   });
 
+  it('« الكسور المتساوية » (1am.m5.r02): every missing term computed apart, its traps named, never a fraction of the banks', () => {
+    const item = '1am.m5.r02';
+    /** Every fraction the two banks that use this family write (« \frac{n}{d} » and « "n/d" »). */
+    const bankFractions = new Set(
+      ['ikhtizal-kasr', 'ikhtizal-kitaba-kasriya'].flatMap((id) =>
+        readBank(id).sheets.flatMap((s) => {
+          const t = s.text;
+          return [
+            ...[...t.matchAll(/frac\{(\d+)\}\{(\d+)\}/g)].map((m) => `${m[1]}/${m[2]}`),
+            ...[...t.matchAll(/(?<![\d.])(\d+)\/(\d+)(?![\d.])/g)].map((m) => `${m[1]}/${m[2]}`),
+          ];
+        }),
+      ),
+    );
+    expect(bankFractions.size).toBeGreaterThan(100); // both banks were read
+    const own = (n, d) => {
+      expect(bankFractions.has(`${n}/${d}`), `the bank writes ${n}/${d}`).toBe(false);
+      expect(n).toBeLessThan(d);
+      expect(pgcdApart(n, d), `${n}/${d} can be divided`).toBeGreaterThan(1);
+    };
+    const fr = (t) => t.match(/\\frac\{(\d+)\}\{(\d+)\}/g).map((x) => x.match(/\d+/g).map(Number));
+    const seen = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      for (const level of [1, 2]) {
+        const w = makeQuestion(rng(seed * 37 + level), item, level, 'write', { first: seed % 5 === 0 });
+        const { n, d, m, side } = w.calc;
+        own(n, d);
+        // the shape: two fractions with a real bar, ONE box in the second
+        expect(w.tokens).toHaveLength(3);
+        expect(w.tokens[0]).toEqual({ frac: [String(n), String(d)] });
+        expect(w.tokens[1]).toBe('=');
+        const second = w.tokens[2].frac;
+        expect(second.filter((x) => typeof x === 'object')).toHaveLength(1);
+        expect(second[side === 'bottom' ? 0 : 1]).toBe(String(m));
+        const t = termApart(w.calc);
+        expect(Number.isInteger(t), `${n}/${d}`).toBe(true);
+        expect(side === 'bottom' ? t : m).toBeLessThan(side === 'bottom' ? d : d); // a smaller fraction
+        expect(grade(w, { v: String(t) })).toEqual({ correct: true, mistake: null });
+        expect(Math.max(n, d)).toBeLessThanOrEqual(level === 1 ? (seed % 5 === 0 ? 10 : 45) : 180);
+        if (level === 2) expect(d).toBeGreaterThanOrEqual(30);
+        // the slips, judged from the numbers: the same number subtracted, one term left as it was
+        const [given, other] = side === 'bottom' ? [d, n] : [n, d];
+        const sub = given - (other - m);
+        if (sub > 0 && sub !== t) expect(grade(w, { v: String(sub) }).mistake).toBe('subtract-not-divide');
+        expect(grade(w, { v: String(given) })).toEqual({ correct: false, mistake: 'one-term-only' });
+        expect(grade(w, { v: String(t + 1) }).correct).toBe(false);
+      }
+      // three equalities « n/d = x/y », each on its own fraction
+      for (const [level, form] of [
+        [1, 'equal'],
+        [2, 'sort'],
+      ]) {
+        const s = makeQuestion(rng(seed * 7919 + level), item, level, form);
+        expect(new Set(s.cards.map((k) => `${k.n}/${k.d}`)).size).toBe(3);
+        for (const k of s.cards) {
+          own(k.n, k.d);
+          const [[n, d], [x, y]] = fr(k.text);
+          expect([n, d, x, y]).toEqual([k.n, k.d, k.x, k.y]);
+          expect(k.bin).toBe(n * y === d * x ? 'yes' : 'no');
+          if (k.trap === 'subtract-not-divide') expect(n - x).toBe(d - y); // the same number taken from both terms
+          if (k.trap === 'one-term-only') expect([d === y, n % x === 0 && n !== x]).toEqual([true, true]);
+          if (k.trap) {
+            seen.add(k.trap);
+            expect(k.bin).toBe('no');
+            expect(grade(s, { ...right(s), [k.id]: 'yes' })).toEqual({ correct: false, mistake: k.trap });
+          }
+        }
+      }
+    }
+    expect([...seen].sort()).toEqual(['one-term-only', 'subtract-not-divide']);
+    // the worked example: true divisions, an equal fraction; its first step on the mistake shown, with an UNEQUAL fraction
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, ...FAMILIES[item].mistakes]) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          const [n, d] = e.title.match(/\d+/g).map(Number);
+          own(n, d);
+          expect(e.steps).toHaveLength(4);
+          const [k] = e.steps[1].match(/\d+/).map(Number);
+          expect([n % k, d % k]).toEqual([0, 0]);
+          expect(e.steps[2]).toContain(
+            `\\frac{${n}}{${d}} = \\frac{${n} \\div ${k}}{${d} \\div ${k}} = \\frac{${n / k}}{${d / k}}`,
+          );
+          if (mistake) {
+            const [[x, y], [p, q]] = fr(e.steps[0]);
+            expect([p, q]).toEqual([n, d]);
+            expect(x * d === y * n, `${x}/${y} is not ${n}/${d}`).toBe(false);
+          }
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+        }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // its rules and memo: every equality of fractions true, every « لا يساويه » false
+    const texts = [...FAMILIES[item].rules.flatMap((r) => [r.text, r.example]), ...FAMILIES[item].memo];
+    const value = (side) =>
+      // eslint-disable-next-line no-new-func
+      Function(
+        `return ${side
+          .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '(($1)/($2))')
+          .replace(/\\times/g, '*')
+          .replace(/\\div/g, '/')};`,
+      )();
+    let n = 0;
+    for (const t of texts)
+      for (const [, f] of t.matchAll(/\$([^$]+)\$/g)) {
+        if (!f.includes('=')) continue;
+        const sides = f.split('=').map(value);
+        for (const v of sides) expect(Math.abs(v - sides[0]) < 1e-9, f).toBe(true);
+        n += 1;
+      }
+    expect(n).toBeGreaterThanOrEqual(3);
+    expect(9 * 9).not.toBe(15 * 3); // the rule's « 3/9 is not 9/15 » (6 taken from both terms)
+    expect(FAMILIES[item].rules[1].example).toContain('$\\frac{3}{9}$، وهو لا يساويه');
+    // the kit is played BEFORE « اختزال كسر »: nothing of it names that lesson's keys (world/story.js › TABLETS)
+    const all =
+      JSON.stringify({ ...FAMILIES[item], make: null, example: null }) +
+      MISTAKES['subtract-not-divide'] +
+      MISTAKES['one-term-only'];
+    expect(all).not.toMatch(/اختزال|نختزل|مختزل|مراحل|غير قابل|المشترك الأكبر|PGCD|أوّلي/);
+  });
+
+  it('takes the tools of « اختزال كسر » from the learning net: the PGCD of lesson 4 and the equal fractions of 1AM, each with its family', () => {
+    const links = toolsForLesson('ikhtizal-kasr');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['4am.m1.r03', 'qasim-mushtarak-akbar', 'core'],
+      ['1am.m5.r02', 'ikhtizal-kitaba-kasriya', 'core'],
+    ]);
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+    const before = toolsFor('ikhtizal-kasr', { earlierOnly: true }).all.map((t) => t.id);
+    expect(before).toEqual(expect.arrayContaining(['common', 'rules']));
+    expect(before).not.toContain('strip'); // the lesson's own instrument is never in its launch
+  });
+
   it('« الجمع والطرح والضرب » (1AM): its operations are true, in their ranges, and a slip is named', () => {
     const item = '1am.m1.r01';
     const seen = new Set();
@@ -670,6 +815,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       '4am.m1.r01': ['sentences', 'pick'], // no form named `sort`: its own order
       '4am.m1.r02': ['sort', 'write'],
       '4am.m1.r03': ['sort', 'write'],
+      '1am.m5.r02': ['sort', 'write'],
     });
     for (const item of Object.keys(FAMILIES)) {
       expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered

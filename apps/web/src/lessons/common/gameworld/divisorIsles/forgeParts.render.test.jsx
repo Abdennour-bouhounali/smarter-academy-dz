@@ -192,6 +192,17 @@ describe('a case that is a PAIR of gaps — two bridges, the same plank laid on 
     expect(renderToString(<Line c={pairOf(16, 19, 5, { tag: 'tag[p]' })} />)).toContain('tag[p]');
   });
 
+  it('a pair that is a FRACTION (the whole over its lit stretch) names itself by its own head, never « و … لوح »', () => {
+    const head = '\u206666/78 → 33/39\u2069';
+    const line = renderToString(<Line c={pairOf(78, 66, 2, { head, tag: 'الجزء نفسه' })} />);
+    expect(line).toContain('rf-line--pair');
+    expect(line).toContain(`<span class="rf-line__head">${head}</span>`);
+    expect(line).not.toMatch(/لوح|rf-pairhead/);
+    expect(line).toContain('الجزء نفسه');
+    // the mini still draws both bars at one scale: 39 planks of 2 on the whole, 33 on the lit stretch
+    expect(count(line, /class="is-held"/g)).toBe(39 + 33);
+  });
+
   it('a case that is not a pair is drawn exactly as before: one bridge, its own box, its own line', () => {
     const c = { ...outcome(16, 5), fits: false };
     for (const stage of ['ask', 'build', 'done']) {

@@ -436,6 +436,30 @@ await page.waitForSelector('[data-ll-duo]');
 await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 7');
 
+// ══ 2ter. lesson 8 (in its game world since 2026-11-20 — its mission home and its door `[data-mission-lab]` are gone): the SAME lab, its one instrument ══
+await page.goto(`${BASE}/ikhtizal-kasr`, { waitUntil: 'networkidle' }); heard = 0;
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="ikhtizal-kasr"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'strip', `lesson 8 opens the lab from its world: its one instrument is شريط الكسر (${mine})`); }
+if (await page.locator('[data-ll-strip]').count() === 0) await page.click('[data-ll-tool="strip"]');
+await page.waitForSelector('[data-ll-strip]');
+// ONE gesture (the instrument's own « + »), ONE screenshot — the verdict checked by the walk's own arithmetic
+{
+  const k0 = Number(await page.getAttribute('[data-ll-strip]', 'data-k'));
+  const [a, b] = await page.evaluate(() => ['a', 'b'].map((k) => Number(document.querySelector('[data-ll-strip-bar]')?.dataset[k])));
+  await page.click('[data-ll-strip-plus]');
+  await page.waitForFunction((was) => Number(document.querySelector('[data-ll-strip]')?.dataset.k) !== was, k0, { timeout: 3000 }).catch(() => {});
+  await page.waitForTimeout(200);
+  const k = Number(await page.getAttribute('[data-ll-strip]', 'data-k'));
+  const v = await page.getAttribute('[data-ll-strip]', 'data-verdict');
+  const want = Math.min(k0 + 1, Math.max(2, a, b));
+  const truth = a % k === 0 && b % k === 0 ? 'both' : a % k === 0 ? 'a' : b % k === 0 ? 'b' : 'none';
+  expect(k === want && v === truth, `strip, ${a}/${b}: « + » lays a piece of ${k} (from ${k0}): « ${truth} » — computed here (${v})`);
+  await shot('strip-lesson-8');
+}
+await page.click('[data-ll-close]'); await page.waitForTimeout(500);
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 8');
+
 // ══ 3. a lesson with nothing before it has no lab door ══
 await page.goto(`${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-adad-tabii?lab=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForTimeout(800);

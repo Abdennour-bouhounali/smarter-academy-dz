@@ -20,6 +20,7 @@ import {
   twoLists,
   pairLists,
   probeOf,
+  stripOf,
   QUESTS,
   observe,
   luckyPair,
@@ -88,7 +89,8 @@ describe('مختبري — the instruments a lesson may show', () => {
       'qasim-mushtarak-akbar',
       'tayin-pgcd',
     ]);
-    expect(lab.all.length).toBe(TOOLS.filter((t) => t.id !== 'duo').length); // lesson 7's instrument comes after it
+    // the instruments of lessons 7 and 8 come after it
+    expect(lab.all.length).toBe(TOOLS.filter((t) => !['duo', 'strip'].includes(t.id)).length);
   });
 
   it('« تعيين القاسم المشترك الأكبر »: its own instrument (the two lists BUILT), lesson 4’s beside it in the cabinet', () => {
@@ -133,6 +135,37 @@ describe('مختبري — the instruments a lesson may show', () => {
       ...src.matchAll(/'[^'\n]*[\u0600-\u06FF][^'\n]*'|`[^`]*[\u0600-\u06FF][^`]*`|>[^<>{}]*[\u0600-\u06FF][^<>{}]*</g),
     ].map((m) => m[0]);
     expect(arabic.length).toBeGreaterThan(5);
+    for (const s of arabic) expect(s, s).not.toMatch(KEY_WORDS);
+  });
+
+  it('« اختزال كسر »: its own instrument, never before the lesson, naming no key of it', () => {
+    const lab = toolsFor('ikhtizal-kasr');
+    expect(lab.mine.map((t) => t.id)).toEqual(['strip']);
+    expect(lab.cabinet.find((g) => g.grade === '4am').lessons.map((l) => l.code)).toEqual([
+      'qasim-adad-tabii',
+      'qawasim-adad-tabii',
+      'khawass-qawasim',
+      'qasim-mushtarak-akbar',
+      'tayin-pgcd',
+      'bahth-pgcd',
+      'awwaliyan-fima-baynahuma',
+    ]);
+    expect(toolsFor('awwaliyan-fima-baynahuma').all.map((t) => t.id)).not.toContain('strip');
+    const before = toolsFor('ikhtizal-kasr', { earlierOnly: true });
+    expect(before.all.map((t) => t.id)).not.toContain('strip'); // the launch kit's lab: the cabinet only
+    expect(before.all.map((t) => t.id)).toEqual(expect.arrayContaining(['common', 'duo', 'rules']));
+    // the words of the lesson's four tablets (world/story.js › TABLETS: « نختزل كسرًا على مراحل », « كسر غير قابل
+    // للاختزال », « نختزل بالقاسم المشترك الأكبر », « نختزل نتيجة الحساب ») never stand on the tile, its quests or the
+    // instrument's own strings — nor the PGCD, the longest piece, or « reduce »: the keys are named in the game
+    const KEY_WORDS = /اختزال|نختزل|مختزل|مراحل|مرحلة|غير قابل|المشترك الأكبر|PGCD|أطول|أكبر قطعة|نتيجة/;
+    const tile = TOOLS.find((t) => t.id === 'strip');
+    expect(`${tile.name} ${tile.hint} ${tile.labels.a} ${tile.labels.b}`).not.toMatch(KEY_WORDS);
+    for (const q of QUESTS.strip) expect(q.text).not.toMatch(KEY_WORDS);
+    const src = readFileSync(new URL('./tools/Strip.jsx', import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    const arabic = [...src.matchAll(/'[^'\n]*[؀-ۿ][^'\n]*'|`[^`]*[؀-ۿ][^`]*`|>[^<>{}]*[؀-ۿ][^<>{}]*</g)].map(
+      (m) => m[0],
+    );
+    expect(arabic.length).toBeGreaterThanOrEqual(5);
     for (const s of arabic) expect(s, s).not.toMatch(KEY_WORDS);
   });
 
@@ -363,6 +396,34 @@ describe('مختبري — the mathematics the instruments draw', () => {
     expect(divisorsOf(840)).toHaveLength(32);
   });
 
+  it('« شريط الكسر »: the two divisions, where the light ends, what is left, and the fraction in pieces only when k divides both', () => {
+    for (let a = 1; a <= 999; a += 11)
+      for (let b = 1; b <= 999; b += 13)
+        for (const k of [2, 3, 4, 5, 7, 12, 25]) {
+          const S = stripOf(a, b, k);
+          expect(S.lit.q * k + S.lit.r).toBe(a);
+          expect(S.whole.q * k + S.whole.r).toBe(b);
+          expect(S.left).toBe(b % k);
+          expect(S.pieces).toBe(Math.ceil(Math.max(a, b) / k));
+          if (a % k === 0) expect(S.cut).toBe(null);
+          else {
+            // the light ends strictly inside the piece the drawing outlines
+            expect(S.cut.from).toBeLessThan(a);
+            expect(S.cut.to).toBeGreaterThan(a);
+            expect(S.cut.to - S.cut.from).toBe(k);
+            expect(S.cut.from % k).toBe(0);
+          }
+          if (a % k === 0 && b % k === 0) {
+            expect(S.verdict).toBe('both');
+            expect(S.rewrite[0] * b).toBe(S.rewrite[1] * a); // the same fraction
+            expect(S.rewrite).toEqual([a / k, b / k]);
+          } else expect(S.rewrite).toBe(null);
+        }
+    expect(stripOf(60, 96, 8)).toMatchObject({ verdict: 'b', cut: { from: 56, to: 64 }, left: 0, rewrite: null });
+    expect(stripOf(60, 96, 12)).toMatchObject({ verdict: 'both', cut: null, left: 0, rewrite: [5, 8] });
+    expect(stripOf(60, 96, 7)).toMatchObject({ verdict: 'none', left: 5 });
+  });
+
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -409,6 +470,15 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 14, moved: true }, new Set())).toEqual(['probe']);
     expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 14, moved: false }, new Set())).toEqual([]);
     expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 7, moved: true }, new Set())).toEqual([]); // not above 10
+    // « شريط الكسر »: nothing before the hand moved the piece; a piece above 10 in both; a strip above 500 written under 50;
+    // a piece of the denominator only, above 100
+    expect(observe('strip', { a: 84, b: 126, k: 14 }, new Set())).toEqual([]);
+    expect(observe('strip', { a: 84, b: 126, k: 14, moved: true }, new Set())).toEqual(['both']);
+    expect(observe('strip', { a: 84, b: 126, k: 7, moved: true }, new Set())).toEqual([]); // not above 10
+    expect(observe('strip', { a: 300, b: 720, k: 20, moved: true }, new Set())).toEqual(['both', 'big']); // 15/36
+    expect(observe('strip', { a: 300, b: 720, k: 12, moved: true }, new Set())).toEqual(['both']); // 60 is not under 50
+    expect(observe('strip', { a: 35, b: 120, k: 4, moved: true }, new Set())).toEqual(['split']);
+    expect(observe('strip', { a: 35, b: 90, k: 3, moved: true }, new Set())).toEqual([]); // the denominator under 100
     expect(observe('planks', { a: 21, b: 35, d: 7 }, new Set())).toEqual(['both', 'rest']);
     expect(observe('planks', { a: 22, b: 20, d: 7 }, new Set())).toEqual(['sum']);
     expect(observe('planks', { a: 24, b: 12, d: 6 }, new Set())).toEqual(['both']); // 24 = 12 × 2: no remainder
@@ -457,6 +527,7 @@ describe('مختبري — the sounds', () => {
       'Rules',
       'Bracket',
       'Duo',
+      'Strip',
     ].map((n) => `./tools/${n}.jsx`),
   ];
   /** Every sound name written in the lab's code: play('x'…), useChime(play, 'x'…), and the two names of a « a ? 'x' : 'y' ». */

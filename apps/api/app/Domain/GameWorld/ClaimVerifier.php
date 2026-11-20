@@ -168,16 +168,43 @@ final class ClaimVerifier
                 return $a % $d === 0 && $b % $d === 0;
             case 'fraction':
                 // a/b la fraction donnée, p/q l'écriture de l'élève : égales (a × q = p × b) et, sauf
-                // `reduced === false`, p/q irréductible (PGCD(p ; q) = 1)
+                // `reduced === false`, p/q irréductible (PGCD(p ; q) = 1). Avec `op` ('+', '-' ou '*'), a/b est le
+                // RÉSULTAT du calcul x/y op z/w que porte l'affirmation : il doit lui être égal (recalculé ici, jamais
+                // repris du navigateur) — l'affirmation porte alors sur le calcul lui-même.
                 [$a, $b, $p, $q] = [$n('a'), $n('b'), $n('p'), $n('q')];
                 if ($a === null || $b === null || $p === null || $q === null || $b === 0 || $q === 0) {
                     return false;
                 }
 
-                return $a * $q === $p * $b && (($c['reduced'] ?? null) === false || self::gcd($p, $q) === 1);
+                return $a * $q === $p * $b && (($c['reduced'] ?? null) === false || self::gcd($p, $q) === 1)
+                    && (! array_key_exists('op', $c) || self::isResult($c, $a, $b, $n));
             default:
                 return false;
         }
+    }
+
+    /**
+     * a/b est le résultat de x/y op z/w : les deux formes irréductibles sont les mêmes (non réduit, le calcul reste
+     * ≤ 2 × 10^12 ; un résultat négatif n'est jamais une fraction a/b de naturels).
+     */
+    private static function isResult(array $c, int $a, int $b, callable $n): bool
+    {
+        [$x, $y, $z, $w] = [$n('x'), $n('y'), $n('z'), $n('w')];
+        if ($x === null || $y === null || $z === null || $w === null || $y === 0 || $w === 0) {
+            return false;
+        }
+        [$num, $den] = match ($c['op']) {
+            '+' => [$x * $w + $z * $y, $y * $w],
+            '-' => [$x * $w - $z * $y, $y * $w],
+            '*' => [$x * $z, $y * $w],
+            default => [-1, 1],
+        };
+        if ($num < 0) {
+            return false;
+        }
+        [$g, $h] = [self::gcd($num, $den), self::gcd($a, $b)];
+
+        return intdiv($num, $g) === intdiv($a, $h) && intdiv($den, $g) === intdiv($b, $h);
     }
 
     private static function gcd(int $a, int $b): int

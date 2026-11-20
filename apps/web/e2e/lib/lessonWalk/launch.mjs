@@ -3,7 +3,7 @@
 // purpose (its tools' families, their home lessons, the mistakes) taken out of the foreign words — is computed here.
 import { homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import { FAMILIES, MISTAKES } from '../../../src/lessons/common/launchkit/families.js';
-import { walkLaunch, walkLaunchLists, walkLaunchOne, A, B, LISTS } from '../launchKitTwoTools.mjs';
+import { walkLaunch, walkLaunchLists, walkLaunchOne, walkLaunchPair, A, B, LISTS } from '../launchKitTwoTools.mjs';
 import { sittingWalk } from '../sittingWalk.mjs';
 
 const strings = (v, out = []) => {
@@ -16,11 +16,19 @@ const strings = (v, out = []) => {
  * The launch's scenario, from the descriptor's `launch`:
  *   { scenario: 'lists' }        two core tools, the divisor list 4am.m1.r02 then the 2AM division (the PGCD lessons);
  *   { scenario: 'two' }          two core tools, 4am.m1.r01 then the 2AM division (lessons 2 and 3);
- *   { scenario: 'one', tool }    one tool (walkLaunchOne).
+ *   { scenario: 'one', tool }    one tool (walkLaunchOne);
+ *   { scenario: 'pair', tools }  two tools of the descriptor's choosing, each a `tool` as above (walkLaunchPair; lesson 8).
  */
 export async function launchWalk(L, D, opts) {
   const spec = D.launch ?? { scenario: 'lists' };
-  const items = spec.scenario === 'lists' ? [LISTS, B] : spec.scenario === 'two' ? [A, B] : [spec.tool.item];
+  const items =
+    spec.scenario === 'lists'
+      ? [LISTS, B]
+      : spec.scenario === 'two'
+        ? [A, B]
+        : spec.scenario === 'pair'
+          ? spec.tools.map((t) => t.item)
+          : [spec.tool.item];
   const homes = items.map((i) => homeLessonOf(i)?.titleAr).filter(Boolean);
   const own = [...items.flatMap((i) => strings(FAMILIES[i])), ...strings(MISTAKES)].join('\n');
   const alien = (opts.foreign ?? []).filter((x) => !homes.some((h) => h.includes(x)) && !own.includes(x));
@@ -37,6 +45,7 @@ export async function launchWalk(L, D, opts) {
   );
   if (spec.scenario === 'lists') return walkLaunchLists({ ...args, home: homes[0] });
   if (spec.scenario === 'two') return walkLaunch(args);
+  if (spec.scenario === 'pair') return walkLaunchPair({ ...args, url: L.url, grade: L.grade, tools: spec.tools });
   return walkLaunchOne({ ...args, url: L.url, grade: L.grade, tool: spec.tool });
 }
 
@@ -47,6 +56,8 @@ export async function sittingPart(L, D, opts) {
     id: L.id,
     url: L.url,
     keys: L.lesson.keys,
+    // the lesson's last island (a save beyond its road crashes the world)
+    stage: L.lesson.story.islands.length - 1,
     uid: (D.uid ?? 9900) + 90,
     foreign: opts.foreign,
     foreignNumbers: opts.foreignNumbers,

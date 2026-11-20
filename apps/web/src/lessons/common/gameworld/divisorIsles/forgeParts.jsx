@@ -22,7 +22,9 @@
  * still `held` (what the case asks); `fits` says whether the plank fills both.
  *
  * A case drawn as a bridge that is NOT about a plank (a pair of numbers and their notebooks) carries `head`: its line
- * then names it in those words (« 1003 و 34 ») instead of « a لوح b » (defects.md A10).
+ * then names it in those words (« 1003 و 34 ») instead of « a لوح b » (defects.md A10). A PAIR may carry `head` too —
+ * a fraction drawn as its whole bridge over its lit stretch (`pair` = { a: the whole, b: the lit cells, d: the plank }):
+ * its line then reads « 66/78 → 33/39 » (an isolated LTR run), not « 78 و 66 لوح 6 ».
  */
 import Inquiry from './Inquiry';
 import { dealOf } from './deal';
@@ -489,6 +491,9 @@ function Line({ c, children }) {
           <span>{c.text}</span>
         ) : c.deal ? (
           <DealHead deal={c.deal} />
+        ) : c.pair && c.head ? (
+          // a pair that is not two gaps (a FRACTION: the whole, its lit stretch) names itself in its own words
+          <span className="rf-line__head">{c.head}</span>
         ) : c.pair ? (
           <>
             <PairHead pair={c.pair} /> <span>{L.plank(c.pair.d)}</span>

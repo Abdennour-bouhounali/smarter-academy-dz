@@ -157,6 +157,21 @@ export const TOOLS = [
     range: { a: [0, 9999], b: [1, 999] },
     load: () => import('./tools/Rules'),
   },
+  {
+    // a fraction of the student's own as a strip of b cells with a cells lit, and a piece of length k he drags along it:
+    // where k divides both, the strip regroups and the fraction is written in pieces — facts only; neither the tile nor
+    // the instrument names a key of its lesson
+    id: 'strip',
+    lesson: 'ikhtizal-kasr',
+    lessonTitle: 'اختزال كسر',
+    icon: '🎞️',
+    name: 'شريط الكسر',
+    hint: 'كسر من عندك على شريط مضاء: قطعة بطول تختاره، هل تقع مفاصلها حيث ينتهي الضوء وحيث ينتهي الشريط؟',
+    needs: 'ab',
+    labels: { a: 'البسط', b: 'المقام' },
+    range: { a: [1, 999], b: [1, 999] },
+    load: () => import('./tools/Strip'),
+  },
 ];
 
 export const toolById = (id) => TOOLS.find((t) => t.id === id) ?? null;

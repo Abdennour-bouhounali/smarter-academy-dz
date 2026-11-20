@@ -223,6 +223,39 @@
   background: #fff8db;
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.5);
 }
+/* ───────── a FRACTION in its own shape: the numerator over a real bar over the denominator ─────────
+   THE ONE PLACE of this look in the kit (2026-11-20): the trainer's form (`Trainer.jsx › FormLines`, a token
+   `{ frac: { n, d } }`) and any other screen of the kit that writes a fraction by hand (the forge's last step) use these
+   classes — `di-frac` around, `di-frac__bar` between, the numerator first. Colours follow the text (currentColor), so the
+   same rule reads on the white sheet and on a dark panel; a screen only sizes its boxes. Printed parts are <b>. */
+.di-frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  gap: 0.18rem;
+  margin: 0 0.2rem;
+  line-height: 1.1;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+.di-frac > b {
+  font-weight: 800;
+}
+.di-frac__bar {
+  display: block;
+  align-self: stretch;
+  min-width: 1.2em;
+  height: 3px;
+  border-radius: 2px;
+  background: currentColor;
+}
+/* on the exam sheet: a typed fraction is two boxes a little lower than a lone box, so the line keeps its height in check
+   (2 × 2.15rem + the bar); a box holds three digits */
+.di-root .di-frac .di-num--tr {
+  height: 2.15rem;
+  font-size: 1.2rem;
+}
 .di-sheet__reasons {
   display: grid;
   gap: 0.3rem;

@@ -10,9 +10,10 @@ import { useEffect, useRef, useState } from 'react';
 import { Delete } from 'lucide-react';
 import MathText from '../components/MathText';
 import { svgPoint } from '../lessonlab/kit';
+import { slotsOf } from './families';
 
 export function Write({ q, value, onChange, locked, play }) {
-  const slots = q.tokens.filter((t) => typeof t === 'object');
+  const slots = slotsOf(q.tokens);
   const [focus, setFocus] = useState(slots[0].slot);
   const v = value ?? {};
   const ref = useRef(null);
@@ -57,28 +58,43 @@ export function Write({ q, value, onChange, locked, play }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const box = (t, key) => (
+    <button
+      key={key}
+      type="button"
+      className={`lk-slot ${focus === t.slot && !locked ? 'is-on' : ''} ${v[t.slot] ? 'is-filled' : ''}`}
+      onClick={() => {
+        setFocus(t.slot);
+        play('slot');
+      }}
+      disabled={locked}
+      data-lk-slot={t.slot}
+      aria-label={t.label}
+    >
+      <span>{v[t.slot] ?? ''}</span>
+      <small>{t.label}</small>
+    </button>
+  );
+  // a fraction token: its two terms one above the other with a real bar (a term is a number or a box)
+  const term = (x, key) => (typeof x === 'string' ? <b key={key}>{x}</b> : box(x, key));
   return (
     <div className="lk-write" data-lk-gesture="write">
       <div className="lk-equation" dir="ltr">
         {q.tokens.map((t, i) =>
           typeof t === 'string' ? (
             <b key={i}>{t}</b>
-          ) : (
-            <button
+          ) : t.frac ? (
+            <span
               key={i}
-              type="button"
-              className={`lk-slot ${focus === t.slot && !locked ? 'is-on' : ''} ${v[t.slot] ? 'is-filled' : ''}`}
-              onClick={() => {
-                setFocus(t.slot);
-                play('slot');
-              }}
-              disabled={locked}
-              data-lk-slot={t.slot}
-              aria-label={t.label}
+              className="lk-frac"
+              data-lk-frac={t.frac.map((x) => (typeof x === 'string' ? x : '▢')).join('/')}
             >
-              <span>{v[t.slot] ?? ''}</span>
-              <small>{t.label}</small>
-            </button>
+              {term(t.frac[0], 'top')}
+              <i aria-hidden="true" />
+              {term(t.frac[1], 'bottom')}
+            </span>
+          ) : (
+            box(t, i)
           ),
         )}
       </div>

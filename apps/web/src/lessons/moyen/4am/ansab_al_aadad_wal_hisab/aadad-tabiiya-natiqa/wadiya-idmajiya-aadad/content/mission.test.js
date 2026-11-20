@@ -154,9 +154,13 @@ const walk = (x, depth = 0) => {
   Object.values(x).forEach((v) => walk(v, depth + 1));
 };
 Object.values(lessonContent).forEach((m) => walk(m));
-// the v2 lessons have no content/ any more: their pairs are the gaps and lanes of their world's road (world/math.js › NUMBERS)
+// the v2 lessons have no content/ any more: their pairs are the gaps and lanes of their world's road (world/math.js › NUMBERS),
+// and the fraction of a MARKED bridge — its lit cells over its gap (`mark`, or the sum of its `strokes`)
 const roadPairs = (x, depth = 0) => {
   if (!x || typeof x !== 'object' || depth > 6) return;
+  const lit = Number.isInteger(x.mark) ? x.mark : Array.isArray(x.strokes) ? x.strokes.reduce((s, n) => s + n, 0) : null;
+  if (Number.isInteger(x.gap) && x.gap > 0 && Number.isInteger(lit) && lit > 0)
+    lessonPairs.add([lit, x.gap].sort((m, n) => m - n).join('/'));
   for (const [k, v] of Object.entries(x)) {
     if (['gaps', 'lanes', 'piers'].includes(k) && Array.isArray(v) && v.length === 2 && v.every((n) => Number.isInteger(n) && n > 0))
       lessonPairs.add([...v].sort((m, n) => m - n).join('/'));
@@ -169,8 +173,9 @@ const key = ({ a, b }) => [a, b].sort((m, n) => m - n).join('/');
 describe('module 7 — the collision rule against the unit\'s lessons', () => {
   it('the lessons\' pairs are read', () => {
     expect(lessonPairs.size).toBeGreaterThan(20);
-    // a pair of ikhtizal-kasr's « أستعدّ » (its content/prep.js); bahth-pgcd's « 140/252 » went with its content/ (v2, 2026-11-19)
-    expect(lessonPairs.has('65/91')).toBe(true);
+    // a marked bridge of a v2 world: ikhtizal-kasr's first, 66 cells lit over 78 (its content/prep.js and the old sentinel
+    // « 65/91 » went with its v2, 2026-11-20; bahth-pgcd's « 140/252 » with its own, 2026-11-19)
+    expect(lessonPairs.has('66/78')).toBe(true);
     // a pair of a v2 world's road: awwaliyan-fima-baynahuma's convoy « hidden » (its content/ went with its v2, 2026-11-20)
     expect(lessonPairs.has('85/119')).toBe(true);
   });

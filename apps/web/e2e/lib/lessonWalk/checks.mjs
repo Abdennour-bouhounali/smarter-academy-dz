@@ -121,7 +121,11 @@ export async function noName(w, page, where, re) {
   w.check(!m, `${where}: the mirror names nothing before the tablet${m ? ` — « ${m[0]} »` : ''}`);
 }
 
-/** The last step's lines: each on ONE row (its boxes share a top), nothing leaves the forge. */
+/**
+ * The last step's lines: each on ONE row, nothing leaves the forge. A typed FRACTION (`[data-rf-frac]`, lesson 8: two
+ * boxes stacked over a bar) is ONE unit of its row: the units of a line share a horizontal band (none sits wholly below
+ * another), and a line is at most twice as tall as its tallest unit.
+ */
 export async function lastStepLayout(w, page, where) {
   const m = await page.evaluate(() => {
     const lines = [...document.querySelectorAll('.rf-root .rf-use')];
@@ -129,10 +133,19 @@ export async function lastStepLayout(w, page, where) {
     const bad = [];
     lines.forEach((l, i) => {
       const r = l.getBoundingClientRect();
-      const boxes = [...l.querySelectorAll('[data-rf-use]')].map((b) => b.getBoundingClientRect());
-      const tops = boxes.map((b) => b.top);
-      if (tops.length && Math.max(...tops) - Math.min(...tops) > 6) bad.push(`line ${i + 1}: its boxes wrap`);
-      const bh = boxes.length ? boxes[0].height : 30;
+      const units = [
+        ...l.querySelectorAll('[data-rf-frac]'),
+        ...[...l.querySelectorAll('[data-rf-use]')].filter((b) => !b.closest('[data-rf-frac]')),
+      ].map((b) => b.getBoundingClientRect());
+      if (units.length && Math.max(...units.map((b) => b.top)) >= Math.min(...units.map((b) => b.bottom)))
+        bad.push(`line ${i + 1}: its boxes wrap`);
+      // two lines side by side (a two-column last step) share their row's height: the tallest unit of the ROW counts
+      const row = lines.filter((x) => Math.abs(x.getBoundingClientRect().top - r.top) < 3);
+      const tall = row.flatMap((x) => [
+        ...[...x.querySelectorAll('[data-rf-frac]')].map((b) => b.getBoundingClientRect().height),
+        ...[...x.querySelectorAll('[data-rf-use]')].map((b) => b.getBoundingClientRect().height),
+      ]);
+      const bh = tall.length ? Math.max(...tall) : units.length ? Math.max(...units.map((b) => b.height)) : 30;
       if (r.height > bh * 1.9) bad.push(`line ${i + 1}: ${Math.round(r.height)} px tall (a box ${Math.round(bh)})`);
       if (r.right > root.right + 1 || r.left < root.left - 1 || r.bottom > root.bottom + 1)
         bad.push(`line ${i + 1} leaves the forge`);

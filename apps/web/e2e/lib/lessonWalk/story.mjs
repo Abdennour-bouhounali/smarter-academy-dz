@@ -21,6 +21,22 @@ import { worldOf } from './world.mjs';
 const fills = (n, d) => n % d === 0;
 const range = (a, b) => Array.from({ length: Math.max(0, b - a + 1) }, (_, i) => a + i);
 
+/**
+ * A BRIDGE WITH A LIT STRETCH (`seg.mark`, lesson 8 — divisorIsles/mark.js), the walk's own arithmetic: planks of b
+ * hold when b fills the gap AND a joint falls on the post (b divides the mark).
+ */
+const holdsMark = (seg, b) => fills(seg.a, b) && (!seg.mark || fills(seg.mark, b));
+/** The sign of a marked bridge, as the walk writes it: the fraction in cells, then once per plank that held. */
+export function signChainOf(seg, planks) {
+  const chain = [[seg.mark, seg.a]];
+  for (const b of planks) {
+    if (!holdsMark(seg, b)) continue;
+    const p = [seg.mark / b, seg.a / b];
+    if (!chain.some(([n, d]) => n === p[0] && d === p[1])) chain.push(p);
+  }
+  return chain.map((c) => c.join('/')).join('=');
+}
+
 export async function storyWalk(L, D, opts) {
   const w = createWalk(`lesson-${L.id}-story`, opts);
   const { expect, check } = w;
@@ -69,6 +85,102 @@ export async function storyWalk(L, D, opts) {
     let facingBack = false;
     let leftWorld = false;
     let firstWorkshop = true;
+    let folded = false;
+    /** The planks that held each marked bridge, in his order (the walk's own record, for the sign). */
+    const heldOn = {};
+
+    /** The sign shown is the one of marked bridge i, with the planks that held it (and its strokes). */
+    const sign = async (i, label) => {
+      const seg = segs[i];
+      const want = signChainOf(seg, heldOn[i] ?? []);
+      const got = await page.evaluate(() => {
+        const el = document.querySelector('[data-di-sign]');
+        const s = window.__world.getState().sign;
+        return {
+          dom: el?.dataset.diSign ?? null,
+          state: s ? s.chain.map((c) => c.join('/')).join('=') : null,
+          strokes: s?.strokes ?? null,
+        };
+      });
+      check(
+        (got.dom ?? got.state) === want && JSON.stringify(got.strokes ?? null) === JSON.stringify(seg.strokes ?? null),
+        `${label}: the bridge's sign reads ${want}${seg.strokes ? ` (opened on the strokes ${seg.strokes.join(' + ')})` : ''} — the world: ${got.dom ?? got.state}`,
+      );
+    };
+    /** The instruction folds and opens again (once, on the first island). */
+    const foldOnce = async (h) => {
+      if (folded) return;
+      folded = true;
+      await page.click('[data-di-instruction-fold]');
+      await page.waitForTimeout(200);
+      check(
+        (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'folded',
+        'the instruction folds',
+      );
+      await shotWorld(`island-${islands[h].id}-folded`);
+      await page.click('[data-di-instruction-fold]');
+      await page.waitForTimeout(200);
+      check(
+        (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'open',
+        'the same button opens it again',
+      );
+    };
+    /**
+     * Planks of b, in hand, fired on marked bridge i: they fill the gap and the post stands in the middle of a plank —
+     * refused (`verdict.mark`), the stretch's own division on screen (`data-di-eq-mark` = its remainder).
+     */
+    const postMiss = async (i, b, label) => {
+      const seg = segs[i];
+      const stood = (await W.road()).segs[i];
+      await W.fire(i, async () => {
+        expect(await W.until((r) => r.verdict != null, 60), `the world shows its verdict on ${seg.a}`);
+        const v = (await W.road()).verdict;
+        const eqMark = await page.getAttribute('[data-di-eq-mark]', 'data-di-eq-mark').catch(() => null);
+        check(
+          !v.holds && v.r === 0 && v.mark?.r === seg.mark % b && eqMark === String(seg.mark % b),
+          `${seg.a} = ${b} × ${seg.a / b}, but ${seg.mark} = ${b} × ${Math.floor(seg.mark / b)} + ${seg.mark % b}: the gap is filled and the post stands in a plank — refused (verdict ${JSON.stringify(v)}, the stretch's line ${eqMark})`,
+        );
+        const said = ((await page.textContent('.di-verdict').catch(() => '')) ?? '').trim();
+        check(said.includes(String(seg.mark)), `the verdict says where the post stands (« ${said} »)`);
+        await shotWorld(label);
+        return 0;
+      });
+      const now = (await W.road()).segs[i];
+      check(
+        now.complete === stood.complete && now.builtWith === stood.builtWith,
+        `planks of ${b} refused: the bridge is as it was (${stood.complete ? `standing with ${stood.builtWith}` : 'unbuilt'})`,
+      );
+      await sign(i, `after ${b} missed the post`);
+    };
+    /** Planks of b fired on marked bridge i hold: the equation's second line shown while it is built; the sign grows. */
+    const markHold = async (i, b, label) => {
+      const seg = segs[i];
+      let lines = null;
+      const t = await W.fire(i, async () => {
+        // the stretch's own division, once the planks have passed the post
+        let s = 0;
+        for (let k = 0; k < 120; k += 1) {
+          const eq = await page.evaluate(() => window.__world.getState().equation);
+          if (eq?.mark?.shown || !eq) break;
+          await W.ff(0.25);
+          s += 0.25;
+        }
+        lines = await page.evaluate(() => ({
+          main: Boolean(document.querySelector('.di-eq')),
+          mark: document.querySelector('[data-di-eq-mark]')?.dataset.diEqMark ?? null,
+        }));
+        if (label) await shotWorld(label);
+        return s;
+      });
+      if (seg.a / b > 30) waits.push(`${b} on ${seg.a} (${seg.a / b} planks): ${t.toFixed(1)} s`);
+      check(
+        lines?.main && lines.mark === '0',
+        `${seg.a} = ${b} × ${seg.a / b} and ${seg.mark} = ${b} × ${seg.mark / b}: the equation shows the stretch's line too (${JSON.stringify(lines)})`,
+      );
+      expect(await W.standsWith(i, b), `${seg.a} = ${b} × ${seg.a / b}, a joint on ${seg.mark}: the bridge holds`);
+      heldOn[i] = [...(heldOn[i] ?? []).filter((x) => x !== b), b];
+      await sign(i, `held with ${b}`);
+    };
 
     // ══ the title ══
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
@@ -203,7 +315,18 @@ export async function storyWalk(L, D, opts) {
       const pedestals = locked || !ws ? await W.pedestals(h) : [];
       const offered = ws ? range(ws.min ?? 1, ws.max) : pedestals;
       const costs = (b) => gaps.reduce((t, a) => t + a / b, 0);
-      const fit = offered.filter((b) => gaps.every((a) => fills(a, b)) && costs(b) <= purse);
+      const built = group.filter((x) => !x.s.standing);
+      // a marked bridge holds only when a joint falls on its post too (holdsMark)
+      const fit = offered.filter((b) => built.every((x) => holdsMark(x.s, b)) && costs(b) <= purse);
+      // planks that fill every gap, within the purse, and leave a post in the middle of a plank (the cheapest such)
+      const marked = built.some((x) => x.s.mark);
+      const missPost = marked
+        ? (offered.find(
+            (b) => gaps.every((a) => fills(a, b)) && costs(b) <= purse && built.some((x) => !holdsMark(x.s, b)),
+          ) ?? null)
+        : null;
+      const markMiss =
+        missPost != null && (S.markMiss ?? [segs.find((s) => s.convoy && s.mark)?.convoy]).includes(head.convoy);
       expect(
         fit.length >= 1,
         `convoy « ${head.convoy} » (${gaps.join(', ')}${purse < Infinity ? `, ${purse} coins` : ''}): a plank of ${ws ? 'the workshop' : offered.join(', ')} builds every gap (${fit.join(', ')}) — computed here`,
@@ -227,8 +350,9 @@ export async function storyWalk(L, D, opts) {
         (S.wrongFirst ?? [segs.find((s) => s.convoy)?.convoy]).includes(head.convoy) && firstOnly != null;
       const purseOut = (S.purseOut ?? []).includes(head.convoy) && tooCheap != null;
       console.log(
-        `NOTE  convoy « ${head.convoy} »: right ${right}${wrongFirst ? `, first only ${firstOnly}` : ''}${purseOut ? `, purse out ${tooCheap}` : ''} (computed)`,
+        `NOTE  convoy « ${head.convoy} »: right ${right}${wrongFirst ? `, first only ${firstOnly}` : ''}${purseOut ? `, purse out ${tooCheap}` : ''}${markMiss ? `, misses the post ${missPost}` : ''} (computed)`,
       );
+      for (const x of built) if (x.s.mark) await sign(x.i, `island « ${islands[h].name} », before he builds`);
 
       {
         const r = await W.road();
@@ -243,21 +367,7 @@ export async function storyWalk(L, D, opts) {
           );
         await shotWorld(`island-${islands[h].id}`);
         if (locked) await unlock(h, gaps, pedestals);
-        if (h === 0) {
-          await page.click('[data-di-instruction-fold]');
-          await page.waitForTimeout(200);
-          check(
-            (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'folded',
-            'the instruction folds',
-          );
-          await shotWorld(`island-${islands[h].id}-folded`);
-          await page.click('[data-di-instruction-fold]');
-          await page.waitForTimeout(200);
-          check(
-            (await page.getAttribute('[data-di-instruction]', 'data-di-instruction')) === 'open',
-            'the same button opens it again',
-          );
-        }
+        if (h === 0) await foldOnce(h);
       }
       if (ws) {
         await W.openWorkshop(h);
@@ -357,6 +467,13 @@ export async function storyWalk(L, D, opts) {
         facingBack = true;
       }
       if (ws?.bench) await bench(h, ws.bench);
+      // ── a marked bridge: planks that fill the gap and leave the post in the middle of a plank ──
+      if (markMiss) {
+        await hold(h, missPost);
+        await W.ff(1.2);
+        const i = built.find((x) => !holdsMark(x.s, missPost)).i;
+        await postMiss(i, missPost, `post-missed-${segs[i].a}-${missPost}`);
+      }
       // ── a plank of every gap that the purse cannot pay on the first gap ──
       if (purseOut) {
         await hold(h, tooCheap);
@@ -379,7 +496,7 @@ export async function storyWalk(L, D, opts) {
       }
       // ── the right plank: every bridge of the convoy ──
       await hold(h, right, ws && firstWorkshop === false && wrongFirst ? 'enter' : 'button');
-      if (wrongFirst || purseOut) {
+      if (wrongFirst || purseOut || markMiss) {
         const r = await W.road();
         check(
           !r.segs[h].complete || r.segs[h].builtWith === right,
@@ -418,9 +535,12 @@ export async function storyWalk(L, D, opts) {
           );
           continue;
         }
-        const t = await W.fire(i);
-        if (s.a / right > 30) waits.push(`${right} on ${s.a} (${s.a / right} planks): ${t.toFixed(1)} s`);
-        expect(await W.standsWith(i, right), `${s.a} = ${right} × ${s.a / right}: the bridge holds`);
+        if (s.mark) await markHold(i, right, `building-${s.a}-${right}`);
+        else {
+          const t = await W.fire(i);
+          if (s.a / right > 30) waits.push(`${right} on ${s.a} (${s.a / right} planks): ${t.toFixed(1)} s`);
+          expect(await W.standsWith(i, right), `${s.a} = ${right} × ${s.a / right}: the bridge holds`);
+        }
         if (purse < Infinity) {
           // the coins left as the world counts them (its chip hides once the purse is empty)
           const left = await page.evaluate((k) => window.__world.purseOf(window.__world.segs[k])?.left ?? null, i);
@@ -452,6 +572,114 @@ export async function storyWalk(L, D, opts) {
       }
       lap(`convoy ${head.convoy}`);
       return group.at(-1).i + 1;
+    };
+
+    /**
+     * A MARKED BRIDGE whose planks lie on its island's pedestals (no convoy, no purse — lesson 8, islands A and B). Played:
+     * a plank that fills the gap and misses the post (refused); then the planks that hold, in increasing length — the
+     * sign rewritten after each. When more than one holds: he crosses with the first writing only, the world sends him
+     * back (the instruction names this island, no mirror opens), he WALKS BACK, a plank that does not fill fails on the
+     * standing bridge (it stands again as it was, the sign unchanged), the other planks rebuild it, the forges the
+     * world opens there are played, and he crosses again. Returns the island he stands on.
+     */
+    const markedBridge = async (k) => {
+      const seg = segs[k];
+      const name = islands[k].name;
+      const moulds = await W.pedestals(k);
+      const holders = moulds.filter((b) => holdsMark(seg, b)).sort((x, y) => x - y);
+      const misses = moulds.filter((b) => fills(seg.a, b) && !holdsMark(seg, b));
+      const open = moulds.filter((b) => !fills(seg.a, b));
+      expect(
+        holders.length >= 1,
+        `island « ${name} » offers ${moulds.join(', ')}: ${holders.join(', ')} hold ${seg.a} cells with a joint on ${seg.mark} — computed here`,
+      );
+      console.log(
+        `NOTE  marked bridge ${seg.a} (${seg.mark} lit) on « ${name} »: holds ${holders.join(', ')}; misses the post ${misses.join(', ') || '—'}; does not fill ${open.join(', ') || '—'} (computed)`,
+      );
+      const r0 = await W.road();
+      check(
+        r0.objective.includes(String(seg.a)) && r0.objective.includes(String(seg.mark)),
+        `island « ${name} »: the instruction names the bridge, ${seg.a} cells, ${seg.mark} lit`,
+      );
+      await sign(k, `island « ${name} », before he builds`);
+      await shotWorld(`island-${islands[k].id}`);
+      await foldOnce(k);
+      if (misses.length) {
+        await W.take(misses[0]);
+        await W.ff(0.6);
+        await postMiss(k, misses[0], `post-missed-${seg.a}-${misses[0]}`);
+      }
+      await W.take(holders[0]);
+      await W.ff(0.6);
+      await markHold(k, holders[0], `building-${seg.a}-${holders[0]}`);
+      await shotWorld(`${islands[k].id}-sign-${holders[0]}`);
+      if (holders.length > 1) {
+        // ── he crosses with ONE writing on the sign: the world sends him back ──
+        await W.cross(k);
+        await page.waitForTimeout(400);
+        await W.ff(1);
+        const r = await W.road();
+        expect(r.island === k + 1, `with one writing he can cross to « ${islands[k + 1].name} »`);
+        check(
+          r.overlay == null && r.objective.includes(name),
+          `on « ${islands[k + 1].name} » no mirror opens; the instruction sends him back to « ${name} » (« ${r.objective.slice(0, 80)} »)`,
+        );
+        await shotWorld(`island-${islands[k + 1].id}-sent-back`);
+        await W.walkBack(k, `walk-back-to-${islands[k].id}`, (label) => shotWorld(label));
+        facingBack = true;
+        await sign(k, `back on « ${name} », the sign is this bridge's own`);
+        await shotWorld(`island-${islands[k].id}-back`);
+        if (open.length) {
+          const b = open[0];
+          await W.take(b);
+          await W.ff(0.6);
+          await W.fire(k, async () => {
+            expect(await W.until((x) => x.verdict != null, 30), `the world shows its verdict on ${seg.a}`);
+            const v = (await W.road()).verdict;
+            check(
+              !v.holds && v.r === seg.a % b,
+              `${seg.a} = ${b} × ${Math.floor(seg.a / b)} + ${seg.a % b}: the rebuild with ${b} fails (${JSON.stringify(v)})`,
+            );
+            return 0;
+          });
+          check(
+            await W.standsWith(k, holders[0]),
+            `a failed rebuild: the bridge stands again with ${holders[0]}, as it was`,
+          );
+          await sign(k, `after the failed rebuild with ${b}`);
+        }
+        for (const b of holders.slice(1)) {
+          await W.take(b);
+          await W.ff(0.6);
+          await markHold(k, b, null);
+        }
+        // the last hold opens the mirror the sign was waiting for (it covers the island): its forges first
+        await forges();
+        const s = await W.road();
+        if (s.island === k) {
+          await sign(k, `after the mirror, back on « ${name} »`);
+          await shotWorld(`${islands[k].id}-sign-all`);
+          if (s.facing === -1 || facingBack) await W.crossAgain(k, `${islands[k].id} → ${islands[k + 1].id} again`);
+          else await W.cross(k);
+          facingBack = false;
+        } else {
+          // the forge's ✕ reopened the world on the save's island (defects.md C9): the card on the right recalls the sign
+          facingBack = false;
+          const card = ((await page.textContent('[data-di-recall]').catch(() => '')) ?? '').replace(/\s+/g, '');
+          const want = signChainOf(seg, heldOn[k]).split(/[=/]/);
+          check(
+            want.every((x) => card.includes(x)),
+            `on « ${islands[k + 1].name} » the card on the right recalls the sign ${signChainOf(seg, heldOn[k])}`,
+          );
+          await shotWorld(`${islands[k + 1].id}-recall-sign-all`);
+        }
+      } else {
+        await W.cross(k);
+      }
+      await page.waitForTimeout(300);
+      expect((await W.road()).island === k + 1, `he stands on « ${islands[k + 1].name} »`);
+      lap(`marked bridge ${seg.a}`);
+      return k + 1;
     };
 
     /** The gate dash, from island k: each wave's right gate computed by the descriptor. */
@@ -491,9 +719,138 @@ export async function storyWalk(L, D, opts) {
     };
 
     /** The store of the last bridge (segment k): the lanes from the descriptor or the lesson's NUMBERS. */
+    /** The store opened at the last bridge's altar: its mission names the gap. */
+    const openStore = async (k) => {
+      await shotWorld(`island-${islands[k].id}`);
+      await W.toAltar(k);
+      await page.waitForTimeout(600);
+      await W.act();
+      await page.waitForTimeout(400);
+      expect(
+        (await W.st()).overlay === 'boss' &&
+          ((await page.textContent('[data-di-boss-mission]')) ?? '').includes(String(segs[k].a)),
+        `the store opens on the lesson's problem: ${segs[k].a} cells`,
+      );
+      return page.locator('[data-di-mould]').evaluateAll((els) => els.map((e) => Number(e.dataset.diMould)));
+    };
+    /** Planks of b chosen in the store, their division typed: the world builds them. */
+    const storeBuild = async (b, A) => {
+      await page.click(`[data-di-mould="${b}"]`);
+      await page.waitForTimeout(300);
+      if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]');
+      await page.fill('[data-di-q]', String(Math.floor(A / b)));
+      await page.fill('[data-di-r]', String(A % b));
+      await page.click('[data-di-check]');
+    };
+    /** The bridge holds: its price typed wrong then right, paid; he crosses; the end screen. */
+    const storePay = async (k, Q) => {
+      if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]');
+      const price = Number(((await page.textContent('[data-di-boss-price]')) ?? '').trim());
+      check(
+        ((await page.textContent('.di-template').catch(() => '')) ?? '').includes('دج'),
+        'the amount is typed in its own shape: « دج » printed',
+      );
+      await w.shot(page, 'boss-cost', OUT);
+      await page.fill('[data-di-cost]', String(Q * price + 1));
+      await page.click('[data-di-check]');
+      await page.waitForTimeout(300);
+      check(
+        ((await page.textContent('[data-di-boss-error]').catch(() => '')) ?? '').trim().length > 5,
+        'a wrong price is refused with a sentence',
+      );
+      await page.fill('[data-di-cost]', String(Q * price));
+      await page.click('[data-di-check]');
+      await W.ff(0.5);
+      expect((await W.st()).overlay == null, `paid ${Q * price} دج (${Q} × ${price})`);
+      await W.cross(k);
+      await W.ff(3);
+      await page.waitForTimeout(500);
+      await w.shot(page, 'finale', OUT);
+      await W.ff(6);
+      await page.waitForTimeout(600);
+      await w.shot(page, 'end', OUT);
+      expect((await W.st()).overlay === 'end', 'the landing is reached and the end screen shows');
+      lap('the end');
+    };
+    /**
+     * The store of a MARKED last bridge (lesson 8): every option is judged by the walk — it holds (fills the gap, a joint
+     * on the post) and the purse pays it. Each wrong option is tried first: the world builds it, refuses it (cells left,
+     * the post in a plank, or the coins run out at the purse's last plank) and the store REOPENS by itself, its card
+     * saying why; then the one option that holds within the purse, its sign, its price.
+     */
+    const markedStore = async (k) => {
+      const seg = segs[k];
+      const A = seg.a;
+      const purse = convoys[seg.convoy]?.purse ?? Infinity;
+      const moulds = await openStore(k);
+      const good = moulds.filter((b) => holdsMark(seg, b) && A / b <= purse);
+      const bad = moulds.filter((b) => !good.includes(b));
+      expect(
+        good.length === 1 && bad.length >= 1,
+        `the store offers ${moulds.join(' and ')}: only ${good} holds ${A} cells with a joint on ${seg.mark} within ${purse} coins — computed here`,
+      );
+      await w.shot(page, 'boss', OUT);
+      for (const b of bad) {
+        const why = !fills(A, b)
+          ? { cells: A % b }
+          : !fills(seg.mark, b)
+            ? { mark: seg.mark % b }
+            : { purse: true, laid: purse, need: A / b };
+        await storeBuild(b, A);
+        let s = 0;
+        for (
+          let n = 0;
+          n < 160 && !((await W.st()).overlay === 'boss' && (await W.st()).o?.view === 'choose');
+          n += 1
+        ) {
+          await W.ff(0.5);
+          s += 0.5;
+        }
+        waits.push(`the store's ${b} refused: ${s.toFixed(1)} s`);
+        const o = (await W.st()).o;
+        const tried = o?.tried?.[b];
+        expect(o?.type === 'boss' && o.view === 'choose', `planks of ${b} refused: the store REOPENS by itself`);
+        const card = ((await page.textContent(`[data-di-mould="${b}"] em`).catch(() => '')) ?? '').trim();
+        if (why.purse)
+          check(
+            tried?.purse === true &&
+              tried.laid === why.laid &&
+              tried.need === why.need &&
+              card.includes(`${why.laid} من ${why.need}`),
+            `${A} = ${b} × ${A / b}: the purse pays ${purse} planks of ${A / b} — the card says so (« ${card} »)`,
+          );
+        else if (why.mark != null)
+          check(
+            tried?.mark === why.mark,
+            `${b} misses the post: ${seg.mark} = ${b} × ${Math.floor(seg.mark / b)} + ${why.mark} (« ${card} »)`,
+          );
+        else check(tried === why.cells, `${b} leaves ${why.cells} cells (« ${card} »)`);
+        await w.shot(page, `boss-reopened-${b}`, OUT);
+      }
+      await storeBuild(good[0], A);
+      let s = 0;
+      for (let n = 0; n < 160 && (await W.st()).o?.view !== 'cost'; n += 1) {
+        await W.ff(0.5);
+        s += 0.5;
+      }
+      const Q = A / good[0];
+      waits.push(`the last bridge, ${Q} planks of ${good[0]}: ${s.toFixed(1)} s`);
+      expect(
+        (await W.st()).o?.view === 'cost',
+        `the bridge of ${A} holds with ${Q} planks: the store asks their price`,
+      );
+      heldOn[k] = [good[0]];
+      await sign(k, `the store's bridge held with ${good[0]}`);
+      await storePay(k, Q);
+    };
+
     const boss = async (k) => {
       await ctx.hook('boss:before');
       const seg = segs[k];
+      if (seg.mark) {
+        await markedStore(k);
+        return;
+      }
       const A = seg.a;
       const parts =
         D.bossParts ??
@@ -563,33 +920,7 @@ export async function storyWalk(L, D, opts) {
         (await W.st()).o?.view === 'cost',
         `the bridge of ${A} holds with ${Q} planks: the store asks their price`,
       );
-      if (await page.locator('[data-di-pgate-go]').count()) await page.click('[data-di-pgate-go]');
-      const price = Number(((await page.textContent('[data-di-boss-price]')) ?? '').trim());
-      check(
-        ((await page.textContent('.di-template').catch(() => '')) ?? '').includes('دج'),
-        'the amount is typed in its own shape: « دج » printed',
-      );
-      await w.shot(page, 'boss-cost', OUT);
-      await page.fill('[data-di-cost]', String(Q * price + 1));
-      await page.click('[data-di-check]');
-      await page.waitForTimeout(300);
-      check(
-        ((await page.textContent('[data-di-boss-error]').catch(() => '')) ?? '').trim().length > 5,
-        'a wrong price is refused with a sentence',
-      );
-      await page.fill('[data-di-cost]', String(Q * price));
-      await page.click('[data-di-check]');
-      await W.ff(0.5);
-      expect((await W.st()).overlay == null, `paid ${Q * price} دج (${Q} × ${price})`);
-      await W.cross(k);
-      await W.ff(3);
-      await page.waitForTimeout(500);
-      await w.shot(page, 'finale', OUT);
-      await W.ff(6);
-      await page.waitForTimeout(600);
-      await w.shot(page, 'end', OUT);
-      expect((await W.st()).overlay === 'end', 'the landing is reached and the end screen shows');
-      lap('the end');
+      await storePay(k, Q);
     };
 
     // ══ the road, island by island ══
@@ -613,6 +944,8 @@ export async function storyWalk(L, D, opts) {
           break;
         } else if (seg.kind === 'bridge' && seg.convoy) {
           k = await convoy(k);
+        } else if (seg.kind === 'bridge' && seg.mark) {
+          k = await markedBridge(k);
         } else {
           expect(
             false,

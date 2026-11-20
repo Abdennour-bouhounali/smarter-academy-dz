@@ -638,6 +638,25 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      key (`earlierOnly` to wire in `kit/LessonWorld.jsx`); the six gaps the forges' agent found in the authoring kit;
      the findings of the kit on lessons 5 and 6 (bank pairs missed by their own reader, « 1003 خانة », « بقيت 15 خانات »).
 
+  22. [x] **Lesson 8 `ikhtizal-kasr` — v2 (2026-11-20, about 2 h 05), on a NEW world piece: a bridge with a LIT STRETCH**
+     (`divisorIsles/mark.js`; the council's verdict of 2026-11-19: fractions stay on the islands). The bridge is the
+     fraction « lit cells over the whole »; planks hold only when a joint falls where the light ends; the bridge's sign
+     is rewritten in planks. Four keys, all met on the islands: 🪜 `ikhtizal-marahil` (78 with 66 lit, built with 2 then
+     6: 66/78 = 33/39 = 11/13), 🔒 `ghayr-qabil` (48 with 35 lit: only the plank 1), 🎯 `ikhtizal-pgcd` (99 with 66,
+     243 with 189: a purse that only the longest plank pays), 🧾 `natija-mukhtazala` (39 lit in two strokes, 5 then 8).
+     The store: 273 cells with 195 lit, the planks 3 and 39 — both hold; 3 leaves 65/91 and runs out of coins. New
+     with it: a fraction typed over a REAL BAR in the trainer, the mirror's last step and the launch kit; the
+     instrument « شريط الكسر »; the launch family `1am.m5.r02`; the claim `fraction … op` (the server computes a sum or
+     a product of fractions itself); **the exam sitting shows an answer sheet too tall in PAGES** (3 of this bank's 50
+     sheets were cut or at the limit) — a change of the shared sitting, re-walked on lesson 4 (2,123 checks, 0 FAIL).
+     Walks at 1366×768: story 987 checks, hub 248, trainer 543, board 162, launch 190, lesson-lab passed, sitting
+     2,201 — 0 FAIL. Looked at: 13 screens by the walks' agent, 5 by the sitting's agent, 6 by the main session.
+     **Unit 1 has no ordinary lesson left on the mission player; only its integration lesson.** OPEN: the instrument
+     writes 36/24 over a strip of 24 lit of 36 (a numerator greater than the denominator); after a walk back, the
+     chip and the card at the top right still describe the island ahead; a save whose stage is beyond the road throws;
+     the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
+     1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
+
 ## 4ter. When each item of 4bis is done
 
 | When | Items | Why then |

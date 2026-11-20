@@ -18,6 +18,10 @@
 > pages deleted (`OLD_VERSION_TRACE_2026-11-18.md` §14); its row and section below are history. The unit's lessons still on
 > the mission player: `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.
 >
+> **2026-11-20: lesson 8 (`ikhtizal-kasr`) too** — v2, its mission player, its scene `bakery` and its module pages deleted
+> (`OLD_VERSION_TRACE_2026-11-18.md` §15); its row and section below are history. The unit's ONLY lesson still on the
+> mission player is the synthesis `wadiya-idmajiya-aadad`.
+>
 > **2026-11-19: lesson 6 (`bahth-pgcd`) too** — v2, its mission player, its scene `sewing-workshop` and its module pages
 > deleted (`OLD_VERSION_TRACE_2026-11-18.md` §13); its row and section below are history. The unit's lessons still on the
 > mission player: `awwaliyan-fima-baynahuma`, `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.

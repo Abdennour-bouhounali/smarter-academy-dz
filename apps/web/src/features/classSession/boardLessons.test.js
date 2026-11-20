@@ -22,6 +22,8 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('bahth-pgcd')).toBe(true);
     expect(BOARD_LESSONS).toContain('awwaliyan-fima-baynahuma'); // lesson 7 joined with its script and memo (2026-11-20)
     expect(hasClassBoard('awwaliyan-fima-baynahuma')).toBe(true);
+    expect(BOARD_LESSONS).toContain('ikhtizal-kasr'); // lesson 8 joined with its script and memo (2026-11-20)
+    expect(hasClassBoard('ikhtizal-kasr')).toBe(true);
     expect(hasClassBoard('jidhr-tarbii')).toBe(false); // a lesson still on the mission player: no board yet
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
@@ -74,6 +76,11 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       state: undefined,
       session: true,
     });
+    expect(classDoor('ikhtizal-kasr', `${base}/ikhtizal-kasr`)).toEqual({
+      to: '/enseignant/hissa/ikhtizal-kasr',
+      state: undefined,
+      session: true,
+    });
     expect(classDoor('jidhr-tarbii', `${base}/jidhr-tarbii`)).toEqual({
       to: `${base}/jidhr-tarbii`,
       state: CLASSROOM_START_STATE,
@@ -87,6 +94,7 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(boardLessonOfPath(`${base}/tayin-pgcd/2`)).toBe('tayin-pgcd');
     expect(boardLessonOfPath(`${base}/bahth-pgcd/2`)).toBe('bahth-pgcd');
     expect(boardLessonOfPath(`${base}/awwaliyan-fima-baynahuma/2`)).toBe('awwaliyan-fima-baynahuma');
+    expect(boardLessonOfPath(`${base}/ikhtizal-kasr/2`)).toBe('ikhtizal-kasr');
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
@@ -95,6 +103,7 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(canPresentPath(`${base}/tayin-pgcd/2`)).toBe(false);
     expect(canPresentPath(`${base}/bahth-pgcd/2`)).toBe(false);
     expect(canPresentPath(`${base}/awwaliyan-fima-baynahuma/2`)).toBe(false);
+    expect(canPresentPath(`${base}/ikhtizal-kasr/2`)).toBe(false);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

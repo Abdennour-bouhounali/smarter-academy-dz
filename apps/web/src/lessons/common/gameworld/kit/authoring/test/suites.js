@@ -10,7 +10,7 @@
  *                      attacks, nudges, the last step, the words; no pair of the bank in the mirror
  *   describeExperiments no two keys share a (kind, mode); no sentence of an experiment names a rule
  *   describeEvidence   `verifyClaim(claim) === check(q, v).ok` for every answer a student can write
- *   describeTrainer    every question accepts its solution and refuses a wrong answer; ≤ 3 boxes a line; true hints
+ *   describeTrainer    every question accepts its solution and refuses a wrong answer; ≤ 3 answers a line; true hints
  *   describeKnowledge  the map: every card placed, reachable, laid out; every memo sheet complete and computed
  *   describeLimits     the data stays inside the limits the walks proved (`trusted.md`)
  *   describeSitting    « الامتحان الأبيض » serves the bank as it is
@@ -23,9 +23,11 @@ import { guardEvidence } from '../../evidence';
 import { rng } from '../../random';
 import { keysOfPoints } from '../../bankSitting';
 import { allQuestions, forgotten } from '../../sitting';
-import { pairKey } from '../forgeBlocks';
+import { boxesOf, pairKey } from '../forgeBlocks';
 import { COINS, DIVISIONS, PLANKS, ROWS, SUBTRACTIONS, gcd, range } from '../numbers';
 import { alone, bankPairs, islandNamesIn, linesWithBoth, pairLines, readBank, storiesOf } from './bank.js';
+// the one rule of a bridge with a marked stretch (pure, no three.js): the islands' stories are what this suite reads
+import { markVerdict } from '../../../divisorIsles/mark.js';
 
 // ───────────────────────── what a test asks of a forge and of a road (never needed by the app) ─────────────────────────
 
@@ -34,13 +36,23 @@ export const allRules = (forge) =>
   forge.slots.reduce((rules, s) => rules.flatMap((rule) => s.options.map((o) => ({ ...rule, [s.id]: o.id }))), [{}]);
 
 /**
+ * Planks of `b` HOLD a gap of `a` cells: they fill it — and when its first `mark` cells are marked (a bridge with a
+ * marked stretch, `divisorIsles/mark.js`), a joint also falls on the post: `markVerdict(a, mark, b).holds`.
+ */
+export const holdsGap = (a, b, mark = null) => b >= 1 && (mark == null ? a % b === 0 : markVerdict(a, mark, b).holds);
+/** Planks of `b` hold this segment of a road (its `a`, and its `mark` when it has one). */
+export const holdsOn = (seg, b) => holdsGap(seg.a, b, seg.mark ?? null);
+
+/**
  * The plank lengths among `candidates` (default 1 … the longest gap) that build EVERY gap of a road with the coins of
  * its purse — a coin per plank laid, whatever its length (GAME_WORLD.md §2ter-1). A gap of 0 cells costs nothing.
- * A road is solvable for the student when this list holds exactly the plank the story expects.
+ * `marks` (optional, one per gap, null for an unmarked one): a marked gap holds only planks that also put a joint on
+ * its post (`holdsGap`). A road is solvable for the student when this list holds exactly the plank the story expects.
  */
-export function buildersOf(gaps, purse = Infinity, candidates = range(1, Math.max(...gaps))) {
+export function buildersOf(gaps, purse = Infinity, candidates = range(1, Math.max(...gaps)), marks = []) {
   return candidates.filter(
-    (b) => b >= 1 && gaps.every((a) => a % b === 0) && gaps.reduce((n, a) => n + a / b, 0) <= purse,
+    (b) =>
+      b >= 1 && gaps.every((a, i) => holdsGap(a, b, marks[i] ?? null)) && gaps.reduce((n, a) => n + a / b, 0) <= purse,
   );
 }
 
@@ -54,9 +66,9 @@ export const plain = (x) => {
   expect(String(x), String(x)).not.toMatch(/\$|\\/);
 };
 
-/** The value of an arithmetic side: « 19 \\times 4 + 3 », « 152 - 95 », « \\mathrm{PGCD}(32 ; 44) »; null if not one. */
-export function valueOf(side) {
-  const t = side
+/** A side written plainly: each PGCD of numbers by its value, × as *, the minus sign as -, no LaTeX space. */
+const normalSide = (side) =>
+  side
     .replace(/\\mathrm\{PGCD\}\s*\((\d+)\s*;\s*(\d+)\)|PGCD\s*\((\d+)\s*;\s*(\d+)\)/g, (_, a, b, c, d) =>
       String(gcd(Number(a ?? c), Number(b ?? d))),
     )
@@ -64,6 +76,10 @@ export function valueOf(side) {
     .replace(/−/g, '-')
     .replace(/\\,|\\;|\\ /g, '')
     .trim();
+
+/** The value of an arithmetic side: « 19 \\times 4 + 3 », « 152 - 95 », « \\mathrm{PGCD}(32 ; 44) »; null if not one. */
+export function valueOf(side) {
+  const t = normalSide(side);
   if (!/^\d+(\s*[-+*]\s*\d+)*$/.test(t)) return null;
   const tokens = t.match(/\d+|[-+*]/g);
   let sum = 0;
@@ -81,16 +97,59 @@ export function valueOf(side) {
   return sum + sign * prod;
 }
 
+/** [n, d] in lowest terms, d > 0 — or null for a denominator 0. */
+const ratio = (n, d) => {
+  if (d === 0) return null;
+  const g = gcd(Math.abs(n), Math.abs(d)) || 1;
+  return d < 0 ? [-n / g, -d / g] : [n / g, d / g];
+};
 /**
- * Every equality of a formula is TRUE: its parts (split by `\\qquad`), each side that is arithmetic or a PGCD of numbers.
- * Returns how many equalities were checked (a side with a letter or a box is skipped).
+ * The value of a side as a FRACTION [n, d] (lowest terms): an arithmetic side (`valueOf`) is [v, 1]; a side may also hold
+ * fractions `\\frac{p}{q}` (`\\dfrac`, `\\tfrac`) whose terms are arithmetic, joined by + − × — « \\frac{5}{39} +
+ * \\frac{8}{39} », « \\frac{2}{3} \\times \\frac{9}{4} ». null when it is not one (a letter, a box, a ÷ inside a term).
+ */
+export function fractionOf(side) {
+  const fracs = [];
+  let bad = false;
+  const t = normalSide(
+    side.replace(/\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, (_, x, y) => {
+      const r = valueOf(x) != null && valueOf(y) != null ? ratio(valueOf(x), valueOf(y)) : null;
+      if (!r) bad = true;
+      fracs.push(r);
+      return ` F${fracs.length - 1} `;
+    }),
+  );
+  if (bad || !/^(F\d+|\d+)(\s*[-+*]\s*(F\d+|\d+))*$/.test(t)) return null;
+  const tokens = t.match(/F\d+|\d+|[-+*]/g);
+  const val = (x) => (x[0] === 'F' ? fracs[Number(x.slice(1))] : [Number(x), 1]);
+  const add = ([a, b], [c, d], sign) => ratio(a * d + sign * c * b, b * d);
+  let sum = [0, 1];
+  let sign = 1;
+  let prod = val(tokens[0]);
+  for (let i = 1; i < tokens.length; i += 2) {
+    const [op, x] = [tokens[i], val(tokens[i + 1])];
+    if (op === '*') prod = ratio(prod[0] * x[0], prod[1] * x[1]);
+    else {
+      sum = add(sum, prod, sign);
+      sign = op === '+' ? 1 : -1;
+      prod = x;
+    }
+  }
+  return add(sum, prod, sign);
+}
+
+/**
+ * Every equality of a formula is TRUE: its parts (split by `\\qquad`), each side that is arithmetic, a PGCD of numbers,
+ * or fractions of numbers — two fractions are equal by CROSS-MULTIPLICATION (« \\frac{66}{78} = \\frac{11}{13} »:
+ * 66 × 13 = 78 × 11). Returns how many equalities were checked (a side with a letter or a box is skipped).
  */
 export function equalitiesHold(formula) {
   let checked = 0;
   for (const part of formula.split(/\\qquad|\\quad/)) {
-    const sides = part.split('=').map(valueOf);
+    const sides = part.split('=').map(fractionOf);
     if (sides.length < 2 || sides.some((v) => v == null)) continue;
-    for (const v of sides.slice(1)) expect(v, formula).toBe(sides[0]);
+    const [[n0, d0]] = sides;
+    for (const [n, d] of sides.slice(1)) expect(n * d0, formula).toBe(n0 * d);
     checked += 1;
   }
   return checked;
@@ -160,7 +219,7 @@ function fakeGame(story, held) {
   return { game, opened, modules };
 }
 /** The convoys of a road, in order: { id, segs: [segment…], head: index }. */
-const convoysOf = (segments) => {
+export const convoysOf = (segments) => {
   const out = [];
   segments.forEach((s, i) => {
     if (!s.convoy) return;
@@ -172,6 +231,34 @@ const convoysOf = (segments) => {
   });
   return out;
 };
+
+/**
+ * What the student can try on a convoy, and which of it builds the whole convoy within its purse: the lengths its head's
+ * workshop makes, the planks a store sells (a store inside a convoy: its options, paid from the convoy's purse), or the
+ * planks its head island offers. Marked gaps (`mark`) are held only by planks with a joint on the post.
+ */
+export function convoyBuilders(story, convoy) {
+  const head = convoy.segs[0];
+  const w = head.workshop;
+  const candidates = w ? range(w.min ?? 1, w.max) : head.boss ? head.boss.options : head.moulds;
+  const purse = story.convoys?.[convoy.id]?.purse ?? Infinity;
+  const gaps = convoy.segs.map((s) => s.a);
+  const marks = convoy.segs.map((s) => s.mark ?? null);
+  return { candidates, purse, builders: candidates?.length ? buildersOf(gaps, purse, candidates, marks) : [] };
+}
+
+/**
+ * The options of the store (the last bridge, `boss`) that HOLD it within the purse — of its convoy when it stands in one
+ * (several options may hold the post; the purse pays only the right one), or with no purse. Exactly [holdsWith] when
+ * the store is right.
+ */
+export function storeHolders(story) {
+  const boss = story.segments.find((s) => s.boss);
+  if (!boss) return [];
+  const convoy = boss.convoy && convoysOf(story.segments).find((c) => c.segs.includes(boss));
+  if (convoy) return convoyBuilders(story, convoy).builders;
+  return boss.boss.options.filter((b) => holdsOn(boss, b));
+}
 
 /**
  * THE STORY — `world/story.js` (and its tablets).
@@ -209,13 +296,30 @@ export function describeStory(opts) {
       expect(new Set(ids).size).toBe(ids.length);
       for (const s of bridges) {
         expect(s.holdsWith, s.id).toBeGreaterThanOrEqual(1);
-        expect(s.a % s.holdsWith, s.id).toBe(0);
+        // it fills the gap — and, on a marked bridge, a joint falls on the post (mark.js)
+        expect(
+          holdsOn(s, s.holdsWith),
+          `${s.id}: ${s.holdsWith} does not hold ${s.a}${s.mark != null ? ` marked ${s.mark}` : ''}`,
+        ).toBe(true);
+        if (s.mark != null) {
+          expect(s.mark, s.id).toBeGreaterThan(0);
+          expect(s.mark, s.id).toBeLessThanOrEqual(s.a);
+        }
+        if (s.strokes) {
+          expect(s.mark, `${s.id}: strokes without a mark`).toBeDefined();
+          for (const k of s.strokes) expect(k, s.id).toBeGreaterThan(0);
+          expect(
+            s.strokes.reduce((n, k) => n + k, 0),
+            `${s.id}: the strokes add up to the mark`,
+          ).toBe(s.mark);
+        }
         if (s.moulds?.length && !s.convoy && !s.boss) expect(s.moulds, s.id).toContain(s.holdsWith);
       }
       expect(story.segments.filter((s) => s.boss)).toHaveLength(boss ? 1 : 0);
       if (boss) {
         expect(story.segments.at(-1)).toBe(boss);
-        expect(boss.boss.options.filter((b) => boss.a % b === 0)).toEqual([boss.holdsWith]);
+        // the ONE option that holds within the purse (a store in a convoy may sell several that hold the post)
+        expect(storeHolders(story), `the store ${boss.id}`).toEqual([boss.holdsWith]);
         expect(boss.boss.price).toBeGreaterThan(0);
       }
       const names = story.islands.map((x) => x.name);
@@ -223,10 +327,11 @@ export function describeStory(opts) {
       for (const n of names) expect(n, n).not.toMatch(/\d/);
     });
 
-    it('every convoy is solvable: its plank exists, fills every gap, the purse pays it — and no other plank does', () => {
+    it('every convoy is solvable: its plank exists, holds every gap (and post), the purse pays it — and no other does', () => {
       for (const c of convoys) {
         const [head, ...tail] = c.segs;
         const gaps = c.segs.map((s) => s.a);
+        const marks = c.segs.filter((s) => s.mark != null).map((s) => `${s.a} marked ${s.mark}`);
         const plank = head.holdsWith;
         for (const s of c.segs) expect(s.holdsWith, s.id).toBe(plank);
         for (const s of tail) {
@@ -234,13 +339,11 @@ export function describeStory(opts) {
           expect(s.workshop, s.id).toBeUndefined();
           expect(story.islands[story.segments.indexOf(s)].feature, s.id).not.toBe('anvil');
         }
-        const purse = story.convoys?.[c.id]?.purse ?? Infinity;
-        const w = head.workshop;
-        if (w) expect(story.islands[c.head].feature, c.id).toBe('anvil');
-        // what he can try: the planks the head island offers, or every length its workshop makes
-        const candidates = w ? range(w.min ?? 1, w.max) : head.moulds;
+        if (head.workshop) expect(story.islands[c.head].feature, c.id).toBe('anvil');
+        // what he can try: every length its workshop makes, the planks a store sells, or those the head island offers
+        const { candidates, purse, builders } = convoyBuilders(story, c);
         expect(candidates?.length, `${c.id}: no plank to try`).toBeGreaterThan(0);
-        expect(buildersOf(gaps, purse, candidates), `${c.id} ${gaps.join(', ')} (purse ${purse})`).toEqual([plank]);
+        expect(builders, `${c.id} ${gaps.join(', ')} ${marks.join(', ')} (purse ${purse})`).toEqual([plank]);
       }
     });
 
@@ -600,19 +703,25 @@ export function describeForges(opts) {
         it('ends on a case the mirror does not build — the rule decides, typed in its own shape', () => {
           for (let seed = 1; seed <= 25; seed += 1) {
             const c = F.use.make(rng(seed * 104729));
-            const vals = solve[key](c);
+            // a step that ends on yes / no (`use.verdict`): the conclusion is `solve`'s `verdict`, else the case's own
+            const { verdict: said0, ...vals } = solve[key](c);
+            const verdict = F.use.verdict ? (said0 ?? c.held) : undefined;
             const lines = F.use.lines(c);
             expect(lines.length).toBeGreaterThanOrEqual(1);
             expect(lines.length).toBeLessThanOrEqual(4);
-            const boxes = lines.flatMap((l) => l.tokens.filter((t) => typeof t === 'object'));
+            // a typed fraction (`fractionBox`) gives its numerator's box, then its denominator's (lesson 8)
+            const boxes = lines.flatMap((l) => boxesOf(l.tokens));
             expect(boxes.map((t) => t.slot).sort()).toEqual(Object.keys(vals).sort());
             for (const t of boxes) expect(String(vals[t.slot]).length, t.slot).toBeLessThanOrEqual(t.w);
-            for (const l of lines) for (const t of l.tokens) plain(typeof t === 'string' ? t : t.label);
+            for (const l of lines)
+              for (const t of l.tokens)
+                if (t?.frac) for (const x of [t.frac.n, t.frac.d]) plain(typeof x === 'string' ? x : x.label);
+                else plain(typeof t === 'string' ? t : t.label);
             const asText = Object.fromEntries(Object.entries(vals).map(([k, v]) => [k, String(v)]));
-            expect(F.use.check(c, asText)).toBe('ok');
+            expect(F.use.check(c, asText, verdict)).toBe('ok');
             said(F.text.tryKey(c));
             for (const name of Object.keys(vals)) {
-              const fb = F.use.check(c, { ...asText, [name]: String(Number(vals[name]) + 100) });
+              const fb = F.use.check(c, { ...asText, [name]: String(Number(vals[name]) + 100) }, verdict);
               expect(fb, `${key} ${name}`).not.toBe('ok');
               expect(typeof F.text.use[fb], `${key} text.use.${fb}`).toBe('string');
             }
@@ -740,13 +849,27 @@ export function describeEvidence(opts) {
 
 // ───────────────────────── the trainer ─────────────────────────
 
+/** A token of a form line that is answered: a box `{ num }` or a choice `{ choice }`. */
+const isAnswerBox = (t) => Boolean(t && typeof t === 'object' && (t.num || t.choice));
+/** The kit's fraction template `{ frac: { n, d } }` (Trainer.jsx › FormLines). */
+const isFracToken = (t) => Boolean(t && typeof t === 'object' && t.frac && typeof t.frac === 'object');
+/**
+ * How many ANSWERS a line of a form asks (defects.md B17: a sheet whose boxes wrap one alone onto a line). A box or a
+ * choice is one; a typed fraction — two boxes stacked over a bar — is ONE answer in its own shape, as wide as one box;
+ * a printed fraction asks nothing.
+ */
+export const answersOnLine = (line) =>
+  line.tokens.filter((t) => isAnswerBox(t) || (isFracToken(t) && (isAnswerBox(t.frac.n) || isAnswerBox(t.frac.d))))
+    .length;
+
 /**
  * THE TRAINER « تدرّب » — `world/trainer.js`.
  *
  *   describeTrainer({ trainer, check, solution, answerLabel, evidenceOf: trainerEvidence, planOf: PLAN_OF,
  *     cards: KNOWLEDGE.graph.nodes.map((n) => n.id), kinds: ['farq', 'furuq', 'tap', 'tf'] });
  *
- * opts:   kinds — every kind a session can ask (each must be seen); boxes — at most this many boxes a line (3, B17);
+ * opts:   kinds — every kind a session can ask (each must be seen); boxes — at most this many answers a line (3, B17;
+ *         a typed fraction `{ frac: { n, d } }` counts as ONE: `answersOnLine`);
  *         seeds — sessions per card (25)
  */
 export function describeTrainer(opts) {
@@ -790,13 +913,17 @@ export function describeTrainer(opts) {
       expect([...seen].sort()).toEqual([...kinds].sort());
     });
 
-    it(`a line of an exam sheet holds at most ${maxBoxes} boxes (defects.md B17)`, () => {
+    it(`a line of an exam sheet holds at most ${maxBoxes} answers (defects.md B17); a typed fraction is ONE`, () => {
       for (const q of all())
-        for (const l of q.form?.lines ?? [])
-          expect(
-            l.tokens.filter((t) => t && typeof t === 'object' && (t.num || t.choice)).length,
-            `${q.kind} ${q.prompt}`,
-          ).toBeLessThanOrEqual(maxBoxes);
+        for (const l of q.form?.lines ?? []) {
+          expect(answersOnLine(l), `${q.kind} ${q.prompt}`).toBeLessThanOrEqual(maxBoxes);
+          for (const t of l.tokens.filter(isFracToken)) {
+            const parts = [t.frac.n, t.frac.d];
+            // a fraction is typed whole or printed whole: never a box over a printed number, never empty
+            expect(new Set(parts.map(isAnswerBox)).size, `${q.kind} ${q.prompt}: a half-typed fraction`).toBe(1);
+            for (const x of parts) if (!isAnswerBox(x)) said(x);
+          }
+        }
     });
   });
 }

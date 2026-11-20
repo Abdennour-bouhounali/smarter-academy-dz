@@ -498,6 +498,39 @@
 .lk-slot.is-filled span {
   border-style: solid;
 }
+/* a fraction of a « write » question: its two terms one above the other, a real bar between them; a box inside it is
+   smaller and keeps its label for the screen reader only, so the equation stays about one box and a half high */
+.lk-frac {
+  display: inline-grid;
+  justify-items: center;
+  align-self: center;
+  gap: 0.25rem;
+  font-size: 2.4rem;
+  line-height: 2.9rem;
+}
+.lk-frac > i {
+  display: block;
+  width: 100%;
+  min-width: 3.4rem;
+  height: 0.28rem;
+  border-radius: 0.2rem;
+  background: currentColor;
+}
+.lk-frac .lk-slot span {
+  min-width: 4.4rem;
+  height: 3rem;
+  font-size: 2.2rem;
+}
+.lk-frac .lk-slot small {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.lk-equation:has(.lk-frac) {
+  align-items: center;
+}
 .lk-keys {
   display: grid;
   grid-template-columns: repeat(11, 3.6rem);

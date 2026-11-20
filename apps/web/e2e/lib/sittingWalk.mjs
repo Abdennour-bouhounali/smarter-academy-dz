@@ -11,7 +11,9 @@
 //   everySheet  EVERY sheet of EVERY level of the bank: opened through the ladder (the DEV hook `localStorage['di.dev.sheet']`
 //               makes the sitting draw that sheet), its statement and every step checked against the disk (words, formulas
 //               drawn, the table, « دج »), its answer boxes in their shape, each screen through `shot` (nothing scrolls or is
-//               cut, 12 px, no raw formula), then « خروج ». No story is played: the save opens the five levels at once.
+//               cut, 12 px, no raw formula), then « خروج » — or, for an answer sheet shown in LEAVES (too long for its
+//               box), every leaf looked at, every answer typed on its leaf, and the copy handed in (`everyLeaf`).
+//               No story is played: the save opens the five levels at once.
 //               About 3 s a sheet: ~2.5–3 min for the 50 sheets of a lesson at one size.
 //
 // The answer key is always the bank's on disk (`fromDisk`), the points are shared HERE from `metadata.exam.points` (quarter
@@ -42,7 +44,9 @@ const pgcdDrawn = (t) =>
   t
     .split(/(\$[^$]*\$)/)
     .map((part, i) =>
-      i % 2 === 1 ? part : part.replace(PGCD_IN_WORDS, (_, f, args, eq) => `$\\mathrm{${f}}(${args.trim()})${eq.replace(/\s+/g, ' ')}$`),
+      i % 2 === 1
+        ? part
+        : part.replace(PGCD_IN_WORDS, (_, f, args, eq) => `$\\mathrm{${f}}(${args.trim()})${eq.replace(/\s+/g, ' ')}$`),
     )
     .join('');
 const dj = (t) =>
@@ -77,7 +81,9 @@ export function diskPoints(sheet) {
   const quarters = Math.round(total * 4);
   const base = typed.length ? Math.floor(quarters / typed.length) : 0;
   let t = 0;
-  return sheet.questions.map((q) => (q.answerType === 'selfCheck' ? 0 : (base + (t++ < quarters - base * typed.length ? 1 : 0)) / 4));
+  return sheet.questions.map((q) =>
+    q.answerType === 'selfCheck' ? 0 : (base + (t++ < quarters - base * typed.length ? 1 : 0)) / 4,
+  );
 }
 /** The steps of a drawn subject, each with its bank question and its points taken from the DISK. */
 export function stepsOf(subject, bank) {
@@ -86,24 +92,39 @@ export function stepsOf(subject, bank) {
     const pts = sheet ? diskPoints(sheet) : [];
     return e.questions.map((q) => {
       const d = fromDisk(q, sheet ?? { questions: [] });
-      return { ...d, exercise: e, sheet, diskPoints: pts[sheet ? sheet.questions.findIndex((x) => x.id === q.qid) : -1] ?? 0 };
+      return {
+        ...d,
+        exercise: e,
+        sheet,
+        diskPoints: pts[sheet ? sheet.questions.findIndex((x) => x.id === q.qid) : -1] ?? 0,
+      };
     });
   });
 }
 /** The mark a copy must get: each step's disk points when its answer is the key, 0 otherwise. */
 export const markOf = (steps, plan) =>
-  steps.reduce((t, q) => t + (!q.paper && plan[q.id] && JSON.stringify(plan[q.id]) === JSON.stringify(rightOf(q)) ? q.diskPoints : 0), 0);
+  steps.reduce(
+    (t, q) =>
+      t + (!q.paper && plan[q.id] && JSON.stringify(plan[q.id]) === JSON.stringify(rightOf(q)) ? q.diskPoints : 0),
+    0,
+  );
 export const totalOf = (steps) => steps.reduce((t, q) => t + q.diskPoints, 0);
 
 // ───────────────────────────── reading a sheet on the screen ─────────────────────────────
 /** What the paper must show of a disk sheet: its words, how many formulas, its table, its steps. */
 function onPaper(sheet) {
   const st = sheet.statement ?? {};
-  const texts = [...String(st.content ?? '').split('\n\n'), ...sheet.questions.flatMap((q) => [q.lead ?? '', q.statement ?? ''])];
+  const texts = [
+    ...String(st.content ?? '').split('\n\n'),
+    ...sheet.questions.flatMap((q) => [q.lead ?? '', q.statement ?? '']),
+  ];
   const cells = st.table ? [...st.table.head, ...st.table.rows.flat()].map(String) : [];
   return {
     words: texts.map(dj).flatMap(words),
-    formulas: texts.reduce((t, x) => t + formulasIn(x), 0) + (st.formulas?.length ?? 0) + cells.reduce((t, x) => t + formulasIn(x), 0),
+    formulas:
+      texts.reduce((t, x) => t + formulasIn(x), 0) +
+      (st.formulas?.length ?? 0) +
+      cells.reduce((t, x) => t + formulasIn(x), 0),
     table: st.table ? { head: st.table.head.length, rows: st.table.rows.length } : null,
     steps: sheet.questions.length,
   };
@@ -143,8 +164,14 @@ export async function checkPaper(w, page, scope, sheet, where) {
   const got = await readBox(page, `${scope} .xs-ex[data-xs-bank="${sheet.id}"]`);
   if (!w.check(Boolean(got), `${where}: the sheet ${sheet.id} is on the paper`)) return;
   const missing = want.words.filter((t) => !got.text.includes(t));
-  w.check(missing.length === 0, `${where}: every sentence of the bank is on the paper, word for word${missing.length ? ' — missing: ' + missing.slice(0, 4).join(' | ') : ''}`);
-  w.check(got.katex >= want.formulas && got.errors === 0, `${where}: its ${want.formulas} formula(s) drawn (${got.katex} on screen, ${got.errors} error)`);
+  w.check(
+    missing.length === 0,
+    `${where}: every sentence of the bank is on the paper, word for word${missing.length ? ' — missing: ' + missing.slice(0, 4).join(' | ') : ''}`,
+  );
+  w.check(
+    got.katex >= want.formulas && got.errors === 0,
+    `${where}: its ${want.formulas} formula(s) drawn (${got.katex} on screen, ${got.errors} error)`,
+  );
   w.check(!/\$|\\[a-zA-Z]{2,}/.test(got.plain), `${where}: no raw formula on the paper`);
   w.check(!DA_ON_SCREEN.test(got.plain), `${where}: money reads « دج », never « DA » (glued to a number included)`);
   w.check(
@@ -158,7 +185,10 @@ export async function checkPaper(w, page, scope, sheet, where) {
 export async function checkFields(w, page, steps, where) {
   for (const q of steps) {
     if (q.paper) {
-      w.check((await page.locator(`${ON} [data-xs-paper-only="${q.id}"]`).count()) === 1, `${where} ${q.qid}: a « بيّن أن » step is written on the paper only — no box`);
+      w.check(
+        (await page.locator(`${ON} [data-xs-paper-only="${q.id}"]`).count()) === 1,
+        `${where} ${q.qid}: a « بيّن أن » step is written on the paper only — no box`,
+      );
       continue;
     }
     const f = await page.evaluate((id) => {
@@ -166,7 +196,8 @@ export async function checkFields(w, page, steps, where) {
       if (!el) return null;
       let text = '';
       const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
-      for (let t = tw.nextNode(); t; t = tw.nextNode()) if (!t.parentElement.closest('.katex-mathml')) text += t.nodeValue;
+      for (let t = tw.nextNode(); t; t = tw.nextNode())
+        if (!t.parentElement.closest('.katex-mathml')) text += t.nodeValue;
       return {
         template: el.querySelector('[data-template]')?.dataset.template ?? null,
         buttons: el.querySelectorAll('button').length,
@@ -181,10 +212,16 @@ export async function checkFields(w, page, steps, where) {
         : q.answerType === 'integerSet'
           ? f.area
           : Boolean(f.template);
-    w.check(shape, `${where} ${q.qid} (${q.answerType}): answered in its own shape (${JSON.stringify(f && { ...f, text: undefined })})`);
+    w.check(
+      shape,
+      `${where} ${q.qid} (${q.answerType}): answered in its own shape (${JSON.stringify(f && { ...f, text: undefined })})`,
+    );
     if (f && q.answerType === 'choice') {
       const missing = q.bank.choices.flatMap((c) => words(dj(c.content))).filter((t) => !f.text.includes(t));
-      w.check(missing.length === 0 && !DA_ON_SCREEN.test(f.text), `${where} ${q.qid}: its choices read as the bank writes them, money in « دج »${missing.length ? ' — missing: ' + missing.join(' | ') : ''}`);
+      w.check(
+        missing.length === 0 && !DA_ON_SCREEN.test(f.text),
+        `${where} ${q.qid}: its choices read as the bank writes them, money in « دج »${missing.length ? ' — missing: ' + missing.join(' | ') : ''}`,
+      );
     }
   }
 }
@@ -220,18 +257,64 @@ export async function quitSitting(page) {
   await page.click('[data-xs-quit-yes]');
   await page.waitForSelector('[data-di-ladder="open"]');
 }
+// ───────────────────────────── an answer sheet in leaves (kit/ExamSittingLeaves.jsx) ─────────────────────────────
+/** The answer sheet on screen: how many leaves, the one shown, and the leaf of each step (by its sitting id). */
+export const leavesOnScreen = (page) =>
+  page.evaluate((on) => {
+    const col = document.querySelector(`${on} [data-xs-leaves]`);
+    if (!col) return null;
+    const at = {};
+    for (const li of col.querySelectorAll('li[data-xs-leaf]')) {
+      const f = li.querySelector('[data-xs-field], [data-xs-paper-only]');
+      if (f) at[f.dataset.xsField ?? f.dataset.xsPaperOnly] = Number(li.dataset.xsLeaf);
+    }
+    return {
+      n: Number(col.dataset.xsLeaves),
+      on: Number(col.dataset.xsLeafOn),
+      count: col.querySelector('[data-xs-leaf-count]')?.textContent.replace(/\s+/g, ' ').trim() ?? null,
+      at,
+    };
+  }, ON);
+/** Turns the answer sheet on screen to leaf `l`, with its « التالي » / « السابق » — as the student does. */
+export async function turnTo(page, l) {
+  for (let k = 0; k < 12; k += 1) {
+    const s = await leavesOnScreen(page);
+    if (!s || s.on === l) return;
+    await page.click(`${ON} ${s.on < l ? '[data-xs-leaf-next]' : '[data-xs-leaf-prev]'}`);
+    await page.waitForTimeout(120);
+  }
+}
+/** Types step `q` (bankSheet › fillStep) after turning to the leaf that holds it. */
+export async function typeStep(page, q, v) {
+  if (!v) return;
+  const s = await leavesOnScreen(page);
+  if (s && s.at[q.id] !== undefined) await turnTo(page, s.at[q.id]);
+  await fillStep(page, q, v);
+}
+/** The fit box of the answer sheet on screen at its leaf: it holds its content (not cut), its scale. */
+const sheetBox = (page) =>
+  page.evaluate((on) => {
+    const box = document.querySelector(`${on} [data-xs-leaves] > [data-di-fitbox]`);
+    const o = box.getBoundingClientRect();
+    const i = box.firstElementChild.getBoundingClientRect();
+    return { have: Math.round(o.height), need: Math.round(i.height), z: box.dataset.diFitz };
+  }, ON);
+
 const practicePosts = (page) =>
   page.evaluate(() => (window.__api ?? []).filter((x) => x.method === 'POST' && x.url.includes('/practice/')));
 const bodyOf = (p) => (typeof p?.body === 'string' ? JSON.parse(p.body) : p?.body);
 const examState = (page) => page.evaluate(() => window.__world.getState().exam);
 const short = (id) => id.replace(/^ex-[^-]+-/, '').replace(/-(l\d-\d{3})$/, '·$1');
 
-/** A save with the lesson played and the five levels passed: the ladder is open at every level. */
-const openSave = (keys) => {
+/**
+ * A save with the lesson played and the five levels passed: the ladder is open at every level. `stage`: the lesson's
+ * last island (lesson 8 has eight, 0–7: the stage 8 the walk wrote for every lesson crashed its world, 2026-11-20).
+ */
+const openSave = (keys, stage = 8) => {
   const one = { stars: 3, mark: 1, total: 1 };
   return {
     v: 1,
-    stage: 8,
+    stage,
     stars: {},
     gems: [],
     keys,
@@ -249,7 +332,7 @@ async function fill(page, subject, steps, plan) {
   for (const [i, e] of subject.exercises.entries()) {
     await page.click(`[data-xs-page="${i}"]`);
     await page.waitForTimeout(150);
-    for (const q of steps.filter((x) => x.exercise.id === e.id)) await fillStep(page, q, plan[q.id]);
+    for (const q of steps.filter((x) => x.exercise.id === e.id)) await typeStep(page, q, plan[q.id]);
   }
 }
 /**
@@ -269,7 +352,12 @@ async function handIn(page) {
 /** The numbers written anywhere in the sheet (its statement, its table, every step): a hint may repeat them. */
 const numbersOfSheet = (sheet) => {
   const st = sheet.statement ?? {};
-  const all = [st.content, ...(st.formulas ?? []), ...(st.table ? [...st.table.head, ...st.table.rows.flat()] : []), ...sheet.questions.flatMap((x) => [x.lead, x.statement])].join(' ');
+  const all = [
+    st.content,
+    ...(st.formulas ?? []),
+    ...(st.table ? [...st.table.head, ...st.table.rows.flat()] : []),
+    ...sheet.questions.flatMap((x) => [x.lead, x.statement]),
+  ].join(' ');
   return new Set(all.match(/\d+(?:[.,]\d+)?/g) ?? []);
 };
 /** What of the answer a « أرشدني » text would give away: a number of the answer the sheet itself never writes, the right choice's words. */
@@ -278,17 +366,28 @@ export function leaksOf(guideText, q) {
   const inGuide = new Set(guideText.match(/\d+(?:[.,]\d+)?/g) ?? []);
   const out = [];
   if (q.answerType === 'rational' || q.answerType === 'integerSet') {
-    const nums = String(Array.isArray(q.bank.expectedAnswer) ? q.bank.expectedAnswer.join(' ') : q.bank.expectedAnswer).match(/\d+(?:[.,]\d+)?/g) ?? [];
+    const nums =
+      String(Array.isArray(q.bank.expectedAnswer) ? q.bank.expectedAnswer.join(' ') : q.bank.expectedAnswer).match(
+        /\d+(?:[.,]\d+)?/g,
+      ) ?? [];
     // 0 and 1 are said in any hint about divisors (« 1 يقسم كلّ عدد »): they give nothing away
     const own = nums.filter((n) => !seen.has(n) && n !== '0' && n !== '1');
     // a set is given away when every one of its numbers the sheet does not write is in the hint
-    if (q.answerType === 'integerSet' ? own.length > 0 && own.every((n) => inGuide.has(n)) : own.some((n) => inGuide.has(n))) out.push(own.join(', '));
+    if (
+      q.answerType === 'integerSet'
+        ? own.length > 0 && own.every((n) => inGuide.has(n))
+        : own.some((n) => inGuide.has(n))
+    )
+      out.push(own.join(', '));
   }
   if (q.answerType === 'choice') {
     const right = dj(q.bank.choices.find((c) => c.isCorrect).content);
     const nums = (right.match(/\d+(?:[.,]\d+)?/g) ?? []).filter((n) => !seen.has(n) && n !== '0' && n !== '1');
     if (nums.some((n) => inGuide.has(n))) out.push(right);
-    const plain = right.replace(/\$[^$]*\$/g, ' ').replace(/\s+/g, ' ').trim();
+    const plain = right
+      .replace(/\$[^$]*\$/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     if (plain.length >= 6 && guideText.includes(plain)) out.push(right);
   }
   // the model copy's conclusion is the answer written out
@@ -307,7 +406,12 @@ export async function checkExplain(w, page, q, where) {
   const want = lines.reduce((t, x) => t + formulasIn(x), 0) + resultFormula;
   const resultText = result && !resultFormula ? dj(result).trim() : null;
   w.check(
-    lines.length > 0 && missing.length === 0 && got.katex >= want && got.errors === 0 && (!resultText || got.text.includes(resultText)) && !DA_ON_SCREEN.test(got.plain),
+    lines.length > 0 &&
+      missing.length === 0 &&
+      got.katex >= want &&
+      got.errors === 0 &&
+      (!resultText || got.text.includes(resultText)) &&
+      !DA_ON_SCREEN.test(got.plain),
     `${where}: « اشرح لي » shows the bank's model solution — its ${lines.length} line(s) word for word, ${want} formula(s) drawn (${got.katex}), its result${resultText ? ` « ${resultText} »` : ''}${missing.length ? ' — missing: ' + missing.slice(0, 3).join(' | ') : ''}`,
   );
 }
@@ -318,8 +422,14 @@ export async function checkGuide(w, page, q, where) {
   const hints = (q.bank.hints ?? []).map((h) => dj(h.content));
   const missing = hints.flatMap(words).filter((t) => !got.text.includes(t));
   const leaks = leaksOf(got.text, q);
-  w.check(got.text.includes('أعد حلّ') && missing.length === 0, `${where}: « أرشدني » gives the bank's ${hints.length} hint(s) and sends back to the paper${missing.length ? ' — missing: ' + missing.join(' | ') : ''}`);
-  w.check(leaks.length === 0, `${where}: « أرشدني » does not give the answer${leaks.length ? ' — it shows ' + leaks.join(' | ') : ''}`);
+  w.check(
+    got.text.includes('أعد حلّ') && missing.length === 0,
+    `${where}: « أرشدني » gives the bank's ${hints.length} hint(s) and sends back to the paper${missing.length ? ' — missing: ' + missing.join(' | ') : ''}`,
+  );
+  w.check(
+    leaks.length === 0,
+    `${where}: « أرشدني » does not give the answer${leaks.length ? ' — it shows ' + leaks.join(' | ') : ''}`,
+  );
 }
 
 // ───────────────────────────── the parts ─────────────────────────────
@@ -329,7 +439,9 @@ const progress = (page) =>
     exam: document.querySelector('[data-di-road-step="exam"] b')?.textContent ?? '',
     ready: Number(document.querySelector('[data-di-ready]')?.dataset.diReady),
     next: document.querySelector('[data-di-next-step]')?.dataset.diNextStep,
-    rows: Object.fromEntries([...document.querySelectorAll('[data-di-prow]')].map((r) => [r.dataset.diProw, r.textContent])),
+    rows: Object.fromEntries(
+      [...document.querySelectorAll('[data-di-prow]')].map((r) => [r.dataset.diProw, r.textContent]),
+    ),
   }));
 
 /** The first sheet of a level on disk (by id) that the sitting can draw: the walk's choice, made from the disk alone. */
@@ -339,14 +451,28 @@ export const firstSheet = (bank, level, pick = () => true) =>
     .find(pick) ?? sittableOnDisk(bank, level)[0];
 /** A sheet whose typed number step has hints and an answer the sheet never writes: « أرشدني » can be tested on it. */
 export const guideTestable = (s) =>
-  s.questions.some((q) => q.answerType === 'rational' && (q.hints ?? []).length && (String(q.expectedAnswer).match(/\d+/g) ?? []).some((n) => !numbersOfSheet(s).has(n)));
+  s.questions.some(
+    (q) =>
+      q.answerType === 'rational' &&
+      (q.hints ?? []).length &&
+      (String(q.expectedAnswer).match(/\d+/g) ?? []).some((n) => !numbersOfSheet(s).has(n)),
+  );
 
 /** The level-5 sitting answered right, with « تقدّمي » before and after (four levels passed in the save). */
-export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
+export async function levelFive(w, { uid, id, grade, url, keys, bank, allow, stage }) {
   const { expect, shot } = w;
   const one = (m) => ({ stars: 3, mark: m, total: m });
-  const save = { ...openSave(keys), exam: { best: { 1: one(1), 2: one(1), 3: one(1), 4: one(1) }, fails: {}, weak: {}, sittings: 4 } };
-  const { page, ctx } = await w.student({ uid, lessonId: id, url, grade, seed: { [`u_${uid}_smarter_world_${id}`]: save } });
+  const save = {
+    ...openSave(keys, stage),
+    exam: { best: { 1: one(1), 2: one(1), 3: one(1), 4: one(1) }, fails: {}, weak: {}, sittings: 4 },
+  };
+  const { page, ctx } = await w.student({
+    uid,
+    lessonId: id,
+    url,
+    grade,
+    seed: { [`u_${uid}_smarter_world_${id}`]: save },
+  });
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
 
   // « تقدّمي » BEFORE: four levels of five, no first try yet → readiness = ½ × 4/5
@@ -354,24 +480,58 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
   await page.waitForSelector('[data-di-progress]');
   await page.waitForTimeout(400);
   const before = await progress(page);
-  expect(before.exam === `4${NB}5` && before.next === 'exam' && (await page.textContent('[data-di-next-step]')).includes('5'), `« تقدّمي » before: four exam levels of five passed, the next thing « اجتز الدرجة 5 » (exam=${JSON.stringify(before.exam)} next=${before.next})`);
-  expect(before.ready === readinessFor(4, 0, 0), `the readiness before is ½ × 4/5 = ${readinessFor(4, 0, 0)}% (shown ${before.ready}%)`);
-  expect(Object.keys(before.rows).join() === keys.join() && keys.every((k) => before.rows[k].includes('لا محاولة بعد')), 'no answer given as in an exam yet: each الكفاءة says « لا محاولة بعد »');
+  expect(
+    before.exam === `4${NB}5` &&
+      before.next === 'exam' &&
+      (await page.textContent('[data-di-next-step]')).includes('5'),
+    `« تقدّمي » before: four exam levels of five passed, the next thing « اجتز الدرجة 5 » (exam=${JSON.stringify(before.exam)} next=${before.next})`,
+  );
+  expect(
+    before.ready === readinessFor(4, 0, 0),
+    `the readiness before is ½ × 4/5 = ${readinessFor(4, 0, 0)}% (shown ${before.ready}%)`,
+  );
+  expect(
+    Object.keys(before.rows).join() === keys.join() && keys.every((k) => before.rows[k].includes('لا محاولة بعد')),
+    'no answer given as in an exam yet: each الكفاءة says « لا محاولة بعد »',
+  );
   await shot(page, 'progress-before', { exit: ['[data-di-progress-close]'], sound: true, numbers: true });
   await page.click('[data-di-progress-close]');
   await page.waitForSelector('[data-di-start]');
 
   await toLadder(page);
-  expect((await page.locator('.di-rungs li.is-passed').count()) === 4 && (await page.locator('.di-rungs li.is-next [data-di-exam-level="5"]').count()) === 1, '« فضاء الامتحان »: four levels passed, level 5 lit');
+  expect(
+    (await page.locator('.di-rungs li.is-passed').count()) === 4 &&
+      (await page.locator('.di-rungs li.is-next [data-di-exam-level="5"]').count()) === 1,
+    '« فضاء الامتحان »: four levels passed, level 5 lit',
+  );
   await shot(page, 'ladder', { exit: ['[data-di-map-close]'], numbers: true });
   const S = firstSheet(bank, 5);
   const subject = await openSitting(page, 5, S.id);
-  expect(subject.level === 5 && subject.exercises.length === 1 && subject.exercises[0].bankId === S.id && subject.exercises[0].title === 'الوضعيّة الإدماجيّة', `level 5: ONE sheet, the integrative situation the walk asked for (${S.id}; drawn ${subject.exercises.map((e) => e.bankId).join(', ')})`);
+  expect(
+    subject.level === 5 &&
+      subject.exercises.length === 1 &&
+      subject.exercises[0].bankId === S.id &&
+      subject.exercises[0].title === 'الوضعيّة الإدماجيّة',
+    `level 5: ONE sheet, the integrative situation the walk asked for (${S.id}; drawn ${subject.exercises.map((e) => e.bankId).join(', ')})`,
+  );
   const steps = stepsOf(subject, bank);
-  expect(steps.every((q) => JSON.stringify(q.bank) === JSON.stringify(subject.exercises.flatMap((e) => e.questions).find((x) => x.id === q.id).bank)) && steps.length === S.questions.length, `the sheet served is the bank's file as it is on disk (${S.questions.length} steps, their keys unchanged)`);
-  expect((await page.locator('.xs-root input, .xs-root textarea, [data-xs-field]').count()) === 0, 'reading time: the sheet is on the paper, and no answer box exists yet');
+  expect(
+    steps.every(
+      (q) =>
+        JSON.stringify(q.bank) ===
+        JSON.stringify(subject.exercises.flatMap((e) => e.questions).find((x) => x.id === q.id).bank),
+    ) && steps.length === S.questions.length,
+    `the sheet served is the bank's file as it is on disk (${S.questions.length} steps, their keys unchanged)`,
+  );
+  expect(
+    (await page.locator('.xs-root input, .xs-root textarea, [data-xs-field]').count()) === 0,
+    'reading time: the sheet is on the paper, and no answer box exists yet',
+  );
   await checkPaper(w, page, '.xs-paper', S, 'read');
-  expect(await page.evaluate(() => window.__world.getState().paper === true), 'the sitting is silent: paper mode, no music');
+  expect(
+    await page.evaluate(() => window.__world.getState().paper === true),
+    'the sitting is silent: paper mode, no music',
+  );
   await shot(page, 'read', { ...SHEET_OUT, allow }); // silent by design (« بلا موسيقى »): no sound button is asked of it
   await page.click('[data-xs-start]');
   await page.waitForSelector('[data-xs="sit"]');
@@ -380,10 +540,23 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
   const plan = Object.fromEntries(typed.map((q) => [q.id, rightOf(q)]));
   await page.click('[data-xs-page="0"]');
   await checkFields(w, page, steps, 'sit');
-  for (const q of typed) await fillStep(page, q, plan[q.id]);
-  await shot(page, 'sit-1', { ...SHEET_OUT, allow });
-  expect((await page.locator('.xs-pen, .xs-total, .xs-red, [data-xs-mark]').count()) === 0, 'during the sitting there is NO verdict of any kind');
-  expect((await practicePosts(page)).length === 0 && (await page.evaluate(() => window.__posts ?? [])).length === 0, 'nothing is sent before the paper is handed in');
+  for (const q of typed) await typeStep(page, q, plan[q.id]);
+  {
+    // a sheet in leaves: every leaf is a screen of its own, looked at like the others
+    const s = await leavesOnScreen(page);
+    for (let l = 0; s && l < s.n; l += 1) {
+      await turnTo(page, l);
+      await shot(page, s.n > 1 ? `sit-1-leaf${l + 1}` : 'sit-1', { ...SHEET_OUT, allow });
+    }
+  }
+  expect(
+    (await page.locator('.xs-pen, .xs-total, .xs-red, [data-xs-mark]').count()) === 0,
+    'during the sitting there is NO verdict of any kind',
+  );
+  expect(
+    (await practicePosts(page)).length === 0 && (await page.evaluate(() => window.__posts ?? [])).length === 0,
+    'nothing is sent before the paper is handed in',
+  );
   await page.click('[data-xs-hand]');
   await page.waitForSelector('[data-xs-hand-yes]');
   await shot(page, 'confirm', { ...SHEET_OUT, allow });
@@ -393,30 +566,68 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
 
   const want = totalOf(steps);
   const total = Number(await page.getAttribute('[data-xs-total]', 'data-xs-total'));
-  expect(want > 0 && total === want && markOf(steps, plan) === want, `a full paper: ${total} / ${want} (the points of ${S.id} on disk)`);
-  expect((await page.textContent('[data-xs-appreciation]')).trim() === appreciationFor(want, want), `the copy reads « ${appreciationFor(want, want)} »`);
-  expect((await page.locator('[data-xs-row]').evaluateAll((els) => els.map((e) => e.dataset.xsMark))).join() === steps.map((q) => (q.paper ? 'paper' : 'ok')).join(), 'every typed step carries its red tick (a step on paper: ✎)');
+  expect(
+    want > 0 && total === want && markOf(steps, plan) === want,
+    `a full paper: ${total} / ${want} (the points of ${S.id} on disk)`,
+  );
+  expect(
+    (await page.textContent('[data-xs-appreciation]')).trim() === appreciationFor(want, want),
+    `the copy reads « ${appreciationFor(want, want)} »`,
+  );
+  expect(
+    (await page.locator('[data-xs-row]').evaluateAll((els) => els.map((e) => e.dataset.xsMark))).join() ===
+      steps.map((q) => (q.paper ? 'paper' : 'ok')).join(),
+    'every typed step carries its red tick (a step on paper: ✎)',
+  );
   {
     const posts = await practicePosts(page);
     const path = (p) => p.url.split('?')[0];
     const answers = posts.filter((p) => /\/answers$/.test(path(p)));
     const sessions = posts.filter((p) => /\/practice\/sessions$/.test(path(p)) && p.url.includes(`/lessons/${id}/`));
-    expect(sessions.length === 1 && bodyOf(sessions[0])?.sessionId?.length === 36 && bodyOf(sessions[0])?.level === 5, `the hand-in opens ONE practice session at level 5: POST /lessons/${id}/practice/sessions`);
+    expect(
+      sessions.length === 1 && bodyOf(sessions[0])?.sessionId?.length === 36 && bodyOf(sessions[0])?.level === 5,
+      `the hand-in opens ONE practice session at level 5: POST /lessons/${id}/practice/sessions`,
+    );
     const opened = posts.filter((p) => /\/questions$/.test(path(p))).map(bodyOf);
-    expect(opened.length === typed.length && typed.every((q, k) => opened[k]?.questionId === q.qid && opened[k]?.exerciseId === S.id), `one question attempt per typed step, named by the bank's ids (× ${typed.length})`);
-    expect(answers.length === typed.length && typed.every((q, k) => { const b = bodyOf(answers[k]); return b?.attemptUuid?.length === 36 && JSON.stringify(b.answer) === JSON.stringify(plan[q.id]) && b.outcome === 'correct'; }), `one answer per typed step (${answers.length} of ${typed.length}): the raw answer, its own attempt, the browser's guess only as a prediction`);
-    expect(posts.some((p) => /\/exercise-completions$/.test(path(p))) && posts.some((p) => /\/complete$/.test(path(p))), 'the sheet and the session are closed: POST …/exercise-completions, then …/complete');
+    expect(
+      opened.length === typed.length &&
+        typed.every((q, k) => opened[k]?.questionId === q.qid && opened[k]?.exerciseId === S.id),
+      `one question attempt per typed step, named by the bank's ids (× ${typed.length})`,
+    );
+    expect(
+      answers.length === typed.length &&
+        typed.every((q, k) => {
+          const b = bodyOf(answers[k]);
+          return (
+            b?.attemptUuid?.length === 36 &&
+            JSON.stringify(b.answer) === JSON.stringify(plan[q.id]) &&
+            b.outcome === 'correct'
+          );
+        }),
+      `one answer per typed step (${answers.length} of ${typed.length}): the raw answer, its own attempt, the browser's guess only as a prediction`,
+    );
+    expect(
+      posts.some((p) => /\/exercise-completions$/.test(path(p))) && posts.some((p) => /\/complete$/.test(path(p))),
+      'the sheet and the session are closed: POST …/exercise-completions, then …/complete',
+    );
     expect((await page.evaluate(() => window.__posts ?? [])).length === 0, 'no game claim is sent by a sitting');
   }
   await shot(page, 'back', { exit: ['[data-xs-close]'], allow });
   await page.click(`[data-xs-row="${typed[0].id}"]`);
   await page.waitForSelector(`[data-xs-detail="${typed[0].id}"]`);
-  expect((await page.locator('[data-xs-guide]').count()) === 0, 'a full-mark question opens its model copy directly (no « أرشدني »)');
+  expect(
+    (await page.locator('[data-xs-guide]').count()) === 0,
+    'a full-mark question opens its model copy directly (no « أرشدني »)',
+  );
   await checkExplain(w, page, typed[0], 'back');
   await shot(page, 'back-model', { exit: ['[data-xs-close]'], allow });
   await page.locator('[data-xs-notebook-open]').first().click();
   await page.waitForSelector('[data-xs-notebook]');
-  expect((await page.locator('[data-xs-notebook] li').count()) === 0 && (await page.textContent('[data-xs-notebook]')).includes('ورقة كاملة'), 'the notebook: a full paper, nothing to write in it');
+  expect(
+    (await page.locator('[data-xs-notebook] li').count()) === 0 &&
+      (await page.textContent('[data-xs-notebook]')).includes('ورقة كاملة'),
+    'the notebook: a full paper, nothing to write in it',
+  );
   await shot(page, 'notebook', { exit: ['[data-xs-close]', '[data-xs-finish]'], allow });
   await page.click('[data-xs-finish]');
   await page.waitForSelector('[data-di-promotion]');
@@ -424,14 +635,27 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
   {
     const kind = await page.getAttribute('[data-di-promotion]', 'data-di-promotion');
     const ex = await examState(page);
-    expect(kind === 'champion' && ex.best[5]?.stars === starsFor(want, want) && ex.best[5].mark === want, `the last level passed with a full paper: the champion's promotion (${kind}), ${starsFor(want, want)} stars saved`);
-    expect((await page.locator('.di-confetti i').count()) > 10 && (await page.locator('[data-di-promotion] .di-stars3 .is-on').count()) === starsFor(want, want), 'the promotion is a moment of GAME: confetti, three stars');
-    expect((await page.textContent('.di-promo__mark b')).trim() === `${fmt(want)}${NB}${fmt(want)}`, `the promotion writes the mark ${fmt(want)} / ${fmt(want)}`);
+    expect(
+      kind === 'champion' && ex.best[5]?.stars === starsFor(want, want) && ex.best[5].mark === want,
+      `the last level passed with a full paper: the champion's promotion (${kind}), ${starsFor(want, want)} stars saved`,
+    );
+    expect(
+      (await page.locator('.di-confetti i').count()) > 10 &&
+        (await page.locator('[data-di-promotion] .di-stars3 .is-on').count()) === starsFor(want, want),
+      'the promotion is a moment of GAME: confetti, three stars',
+    );
+    expect(
+      (await page.textContent('.di-promo__mark b')).trim() === `${fmt(want)}${NB}${fmt(want)}`,
+      `the promotion writes the mark ${fmt(want)} / ${fmt(want)}`,
+    );
   }
   await shot(page, 'promotion', { exit: ['[data-di-promo-ladder]', '[data-di-exit]'] });
   await page.click('[data-di-promo-ladder]');
   await page.waitForSelector('[data-di-ladder="open"]');
-  expect((await page.locator('.di-rungs li.is-passed').count()) === 5, 'back on the ladder: the five levels are passed');
+  expect(
+    (await page.locator('.di-rungs li.is-passed').count()) === 5,
+    'back on the ladder: the five levels are passed',
+  );
   await shot(page, 'ladder-after', { exit: ['[data-di-map-close]'], numbers: true });
   await page.click('[data-di-map-close]');
   await page.waitForSelector('[data-di-start]');
@@ -444,31 +668,57 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow }) {
   await page.waitForTimeout(400);
   const after = await progress(page);
   expect(after.exam === `5${NB}5`, `the road: the exam station reads 5 / 5 (was ${before.exam.replace(/ /g, ' ')})`);
-  expect(counted.length > 0, `the sheet's steps are mapped to the lesson's keys (${counted.length} counted step(s)) — a sheet that maps none would prove nothing below`);
-  expect(keys.every((k) => (per[k] ? new RegExp(`${per[k]}\\D*صحيحة\\D*${per[k]}`).test(after.rows[k]) : after.rows[k].includes('لا محاولة بعد'))), `per الكفاءة, the steps answered as in an exam, all right: ${keys.map((k) => `${k} ${per[k]} of ${per[k]}`).join(', ')}`);
+  expect(
+    counted.length > 0,
+    `the sheet's steps are mapped to the lesson's keys (${counted.length} counted step(s)) — a sheet that maps none would prove nothing below`,
+  );
+  expect(
+    keys.every((k) =>
+      per[k]
+        ? new RegExp(`${per[k]}\\D*صحيحة\\D*${per[k]}`).test(after.rows[k])
+        : after.rows[k].includes('لا محاولة بعد'),
+    ),
+    `per الكفاءة, the steps answered as in an exam, all right: ${keys.map((k) => `${k} ${per[k]} of ${per[k]}`).join(', ')}`,
+  );
   const ready = readinessFor(5, counted.length, counted.length);
-  expect(after.ready === ready, `the readiness counts the ladder (5 of 5) and these ${counted.length} first tries, all right: ${ready}% (shown ${after.ready}%, was ${before.ready}%)`);
+  expect(
+    after.ready === ready,
+    `the readiness counts the ladder (5 of 5) and these ${counted.length} first tries, all right: ${ready}% (shown ${after.ready}%, was ${before.ready}%)`,
+  );
   expect(after.next !== 'exam', `the next thing is no longer an exam level (« ${after.next} »)`);
   await shot(page, 'progress-after', { exit: ['[data-di-progress-close]'], numbers: true });
   await page.click('[data-di-progress-close]');
   await page.waitForSelector('[data-di-start]');
-  expect((await page.evaluate(() => window.__world.getState().phase)) === 'title', '« تقدّمي » closes back to the title screen');
+  expect(
+    (await page.evaluate(() => window.__world.getState().phase)) === 'title',
+    '« تقدّمي » closes back to the title screen',
+  );
   await page.reload({ waitUntil: 'networkidle' });
   await page.waitForSelector('[data-di-start]');
   {
     const st = await page.evaluate(() => window.__world.getState());
     const n = Object.values(st.tally ?? {}).reduce((t, x) => t + x.n, 0);
     const ok = Object.values(st.tally ?? {}).reduce((t, x) => t + x.ok, 0);
-    expect(st.exam.best[5]?.stars === 3 && n === counted.length && ok === counted.length, `after a reload the ladder and the tally (${ok} right of ${n}) are still there`);
+    expect(
+      st.exam.best[5]?.stars === 3 && n === counted.length && ok === counted.length,
+      `after a reload the ladder and the tally (${ok} right of ${n}) are still there`,
+    );
   }
-  if (PHONE) console.log('    (phone held sideways: the answer sheet may slide inside its box — GAME_WORLD.md « On a phone »)');
+  if (PHONE)
+    console.log('    (phone held sideways: the answer sheet may slide inside its box — GAME_WORLD.md « On a phone »)');
   await ctx.close();
 }
 
 /** Four copies, each asserted by what the screen says (the five levels open in the save). */
-export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
+export async function copies(w, { uid, id, grade, url, keys, bank, allow, stage }) {
   const { expect, check, shot } = w;
-  const { page, ctx } = await w.student({ uid, lessonId: id, url, grade, seed: { [`u_${uid}_smarter_world_${id}`]: openSave(keys) } });
+  const { page, ctx } = await w.student({
+    uid,
+    lessonId: id,
+    url,
+    grade,
+    seed: { [`u_${uid}_smarter_world_${id}`]: openSave(keys, stage) },
+  });
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
   await toLadder(page);
   let tally = { ok: 0, n: 0 };
@@ -477,7 +727,10 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
   {
     const S = firstSheet(bank, 1);
     const subject = await openSitting(page, 1, S.id);
-    expect(subject.exercises.map((e) => e.bankId).join() === S.id, `blank copy: level 1 draws the sheet asked (${S.id})`);
+    expect(
+      subject.exercises.map((e) => e.bankId).join() === S.id,
+      `blank copy: level 1 draws the sheet asked (${S.id})`,
+    );
     const steps = stepsOf(subject, bank);
     const want = totalOf(steps);
     const before = await examState(page);
@@ -485,16 +738,37 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await page.waitForSelector('[data-xs="sit"]');
     await handIn(page);
     expect(Number(await page.getAttribute('[data-xs-total]', 'data-xs-total')) === 0, `blank copy: 0 / ${want}`);
-    expect((await page.textContent('[data-xs-appreciation]')).trim() === appreciationFor(0, want), `blank copy: the copy reads « ${appreciationFor(0, want)} »`);
-    const rows = await page.locator('[data-xs-row]').evaluateAll((els) => els.map((e) => ({ m: e.dataset.xsMark, t: e.textContent })));
-    expect(rows.length === steps.length && steps.every((q, k) => (q.paper ? rows[k].m === 'paper' : rows[k].m === 'ko' && rows[k].t.includes('لم تُجب'))), 'blank copy: every typed step is crossed and says « لم تُجب »');
-    expect((await practicePosts(page)).length === 0, 'blank copy: nothing is sent to the practice engine (no answered step)');
+    expect(
+      (await page.textContent('[data-xs-appreciation]')).trim() === appreciationFor(0, want),
+      `blank copy: the copy reads « ${appreciationFor(0, want)} »`,
+    );
+    const rows = await page
+      .locator('[data-xs-row]')
+      .evaluateAll((els) => els.map((e) => ({ m: e.dataset.xsMark, t: e.textContent })));
+    expect(
+      rows.length === steps.length &&
+        steps.every((q, k) => (q.paper ? rows[k].m === 'paper' : rows[k].m === 'ko' && rows[k].t.includes('لم تُجب'))),
+      'blank copy: every typed step is crossed and says « لم تُجب »',
+    );
+    expect(
+      (await practicePosts(page)).length === 0,
+      'blank copy: nothing is sent to the practice engine (no answered step)',
+    );
     await shot(page, 'blank-back', { exit: ['[data-xs-close]'], allow });
     await page.click('[data-xs-close]');
     await page.waitForSelector('[data-di-promotion="retry"]');
     const ex = await examState(page);
-    expect(ex.fails[1] === 1 && JSON.stringify(ex.best[1]) === JSON.stringify(before.best[1]) && ex.weak[1].includes(`ex:${S.id}`), 'blank copy: the level is not passed again, the sheet is remembered as missed');
-    expect((await page.textContent('.di-promo__mark b')).trim() === `0${NB}${fmt(want)}` && (await page.locator('.di-confetti').count()) === 0, `blank copy: « لم تنجح بعد », the mark 0 / ${fmt(want)}, no celebration`);
+    expect(
+      ex.fails[1] === 1 &&
+        JSON.stringify(ex.best[1]) === JSON.stringify(before.best[1]) &&
+        ex.weak[1].includes(`ex:${S.id}`),
+      'blank copy: the level is not passed again, the sheet is remembered as missed',
+    );
+    expect(
+      (await page.textContent('.di-promo__mark b')).trim() === `0${NB}${fmt(want)}` &&
+        (await page.locator('.di-confetti').count()) === 0,
+      `blank copy: « لم تنجح بعد », the mark 0 / ${fmt(want)}, no celebration`,
+    );
     await shot(page, 'blank-retry', { exit: ['[data-di-promo-ladder]'] });
     await page.click('[data-di-promo-ladder]');
     await page.waitForSelector('[data-di-ladder="open"]');
@@ -504,7 +778,13 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
   {
     const S = firstSheet(bank, 2, guideTestable);
     const subject = await openSitting(page, 2, S.id);
-    expect(subject.exercises.some((e) => e.bankId === S.id), `wrong copy: level 2 draws the sheet asked (${S.id}) beside ${subject.exercises.filter((e) => e.bankId !== S.id).map((e) => e.bankId).join(', ')}`);
+    expect(
+      subject.exercises.some((e) => e.bankId === S.id),
+      `wrong copy: level 2 draws the sheet asked (${S.id}) beside ${subject.exercises
+        .filter((e) => e.bankId !== S.id)
+        .map((e) => e.bankId)
+        .join(', ')}`,
+    );
     const steps = stepsOf(subject, bank);
     const typed = steps.filter((q) => !q.paper);
     const plan = Object.fromEntries(typed.map((q) => [q.id, wrongOf(q)]));
@@ -514,19 +794,38 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await fill(page, subject, steps, plan);
     await handIn(page);
     const got = markOf(steps, plan);
-    expect(got === 0 && Number(await page.getAttribute('[data-xs-total]', 'data-xs-total')) === 0, `wrong copy: 0 / ${want}`);
-    expect((await page.locator('[data-xs-row]').evaluateAll((els) => els.map((e) => e.dataset.xsMark))).join() === steps.map((q) => (q.paper ? 'paper' : 'ko')).join(), 'wrong copy: every typed step carries a red cross');
+    expect(
+      got === 0 && Number(await page.getAttribute('[data-xs-total]', 'data-xs-total')) === 0,
+      `wrong copy: 0 / ${want}`,
+    );
+    expect(
+      (await page.locator('[data-xs-row]').evaluateAll((els) => els.map((e) => e.dataset.xsMark))).join() ===
+        steps.map((q) => (q.paper ? 'paper' : 'ko')).join(),
+      'wrong copy: every typed step carries a red cross',
+    );
     {
       const posts = await practicePosts(page);
       const answers = posts.filter((p) => /\/answers$/.test(p.url.split('?')[0])).map(bodyOf);
-      expect(answers.length === typed.length && typed.every((q, k) => JSON.stringify(answers[k]?.answer) === JSON.stringify(plan[q.id]) && answers[k]?.outcome !== 'correct'), `wrong copy: each of the ${typed.length} answers is sent as he wrote it, never as right`);
+      expect(
+        answers.length === typed.length &&
+          typed.every(
+            (q, k) =>
+              JSON.stringify(answers[k]?.answer) === JSON.stringify(plan[q.id]) && answers[k]?.outcome !== 'correct',
+          ),
+        `wrong copy: each of the ${typed.length} answers is sent as he wrote it, never as right`,
+      );
     }
     await shot(page, 'wrong-back', { exit: ['[data-xs-close]'], allow });
-    const q = typed.find((x) => x.sheet.id === S.id && x.answerType === 'rational' && (x.bank.hints ?? []).length) ?? typed[0];
+    const q =
+      typed.find((x) => x.sheet.id === S.id && x.answerType === 'rational' && (x.bank.hints ?? []).length) ?? typed[0];
     await page.click(`[data-xs-row="${q.id}"]`);
     await page.waitForSelector(`[data-xs-detail="${q.id}"]`);
     const schemeN = q.answerType === 'integerSet' ? 3 : 2;
-    expect((await page.locator(`[data-xs-detail="${q.id}"] .xs-scheme input`).count()) === schemeN && (await page.locator('[data-xs-help]').count()) === 0, `wrong copy ${q.qid}: a lost point opens the scheme (${schemeN} lines) to tick against the paper — and no answer yet`);
+    expect(
+      (await page.locator(`[data-xs-detail="${q.id}"] .xs-scheme input`).count()) === schemeN &&
+        (await page.locator('[data-xs-help]').count()) === 0,
+      `wrong copy ${q.qid}: a lost point opens the scheme (${schemeN} lines) to tick against the paper — and no answer yet`,
+    );
     await page.click('[data-xs-guide]');
     await checkGuide(w, page, q, `wrong copy ${q.qid}`);
     await shot(page, 'wrong-guide', { exit: ['[data-xs-close]'], allow });
@@ -536,14 +835,28 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await page.locator('[data-xs-notebook-open]').first().click();
     await page.waitForSelector('[data-xs-notebook]');
     const lostKeys = new Set(typed.map((x) => x.key).filter(Boolean));
-    expect(lostKeys.size > 0 && (await page.locator('[data-xs-notebook] li').count()) === lostKeys.size, `wrong copy: the notebook lists one line per rule that lost points (${lostKeys.size}: ${[...lostKeys].join(', ') || 'NO step mapped to a key'})`);
+    expect(
+      lostKeys.size > 0 && (await page.locator('[data-xs-notebook] li').count()) === lostKeys.size,
+      `wrong copy: the notebook lists one line per rule that lost points (${lostKeys.size}: ${[...lostKeys].join(', ') || 'NO step mapped to a key'})`,
+    );
     await shot(page, 'wrong-notebook', { exit: ['[data-xs-close]', '[data-xs-finish]'], allow });
     await page.click('[data-xs-finish]');
     await page.waitForSelector('[data-di-promotion="retry"]');
     const ex = await examState(page);
-    const missed = subject.exercises.filter((e) => steps.some((x) => x.exercise.id === e.id && !x.paper)).map((e) => `ex:${e.bankId}`);
-    expect(ex.fails[2] === 1 && missed.every((m) => ex.weak[2].includes(m)), `wrong copy: the level stays failed once, the sheets missed are remembered (${missed.join(', ')})`);
-    expect((await page.locator('[data-di-promo-similar]').count()) === 1 && (await page.locator('[data-di-promo-next]').count()) === 0 && (await page.locator('.di-confetti').count()) === 0 && (await page.textContent('.di-promo__mark b')).trim() === `0${NB}${fmt(want)}`, `wrong copy: no celebration, « ورقة مشابهة », the mark 0 / ${fmt(want)}`);
+    const missed = subject.exercises
+      .filter((e) => steps.some((x) => x.exercise.id === e.id && !x.paper))
+      .map((e) => `ex:${e.bankId}`);
+    expect(
+      ex.fails[2] === 1 && missed.every((m) => ex.weak[2].includes(m)),
+      `wrong copy: the level stays failed once, the sheets missed are remembered (${missed.join(', ')})`,
+    );
+    expect(
+      (await page.locator('[data-di-promo-similar]').count()) === 1 &&
+        (await page.locator('[data-di-promo-next]').count()) === 0 &&
+        (await page.locator('.di-confetti').count()) === 0 &&
+        (await page.textContent('.di-promo__mark b')).trim() === `0${NB}${fmt(want)}`,
+      `wrong copy: no celebration, « ورقة مشابهة », the mark 0 / ${fmt(want)}`,
+    );
     await shot(page, 'wrong-retry', { exit: ['[data-di-promo-ladder]'] });
     tally = { ok: 0, n: typed.filter((x) => x.key && x.counted).length };
 
@@ -556,7 +869,10 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await page.waitForSelector('[data-xs="read"]');
     await page.waitForFunction(() => window.__sitting?.subject);
     const second = await page.evaluate(() => window.__sitting.subject);
-    expect(second.level === 2 && second.exercises.every((e) => !missed.includes(`ex:${e.bankId}`)), `the similar sheet is of level 2 and leaves out the sheets he missed (${second.exercises.map((e) => e.bankId).join(', ')})`);
+    expect(
+      second.level === 2 && second.exercises.every((e) => !missed.includes(`ex:${e.bankId}`)),
+      `the similar sheet is of level 2 and leaves out the sheets he missed (${second.exercises.map((e) => e.bankId).join(', ')})`,
+    );
     const st2 = stepsOf(second, bank);
     const sent = (await practicePosts(page)).length;
     const exBefore = JSON.stringify(await examState(page));
@@ -564,22 +880,34 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await page.waitForSelector('[data-xs="sit"]');
     const one = st2.find((x) => !x.paper);
     await page.click(`[data-xs-page="${second.exercises.findIndex((e) => e.id === one.exercise.id)}"]`);
-    await fillStep(page, one, rightOf(one));
+    await typeStep(page, one, rightOf(one));
     await page.click('[data-xs-quit]');
     await page.waitForSelector('[data-xs-quit-box]');
-    expect((await page.textContent('[data-xs-quit-box]')).includes('تخرج من الامتحان؟') && (await page.locator('[data-xs="sit"]').count()) === 1, 'quit half-way: « خروج » asks first, the sitting still behind the question');
+    expect(
+      (await page.textContent('[data-xs-quit-box]')).includes('تخرج من الامتحان؟') &&
+        (await page.locator('[data-xs="sit"]').count()) === 1,
+      'quit half-way: « خروج » asks first, the sitting still behind the question',
+    );
     await shot(page, 'quit-ask', { exit: ['[data-xs-quit-no]', '[data-xs-quit-yes]'], allow });
     await page.click('[data-xs-quit-yes]');
     await page.waitForSelector('[data-di-ladder="open"]');
     await page.waitForTimeout(300);
-    expect(JSON.stringify(await examState(page)) === exBefore && (await practicePosts(page)).length === sent && (await page.evaluate(() => window.__world.getState().paper)) !== true, 'quit half-way: back on the ladder, nothing marked, nothing sent, the paper mode off');
+    expect(
+      JSON.stringify(await examState(page)) === exBefore &&
+        (await practicePosts(page)).length === sent &&
+        (await page.evaluate(() => window.__world.getState().paper)) !== true,
+      'quit half-way: back on the ladder, nothing marked, nothing sent, the paper mode off',
+    );
   }
 
   // ── a RIGHT copy (level 3): full marks, three stars ──
   {
     const S = firstSheet(bank, 3);
     const subject = await openSitting(page, 3, S.id);
-    expect(subject.exercises.some((e) => e.bankId === S.id), `right copy: level 3 draws the sheet asked (${S.id})`);
+    expect(
+      subject.exercises.some((e) => e.bankId === S.id),
+      `right copy: level 3 draws the sheet asked (${S.id})`,
+    );
     const steps = stepsOf(subject, bank);
     const typed = steps.filter((q) => !q.paper);
     const plan = Object.fromEntries(typed.map((q) => [q.id, rightOf(q)]));
@@ -588,15 +916,26 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     await page.waitForSelector('[data-xs="sit"]');
     await fill(page, subject, steps, plan);
     await handIn(page);
-    expect(Number(await page.getAttribute('[data-xs-total]', 'data-xs-total')) === want && markOf(steps, plan) === want, `right copy: ${want} / ${want} (the points of its sheets on disk)`);
+    expect(
+      Number(await page.getAttribute('[data-xs-total]', 'data-xs-total')) === want && markOf(steps, plan) === want,
+      `right copy: ${want} / ${want} (the points of its sheets on disk)`,
+    );
     expect((await page.textContent('[data-xs-appreciation]')).trim() === 'ممتاز', 'right copy: « ممتاز »');
     await shot(page, 'right-back', { exit: ['[data-xs-close]'], allow });
     await page.click('[data-xs-close]');
     await page.waitForSelector('[data-di-promotion]');
     const kind = await page.getAttribute('[data-di-promotion]', 'data-di-promotion');
-    expect(kind === 'passed' && (await page.locator('[data-di-promotion] .di-stars3 .is-on').count()) === starsFor(want, want) && (await page.textContent('.di-promo__mark b')).trim() === `${fmt(want)}${NB}${fmt(want)}`, `right copy: a level already passed is passed again (${kind}), ${starsFor(want, want)} stars, ${fmt(want)} / ${fmt(want)}`);
+    expect(
+      kind === 'passed' &&
+        (await page.locator('[data-di-promotion] .di-stars3 .is-on').count()) === starsFor(want, want) &&
+        (await page.textContent('.di-promo__mark b')).trim() === `${fmt(want)}${NB}${fmt(want)}`,
+      `right copy: a level already passed is passed again (${kind}), ${starsFor(want, want)} stars, ${fmt(want)} / ${fmt(want)}`,
+    );
     await shot(page, 'right-promotion', { exit: ['[data-di-promo-ladder]'] });
-    tally = { ok: tally.ok + typed.filter((x) => x.key && x.counted).length, n: tally.n + typed.filter((x) => x.key && x.counted).length };
+    tally = {
+      ok: tally.ok + typed.filter((x) => x.key && x.counted).length,
+      n: tally.n + typed.filter((x) => x.key && x.counted).length,
+    };
     await page.click('[data-di-promo-ladder]');
     await page.waitForSelector('[data-di-ladder="open"]');
     await page.click('[data-di-map-close]');
@@ -612,20 +951,120 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow }) {
     const st = await page.evaluate(() => window.__world.getState().tally ?? {});
     const n = Object.values(st).reduce((t, x) => t + x.n, 0);
     const ok = Object.values(st).reduce((t, x) => t + x.ok, 0);
-    check(n === tally.n && ok === tally.ok, `the tally counts the wrong copy and the right one only: ${ok} right of ${n} (computed ${tally.ok} of ${tally.n})`);
-    check(p.ready === readinessFor(5, tally.ok, tally.n), `the readiness: ½ × 5/5 + ½ × ${tally.ok}/${tally.n} = ${readinessFor(5, tally.ok, tally.n)}% (shown ${p.ready}%)`);
+    check(
+      n === tally.n && ok === tally.ok,
+      `the tally counts the wrong copy and the right one only: ${ok} right of ${n} (computed ${tally.ok} of ${tally.n})`,
+    );
+    check(
+      p.ready === readinessFor(5, tally.ok, tally.n),
+      `the readiness: ½ × 5/5 + ½ × ${tally.ok}/${tally.n} = ${readinessFor(5, tally.ok, tally.n)}% (shown ${p.ready}%)`,
+    );
     await shot(page, 'copies-progress', { exit: ['[data-di-progress-close]'], numbers: true });
   }
   await ctx.close();
 }
 
+/**
+ * An answer sheet that does not fit at the 12 px floor is shown in LEAVES (GAME_WORLD.md §2quater): never cut, never
+ * scrolled. For such a sheet: the count « 1 / n » is shown, every step is on exactly one leaf, each leaf is a screen of its
+ * own (`shot`: not cut, 12 px), every answer is TYPED on its leaf with « التالي », and back on the first leaf what he typed
+ * there is still in its box and the sheet's progress counts every leaf; then the copy is handed in and comes back whole,
+ * each answer marked right (true: the sitting is over, the ladder is back). A sheet that fits has ONE leaf and no control.
+ */
+async function everyLeaf(w, page, steps, tag, allow) {
+  const { check, shot } = w;
+  const s = await leavesOnScreen(page);
+  if (!check(Boolean(s), `${tag} sit: the answer sheet says how many leaves it has`)) return false;
+  if (s.n === 1) {
+    check(
+      (await page.locator(`${ON} [data-xs-leaf-nav]`).count()) === 0,
+      `${tag} sit: the answer sheet fits on one leaf — no page control`,
+    );
+    return false;
+  }
+  console.log(`    ${tag}: the answer sheet is shown in ${s.n} leaves`);
+  check(
+    s.count === `1 / ${s.n}` && steps.every((q) => s.at[q.id] !== undefined),
+    `${tag} sit: ${s.n} leaves, the count « ${s.count} », every step on one leaf (${steps.map((q) => `${q.qid}→${s.at[q.id] + 1}`).join(' ')})`,
+  );
+  const typed = steps.filter((q) => !q.paper);
+  for (let l = 0; l < s.n; l += 1) {
+    await turnTo(page, l);
+    const box = await sheetBox(page);
+    const mine = steps.filter((q) => s.at[q.id] === l);
+    const visible = await page.evaluate(
+      (ids) =>
+        ids.every((id) => {
+          const el = document.querySelector(`[data-xs-field="${id}"], [data-xs-paper-only="${id}"]`);
+          return el && el.getClientRects().length > 0;
+        }),
+      mine.map((q) => q.id),
+    );
+    check(
+      visible && box.need <= box.have + 3,
+      `${tag} sit leaf ${l + 1}/${s.n}: its ${mine.length} answer(s) on screen, the column whole (${box.need} in ${box.have}, scale ${box.z})`,
+    );
+    for (const q of typed.filter((x) => s.at[x.id] === l)) await typeStep(page, q, rightOf(q));
+    await shot(page, `${tag}-sit-leaf${l + 1}`, { ...SHEET_OUT, allow });
+  }
+  await turnTo(page, 0);
+  const first = typed.find((q) => s.at[q.id] === 0 && q.answerType !== 'choice');
+  if (first) {
+    const kept = await page.evaluate(
+      (id) =>
+        [...document.querySelectorAll(`[data-xs-field="${id}"] input, [data-xs-field="${id}"] textarea`)].some(
+          (x) => x.value !== '',
+        ),
+      first.id,
+    );
+    check(kept, `${tag} sit: back on leaf 1, what he typed in ${first.qid} is still in its box`);
+  }
+  const progress = (await page.textContent(`[data-xs-page].is-on i`)).trim();
+  check(
+    progress === `${typed.length}/${typed.length}`,
+    `${tag} sit: the sheet's count reads every leaf: ${progress} (${typed.length} typed steps)`,
+  );
+  // the copy handed back: the same answers with their corrections, never cut either (`shot`), every step marked right
+  await page.click('[data-xs-hand]');
+  if (await page.waitForSelector('[data-xs-forgot-go]', { timeout: 1500 }).catch(() => null)) {
+    await page.click('[data-xs-forgot-go]'); // another exercise of the subject left empty: the walk hands in anyway
+    await page.click('[data-xs-hand]');
+  }
+  await page.waitForSelector('[data-xs-hand-yes]', { timeout: 5000 });
+  await page.click('[data-xs-hand-yes]');
+  await page.waitForSelector('[data-xs="back"]');
+  await page.waitForTimeout(500);
+  const marks = await page
+    .locator('[data-xs-row]')
+    .evaluateAll((els) => Object.fromEntries(els.map((e) => [e.dataset.xsRow, e.dataset.xsMark])));
+  check(
+    steps.every((q) => marks[q.id] === (q.paper ? 'paper' : 'ok')),
+    `${tag} back: every answer typed on its leaf is on the copy, marked right`,
+  );
+  await shot(page, `${tag}-back`, { exit: ['[data-xs-close]'], allow });
+  await page.click('[data-xs-close]');
+  await page.waitForSelector('[data-di-promotion]');
+  await page.click('[data-di-promo-ladder]');
+  await page.waitForSelector('[data-di-ladder="open"]');
+  return true;
+}
+
 /** EVERY sheet of EVERY level: opened, checked against the disk, each screen through `shot`, then « خروج ». */
-export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) {
+export async function everySheet(w, { uid, id, grade, url, keys, bank, allow, stage }) {
   const { expect, check, shot } = w;
-  const { page, ctx } = await w.student({ uid, lessonId: id, url, grade, seed: { [`u_${uid}_smarter_world_${id}`]: openSave(keys) } });
+  const { page, ctx } = await w.student({
+    uid,
+    lessonId: id,
+    url,
+    grade,
+    seed: { [`u_${uid}_smarter_world_${id}`]: openSave(keys, stage) },
+  });
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
   await toLadder(page);
-  expect((await page.locator('[data-di-exam-level]:not([disabled])').count()) === 5, 'every sheet: the five levels are open');
+  expect(
+    (await page.locator('[data-di-exam-level]:not([disabled])').count()) === 5,
+    'every sheet: the five levels are open',
+  );
   const t0 = Date.now();
   let first = true;
   let n = 0;
@@ -634,16 +1073,24 @@ export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) 
   if (only.length) console.log(`NOTE: only the sheet(s) ${only.join(', ')} of the bank — NOT a full run`);
   const wanted = (s) => !only.length || only.some((o) => s.id.endsWith(`-${o}`));
   for (let level = 1; level <= 5; level += 1) {
-    const all = [...bank.values()]
-      .filter((s) => s.level === level && wanted(s))
-      .sort((a, b) => (a.id < b.id ? -1 : 1));
+    const all = [...bank.values()].filter((s) => s.level === level && wanted(s)).sort((a, b) => (a.id < b.id ? -1 : 1));
     const can = sittableOnDisk(bank, level);
     for (const sheet of all) {
       const tag = short(sheet.id);
-      if (!check(can.includes(sheet), `${tag}: a sheet the sitting can draw (an exam sheet, every step of a type the sitting draws)`)) continue;
+      if (
+        !check(
+          can.includes(sheet),
+          `${tag}: a sheet the sitting can draw (an exam sheet, every step of a type the sitting draws)`,
+        )
+      )
+        continue;
       const subject = await openSitting(page, level, sheet.id);
       const drawn = subject.exercises.some((e) => e.bankId === sheet.id);
-      if (first) expect(drawn, `the DEV hook localStorage['di.dev.sheet'] draws the sheet asked (${sheet.id}; drawn ${subject.exercises.map((e) => e.bankId).join(', ')})`);
+      if (first)
+        expect(
+          drawn,
+          `the DEV hook localStorage['di.dev.sheet'] draws the sheet asked (${sheet.id}; drawn ${subject.exercises.map((e) => e.bankId).join(', ')})`,
+        );
       else check(drawn, `${tag}: drawn at level ${level}`);
       first = false;
       if (!drawn) {
@@ -660,13 +1107,32 @@ export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) 
       await page.click(`[data-xs-page="${i}"]`);
       await page.waitForTimeout(150);
       await checkPaper(w, page, `${ON} .xs-paper`, sheet, `${tag} sit`);
-      await checkFields(w, page, steps.filter((q) => q.exercise.bankId === sheet.id), `${tag} sit`);
+      await checkFields(
+        w,
+        page,
+        steps.filter((q) => q.exercise.bankId === sheet.id),
+        `${tag} sit`,
+      );
       await shot(page, `${tag}-sit`, { ...SHEET_OUT, allow });
-      await quitSitting(page);
+      // a sheet in leaves is handed in (its copy comes back, then the ladder); any other leaves by « خروج »
+      if (
+        !(await everyLeaf(
+          w,
+          page,
+          steps.filter((q) => q.exercise.bankId === sheet.id),
+          tag,
+          allow,
+        ))
+      )
+        await quitSitting(page);
     }
   }
   if (only.length) console.log(`NOTE: ${n} sheet(s) opened of the ${bank.size} of the bank`);
-  else check(n === bank.size, `every sheet of the bank was opened and read (${n} of ${bank.size}) in ${Math.round((Date.now() - t0) / 1000)} s`);
+  else
+    check(
+      n === bank.size,
+      `every sheet of the bank was opened and read (${n} of ${bank.size}) in ${Math.round((Date.now() - t0) / 1000)} s`,
+    );
   await page.evaluate(() => localStorage.removeItem('di.dev.sheet'));
   await ctx.close();
 }
@@ -676,13 +1142,24 @@ export async function everySheet(w, { uid, id, grade, url, keys, bank, allow }) 
  * `foreign` / `foreignNumbers`: the words and numbers of OTHER lessons; on the screens that show the bank's own text they
  * are allowed only where the bank writes them (`bankWrites`).
  */
-export async function sittingWalk({ name, grade, id, url, keys, uid, foreign = [], foreignNumbers = [], pilot = false }) {
+export async function sittingWalk({
+  name,
+  grade,
+  id,
+  url,
+  keys,
+  uid,
+  foreign = [],
+  foreignNumbers = [],
+  pilot = false,
+  stage = 8,
+}) {
   const bank = bankOnDisk(grade, id);
   const allow = bankWrites(bank, { words: foreign, numbers: foreignNumbers });
   const w = createWalk(name, { foreign, foreignNumbers, pilot });
   const parts = (process.env.E2E_PARTS || 'five,copies,sheets').split(',');
   if (parts.length < 3) console.log(`NOTE: only the part(s) ${parts.join(', ')} of ${name} — NOT a full run`);
-  const ctx = { id, grade, url, keys, bank, allow };
+  const ctx = { id, grade, url, keys, bank, allow, stage };
   await w.run(async () => {
     if (parts.includes('five')) await levelFive(w, { ...ctx, uid });
     if (parts.includes('copies')) await copies(w, { ...ctx, uid: uid + 1 });

@@ -189,6 +189,28 @@ export function probeOf(a, b, d) {
 }
 
 /**
+ * « شريط الكسر » — a strip of b cells with its first a cells lit (the fraction a/b), and a piece of length k laid along it
+ * from 0. What the drawing reads, never a conclusion: the two divisions (the lit part by k, the whole strip by k), where
+ * the light ends — on a joint between two pieces or INSIDE a piece (`cut`: the start and end of that piece) —, what is
+ * left at the end of the strip, and, only when k divides both, the fraction written in pieces: (a ÷ k)/(b ÷ k).
+ * `verdict` is `probeOf`'s: `both`, `a` (the lit part only), `b` (the whole strip only) or `none`.
+ */
+export function stripOf(a, b, k) {
+  const P = probeOf(a, b, k);
+  const lit = P.a;
+  return {
+    k,
+    lit: P.a,
+    whole: P.b,
+    verdict: P.verdict,
+    cut: lit.r === 0 ? null : { from: lit.q * k, to: (lit.q + 1) * k },
+    left: P.b.r,
+    pieces: Math.ceil(Math.max(a, b) / k),
+    rewrite: P.verdict === 'both' ? [a / k, b / k] : null,
+  };
+}
+
+/**
  * اللوح المشترك: the lengths a plank of d is laid along — the two numbers, their sum, their difference, the remainder of
  * the greater by the smaller, three times the first — each with its planks and what is left. `fits` is computed per row,
  * never stated: the drawing shows which lengths the plank fills.
@@ -295,6 +317,11 @@ export const QUESTS = {
     { id: 'chain', text: 'اكتب القسمات حتى الباقي 0 لعددين تلزمهما 5 قسمات على الأقلّ.' },
     { id: 'probe', text: 'اختبر عددًا أكبر من 10 يقسم العددين معًا.' },
   ],
+  strip: [
+    { id: 'both', text: 'جد قطعة يزيد طولها على 10 وتقسم البسط والمقام معًا.' },
+    { id: 'big', text: 'اكتب كسرًا مقامه أكبر من 500 بقطع تجعل مقامه أصغر من 50.' },
+    { id: 'split', text: 'جد قطعة تقسم المقام ولا تقسم البسط، والمقام أكبر من 100.' },
+  ],
   rules: [
     { id: 'three', text: 'أضِئ ثلاثة مصابيح معًا.' },
     { id: 'nine', text: 'أضِئ مصباح 9 بعدد من ثلاثة أرقام.' },
@@ -392,6 +419,14 @@ export function observe(tool, st, seen) {
     } else if (st.face === 'probe' && st.moved && Number.isInteger(st.d)) {
       if (st.d > 10 && a % st.d === 0 && b % st.d === 0) put('probe');
     }
+  } else if (tool === 'strip') {
+    // reported only after the hand moved the piece (`moved`), with the length `k` it holds
+    if (st.moved && Number.isInteger(st.k) && st.k > 1) {
+      const S = stripOf(a, b, st.k);
+      if (S.verdict === 'both' && st.k > 10) put('both');
+      if (S.verdict === 'both' && b > 500 && b / st.k < 50) put('big');
+      if (S.verdict === 'b' && b > 100) put('split');
+    }
   } else if (tool === 'rules') {
     const lit = digitRules(a).filter((x) => x.ok).length;
     if (a > 0 && lit >= 3) put('three');
@@ -419,6 +454,12 @@ export function luckyPair(tool, rand = Math.random) {
     // half the time two numbers that share a divisor bigger than 1, half the time two drawn apart
     const g = rand() < 0.5 ? 1 : int(2, 12);
     return { a: g * int(5, 40), b: g * int(5, 40) };
+  }
+  if (tool.id === 'strip') {
+    // a fraction (the lit part not longer than the strip) whose two terms share a divisor bigger than 1, or not, half and half
+    const g = rand() < 0.5 ? 1 : int(2, 12);
+    const d = int(6, 60);
+    return { a: g * int(1, d - 1), b: g * d };
   }
   if (tool.id === 'lists') {
     // two numbers that share a divisor bigger than 1: the two lists meet in more than 1

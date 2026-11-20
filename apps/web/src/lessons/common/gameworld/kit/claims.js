@@ -17,6 +17,21 @@ const natural = (x) => Number.isInteger(x) && x >= 0;
 const MAX = 1000000;
 const n = (x) => natural(x) && x <= MAX;
 const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+/** The operations a `fraction` claim may carry: x/y op z/w = A/B, unreduced (numbers ≤ 2 × 10^12: exact in a double). */
+const OPS = {
+  '+': (x, y, z, w) => [x * w + z * y, y * w],
+  '-': (x, y, z, w) => [x * w - z * y, y * w],
+  '*': (x, y, z, w) => [x * z, y * w],
+};
+/** a/b is the result of x/y op z/w: both irreducible forms are the same (a negative result is never a natural a/b). */
+function isResult(c) {
+  if (typeof c.op !== 'string' || !Object.hasOwn(OPS, c.op) || ![c.x, c.y, c.z, c.w].every(n) || c.y === 0 || c.w === 0)
+    return false;
+  const [A, B] = OPS[c.op](c.x, c.y, c.z, c.w);
+  if (A < 0) return false;
+  const [g, h] = [gcd(A, B), gcd(c.a, c.b)];
+  return A / g === c.a / h && B / g === c.b / h;
+}
 
 const KINDS = {
   /** a = b × q + r with r < b, and « b fills a » said rightly. */
@@ -86,7 +101,9 @@ const KINDS = {
     c.a % c.d === 0 &&
     c.b % c.d === 0,
   /** a/b is the fraction given, p/q the student's writing: equal (a × q = p × b) and, unless `reduced === false`,
-   * irreducible (PGCD(p ; q) = 1). */
+   * irreducible (PGCD(p ; q) = 1). With `op` ('+', '-' or '*'), a/b is the RESULT of a calculation x/y op z/w the
+   * claim carries: it must equal that result (computed here, never taken from the browser) — the claim is then about the
+   * calculation itself. */
   fraction: (c) =>
     n(c.a) &&
     n(c.b) &&
@@ -95,7 +112,8 @@ const KINDS = {
     c.b > 0 &&
     c.q > 0 &&
     c.a * c.q === c.p * c.b &&
-    (c.reduced === false || gcd(c.p, c.q) === 1),
+    (c.reduced === false || gcd(c.p, c.q) === 1) &&
+    (c.op === undefined || isResult(c)),
 };
 
 export const CLAIM_KINDS = Object.keys(KINDS);

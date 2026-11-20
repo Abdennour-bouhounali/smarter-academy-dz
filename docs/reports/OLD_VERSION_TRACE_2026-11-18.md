@@ -761,3 +761,123 @@ per part — no test for forges » (the forges' agent) and ❌ « a walk plays i
 only) — nothing of this change · `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`,
 `world/evidence*`, `claims*`, `bankDisplay.test.js`, `boardLessons.test.js` ✅. NOT run: the lesson's other `world/` tests,
 the whole suite, a build, `check:lessons`, any walk.
+
+## 15. Lesson 8 — `ikhtizal-kasr` (2026-11-20, NOT committed)
+
+Lesson: 4AM `ikhtizal-kasr` (`…/aadad-tabiiya-natiqa/ikhtizal-kasr/`), lesson 8 of the unit — its LAST ordinary lesson.
+Same job and shape as §14. Its new version — `world/` (other agents were writing `world/forges.js`, `inquiries.js`,
+`trainer.js`, `story.test.js` during this change), `board/` — was not touched, except `world/evidence.js` and its test
+(15.4); its pack `lesson.pack.js` was written in this change (world `divisor-isles`, `knowledge` = `world/knowledge.js ›
+LESSON_KNOWLEDGE`, `coach` P1 `ikhtizal-marahil` · P2 `ghayr-qabil` · P3 `ikhtizal-pgcd` · P4 `natija-mukhtazala`, as
+`world/evidence.js › POINTS`, `board` script and memo, `phone: false`). This lesson was on the MISSION PLAYER (scene
+`bakery`).
+
+### 15.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1, rows h, l of §11.1, rows b, f, m of §13.1 and rows a, e, k of §14.1 hold
+unchanged. What is specific:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge: () => import('./knowledge')`) | pages + the 🧠 map | **changed** as §14 (`retiredModules: true`, no `loadKnowledge`): the 9 module addresses redirect home |
+| b | `lesson.config.js › studentView`, `mission` (scene `bakery`, four tools `ikhtizal`, `kasr-ghayr-qabil`, `ikhtizal-bil-pgcd`, `tahaqquq-al-ikhtizal`, four checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef` | the mission player, `LessonProblemCard`, the old 🧠 provider | **deleted**; the header (the textbook's activity, pages and exercises, the French design notes) rewritten |
+| c | `common/mission/MissionScene.jsx › 'bakery'` → `BakeryScene.jsx` | this config only (the 1AM `theme: 'bakery'` of `hasil-qisma-kasr` is a lab theme, not a scene) | **deleted** (import, entry; the comment no longer names the lesson — `lessonPack.test.js`) |
+| d | `content/exercises.js`, `peerSheet.js`, `prep.js`, `problems.js`, `recipes.js` (+ their 4 tests), `textbook.js` | the module pages only (`world/` imports the kit, `divisorIsles/` and its own files; `board/` imports `features/classSession/*`) | **deleted** |
+| e | the old knowledge ids `ikhtizal`, `kasr-ghayr-qabil`, `ikhtizal-bil-pgcd`, `tahaqquq-al-ikhtizal` and the old graph's ids | no app code outside the lesson (the `'ikhtizal'` of `ikhtizal-kitaba-kasriya` 1AM and `maqlub-qismat-kasrayn` 3AM are THEIR OWN ids); the legacy walk `moyen-retrofit-phase1.mjs` (15.5) | nothing to re-point: no 1AM/2AM/3AM lesson and no `priorKnowledge` names them. The new keys are `ikhtizal-marahil`, `ghayr-qabil`, `ikhtizal-pgcd`, `natija-mukhtazala` (`world/story.js › K`) |
+| f | **`check-textbook-coverage.mjs`**: `now-13-2` (module 3), `ex-30`, `ex-31`, `ex-33`, `ex-37`, `ex-38` (module 4), `ex-35`, `ex-36` (module 3) were cited by the deleted `content/textbook.js` only | coverage | the eight marked **`notIntegrated`** in `docs/sources/4am/unit1/extraction.json` with the reason of `now-13-1`, this lesson's id — edited by id, their text not read (owner, 2026-11-19 — `defects.md` D11). `act-8` and `method-reduce` are still cited by `resources › sourceElementIds`; the other exercises by the bank. Nothing moved to another lesson |
+| g | `wadiya-idmajiya-aadad/content/mission.test.js › lessonPairs` — the sentinel `65/91` was a pair of THIS lesson's deleted `content/prep.js` | pairs | **moved** (15.3) |
+| h | `wadiya-idmajiya-aadad › mission.tools` | ids | cite no id of this lesson (`al-akbar`, `baqi-yabqi`, `iqlidis`, … — lessons 4–6 and the synthesis' own): unchanged |
+| i | this lesson's `priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan', 'khwarizmiyat-iqlidus']` | the brief, the audit | `khwarizmiyat-iqlidus` (bahth-pgcd's deleted root id) **re-pointed** to `iqlidis` (lesson 6's world key); `awwaliyan` is lesson 7's; `al-aadad-al-natiqa` (an earlier year's knowledge) kept as data — no file defines it now (it was cited by the deleted `content/problems.js` only) |
+| j | the labs `fraction-reduction` (`resources` of this config; `manipulationRegistry.js`, `levels.js`, its own tests) | `resources` | **kept** as data, titles without the textbook's numbers nor its character; mounted by no page now. The lesson's instrument in « مختبري » is `strip` « شريط الكسر » (another agent, `lessonlab/registry.js`) |
+| k | `unitMissions.js` (the lesson's icon, title, and the milestone after it), `moduleLayoutMigrations.js` (`{ 5: 8 }`), the API's migration and seeders (`4am_ikhtizal-kasr_P3`), `learningNet.test.js`, `practice-oracle/ikhtizal-kasr.mjs`, `content/practice`, `content/class-tests` | ids, slugs, the bank | unchanged |
+| l | `docs/reports/knowledge-contracts/4am_ikhtizal-kasr.json` | the audit's stale report | **deleted** |
+
+### 15.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط, معارف, two « أوظّف », three مسائل, « إختبار أولي ») | 9 | 350 |
+| `moduleContext.js` | 1 | 3 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 236 |
+| `content/` — `exercises`, `peerSheet`, `prep`, `problems`, `recipes` (+ their 4 tests), `textbook` | 10 | 850 |
+| **lesson folder, total** | **22** | **1,439** |
+| mission scene `BakeryScene.jsx` | 1 | 54 |
+| stale audit report `docs/reports/knowledge-contracts/4am_ikhtizal-kasr.json` | 1 | 337 |
+| **total** | **24** | **1,830** |
+
+Also edited: `lesson.config.js` (15.1 b, i; `textbookRef` gone; module titles and `desc` neutral — 0 « أستعدّ », 1 « نختزل
+على مراحل », 2 « قسمة واحدة », 3 « أتمرّن (1) », 4 « أتمرّن (2) », 5 « مسألة 1 », 6 « مسألة الدرس » (the store of the
+world's last bridge, `world/story.js › PROBLEM_MODULE = '6'`), 7 « مسألة 2 », 8 « التقويم »; ids, numbers, slugs, stages,
+`teachesLearningPointIds` unchanged — `world/journey.test.js` and `world/evidence.test.js` check them; the resources'
+titles no longer carry the textbook's fractions nor the old problems' contexts); `routes.jsx`; `MissionScene.jsx`;
+`extraction.json` (15.1 f); `package.json` (`format:v2`, `check:format`: the lesson's `world`, `board`, `lesson.pack.js`);
+`lessonIndex.generated.json` (the lesson's `pack` flags); `e2e/lesson-lab.mjs` (a step 2ter: lesson 8 opens the lab from
+its world, its one instrument `strip`, one « + » judged by the walk's own arithmetic, closed by its ✕); `LESSON_V2.md`
+(retirement ledger, §1bis), `LESSON_DEVELOPMENT_GUIDE.md` (`bakery` deleted), `MISSION_ROLLOUT_PROGRESS.md`.
+
+### 15.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (door « حصّة القسم », « present » refused).
+- `4am …/_unit/prepDiagnostic.test.js`: eight v2 lessons have no « أستعدّ » page.
+- `knowledge/finalSynthesis.test.js`: 67 → 66 evaluation modules (unit 1: 2 → 1, the synthesis).
+- `gameworld/kit/bankDisplay.test.js`: at least 11 v2 sittings.
+- `wadiya-idmajiya-aadad/content/mission.test.js`: the sentinel `65/91` left with this lesson's `content/prep.js`. The
+  road reader now ALSO reads the fraction of every MARKED bridge of a v2 world (`{ gap, mark }` or `{ gap, strokes }` of
+  `world/math.js › NUMBERS` → lit/gap): more pairs are checked against the synthesis' rounds than before, and the new
+  sentinel `66/78` (this lesson's first bridge) proves they are read. Nothing weakened.
+- the claim (15.4): `kit/claims.test.js`, the fixture, `ClaimVerifierTest`, the lesson's `world/evidence.test.js`.
+
+### 15.4 The evidence gap closed — `fraction` with the option `op`
+
+For P4 the trainer asks « احسب x/y op z/w ثمّ أعطِ النتيجة على شكل كسر غير قابل للاختزال »; the browser computed the result
+A/B and claimed `fraction (A ; B ; p ; q)`: the server re-checked p/q against A/B but TRUSTED A/B. Now `fraction` takes the
+option `op` (`'+'`, `'-'`, `'*'`) with the operands x, y, z, w (naturals ≤ 10^6, y and w > 0) in `kit/claims.js` and
+`ClaimVerifier.php`: each side computes x/y op z/w itself and the claim is false unless a/b equals it (irreducible forms
+compared — exact: the unreduced result stays ≤ 2 × 10^12; a negative result is false). A present but invalid `op` (null, an
+unknown operation, an array, a missing operand) is false on both sides. The item id (`fraction-AxB`) and the controller's
+validation (`claim.a`, `claim.b`) are unchanged. 15 rows in the shared fixture (6 true, 9 false), a test on each side;
+`world/evidence.js` sends the calculation with both claims of a « hisab » answer (`×` → `'*'`), and its test checks that a
+result A/B forged by the browser makes the claim false (it is true without `op`). The property test « `verifyClaim(claim)
+=== check.ok` » is unchanged and has no silent case.
+
+### 15.5 Walks (NONE was run)
+
+Changed: `lesson-lab.mjs` (15.2). **Opening this lesson's deleted pages or its old home**:
+`lesson-kit/manipulations.mjs` (`ikhtizal-kasr/samir` — the browser suites of the `fraction-reduction` lab, five places),
+`lesson-kit/4am-aadad-tabiiya-natiqa.mjs` (the unit's lessons and modules; `ikhtizal-kasr/samir` on a phone),
+`lesson-kit/moyen-retrofit-phase1.mjs` (modules `samir`, `maarif` and their bricks `ikhtizal`, `kasr-ghayr-qabil`,
+`ikhtizal-bil-pgcd`, `tahaqquq-al-ikhtizal`), `knowledge-map.mjs` (its `ALL` list opens the 🧠 map of this lesson's page —
+gone), `teacher-memo.mjs` (`/enseignant/cours/ikhtizal-kasr/memoire` waited for the old memo's rail and timeline built from the
+deleted root knowledge and `content/`; the page now shows the lesson's WRITTEN memo from its pack, `usePackPart(…, 'memo')`). `lesson-route-boundary.mjs`
+picks its module lesson by the index (`!pack.world`): it moves on by itself.
+
+### 15.6 Follow-ups NOT done
+
+34. **5 final-test items retired at the next deploy** (the deleted « إختبار أولي »), as follow-ups 1, 10, 13, 17, 24, 31.
+35. Still identifiers in the config (§10.2): the slug `samir` of module 1 (a textbook character) and the resource codes
+    `fraction-reduction-12-18`, `fraction-reduction-84-48`, `method-reduce-595-560` carry the textbook's numbers.
+36. The `fraction-reduction` lab (`FractionReduction.jsx`, its v2 player treatment) is mounted by no lesson page now; its
+    browser suites are the walks of 15.5.
+37. **The legacy mission home is mounted in unit 1 by the synthesis `wadiya-idmajiya-aadad` ONLY.** In `common/mission/`
+    nothing but its scene `ApronStoreScene.jsx` (+ its `'apron-store'` entry) is used by it alone: the player, the home,
+    the map, the checkpoints and the synthesis options (`toolsOwned`, `stationLabels`, `trainings`, `hideStars`,
+    `sittings`, `resumeInside`) serve 23 other lessons on the mission player (5 other syntheses use those options).
+38. `teacher-memo.mjs` used this lesson as its « KaTeX in the memo » example: it needs another lesson (or the written
+    memo's own selectors) — a walk, not touched here.
+
+### 15.7 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/lessons/registry.test.js src/features/classSession
+src/features/practice src/lessons/common/lessonlab <lesson>/world/evidence.test.js <lesson>/world/journey.test.js
+<lesson>/board <unit>/_unit <unit>/wadiya-idmajiya-aadad src/lessons/common/knowledge src/lessons/common/mission
+src/lessons/common/gameworld/kit src/lessons/common/kit/peerSheet.test.js src/lessons/common/problems --maxWorkers=2` — 88
+files, 5,101 tests ✅ · `src/features/teacher/lessonMemo` ✅ 267 · `php8.4 artisan test --filter Claim` ✅ 7 tests, then `--filter
+"ClaimVerifier|test_the_two_verifiers_share_one_fixture"` ✅ 6 · `status:lesson-v2 --lesson ikhtizal-kasr`: ✅ pack,
+world, knowledge, coach, bank, « مختبري », launch kit, board, class test, published, old version deleted; ❌ « a test per
+part — no test for forges » and « every rule is forged — no keys found » (the forges' agent) and ❌ « a walk plays its
+world » (the orchestrator) · `check-textbook-coverage.mjs` ✅ · `check:unreached` ✅ · `check:unused`: 9, none of this
+change — `kit/authoring/forgeBlocks.js › fractionBox`, `givenFraction` and, in this lesson's `world/math.js`, `PLANKS`,
+`commonDivisors`, `euclid`, `listAr`, `planks`, `range`, `reduce` (imported by a test only, while the forges are being
+written) · `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `world/evidence*`, `claims*`,
+`bankDisplay.test.js`, `boardLessons.test.js` ✅. NOT run: the lesson's other `world/` tests, the whole suite, a build,
+`check:lessons`, any walk.

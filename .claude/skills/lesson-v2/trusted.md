@@ -42,3 +42,16 @@ lesson only); a gap of 0 cells (one lesson only); the lab's instruments.
 | The instrument « مِجهر العددين » (`lessonlab/tools/Duo.jsx`) | its three tabs at 36 and 24 | `lessonlab/duo.render.test.jsx` |
 | The launch family `4am.m1.r03` | one tool; write, common-divisor sort, PGCD sort | `launchkit/launchkit.test.js` |
 | The bubble « اضغط E » after a refusal | under the purse, the equation and the verdict | — |
+
+## Added by lesson 8 (`ikhtizal-kasr`, 2026-11-20 — passed at 1366×768, the ONE size)
+
+| Screen | Proven for | Data test |
+|---|---|---|
+| A bridge with a LIT STRETCH on pedestals (`divisorIsles/mark.js`, `Game.js › buildMark`): the posts, the sign « لافتة الجسر », the equation's second line, « fills but misses the post », a rebuild from behind, a failed rebuild | 78 cells with 66 lit; a sign of three writings | `divisorIsles/mark.test.js`; `e2e/lib/lessonWalk/story.mjs › markedBridge` |
+| A marked bridge in a workshop convoy of ONE bridge with a purse; a stretch lit in two strokes | 243 cells; strokes 5 + 8 of 39 | `purse.test.js` |
+| A marked store inside a purse convoy: two options that hold, the purse run out, the store reopened with its reason | 273 cells, 91 planks | `story.mjs › markedStore` |
+| A fraction typed over a real bar — the trainer's sheets (`{ frac: { n, d } }`), the forge's last step (up to four fractions on a line; a fraction + a PGCD box in two columns), a launch card | three-digit terms | `kit/trainerFrac.render.test.jsx`, `kit/ruleForgeFrac.render.test.jsx`, `launchkit/fraction.render.test.jsx` |
+| A mirror case named by its `head` (« 66/78 → 33/39 ») | heads ≤ 25 characters; bars of 243 / 189 cells | the lesson's `forges.test.js` |
+| A board with KaTeX fractions in its text | 11 stations; a nested `\frac{304 \div 16}{368 \div 16}` | the lesson's `board.test.js` |
+| The instrument « شريط الكسر » (`lessonlab/tools/Strip.jsx`) | 36 cells; NOT proven for a numerator greater than the denominator (it writes 36/24 over a strip of 24 lit of 36) | `lessonlab/strip.render.test.jsx` |
+| The launch kit with TWO core tools, one of them with fraction cards | `4am.m1.r03` + `1am.m5.r02` | `launchkit/launchkit.test.js` |

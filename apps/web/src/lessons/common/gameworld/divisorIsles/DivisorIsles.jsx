@@ -701,7 +701,11 @@ function Boss({ o, game }) {
                 >
                   <strong>{b}</strong>
                   <span dir="rtl">{T.boss.mould(b)}</span>
-                  <em dir="rtl">{left != null ? `✗ ${T.boss.tried(left)}` : T.boss.untried}</em>
+                  <em dir="rtl">
+                    {left == null
+                      ? T.boss.untried
+                      : `✗ ${typeof left === 'object' ? (left.purse ? T.boss.triedPurse(left.laid, left.need) : T.boss.triedMark(left.mark)) : T.boss.tried(left)}`}
+                  </em>
                 </button>
               );
             })}
@@ -816,7 +820,7 @@ function Hud({ s }) {
       {s.purse && (
         <div className={`di-purse ${s.purse.left === 0 ? 'is-empty' : ''}`} data-di-purse={s.purse.left}>
           <Coins size={18} aria-hidden="true" />
-          <span>{T.purse.label}</span>
+          <span>{s.purse.n === 1 ? T.purse.one : T.purse.label}</span>
           <b dir="ltr">
             {s.purse.left}
             {'\u00a0/\u00a0'}

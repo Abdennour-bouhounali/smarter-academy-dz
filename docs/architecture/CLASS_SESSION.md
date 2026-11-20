@@ -230,6 +230,16 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   PGCD is 1), `witnessPick` (choice: the common divisor other than 1), `noSmallWitness` (true / false, ALWAYS false:
   « none of 2, 3, 5 divides both, so they are coprime » — the test checks the premise is true AND that a common divisor
   other than 1 exists, so the sentence never teaches a false proof with a true end).
+  **Lesson 8 « اختزال كسر » (2026-11-20)**: `4am/ikhtizal-kasr.json` — no pair of the lesson's exercise bank nor of its
+  story (`scripts/lesson-bank-numbers.mjs`); the end test weighs P1–P4 as the bank does (P1 4, P2 9, P3 94, P4 42 of 149
+  questions: one, one, four, two). A fraction is written « $\frac{n}{d}$ » and judged by the test from its terms. New
+  `check` types: `equalFraction` (choice: the option of the same value — 1AM), `missingTerm` (number: « $\frac{n}{d} =
+  \frac{m}{\dots}$ », a whole denominator), `irreducible` (true / false: the fraction's PGCD is 1), `irreduciblePick`
+  (choice), `oneStep` (number: the divisor that gives the irreducible form in ONE division — the PGCD, never 1),
+  `reduced` (choice: the option EQUAL to n/d AND irreducible — an equal fraction still reducible is the trap),
+  `reducedIs` (true / false: « the irreducible form of n/d is p/q »), `stage` (choice: n/d with both terms divided by
+  k — k subtracted, or one term divided, are the traps), `resultReduced` (choice: a calculation on two fractions, `+`,
+  `−` or `×`, computed by the test; the unreduced result is the trap).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -287,6 +297,11 @@ pack; the page loads it with `usePackPart(lessonId, 'script')`). A lesson withou
 moment ③. Lesson 4 `qasim-mushtarak-akbar` (13 stations, 2026-11-19) shows how a question about TWO numbers is asked with
 an `ask`, which builds over ONE gap: the options are chosen so that the planks filling that gap are exactly the answer (all
 options divide the other number, written with its equalities in the text) — its `board.test.js` computes both sides.
+Lesson 8 `ikhtizal-kasr` (11 stations, 2026-11-20) asks a FRACTION the same way: the fraction is a bridge whose stretch is
+lit; the options are planks of the lit stretch (proved by an equality in the text), the gap `a` is the whole bridge, so
+the planks that hold ARE the common divisors; the fractions themselves are formulas of `text` / `after`
+(`$\frac{60}{96} = \frac{30}{48} = …$`). **Not built:** a station that draws a bridge WITH its lit stretch, or a fraction
+with its bar beside a bridge — the board shows the whole bridge only.
 Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most

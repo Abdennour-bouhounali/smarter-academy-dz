@@ -13,6 +13,9 @@
  *         `max(var(--di-min-font, 12px), …)` is still drawn at `floor` px or more. The floored text then no longer shrinks
  *         with the box: only the rest does (paddings, gaps, widgets) — when that is not enough the box reaches `min` and
  *         its end is cut, which the walks report. Off by default: the panels of the world are laid out not to need it.
+ *   onShort: called when the box is at `min` and its content is STILL taller than the room (it would be cut): its owner then
+ *         shows less at once — the exam sitting turns its answer sheet into leaves (ExamSittingLeaves.jsx). `version`: a
+ *         change of what is shown that keeps the same DOM (a leaf hidden, another shown), so the box may grow back.
  */
 import { useLayoutEffect, useRef, useState } from 'react';
 import { SHORT_SCREEN } from '../engine/phoneScreen';
@@ -25,6 +28,8 @@ export default function Fit({
   avail = null,
   min = 0.5,
   floor = 0,
+  onShort = null,
+  version = '',
   children,
   ...rest
 }) {
@@ -38,6 +43,10 @@ export default function Fit({
   room.current = avail;
   const floorOn = useRef(floor > 0);
   floorOn.current = floor > 0;
+  const short = useRef(onShort);
+  short.current = onShort;
+  const ver = useRef(version);
+  ver.current = version;
   useLayoutEffect(() => {
     const o = outer.current;
     const i = inner.current;
@@ -55,7 +64,7 @@ export default function Fit({
         for (let x = o; x && x.nodeType === 1; x = x.parentElement) a *= parseFloat(getComputedStyle(x).zoom) || 1;
         setAround((old) => (Math.abs(old - a) > 0.001 ? a : old));
       }
-      const sig = `${Math.round(have / 8)}|${i.textContent.length}|${i.querySelectorAll('*').length}`;
+      const sig = `${Math.round(have / 8)}|${i.textContent.length}|${i.querySelectorAll('*').length}|${ver.current}`;
       if (sig !== cap.sig) cap = { z: 1.001, sig };
       const cur = zr.current;
       const ratio = have / need;
@@ -71,6 +80,9 @@ export default function Fit({
       if (next > cur + 0.004 || next < cur - 0.004) {
         zr.current = next;
         setZ(next);
+      } else if (short.current && floor === min && cur <= min + 0.004 && need > have + 1) {
+        // at the smallest scale and still too tall: the box would be cut — its owner shows less at once (onShort)
+        short.current({ have, need, box: o, inner: i });
       }
     };
     const later = () => {

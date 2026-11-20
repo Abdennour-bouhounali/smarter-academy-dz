@@ -264,6 +264,23 @@ export const pgcdPairBox = (A, B, { name = 'p', w = 2 } = {}) =>
   line([`PGCD(${A} ; ${B})`, '=', `PGCD(${B} ;`, slot(name, 'العدد', w), ')']);
 
 /**
+ * A FRACTION in its own shape (root CLAUDE.md: a typed answer is entered in its own shape): the token
+ * `{ frac: { n, d } }`, each part a printed number (a string) or a box `slot(…)`. The forge draws it stacked — numerator,
+ * a real bar, denominator (`kit/RuleForge.jsx`, the classes `di-frac` / `di-frac__bar` of `styles/trainer.css`).
+ *   line([givenFraction(66, 78), '=', fractionBox('n', 'd')])   // 66/78 = □/□, typed over a bar
+ */
+export const fractionBox = (n = 'n', d = 'd', { w = 3, nw = w, dw = w } = {}) => ({
+  frac: { n: slot(n, 'البسط', nw), d: slot(d, 'المقام', dw) },
+});
+/** A fraction printed in the same shape, nothing to type: `givenFraction(66, 78)`. */
+export const givenFraction = (n, d) => ({ frac: { n: String(n), d: String(d) } });
+/** The boxes of a line's tokens, in reading order — a fraction gives its numerator's box, then its denominator's. */
+export const boxesOf = (tokens) =>
+  tokens.flatMap((t) =>
+    t?.frac ? [t.frac.n, t.frac.d].filter((x) => typeof x === 'object') : typeof t === 'object' ? [t] : [],
+  );
+
+/**
  * `use.make` from a list of pairs: one drawn with `rand`, then `build(A, B)` → the case.
  *   make: makerOf(pairsOutside([[1334, 319], [1395, 217]], BANK_PAIRS), (A, B) => ({ A, B, rows: euclid(A, B),
  *     g: gcd(A, B), held: true })),

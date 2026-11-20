@@ -618,6 +618,22 @@
   color: #9fd8ff;
   line-height: 1.5;
 }
+/* a fraction of the last step (`{ frac: { n, d } }`): the look is the kit's `di-frac` (styles/trainer.css — numerator, a
+   real bar, denominator); here only its boxes are sized, a little lower than a lone box so the line stays in its panel */
+.rf-use:has(.rf-frac) {
+  align-items: center;
+}
+.rf-uselines .rf-use .rf-frac {
+  line-height: 1.15;
+}
+.rf-uselines .rf-use .rf-frac input {
+  height: 2.6rem;
+  font-size: 1.6rem;
+}
+.rf-uselines:not([data-rf-lines='1']) .rf-use .rf-frac input {
+  height: 2.1rem;
+  font-size: 1.15rem;
+}
 
 @keyframes rf-lay {
   from {

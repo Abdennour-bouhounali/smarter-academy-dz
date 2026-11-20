@@ -90,7 +90,10 @@ re-computes its verdict from the numbers alone. The kinds of claim (`division`, 
 b × lo ≤ a < b × hi with hi = lo + 1; `fullNeeded`: full = ⌊a ÷ b⌋ and need = ⌈a ÷ b⌉; `pgcd`: g = PGCD(a ; b), a and b
 not both 0; `coprime`: `says` = (PGCD = 1); `commonDivisor`: d ≥ 1 divides a and b — with the option `notOne: true` (2026-11-20, for `awwaliyan-fima-baynahuma`'s
 witness ❌), d ≥ 2: a common divisor OTHER THAN 1, so the answer d = 1 is a false claim; `fraction` (a/b given, p/q written):
-a × q = p × b, b and q > 0, and PGCD(p ; q) = 1 unless `reduced: false`). The kinds from `bracket` on admit only naturals ≤ 10^6 on both sides.
+a × q = p × b, b and q > 0, and PGCD(p ; q) = 1 unless `reduced: false` — with the option `op` (2026-11-20, for
+`ikhtizal-kasr`'s « result of a calculation in irreducible form »), the claim also carries the calculation `x/y op z/w`
+(`op` ∈ `'+'`, `'-'`, `'*'`; x, y, z, w naturals ≤ 10^6, y and w > 0) and a/b must EQUAL its result, computed on each side
+(the irreducible forms compared; a negative result is false) — the server then trusts neither the browser's a/b nor p/q). The kinds from `bracket` on admit only naturals ≤ 10^6 on both sides.
 
 - A lesson says, in its `world/evidence.js`, WHICH claim each of its answers makes and which الكفاءة each key proves
   (`createEvidence({ grade, points })`); the verdict is the kit's `kit/claims.js › verifyClaim`.
@@ -105,7 +108,9 @@ a × q = p × b, b and q > 0, and PGCD(p ; q) = 1 unless `reduced: false`). The 
   the lesson's `check` refused (a warning in development) — a wrong answer with a FALSE claim is still sent: it is
   evidence too. The net covers « تدرّب » only; the division steps of the real cases are not passed through it.
 - **A missing statement that only narrows a kind is an OPTION of that kind, not a new kind** (as `commonDivisor`'s
-  `notOne`): the option is read as `=== true` on both sides, and the fixture carries rows of both verdicts with it.
+  `notOne`): the option is read as `=== true` on both sides, and the fixture carries rows of both verdicts with it. An
+  option that brings DATA (`fraction`'s `op` and its operands) is checked whenever its key is present: a present but
+  invalid value (`null`, an unknown operation, a missing operand) makes the claim false on both sides.
 - **To add a kind** (a lesson needs a statement none of the kinds makes): write it in `kit/claims.js` AND in
   `ClaimVerifier.php` (`KINDS`, `verify`), and add rows that are true and rows that are false to the one fixture
   `apps/api/tests/Fixtures/game-claims.json`. `kit/claims.test.js` fails when the two lists differ, when a kind lacks a
@@ -209,7 +214,7 @@ for a lesson whose pack has a world (`LessonModuleChips`), and « واصل » / 
 **The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
 gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
 `khawass-qawasim`, then (same day) the 1AM `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` and the 2AM
-`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
+`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) and `ikhtizal-kasr` (lesson 8, with its mission scene `bakery`; the unit's last ordinary lesson on the mission player — only the synthesis `wadiya-idmajiya-aadad` stays on it) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
 still has a module page (1AM `darb-qisma-ashriya`); the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
 commit as the conversion:
 

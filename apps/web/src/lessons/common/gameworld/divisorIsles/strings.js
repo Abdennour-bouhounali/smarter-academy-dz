@@ -205,7 +205,7 @@ export const T = {
   /** What matters from the island before (kit/Instruction.jsx › Recall): the gap he has just crossed. */
   recall: { bridge: (a, b, q) => `الهوّة السابقة: $${a} = ${b} \\times ${q}$` },
   /** The purse of a convoy: a coin per plank, whatever its length. */
-  purse: { label: 'قطع الجسرين' },
+  purse: { label: 'قطع الجسرين', one: 'قطع الجسر' },
   say: {
     hello: 'أنا زيرو! العاصفة كسرت جسور الضوء. خذ القالب 3 ثم تعال إلى منصّة الضوء عند الهوّة.',
     goAltar: 'ممتاز! الآن اذهب إلى المنصّة المضيئة عند الهوّة: السهم الأصفر يدلّك عليها.',
@@ -337,6 +337,9 @@ export const T = {
     mould: (b) => `ألواح طولها ${b}`,
     untried: 'لم يُجرَّب بعد',
     tried: (r) => `جُرِّب: ${cells(r)}`,
+    // the store's planks refused for another reason: the purse ran out, or the post of a marked stretch missed a joint
+    triedPurse: (laid, need) => `انتهت القطع: ${laid} من ${need}`,
+    triedMark: (r) => `العمود في وسط لوح (الباقي ${r})`,
     price: 'ثمن اللوح الواحد: 1850 بلّورة ضوء',
     divide: (b) => `القالب ${b}: كم لوحًا يدخل في 756 خانة؟ وكم خانة تبقى؟`,
     qLabel: 'عدد الألواح',

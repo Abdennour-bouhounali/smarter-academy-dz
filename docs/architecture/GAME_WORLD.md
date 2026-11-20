@@ -280,6 +280,21 @@ subject, blue for what the student writes, RED for the corrector and never befor
   count evidence whatever happen »): a sheet sat again — after a blank copy, after reading its model solution — is drawn and
   sent like the first time (the draw only leaves out the sheets of the last miss while the level has others, as before);
   opening a sitting and quitting costs nothing (nothing is recorded, marked or sent). `kit/sittingSat.test.js` checks both.
+- **An answer sheet too long for its box is shown in LEAVES, never cut, never scrolled** (2026-11-20; `kit/ExamSittingLeaves.jsx`,
+  logic `kit/sheetLeaves.js`). The answer sheet is a `Fit` with the 12 px floor; when it reaches Fit's smallest scale
+  (`min`) and is STILL taller than its box, Fit says so (`onShort`) and the answers are measured and split into leaves at a
+  boundary between two answers — as few leaves as the room allows, the most even split among those, an answer taller than
+  the room alone on its leaf. Every answer stays mounted (the others `hidden`): what he typed is kept when he turns. Under
+  the sheet, always on screen, the pager: « السابق », the count « 1 / 2 » (with « تتمّة الأجوبة في الصفحة التالية » while
+  a leaf follows), « التالي ». The exercise tabs' count (« 0/8 ») counts every leaf; « أسلّم ورقتي » is unchanged. A sheet
+  that fits is ONE leaf, exactly as before, no control. Hooks: `data-xs-leaves` (how many) and `data-xs-leaf-on` (the one on
+  screen) on the column, `data-xs-leaf` on each answer, `data-xs-leaf-prev` / `data-xs-leaf-next` / `data-xs-leaf-count`.
+  Cheaper remedies first: the line a fraction box writes under itself (« كسر لا يقبل الاختزال — اترك المقام فارغًا… ») is
+  said once per leaf (`data-xs-quiet` on the others) — it took one sheet of `ikhtizal-kasr` back under its box (636 → fits
+  in 581 px at 1366 × 768) and another from 684 to 650; tighter gaps gained 4 px and were not kept. Three sheets of that bank
+  are in two leaves (l3-003, l4-006, l5-004), none of `qasim-mushtarak-akbar`. The corrected copy is not in leaves (one line
+  per answer: it fits); the walk checks it after handing in every sheet in leaves (`lib/sittingWalk.mjs › everyLeaf`: each
+  leaf a screen of its own, every answer typed on its leaf, kept, counted, then the copy handed back whole).
 - **The clock hands in once**: the countdown updater is pure (`sitting.js › tick`), and the time-out hand-in is an effect on
   `left === 0` (`timeUp`) behind a once-only guard — a StrictMode double call cannot send two copies.
 - **Marked by the practice evaluator** (`mark` = `@smarter-academy/core/practice › evaluateAnswer`): a sheet's points are
@@ -653,6 +668,21 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
   is a single yes / no (`data-rf-use-verdict`, `RuleForge.jsx`), and `check(case, values, verdict)` receives one boolean. A
   last step that needs two separate judgements (or a choice among more than two) cannot be written yet: the lesson
   folds it into boxes, or the kit must grow first.
+- **A fraction in the last step is typed in its own shape** (2026-11-20, lesson 8 `ikhtizal-kasr` first): a token
+  `{ frac: { n, d } }` of a `use` line, each part a box `slot(…)` or a printed number — built with
+  `authoring/forgeBlocks.js › fractionBox(n, d, { w, nw, dw })` (typed) and `givenFraction(n, d)` (printed; never
+  `'66/78'` as a string token). `kit/RuleForge.jsx › UseLines` draws it stacked with the trainer's classes
+  (`span.di-frac.rf-frac`, `dir="ltr"`, `data-rf-frac="n/d"` — the box names or the numbers —, `di-frac--typed` when it
+  holds boxes; `span.di-frac__bar`); its boxes keep `data-rf-use=<name>` and `aria-label` (« البسط » / « المقام »),
+  numerator first, no label under them. `kit/ruleForge.css` only sizes them (2.6rem one-line step, 2.1rem on a step of
+  several lines) and centres a line that holds one. The boxes of a line are `forgeBlocks.js › boxesOf(tokens)` (a
+  fraction gives its numerator's box, then its denominator's) — the frame reads them so. Tests:
+  `kit/ruleForgeFrac.render.test.jsx`. NOT yet: `authoring/test/suites.js › describeForges` reads a line's boxes as its
+  object tokens — a lesson with fractions hands the suite its lines flattened (`ikhtizal-kasr/world/forges.test.js ›
+  flat`) until the suite reads `boxesOf`; `describeLimits` counts a fraction as ONE object of its line.
+- **A case that is a FRACTION** (lesson 8): drawn as a `pair` — `{ a: the whole, b: its lit stretch, d: the plank laid
+  on both }` — with its own `head` (an isolated LTR run, « 66/78 → 33/39 »): `forgeParts.jsx › Line` then names the
+  pair by that head, never « 78 و 66 لوح 6 ».
 - NOT done: the class board (`LessonBoard`) forges only the first rule with the class; the three others are still asked
   and proved there. How a rule was found is kept in the browser only.
 
@@ -1736,7 +1766,19 @@ A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-
 - a sitting question is a STEP of a bank sheet (`kit/bankSitting.js › fromBank`): its `answerType`, its bank question in
   `bank`, its points, its key; its answer is what the practice widget writes (`{ choiceId }`, `{ value }`);
 - a trainer question is a `tap` (`options`), a true / false (`statement`, `truth`, `reasons?`), or a `form` — lines of
-  tokens: a string, `{ strong }`, `{ text, rtl? }`, `{ num, label }`, `{ choice, options }` — `kit/trainer.js`.
+  tokens: a string, `{ strong }`, `{ text, rtl? }`, `{ num, label }`, `{ choice, options }`, `{ frac: { n, d } }` —
+  `kit/trainer.js`, drawn by `kit/Trainer.jsx › FormLines`.
+  **The fraction template** (2026-11-20, lesson 8 `ikhtizal-kasr` first): ONE token `{ frac: { n, d } }`, `n` and `d`
+  each a box `{ num, label }` (typed) or a printed number / string (a fraction GIVEN by the statement — never `'66/78'`
+  as text). It is drawn stacked: `span.di-frac` (`dir="ltr"`, `data-di-frac`, `di-frac--typed` when it holds boxes)
+  around the numerator, `span.di-frac__bar` (a real bar), the denominator — so it reads the same inside an RTL sentence
+  (an isolated LTR block between the words) and on an `ltr` formula line. Its boxes keep every box's hooks
+  (`data-di-tr=<num>`, `aria-label`), the numerator comes first in the keyboard order, a box holds three digits
+  (`Num` w = 3), sheet boxes 2.15rem high at 1.2rem (≥ 12 px at 1366×768). A fraction is typed whole or printed whole,
+  and a typed one is ONE answer in its shape: the B17 rule « ≤ 3 answers a line » (`describeTrainer`,
+  `authoring/test/suites.js › answersOnLine`) counts it once. The CSS lives in ONE place, `kit/styles/trainer.css`
+  (`.di-frac`, `.di-frac__bar`, colours from `currentColor`); any other screen of the kit that writes a fraction by hand
+  (the forge's last step) uses these classes and only sizes its boxes. Tests: `kit/trainerFrac.render.test.jsx`.
 The lesson keeps how an answer is judged (`check`, `mark`), its model copy and its claims.
 
 **Rules of the kit.** A frame is a `create…(lesson data)` function, or a pure helper; a screen reads the lesson with
