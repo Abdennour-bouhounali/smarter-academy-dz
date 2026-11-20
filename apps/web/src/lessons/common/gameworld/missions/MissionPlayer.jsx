@@ -18,6 +18,7 @@ import { M } from '../kit/parts';
 import { PaperModel } from '../kit/Paper';
 import { deal, euclid, fill, gcd, line, slip, advice } from './lots';
 import Ink from './Ink';
+import { Box, Sheet } from './parts';
 import './mission.css';
 
 const NB = '\u00a0';
@@ -44,45 +45,6 @@ const clock = (s) =>
 const STEPS = 10;
 const BRAVO = ['أحسنت!', 'ممتاز!', 'رائع!', 'صحيح!', 'هكذا!'];
 const WARN = 5; // seconds the « the clock is about to start » message stays — it cannot be closed
-
-function Box({ value, onChange, label, name, w = 4, onEnter }) {
-  return (
-    <input
-      className="ms-in ms-target"
-      inputMode="numeric"
-      dir="ltr"
-      style={{ width: `${w + 1.6}ch` }}
-      value={value ?? ''}
-      aria-label={label}
-      data-ms-in={name}
-      onChange={(e) => onChange(e.target.value.replace(/[^\d]/g, '').slice(0, 5))}
-      onKeyDown={(e) => e.key === 'Enter' && onEnter?.()}
-    />
-  );
-}
-
-/** ✍️ what to write on the REAL sheet; its boxes open only after « كتبتُ على ورقتي » (a few seconds must pass). */
-function Sheet({ id, text, written, onWritten, children }) {
-  const [wait, setWait] = useState(3);
-  useEffect(() => {
-    setWait(3);
-    const t = setInterval(() => setWait((w) => Math.max(0, w - 1)), 1000);
-    return () => clearInterval(t);
-  }, [id]);
-  if (written) return children;
-  return (
-    <div className="ms-sheet" data-ms-sheet={id}>
-      <p>
-        <PenLine size={22} aria-hidden="true" />
-        <b>على ورقتك:</b> {text}
-      </p>
-      <button type="button" className="ms-btn ms-target" data-ms-written disabled={wait > 0} onClick={onWritten}>
-        <Check size={18} aria-hidden="true" />
-        {wait > 0 ? `كتبتُ على ورقتي (${wait})` : 'كتبتُ على ورقتي'}
-      </button>
-    </div>
-  );
-}
 
 /** The exam paper: its text whole, the phrases that light, and what he taps in it (its numbers, then its questions). */
 function Paper({ sit, lit, known, goals, step, onTap, onGoal }) {

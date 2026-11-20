@@ -1,5 +1,5 @@
 /**
- * PROTOTYPE page (dev builds only, `/__qa/mission-1`): mission 1 of the integration lesson of 4AM unit 1, for the owner
+ * PROTOTYPE page (dev builds only, `/__qa/mission-1`, `/__qa/mission-2`): a mission of the integration lesson of 4AM unit 1, for the owner
  * to play (`docs/reports/INTEGRATION_LESSON_PLAN.md` §6, step 1). The mission is played IN THE 3D DEPOT of the world.
  * Until the integration lesson has its own pack, this page MOUNTS the world itself, with the pilot lesson's content as
  * its host — no lesson page in between (its account, its launch kit and its saved journey do not matter here: the world
@@ -9,15 +9,24 @@
 import DivisorIsles from '../../lessons/common/gameworld/divisorIsles/DivisorIsles';
 import { lesson } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world';
 import { LESSON_CONFIG } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/lesson.config';
+import { BEM_2020 } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/missions/bem2020';
 import { BEM_2022 } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/missions/bem2022';
 
-const CONFIG = { ...LESSON_CONFIG, id: 'qa-mission-1' };
+const MISSIONS = { 1: BEM_2022, 2: BEM_2020 };
 
-export default function MissionPrototype() {
+export default function MissionPrototype({ n = 1 }) {
   // said BEFORE the world is built (during render) and never taken back: in dev React builds the world twice, and an
   // effect's cleanup here would run between the two. The world starts a mission only on a `/__qa/` address.
-  if (typeof window !== 'undefined') window.__qaMission = BEM_2022;
+  if (typeof window !== 'undefined') window.__qaMission = MISSIONS[n];
   return (
-    <DivisorIsles lesson={lesson} config={CONFIG} basePath="/__qa/mission-1" exitTo="/" completedModules={[]} preview />
+    <DivisorIsles
+      key={n}
+      lesson={lesson}
+      config={{ ...LESSON_CONFIG, id: `qa-mission-${n}` }}
+      basePath={`/__qa/mission-${n}`}
+      exitTo="/"
+      completedModules={[]}
+      preview
+    />
   );
 }

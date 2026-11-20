@@ -37,10 +37,18 @@ const AdminReportList = lazy(() => import('./pages/admin/reports/ReportList'));
 const AdminReportDetail = lazy(() => import('./pages/admin/reports/ReportDetail'));
 const AdminStudentList = lazy(() => import('./pages/admin/students/StudentList'));
 const AdminStudentDetail = lazy(() => import('./pages/admin/students/StudentDetail'));
-const PlatformAnalytics = lazy(() => import('./pages/admin/analytics/Platform').then((m) => ({ default: m.PlatformAnalytics })));
-const LearningAnalytics = lazy(() => import('./pages/admin/analytics/Platform').then((m) => ({ default: m.LearningAnalytics })));
-const ContentAnalytics = lazy(() => import('./pages/admin/analytics/ContentAnalytics').then((m) => ({ default: m.ContentAnalytics })));
-const LearningPointAnalytics = lazy(() => import('./pages/admin/analytics/ContentAnalytics').then((m) => ({ default: m.LearningPointAnalytics })));
+const PlatformAnalytics = lazy(() =>
+  import('./pages/admin/analytics/Platform').then((m) => ({ default: m.PlatformAnalytics })),
+);
+const LearningAnalytics = lazy(() =>
+  import('./pages/admin/analytics/Platform').then((m) => ({ default: m.LearningAnalytics })),
+);
+const ContentAnalytics = lazy(() =>
+  import('./pages/admin/analytics/ContentAnalytics').then((m) => ({ default: m.ContentAnalytics })),
+);
+const LearningPointAnalytics = lazy(() =>
+  import('./pages/admin/analytics/ContentAnalytics').then((m) => ({ default: m.LearningPointAnalytics })),
+);
 const AdminProfile = lazy(() => import('./pages/admin/account/Account').then((m) => ({ default: m.AdminProfile })));
 const AdminSecurity = lazy(() => import('./pages/admin/account/Account').then((m) => ({ default: m.AdminSecurity })));
 const AdminActivationCodes = lazy(() => import('./pages/admin/activation/ActivationCodes'));
@@ -53,8 +61,14 @@ const AdminContactMessages = lazy(() => import('./pages/admin/system/ContactMess
 // publique et suivi admin — lots paresseux, rien dans l'entrée.
 // Voir docs/architecture/BOOKS_STORE.md.
 // Les données du livre partent AVEC le lot de la page, pas après lui (bookCache.js).
-const BooksPage = lazy(() => { prefetchBooksForLocation(); return import('./features/books/BooksPage'); });
-const BookDetailPage = lazy(() => { prefetchBooksForLocation(); return import('./features/books/BookDetailPage'); });
+const BooksPage = lazy(() => {
+  prefetchBooksForLocation();
+  return import('./features/books/BooksPage');
+});
+const BookDetailPage = lazy(() => {
+  prefetchBooksForLocation();
+  return import('./features/books/BookDetailPage');
+});
 const AdminBookOrders = lazy(() => import('./pages/admin/books/BookOrders'));
 const AdminBookOrderDetail = lazy(() => import('./pages/admin/books/BookOrderDetail'));
 const AdminBookCatalog = lazy(() => import('./pages/admin/books/BookCatalog'));
@@ -70,7 +84,9 @@ const AdminPlanList = lazy(() => import('./pages/admin/plans/PlanList'));
 const AdminPlanEditor = lazy(() => import('./pages/admin/plans/PlanEditor'));
 const AdminAccessLimits = lazy(() => import('./pages/admin/access/AccessLimits'));
 const AdminSubscriptionRequests = lazy(() => import('./pages/admin/requests/SubscriptionRequests'));
-const AdminSubscriptions = lazy(() => import('./pages/admin/subscriptions/Subscriptions').then((m) => ({ default: m.AdminSubscriptions })));
+const AdminSubscriptions = lazy(() =>
+  import('./pages/admin/subscriptions/Subscriptions').then((m) => ({ default: m.AdminSubscriptions })),
+);
 // L'ESPACE ENSEIGNANT (« فضاء الأستاذ ») : arabe, RTL, sa propre coquille.
 const TeacherLayout = lazy(() => {
   preloadNamespace('teacher');
@@ -130,7 +146,9 @@ const Explorer = lazy(() => import('./pages/student/Explorer'));
 const Progression = lazy(() => import('./pages/student/Progression'));
 const Notebook = lazy(() => import('./pages/student/Notebook'));
 const NotebookNotePage = lazy(() => import('./pages/student/Notebook').then((m) => ({ default: m.NotebookNotePage })));
-const NotebookReviewPage = lazy(() => import('./pages/student/Notebook').then((m) => ({ default: m.NotebookReviewPage })));
+const NotebookReviewPage = lazy(() =>
+  import('./pages/student/Notebook').then((m) => ({ default: m.NotebookReviewPage })),
+);
 const Profil = lazy(() => import('./pages/student/Profil'));
 const ChooseGrade = lazy(() => import('./pages/student/ChooseGrade'));
 // « عرّفنا بنفسك » : l'étape qui demande الاسم و اللقب à un compte qui n'en a
@@ -167,8 +185,12 @@ const GamesHub = lazy(() => import('./pages/student/madar/GamesHub'));
 const TeacherMadarDisplay = lazy(() => import('./pages/teacher/MadarDisplayPage'));
 const TeacherClassSession = lazy(() => import('./pages/teacher/ClassSessionPage'));
 const TeacherLessonFile = lazy(() => import('./pages/teacher/LessonFilePage'));
-const TeacherLessonTracking = lazy(() => import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonTrackingPage })));
-const TeacherLessonCard = lazy(() => import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonCardPage })));
+const TeacherLessonTracking = lazy(() =>
+  import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonTrackingPage })),
+);
+const TeacherLessonCard = lazy(() =>
+  import('./pages/teacher/LessonToolPages').then((m) => ({ default: m.LessonCardPage })),
+);
 const TeacherGamesPage = lazy(() => import('./pages/teacher/TeacherGamesPage'));
 const AdminDailyChallenge = lazy(() => import('./pages/admin/dailyChallenge/DailyChallengeConfig'));
 // Le مختبر الرياضيات (Math Lab) : les instruments LIBRES de l'élève, hors de
@@ -188,8 +210,7 @@ import RequireLargeScreen from './components/auth/RequireLargeScreen';
  * Deux portes, et les deux sont des CONSTANTES à la construction : Vite
  * remplace `import.meta.env.*` par des littéraux avant que Rollup ne passe.
  */
-const QA_FIXTURES_ENABLED =
-  import.meta.env.DEV || import.meta.env.VITE_QA_FIXTURES === 'true';
+const QA_FIXTURES_ENABLED = import.meta.env.DEV || import.meta.env.VITE_QA_FIXTURES === 'true';
 
 /**
  * Le chargement de la surface de QA — PARESSEUX, et c'est ce qui la tient
@@ -206,7 +227,11 @@ const QA_FIXTURES_ENABLED =
  * réellement construit.
  */
 const RtlLessonFixture = QA_FIXTURES_ENABLED
-  ? lazy(() => Promise.all([import('./qa/rtlLessonFixture/FixtureRoutes.jsx'), loadLessonManipulationStrings()]).then(([m]) => m))
+  ? lazy(() =>
+      Promise.all([import('./qa/rtlLessonFixture/FixtureRoutes.jsx'), loadLessonManipulationStrings()]).then(
+        ([m]) => m,
+      ),
+    )
   : null;
 // The prototype of an integration mission (dev builds only, like the fixture above).
 const MissionPrototype = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx')) : null;
@@ -249,22 +274,22 @@ export default function App() {
     <AuthProvider>
       <LessonProgressSync />
       <ContentAvailabilityProvider>
-      <StudyContextProvider>
-      <WorkspaceLayoutProvider>
-      {/* LE cahier de l'élève : une seule fenêtre pour toute l'application,
+        <StudyContextProvider>
+          <WorkspaceLayoutProvider>
+            {/* LE cahier de l'élève : une seule fenêtre pour toute l'application,
           au-dessus du routeur pour survivre au changement de module. Les
           pages de leçon lui publient leur position (LessonNotebookAnchor). */}
-      <NotebookProvider>
-      {/* LE مختبر posé SUR la leçon : un seul calque pour toute
+            <NotebookProvider>
+              {/* LE مختبر posé SUR la leçon : un seul calque pour toute
           l'application, au-dessus du routeur lui aussi — ouvrir un
           instrument ne doit jamais démonter la leçon, sinon l'élève perd sa
           place (features/mathlab/overlay/). */}
-      <MathLabOverlayProvider>
-      <Router>
-        {/* Le TEMPS RÉEL d'étude de l'élève (PARENT_SPACE.md §3) : un composant
+              <MathLabOverlayProvider>
+                <Router>
+                  {/* Le TEMPS RÉEL d'étude de l'élève (PARENT_SPACE.md §3) : un composant
             nul sous le routeur — il lit l'adresse pour savoir où le temps passe. */}
-        <StudyTimeTracker />
-        {/* Frontière d'attente UNIQUE pour les routes découpées (admin,
+                  <StudyTimeTracker />
+                  {/* Frontière d'attente UNIQUE pour les routes découpées (admin,
             moteur d'exercices, pages légales, diagnostic). Elle est posée
             AUTOUR du routeur : la coquille (barre de navigation, pied de
             page) est rendue par les layouts à l'intérieur de chaque route,
@@ -272,14 +297,14 @@ export default function App() {
             du lot de la page. Les leçons ont en plus leur propre <Suspense>
             (frontière de routes, puis celui que buildLessonRoutes pose autour
             de leur contenu) : la coquille reste à l'écran. */}
-        <Suspense fallback={<div className="min-h-screen bg-[#FAFAFA]" />}>
-        <AppRoutes />
-        </Suspense>
-      </Router>
-      </MathLabOverlayProvider>
-      </NotebookProvider>
-      </WorkspaceLayoutProvider>
-      </StudyContextProvider>
+                  <Suspense fallback={<div className="min-h-screen bg-[#FAFAFA]" />}>
+                    <AppRoutes />
+                  </Suspense>
+                </Router>
+              </MathLabOverlayProvider>
+            </NotebookProvider>
+          </WorkspaceLayoutProvider>
+        </StudyContextProvider>
       </ContentAvailabilityProvider>
     </AuthProvider>
   );
@@ -403,18 +428,18 @@ function AppRoutes() {
               directement. */}
           {/* Exercices : tablette et ordinateur seulement (RequireLargeScreen). */}
           <Route element={<RequireLargeScreen />}>
-          <Route path="pratique/:lessonCode" element={<PracticeHub />} />
-          <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
-          <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
-          {/* La correction de l'enseignant, ouverte depuis la cloche — en lecture seule. */}
-          <Route path="tashih/:reviewId" element={<AnswerReviewPage />} />
-          {/* « مختبر التفكير » : l'échelle, un défi (par son id stable), un numéro (« التحدّي 318 »).
+            <Route path="pratique/:lessonCode" element={<PracticeHub />} />
+            <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
+            <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
+            {/* La correction de l'enseignant, ouverte depuis la cloche — en lecture seule. */}
+            <Route path="tashih/:reviewId" element={<AnswerReviewPage />} />
+            {/* « مختبر التفكير » : l'échelle, un défi (par son id stable), un numéro (« التحدّي 318 »).
               Le serveur juge, compte et ouvre la porte ; ces pages ne font qu'afficher. */}
-          <Route path="tafkir" element={<ThinkingLadderPage />} />
-          <Route path="tafkir/n/:number" element={<ThinkingNumberPage />} />
-          <Route path="tafkir/:challengeId" element={<ThinkingChallengePage />} />
-          {/* « بوصلتي » : la jauge de départ et sa خطّة (YEAR_COMPASS.md). Le serveur sert et corrige. */}
-          <Route path="bawsala" element={<CompassPage />} />
+            <Route path="tafkir" element={<ThinkingLadderPage />} />
+            <Route path="tafkir/n/:number" element={<ThinkingNumberPage />} />
+            <Route path="tafkir/:challengeId" element={<ThinkingChallengePage />} />
+            {/* « بوصلتي » : la jauge de départ et sa خطّة (YEAR_COMPASS.md). Le serveur sert et corrige. */}
+            <Route path="bawsala" element={<CompassPage />} />
           </Route>
           {/* « التحدّي اليومي » : le serveur tient la tentative ; ces
               routes ne font que l'afficher (DAILY_CHALLENGE.md). */}
@@ -446,7 +471,9 @@ function AppRoutes() {
         <Route path="classes/:id/madar/affichage" element={<TeacherMadarDisplay />} />
         {/* « حصّة القسم » : la séance en classe d'une leçon (plan de la classe, test, podium) — plein écran, au tableau (CLASS_SESSION.md). */}
         {/* tablette et ordinateur seulement : la séance de classe se projette */}
-        <Route element={<RequireLargeScreen />}><Route path="hissa/:lessonId" element={<TeacherClassSession />} /></Route>
+        <Route element={<RequireLargeScreen />}>
+          <Route path="hissa/:lessonId" element={<TeacherClassSession />} />
+        </Route>
         {/* « نافس أستاذك » : l'enseignant joue dans UNE de ses classes — la même
             salle et les mêmes jeux que l'élève, plein écran, hors coquille. */}
         <Route path="classes/:classId/jeux" element={<GamesHub />} />
@@ -484,23 +511,25 @@ function AppRoutes() {
               Enseignant seulement — la porte est ce ProtectedRoute ;
               les notes « كرّاسي » qu'elle affiche sont servies par le
               serveur au seul propriétaire. */}
-          <Route element={<RequireLargeScreen />}><Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} /></Route>
+          <Route element={<RequireLargeScreen />}>
+            <Route path="cours/:lessonId/memoire" element={<TeacherLessonMemo />} />
+          </Route>
           {/* La pratique de la leçon, côté ENSEIGNANT : on y entre PAR LA
               LEÇON, et le Hub est la MÊME page que celle de l'élève
               (PracticeHub, mode enseignant : aucun suivi). Le lecteur
               vérifie localement et montre les réponses de SES élèves ;
               le serveur garde les écritures derrière `learner`. */}
           <Route element={<RequireLargeScreen />}>
-          {/* TeacherBankGate : une leçon qui a son tableau (« حصّة القسم ») a le بنك de l'enseignant et montre
+            {/* TeacherBankGate : une leçon qui a son tableau (« حصّة القسم ») a le بنك de l'enseignant et montre
               un exercice sur le tableau de la classe ; les autres gardent le Hub et le lecteur d'avant. */}
-          {/* « ملفّ الدرس » : le fichier de travail de l'enseignant sur UNE leçon — DANS son espace (la navigation reste),
+            {/* « ملفّ الدرس » : le fichier de travail de l'enseignant sur UNE leçon — DANS son espace (la navigation reste),
               hors du مختبر ; seul le plein écran de la سبّورة la recouvre. */}
-          <Route path="milaff/:lessonId" element={<TeacherLessonFile />} />
-          {/* « متابعة القسم » et « بطاقة المعارف » d'une leçon : dans l'espace enseignant, sous l'en-tête commun des outils */}
-          <Route path="mutabaa/:lessonId" element={<TeacherLessonTracking />} />
-          <Route path="bitaqa/:lessonId" element={<TeacherLessonCard />} />
-          <Route path="pratique/:lessonCode" element={<TeacherBankGate />} />
-          <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />} />
+            <Route path="milaff/:lessonId" element={<TeacherLessonFile />} />
+            {/* « متابعة القسم » et « بطاقة المعارف » d'une leçon : dans l'espace enseignant, sous l'en-tête commun des outils */}
+            <Route path="mutabaa/:lessonId" element={<TeacherLessonTracking />} />
+            <Route path="bitaqa/:lessonId" element={<TeacherLessonCard />} />
+            <Route path="pratique/:lessonCode" element={<TeacherBankGate />} />
+            <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />} />
           </Route>
           <Route path="atelier" element={<MathLabHome />} />
           <Route path="atelier/:toolSlug" element={<MathLabToolPage />} />
@@ -561,16 +590,16 @@ function AppRoutes() {
             site — le seul chemin était le bouton « retour » du
             navigateur. Elles se redirigent d'elles-mêmes une fois la
             session ouverte, donc aucun risque de les montrer ici. */}
-        <Route path="/login"    element={<Login />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/mot-de-passe-oublie" element={<ForgotPassword />} />
         <Route path="/reinitialiser-mot-de-passe" element={<ResetPassword />} />
-        <Route path="/methode"  element={<Methode />} />
-        <Route path="/about"    element={<About />} />
-        <Route path="/faq"      element={<FAQ />} />
-        <Route path="/contact"  element={<Contact />} />
-        <Route path="/books"        element={<BooksPage />} />
-        <Route path="/books/:slug"  element={<BookDetailPage />} />
+        <Route path="/methode" element={<Methode />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/books" element={<BooksPage />} />
+        <Route path="/books/:slug" element={<BookDetailPage />} />
 
         {/* L'écran d'attente entre l'inscription et l'espace élève.
             Publique : l'élève y arrive aussi en revenant du lien reçu
@@ -595,10 +624,10 @@ function AppRoutes() {
             Publiques et accessibles SANS compte : on doit pouvoir lire
             ce que l'on accepte avant de l'accepter. Elles sont liées
             depuis le pied de page et depuis la case de consentement. */}
-        <Route path="/confidentialite"  element={<Confidentialite />} />
-        <Route path="/cgu"              element={<CGU />} />
+        <Route path="/confidentialite" element={<Confidentialite />} />
+        <Route path="/cgu" element={<CGU />} />
         {/* « اجعل الجهاز للدراسة فقط » : le guide des parents, PUBLIC (PARENT_SPACE.md §6). */}
-        <Route path="/himaya"           element={<DeviceGuidePage />} />
+        <Route path="/himaya" element={<DeviceGuidePage />} />
 
         <Route path="*" element={<HomeRedirect />} />
       </Route>
@@ -606,24 +635,22 @@ function AppRoutes() {
       <Route element={<CourseLayout />}>
         {/* Un élève connecté n'atterrit pas sur la page de vente : il
             est renvoyé vers /espace (voir HomeRedirect). */}
-        <Route path="/"         element={<HomeRedirect />} />
+        <Route path="/" element={<HomeRedirect />} />
         {/* Catalogue, unités et leçons : compte obligatoire (RequireAccount).
             Seul "/" reste ouvert au visiteur. */}
         <Route element={<RequireAccount />}>
-        <Route path="/courses"  element={<Courses />} />
-        {/* La page d'une UNITÉ du manuel (الوحدة) : le niveau entre le ميدان et le درس (phase 8). */}
-        <Route path="/courses/:levelId/:gradeId/:chapterId/units/:unitId" element={<UnitPage />} />
+          <Route path="/courses" element={<Courses />} />
+          {/* La page d'une UNITÉ du manuel (الوحدة) : le niveau entre le ميدان et le درس (phase 8). */}
+          <Route path="/courses/:levelId/:gradeId/:chapterId/units/:unitId" element={<UnitPage />} />
 
-        {/* Les leçons — UNE frontière paresseuse (lessons/lessonRouteBoundary.jsx) :
+          {/* Les leçons — UNE frontière paresseuse (lessons/lessonRouteBoundary.jsx) :
             une route `<chemin de la leçon>/*` par leçon construite, remplacée
             par les routes réelles de la leçon dès qu'elles sont chargées.
             check-routes.mjs vérifie le montage, check-dormant-isolation.mjs
             qu'aucun dossier français ne revient. */}
-        {/* Tablette et ordinateur seulement : un téléphone lit un message
+          {/* Tablette et ordinateur seulement : un téléphone lit un message
             à la place de la leçon (RequireLargeScreen, 2026-10-27). */}
-        <Route element={<RequireLargeScreen />}>
-        {lessonRoutes}
-        </Route>
+          <Route element={<RequireLargeScreen />}>{lessonRoutes}</Route>
         </Route>
 
         {/* ── SURFACE DE QA — jamais en production ────────────────
@@ -641,10 +668,9 @@ function AppRoutes() {
             Hors de src/lessons/ : l'index des leçons, les globs de lessonLoaders.js,
             check-routes, validate-lessons et check-dormant-isolation
             n'y voient rien, et elle n'est dans aucun catalogue. */}
-        {QA_FIXTURES_ENABLED && (
-          <Route path="/__qa/rtl-lesson/*" element={<RtlLessonFixture />} />
-        )}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/rtl-lesson/*" element={<RtlLessonFixture />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-1" element={<MissionPrototype />} />}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-2" element={<MissionPrototype n={2} />} />}
       </Route>
     </Routes>
   );

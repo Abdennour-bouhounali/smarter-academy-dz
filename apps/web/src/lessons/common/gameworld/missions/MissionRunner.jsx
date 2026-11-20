@@ -1,0 +1,596 @@
+/**
+ * AN INTEGRATION MISSION PLAYED FROM DATA (`docs/reports/INTEGRATION_LESSON_PLAN.md` §6, §8, §9) — the engine of every
+ * mission after the first: the situation is a file of the lesson (its exam text, its scene, its steps, the guidance of
+ * each wrong answer); this file names no lesson and no scene.
+ *
+ * The same contract as mission 1 (`MissionPlayer.jsx`): the paper first, the world checks. A mission card, the message
+ * that the clock starts (5 s, nothing closes it), READ THE WHOLE TEXT, then the steps:
+ *   { kind: 'data' }   he taps in the text every datum and every condition carried by words (`paper[].mark`); each
+ *                      becomes a line of « المعطيات » (the robot does the first one)
+ *   { kind: 'goal' }   he taps the question(s) (`paper[].goal`)
+ *   { kind: 'plan' }   the question hides steps: he orders them (`items`, `order`); a step taken too early is answered
+ *                      by what it needs (`item.needs`)
+ *   { kind: 'work' }   one operation: what to write on the sheet (`sheet`), then its boxes (`shape`), then `check`:
+ *                      `check(values, ctx) → { ok, fact, line, scene }`. The WORLD carries out `scene` whatever he
+ *                      typed (a misreading is built, never « wrong »); `fact` may be a function of what the world
+ *                      built. A wrong answer ALWAYS gets a guidance (`fact`), never the next question.
+ * then the model copy and the marker's list. `stage` groups steps under one number of « الخطوة n من N ».
+ * Each right answer is celebrated, the end of the mission more; what must be tapped carries « اضغط هنا ».
+ */
+import { useEffect, useRef, useState } from 'react';
+import { ArrowLeft, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
+import { M } from '../kit/parts';
+import Ink from './Ink';
+import { Box, Sheet } from './parts';
+import './mission.css';
+
+const BRAVO = ['أحسنت!', 'ممتاز!', 'رائع!', 'صحيح!', 'هكذا!'];
+const WARN = 5;
+const READ = 10;
+const num = (v) => (/^\d+$/.test(String(v ?? '').trim()) ? Number(v) : null);
+const clock = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+const val = (x, ctx) => (typeof x === 'function' ? x(ctx) : x);
+
+/** The exam paper: its text whole; what he taps in it — its data and conditions, then its question. */
+function Paper({ sit, mode, data, goals, next, onMark, onGoal }) {
+  return (
+    <aside className="ms-paper" data-ms-paper>
+      <h3>{sit.session}</h3>
+      <p>
+        {sit.paper.map((p, i) => {
+          let el;
+          if (p.mark && mode === 'data' && !data.includes(p.mark))
+            el = (
+              <button
+                key={i}
+                type="button"
+                className={`ms-num is-ask ${p.mark === next ? 'ms-target' : ''}`}
+                data-ms-tap={p.mark}
+                onClick={() => onMark(p.mark)}
+              >
+                {p.t}
+              </button>
+            );
+          else if (p.goal && mode === 'goal' && !goals.includes(p.goal))
+            el = (
+              <button
+                key={i}
+                type="button"
+                className="ms-num is-goal ms-target"
+                data-ms-goal={p.goal}
+                onClick={() => onGoal(p.goal)}
+              >
+                {p.t}
+              </button>
+            );
+          else if (p.mark || p.goal) {
+            const on = p.mark ? data.includes(p.mark) : goals.includes(p.goal);
+            el = (
+              <mark key={i} className={`ms-phrase ${on ? (p.mark ? 'is-on' : 'is-goal') : ''}`}>
+                {p.t}
+              </mark>
+            );
+          } else el = <span key={i}>{p.t}</span>;
+          return p.br ? [el, <br key={`b${i}`} />] : el;
+        })}
+      </p>
+    </aside>
+  );
+}
+
+/** « ورقتي »: the typed twin of his sheet. The section he is working on is open; the others fold to their title. */
+function Copy({ sit, data, goals, plan, lines, open, onOpen }) {
+  const head = (id, title, n) => (
+    <h4>
+      <button
+        type="button"
+        className="ms-fold ms-fold--title"
+        data-ms-open={id}
+        aria-expanded={open === id}
+        onClick={() => onOpen(id)}
+      >
+        {title}
+        {n > 0 && open !== id ? ` (${n})` : ''}
+      </button>
+    </h4>
+  );
+  return (
+    <aside className="ms-book" data-ms-book={lines.length}>
+      <h3>
+        <PenLine size={18} aria-hidden="true" /> ورقتي
+      </h3>
+      {head('data', 'المعطيات', data.length)}
+      {open === 'data' && (
+        <ul data-ms-data={data.join(',')}>
+          {sit.data
+            .filter((d) => data.includes(d.id))
+            .map((d) => (
+              <li key={d.id}>{d.text}</li>
+            ))}
+        </ul>
+      )}
+      {head('goal', 'المطلوب', goals.length + plan.length)}
+      {open === 'goal' && (
+        <ul data-ms-goals={goals.join(',')} data-ms-plan={plan.join(',')}>
+          {sit.goals
+            .filter((g) => goals.includes(g.id))
+            .map((g) => (
+              <li key={g.id}>{g.text}</li>
+            ))}
+          {plan.map((id, i) => (
+            <li key={id} className="is-key">
+              {i + 1}. {sit.plan.find((x) => x.id === id).text}
+            </li>
+          ))}
+        </ul>
+      )}
+      {head('work', 'الحلّ', lines.length)}
+      {open === 'work' && (
+        <ol>
+          {lines.map((l) => (
+            <li key={l.id} className="is-key" data-ms-line={l.id} dir={l.tex ? 'ltr' : 'rtl'}>
+              {l.tex ? <M>{l.tex}</M> : l.text}
+            </li>
+          ))}
+        </ol>
+      )}
+    </aside>
+  );
+}
+
+export default function MissionRunner({ situation: sit, world, onClose }) {
+  const steps = sit.steps;
+  const STAGES = Math.max(...steps.map((s) => s.stage)) + 1; // the last one is the model copy
+  const [phase, setPhase] = useState('card'); // 'card' | 'play' | 'model' | 'marker'
+  const [warn, setWarn] = useState(null);
+  const [left, setLeft] = useState(sit.minutes * 60);
+  const [read, setRead] = useState(false);
+  const [reading, setReading] = useState(READ);
+  const [i, setI] = useState(0);
+  const [data, setData] = useState([]);
+  const [goals, setGoals] = useState([]);
+  const [plan, setPlan] = useState([]);
+  const [vals, setVals] = useState({});
+  const [fails, setFails] = useState({});
+  const [lines, setLines] = useState([]);
+  const [written, setWritten] = useState({});
+  const [v, setV] = useState({});
+  const [fact, setFact] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const [coins, setCoins] = useState(0);
+  const [slips, setSlips] = useState(0);
+  const [win, setWin] = useState(null);
+  const [finale, setFinale] = useState(false);
+  const [ticks, setTicks] = useState([]);
+  const [pen, setPen] = useState(false);
+  const [idle, setIdle] = useState(false);
+  const [open, setOpen] = useState('data');
+  const acts = useRef(0);
+  const act = () => {
+    acts.current += 1;
+    setIdle(false);
+  };
+  const step = phase === 'play' ? steps[i] : null;
+  const ctx = { vals, fails: fails[step?.id] ?? 0, data, plan };
+  const playing = phase === 'play' && read;
+
+  useEffect(() => {
+    if (!win) return undefined;
+    const t = setTimeout(() => setWin(null), 1500);
+    return () => clearTimeout(t);
+  }, [win]);
+  useEffect(() => {
+    if (warn == null) return undefined;
+    if (warn <= 0) {
+      setWarn(null);
+      setPhase('play');
+      return undefined;
+    }
+    const t = setTimeout(() => setWarn((w) => w - 1), 1000);
+    return () => clearTimeout(t);
+  }, [warn]);
+  useEffect(() => {
+    if (phase !== 'play') return undefined;
+    const t = setInterval(() => setLeft((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [phase]);
+  useEffect(() => {
+    if (phase !== 'play' || read || reading <= 0) return undefined;
+    const t = setTimeout(() => setReading((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [phase, read, reading]);
+  useEffect(() => {
+    if (!playing) return undefined;
+    const seen = acts.current;
+    const t = setTimeout(() => acts.current === seen && setIdle(true), 8000);
+    return () => clearTimeout(t);
+  }, [playing, i, data.length, goals.length, plan.length, written, fact]);
+  // the robot does the FIRST gesture itself: it underlines the first datum and writes it in « المعطيات »
+  useEffect(() => {
+    if (!playing || step?.kind !== 'data' || data.length) return undefined;
+    const t = setTimeout(() => mark(sit.data[0].id, true), 1600);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [playing, step?.kind]);
+  // « ورقتي » opens on the section he is working on
+  useEffect(() => {
+    if (step) setOpen(step.kind === 'data' ? 'data' : step.kind === 'work' ? 'work' : 'goal');
+  }, [step]);
+
+  const bravo = (pay) => {
+    setCoins((c) => c + pay);
+    setWin({ id: Date.now(), pay, word: BRAVO[Math.floor(Math.random() * BRAVO.length)] });
+    world.cheer?.(false);
+  };
+  const advance = (pay = 10) => {
+    act();
+    setV({});
+    if (i + 1 >= steps.length) {
+      setCoins((c) => c + pay);
+      setPhase('model');
+      setFinale(true);
+      world.cheer?.(true);
+    } else {
+      setI(i + 1);
+      bravo(pay);
+    }
+  };
+  const slipped = (id, text) => {
+    act();
+    setSlips((x) => x + 1);
+    setFails((f) => ({ ...f, [id]: (f[id] ?? 0) + 1 }));
+    setFact(text);
+  };
+  const wrote = (id) => {
+    act();
+    setWritten((w) => ({ ...w, [id]: true }));
+  };
+
+  const mark = (id, demo = false) => {
+    act();
+    setData((d) => (d.includes(id) ? d : [...d, id]));
+    const d = sit.data.find((x) => x.id === id);
+    setFact(demo ? `الروبوت سطّر « ${d.text} » وكتبه في المعطيات. دورك: سطّر كلّ ما يلزمك من النصّ.` : d.say);
+  };
+  const goal = (id) => {
+    act();
+    setGoals((g) => [...g, id]);
+    setFact(null);
+  };
+  const pick = (id) => {
+    const want = step.order[plan.length];
+    if (id !== want) return slipped(step.id, sit.plan.find((x) => x.id === id).needs);
+    act();
+    setFact(null);
+    setPlan((p) => [...p, id]);
+    return undefined;
+  };
+  const submit = async () => {
+    const r = step.check(Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])), ctx);
+    act();
+    setFact(null);
+    let built = null;
+    if (r.scene) {
+      setBusy(true);
+      built = await world.run(r.scene);
+      setBusy(false);
+    }
+    const said = typeof r.fact === 'function' ? r.fact(built) : r.fact;
+    if (!r.ok) return slipped(step.id, said);
+    setVals((s) => ({ ...s, [step.id]: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])) }));
+    if (r.line) setLines((ls) => [...ls.filter((l) => l.id !== step.id), { id: step.id, ...r.line }]);
+    setFact(said ?? null);
+    return advance(step.pay ?? 10);
+  };
+
+  const stars = slips <= 2 ? 3 : slips <= 5 ? 2 : 1;
+  const stage = phase === 'play' ? step.stage : STAGES;
+  const nextMark = sit.data.find((d) => !data.includes(d.id))?.id;
+  const ASK = !read
+    ? 'اقرأ التمرين كلّه أوّلًا، حتّى آخر سؤال.'
+    : phase === 'model'
+      ? 'قارن ورقتك بهذا الحلّ، وصحّحها بقلمك.'
+      : phase === 'marker'
+        ? 'ماذا في ورقتك؟ ضع علامة على ما كتبتَه.'
+        : step.kind === 'data'
+          ? data.length < sit.data.length
+            ? `ما المعطيات؟ سطّر في النصّ كلّ عدد وكلّ شرط (${data.length} من ${sit.data.length}).`
+            : 'هذه معطياتك. اكتبها على ورقتك.'
+          : step.kind === 'goal'
+            ? 'ما المطلوب؟ اضغط على السؤال في النصّ.'
+            : step.kind === 'plan'
+              ? plan.length < step.order.length
+                ? `السؤال يخفي خطوات. ما الذي تبحث عنه ${plan.length ? 'بعد ذلك' : 'أوّلًا'}؟`
+                : 'هذه خطّتك. اكتبها على ورقتك.'
+              : val(step.ask, ctx);
+
+  if (phase === 'card')
+    return (
+      <div className="ms-root ms-root--card" dir="rtl" data-ms-step={0} data-ms-warn={warn ?? 'off'}>
+        {warn == null ? (
+          <div className="ms-card" data-ms-card>
+            <h2>{sit.title}</h2>
+            <p className="ms-card__session">{sit.session}</p>
+            <p>{sit.intro}</p>
+            <p className="ms-card__need">
+              <PenLine size={24} aria-hidden="true" /> ورقة · قلم
+              <Clock size={24} aria-hidden="true" /> {sit.minutes} دقيقة
+            </p>
+            <button type="button" className="ms-btn ms-btn--go ms-target" data-ms-start onClick={() => setWarn(WARN)}>
+              ورقتي وقلمي أمامي — أبدأ
+              <ArrowLeft size={20} aria-hidden="true" />
+            </button>
+            <button type="button" className="ms-btn ms-btn--ghost" data-ms-close onClick={onClose}>
+              ليس الآن
+            </button>
+          </div>
+        ) : (
+          <div className="ms-card ms-card--warn" data-ms-clock-warn={warn} role="status">
+            <Clock size={54} aria-hidden="true" />
+            <h2>الساعة ستبدأ الآن</h2>
+            <p>أمامك {sit.minutes} دقيقة. جهّز ورقتك وقلمك.</p>
+            <b className="ms-card__count">{warn}</b>
+          </div>
+        )}
+      </div>
+    );
+
+  const long = sit.paper.reduce((s, x) => s + x.t.length, 0) > 420;
+  const shape = step?.kind === 'work' ? val(step.shape, ctx) : null;
+  const full = shape ? shape.every((p) => !p.box || num(v[p.box]) != null) : false;
+  return (
+    <div
+      className={`ms-root ${long ? 'ms-root--long' : ''} ${idle ? 'is-idle' : ''} ${!read ? 'is-reading' : ''}`}
+      dir="rtl"
+      data-ms-step={stage}
+      data-ms-at={step?.id ?? phase}
+      data-ms-busy={busy}
+      data-ms-read={read}
+    >
+      <header className="ms-head">
+        <b className="ms-count" data-ms-progress={`${stage}/${STAGES}`}>
+          الخطوة {stage} من {STAGES}
+        </b>
+        <h2 data-ms-ask>{ASK}</h2>
+        <span className={`ms-clock ${left === 0 ? 'is-over' : ''}`} dir="ltr" data-ms-clock={left}>
+          <Clock size={20} aria-hidden="true" />
+          {clock(left)}
+        </span>
+        <button
+          type="button"
+          className={`ms-tool ${pen ? 'is-on' : ''}`}
+          data-ms-pen-open
+          aria-pressed={pen}
+          onClick={() => setPen((x) => !x)}
+        >
+          <PenLine size={20} aria-hidden="true" />
+          قلم
+        </button>
+        <span className="ms-coins" data-ms-coins={coins}>
+          <Coins size={20} aria-hidden="true" />
+          {coins}
+        </span>
+        <button type="button" className="ms-x" aria-label="خروج" data-ms-close onClick={onClose}>
+          <X size={20} aria-hidden="true" />
+        </button>
+      </header>
+
+      <div className="ms-body">
+        <Paper
+          sit={sit}
+          mode={playing ? step.kind : null}
+          data={data}
+          goals={goals}
+          next={nextMark}
+          onMark={(id) => mark(id)}
+          onGoal={goal}
+        />
+        <div className="ms-stage">
+          {playing && step.kind === 'plan' && plan.length < step.order.length && (
+            <div className="ms-connect" data-ms-plan-pick>
+              <p className="ms-connect__goal">{sit.goals[0].text}</p>
+              <div className="ms-connect__items ms-connect__items--plan">
+                {sit.plan
+                  .filter((x) => !plan.includes(x.id))
+                  .map((x) => (
+                    <button
+                      key={x.id}
+                      type="button"
+                      className="ms-chip ms-target"
+                      data-ms-need={x.id}
+                      onClick={() => pick(x.id)}
+                    >
+                      {x.text}
+                    </button>
+                  ))}
+              </div>
+            </div>
+          )}
+          {phase === 'model' && (
+            <div className="ms-model" data-ms-copy>
+              <h3>{sit.session} — الحلّ</h3>
+              {sit.model.map((l, k) =>
+                l.tex ? (
+                  <p key={k} dir="ltr">
+                    <M>{l.tex}</M>
+                  </p>
+                ) : (
+                  <p key={k}>{l.t}</p>
+                ),
+              )}
+            </div>
+          )}
+          {fact && phase === 'play' && (
+            <p className="ms-fact" data-ms-fact>
+              {fact}
+            </p>
+          )}
+          <div className="ms-act" data-ms-act>
+            {!read && (
+              <>
+                {reading > 0 && <span className="ms-hint">خذ وقتك في القراءة…</span>}
+                {reading <= 0 && (
+                  <button
+                    type="button"
+                    className="ms-btn ms-btn--go ms-target"
+                    data-ms-read-done
+                    onClick={() => {
+                      act();
+                      setRead(true);
+                    }}
+                  >
+                    <Check size={18} aria-hidden="true" />
+                    قرأتُ التمرين كلّه
+                  </button>
+                )}
+              </>
+            )}
+            {playing && step.kind === 'data' && data.length < sit.data.length && (
+              <span className="ms-hint">الأعداد والشروط في نصّ الامتحان، على اليمين.</span>
+            )}
+            {playing && step.kind === 'data' && data.length === sit.data.length && (
+              <Sheet
+                id="data"
+                written={false}
+                onWritten={() => advance()}
+                text="اكتب « المعطيات » كما في ورقتك على الشاشة."
+              />
+            )}
+            {playing && step.kind === 'goal' && goals.length < sit.goals.length && (
+              <span className="ms-hint">السؤال في آخر النصّ، على اليمين.</span>
+            )}
+            {playing && step.kind === 'goal' && goals.length === sit.goals.length && (
+              <Sheet id="goal" written={false} onWritten={() => advance()} text="اكتب « المطلوب » على ورقتك." />
+            )}
+            {playing && step.kind === 'plan' && plan.length < step.order.length && (
+              <span className="ms-hint">اضغط على ما تبحث عنه {plan.length ? 'بعد ذلك' : 'أوّلًا'}.</span>
+            )}
+            {playing && step.kind === 'plan' && plan.length === step.order.length && (
+              <Sheet
+                id="plan"
+                written={false}
+                onWritten={() => advance()}
+                text="اكتب خطّتك تحت « المطلوب »: الخطوات بترتيبها."
+              />
+            )}
+            {playing && step.kind === 'work' && (
+              <Sheet
+                key={step.id}
+                id={step.id}
+                written={written[step.id]}
+                onWritten={() => wrote(step.id)}
+                text={val(step.sheet, ctx)}
+              >
+                <span className="ms-shape" dir={step.rtl ? 'rtl' : 'ltr'}>
+                  {shape.map((p, k) =>
+                    p.box ? (
+                      <Box
+                        key={k}
+                        value={v[p.box]}
+                        onChange={(x) => setV((s) => ({ ...s, [p.box]: x }))}
+                        label={p.label ?? p.box}
+                        name={p.box}
+                        w={p.w ?? 3}
+                        onEnter={() => full && !busy && submit()}
+                      />
+                    ) : p.tex ? (
+                      <M key={k}>{p.tex}</M>
+                    ) : (
+                      <span key={k}>{p.t}</span>
+                    ),
+                  )}
+                </span>
+                <button type="button" className="ms-btn" data-ms-check disabled={!full || busy} onClick={submit}>
+                  {step.world ? <Play size={18} aria-hidden="true" /> : <Check size={18} aria-hidden="true" />}
+                  {step.world ?? 'أكتبه في ورقتي'}
+                </button>
+              </Sheet>
+            )}
+            {phase === 'model' && !finale && (
+              <button
+                type="button"
+                className="ms-btn ms-btn--go ms-target"
+                data-ms-corrected
+                onClick={() => setPhase('marker')}
+              >
+                <Check size={18} aria-hidden="true" />
+                صحّحتُ ورقتي
+              </button>
+            )}
+            {phase === 'marker' && (
+              <div className="ms-marker" data-ms-marker={ticks.length}>
+                <b>ماذا في ورقتك؟</b>
+                {sit.marker.map((m, k) => (
+                  <label key={k}>
+                    <input
+                      type="checkbox"
+                      data-ms-tick={k}
+                      checked={ticks.includes(k)}
+                      onChange={() => setTicks((s) => (s.includes(k) ? s.filter((x) => x !== k) : [...s, k]))}
+                    />
+                    {m}
+                  </label>
+                ))}
+                <button type="button" className="ms-btn ms-btn--go" data-ms-done onClick={onClose}>
+                  أنهيتُ
+                  <ArrowLeft size={18} aria-hidden="true" />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        <Copy sit={sit} data={data} goals={goals} plan={plan} lines={lines} open={open} onOpen={setOpen} />
+      </div>
+
+      {win && !finale && (
+        <div key={win.id} className="ms-win" data-ms-win={win.pay} aria-live="polite">
+          <b>{win.word}</b>
+          <span dir="ltr">
+            +{win.pay}
+            <Coins size={26} aria-hidden="true" />
+          </span>
+        </div>
+      )}
+      {finale && (
+        <div className="ms-finale" data-ms-finale role="status">
+          <div className="ms-confetti" aria-hidden="true">
+            {Array.from({ length: 36 }, (_, k) => (
+              <i
+                key={k}
+                style={{
+                  '--x': `${(k * 37) % 100}%`,
+                  '--d': `${(k % 9) * 0.12}s`,
+                  '--c': ['#fbbf24', '#34d399', '#a5f3fc', '#f472b6'][k % 4],
+                }}
+              />
+            ))}
+          </div>
+          <div className="ms-finale__card">
+            <Trophy size={76} aria-hidden="true" />
+            <h2>أنهيتَ المهمّة!</h2>
+            <p className="ms-finale__stars" data-ms-stars={stars}>
+              {[0, 1, 2].map((k) => (
+                <Star key={k} size={46} className={k < stars ? 'is-on' : ''} aria-hidden="true" />
+              ))}
+            </p>
+            <p>حللتَ وضعية إدماجية من {sit.session}، بورقتك وقلمك.</p>
+            <p className="ms-finale__coins">
+              <Coins size={30} aria-hidden="true" /> {coins} قطعة
+              <Clock size={30} aria-hidden="true" /> بقي {clock(left)}
+            </p>
+            <button
+              type="button"
+              className="ms-btn ms-btn--go ms-target"
+              data-ms-finale-next
+              onClick={() => setFinale(false)}
+            >
+              أقارن ورقتي بالحلّ
+              <ArrowLeft size={20} aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      )}
+      <Ink open={pen} onClose={() => setPen(false)} />
+    </div>
+  );
+}

@@ -4,7 +4,7 @@
  * forge, the statues, the workshop, the store of the last bridge, the guidance after a mistake).
  * The title screen, the top bar, the hub, the tablets, the result and the end are the kit's.
  */
-import { useEffect, useMemo, useState } from 'react';
+import { createElement, useEffect, useMemo, useState } from 'react';
 import { X, ArrowLeft, ArrowRight, Star, Heart, Lightbulb, Flame, Truck, Coins } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { DivisorIslesGame } from './Game';
@@ -16,6 +16,7 @@ import RuleForge from '../kit/RuleForge';
 import { FORGE_PARTS } from './forgeParts';
 import Workshop from './Workshop';
 import MissionPlayer from '../missions/MissionPlayer';
+import MissionRunner from '../missions/MissionRunner';
 import { signTex } from './mark';
 
 import Fit, { stepRoom } from '../kit/Fit';
@@ -869,15 +870,17 @@ const WORLD = {
     ) : null,
   Over: ({ s, game }) =>
     s.mission ? (
-      <MissionPlayer
-        situation={s.mission}
-        world={{
+      // a mission written as steps is played by the data-driven runner; mission 1 (the lots) keeps its own player
+      createElement(s.mission.steps ? MissionRunner : MissionPlayer, {
+        key: s.mission.id,
+        situation: s.mission,
+        world: {
           run: (spec, opts) => game.missionRun(spec, opts),
           stock: (a, b) => game.missionStock(a, b),
           cheer: (big) => game.missionCheer(big),
-        }}
-        onClose={() => game.leaveMission()}
-      />
+        },
+        onClose: () => game.leaveMission(),
+      })
     ) : s.depot ? (
       <DepotHud d={s.depot} eq={s.equation} game={game} paused={s.phase !== 'depot'} />
     ) : null,

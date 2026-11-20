@@ -846,3 +846,27 @@
     animation: none;
   }
 }
+
+/* A LONG EXAM TEXT (a situation with a list of offers and a budget) gets a wider paper and tighter lines, so that the
+   whole text stays on the screen at a reading size; the notebook gives the room */
+.ms-root--long .ms-body {
+  grid-template-columns: 28.5rem 1fr 16.5rem;
+}
+.ms-root.ms-root--long .ms-paper p {
+  font-size: 1.125rem;
+  line-height: 1.62;
+}
+.ms-fold--title {
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.ms-connect__items--plan {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 2.6rem; /* room for « اضغط هنا » above the first step */
+}

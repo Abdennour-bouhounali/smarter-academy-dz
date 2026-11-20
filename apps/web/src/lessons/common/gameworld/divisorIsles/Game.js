@@ -2217,8 +2217,12 @@ export class DivisorIslesGame extends WorldRuntime {
     h.yaw = 1.9;
     this.camPos.copy(this.depot.camPos).add(new THREE.Vector3(0, 6, 8));
     this.camLook.copy(this.depot.camLook);
-    this.depot.setStock({ a: null, b: null }, sit.kinds);
-    this.depot.stockLabel(null, null, sit.stock); // not counted yet (« ؟ »), but each pile already has its size
+    if (sit.scene?.kind === 'ring') this.depot.setPlot(sit.scene);
+    else {
+      this.depot.clearPlot();
+      this.depot.setStock({ a: null, b: null }, sit.kinds);
+      this.depot.stockLabel(null, null, sit.stock); // not counted yet (« ؟ »), but each pile already has its size
+    }
     this.skyNow = SKIES[1].slice();
     this.input.clear();
     this.set({
@@ -2238,7 +2242,8 @@ export class DivisorIslesGame extends WorldRuntime {
   async missionRun(spec, opts = {}) {
     const { ship = false } = opts;
     const sit = this.state.mission;
-    if (!sit) return;
+    if (!sit) return null;
+    if (spec.ring) return this.depot.runRing(spec.ring);
     if (spec.pairing) {
       this.depot.stockLabel(sit.stock.a, sit.stock.b, sit.stock); // the two stocks stand whole while one is laid along the other
       await this.depot.runPairing(spec.pairing, spec.colors);
@@ -2252,6 +2257,7 @@ export class DivisorIslesGame extends WorldRuntime {
 
   /** What the robot has counted so far shows on the quay (`null` = not counted yet). */
   missionStock(a, b) {
+    if (this.state.mission?.scene?.kind) return; // a scene of its own has no quay to count
     this.depot?.stockLabel(a, b, this.state.mission?.stock ?? null);
   }
 
@@ -2285,6 +2291,7 @@ export class DivisorIslesGame extends WorldRuntime {
   }
 
   leaveMission() {
+    this.depot?.clearPlot();
     this.set({ mission: null });
     this.leaveDepot();
     this.refreshObjective();

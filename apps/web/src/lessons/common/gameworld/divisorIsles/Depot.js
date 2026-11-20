@@ -624,6 +624,127 @@ export class Depot {
   }
 
   /**
+   * THE SCENE « ring » OF A MISSION (BEM 2020: trees around a rectangular plot). The quay is cleared — no pile, no
+   * truck — and a plot `L × W` (in metres, drawn to scale) lies on the packing floor with its two measures.
+   */
+  setPlot({ L, W }) {
+    this.clearSim();
+    this.clearPlot();
+    [this.pallet, this.truck, this.second?.group].forEach((o) => o && (o.visible = false));
+    const s = Math.min(11.5 / L, 6.6 / W);
+    const g = new THREE.Group();
+    g.position.set(0, 0.11, PAD.z);
+    const soil = new THREE.Mesh(new THREE.BoxGeometry(L * s, 0.1, W * s), std(0x9ccf6a));
+    soil.receiveShadow = true;
+    g.add(soil);
+    const side = (text, x, z) => {
+      const tag = textSprite(text, { h: 0.95, bg: 'rgba(10,26,60,0.9)', stroke: null, color: '#fff7d6' });
+      tag.position.set(x, 1.5, z);
+      g.add(tag);
+    };
+    side(`${L} م`, 0, (W * s) / 2 + 0.75);
+    side(`${W} م`, (L * s) / 2 + 1.1, 0);
+    this.group.add(g);
+    this.plot = { g, L, W, s, trees: [] };
+  }
+
+  clearPlot() {
+    if (!this.plot) return;
+    this.group.remove(this.plot.g);
+    this.plot.g.traverse((o) => {
+      o.geometry?.dispose();
+      if (o.material && !this.kept?.has(o.material)) {
+        o.material.map?.dispose();
+        o.material.dispose();
+      }
+    });
+    this.plot = null;
+    [this.pallet, this.truck].forEach((o) => o && (o.visible = true));
+  }
+
+  /**
+   * The world PLANTS what he decided: one tree every `d` metres around the plot, starting at a corner and walking the
+   * whole way round. What his spacing produces is shown, never judged: a corner that got no tree carries a red sign,
+   * and so does a last gap shorter than the others. With `count`, a count follows the planting. Resolves with what
+   * was built.
+   */
+  async runRing({ d, count: counted = false }) {
+    const { game, plot } = this;
+    if (!plot || !(d > 0)) return null;
+    plot.trees.forEach((o) => plot.g.remove(o));
+    plot.trees = [];
+    const { L, W, s } = plot;
+    const P = 2 * (L + W);
+    const at = (m) => {
+      const x0 = (-L * s) / 2;
+      const z0 = (W * s) / 2;
+      if (m <= L) return [x0 + m * s, z0];
+      if (m <= L + W) return [x0 + L * s, z0 - (m - L) * s];
+      if (m <= 2 * L + W) return [x0 + L * s - (m - L - W) * s, z0 - W * s];
+      return [x0, z0 - W * s + (m - 2 * L - W) * s];
+    };
+    const put = (o) => {
+      plot.g.add(o);
+      plot.trees.push(o);
+      return o;
+    };
+    const n = Math.ceil(P / d - 1e-9);
+    const size = Math.max(0.16, Math.min(0.5, (d * s) / 2.2));
+    const trunkGeo = new THREE.CylinderGeometry(size * 0.16, size * 0.2, size * 1.1, 6);
+    const leafGeo = new THREE.ConeGeometry(size * 0.7, size * 2, 7);
+    const trunkMat = std(0x8a6239);
+    const leafMat = std(0x2f8748);
+    const count = put(textSprite('0', { h: 1.5, bg: 'rgba(10,26,60,0.9)', stroke: null, color: '#fff7d6' }));
+    count.position.set(0, 2.4, 0);
+    count.visible = counted; // the count is HIS to find: the plot shows it only when he asks it to count
+    const fast = game.instantSim || n > 60;
+    for (let k = 0; k < n; k += 1) {
+      if (game.dead || this.plot !== plot) return null;
+      const [x, z] = at(k * d);
+      const tree = put(new THREE.Group());
+      const trunk = new THREE.Mesh(trunkGeo, trunkMat);
+      trunk.position.y = size * 0.55;
+      const leaf = new THREE.Mesh(leafGeo, leafMat);
+      leaf.position.y = size * 1.9;
+      leaf.castShadow = true;
+      tree.add(trunk, leaf);
+      tree.position.set(x, 0.05, z);
+      count.userData.setText(String(k + 1));
+      if (!fast || k % 8 === 0) {
+        if (!fast) game.audio.play('plank', k);
+        await game.tween(
+          fast ? 0.03 : Math.max(0.05, 0.9 / Math.sqrt(n)),
+          (t) => tree.scale.setScalar(0.2 + 0.8 * t),
+          easeOut,
+        );
+      }
+    }
+    const red = (text, x, z, h = 0.85) => {
+      const tag = put(textSprite(text, { h, bg: 'rgba(190,40,40,0.95)', stroke: null, color: '#ffffff' }));
+      tag.position.set(x, 2.1, z);
+    };
+    const corners = [0, L, L + W, 2 * L + W].filter((m) => m % d !== 0);
+    corners.forEach((m) => {
+      const [x, z] = at(m);
+      const post = put(new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.13, 1.5, 8), glow(0xe5484d, 0.6)));
+      post.position.set(x, 0.75, z);
+      red('ركن بلا شجرة', x, z);
+    });
+    const gap = P - (n - 1) * d;
+    const uneven = Math.abs(gap - d) > 1e-9;
+    if (uneven) {
+      const [x, z] = at(P - gap / 2);
+      red(`${Number(gap.toFixed(2))} م فقط`, x, z - 0.9, 0.8);
+    }
+    const [x1, z1] = at(d / 2);
+    const first = put(textSprite(`${d} م`, { h: 0.8, bg: 'rgba(255,244,214,0.96)', stroke: null, color: '#3b2a06' }));
+    first.position.set(x1, 1.3, z1 + 0.7);
+    game.audio.play(corners.length || uneven ? 'key' : 'success');
+    await game.wait(game.instantSim ? 0.001 : 0.4);
+    return { n, corners: corners.length, gap, uneven };
+  }
+
+  /**
    * The TWO stocks of a mission stand apart on the quay, each pile under its own count (owner, 2026-11-20). The first
    * is the depot's pile; the second is built beside it the first time a mission asks for it.
    */

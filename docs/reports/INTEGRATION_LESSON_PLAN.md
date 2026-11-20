@@ -265,6 +265,24 @@ depot plays every line); what changes is WHERE he works.
 > يقسم…؟ »). The greatest common divisor is never offered: it is the answer. The question of the step is rewritten
 > from his number (« العدد 8 ترك صناديق… »). Every later mission keeps this rule: each wrong answer has its guidance.
 
+> **MISSION 2 IS BUILT (2026-11-20, `http://localhost:5173/__qa/mission-2`) — and with it THE ENGINE of every later
+> mission.** `missions/MissionRunner.jsx` plays a mission FROM DATA: a situation is one file of the lesson (here
+> `wadiya-idmajiya-aadad/missions/bem2020.js`, tested) holding the exam text with what is underlined in it, the question
+> and the steps it hides, each operation (`sheet` to write, `shape` of its boxes, `check` with THE GUIDANCE OF EACH
+> WRONG ANSWER and the `scene` the world carries out), the model copy and the marker's list. Step kinds: `data` (he
+> underlines every number AND every condition carried by words), `goal`, `plan` (he orders the hidden steps; one taken
+> too early is answered by what it needs), `work`. The shared pieces are `missions/parts.jsx`; mission 1 keeps its own
+> player (`MissionPlayer.jsx`) until it is rewritten as data. BEM 2020 in 10 stages: data (9 lines), question, plan
+> (4 steps), the three divisions of the PGCD, the spacing — **the plot is PLANTED with whatever he types** (scene
+> « ring », `Depot.js › setPlot / runRing`: a corner without a tree and a shorter last gap carry a red sign) — the
+> perimeter and the count, the budget (32000 − 1400, ÷ 34), the percentage (100 % + 125 %) and the price, the sentence,
+> then the model copy and the marker's list. The budget is worked by arithmetic (the official solution uses an
+> inequality, taught later in the year): 400 دج either way. A long exam text gets a wider paper (`ms-root--long`).
+> The walk of the missions is `node apps/web/e2e/mission.mjs <1|2> <out>` (kept): it plays the mission through its UI
+> with wrong answers on the way and fails on a text under 18 px, on text beyond the screen, on a missing guidance, on
+> a success after a wrong answer, on a page error. Both missions pass it; 9 screens of mission 2 looked at.
+> NOT built: mission 3, the home of the lesson, the save, hearts; mission 2's « classmate's copy » episode of §3.
+
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,
 « المطلوب », « الحلّ »), and the depot is what proves each line. Every step has the same three beats, always shown in
