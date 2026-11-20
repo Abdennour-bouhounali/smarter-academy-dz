@@ -469,6 +469,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/bahth-pgcd.json'); // lesson 6: the two algorithms (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/awwaliyan-fima-baynahuma.json'); // lesson 7: coprime numbers (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/ikhtizal-kasr.json'); // lesson 8: reducing a fraction (2026-11-20)
+    expect(files.map((f) => f.name)).toContain('4am/wadiya-idmajiya-aadad.json'); // lesson 9: أدمج تعلّماتي (2026-11-20)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',

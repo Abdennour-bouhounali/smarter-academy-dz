@@ -3786,3 +3786,22 @@
 .cs-workwin .katex {
   white-space: nowrap;
 }
+
+/* a mission on the board (the last lesson of a unit): what the class needs, then the lesson's world over the window */
+.cs-mission__needs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cs-mission__needs li {
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #1e2a55;
+  font-size: 1.5rem;
+  font-weight: 800;
+}

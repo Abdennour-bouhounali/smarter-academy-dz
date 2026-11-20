@@ -283,6 +283,19 @@ depot plays every line); what changes is WHERE he works.
 > a success after a wrong answer, on a page error. Both missions pass it; 9 screens of mission 2 looked at.
 > NOT built: mission 3, the home of the lesson, the save, hearts; mission 2's « classmate's copy » episode of §3.
 
+> **ITS BOARD AND ITS CLASS TEST ARE BUILT (2026-11-20): `status:lesson-v2 -- --lesson wadiya-idmajiya-aadad` prints ✅.**
+> The hour on the board IS a mission: `board/script.js` holds two stations of a NEW kind, `mission`
+> (`features/classSession/LessonBoard.jsx › MissionStation`): the station says what the class needs (a sheet each, a
+> pen, the mission's minutes), then « افتح المهمّة على السبّورة » mounts the lesson's OWN world on that mission over the
+> whole window, as a preview (`MissionIsle › board = { mission, onLeave }`); the class solves on paper, one student
+> types, the board builds it. Leaving the mission, the world's ✕ or « خروج من المعاينة » come back to the station. ONE
+> mission per hour. The written memo (`board/memo.js`, 14 tests) covers both hours; the class test is
+> `content/class-tests/4am/wadiya-idmajiya-aadad.json` (8 start, 8 end, 3 pool). The teacher's header now holds every
+> tool but « بطاقة المعارف » (the lesson has no knowledge of its own). Walk kept: `e2e/missionBoard.mjs`.
+> LIMITS, said by their author (an Opus agent) and not corrected: no opening of the memo is the board's own (the
+> memo's drawings cannot draw crates or trees); the class test has no question in words (« which datum is needed »):
+> no existing check type judges one; the memo was looked at on its page (first part only), never printed.
+>
 > **THE LESSON IS BUILT (2026-11-20) — except its board and its class test.** The owner said yes to the home (« 1-yes »).
 > « أدمج تعلّماتي » of 4AM unit 1 is a v2 lesson of its own kind: its world is **« جزيرة المهمّات »**
 > (`gameworld/missionIsle/`: `Game.js` on the shared runtime, `MissionIsle.jsx`), the oasis island alone — no road, no

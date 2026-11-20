@@ -8,7 +8,7 @@
  * be reached from the rail, nothing is ever locked, the footer whispers one oral question, the board tools (class, pen,
  * pointer, curtain, timer) are the same on every screen. Nothing scrolls; nothing here is a student's progress.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,6 +19,7 @@ import {
   Minus,
   NotebookPen,
   Plus,
+  Presentation,
   RotateCcw,
   Star,
   Swords,
@@ -27,6 +28,9 @@ import {
   X,
 } from 'lucide-react';
 import MathText from '../../lessons/common/components/MathText';
+
+// the lesson's game world (three.js): its own chunk, loaded only when a mission is opened on the board
+const LessonGameWorld = lazy(() => import('../../lessons/common/gameworld/LessonGameWorld'));
 import { playSfx } from '../../lessons/common/utils/playEffect';
 import {
   QUANTITIES,
@@ -58,6 +62,7 @@ import {
 } from './lessonScripts';
 
 const LL = {
+  openMission: 'افتح المهمّة على السبّورة',
   exit: 'خروج',
   prev: 'السابق',
   next: 'التالي',
@@ -149,6 +154,59 @@ function useLater() {
 
 /** What the board remembers of the hour while the teacher moves between screens (kept for the browser tab, never sent). */
 export const EMPTY_MEMO = { step: 0, log: [], stars: 0, preds: 0, rule: null, sealed: false, readers: [] };
+
+/**
+ * A MISSION ON THE BOARD (the last lesson of a unit, INTEGRATION_LESSON_PLAN.md): the station says what the class needs
+ * — paper, pen, the minutes — and opens the lesson's OWN world on that mission, over the whole window, as a preview
+ * (nothing is recorded). The class solves on paper; the board asks, builds what one student types and answers a wrong
+ * value by its fact. Leaving the mission comes back to this station.
+ */
+function MissionStation({ step }) {
+  const [open, setOpen] = useState(false);
+  const board = useMemo(() => ({ mission: step.mission, onLeave: () => setOpen(false) }), [step.mission]);
+  // the world's own « ✕ » and « خروج من المعاينة » lead to `#board`: the hash closes the world, then is cleared
+  useEffect(() => {
+    if (!open) return undefined;
+    const close = () => {
+      if (window.location.hash !== '#board') return;
+      setOpen(false);
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    };
+    window.addEventListener('hashchange', close);
+    return () => window.removeEventListener('hashchange', close);
+  }, [open]);
+  return (
+    <div className="cs-sit cs-mission" data-cs-mission={step.mission}>
+      <p className="cs-say">
+        <MathText>{step.text}</MathText>
+      </p>
+      <ul className="cs-mission__needs">
+        {step.needs.map((n) => (
+          <li key={n}>{n}</li>
+        ))}
+      </ul>
+      <div className="cs-actrow">
+        <p className="cs-quest">{step.question}</p>
+        <button type="button" className="cs-btn cs-btn--big" onClick={() => setOpen(true)} data-cs-mission-open>
+          <Presentation size={22} aria-hidden="true" /> {LL.openMission}
+        </button>
+      </div>
+      {open && (
+        <Suspense fallback={null}>
+          <LessonGameWorld
+            worldId={step.world}
+            config={{ id: step.lesson, title: step.title, modules: [] }}
+            basePath=""
+            exitTo="#board"
+            completedModules={[]}
+            board={board}
+            preview
+          />
+        </Suspense>
+      )}
+    </div>
+  );
+}
 
 function Situation({ step }) {
   const c = useMemo(() => outcome(step.bridge.a, step.bridge.b), [step]);
@@ -1019,6 +1077,7 @@ export default function LessonBoard({ script, rules, students, seating, memo, se
           {step.kind === 'trace' && <p>{LL.copy}</p>}
         </header>
         {step.kind === 'situation' && <Situation step={step} />}
+        {step.kind === 'mission' && <MissionStation step={step} />}
         {step.kind === 'bridges' && <Bridges step={step} memo={memo} patch={patch} />}
         {step.kind === 'forge' && <Forge memo={memo} patch={patch} goBack={() => go(i - 1)} />}
         {step.kind === 'name' && (

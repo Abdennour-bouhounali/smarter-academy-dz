@@ -38,12 +38,12 @@ export class GameAudio {
   /** The paper mode: an exam has no music. The effects stay (a right answer still chimes). */
   setMusic(on) {
     this.musicWanted = on;
-    if (this.musicGain) this.musicGain.gain.setTargetAtTime(on ? 0.16 : 0, this.ctx.currentTime, 0.35);
+    if (this.musicGain && this.ctx) this.musicGain.gain.setTargetAtTime(on ? 0.16 : 0, this.ctx.currentTime, 0.35);
   }
 
   setEnabled(on) {
     this.enabled = on;
-    if (this.master) this.master.gain.setTargetAtTime(on ? 0.9 : 0, this.ctx.currentTime, 0.05);
+    if (this.master && this.ctx) this.master.gain.setTargetAtTime(on ? 0.9 : 0, this.ctx.currentTime, 0.05);
   }
 
   tone({ f = 440, t = 0, d = 0.2, type = 'sine', g = 0.5, slide = 0, out = null, attack = 0.005 }) {

@@ -392,7 +392,12 @@ const WORLD = {
   },
 };
 
-export default function MissionIsle({ lesson, ...props }) {
+/**
+ * `board` = `{ mission, onLeave }`: the world mounted by the class board (`features/classSession/LessonBoard › MissionStation`)
+ * opens on that mission and calls `onLeave` when it is left. Always a preview there: nothing is saved as the teacher's.
+ */
+export default function MissionIsle({ lesson: content, board = null, ...props }) {
+  const lesson = useMemo(() => (board ? { ...content, board } : content), [content, board]);
   const world = useMemo(
     () => ({
       ...WORLD,

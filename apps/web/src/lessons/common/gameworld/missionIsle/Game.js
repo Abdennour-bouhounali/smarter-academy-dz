@@ -385,6 +385,9 @@ export class MissionIsleGame extends WorldRuntime {
     // no title screen and no road: the world opens on its home, the missions of the lesson
     this.state = { ...this.state, phase: 'home', stars: this.starsOf(), stage: this.stageOf() };
     this.qaMission();
+    // ON THE BOARD OF THE CLASS (`MissionIsle › board`): the world opens on ONE mission, and leaving it leaves the world
+    const open = this.lesson.board && this.lesson.missions.find((m) => m.id === this.lesson.board.mission);
+    if (open) this.startMission(open);
   }
   starsOf() {
     return Object.fromEntries(Object.entries(this.done).map(([id, d]) => [id, d.stars ?? 0]));
@@ -548,5 +551,6 @@ export class MissionIsleGame extends WorldRuntime {
     this.depot.clearSim();
     this.depot.clearPlot();
     this.set({ mission: null, phase: 'home' });
+    this.lesson.board?.onLeave?.();
   }
 }

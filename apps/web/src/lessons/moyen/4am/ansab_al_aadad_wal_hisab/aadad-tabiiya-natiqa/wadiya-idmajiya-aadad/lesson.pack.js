@@ -11,4 +11,9 @@ export const LESSON_PACK = {
   // the LAST lesson of the unit is not a lesson of keys: its world is the island of the missions
   // (docs/reports/INTEGRATION_LESSON_PLAN.md), played with this lesson's situations and its bank
   world: { id: 'mission-isle', content: () => import('./world').then((m) => m.lesson) },
+  // « حصّة القسم »: the hour on the board IS a mission (one per hour, `board/script.js`), and its written memo
+  board: {
+    script: () => import('./board/script.js').then((m) => m.SCRIPT),
+    memo: () => import('./board/memo.js').then((m) => m.MEMO),
+  },
 };

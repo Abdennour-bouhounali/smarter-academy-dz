@@ -108,17 +108,17 @@ describe('حصّة القسم — the lessons that have their own board (and no 
   });
 });
 
-describe("a v2 lesson that has its world before its board (a unit's last lesson)", () => {
-  it("gets the teacher's own bank, and a header of the tools that have content only", async () => {
+describe("the teacher's tools of a v2 lesson: only those that have content", () => {
+  it("a unit's last lesson has its board and every tool but the knowledge card (it has no knowledge of its own)", async () => {
     const { hasTeacherBank, toolHasContent, hasClassBoard } = await import('./boardLessons');
     const id = 'wadiya-idmajiya-aadad';
-    expect(hasClassBoard(id)).toBe(false);
+    expect(hasClassBoard(id)).toBe(true);
     expect(hasTeacherBank(id)).toBe(true);
     expect(['lesson', 'session', 'memo', 'file', 'bank', 'track', 'card'].filter((t) => toolHasContent(id, t))).toEqual(
-      ['lesson', 'bank', 'track'],
+      ['lesson', 'session', 'memo', 'file', 'bank', 'track'],
     );
-    // a lesson with its board keeps every tool; so does a lesson that is not v2
-    expect(toolHasContent('ikhtizal-kasr', 'session')).toBe(true);
+    // a lesson of keys with its board keeps every tool; so does a lesson that is not v2 (its old page has them all)
+    expect(toolHasContent('ikhtizal-kasr', 'card')).toBe(true);
     expect(toolHasContent('muadala-ula', 'memo')).toBe(true);
     expect(hasTeacherBank('muadala-ula')).toBe(false);
   });

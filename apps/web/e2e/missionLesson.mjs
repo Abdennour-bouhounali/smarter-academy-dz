@@ -69,7 +69,7 @@ for (const [name, address] of [
     text.includes('للأستاذ'),
   );
   if (old.length) bad.push(`the teacher's page still shows: ${old.join(' ، ')}`);
-  // his header shows only the tools that have content; no memo door, no site footer, no floating notebook
+  // his header shows only the tools that have content (no knowledge card: the lesson has none); no site footer, no floating notebook
   const tabs = await page.locator('[data-lesson-tool]').evaluateAll((els) => els.map((e) => e.dataset.lessonTool));
   console.log(
     'header tabs:',
@@ -81,8 +81,7 @@ for (const [name, address] of [
     '| « كرّاسي »',
     text.includes('كرّاسي'),
   );
-  if (tabs.join() !== 'lesson,bank,track') bad.push(`header tabs: ${tabs.join(', ')}`);
-  if (await page.locator('[data-teacher-memo]').count()) bad.push('the memo door is still there');
+  if (tabs.join() !== 'lesson,session,memo,file,bank,track') bad.push(`header tabs: ${tabs.join(', ')}`);
   if (text.includes('Abdennour') || text.includes('كرّاسي'))
     bad.push('the footer or the floating notebook is still on the page');
   // « ما يتعلّمه تلاميذك » leads to the tracking of the class on this lesson, and so does the door « متابعة »

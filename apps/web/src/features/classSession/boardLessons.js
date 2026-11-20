@@ -34,8 +34,13 @@ export const hasTeacherBank = (lessonId) => hasClassBoard(lessonId) || hasWorld(
  * which every lesson has (owner, the same day: « the teacher must track the work of his student »). Every other lesson
  * keeps every tool.
  */
-export const toolHasContent = (lessonId, toolId) =>
-  !hasWorld(lessonId) || hasClassBoard(lessonId) || ['lesson', 'bank', 'track'].includes(toolId);
+const KNOWLEDGE_LESSONS = Object.freeze(lessonsWithPack('knowledge'));
+export const toolHasContent = (lessonId, toolId) => {
+  if (!hasWorld(lessonId)) return true;
+  // « بطاقة المعارف » reads the lesson's own knowledge: a unit's last lesson has none (the unit's rules are its recap)
+  if (toolId === 'card') return hasClassBoard(lessonId) && KNOWLEDGE_LESSONS.includes(lessonId);
+  return hasClassBoard(lessonId) || ['lesson', 'bank', 'track'].includes(toolId);
+};
 
 /** The four moments of the hour, in order (the set-up screen and the teacher's card show them the same way). */
 export const MOMENTS = Object.freeze(['start', 'revise', 'lesson', 'end']);

@@ -1,10 +1,13 @@
 import { describe, it, expect } from 'vitest';
 import { hasKnowledgeCards, loadKnowledgeCards, cardsOf, earlierLessons } from './knowledgeCards';
 import { BOARD_LESSONS } from './boardLessons';
+import { lessonPackFlags } from '../../lessons/registry';
 
 describe('بطاقة المعارف — the knowledge card of a lesson on the board', () => {
   it('exists for every lesson that has its board, from the lesson’s own knowledge', async () => {
-    for (const id of BOARD_LESSONS) expect(hasKnowledgeCards(id), id).toBe(true);
+    // every lesson of keys that has its board; a unit's last lesson (world « mission-isle ») has no knowledge of its own
+    for (const id of BOARD_LESSONS)
+      expect(hasKnowledgeCards(id), id).toBe(lessonPackFlags(id).world !== 'mission-isle');
     expect(await loadKnowledgeCards('other')).toEqual([]);
     expect(hasKnowledgeCards('other')).toBe(false);
     const cards = await loadKnowledgeCards('qasim-adad-tabii');

@@ -40,7 +40,14 @@ import { GRADE_NAMES } from '../../lessons/common/lessonlab/order';
 import { hasLab } from '../../lessons/common/lessonlab/registry';
 import { levelCounts } from '../practice/practiceCounts';
 import { teacherBankPath } from '../practice/teacherBank';
-import { classCardPath, classSessionPath, classTrackingPath, hasClassBoard, MOMENTS } from './boardLessons';
+import {
+  classCardPath,
+  classSessionPath,
+  classTrackingPath,
+  hasClassBoard,
+  MOMENTS,
+  toolHasContent,
+} from './boardLessons';
 import './teacherPanel.css';
 import { reviewCards } from './lessonScripts';
 import { usePackPart } from '../../lessons/lessonPack';
@@ -293,7 +300,7 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
                 data-teacher-bank
               />
             )}
-            {board && (
+            {board && toolHasContent(config.id, 'card') && (
               <Door
                 icon={Brain}
                 title={L.map}
