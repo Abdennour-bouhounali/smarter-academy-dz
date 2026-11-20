@@ -223,3 +223,62 @@ puts his tries side by side (facts, no hint of the answer). Hearts and coins as 
 **What the council could not settle, for the owner:** no mark out of 8 on the notebook (a BEM copy is marked on its
 justification too — a score would lie, and it feeds the fear); the engine for the other families (offers, plots) is
 extracted AFTER mission 2 exists, not before; one real student plays mission 1 before missions 2 and 3 are built.
+
+
+## 9. The mission prepares for the EXAM: paper and pen first (2026-11-20 — PROPOSED, awaiting the owner; not coded)
+
+The owner, after playing §8's mission: « at the beginning the student will not know that he has to click on the numbers
+to start; also the mission must prepare the student for the exam — to use the paper and pen to write down data, connect
+the dots, make operations of calculation in the paper ». §8 stays (one sentence of the text ↔ one line of numbers, the
+depot plays every line); what changes is WHERE he works.
+
+**The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
+sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,
+« المطلوب », « الحلّ »), and the depot is what proves each line. Every step has the same three beats, always shown in
+the same place: **✍️ على ورقتك** (what to write, with the shape of the line) → **⌨️ اكتب ما كتبتَ** (he types only the
+numbers he wrote) → **🏗️ المستودع يتحقّق** (the depot plays that line, and « ورقتي » inks it). The kit already has the
+gate « كتبتُ على ورقتي » (`kit/Paper.jsx › PaperGate`: a few seconds must pass, no reflex tap) and the model of a
+division posed on paper (`PaperModel`, `kit/longDivision.js`): both are reused.
+
+**The start can no longer be missed.**
+- A mission card before anything: the session, « ستحلّها كما في الامتحان: بورقة وقلم » , and ONE button
+  « ورقتي وقلمي أمامي — أبدأ ».
+- The robot does the first gesture ITSELF, once: it underlines « 1188 » in the text and writes it in « المعطيات ».
+  Then « دورك » with the next thing to touch pulsing. A gesture is shown before it is asked — in every step where it is new.
+- If nothing is touched for 8 seconds, the thing to touch pulses again and the instruction says where it is.
+
+**Mission 1 (BEM 2022, the crates) — the exam's own method, lived step by step:**
+
+| # | The question on screen | ✍️ On his paper | He touches | The depot / « ورقتي » |
+|---|---|---|---|---|
+| 0 | the mission card | takes a sheet, writes the session's name | « أبدأ » | — |
+| 1 | « ما المعطيات؟ سطّرها » | underlines them in his head, writes « المعطيات: 1188 صندوق بطاطا، 528 صندوق جزر » | the two numbers of the text (the robot showed the first) | each stock lands on the quay; « المعطيات » fills |
+| 2 | « ما المطلوب؟ » | writes « المطلوب: (ا) أكبر عدد من التشكيلات (ب) ما في كلّ تشكيلة » | the two questions of the text, with the other pen (blue) | « المطلوب » fills; the two questions stay lit as the goal |
+| 3 | « كم تشكيلة؟ جرّب » | writes each try as a division: `1188 = 9 × … + …` | types a number of lots | deals; the two lines; a phrase he had NOT written turns red in the text (« يُجمّع الصناديق ») and the robot asks him to add it to « المعطيات » on his sheet |
+| 4 | « أربط: ما الذي يحتاجه السؤال (ا)؟ » | draws an arrow from each datum to the question | taps the data of « ورقتي » that (ا) needs | a line is drawn from each to the question — the dots, connected |
+| 5 | « احسب على ورقتك » | POSES the division of 1188 by 528 as on an exam sheet, then 528 by 132 | types quotient and remainder | lays one stock along the other; « ورقتي » shows the posed division to compare with his |
+| 6 | « أكبر من 132؟ » | writes why none can be | types a greater number | the 132 crates left alone are not split |
+| 7 | « أربط: والسؤال (ب)؟ » | arrow from the answer of (ا) to (ب) | taps what (ب) needs — it needs 132: the CHAIN | the answer of (ا) becomes a datum of (ب) |
+| 8 | « احسب ما في كلّ تشكيلة » | `1188 ÷ 132`, `528 ÷ 132` | types 9 and 4 | packs the 132 lots; the truck leaves |
+| 9 | « حرّر جوابك » | writes the two answer sentences, with their units | completes them on screen | « ورقتي » is whole |
+| 10 | « قارن ورقتك » | corrects his sheet with his pen | ticks, line by line, what HIS sheet holds | the model copy beside the list |
+
+**The last screen is the marker's eye.** A list he ticks against his own sheet: the data are listed; the question is
+restated; the reason for the PGCD is written in a sentence; the divisions are posed; each result has its unit; each
+question has its answer sentence. No mark out of 8 (the annals give no official scale): what he sees is what a marker
+looks for.
+
+**Missions 2 and 3 — the screen withdraws, the sheet stays.**
+
+| | « ورقتي » on screen | When the depot plays | What is new |
+|---|---|---|---|
+| Mission 1 | shows the shape of every line | after each line | — |
+| Mission 2 (BEM 2020, the trees) | only its three headings; he writes whole lines on paper first, then types them | after each QUESTION | data he must not use yet (prices), a condition in words (« في كل ركن شجرة »), a chain of four |
+| Mission 3 (an unseen exercise of the bank) | nothing: the exam paper, a clock, and his sheet | once, after he hands in: the film of his own lines | exam conditions; then the marker's list; a photo of his sheet may be attached (the bank already allows it: `work: optional`) |
+
+**What it costs.** Mission 1 becomes eleven short screens, about twelve minutes — the time such an exercise takes
+in the exam. Steps 4 and 7 (« أربط ») are new screens to build; the rest re-uses what §8 built and the kit's paper mode.
+
+**Open, for the owner:** (1) whether a photo of the sheet is asked at the end of mission 3 or left optional; (2) the
+clock of mission 3 (the platform's own choice: 25 minutes); (3) the marker's list is the platform's, not an official
+scale.
