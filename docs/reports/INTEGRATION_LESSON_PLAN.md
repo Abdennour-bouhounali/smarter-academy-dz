@@ -257,6 +257,13 @@ depot plays every line); what changes is WHERE he works.
 > carries a flashing red sign « 👆 اضغط هنا » from the first second**: a number and a question in the exam text, the
 > first datum to connect, the number to try again. The call to read is ON the exercise, and nowhere else (the line at the bottom of the screen was removed): a flashing band « 📖 اقرأ التمرين كلّه »
 > at the top of the exam text, whose border flashes red and amber. The coins and stars are not saved and buy nothing yet.
+>
+> **A wrong answer is answered by a GUIDANCE, never by the next question (owner, 2026-11-20, built for the free tries;
+> `lots.js › advice`, tested).** A number of lots that leaves crates gets, in the fact box: what stayed on the quay,
+> WHY (« 8 يقسم 528، لكنّه لا يقسم 1188 »), then where to look — a little more at each failure: 1st « ابحث عن عدد
+> يقسم 1188 و 528 معًا », 2nd the nearest numbers that work (« جرّب 6 أو 11 »), 3rd a small one to start from (« هل 2
+> يقسم…؟ »). The greatest common divisor is never offered: it is the answer. The question of the step is rewritten
+> from his number (« العدد 8 ترك صناديق… »). Every later mission keeps this rule: each wrong answer has its guidance.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,

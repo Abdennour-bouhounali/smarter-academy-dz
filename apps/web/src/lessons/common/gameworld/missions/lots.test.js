@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { deal, euclid, fill, gcd, line, slip } from './lots';
+import { advice } from './lots';
 
 const REAL = { a: 1188, b: 528 };
 
@@ -47,4 +48,22 @@ describe('the scene « lots »: every act is a line of numbers', () => {
     expect(slip(1188, 528, 3, 132)).toEqual({ kind: 'sum', value: 1716 });
     expect(slip(1188, 528, 1, 660)).toEqual({ kind: 'rest', value: 660 });
   });
+});
+
+describe('advice — the guidance after a number of lots that left crates', () => {
+  const stock = { a: 1188, b: 528 };
+  it('says nothing when the number works', () => expect(advice(12, stock)).toBeNull());
+  it('names the stock it does not divide', () => {
+    expect(advice(7, stock).which).toBe('both');
+    expect(advice(8, stock).which).toBe('a'); // 528 = 8 × 66, 1188 = 8 × 148 + 4
+    expect(advice(9, stock).which).toBe('b'); // 1188 = 9 × 132, 528 = 9 × 58 + 6
+  });
+  it('gives no number at the first failure, the nearest ones at the second, a small one at the third', () => {
+    expect(advice(7, stock, 1)).toMatchObject({ near: null, small: null });
+    expect(advice(7, stock, 2).near).toEqual({ below: 6, above: 11 });
+    expect(advice(7, stock, 3).small).toBe(2);
+  });
+  it('never offers the greatest common divisor', () =>
+    expect(advice(100, stock, 2).near).toEqual({ below: 66, above: null }));
+  it('sees more lots than crates of the smaller stock', () => expect(advice(600, stock).over).toBe(true));
 });

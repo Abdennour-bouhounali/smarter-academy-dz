@@ -59,3 +59,29 @@ export function slip(a, b, q, r) {
   if (r >= b) return { kind: 'rest', value: r };
   return null;
 }
+
+/**
+ * WHY a number of lots left crates, and where to look next — the guidance after a wrong try (owner, 2026-11-20: a wrong
+ * answer is answered by a guidance, never by « next question »). `fails` = how many of his tries have left crates so far.
+ *   which   'a' | 'b' (it divides the other stock, not this one) | 'both'
+ *   over    true when there are more lots than crates of the smaller stock (lots would lack that kind)
+ *   near    the common divisors closest to n, below and above (null when there is none; never the greatest common
+ *           divisor, which is the answer) — offered from the 2nd failure
+ *   small   the smallest common divisor above 1 (null when the stocks are coprime) — offered from the 3rd failure
+ */
+export function advice(n, { a, b }, fails = 1) {
+  const ra = a % n;
+  const rb = b % n;
+  if (!ra && !rb) return null;
+  const g = gcd(a, b);
+  const common = [];
+  for (let d = 2; d <= g; d += 1) if (g % d === 0) common.push(d);
+  const below = common.filter((d) => d < n).pop() ?? null;
+  const above = common.find((d) => d > n && d < g) ?? null; // never the greatest one: it is the answer he is looking for
+  return {
+    which: ra && rb ? 'both' : ra ? 'a' : 'b',
+    over: n > Math.min(a, b),
+    near: fails >= 2 ? { below, above } : null,
+    small: fails >= 3 ? (common[0] ?? null) : null,
+  };
+}

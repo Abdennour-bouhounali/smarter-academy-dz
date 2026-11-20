@@ -16,7 +16,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import { PaperModel } from '../kit/Paper';
-import { deal, euclid, fill, gcd, line, slip } from './lots';
+import { deal, euclid, fill, gcd, line, slip, advice } from './lots';
 import Ink from './Ink';
 import './mission.css';
 
@@ -249,7 +249,8 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
   const [pen, setPen] = useState(false);
   const [win, setWin] = useState(null); // the small success of a right answer: { id, pay, word }
   const [finale, setFinale] = useState(false); // the big one, at the end of the mission
-  const [slips, setSlips] = useState(0); // operations typed that were not the right ones (his free tries are not slips)
+  const [slips, setSlips] = useState(0);
+  const [miss, setMiss] = useState(null); // his last number of lots, when it left crates: the question guides him from it // operations typed that were not the right ones (his free tries are not slips)
   const acts = useRef(0);
   const set = (patch) => setV((s) => ({ ...s, ...patch }));
   const act = () => {
@@ -375,8 +376,23 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
       setFails((f) => [...f.filter((x) => x.n !== n), { n, left: d.left }]);
       setLit((s) => ({ ...s, all: 'red' }));
       if (where === 'free' && !data.includes('all')) setOwed('all');
-      setFact(`${counted(n, sit.lot.forms)}: بقي على الرصيف ${leftOf(d.left, sit.kinds)}.`);
+      // A WRONG TRY IS ANSWERED BY A GUIDANCE (owner, 2026-11-20): why this number left crates, then where to look —
+      // a little more at each failure, and never the answer of the question
+      const tip = advice(n, sit.stock, fails.filter((x) => x.n !== n).length + 1);
+      const why =
+        tip.which === 'both'
+          ? `${n} لا يقسم ${a} ولا ${b}`
+          : `${n} يقسم ${tip.which === 'a' ? b : a}، لكنّه لا يقسم ${tip.which === 'a' ? a : b}`;
+      const near = tip.near && [tip.near.below, tip.near.above].filter(Boolean);
+      const look = tip.small
+        ? `ابدأ بعدد صغير: هل ${tip.small} يقسم ${a} و ${b}؟ جرّبه.`
+        : near?.length
+          ? `يوجد عدد يصلح قريب من ${n}: جرّب ${near.join(' أو ')}.`
+          : `ابحث عن عدد يقسم ${a} و ${b} معًا.`;
+      setMiss(n);
+      setFact(`${counted(n, sit.lot.forms)}: بقي على الرصيف ${leftOf(d.left, sit.kinds)}. السبب: ${why}. ${look}`);
     } else {
+      setMiss(null);
       if (where === 'free') {
         setWorked((w) => (w.includes(n) ? w : [...w, n].slice(-2)));
         if (!data.includes('same')) setOwed('same');
@@ -468,9 +484,11 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
         ? 'دورك: سطّر العدد الآخر في النصّ. ماذا يعدّ؟'
         : 'ما المعطيات؟ انظر: الروبوت يسطّر الأوّل.',
     'ما المطلوب؟ اضغط على كلّ سؤال في النصّ.',
-    worked.length
-      ? 'هل تستفيد دور أكثر؟ جرّب عددًا آخر، أو ابحث عن الأكبر.'
-      : 'كم تشكيلة تكوّن؟ جرّب عددًا: المستودع سيوزّع الصناديق.',
+    miss
+      ? `العدد ${miss} ترك صناديق على الرصيف. جرّب عددًا يقسم ${a} و ${b} معًا.`
+      : worked.length
+        ? 'هل تستفيد دور أكثر؟ جرّب عددًا آخر، أو ابحث عن الأكبر.'
+        : 'كم تشكيلة تكوّن؟ جرّب عددًا: المستودع سيوزّع الصناديق.',
     'أربط: ما الذي يحتاجه السؤال (ا) من ورقتك؟',
     ei >= rows.length
       ? 'الباقي 0: توقّفت القسمات. ما هو القاسم المشترك الأكبر؟'
