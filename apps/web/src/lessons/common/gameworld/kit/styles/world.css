@@ -298,6 +298,31 @@
   background: #fde2e2;
   color: #7a1212;
 }
+.di-sign,
+.di-eq__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 800;
+}
+.di-sign {
+  padding: 0.3rem 1.1rem;
+  border-radius: 0.9rem;
+  background: rgba(255, 244, 214, 0.96);
+  color: #3b2a06;
+  font-size: 1.15rem;
+  box-shadow: 0 6px 18px rgba(3, 10, 30, 0.3);
+}
+.di-eq__mark {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.15rem;
+  font-size: 1.35rem;
+  color: #ffe9a8;
+}
+.di-eq__mark > span {
+  font-size: 1rem;
+}
 .di-pinned {
   display: inline-flex;
   gap: 0.6rem;

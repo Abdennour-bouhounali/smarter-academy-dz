@@ -216,6 +216,9 @@ export const T = {
       `بقيت ${cells(r)}، فانهار الجسر الثاني. لا ألواح هنا: ارجع إلى «${name}» واختر ألواحًا تبني الجسرين معًا.`,
     convoyReset: (b) => `الألواح ${b} تبني الجسرين معًا: الألواح القديمة عادت إلى أماكنها.`,
     convoyOnly: 'الجسران يُبنيان بالألواح نفسها: خذها من الجزيرة السابقة.',
+    // a marked stretch (`mark.js`): the gap is filled, but the post of the mark stands in the middle of a plank
+    markMiss: (b, mark) =>
+      `الجسر امتلأ، لكنّ عمود المصباح عند الخانة ${mark.m} وقع في وسط لوح: ${mark.m} = ${b} × ${mark.q} + ${mark.r}. العمود لا يثبت إلا على فاصل بين لوحين.`,
     purseOut: (laid, need) =>
       `انتهت القطع! وُضع ${planks(laid)}، والجسر يحتاج ${planks(need)}. لكلّ لوح قطعة، مهما كان طوله.`,
     gapRight: (r) => `كما توقّعتَ: بقيت ${cells(r)}. إذن هذا القالب لا يصلح — جرّب قالبًا آخر.`,
@@ -249,7 +252,14 @@ export const T = {
     end: 'عادت المنارة تضيء! شكرًا لك.',
   },
   // Two SEPARATE results after a forge: the student's prediction (right or not), then what the mould does to the gap.
+  // a bridge with a marked stretch: its label over the gap, the name of its sign
+  mark: {
+    label: (m, a) => `${m} مضاءة من ${a} خانة`,
+    sign: 'لافتة الجسر',
+    stretch: 'الجزء المضاء',
+  },
   verdict: {
+    markMiss: (b, m) => `القالب ${b} يملأ الجسر، لكن لا فاصل عند الخانة ${m}: العمود لا يثبت`,
     purse: (laid, need) => `وُضع ${planks(laid)} من ${need}: انتهت القطع قبل أن يمتلئ الجسر`,
     right: (r) => (r === 0 ? 'توقّعك صحيح: لم تبقَ أيّ خانة فارغة' : `توقّعك صحيح: بقيت ${cells(r)}`),
     wrong: (p, r) => `توقّعتَ ${p}، والباقي ${r}`,

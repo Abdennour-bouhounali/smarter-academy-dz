@@ -235,6 +235,8 @@ their work with what exists.
 | ✅ أثبت أنّهما أوّليان فيما بينهما (113 questions) | — | mirror (`ladder/divide` ending on 1, then the sentence of the proof) | — |
 | ❌ أثبت أنّهما ليسا أوّليين فيما بينهما | a convoy 645 and 410 with the planks the divisibility rules give (2, 3, 5, 9, 10): ONE plank that builds both ends it; then 85 and 119, where none of them does — and the bridges still stand with 17, made in the workshop | tiles (one witness is enough; no witness seen proves nothing) | — |
 
+**Lesson 7 AS BUILT (2026-11-20):** the pairs of the table above changed where a check refused them — 26 ; 39 → 39 ; 52 (the bank holds « 39 = 26 × 1 + 13 »), the proof's bench plays 35 ; 26, the mirror of ✅ keeps a two-round experiment (440 ; 301 ending on 1, 341 ; 176 ending on 11), the attack 13 ; 39 was replaced, the store's lanes are 105 and 74. Every last step ends on a yes/no conclusion.
+
 **Lesson 8 — DECIDED 2026-11-19 (the owner, after a council of five advisors): it stays on the islands, with ONE bridge
 and a marked stretch; the table below it is SUPERSEDED.** The gap is the whole; a stretch of it is marked (roofed,
 lit); the fraction is that stretch over the whole bridge and a sign writes it. He builds with one kind of plank, and a
@@ -244,6 +246,21 @@ moved, only the writing. The four keys on that one situation: 🪜 in stages (a 
 🔒 irreducible (25 of 27: every joint misses the mark but the plank 1's); 🎯 by the PGCD at once (a purse that only the
 longest plank pays); 🧾 the result of a calculation (the stretch marked in two strokes, 5 then 8 of 39). New piece of the
 world: a bridge with a marked stretch, the joint rule and the sign. NOT yet checked against the lesson's bank and board.
+**The world piece is CODED (2026-11-19, `divisorIsles/mark.js` + `Game.js › buildMark`, the equation's second line, the
+sign « لافتة الجسر »; unit-tested, not yet seen in a browser):** a segment declares `mark: 66` (and `strokes: [5, 8]`
+for a stretch marked in two strokes); planks of `b` hold only when `b` divides the gap AND the mark; a plank that fills
+the gap but misses the mark is shown (the post stands in the middle of a plank), then the bridge goes back.
+
+**The road, checked against the bank (25 of 27 stands in the bank and is lesson 7's pair — replaced by 35 of 48):**
+
+| Island | The bridge | Planks | What the world shows | Mirror |
+|---|---|---|---|---|
+| A → B | 78 cells, 66 lit | offered 2, 4, 6, 9 | 2 holds: the sign writes 66/78 = 33/39; 4 and 9 do not fill 78; rebuilt with 6: = 11/13. The instruction after the first hold asks for a SHORTER writing | 🪜 in stages (P1, 4 questions) |
+| B → C | 48 cells, 35 lit | offered 3, 5, 7, 1 | 3 fills the gap and misses the mark (35 = 3 × 11 + 2); 5 and 7 do not fill; only 1 holds, and the sign does not change | 🔒 irreducible (P2, 9) |
+| C → D, D → E | 99 cells, 66 lit, a purse of 3; then 216 cells, 168 lit, a purse of 9, a workshop whose bench is the division notebook | made in the workshop | only the longest plank is paid: 33 → 2/3 at once; 24 → 7/9 at once | 🎯 by the PGCD (P3, 94 — the richest last step: a fraction of the platform's own reduced in one line, typed with its fraction bar) |
+| E → F | 39 cells, lit in two strokes: 5 then 8 | made in the workshop, a purse of 3 | the sign opens on 5/39 + 8/39 = 13/39; 13 → 1/3 | 🧾 the result of a calculation (P4, 42) |
+| F → the dash → the store | the final mission: a fraction that a plain division cannot reduce (to design with the world's agent) | | | |
+
 A new world for fractions (« أَحيِ الواحة », an oasis fed by a foggara — sketches in `mockups/oasis-world.html` with
 three other ideas) was proposed and NOT retained: the council (four of five) found it unproven for fun, broken by large
 numbers (a comb of 78 teeth), and a second world to maintain; no other fractions lesson is committed to either world,

@@ -17,6 +17,7 @@ import module8Src from '../modules/Module08Ahill.jsx?raw';
 // a sibling's knowledge: its root `knowledge.jsx`, or `world/knowledge.js` once it is a v2 lesson (its root file is deleted)
 const knowledgeOf = import.meta.glob(['../../*/knowledge.jsx', '../../*/world/knowledge.js'], { eager: true });
 const lessonContent = import.meta.glob(['../../*/content/*.js', '!../../*/content/*.test.js', '!../../wadiya-idmajiya-aadad/**'], { eager: true });
+const worldNumbers = import.meta.glob('../../*/world/math.js', { eager: true });
 const peerSheets = import.meta.glob('../../../../../../**/content/peerSheet.js', { eager: true });
 
 /**
@@ -153,6 +154,16 @@ const walk = (x, depth = 0) => {
   Object.values(x).forEach((v) => walk(v, depth + 1));
 };
 Object.values(lessonContent).forEach((m) => walk(m));
+// the v2 lessons have no content/ any more: their pairs are the gaps and lanes of their world's road (world/math.js › NUMBERS)
+const roadPairs = (x, depth = 0) => {
+  if (!x || typeof x !== 'object' || depth > 6) return;
+  for (const [k, v] of Object.entries(x)) {
+    if (['gaps', 'lanes', 'piers'].includes(k) && Array.isArray(v) && v.length === 2 && v.every((n) => Number.isInteger(n) && n > 0))
+      lessonPairs.add([...v].sort((m, n) => m - n).join('/'));
+    else roadPairs(v, depth + 1);
+  }
+};
+Object.values(worldNumbers).forEach((m) => roadPairs(m.NUMBERS));
 const key = ({ a, b }) => [a, b].sort((m, n) => m - n).join('/');
 
 describe('module 7 — the collision rule against the unit\'s lessons', () => {
@@ -160,6 +171,8 @@ describe('module 7 — the collision rule against the unit\'s lessons', () => {
     expect(lessonPairs.size).toBeGreaterThan(20);
     // a pair of ikhtizal-kasr's « أستعدّ » (its content/prep.js); bahth-pgcd's « 140/252 » went with its content/ (v2, 2026-11-19)
     expect(lessonPairs.has('65/91')).toBe(true);
+    // a pair of a v2 world's road: awwaliyan-fima-baynahuma's convoy « hidden » (its content/ went with its v2, 2026-11-20)
+    expect(lessonPairs.has('85/119')).toBe(true);
   });
   it('no round, free or ladder pair is a pair of a lesson, and the rounds are all distinct', () => {
     const ours = [...ALL.map(({ id, props }) => ({ id, ...props })), ...FREE_PAIRS.map((p) => ({ id: 'free', ...p })), ...PREP_PAIRS.map((p) => ({ id: `prep-${p.n}`, ...p }))];

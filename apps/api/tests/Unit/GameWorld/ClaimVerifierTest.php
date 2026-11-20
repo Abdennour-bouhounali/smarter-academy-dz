@@ -26,6 +26,16 @@ class ClaimVerifierTest extends TestCase
         $this->assertFalse(ClaimVerifier::verify([]));
     }
 
+    public function test_a_common_divisor_other_than_one_refuses_one(): void
+    {
+        // without the option, 1 is a common divisor of any two numbers; with `notOne: true` it is no witness
+        $this->assertTrue(ClaimVerifier::verify(['kind' => 'commonDivisor', 'a' => 85, 'b' => 119, 'd' => 1]));
+        $this->assertFalse(ClaimVerifier::verify(['kind' => 'commonDivisor', 'a' => 85, 'b' => 119, 'd' => 1, 'notOne' => true]));
+        $this->assertTrue(ClaimVerifier::verify(['kind' => 'commonDivisor', 'a' => 85, 'b' => 119, 'd' => 17, 'notOne' => true]));
+        // only the boolean true asks for it, as in the browser (`=== true`)
+        $this->assertTrue(ClaimVerifier::verify(['kind' => 'commonDivisor', 'a' => 85, 'b' => 119, 'd' => 1, 'notOne' => 1]));
+    }
+
     public function test_the_same_division_is_the_same_item(): void
     {
         $this->assertSame('division-756x36', ClaimVerifier::itemId(['kind' => 'division', 'a' => 756, 'b' => 36, 'q' => 21, 'r' => 0]));

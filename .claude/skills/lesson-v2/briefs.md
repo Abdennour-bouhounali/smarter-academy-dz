@@ -47,6 +47,15 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 
 ## §W. The written world (wave 1)
 
+> **Build on the authoring kit (since lesson 7): `apps/web/src/lessons/common/gameworld/kit/authoring/README.md` — read it
+> first.** Before any number is used: `node scripts/lesson-bank-numbers.mjs <id> --check a,b c,d …` must print CLEAR for
+> every pair of the road, and `buildersOf(gaps, purse)` must give exactly the convoy's plank. `math.js` re-exports what
+> it needs from `authoring/numbers.js` and holds only `NUMBERS`. Each test file calls its shared suite in three lines
+> (`describeStory`, `describeEvidence`, `describeTrainer`, `describeKnowledge`, `describeLimits`, `describeSitting`, from
+> `authoring/test/suites.js`), then adds ONLY the lesson's own checks. Never re-write a helper or a check the kit has. If
+> a suite fails on a limit, that screen is walked; the limit is never raised to make the test pass.
+
+
 > Task: write `<L>/world/` — every file EXCEPT `forges.js` and `inquiries.js` (another agent writes those next):
 > `story.js`, `math.js`, `text.js`, `practice.js`, `trainer.js`, `journey.js`, `knowledge.js`, `evidence.js`,
 > `sitting.js`, `index.js`, each with its test.
@@ -90,6 +99,15 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > Report also what a walk of the board must click, and what differs from `<REF>`'s board walk.
 
 ## §F. The forges and their experiments (wave 2)
+
+> **Assemble each forge from `authoring/forgeBlocks.js`** (the README's skeleton; `proof.bahth.test.js` rebuilds lesson
+> 6's 🔁 that way): `judge({ slots, right, says })` for the tiles; `fromLog` / `gather` / `fromRounds` for the evidence;
+> `attacksOf({ pool: pairPool({… exclude: BANK_PAIRS }), hard })`; `plankCase` / `pairCase` / `sharingCase`; `makerOf`,
+> the template lines and `firstWrong` for the last step. `BANK_PAIRS` is pasted from
+> `node scripts/lesson-bank-numbers.mjs <id> --js`. The lesson writes only what the tiles mean, the words, the hard
+> cases and the last step's numbers. `forges.test.js` calls `describeForges(...)`, `inquiries.test.js` calls
+> `describeExperiments(...)`; then only the « false rules students really hold » tests.
+
 
 > Task: `<L>/world/forges.js`, `inquiries.js`, `forges.test.js`, `inquiries.test.js`, and the minimal edits they need
 > in `story.js` / `text.js` / `math.js` / `index.js` (say which).
@@ -135,35 +153,31 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 > `check:unreached` and `check:unused` once each (report only what concerns this lesson).
 > Report also the walks that still open this lesson's deleted pages.
 
-## §X. The walks (alone in the tree)
+## §X. The walks (alone in the tree) — through the shared library (since lesson 7)
 
-> Task: write AND RUN `apps/web/e2e/gameworld-<short>.mjs` (the story), `-hub`, `-trainer`, `-sitting`,
-> `class-lesson-<short>.mjs`, `launch-kit-<short>.mjs`, with a shared `lib/<short>.mjs`.
-> You are the ONLY agent writing in the repo. Nothing of this lesson has been opened in a browser yet.
-> Read first: `e2e/lib/walk.mjs` (what `shot` checks at every screenshot), `lib/sittingWalk.mjs`,
-> `lib/launchKitTwoTools.mjs`, `lib/lessonWords.mjs`; the six walks of `<REF>`; `GAME_WORLD.md` §2ter-0 and the hooks of
-> the kinds used; the lesson's `world/` and `board/`; `.claude/skills/lesson-v2/defects.md` §C and « To move ».
-> What the agents who wrote the lesson said a walk must do: `<their hooks, tiles, stations — re-check against the code>`.
-> - The story walk plays EVERY screen through its UI: each forge from its experiment's first screen (a wrong prediction
->   and a right one), a false rule refuted, the attacks, the seal, the last step typed wrong then right, the tablet;
->   the dash; the stone; the store (the wrong plank first); the end; the ✕ in the world and inside a forge.
-> - ANSWERS are computed in the walk from the numbers on screen; a state hook may give the question, never the answer.
->   Nothing is weakened to make a walk pass. A check that fails on something that is right on the screenshot is a fault
->   of the check: fix the check and say so.
-> - Carry the checks of `defects.md` « To move » (they are not in the library yet): nothing in an experiment names the
->   rule; no key's name before its naming station; SVG text at its real size; a map and a hub laid out; a whole
->   subtitle; a key that is not about a bridge shows no plank word in its forge or on the board.
-> - Anything the app draws at random: test the worst case deliberately (the longest list card), not the one dealt.
-> - The story walk names its lesson by a literal id (the status script looks for it).
-> Running: the dev server is up on :5173 (do not start or stop it). `E2E_SIZE=1366x768 node apps/web/e2e/<walk>.mjs <outDir>`,
-> output kept in a `.log`. ONE walk at a time; never edit a source file while a walk runs. When a walk passes at
-> 1366×768, do NOT run any other size (owner, 2026-11-19: 1366×768 alone).
-> LOOK at the screenshots (`review.md` §B gives the list and what to look for). Read mixed Arabic and Latin lines on a
-> zoomed crop, never at full size.
-> Fix real defects where they are: this lesson's folder, the kit screens that are new for this lesson, and — with care
-> — the rest of the kit (a change that could alter another lesson's screens beyond a bug fix is reported, not made).
-> Report also: per walk its check count at both sizes; the screenshots you LOOKED at and those you did not; what the
-> lesson's arrival changes for the OTHER lessons' walks (their foreign-word lists).
+> Task: write `apps/web/e2e/lessons/<id>.walk.mjs`, a DESCRIPTOR for `apps/web/e2e/lib/lessonWalk/` (its `README.md` is
+> the contract; `lessons/bahth-pgcd.walk.mjs` is the model, 78 lines), and RUN it. Write no other walk file.
+> The descriptor says only what the lesson's files cannot: `forbidden` (per key, the words of its name),
+> `benchForbidden`, `story` (`{ wrongFirst, purseOut, reloadOn }`), `truth` (per forge, what the world does with a case —
+> your own arithmetic), `use` (per forge, every box of the last step computed from the case shown), `dash`, `gate`,
+> `solve` (per trainer form), optionally `statement`, `train`, `launch`.
+> The library DERIVES the rest — do not write it: the tiles of the rule that holds, the false rule, each convoy's right,
+> wrong and purse-out planks, the bench's answers, the board's right picks, the foreign words and numbers, the map's
+> cards, each trainer session's kinds.
+> Anything new to the library (a segment, a board station, an experiment kind, a last step with buttons) stops the walk
+> with a sentence: write it as a hook in `steps`, make it pass, then MOVE it into the library in the same task (README
+> « Adding to the library »). Never weaken a library check for one lesson; a check wrong for every lesson is fixed in the
+> library and said in the report (defects.md C4).
+> **ONE size: `E2E_SIZE=1366x768`** (owner, 2026-11-19). Run (dev server on :5173; ONE walk at a time; never edit source
+> while it runs): `node apps/web/e2e/lesson.mjs <id> story <out>`, then `… hub`, `trainer`, `board`, `launch`; `sitting`
+> alone, once. The runner mutes Vite's HMR.
+> **Eyes (SKILL.md §0bis): about TEN chosen screens** — the ones this lesson is the first to show (what its agents
+> reported as beyond `trusted.md`'s limits or new). Read those PNGs; do not open the rest.
+> Fix what the walks find (in the lesson; in the kit or the library when the defect is there — smallest change, tested,
+> said loudly). Expected: descriptor 15–20 min; the five parts ≈ 5 min a run.
+> Report: each line `walk lesson-<id>-<part> @ 1366x768: N ok, F FAIL, S s`; the hooks written and whether they moved
+> into the library; the screens you LOOKED at; every defect fixed (file, cause); what you did NOT verify; lines for
+> `defects.md` and `trusted.md`; YOUR OWN TIME in minutes.
 
 ## §K. A new experiment kind, or a new mode of one
 

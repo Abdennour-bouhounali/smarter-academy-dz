@@ -42,6 +42,8 @@ import { WorldRuntime, easeOut, damp } from '../kit/WorldRuntime';
 import { ShareScene, TileScene } from './Worlds';
 
 /** The 3D worlds of the real cases, built the first time they are played. */
+import { markVerdict, signChain } from './mark';
+
 const WORLDS = { depot: Depot, share: ShareScene, tiling: TileScene };
 
 const BRIDGE_HALF = 1.15;
@@ -93,6 +95,9 @@ export class DivisorIslesGame extends WorldRuntime {
     this.log = [...(sv?.log ?? [])];
     // the plank each standing bridge was built with (segment id → b)
     this.built = { ...(sv?.built ?? {}) };
+    // A MARKED STRETCH (`seg.mark`, `./mark.js`): the planks that held each such bridge, in the order he built them —
+    // the sign of the bridge is rewritten once per plank (segment id → [b, …])
+    this.markSigns = { ...(sv?.signs ?? {}) };
     this.heldSaved = sv?.held ?? null;
     // CONVOYS (owner, 2026-11-19): consecutive bridges that carry the same `convoy` id are built with the planks of ONE
     // island — the first one's. The islands in between hold no planks and he keeps the plank he carries; if a later gap
@@ -114,10 +119,11 @@ export class DivisorIslesGame extends WorldRuntime {
       depot: null,
       recall: [],
       purse: null,
+      sign: null,
     };
   }
   worldSave() {
-    return { stars: this.state.stars, log: this.log, built: this.built, held: this.state.held };
+    return { stars: this.state.stars, log: this.log, built: this.built, held: this.state.held, signs: this.markSigns };
   }
   worldCentre() {
     return this.isl[Math.floor(this.isl.length / 2)];
@@ -627,7 +633,13 @@ export class DivisorIslesGame extends WorldRuntime {
       }
       g.add(tick);
     }
-    const label = textSprite(`${seg.a} خانة`, { h: 1.25, bg: 'rgba(10,26,60,0.86)', stroke: null, color: '#e9fbff' });
+    if (seg.mark) this.buildMark(seg, g, q);
+    const label = textSprite(seg.mark ? this.T.mark.label(seg.mark, seg.a) : `${seg.a} خانة`, {
+      h: 1.25,
+      bg: 'rgba(10,26,60,0.86)',
+      stroke: null,
+      color: '#e9fbff',
+    });
     label.position.copy(this.segPoint(seg, seg.len / 2, 0, 3.4));
     g.add(label);
     seg.label = label;
@@ -657,6 +669,49 @@ export class DivisorIslesGame extends WorldRuntime {
       seg.deck = deck;
       this.markComplete(seg, true);
     }
+  }
+
+  /**
+   * THE MARKED STRETCH of a bridge (`seg.mark` cells from the island he leaves; `./mark.js`): a band of light over those
+   * cells — one colour per stroke when it was marked in several (`seg.strokes`) — and a LANTERN POST standing where it
+   * ends, on each side: the post is what must stand on a joint between two planks.
+   */
+  buildMark(seg, g, q) {
+    const strokes = seg.strokes?.length ? seg.strokes : [seg.mark];
+    const tints = [0xffd24a, 0xff9d3c];
+    let from = 0;
+    strokes.forEach((n, k) => {
+      const len = n * seg.cell;
+      const band = new THREE.Mesh(
+        new THREE.BoxGeometry(2.7, 0.03, len),
+        new THREE.MeshBasicMaterial({ color: tints[k % 2], transparent: true, opacity: 0.42, depthWrite: false }),
+      );
+      band.position.copy(this.segPoint(seg, from + len / 2, 0, -0.02));
+      band.quaternion.copy(q);
+      g.add(band);
+      from += len;
+    });
+    seg.posts = [1.5, -1.5].map((v) => {
+      const post = new THREE.Group();
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.09, 2.6, 8), std(0x1e4fa8));
+      pole.position.y = 1.3;
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.26, 14, 10), glow(0xffd24a, 1.1));
+      lamp.position.y = 2.7;
+      post.add(pole, lamp);
+      post.userData.lamp = lamp;
+      post.position.copy(this.segPoint(seg, seg.mark * seg.cell, v, 0));
+      g.add(post);
+      return post;
+    });
+  }
+
+  /** The sign of the marked bridge he stands before: the fraction in cells, then once per plank that held. */
+  syncSign() {
+    const seg = this.segs[this.state.stage];
+    const sign = seg?.mark
+      ? { chain: signChain(seg.a, seg.mark, this.markSigns[seg.id] ?? []), strokes: seg.strokes ?? null }
+      : null;
+    if (JSON.stringify(sign) !== JSON.stringify(this.state.sign)) this.set({ sign });
   }
 
   buildRail(seg) {
@@ -983,14 +1038,19 @@ export class DivisorIslesGame extends WorldRuntime {
   async forge(seg, b, predicted) {
     const a = seg.a;
     const { q, r } = divide(a, b);
+    // a marked stretch: the post must stand on a joint (`./mark.js`) — the equation shows the stretch's division too
+    const mv = seg.mark ? markVerdict(a, seg.mark, b) : null;
+    const eqMark = (laid) =>
+      mv ? { mark: { ...mv.mark, shown: laid * b >= Math.min(a, mv.mark.m + (mv.mark.r ? b - mv.mark.r : 0)) } } : {};
     this.logBridge(a, b);
+    if (mv) this.logBridge(seg.mark, b);
     this.input.clear();
     this.set({
       phase: 'forge',
       overlay: null,
       prompt: null,
       verdict: null,
-      equation: { a, b, q: 0, r: a, live: true },
+      equation: { a, b, q: 0, r: a, live: true, ...eqMark(0) },
     });
     // cinematic camera: from the side, the whole gap in view
     const mid = this.segPoint(seg, seg.len / 2);
@@ -1016,7 +1076,8 @@ export class DivisorIslesGame extends WorldRuntime {
     const from = seg.altarWorld.clone().setY(1.6);
     seg.count.visible = q > 0;
     seg.count.userData.setText('0');
-    const per = Math.min(0.42, Math.max(0.1, 3.4 / Math.max(1, q)));
+    // a plank every 0.1 s at least — but a long bridge (322 planks of 2 on 645 cells) is laid in about 7 s, not 32
+    const per = Math.min(0.42, Math.max(q > 70 ? 7 / q : 0.1, 3.4 / Math.max(1, q)));
     if (q === 0) {
       // the plank is longer than the whole gap: it tips over the edge and falls
       const m = this.plankMesh(seg, b, 0);
@@ -1059,7 +1120,7 @@ export class DivisorIslesGame extends WorldRuntime {
       seg.count.userData.setText(String(k + 1));
       seg.count.position.copy(this.segPoint(seg, (k + 0.5) * b * seg.cell, 0, 1.6));
       this.set({
-        equation: { a, b, q: k + 1, r: a - b * (k + 1), live: true },
+        equation: { a, b, q: k + 1, r: a - b * (k + 1), live: true, ...eqMark(k + 1) },
         ...(purse ? { purse: { of: purse.of, left: purse.left - (k + 1) } } : {}),
       });
     }
@@ -1104,7 +1165,7 @@ export class DivisorIslesGame extends WorldRuntime {
       this.save();
       return;
     }
-    this.set({ equation: { a, b, q, r, live: false } });
+    this.set({ equation: { a, b, q, r, live: false, ...eqMark(q) } });
     this.robot.setChest(String(r), r === 0 ? true : null);
     seg.count.visible = false;
     // TWO results, never mixed: was the PREDICTION right? — then, does this mould fill the gap? A right prediction of a
@@ -1121,9 +1182,31 @@ export class DivisorIslesGame extends WorldRuntime {
         this.robot.cheer();
       }
     }
-    this.set({ verdict: { right, first, predicted, a, b, r, holds: r === 0 } });
+    this.set({
+      verdict: { right, first, predicted, a, b, r, holds: mv ? mv.holds : r === 0, ...(mv ? { mark: mv.mark } : {}) },
+    });
     if (seg.label) seg.label.visible = false; // the result panel takes its place on screen; crumble() brings it back
 
+    if (mv && r === 0 && !mv.joint) {
+      // THE GAP IS FILLED BUT THE POST STANDS IN THE MIDDLE OF A PLANK: that plank is shown, then the bridge goes back
+      seg.stat.fails += 1;
+      this.audio.play('fail');
+      this.shake = 0.15;
+      seg.gap.scale.z = b * seg.cell;
+      seg.gap.position.copy(this.segPoint(seg, (mv.mark.q + 0.5) * b * seg.cell, 0, 0.08));
+      seg.gap.visible = true;
+      this.gapPulse = seg.gap;
+      await this.wait(2.4);
+      this.gapPulse = null;
+      await this.crumble(seg);
+      this.cine = null;
+      this.set({ phase: 'play' });
+      if (this.convoyTail(seg)) this.flags.convoyStuck = seg.id;
+      this.say(this.T.say.markMiss(b, mv.mark), 10);
+      this.refreshObjective();
+      this.save();
+      return;
+    }
     if (r === 0) {
       this.audio.play('success');
       this.robot.cheer();
@@ -1160,6 +1243,7 @@ export class DivisorIslesGame extends WorldRuntime {
   finishBridge(seg, b, q) {
     seg.builtWith = b;
     this.built[seg.id] = b;
+    if (seg.mark) this.markSigns[seg.id] = [...(this.markSigns[seg.id] ?? []).filter((x) => x !== b), b];
     this.markComplete(seg);
     this.cine = null;
     if (seg.boss) {
@@ -1202,6 +1286,8 @@ export class DivisorIslesGame extends WorldRuntime {
     else this.say(this.T.say.gapShort(r), 5);
     if (seg.workshop && seg.stat.fails >= 2 && !this.flags.anvil) {
       this.flags.anvil = true;
+      // the instruction says it at once: the workshop is open (lesson 7's walk, 2026-11-20 — it still said « take it here »)
+      this.refreshObjective();
       this.audio.play('key');
       this.particles.burst(this.anvil.getWorldPosition(new THREE.Vector3()).setY(1.5), 0xff9d3c, 40, 4, 4, 1.2);
       setTimeout(() => !this.dead && this.say(this.T.say.anvilOpen, 9), 2600);
@@ -1257,6 +1343,7 @@ export class DivisorIslesGame extends WorldRuntime {
       else o = this.T.objective.bridge(seg.a);
     }
     if (this.state.objective !== o) this.set({ objective: o });
+    this.syncSign();
     // the purse of the convoy he is building (shown while one of its bridges is still to build)
     const group = this.convoyOf(seg);
     const purse = group && group.some((s) => !s.complete) ? this.purseOf(seg) : null;

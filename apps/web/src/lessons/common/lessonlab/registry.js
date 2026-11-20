@@ -108,6 +108,20 @@ export const TOOLS = [
     load: () => import('./tools/Euclid'),
   },
   {
+    // three faces on two numbers of the student's own: the two lists of divisors and what is in both, the divisions one
+    // after another, one number tried on both — facts only; neither the tile nor the instrument names a key of its lesson
+    id: 'duo',
+    lesson: 'awwaliyan-fima-baynahuma',
+    lessonTitle: 'العددان الأوّليّان فيما بينهما',
+    icon: '🔬',
+    name: 'مِجهر العددين',
+    hint: 'انظر إلى عددين من ثلاث جهات: قواسمهما، قسماتهما المتتالية، وعدد تختبره عليهما معًا.',
+    needs: 'ab',
+    labels: { a: 'العدد الأوّل', b: 'العدد الثاني' },
+    range: { a: [1, 999], b: [1, 999] },
+    load: () => import('./tools/Duo'),
+  },
+  {
     id: 'paper',
     lesson: 'qisma-iqlidiya-baqi',
     lessonTitle: 'القسمة الإقليدية',

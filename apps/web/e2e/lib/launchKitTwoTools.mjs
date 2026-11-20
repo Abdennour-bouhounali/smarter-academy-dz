@@ -60,6 +60,8 @@ export const LONGEST_LIST = (() => {
   return best;
 })();
 
+/** The greatest common divisor, the walk's own (never the game's). */
+const gcdOf = (a, b) => (b ? gcdOf(b, a % b) : a);
 const norm = (s) =>
   String(s ?? '')
     .replace(/\s+/g, ' ')
@@ -402,6 +404,9 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
       if (m) return Number(m[1]) * Number(m[2]) + Number(m[3] ?? 0) === Number(m[4]) ? 'yes' : 'no';
       m = /^(\d+) - (\d+) = (\d+)$/.exec(tex);
       if (m) return Number(m[1]) - Number(m[2]) === Number(m[3]) ? 'yes' : 'no';
+      // « PGCD(x ; y) = v » (4am.m1.r03, level 2): is v the greatest common divisor, computed here?
+      m = /^\\mathrm\{PGCD\}\((\d+) ; (\d+)\) = (\d+)$/.exec(tex);
+      if (m) return gcdOf(Number(m[1]), Number(m[2])) === Number(m[3]) ? 'yes' : 'no';
       expect(false, `the walk can read the card « ${tex} »`);
     }
     if (card.say) {
@@ -422,6 +427,8 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
       expect(false, `the walk can read the sentence « ${t} »`);
     }
     const n = Number(norm(card.text));
+    const both = /قاسم مشترك للعددين (\d+) و (\d+)/.exec(norm(plain));
+    if (both) return Number(both[1]) % n === 0 && Number(both[2]) % n === 0 ? 'yes' : 'no';
     const of = /قاسم للعدد (\d+)/.exec(plain);
     if (of) return Number(of[1]) % n === 0 ? 'yes' : 'no';
     const k = /القسمة على (\d+)/.exec(plain);
@@ -457,7 +464,16 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
     const sc = await onScreen();
     if (q.gesture === 'write') {
       let vals;
-      if (sc.eq[1] === '=') {
+      if (/^PGCD/.test(sc.eq[0] ?? '')) {
+        // « PGCD(x ; y) = ▢ » (4am.m1.r03): the greatest common divisor, computed here; wrong: the smaller number (it
+        // never divides the greater in this family — the slip « smaller-not-divisor »)
+        const [x, y] = sc.eq.map(Number).filter((v) => Number.isInteger(v) && v > 0);
+        expect(
+          q.calc?.op === 'pgcd' && x === q.calc.x && y === q.calc.y && same(sc.slots, ['v']),
+          `the equation on screen is the question asked (${sc.eq.join(' ')}), ONE box`,
+        );
+        vals = { v: right ? gcdOf(x, y) : Math.min(x, y) };
+      } else if (sc.eq[1] === '=') {
         // « a = b × ▢ (+ ▢) »: the Euclidean division, or the equality that shows a divisor (no box for a remainder)
         const a = Number(sc.eq[0]);
         const b = Number(sc.eq[2]);
@@ -1105,6 +1121,9 @@ export async function walkLaunchOne({
   // belongs to the lesson being launched and must not be shown before it — and then the capsule has no lab step and no
   // « مختبري » button (LaunchKit.jsx)
   const T = { ...given, labTool: FAMILIES[given.item]?.labTool ?? null };
+  // the gesture of the second easy question: the division family's flag (« place »), or what the tool says (4am.m1.r03:
+  // its level-1 « common » form is a SORT of three numbers — lesson 7, 2026-11-20)
+  const SECOND = given.second ?? 'place';
   const H = harness({ id, url, grade, outName, alien: ownToolsAside(alien, [given.item]), alienLabel });
   const { PHONE, expect, shot, px, cur, tool, same, bands, kcard, kit, fill, hand, settle, answer } = H;
   const I = T.item;
@@ -1296,11 +1315,11 @@ export async function walkLaunchOne({
   await ans(false);
   q = (await cur()).q;
   expect(
-    q.item === I && q.level === 1 && q.gesture === 'place',
-    'a tool is never judged on one answer: a second easy question, by another gesture — PLACING a flag',
+    q.item === I && q.level === 1 && q.gesture === SECOND,
+    `a tool is never judged on one answer: a second easy question, by another gesture — ${SECOND === 'place' ? 'PLACING a flag' : SECOND.toUpperCase()}`,
   );
   await fill(false);
-  await shot('place-missed');
+  await shot(`${SECOND}-missed`);
   await hand();
   await settle();
   forms.add(`1:${q.form}`);
@@ -1315,8 +1334,8 @@ export async function walkLaunchOne({
   await page.waitForSelector('[data-lk-qphase="workshop"]');
   q = (await cur()).q;
   expect(
-    q.item === I && q.level === 1 && q.gesture === 'place',
-    'two questions LIKE the one he missed: the flag again',
+    q.item === I && q.level === 1 && q.gesture === SECOND,
+    `two questions LIKE the one he missed: the ${SECOND === 'place' ? 'flag' : SECOND} again`,
   );
   await ans(false);
   await ans(false);
@@ -1443,9 +1462,11 @@ export async function walkLaunchOne({
   await shot('capsule-repaired');
   await H.takeOff('take-off after the capsule: the world of the lesson plays');
 
+  // the tool's own forms (families.js › forms): every easy form, and the harder sort (lesson 7: write, common, sort)
+  const want = [...(FAMILIES[I]?.forms?.[1] ?? ['write', 'place']).map((f) => `1:${f}`), '2:sort'];
   expect(
-    forms.has('1:write') && forms.has('1:place') && forms.has('2:sort'),
-    `the launch asked the tool's three gestures: write, place, sort (${[...forms].join(' ')})`,
+    want.every((f) => forms.has(f)),
+    `the launch asked the tool's gestures: ${want.join(', ')} (${[...forms].join(' ')})`,
   );
   await H.done();
 }

@@ -46,7 +46,9 @@ const walks = fs
   .filter((f) => f.endsWith('.mjs'))
   .map((f) => ({ file: f, text: fs.readFileSync(path.join(WEB, 'e2e', f), 'utf8') }));
 const catalogue = new Map();
-for (const f of fs.readdirSync(path.join(ROOT, 'packages/core/curriculum/dz')).filter((n) => /^lessons_.*\.json$/.test(n))) {
+for (const f of fs
+  .readdirSync(path.join(ROOT, 'packages/core/curriculum/dz'))
+  .filter((n) => /^lessons_.*\.json$/.test(n))) {
   const data = json(path.join(ROOT, 'packages/core/curriculum/dz', f));
   for (const l of Array.isArray(data) ? data : (data.lessons ?? [])) catalogue.set(l.code ?? l.id, l);
 }
@@ -72,35 +74,85 @@ async function statusOf(entry) {
   add('pack: lesson.pack.js, its flags in the generated index', has('lesson.pack.js') && Boolean(entry.pack));
   add('S2 world: named in the pack', Boolean(flags.world), flags.world ?? 'no world');
   const missing = WORLD_FILES.filter((f) => !fs.existsSync(path.join(world, `${f}.js`)));
-  add('S2–S7 world content: every part', missing.length === 0, missing.length ? `missing ${missing.join(', ')}` : WORLD_FILES.length + ' files');
+  add(
+    'S2–S7 world content: every part',
+    missing.length === 0,
+    missing.length ? `missing ${missing.join(', ')}` : WORLD_FILES.length + ' files',
+  );
   const untested = WORLD_TESTED.filter((f) => !fs.existsSync(path.join(world, `${f}.test.js`)));
-  add('world content: a test per part', untested.length === 0, untested.length ? `no test for ${untested.join(', ')}` : '');
+  add(
+    'world content: a test per part',
+    untested.length === 0,
+    untested.length ? `no test for ${untested.join(', ')}` : '',
+  );
   // every rule is forged, never told
-  const keys = [...(/KEYS\s*=\s*\[([^\]]*)\]/.exec(read(path.join(world, 'journey.js')) ?? '')?.[1] ?? '').matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  const keys = [
+    ...(/KEYS\s*=\s*\[([^\]]*)\]/.exec(read(path.join(world, 'journey.js')) ?? '')?.[1] ?? '').matchAll(/'([^']+)'/g),
+  ].map((m) => m[1]);
   const forges = read(path.join(world, 'forges.js')) ?? '';
   const told = keys.filter((k) => !forges.includes(`'${k}'`));
-  add('S2 every rule is forged, never told', keys.length > 0 && told.length === 0, keys.length ? (told.length ? `told: ${told.join(', ')}` : `${keys.length} forges`) : 'no keys found');
+  add(
+    'S2 every rule is forged, never told',
+    keys.length > 0 && told.length === 0,
+    keys.length ? (told.length ? `told: ${told.join(', ')}` : `${keys.length} forges`) : 'no keys found',
+  );
   add('S3 knowledge: named in the pack', Boolean(flags.knowledge));
   add('S6 exam coach: named in the pack', Boolean(flags.coach));
   add('S4 practice bank is the BEM exam sheet', examStyle.includes(entry.id), 'content/practice/exam-style.json');
   // the exam sittings serve the lesson's bank AS IT IS (owner, 2026-11-18): its world/sitting.js goes through the kit's adapter
   const sitting = read(path.join(world, 'sitting.js')) ?? '';
-  add('S4bis the bank is served as it is', /createBankSittings\(/.test(sitting) && !/createSittings\(/.test(sitting), 'world/sitting.js › createBankSittings (kit/bankSitting.js)');
+  add(
+    'S4bis the bank is served as it is',
+    /createBankSittings\(/.test(sitting) && !/createSittings\(/.test(sitting),
+    'world/sitting.js › createBankSittings (kit/bankSitting.js)',
+  );
   add('S8 « مختبري »: an instrument of its own', labRegistry.includes(`lesson: '${entry.id}'`));
   const tools = await coreTools(entry.id);
-  if (tools === null) add('S1 launch kit: a family per core tool', null, 'the learning net could not be read from this script');
+  if (tools === null)
+    add('S1 launch kit: a family per core tool', null, 'the learning net could not be read from this script');
   else {
     const bare = tools.filter((t) => !families.includes(`'${t.id}'`));
-    add('S1 launch kit: a family per core tool', bare.length === 0, bare.length ? `no family for ${bare.map((t) => t.id).join(', ')}` : `${tools.length} core tool(s)`);
+    add(
+      'S1 launch kit: a family per core tool',
+      bare.length === 0,
+      bare.length ? `no family for ${bare.map((t) => t.id).join(', ')}` : `${tools.length} core tool(s)`,
+    );
   }
-  add('T1–T3 board: script and written memo', Boolean(flags.board) && has('board', 'script.js') && has('board', 'memo.js'));
-  add('T2 class test: its default', fs.existsSync(path.join(ROOT, 'content/class-tests', entry.grade, `${entry.id}.json`)));
+  add(
+    'T1–T3 board: script and written memo',
+    Boolean(flags.board) && has('board', 'script.js') && has('board', 'memo.js'),
+  );
+  add(
+    'T2 class test: its default',
+    fs.existsSync(path.join(ROOT, 'content/class-tests', entry.grade, `${entry.id}.json`)),
+  );
   // PHONES ARE PAUSED (owner, 2026-11-18): a lesson whose pack says `phone: false` is not judged on it — only a `true` is checked
-  add('phone: its home designed and walked (PAUSED since 2026-11-18)', flags.phone ? true : null, flags.phone ? '' : 'paused: pack.phone is false', !flags.phone);
-  const mine = walks.filter((w) => w.text.includes(`/${entry.id}\``) || w.text.includes(`/${entry.id}'`) || w.text.includes(`'${entry.id}'`));
-  add('a walk plays its world', mine.some((w) => w.text.includes('data-di-start')), mine.length ? `${mine.length} walk(s) name it` : 'no walk names it');
+  add(
+    'phone: its home designed and walked (PAUSED since 2026-11-18)',
+    flags.phone ? true : null,
+    flags.phone ? '' : 'paused: pack.phone is false',
+    !flags.phone,
+  );
+  const mine = walks.filter(
+    (w) => w.text.includes(`/${entry.id}\``) || w.text.includes(`/${entry.id}'`) || w.text.includes(`'${entry.id}'`),
+  );
+  // a lesson walked through the shared library has ONE descriptor, `e2e/lessons/<id>.walk.mjs` (`e2e/lib/lessonWalk/`)
+  const descriptor = fs.existsSync(path.join(WEB, 'e2e', 'lessons', `${entry.id}.walk.mjs`));
+  add(
+    'a walk plays its world',
+    descriptor || mine.some((w) => w.text.includes('data-di-start')),
+    descriptor
+      ? 'its descriptor for the shared walk'
+      : mine.length
+        ? `${mine.length} walk(s) name it`
+        : 'no walk names it',
+  );
   const cat = catalogue.get(entry.id);
-  add('published: status « available » in the catalogue', cat?.status === 'available', cat ? cat.status : 'not in the catalogue');
+  add(
+    'published: status « available » in the catalogue',
+    cat?.status === 'available',
+    cat ? cat.status : 'not in the catalogue',
+  );
   // what it replaced is deleted (owner, 2026-11-18: « for each lesson that is updated to the gaming version, delete the old
   // version »): no module page, the module addresses redirect home, no mission player in its config (LESSON_V2.md §2)
   const config = read(path.join(dir, 'lesson.config.js')) ?? '';
@@ -129,8 +181,12 @@ if (one) {
   else {
     console.log(`\nLesson v2 — ${s.id} (${s.grade})\n`);
     for (const c of s.checks) console.log(`  ${mark(c.ok)} ${c.part}${c.note ? `  — ${c.note}` : ''}`);
-    console.log(`\n${s.done ? '✅ every part of a v2 lesson is in its place' : `❌ ${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}.`);
-    console.log('   Not judged here: its tests, its walks at 1366×768, 1024×768 and 1840×900 (the phone is paused), the screenshots.\n');
+    console.log(
+      `\n${s.done ? '✅ every part of a v2 lesson is in its place' : `❌ ${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}.`,
+    );
+    console.log(
+      '   Not judged here: its tests, its walk at 1366×768 (the ONE size), the screenshots.\n',
+    );
   }
   process.exit(s.done ? 0 : 1);
 }
@@ -152,14 +208,20 @@ const ledger = [
   ['v2: a pack with a world', count((c) => c.entry.pack?.world)],
   ['still on the mission player only (no world)', count((c) => c.mission && !c.entry.pack?.world)],
   ['still on the older lesson page (no mission, no world)', count((c) => !c.mission && !c.entry.pack?.world)],
-  ['still open with an « أستعدّ » module', count((c) => !c.retired && c.entry.modules.some(([, slug]) => slug === 'astaidd'))],
+  [
+    'still open with an « أستعدّ » module',
+    count((c) => !c.retired && c.entry.modules.some(([, slug]) => slug === 'astaidd')),
+  ],
   ['v2 whose old version is deleted (module pages, mission player)', count((c) => c.retired)],
   ['still without a board (old « وضع القسم », derived memo)', count((c) => !c.entry.pack?.board)],
 ];
 if (args.includes('--json')) console.log(JSON.stringify({ packed, ledger: Object.fromEntries(ledger) }, null, 2));
 else {
   console.log('\nLesson v2 — the lessons that have a pack\n');
-  for (const s of packed) console.log(`  ${s.done ? '✅' : '❌'} ${s.id.padEnd(34)} ${s.grade}  ${s.done ? '' : `${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}`);
+  for (const s of packed)
+    console.log(
+      `  ${s.done ? '✅' : '❌'} ${s.id.padEnd(34)} ${s.grade}  ${s.done ? '' : `${s.failed} part(s) missing${s.unknown ? `, ${s.unknown} not checked` : ''}`}`,
+    );
   console.log('\nThe retirement ledger — a legacy system is deleted in the commit that converts its last lesson\n');
   for (const [label, n] of ledger) console.log(`  ${String(n).padStart(4)}  ${label}`);
   console.log('');

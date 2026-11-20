@@ -620,6 +620,24 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      says « قالب ». The repository checks ran on a worktree of the commit (result in the commit after this one if
      anything failed).
 
+  21. [x] **Lesson 7 `awwaliyan-fima-baynahuma` — v2 (2026-11-20, about 1 h 30 of work against 2 h 25 for lesson 6), the
+     first lesson built on the three tools made the same night:** the authoring kit `gameworld/kit/authoring/` (number
+     helpers, the blocks of a mirror, eight shared test suites, `scripts/lesson-bank-numbers.mjs`), the shared walk
+     `apps/web/e2e/lib/lessonWalk/` (a lesson's walks are ONE descriptor, `e2e/lessons/<id>.walk.mjs`: 59, 78 and 110
+     lines for lessons 5, 6, 7), and the checks run on a worktree of the commit. Three keys: 🤝 `awwaliyan` (25 and 27:
+     only the plank 1; 39 and 52: 13), ✅ `ithbat-awwaliyan` (the divisions end on 1 — its mirror keeps a two-round
+     experiment; the last step ends on a yes/no conclusion), ❌ `shahid-wahid` (645 and 410: ONE plank is enough; 85 and
+     119: none of the rules' planks, yet 17). The store: lanes of 105 and 74, the plank 1 against 35. New: the
+     instrument « مِجهر العددين », the launch family `4am.m1.r03`, the claim option `commonDivisor … notOne` (client and
+     server). Walks at 1366×768 (the ONE size): story 973 checks, hub 226, trainer 497, board 131, launch 237, sitting
+     2,059 (every sheet), lesson-lab 79 — 0 FAIL. Looked at: 12 screens by the walks' agent, 2 by the main session.
+     Kit fixes on the way: the bubble « اضغط E » no longer covers the world's answer; an opened workshop refreshes the
+     instruction; long bridges are laid in about 7 s. In the tree and used by no lesson yet: lesson 8's world piece, a
+     bridge with a marked stretch (`divisorIsles/mark.js`). NOT done: lessons 1–6 re-walked after the kit changes (one
+     reference, lesson 6's story through the library, is owed); the lab still opens its new instrument before the first
+     key (`earlierOnly` to wire in `kit/LessonWorld.jsx`); the six gaps the forges' agent found in the authoring kit;
+     the findings of the kit on lessons 5 and 6 (bank pairs missed by their own reader, « 1003 خانة », « بقيت 15 خانات »).
+
 ## 4ter. When each item of 4bis is done
 
 | When | Items | Why then |

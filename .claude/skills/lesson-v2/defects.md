@@ -57,6 +57,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | B25 | The board's rail overflowed with 14 stations: each copybook page made a group | L6 | `features/classSession/lessonScripts.test.js` (`groupsOf`: ONE copybook group) | — (fixed in the kit) |
 | B26 | A generated reason of « علّل » chained five divisions and shrank its panel under 12 px | L6 | the lesson's `trainer.test.js` (≤ 3 divisions); to move to the shared suites | Every generated sentence is bounded in a test — length is data. |
 | B27 | A bench showed, on every row, the planks common to the pair — the answer the student was to find | L6 (seen by the world's agent, before any walk) | `inquiryGcd.render.test.jsx` (`plain`) | A bench gives facts and stops there: ask of every column « does this tell the plank to make? ». |
+| B28 | After a refusal, at the light platform, the « اضغط E » bubble sat on the equation the world had just written | L7 (every lesson had it; no walk had shot that state) | `e2e/lib/lessonWalk/` (`worldShot` after a refusal) | The bubble drops under EVERYTHING the world shows in the middle: the instruction, the purse, a bridge's sign, the equation, the verdict (`kit/WorldRuntime.js › placePrompt`). |
 
 ## C. The walks themselves — how a check lies
 
@@ -75,6 +76,7 @@ lessons (`qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma`, `qisma-iqlidiya-hasr`)
 | C10 | A walk read the page in the same instant the address changed (the world not yet unmounted) | clean measure | — | After a navigation, wait for the element to detach, and print how long it took. |
 | C11 | A walk compared text that held invisible bidi marks, or measured text hidden under a full-screen layer | clean measure | `sittingWalk.mjs › readBox`, `walk.mjs › tinyText` | Compare what is SEEN. |
 | C12 | A walk's own tables lagged the kit (a new claim kind, the cabinet's pager, a foreign-word list holding the launch's own tool, an authored two-row formula taken for a broken one) | clean measure | — | Read kinds and names from the kit, never from a hand-written table in the walk. |
+| C13 | Two controls shared one hook (`data-ll-plus` on the instrument's « + » and on the number panel's stepper) | L7 | — | A hook names ONE control on a screen; give a new control its own value. |
 
 ## D. The tree
 
@@ -95,6 +97,8 @@ Checks that exist in lesson 4's walks only, and that every lesson needs: nothing
 the map and the hub laid out (B8), a bidi check on plain text in the trainer, the launch kit and the board (B7 — none
 exists yet), the mirror and the board speak the key's language (A10).
 | D8 | Deleting an old version orphaned a textbook element in `scripts/check-textbook-coverage.mjs`, and the question went to the owner (« دوري الآن » p. 13) | L6 | `node scripts/check-textbook-coverage.mjs` (in `check:lessons`) | **Owner, 2026-11-19: the textbook is NOT read to generate a lesson, nor its extraction, nor the old version — only the learning points (`lesson:brief`) and some exercises of the bank.** An orphaned element is marked `notIntegrated` in `docs/sources/<grade>/<unit>/extraction.json` with the reason « rebuilt from scratch, owner 2026-11-19 »; never moved to another lesson, never asked. |
+| D9 | A flag of the world changed without `refreshObjective()`: the instruction kept saying « take it from this island » after the workshop had opened | L7 | `e2e/lib/lessonWalk/story.mjs › unlock` | Whatever changes what he can do refreshes the instruction. |
+| D10 | A pair of the gate dash was the road pair of another lesson (76 and 57 against lesson 5's 19 ; 76); a comment of the kit named two lessons | L7 | `kit/authoring/test/suites.js › describeStory`, `lessonPack.test.js` | Every number of a lesson goes through `node scripts/lesson-bank-numbers.mjs <id> --check`, the dash's too. |
 
 ## Time of a lesson (measured — the skill exists to make these numbers fall; owner, 2026-11-19)
 
@@ -109,6 +113,8 @@ waiting. Fill a line at every lesson's commit; if a number does not fall, say wh
 | L5, through the skill | 4 h 16 (16:47 → 21:03) | about 3 h 25 | 83 min | 2.3 M | about 50 min of the wall clock went to other work (a new-world study, the older lessons' walks, a session restart); the walks grew (four world pieces seen for the first time); `trusted.md` did not exist yet |
 
 | L6, skill + « do not walk what is proven » | 2 h 25 (21:05 → 23:30, the commit; the repository checks ran after it, on a worktree) | wave 1: 31 min; wave 2: 39; walks: 47; three-size review run: 35 | 47 min | 2.4 M | the walks fell from 83 to 47 min (limits tested as data, the sitting and the frames not re-walked); about 40 min of the clock went to the owner's questions and a council; waves waited on nothing |
+
+| L7, on the authoring kit and the shared walk, ONE size | about 1 h 30 of work (23:31 → 00:42, then 08:01 → 08:20 after a network cut of the night) | wave 1: 31 min; wave 2: 20 (three agents); walks: 31; the main session's fix and re-run: 10 | 31 min | 2.0 M | the walks fell from 47 to 31 min although the library met four things it had never played; wave 2 fell from 39 to 20 min on the authoring kit; no three-size run |
 
 **After L6 (owner, 2026-11-19): ONE size, 1366×768 — the three-size review run (35 min) is gone; and the five cuts he
 asked for are being built: walks as data (`apps/web/e2e/lib/lessonWalk/`), an authoring kit

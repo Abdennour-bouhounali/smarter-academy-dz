@@ -224,6 +224,12 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   beside it is checked too), `pgcdSame` (choice: the option « $\mathrm{PGCD}(x ; y)$ » that keeps the PGCD of the pair),
   `subtractions` / `divisions` (the steps of each algorithm down to 0, each algorithm RUN by the test), `fewerSteps`
   (which algorithm is shorter, each option written as its form says).
+  **Lesson 7 « العددان الأوّليّان فيما بينهما » (2026-11-19)**: `4am/awwaliyan-fima-baynahuma.json` — no pair of the
+  lesson's exercise bank nor of its story; the end test weighs P1–P3 as the bank does (one, five, two questions). New
+  `check` types: `coprime` (true / false: the pair's PGCD is 1), `coprimePick` (choice: options « a و b », the pair whose
+  PGCD is 1), `witnessPick` (choice: the common divisor other than 1), `noSmallWitness` (true / false, ALWAYS false:
+  « none of 2, 3, 5 divides both, so they are coprime » — the test checks the premise is true AND that a common divisor
+  other than 1 exists, so the sentence never teaches a false proof with a true end).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.

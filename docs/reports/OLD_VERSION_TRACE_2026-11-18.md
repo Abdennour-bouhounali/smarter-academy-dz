@@ -651,3 +651,113 @@ world » (the orchestrator) · `check:unreached`: nothing of this lesson (the th
 27. only, besides those drafts · `validate-lessons.mjs`: 5/5 الكفاءات covered · `check-textbook-coverage.mjs`: ❌ 22. ·
 `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`, `world/`, `boardLessons.test.js`,
 `lessonPack.test.js` ✅. NOT run: the lesson's `world/` tests, the whole suite, a build, `check:lessons`, any walk.
+
+## 14. Lesson 7 — `awwaliyan-fima-baynahuma` (2026-11-20, NOT committed)
+
+Lesson: 4AM `awwaliyan-fima-baynahuma` (`…/aadad-tabiiya-natiqa/awwaliyan-fima-baynahuma/`), lesson 7 of the unit. Same job
+and shape as §13. Its new version — `world/` (another agent was writing `world/forges.js` and `world/inquiries.js` during
+this change), `board/` — was not touched, except `world/evidence.js` and its test (14.4); its pack `lesson.pack.js` was
+written in this change (world `divisor-isles`, `knowledge` = `world/knowledge.js › LESSON_KNOWLEDGE`, `coach` P1
+`awwaliyan` · P2 `ithbat-awwaliyan` · P3 `shahid-wahid`, as `world/evidence.js › POINTS`, `board` script and memo,
+`phone: false`). This lesson was on the MISSION PLAYER (scene `math-club`).
+
+### 14.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1, rows h, l of §11.1 and rows b, f, m of §13.1 hold unchanged. What is specific:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge: () => import('./knowledge')`) | pages + the 🧠 map | **changed** as §13 (`retiredModules: true`, no `loadKnowledge`): the 8 module addresses redirect home |
+| b | `lesson.config.js › studentView`, `mission` (scene `math-club`, four tools `awwaliyan-taarif`, `nafy-awwaliyan`, `laysa-awwali`, `ithbat-awwaliyan`, three checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef` | the mission player, `LessonProblemCard`, the old 🧠 provider | **deleted**; the header (the textbook's activity, pages and exercises, the French design notes) rewritten |
+| c | `common/mission/MissionScene.jsx › 'math-club'` → `MathClubScene.jsx` | this config only | **deleted** (import, entry, comment) |
+| d | `content/kits.js`, `peerSheet.js`, `prep.js`, `problems.js` (+ their 4 tests), `exercises.js`, `textbook.js` | the module pages only (`world/` imports the kit, `divisorIsles/` and its own files; `board/` imports `features/classSession/*`) | **deleted** |
+| e | the globs over every lesson's `content/` and `knowledge.jsx`: `kit/peerSheet.test.js`, `problems/masailIllustrations.test.js`, `problems/lessonProblemPlacement.test.js`, `knowledge/memoContent.test.js`, `progressive/lessonGraphs.test.js`, `wadiya…/content/mission.test.js` (`lessonContent`, `peerSheets`, `knowledgeOf`) | files | pass without them, except `mission.test.js › lessonPairs` (14.3) |
+| f | **`check-textbook-coverage.mjs`**: `ex-23`, `ex-24`, `ex-26` (destination module 3, cited by the deleted `content/textbook.js` only) and **`qcm`** (destination module 7, item 8 of the deleted « إختبار أولي » — moved here by §13.1 g) were cited by no content any more; `act-7` is still cited by `resources › sourceElementIds`, `ex-25`, `ex-27`, `ex-39` by the bank | coverage | the four marked **`notIntegrated`** in `docs/sources/4am/unit1/extraction.json` with the reason of `now-13-1`, this lesson's id (owner, 2026-11-19 — `defects.md` D8); `qcm` keeps its history note. Nothing moved to another lesson. The textbook and the extraction's content were not used to decide |
+| g | `ikhtizal-kasr/lesson.config.js › priorKnowledge` (`awwaliyan-taarif`, an id of this lesson's deleted `knowledge.jsx`) | ids as data | **re-pointed** to the world key `awwaliyan` |
+| h | `wadiya-idmajiya-aadad`: `mission.tools` cite no id of this lesson (`baqi-yabqi`, `iqlidis` are lesson 6's world keys); the pairs' sentinel `65/91` is ikhtizal-kasr's | ids, pairs | unchanged; `lessonPairs` re-fed (14.3) |
+| i | this lesson's `priorKnowledge: ['pgcd-taarif', 'khwarizmiyat-iqlidus', 'qawaid-qisma']` — the first two existed only in deleted root files | the brief, the audit | **re-pointed** to `al-akbar` (lesson 4's world) and `iqlidis` (lesson 6's); `qawaid-qisma` is lesson 2's key |
+| j | the labs `coprime-explorer` (`resources` of this config) | `resources` | **kept** as data, titles without the textbook's numbers; mounted by no page now — reached through `manipulationRegistry.js` (as §13 follow-up 23). The lesson's instrument in « مختبري » is `duo` (another agent, `lessonlab/registry.js`) |
+| k | `unitMissions.js`, `moduleLayoutMigrations.js` (`{ 4: 7 }`), `lessonlab/registry.js`, `launchkit/families.js`, the learning net, `content/practice`, `content/class-tests`, the API's seeders and migration, `scripts/practice-oracle/awwaliyan-fima-baynahuma.mjs` | ids, slugs, the bank | unchanged |
+| l | `docs/reports/knowledge-contracts/4am_awwaliyan-fima-baynahuma.json` | the audit's stale report | **deleted** |
+
+### 14.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط, معارف, أوظّف, three مسائل, « إختبار أولي ») | 8 | 332 |
+| `moduleContext.js` | 1 | 3 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 219 |
+| `content/` — `kits`, `peerSheet`, `prep`, `problems` (+ their tests), `textbook`, `exercises` | 10 | 847 |
+| **lesson folder, total** | **21** | **1,401** |
+| mission scene `MathClubScene.jsx` | 1 | 53 |
+| stale audit report `docs/reports/knowledge-contracts/4am_awwaliyan-fima-baynahuma.json` | 1 | 311 |
+| **total** | **23** | **1,765** |
+
+Also edited: `lesson.config.js` (14.1 b; `teachingScope` without the textbook's example; module titles and `desc` neutral —
+0 « أستعدّ », 1 « قاسم مشترك وحيد، أو أكثر », 2 « الإثبات بالحساب », 3 « أتمرّن », 4 « مسألة الدرس » (the store of the
+world's last bridge, `world/story.js › PROBLEM_MODULE = '4'`), 5 « مسألة 1 », 6 « مسألة 2 », 7 « التقويم »; ids, numbers,
+slugs, stages, `teachesLearningPointIds` unchanged — `world/journey.test.js` and `world/evidence.test.js` check them; the
+resources' titles no longer carry the textbook's pairs nor the old problems' contexts); `routes.jsx`; `MissionScene.jsx`;
+`ikhtizal-kasr/lesson.config.js` (14.1 g); `extraction.json` (14.1 f); `package.json` (`format:v2`, `check:format`: the
+lesson's `world`, `board`, `lesson.pack.js`); `lessonIndex.generated.json` (the lesson's `pack` flags); `e2e/lesson-lab.mjs`
+(a step 2bis: lesson 7 opens the lab from its world, its one instrument `duo`, closed by its ✕ — `LESSON_LAB.md`);
+`LESSON_V2.md` (retirement ledger, §1bis), `LESSON_DEVELOPMENT_GUIDE.md` (`math-club` deleted), `MISSION_ROLLOUT_PROGRESS.md`.
+
+### 14.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (door « حصّة القسم », « present » refused).
+- `4am …/_unit/prepDiagnostic.test.js`: seven v2 lessons have no « أستعدّ » page.
+- `knowledge/finalSynthesis.test.js`: 68 → 67 evaluation modules (unit 1: 3 → 2).
+- `gameworld/kit/bankDisplay.test.js`: at least 10 v2 sittings (the lesson's `world/sitting.js`).
+- `wadiya-idmajiya-aadad/content/mission.test.js`: `lessonPairs` fell to 5 pairs once this lesson's `content/` went (the
+  test wants more than 20): it now ALSO reads the gaps, lanes and piers of every v2 world's road (`world/math.js ›
+  NUMBERS`) — the collision rule checks the synthesis' rounds against more pairs than before, and a new sentinel `85/119`
+  (this lesson's convoy « hidden ») proves the roads are read. Nothing weakened.
+- the evidence gap (14.4): `kit/claims.test.js`, the fixture, `ClaimVerifierTest`, the lesson's `world/evidence.test.js`.
+
+### 14.4 The evidence gap closed — `commonDivisor` with `notOne: true`
+
+No claim kind stated « d is a common divisor of a and b OTHER THAN 1 »: `commonDivisor` is true for d = 1, the answer the
+key ❌ `shahid-wahid` refuses, so `world/evidence.js` sent nothing for it. Now `commonDivisor` takes the option `notOne: true`
+(d ≥ 2) in `kit/claims.js` and `ClaimVerifier.php` (read `=== true` on both sides), with 7 rows in the shared fixture and a
+test on each side; `world/evidence.js` sends `{ kind: 'commonDivisor', a, b, d, notOne: true }` for every « shahid »
+answer, and its property test has NO silent case left (every exam answer sends a claim, true exactly when `check` accepts).
+
+### 14.5 Walks (NONE was run)
+
+Changed: `lesson-lab.mjs` (14.2). **Opening this lesson's deleted pages or its old home**: `lesson-kit/manipulations.mjs`
+(`awwaliyan-fima-baynahuma/17-wa-18` and `/maarif` — the browser suites of the `coprime-explorer` lab),
+`lesson-kit/4am-aadad-tabiiya-natiqa.mjs` (the unit's lessons and modules), `lesson-kit/moyen-retrofit-phase1.mjs` (modules
+`17-wa-18`, `maarif` and their bricks `awwaliyan-taarif`, `nafy-awwaliyan`, `laysa-awwali`, `ithbat-awwaliyan`),
+`knowledge-map.mjs` (its `ALL` list opens the 🧠 map of this lesson's page — gone). `lesson-route-boundary.mjs` picks its
+module lesson by the index (`!pack.world`): it moves on by itself.
+
+### 14.6 Follow-ups NOT done
+
+28. **`lessonPack.test.js` FAILS on `launchkit/families.js`** (another agent's uncommitted edit, line 906): a comment names
+    `qasim-mushtarak-akbar` and `awwaliyan-fima-baynahuma` (« shared code names no lesson that has a pack »). The first
+    already had a pack, so the failure predates this change; the comment needs rewording by the launch kit's owner.
+29. **`kit/authoring/proof.tayin.test.js` FAILS**: « 19 ; 76 in awwaliyan-fima-baynahuma/world/story.js » — the line
+    `pgcdWave(76, 57, [1, 3, 19])` of this lesson's gate dash holds both numbers of lesson 5's road pair 19 ; 76. The world's
+    agent's numbers (or the check's reading of a line): not changed here.
+30. The coprime labs (`CoprimeExplorer.jsx`) are mounted by no lesson page now; their browser suites are the walks of 14.5.
+31. **5 final-test items retired at the next deploy** (the deleted « إختبار أولي »), as follow-ups 1, 10, 13, 17, 24.
+32. Still identifiers in the config (§10.2): the slug `17-wa-18` of module 1 and the resource codes `coprime-17-18`,
+    `coprime-22-35` carry the textbook's numbers.
+33. The legacy mission home is mounted in this unit by `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad` only.
+
+### 14.7 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/lessons/registry.test.js src/features/classSession
+src/features/practice src/lessons/common/lessonlab <lesson>/board <lesson>/world/evidence.test.js <lesson>/world/journey.test.js
+<unit>/_unit <unit>/wadiya-idmajiya-aadad <unit>/ikhtizal-kasr src/lessons/common/knowledge src/lessons/common/mission
+src/lessons/common/gameworld/kit src/lessons/common/kit/peerSheet.test.js src/lessons/common/problems` — 89 files, 5,131
+tests: 3 ❌ — `mission.test.js` (fixed, 14.3, the folder re-run ✅ 43), 28. and 29. (not this change's files) ·
+`php8.4 artisan test --filter Claim` ✅ 6 tests · `status:lesson-v2 --lesson awwaliyan-fima-baynahuma`: ✅ pack, world,
+forged rules, knowledge, coach, bank, « مختبري », launch kit, board, class test, published, old version deleted; ❌ « a test
+per part — no test for forges » (the forges' agent) and ❌ « a walk plays its world » (the orchestrator) ·
+`check-textbook-coverage.mjs` ✅ · `check:unreached`: only `kit/authoring/{forgeBlocks,numbers}.js` (not imported yet) ·
+`check:unused`: `kit/authoring/numbers.js` and, in `world/`, `inquiries.js › PROOF_INQUIRY` and `math.js › DIVISIONS` (test
+only) — nothing of this change · `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `board/`,
+`world/evidence*`, `claims*`, `bankDisplay.test.js`, `boardLessons.test.js` ✅. NOT run: the lesson's other `world/` tests,
+the whole suite, a build, `check:lessons`, any walk.

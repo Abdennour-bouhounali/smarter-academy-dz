@@ -157,9 +157,11 @@ final class ClaimVerifier
 
                 return $c['says'] === (self::gcd($a, $b) === 1);
             case 'commonDivisor':
-                // d divise a ET b
+                // d divise a ET b ; avec `notOne: true`, un diviseur commun AUTRE QUE 1 (le témoin que a et b ne
+                // sont pas premiers entre eux — d = 1 est alors faux)
                 [$a, $b, $d] = [$n('a'), $n('b'), $n('d')];
-                if ($a === null || $b === null || $d === null || $a < 1 || $b < 1 || $d < 1) {
+                $min = ($c['notOne'] ?? null) === true ? 2 : 1;
+                if ($a === null || $b === null || $d === null || $a < 1 || $b < 1 || $d < $min) {
                     return false;
                 }
 

@@ -18,6 +18,8 @@ import {
   plankRows,
   bracketOf,
   twoLists,
+  pairLists,
+  probeOf,
   QUESTS,
   observe,
   luckyPair,
@@ -86,7 +88,7 @@ describe('مختبري — the instruments a lesson may show', () => {
       'qasim-mushtarak-akbar',
       'tayin-pgcd',
     ]);
-    expect(lab.all.length).toBe(TOOLS.length);
+    expect(lab.all.length).toBe(TOOLS.filter((t) => t.id !== 'duo').length); // lesson 7's instrument comes after it
   });
 
   it('« تعيين القاسم المشترك الأكبر »: its own instrument (the two lists BUILT), lesson 4’s beside it in the cabinet', () => {
@@ -101,6 +103,37 @@ describe('مختبري — the instruments a lesson may show', () => {
     // its tile names no key of the lesson (BATCH_2_DESIGN.md §7)
     const tile = TOOLS.find((t) => t.id === 'lists');
     expect(`${tile.name} ${tile.hint}`).not.toMatch(/احصر|قاطع|نتائج مباشرة|يقسم الأصغر/);
+  });
+
+  it('« العددان الأوّليّان فيما بينهما »: its own instrument, never before the lesson, naming no key of it', () => {
+    const lab = toolsFor('awwaliyan-fima-baynahuma');
+    expect(lab.mine.map((t) => t.id)).toEqual(['duo']);
+    expect(lab.cabinet.find((g) => g.grade === '4am').lessons.map((l) => l.code)).toEqual([
+      'qasim-adad-tabii',
+      'qawasim-adad-tabii',
+      'khawass-qawasim',
+      'qasim-mushtarak-akbar',
+      'tayin-pgcd',
+      'bahth-pgcd',
+    ]);
+    expect(toolsFor('bahth-pgcd').all.map((t) => t.id)).not.toContain('duo');
+    const before = toolsFor('awwaliyan-fima-baynahuma', { earlierOnly: true });
+    expect(before.all.map((t) => t.id)).not.toContain('duo'); // the launch kit's lab: the cabinet only
+    expect(before.all.map((t) => t.id)).toEqual(expect.arrayContaining(['common', 'lists', 'euclid']));
+    // the words of the lesson's three tablets (world/story.js › TABLETS) never stand on the tile, its quests or the
+    // instrument's own strings: the keys are named in the game
+    const KEY_WORDS = /أوّلي|أولي|فيما بينهما|الوحيد|غير معدوم|يكفي|شاهد/;
+    const tile = TOOLS.find((t) => t.id === 'duo');
+    expect(`${tile.name} ${tile.hint} ${tile.labels.a} ${tile.labels.b}`).not.toMatch(KEY_WORDS);
+    for (const q of QUESTS.duo) expect(q.text).not.toMatch(KEY_WORDS);
+    // lesson 4's « القواسم المشتركة » is the instrument of the launch kit played BEFORE this lesson: its quests too
+    for (const q of QUESTS.common) expect(q.text).not.toMatch(KEY_WORDS);
+    const src = readFileSync(new URL('./tools/Duo.jsx', import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+    const arabic = [
+      ...src.matchAll(/'[^'\n]*[\u0600-\u06FF][^'\n]*'|`[^`]*[\u0600-\u06FF][^`]*`|>[^<>{}]*[\u0600-\u06FF][^<>{}]*</g),
+    ].map((m) => m[0]);
+    expect(arabic.length).toBeGreaterThan(5);
+    for (const s of arabic) expect(s, s).not.toMatch(KEY_WORDS);
   });
 
   it('« خواص قواسم عدد طبيعي »: its own instrument, and the instruments of the two 4AM lessons before it', () => {
@@ -306,6 +339,30 @@ describe('مختبري — the mathematics the instruments draw', () => {
       }
   });
 
+  it('« مِجهر العددين »: the lists, what is in both, one number tried on both — for every pair it can show, and 14 divisions at most', () => {
+    let most = 0;
+    for (let a = 1; a <= 999; a += 13)
+      for (let b = 1; b <= 999; b += 17) {
+        const L = pairLists(a, b);
+        expect(L.A).toEqual(divisorsOf(a));
+        expect(L.common.at(-1)).toBe(gcd(a, b));
+        expect(L.common.every((d) => a % d === 0 && b % d === 0)).toBe(true);
+        expect(L.A.length).toBeLessThanOrEqual(32); // two lines of 16 slots
+        for (const d of [2, 3, 5, 7, 10, 11]) {
+          const P = probeOf(a, b, d);
+          expect(P.a.q * d + P.a.r).toBe(a);
+          expect(P.b.q * d + P.b.r).toBe(b);
+          const want = a % d === 0 && b % d === 0 ? 'both' : a % d === 0 ? 'a' : b % d === 0 ? 'b' : 'none';
+          expect(P.verdict).toBe(want);
+        }
+      }
+    for (let a = 1; a <= 999; a += 1)
+      for (let b = 1; b <= a; b += 1 + (a % 7)) most = Math.max(most, euclidLines(a, b).length);
+    expect(euclidLines(987, 610)).toHaveLength(14); // the longest chain up to 999: the two columns of 7 lines hold it
+    expect(most).toBeLessThanOrEqual(14);
+    expect(divisorsOf(840)).toHaveLength(32);
+  });
+
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -343,6 +400,15 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('lists', { a: 14, b: 70, done: true }, new Set())).toEqual(['inside']);
     expect(observe('lists', { a: 1, b: 70, done: true }, new Set())).toEqual([]); // 1 is in every list: proves nothing
     expect(observe('lists', { a: 35, b: 35, done: true }, new Set())).toEqual([]); // the same number twice
+    expect(observe('duo', { a: 120, b: 180 }, new Set())).toEqual([]); // nothing reported: the hand did nothing yet
+    expect(observe('duo', { a: 120, b: 180, face: 'lists', looked: true }, new Set())).toEqual(['lists']); // 12 in both
+    expect(observe('duo', { a: 120, b: 121, face: 'lists', looked: true }, new Set())).toEqual([]);
+    expect(observe('duo', { a: 987, b: 610, face: 'divisions', done: false }, new Set())).toEqual([]);
+    expect(observe('duo', { a: 987, b: 610, face: 'divisions', done: true }, new Set())).toEqual(['chain']);
+    expect(observe('duo', { a: 60, b: 48, face: 'divisions', done: true }, new Set())).toEqual([]); // 2 divisions
+    expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 14, moved: true }, new Set())).toEqual(['probe']);
+    expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 14, moved: false }, new Set())).toEqual([]);
+    expect(observe('duo', { a: 84, b: 126, face: 'probe', d: 7, moved: true }, new Set())).toEqual([]); // not above 10
     expect(observe('planks', { a: 21, b: 35, d: 7 }, new Set())).toEqual(['both', 'rest']);
     expect(observe('planks', { a: 22, b: 20, d: 7 }, new Set())).toEqual(['sum']);
     expect(observe('planks', { a: 24, b: 12, d: 6 }, new Set())).toEqual(['both']); // 24 = 12 × 2: no remainder
@@ -390,6 +456,7 @@ describe('مختبري — the sounds', () => {
       'PaperDivision',
       'Rules',
       'Bracket',
+      'Duo',
     ].map((n) => `./tools/${n}.jsx`),
   ];
   /** Every sound name written in the lab's code: play('x'…), useChime(play, 'x'…), and the two names of a « a ? 'x' : 'y' ». */

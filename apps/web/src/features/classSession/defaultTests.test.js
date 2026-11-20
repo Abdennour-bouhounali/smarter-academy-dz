@@ -353,6 +353,28 @@ function truth(q) {
         expect(o, `${q.id}: the option is written as its form says`).toBe(f.text);
         return f.holds(c.a, c.b);
       });
+    // ── coprime numbers (4AM lesson 7): recognised, proved by their PGCD, disproved by ONE common divisor ──
+    case 'coprime':
+      // true / false: « a و b أوّليان فيما بينهما » (or « their only common divisor is 1 »), judged by Euclid
+      shows(q, c.a, c.b);
+      return gcd(c.a, c.b) === 1;
+    case 'coprimePick':
+      // each option « a و b » is a pair, judged by Euclid: the right one has the PGCD 1
+      return q.options.map((o) => {
+        const m = String(o).match(/^(\d+) و (\d+)$/);
+        return Boolean(m) && gcd(+m[1], +m[2]) === 1;
+      });
+    case 'witnessPick':
+      // a common divisor other than 1: the option divides a AND b, and is not 1
+      shows(q, c.a, c.b);
+      return q.options.map((o) => Number(o) !== 1 && c.a % Number(o) === 0 && c.b % Number(o) === 0);
+    case 'noSmallWitness':
+      // « none of 2, 3, 5 divides both, so they are coprime »: the premise is TRUE (checked) and the conclusion FALSE —
+      // a common divisor other than 1 exists. The sentence is a proof that proves nothing: always false.
+      shows(q, c.a, c.b, ...c.tried);
+      for (const d of c.tried) expect(c.a % d === 0 && c.b % d === 0, `${q.id}: ${d} divides both`).toBe(false);
+      expect(gcd(c.a, c.b), `${q.id}: a common divisor other than 1 exists`).toBeGreaterThan(1);
+      return false;
     case 'perLot':
       // the lots the question gives share both collections: the greatest number of lots, so one lot is a / PGCD
       expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
@@ -377,6 +399,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/qasim-mushtarak-akbar.json'); // lesson 4: the PGCD (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/tayin-pgcd.json'); // lesson 5: finding the PGCD (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/bahth-pgcd.json'); // lesson 6: the two algorithms (2026-11-19)
+    expect(files.map((f) => f.name)).toContain('4am/awwaliyan-fima-baynahuma.json'); // lesson 7: coprime numbers (2026-11-19)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -418,6 +441,19 @@ describe('حصّة القسم — the default tests', () => {
     // Euclid never takes more steps: the count of subtractions is the sum of the quotients
     for (let a = 1; a <= 120; a += 1)
       for (let b = 1; b < a; b += 1) expect(divisionsOf(a, b)).toBeLessThan(subtractionsOf(a, b));
+    // coprime numbers: a pair judged by hand (64 = 2 × 32, 35 = 5 × 7: only 1 is common); « none of 2, 3, 5 » is never a
+    // proof — the sentence is always false, and a check whose premise is false fails
+    expect(truth({ id: 't', text: '64 و 35', check: { type: 'coprime', a: 64, b: 35 } })).toBe(true);
+    expect(truth({ id: 't', text: '91 و 65', check: { type: 'coprime', a: 91, b: 65 } })).toBe(false);
+    expect(truth({ id: 't', options: ['10 و 21', '10 و 22'], check: { type: 'coprimePick' } })).toEqual([true, false]);
+    expect(
+      truth({ id: 't', text: '77 و 49', options: ['1', '7'], check: { type: 'witnessPick', a: 77, b: 49 } }),
+    ).toEqual([false, true]);
+    const proves = (a, b) =>
+      truth({ id: 't', text: `${a} و ${b}: 2 ، 3 ، 5`, check: { type: 'noSmallWitness', a, b, tried: [2, 3, 5] } });
+    expect(proves(77, 49)).toBe(false);
+    expect(() => proves(77, 13)).toThrow(); // 77 and 13 ARE coprime: the sentence would teach a false proof by a true end
+    expect(() => proves(70, 55)).toThrow(); // 5 divides both: the sentence's premise would be false
   });
 
   for (const { name, data } of files) {

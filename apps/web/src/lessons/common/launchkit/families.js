@@ -15,6 +15,7 @@
  * « التعرّف على قاسم » itself, which the next lesson stands on; 2026-11-18: the 2AM Euclidean division (any divisor), the
  * second core tool of « قواسم عدد طبيعي » and « خواص قواسم » and a core tool of the PGCD lessons; 2026-11-19: the divisor
  * lists of `4am.m1.r02`, the other core tool of the PGCD lessons.
+ * 2026-11-20: the PGCD of `4am.m1.r03`, the one core tool of « العددان الأوّليّان فيما بينهما » (never a pair whose PGCD is 1).
  * A sort card is a number or an equality (`text`), or a SENTENCE in Arabic (`say: true`, drawn right-to-left, smaller).
  * A card the student must ACCEPT may name the mistake of refusing it (`miss`), as a `trap` names the mistake of accepting.
  */
@@ -60,16 +61,21 @@ export const MISTAKES = {
   'borrow-forgot': 'انتبه: إذا كان رقم الآحاد أصغر، نستلف عشرة — لا نطرح الرقم الصغير من الكبير.',
   'order-ops': 'انتبه: نحسب الجداء أوّلًا، ثمّ نضيف.',
   'add-for-sub': 'انتبه: الطرح يُنقص العدد — الراية ترجع نحو 0.',
+  'common-not-greatest': 'انتبه: نبحث عن أكبر القواسم المشتركة، لا عن أيّ قاسم مشترك.',
+  'divisor-of-one': 'انتبه: القاسم المشترك يقسم العددين معًا — تحقّق بالقسمة على كلّ واحد منهما.',
+  'smaller-not-divisor': 'انتبه: العدد الأصغر ليس قاسمًا مشتركًا إذا ترك باقيًا في قسمة الأكبر عليه.',
 };
 
 // ───────────────────────── 1am.m1.r01 — الجمع والطرح والضرب ─────────────────────────
 // What the Euclidean division of 1AM stands on (the net's `requires`): a product of the table, a difference « what is left »,
 // and the recomposition « b × q + r » computed in the right order. A question of this family carries its operation in
 // `calc` ({ op, x, y, z }): `grade` re-computes the value from it — never a stored answer.
+const gcdOf = (x, y) => (y === 0 ? x : gcdOf(y, x % y));
 const CALC = {
   times: (c) => c.x * c.y,
   minus: (c) => c.x - c.y,
   timesPlus: (c) => c.x * c.y + c.z,
+  pgcd: (c) => gcdOf(c.x, c.y), // « 4am.m1.r03 »: PGCD(x ; y) = ▢
 };
 const calcValue = (c) => CALC[c.op](c);
 /** The difference written digit by digit, the small digit taken from the big one (the borrow forgotten). */
@@ -261,6 +267,7 @@ function gradeCalc(q, answer) {
   const v = num(answer?.v);
   if (v === calcValue(c)) return { correct: true, mistake: null };
   if (!Number.isFinite(v)) return { correct: false, mistake: null };
+  if (c.op === 'pgcd') return { correct: false, mistake: pgcdSlip(c.x, c.y, v) };
   const p = c.x * c.y;
   const slip = (w) => [c.x * (c.y - 1), c.x * (c.y + 1), (c.x - 1) * c.y, (c.x + 1) * c.y].includes(w) && w !== p;
   if (c.op === 'times') return { correct: false, mistake: slip(v) ? 'table-slip' : null };
@@ -890,6 +897,178 @@ function listExample(rand, level, { mistake = null } = {}) {
   };
 }
 
+// ───────────────────────── 4am.m1.r03 — تعيين القاسم المشترك الأكبر لعددين ─────────────────────────
+// What « العددان الأوّليّان فيما بينهما » and the reduction of a fraction stand on: the common divisors of two numbers and the
+// GREATEST of them. Its slips: a common divisor that is not the greatest, a divisor of only one of the two numbers, the
+// smaller number taken when it does not divide the greater. Its pairs are the platform's own: never a pair the exercise
+// banks of the lessons that use it name (`launchkit.test.js` reads the banks), and NEVER two numbers whose PGCD is 1 — this
+// kit is played just before the lesson that makes the student discover what such a pair is.
+/** Pairs ≤ 99 named by the banks of the lessons that use this family, and by the road of the one that opens it (`launchkit.test.js` reads them). */
+const PGCD_AVOID = new Set(
+  '5;8 7;9 8;30 9;14 10;13 10;16 12;18 13;39 14;15 14;20 15;22 15;48 16;44 17;18 18;30 18;48 22;35 23;31 25;27 26;39 27;36 28;42 28;91 36;48 36;84 40;64 41;70 42;70 43;70 44;45 44;70 45;70 45;75 46;70 46;75 47;48 47;70 48;70 48;80 48;84 49;70 50;75 50;77 52;78 53;69 54;90 55;77 55;78 56;65 56;84 56;96 63;81 64;96 65;78 66;88 69;80 70;98 84;87'.split(
+    ' ',
+  ),
+);
+const pairKey = (x, y) => (x < y ? `${x};${y}` : `${y};${x}`);
+const divisorsBoth = (x, y) => divisorList(Math.min(x, y)).filter((d) => x % d === 0 && y % d === 0);
+/** Where the two numbers of a level are drawn: x = g × m, y = g × n, m ≠ n both ≥ 2 and sharing nothing — so g IS the PGCD, never 1, and neither number divides the other. */
+const PGCD_FROM = {
+  first: { g: [2, 5], k: [2, 3], top: 15, low: 4 },
+  1: { g: [2, 9], k: [2, 5], top: 45, low: 4 },
+  2: { g: [4, 19], k: [2, 7], top: 99, low: 30 },
+};
+function pgcdPair(rand, level, { first = false, gs = null } = {}) {
+  const R = PGCD_FROM[first ? 'first' : level];
+  for (let i = 0; i < 500; i += 1) {
+    const g = gs ? pick(rand, gs) : int(rand, R.g[0], R.g[1]);
+    const [m, n] = [int(rand, R.k[0], R.k[1]), int(rand, R.k[0], R.k[1])];
+    const [x, y] = [g * m, g * n];
+    if (m === n || gcdOf(m, n) !== 1 || Math.max(x, y) > R.top || Math.min(x, y) < R.low) continue;
+    if (PGCD_AVOID.has(pairKey(x, y))) continue;
+    return { x, y, g };
+  }
+  return level === 2 ? { x: 76, y: 95, g: 19 } : { x: 21, y: 35, g: 7 };
+}
+const pgcdTex = (x, y) => `\\mathrm{PGCD}(${x} ; ${y})`;
+/** The slip an answer v to « PGCD(x ; y) = ▢ » shows (v is not the PGCD). */
+function pgcdSlip(x, y, v) {
+  if (!(v > 0)) return null;
+  const [lo, hi] = [Math.min(x, y), Math.max(x, y)];
+  if (v === lo && hi % lo !== 0) return 'smaller-not-divisor';
+  if (x % v === 0 && y % v === 0) return 'common-not-greatest';
+  if (x % v === 0 || y % v === 0) return 'divisor-of-one';
+  return null;
+}
+
+/** « PGCD(x ; y) = ▢ »: the student writes the greatest common divisor. */
+function pgcdWrite(rand, level, first) {
+  const { x, y } = pgcdPair(rand, level, { first: first && level === 1 });
+  const c = { op: 'pgcd', x, y };
+  return {
+    gesture: 'write',
+    calc: c,
+    prompt: `ما أكبر عدد يقسم ${x} و ${y} معًا؟ أكمل.`,
+    tokens: ['PGCD(', String(x), ';', String(y), ')', '=', S('v', 'الناتج', String(calcValue(c)).length)],
+  };
+}
+
+/** Three numbers: is each one a common divisor of x and y? A divisor of only one of them is the trap. */
+function pgcdCommon(rand) {
+  const { x, y } = pgcdPair(rand, 1, { gs: [4, 6, 8, 9, 10] });
+  const both = divisorsBoth(x, y).filter((d) => d > 1);
+  const only = (n, o) => divisorList(n).filter((d) => d > 1 && o % d !== 0);
+  const draw = {
+    common: () => pick(rand, both),
+    onlyX: () => pick(rand, only(x, y)),
+    onlyY: () => pick(rand, only(y, x)),
+  };
+  const shape = shuffle(
+    rand,
+    pick(rand, [
+      ['common', 'onlyX', 'onlyY'],
+      ['common', 'common', 'onlyX'],
+      ['onlyY', 'common', 'common'],
+      ['common', 'onlyX', 'common'],
+    ]),
+  );
+  const used = new Set();
+  const cards = [];
+  for (const kind of shape) {
+    let n = null;
+    for (let i = 0; i < 40 && (n === null || used.has(n)); i += 1) n = draw[kind]();
+    if (used.has(n)) n = draw[kind === 'common' ? 'onlyX' : 'common']();
+    used.add(n);
+    const yes = x % n === 0 && y % n === 0;
+    cards.push({
+      id: `c${cards.length + 1}`,
+      text: String(n),
+      n,
+      bin: yes ? 'yes' : 'no',
+      trap: yes ? null : 'divisor-of-one',
+    });
+  }
+  return {
+    gesture: 'sort',
+    pair: [x, y],
+    prompt: `هل كلّ عدد قاسم مشترك للعددين ${x} و ${y}؟ أرسله إلى صندوقه.`,
+    bins: [
+      { id: 'yes', label: 'قاسم مشترك' },
+      { id: 'no', label: 'ليس قاسمًا مشتركًا' },
+    ],
+    cards,
+  };
+}
+
+/** Three equalities « PGCD(x ; y) = v », each on its own pair: true, a smaller common divisor, or the smaller number. */
+function pgcdSort(rand) {
+  const make = (kind, id) => {
+    const { x, y, g } = pgcdPair(rand, 2, { gs: [6, 8, 9, 10, 12, 14, 15] });
+    const v =
+      kind === 'true'
+        ? g
+        : kind === 'smaller'
+          ? pick(
+              rand,
+              divisorsBoth(x, y).filter((d) => d > 1 && d < g),
+            )
+          : Math.min(x, y);
+    const trap = kind === 'smaller' ? 'common-not-greatest' : kind === 'min' ? 'smaller-not-divisor' : null;
+    return { id, text: `$${pgcdTex(x, y)} = ${v}$`, x, y, v, bin: v === g ? 'yes' : 'no', trap };
+  };
+  const kinds = shuffle(
+    rand,
+    pick(rand, [
+      ['true', 'smaller', 'min'],
+      ['true', 'true', 'smaller'],
+      ['smaller', 'min', 'true'],
+      ['true', 'min', 'true'],
+    ]),
+  );
+  const cards = [];
+  for (const kind of kinds) {
+    let c = make(kind, `c${cards.length + 1}`);
+    for (let i = 0; i < 30 && cards.some((o) => pairKey(o.x, o.y) === pairKey(c.x, c.y)); i += 1) c = make(kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ مساواة صحيحة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'صحيحة' },
+      { id: 'no', label: 'خاطئة' },
+    ],
+    cards,
+  };
+}
+
+/** The worked example: the two lists, what is in both, the greatest. Its first step answers the mistake shown. */
+function pgcdExample(rand, level, { mistake = null } = {}) {
+  const { x, y, g } = pgcdPair(rand, level === 2 ? 2 : 1, { gs: level === 2 ? [6, 8, 10, 12] : [4, 6, 8, 9] });
+  const both = divisorsBoth(x, y);
+  const [lo, hi] = [Math.min(x, y), Math.max(x, y)];
+  let first;
+  if (mistake === 'smaller-not-divisor')
+    first = `$${hi} = ${lo} \\times ${Math.floor(hi / lo)} + ${hi % lo}$: الباقي ليس 0، إذن ${lo} ليس قاسمًا للعدد ${hi}.`;
+  else if (mistake === 'divisor-of-one') {
+    const d = pick(
+      rand,
+      divisorList(x).filter((k) => k > 1 && y % k !== 0),
+    );
+    first = `العدد ${d} يقسم ${x}، لكنّ $${y} = ${d} \\times ${Math.floor(y / d)} + ${y % d}$: إذن ${d} ليس قاسمًا مشتركًا.`;
+  } else if (mistake === 'common-not-greatest')
+    first = `العدد ${both.at(-2)} قاسم مشترك للعددين، لكنّنا نبحث عن أكبرها: نكتب القائمتين كاملتين.`;
+  else first = 'نكتب قواسم كلّ عدد، ثمّ نختار من القائمتين أكبر عدد فيهما معًا.';
+  return {
+    title: `القاسم المشترك الأكبر للعددين ${x} و ${y}`,
+    steps: [
+      first,
+      `قواسم ${x}: ${listText(divisorList(x))}.`,
+      `قواسم ${y}: ${listText(divisorList(y))}.`,
+      `القواسم المشتركة: ${listText(both)}، أكبرها ${g}: $${pgcdTex(x, y)} = ${g}$.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
   '1am.m1.r01': {
     item: '1am.m1.r01',
@@ -1019,6 +1198,41 @@ export const FAMILIES = {
       'نجرّب الأعداد من 1 إلى أكبر عدد مربّعه لا يتجاوز $a$.',
       'العدد 1 والعدد $a$ نفسه في القائمة دائمًا.',
       `مثال: $45 = 1 \\times 45 = 3 \\times 15 = 5 \\times 9$، إذن قواسم 45 هي ${listText([1, 3, 5, 9, 15, 45])}.`,
+    ],
+  },
+  '4am.m1.r03': {
+    item: '4am.m1.r03',
+    // the name of the gesture; its home lesson (« القاسم المشترك الأكبر لعددين طبيعيين ») is read from the net
+    name: 'القاسم المشترك الأكبر لعددين',
+    icon: '👑',
+    // the instrument of its home lesson: « القواسم المشتركة » (three trays, the crown on the greatest)
+    labTool: 'common',
+    mistakes: ['common-not-greatest', 'divisor-of-one', 'smaller-not-divisor'],
+    forms: { 1: ['write', 'common'], 2: ['sort', 'write'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'common' ? pgcdCommon(rand) : form === 'sort' ? pgcdSort(rand) : pgcdWrite(rand, level, first),
+    example: pgcdExample,
+    rules: [
+      {
+        id: 'common',
+        title: 'القاسم المشترك لعددين',
+        text: 'القاسم المشترك للعددين $a$ و $b$ عدد يقسم $a$ ويقسم $b$ معًا.',
+        example: '$36 = 4 \\times 9$ و $44 = 4 \\times 11$: العدد 4 قاسم مشترك للعددين 36 و 44.',
+        check: { a: 36, b: 4, q: 9, r: 0 },
+      },
+      {
+        id: 'greatest',
+        title: 'القاسم المشترك الأكبر',
+        text: 'نكتب قواسم كلّ عدد، ونأخذ أكبر عدد في القائمتين معًا: هو $\\mathrm{PGCD}(a ; b)$.',
+        example: `قواسم 30: ${listText([1, 2, 3, 5, 6, 10, 15, 30])}، وقواسم 45: ${listText([1, 3, 5, 9, 15, 45])}؛ أكبرها في القائمتين 15: $\\mathrm{PGCD}(30 ; 45) = 15$.`,
+        check: { a: 45, b: 15, q: 3, r: 0 },
+      },
+    ],
+    memo: [
+      'القاسم المشترك للعددين $a$ و $b$ يقسم $a$ ويقسم $b$ معًا.',
+      'نكتب قواسم كلّ عدد، ثمّ الأعداد التي في القائمتين.',
+      'أكبر عدد في القائمتين هو القاسم المشترك الأكبر $\\mathrm{PGCD}(a ; b)$.',
+      `مثال: قواسم 30: ${listText([1, 2, 3, 5, 6, 10, 15, 30])}، وقواسم 45: ${listText([1, 3, 5, 9, 15, 45])}، إذن $\\mathrm{PGCD}(30 ; 45) = 15$.`,
     ],
   },
   '1am.m3.r01': {

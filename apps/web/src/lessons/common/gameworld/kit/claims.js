@@ -74,9 +74,17 @@ const KINDS = {
   /** « a and b are coprime » said rightly: PGCD(a ; b) = 1. */
   coprime: (c) =>
     n(c.a) && n(c.b) && c.a >= 1 && c.b >= 1 && typeof c.says === 'boolean' && c.says === (gcd(c.a, c.b) === 1),
-  /** d is a divisor of a AND of b. */
+  /** d is a divisor of a AND of b; with `notOne: true`, a common divisor OTHER THAN 1 (the witness that a and b are not
+   * coprime — d = 1 is then false). */
   commonDivisor: (c) =>
-    n(c.a) && n(c.b) && n(c.d) && c.a >= 1 && c.b >= 1 && c.d >= 1 && c.a % c.d === 0 && c.b % c.d === 0,
+    n(c.a) &&
+    n(c.b) &&
+    n(c.d) &&
+    c.a >= 1 &&
+    c.b >= 1 &&
+    c.d >= (c.notOne === true ? 2 : 1) &&
+    c.a % c.d === 0 &&
+    c.b % c.d === 0,
   /** a/b is the fraction given, p/q the student's writing: equal (a × q = p × b) and, unless `reduced === false`,
    * irreducible (PGCD(p ; q) = 1). */
   fraction: (c) =>

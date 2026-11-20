@@ -15,6 +15,7 @@ import { divisionTip, ruleTip } from '../kit/tips';
 import RuleForge from '../kit/RuleForge';
 import { FORGE_PARTS } from './forgeParts';
 import Workshop from './Workshop';
+import { signTex } from './mark';
 
 import Fit, { stepRoom } from '../kit/Fit';
 import { PaperGate, PaperModel, PT } from '../kit/Paper';
@@ -26,12 +27,19 @@ import { Instruction, Recall } from '../kit/Instruction';
 import { useLesson } from '../kit/LessonContext';
 
 function Equation({ eq, unit = planks }) {
-  const { a, b, q, r, live, unpaid } = eq;
+  const { a, b, q, r, live, unpaid, mark } = eq;
   // a remainder that is not 0 is a FACT about the mould, not a mistake: amber, never the red of an error
   const col = live ? '#fbbf24' : r === 0 ? '#34d399' : '#fb923c';
   return (
     <div className={`di-eq ${live ? '' : r === 0 ? 'is-ok' : 'is-open'}`}>
       <M>{`${a} = ${b} \\times ${q} + \\textcolor{${col}}{${r}}`}</M>
+      {/* a marked stretch: its own division, once the planks have passed the mark — a joint falls on it only if 0 is left */}
+      {mark?.shown && (
+        <div className="di-eq__mark" data-di-eq-mark={mark.r}>
+          <span>{T.mark.stretch}</span>
+          <M>{`${mark.m} = ${b} \\times ${mark.q} + \\textcolor{${mark.r === 0 ? '#34d399' : '#fb923c'}}{${mark.r}}`}</M>
+        </div>
+      )}
       <div className="di-eq__legend">
         <span>{unit(q)}</span>
         {/* `unpaid`: the purse ran out — what is still open is not a remainder (it is not smaller than the plank) */}
@@ -53,7 +61,13 @@ function Verdict({ v }) {
       )}
       {v.right === false && <p className="di-verdict__pred is-wrong">{T.verdict.wrong(v.predicted, v.r)}</p>}
       <p className={`di-verdict__bridge ${v.holds ? 'is-holds' : ''}`}>
-        {v.purse ? T.verdict.purse(v.q, v.need) : v.holds ? T.verdict.holds(v.b, v.a) : T.verdict.open(v.b, v.a)}
+        {v.purse
+          ? T.verdict.purse(v.q, v.need)
+          : v.holds
+            ? T.verdict.holds(v.b, v.a)
+            : v.mark && v.r === 0
+              ? T.verdict.markMiss(v.b, v.mark.m)
+              : T.verdict.open(v.b, v.a)}
       </p>
     </div>
   );
@@ -808,6 +822,12 @@ function Hud({ s }) {
             {'\u00a0/\u00a0'}
             {s.purse.of}
           </b>
+        </div>
+      )}
+      {s.sign && (
+        <div className="di-sign" data-di-sign={s.sign.chain.map((c) => c.join('/')).join('=')}>
+          <span>{T.mark.sign}</span>
+          <M>{signTex(s.sign.chain, s.sign.strokes)}</M>
         </div>
       )}
       {s.pinned && !s.equation && (

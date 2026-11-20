@@ -722,13 +722,17 @@ export class WorldRuntime {
     let y = Math.max(150, Math.min(hgt - 150, (-v.y * 0.5 + 0.5) * hgt));
     // the bubble never covers THE INSTRUCTION (it stays on screen, GAME_WORLD.md §2ter-1): when the thing to use stands
     // behind it — a tall instruction at 1024×768 — the bubble drops just under it
-    const ins = el.ownerDocument.querySelector('[data-di-instruction]');
-    if (ins) {
-      const box = ins.getBoundingClientRect();
-      const base = this.canvas.getBoundingClientRect();
-      const half = el.offsetWidth / 2;
-      const under = box.bottom - base.top + 8 + el.offsetHeight;
-      if (x + half > box.left - base.left && x - half < box.right - base.left && y < under) y = under;
+    // — and never what the world has just answered either: the purse, the sign of a bridge, the equation and its verdict
+    // (2026-11-20: after a refusal, at the light platform, the bubble sat on « 85 = 3 × 28 + 1 »)
+    const base = this.canvas.getBoundingClientRect();
+    const half = el.offsetWidth / 2;
+    for (const box of el.ownerDocument.querySelectorAll(
+      '[data-di-instruction], .di-purse, .di-sign, .di-eq, .di-verdict',
+    )) {
+      const r = box.getBoundingClientRect();
+      if (!r.width) continue;
+      const under = r.bottom - base.top + 8 + el.offsetHeight;
+      if (x + half > r.left - base.left && x - half < r.right - base.left && y < under) y = under;
     }
     el.style.visibility = v.z < 1 ? 'visible' : 'hidden';
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;

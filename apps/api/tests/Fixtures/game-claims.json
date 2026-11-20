@@ -1147,6 +1147,76 @@
   },
   {
    "claim": {
+    "kind": "commonDivisor",
+    "a": 85,
+    "b": 119,
+    "d": 17,
+    "notOne": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 45,
+    "b": 45,
+    "d": 45,
+    "notOne": true
+   },
+   "ok": true
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 85,
+    "b": 119,
+    "d": 1,
+    "notOne": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 35,
+    "b": 12,
+    "d": 1,
+    "notOne": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 85,
+    "b": 119,
+    "d": 5,
+    "notOne": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 85,
+    "b": 119,
+    "d": 0,
+    "notOne": true
+   },
+   "ok": false
+  },
+  {
+   "claim": {
+    "kind": "commonDivisor",
+    "a": 35,
+    "b": 12,
+    "d": 1,
+    "notOne": false
+   },
+   "ok": true
+  },
+  {
+   "claim": {
     "kind": "fraction",
     "a": 84,
     "b": 36,

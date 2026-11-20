@@ -171,6 +171,24 @@ export function euclidLines(a, b) {
 }
 
 /**
+ * « مِجهر العددين » — what the instrument reads about two numbers, never a conclusion:
+ *   `lists`  the divisors of a and of b, and those in both (`common`, smallest first);
+ *   `probe`  one number d tried on both: the two divisions and which of the two it divides (`both`, `a`, `b` or `none`).
+ * The divisions one after another are `euclidLines`.
+ */
+export function pairLists(a, b) {
+  const A = divisorsOf(a);
+  const B = divisorsOf(b);
+  return { A, B, common: A.filter((d) => b % d === 0) };
+}
+export function probeOf(a, b, d) {
+  const x = divide(a, d);
+  const y = divide(b, d);
+  const verdict = x.r === 0 && y.r === 0 ? 'both' : x.r === 0 ? 'a' : y.r === 0 ? 'b' : 'none';
+  return { d, a: x, b: y, verdict };
+}
+
+/**
  * اللوح المشترك: the lengths a plank of d is laid along — the two numbers, their sum, their difference, the remainder of
  * the greater by the smaller, three times the first — each with its planks and what is left. `fits` is computed per row,
  * never stated: the drawing shows which lengths the plank fills.
@@ -246,7 +264,9 @@ export const QUESTS = {
     { id: 'rest', text: 'اجعل الباقي غير معدوم، ثمّ املأ الطولين الأوّلين بلوح أطول من 1.' },
   ],
   common: [
-    { id: 'one', text: 'جد عددين (أكبر من 1) قاسمهما المشترك الوحيد هو 1.' },
+    // never « قاسمهما المشترك الوحيد هو 1 »: those are the words of lesson 7's first tablet, and this instrument is the one its
+    // launch kit opens BEFORE that lesson
+    { id: 'one', text: 'اجعل التاج على العدد 1 بعددين أكبر من 1.' },
     { id: 'self', text: 'اجعل القاسم المشترك الأكبر يساوي أحد العددين.' },
     { id: 'six', text: 'جد عددين مختلفين قاسمهما المشترك الأكبر 6.' },
   ],
@@ -269,6 +289,11 @@ export const QUESTS = {
     { id: 'over', text: 'اجعل آخر لوح وحده يتجاوز الطول.' },
     { id: 'exact', text: 'املأ الطول تمامًا بأكثر من 10 ألواح.' },
     { id: 'big', text: 'جد الألواح الكاملة والألواح اللازمة لطول من أربعة أرقام ولوح من رقمين.' },
+  ],
+  duo: [
+    { id: 'lists', text: 'اعرض قائمتي عددين أكبر من 100 تلتقيان في 4 أعداد على الأقلّ.' },
+    { id: 'chain', text: 'اكتب القسمات حتى الباقي 0 لعددين تلزمهما 5 قسمات على الأقلّ.' },
+    { id: 'probe', text: 'اختبر عددًا أكبر من 10 يقسم العددين معًا.' },
   ],
   rules: [
     { id: 'three', text: 'أضِئ ثلاثة مصابيح معًا.' },
@@ -358,6 +383,15 @@ export function observe(tool, st, seen) {
       if (x.exact && x.n > 10) put('exact');
       if (a >= 1000 && b >= 10 && b <= 99 && x.r > 0 && st.lo && st.hi) put('big');
     }
+  } else if (tool === 'duo') {
+    // reported only after a gesture on the instrument (a face picked, a divisor tapped, a division written, d moved)
+    if (st.face === 'lists' && st.looked) {
+      if (a > 100 && b > 100 && pairLists(a, b).common.length >= 4) put('lists');
+    } else if (st.face === 'divisions' && st.done) {
+      if (euclidLines(a, b).length >= 5) put('chain');
+    } else if (st.face === 'probe' && st.moved && Number.isInteger(st.d)) {
+      if (st.d > 10 && a % st.d === 0 && b % st.d === 0) put('probe');
+    }
   } else if (tool === 'rules') {
     const lit = digitRules(a).filter((x) => x.ok).length;
     if (a > 0 && lit >= 3) put('three');
@@ -380,6 +414,11 @@ export function luckyPair(tool, rand = Math.random) {
     // two lengths that share a plank longer than 1: something happens as soon as the plank is moved
     const g = int(2, 9);
     return { a: g * int(2, 6), b: g * int(1, 6) };
+  }
+  if (tool.id === 'duo') {
+    // half the time two numbers that share a divisor bigger than 1, half the time two drawn apart
+    const g = rand() < 0.5 ? 1 : int(2, 12);
+    return { a: g * int(5, 40), b: g * int(5, 40) };
   }
   if (tool.id === 'lists') {
     // two numbers that share a divisor bigger than 1: the two lists meet in more than 1

@@ -29,3 +29,16 @@ lesson only); a gap of 0 cells (one lesson only); the lab's instruments.
 | The practice map | 7 nodes with long names at the positions of `bahth-pgcd/world/practice.js` | — |
 | The knowledge map | 15 cards on rows 5/23/41/59/76/93, two-line titles in the middle column | the lesson's `journey.test.js` |
 | The board | 14 stations, 5 keys, `single`-answer asks, the copybook as ONE group, naming rows ≤ 32 characters | the lesson's `board.test.js`, `limits.test.js` |
+
+## Added by lesson 7 (`awwaliyan-fima-baynahuma`, 2026-11-20 — passed at 1366×768, the ONE size)
+
+| Screen | Proven for | Data test |
+|---|---|---|
+| A locked typed workshop beside offered planks, with a bench and a purse, on one island | it opens after two falls; the instruction changes when it opens | `e2e/lib/lessonWalk/story.mjs › unlock` |
+| A convoy without a purse | gaps of 645 and 410; 322 planks laid in under 4 s of play | — |
+| A non-plain `ladder`/`divide` experiment of TWO rounds inside a mirror | 4 rows then 3 rows | — |
+| A last step that ends on yes/no buttons (`use.verdict`) | up to 11 boxes in 4 lines, two columns, plus the two buttons | the lesson's `limits.test.js` |
+| The store offering the plank 1 | 179 planks, 9.5 s | — |
+| The instrument « مِجهر العددين » (`lessonlab/tools/Duo.jsx`) | its three tabs at 36 and 24 | `lessonlab/duo.render.test.jsx` |
+| The launch family `4am.m1.r03` | one tool; write, common-divisor sort, PGCD sort | `launchkit/launchkit.test.js` |
+| The bubble « اضغط E » after a refusal | under the purse, the equation and the verdict | — |

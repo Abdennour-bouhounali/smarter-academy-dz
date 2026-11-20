@@ -393,6 +393,49 @@ await shot('common-36-24');
 await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 6');
 
+// ══ 2bis. lesson 7 (in its game world since 2026-11-20 — its mission home and its door `[data-mission-lab]` are gone): the SAME lab, its one instrument ══
+await page.goto(`${BASE}/awwaliyan-fima-baynahuma`, { waitUntil: 'networkidle' }); heard = 0;
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="awwaliyan-fima-baynahuma"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'duo', `lesson 7 opens the lab from its world: its one instrument is مِجهر العددين (${mine})`); }
+if (await page.locator('[data-ll-duo]').count() === 0) await page.click('[data-ll-tool="duo"]');
+await page.waitForSelector('[data-ll-duo]');
+// ONE gesture per face, ONE screenshot per face — every reading checked by the walk's own arithmetic
+{
+  const g = (x, y) => (y ? g(y, x % y) : x);
+  const face = () => page.getAttribute('[data-ll-duo]', 'data-face');
+  const tab = async (f) => { await page.locator(`[data-ll-face-tab="${f}"]`).dispatchEvent('click'); await page.waitForFunction((want) => document.querySelector('[data-ll-duo]')?.dataset.face === want, f); await page.waitForTimeout(250); };
+  if ((await face()) !== 'lists') await tab('lists');
+  const lists = await page.evaluate(() => Object.fromEntries([...document.querySelectorAll('[data-ll-duo-list]')].map((e) => [e.dataset.llDuoList, e.dataset.all ?? null])));
+  const [A, B] = [lists.A, lists.B].map((l) => Number(l.split(',').at(-1)));
+  const common = await page.getAttribute('[data-ll-common]', 'data-ll-common');
+  const want = Array.from({ length: Math.min(A, B) }, (_, i) => i + 1).filter((d) => A % d === 0 && B % d === 0).join(',');
+  expect(common === want, `duo, the lists of ${A} and ${B}: in both ${want} — computed here (${common})`);
+  await page.locator(`[data-ll-d="${want.split(',').at(-1)}"]`).first().dispatchEvent('click'); await page.waitForTimeout(200);
+  await shot('duo-lesson-7-lists');
+  await tab('divisions');
+  expect(await page.getAttribute('[data-ll-duo-divisions]', 'data-written') === '0', 'duo, the divisions: nothing written on opening');
+  await page.click('[data-ll-next]'); await page.click('[data-ll-next]'); await page.waitForTimeout(300);
+  expect(await page.getAttribute('[data-ll-duo-divisions]', 'data-written') === '2', 'duo, the divisions: two taps, two rows written');
+  await shot('duo-lesson-7-divisions');
+  await tab('probe');
+  const d0 = Number(await page.getAttribute('[data-ll-duo-probe]', 'data-d'));
+  console.log(`    the probe opens on ${d0}`);
+  // `[data-ll-plus="true"]`: the instrument's own « + » — the numbers panel's steppers carry `data-ll-plus="a|b"` too
+  await page.click('[data-ll-plus="true"]');
+  await page.waitForFunction((was) => Number(document.querySelector('[data-ll-duo-probe]')?.dataset.d) !== was, d0, { timeout: 3000 }).catch(() => {});
+  await page.waitForTimeout(200);
+  const d = Number(await page.getAttribute('[data-ll-duo-probe]', 'data-d'));
+  const v = await page.getAttribute('[data-ll-verdict]', 'data-ll-verdict');
+  // the two numbers the probe draws (its bars), read as the question — the verdict computed here
+  const [pa, pb] = await page.evaluate(() => ['a', 'b'].map((k) => Number(document.querySelector(`[data-ll-duo-bar="${k}"]`)?.dataset.n)));
+  const truth = pa % d === 0 && pb % d === 0 ? 'both' : pa % d === 0 ? 'a' : pb % d === 0 ? 'b' : 'none';
+  expect(d === d0 + 1 && v === truth, `duo, the probe: « + » tries ${d} on ${pa} and ${pb}: « ${truth} » — computed here (${v}; PGCD ${g(pa, pb)})`);
+  await shot('duo-lesson-7-probe');
+}
+await page.click('[data-ll-close]'); await page.waitForTimeout(500);
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 7');
+
 // ══ 3. a lesson with nothing before it has no lab door ══
 await page.goto(`${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-adad-tabii?lab=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForTimeout(800);

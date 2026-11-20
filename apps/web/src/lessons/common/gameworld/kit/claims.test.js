@@ -30,6 +30,14 @@ describe('the claims of a game answer — one rule for the browser and for the s
     }
   });
 
+  it('a common divisor OTHER THAN 1 (`notOne: true`) refuses 1; only the boolean true asks for it, as on the server', () => {
+    const c = { kind: 'commonDivisor', a: 85, b: 119 };
+    expect(verifyClaim({ ...c, d: 1 })).toBe(true);
+    expect(verifyClaim({ ...c, d: 1, notOne: true })).toBe(false);
+    expect(verifyClaim({ ...c, d: 17, notOne: true })).toBe(true);
+    expect(verifyClaim({ ...c, d: 1, notOne: 1 })).toBe(true);
+  });
+
   it('never trusts a claim it does not understand', () => {
     expect(verifyClaim(null)).toBe(false);
     expect(verifyClaim({})).toBe(false);

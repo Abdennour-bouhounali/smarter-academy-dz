@@ -108,7 +108,9 @@ export const LESSON_CONFIG = {
   knowledgeMapOpen: true,
   // Acquis des années antérieures (أستعدّ 7–10) et des دروس 6–7 (deux ajouts
   // de la plateforme dans « أستعدّ », déclarés « عبارة إضافية من المنصّة »).
-  priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan-taarif', 'khwarizmiyat-iqlidus'],
+  // `awwaliyan` is awwaliyan-fima-baynahuma's world key (its old id `awwaliyan-taarif` went with its deleted knowledge.jsx,
+  // 2026-11-20); `khwarizmiyat-iqlidus` still exists in the synthesis' knowledge.jsx (bahth-pgcd's key is `iqlidis`).
+  priorKnowledge: ['al-aadad-al-natiqa', 'awwaliyan', 'khwarizmiyat-iqlidus'],
   resources: [
     // Module 1 — workspace à deux niveaux. Réduire, c'est diviser les deux
     // termes par un diviseur COMMUN jusqu'à ce qu'il n'en reste plus. Le

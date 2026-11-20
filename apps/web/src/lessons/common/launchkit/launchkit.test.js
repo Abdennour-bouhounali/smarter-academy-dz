@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { toolsForLesson, getItem, homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
+import { bankPairs, readBank } from '../gameworld/kit/authoring/test/bank.js';
 import { TOOLS, toolById, toolsFor } from '../lessonlab/registry';
 import { GRADES, isReached } from '../lessonlab/order';
 import ORDER from '../lessonlab/lessonOrder.generated.json';
@@ -43,6 +44,9 @@ const divisorsApart = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((
 const accepts = (q, c) => {
   if (c.list) return c.list.join() === divisorsApart(c.n).join(); // « قواسم 12: 1 ، 2 ، … »: the whole list, nothing else
   if (arithmetic(c.text) !== null) return arithmetic(c.text);
+  const pg = String(c.text).match(/^\$\\mathrm\{PGCD\}\((\d+) ; (\d+)\) = (\d+)\$$/); // « PGCD(x ; y) = v »
+  if (pg) return pgcdApart(Number(pg[1]), Number(pg[2])) === Number(pg[3]);
+  if (q.pair) return q.pair.every((n) => n % Number(c.text) === 0); // a common divisor of the two numbers of the question
   if (c.say) return c.verb === 'divisor' ? Number.isInteger(c.y / c.x) : Number.isInteger(c.x / c.y); // « x قاسم لـ y » / « x مضاعف لـ y », « x يقبل القسمة على y »
   if (q.of) return Number.isInteger(q.of / c.n);
   const m = c.text.match(/^\$(\d+) = (\d+) \\times (\d+) ([+-]) (\d+)\$$/);
@@ -52,7 +56,10 @@ const accepts = (q, c) => {
 };
 /** The full-mark answer of a question, computed here — never read from the question. */
 /** The value of a question that carries its operation, computed here from its operands: « x × y », « x − y », « x × y + z ». */
-const calcApart = ({ op, x, y, z }) => (op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z);
+/** The greatest number that divides x and y, found by trying every number — never Euclid, never the family's helper. */
+const pgcdApart = (x, y) => Math.max(...divisorsApart(Math.min(x, y)).filter((d) => x % d === 0 && y % d === 0));
+const calcApart = ({ op, x, y, z }) =>
+  op === 'pgcd' ? pgcdApart(x, y) : op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z;
 const right = (q) =>
   q.calc
     ? q.gesture === 'write'
@@ -130,6 +137,7 @@ describe('عُدّة الانطلاق — the question families', () => {
     each((f, level, form, q, seed) => {
       if (f.item === '2am.m1.r04') return; // the 2AM division has its own ranges (a two-digit divisor), checked below
       if (f.item === '1am.m1.r01') return; // the operations are not a division: their own ranges, checked below
+      if (f.item === '4am.m1.r03') return; // a PGCD, not a division: its own ranges, checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -417,6 +425,122 @@ describe('عُدّة الانطلاق — the question families', () => {
     for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
   });
 
+  it('« القاسم المشترك الأكبر لعددين » (4am.m1.r03): every PGCD computed apart, its traps named, never a pair of the banks, never a PGCD of 1', () => {
+    const item = '4am.m1.r03';
+    const banks = ['qasim-mushtarak-akbar', 'awwaliyan-fima-baynahuma', 'ikhtizal-kasr'].map((id) =>
+      bankPairs(readBank(id)),
+    );
+    const own = (x, y) => {
+      const k = x < y ? `${x};${y}` : `${y};${x}`;
+      for (const b of banks) expect(b.has(k), `the bank names ${k}`).toBe(false);
+      expect(pgcdApart(x, y), `${x} ; ${y}`).toBeGreaterThan(1); // never a pair whose only common divisor is 1
+      expect(x % y !== 0 && y % x !== 0, `${x} ; ${y}`).toBe(true); // neither divides the other
+    };
+    const seen = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      for (const level of [1, 2]) {
+        const w = makeQuestion(rng(seed * 31 + level), item, level, 'write', { first: seed % 5 === 0 });
+        const { x, y } = w.calc;
+        own(x, y);
+        const g = pgcdApart(x, y);
+        expect(w.tokens.filter((t) => typeof t === 'string')).toEqual(['PGCD(', String(x), ';', String(y), ')', '=']);
+        expect(grade(w, { v: String(g) })).toEqual({ correct: true, mistake: null });
+        expect(Math.max(x, y)).toBeLessThanOrEqual(level === 1 ? (seed % 5 === 0 ? 15 : 45) : 99); // the very first: a near-certain win
+        if (level === 2) expect(Math.min(x, y)).toBeGreaterThanOrEqual(30);
+        // the slips, judged from the numbers: the smaller number, a smaller common divisor, a divisor of one only
+        const lo = Math.min(x, y);
+        expect(grade(w, { v: String(lo) }).mistake).toBe('smaller-not-divisor');
+        const smaller = divisorsApart(g).filter((d) => d < g);
+        expect(grade(w, { v: String(smaller.at(-1)) })).toEqual({ correct: false, mistake: 'common-not-greatest' });
+        const one = divisorsApart(x).find((d) => y % d !== 0 && d !== lo);
+        if (one) expect(grade(w, { v: String(one) }).mistake).toBe('divisor-of-one');
+        expect(grade(w, { v: String(x * y) })).toEqual({ correct: false, mistake: null });
+      }
+      // level 1: three numbers, each a common divisor of the pair or not
+      const c = makeQuestion(rng(seed * 104729), item, 1, 'common');
+      own(...c.pair);
+      expect(c.prompt).toContain(`${c.pair[0]} و ${c.pair[1]}`);
+      expect(new Set(c.cards.map((k) => k.n)).size).toBe(3);
+      for (const k of c.cards) {
+        const yes = c.pair.every((n) => n % k.n === 0);
+        expect(k.bin, `${k.n} for ${c.pair}`).toBe(yes ? 'yes' : 'no');
+        expect(k.n).toBeGreaterThan(1); // 1 is never a card: it divides everything
+        if (!yes) {
+          expect(c.pair.some((n) => n % k.n === 0)).toBe(true); // a divisor of ONE of the two numbers
+          expect(k.trap).toBe('divisor-of-one');
+        }
+      }
+      // level 2: three equalities « PGCD(x ; y) = v », each on its own pair
+      const s = makeQuestion(rng(seed * 7919 + 2), item, 2, 'sort');
+      expect(new Set(s.cards.map((k) => `${k.x};${k.y}`)).size).toBe(3);
+      for (const k of s.cards) {
+        own(k.x, k.y);
+        expect(k.text).toBe(`$\\mathrm{PGCD}(${k.x} ; ${k.y}) = ${k.v}$`);
+        const g = pgcdApart(k.x, k.y);
+        expect(k.bin).toBe(k.v === g ? 'yes' : 'no');
+        if (k.trap === 'common-not-greatest')
+          expect(k.x % k.v === 0 && k.y % k.v === 0 && k.v > 1 && k.v < g).toBe(true);
+        if (k.trap === 'smaller-not-divisor') expect(k.v).toBe(Math.min(k.x, k.y));
+        if (k.trap) {
+          seen.add(k.trap);
+          expect(grade(s, { ...right(s), [k.id]: 'yes' })).toEqual({ correct: false, mistake: k.trap });
+        }
+      }
+      for (const k of c.cards) if (k.trap) seen.add(k.trap);
+    }
+    expect([...seen].sort()).toEqual(['common-not-greatest', 'divisor-of-one', 'smaller-not-divisor']);
+    // the worked example: both lists true and whole, what is in both, the greatest; its first step on the mistake shown
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, ...FAMILIES[item].mistakes]) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          const [x, y] = e.title.match(/\d+/g).map(Number);
+          own(x, y);
+          expect(e.steps).toHaveLength(4);
+          expect(e.steps[1]).toBe(`قواسم ${x}: ${divisorsApart(x).join(LIST_SEP)}.`);
+          expect(e.steps[2]).toBe(`قواسم ${y}: ${divisorsApart(y).join(LIST_SEP)}.`);
+          const both = divisorsApart(x).filter((d) => y % d === 0);
+          expect(e.steps[3]).toBe(
+            `القواسم المشتركة: ${both.join(LIST_SEP)}، أكبرها ${pgcdApart(x, y)}: $\\mathrm{PGCD}(${x} ; ${y}) = ${pgcdApart(x, y)}$.`,
+          );
+          for (const m of e.steps[0].matchAll(/\$(\d+) = (\d+) \\times (\d+) \+ (\d+)\$/g)) {
+            const [a, b, q, r] = m.slice(1).map(Number);
+            expect(b * q + r).toBe(a);
+            expect(r).toBeGreaterThan(0);
+            expect(r).toBeLessThan(b);
+          }
+          if (mistake === 'common-not-greatest') {
+            const d = Number(e.steps[0].match(/\d+/)[0]);
+            expect(both).toContain(d);
+            expect(d).toBeLessThan(pgcdApart(x, y));
+          }
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+        }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // its rules and memo: every list a true list of divisors, every PGCD true
+    const texts = [...FAMILIES[item].rules.flatMap((r) => [r.text, r.example]), ...FAMILIES[item].memo];
+    const lists = texts.flatMap((t) => [...t.matchAll(/قواسم (\d+): ([\d  ،]+\d)/g)].map((m) => [Number(m[1]), m[2]]));
+    expect(lists.length).toBeGreaterThanOrEqual(2);
+    for (const [n, l] of lists) expect(l.split('،').map((v) => Number(v.trim()))).toEqual(divisorsApart(n));
+    for (const t of texts)
+      for (const m of t.matchAll(/PGCD\}\((\d+) ; (\d+)\) = (\d+)/g)) expect(pgcdApart(+m[1], +m[2])).toBe(+m[3]);
+    // the kit is played BEFORE « العددان الأوّليّان فيما بينهما »: nothing of it names that lesson's keys
+    const all = JSON.stringify({ ...FAMILIES[item], make: null, example: null }) + MISTAKES['divisor-of-one'];
+    expect(all).not.toMatch(/أوّلي|أولي|فيما بينهما|الوحيد/);
+    expect(FAMILIES[item].icon).not.toBe('🤝'); // the icon of that lesson's first key
+  });
+
+  it('takes the tools of « العددان الأوّليّان فيما بينهما » from the learning net: the PGCD of lesson 4, with its family and its instrument', () => {
+    const links = toolsForLesson('awwaliyan-fima-baynahuma');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['4am.m1.r03', 'qasim-mushtarak-akbar', 'core'],
+    ]);
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+    expect(familyFor('4am.m1.r03').labTool).toBe('common');
+    expect(toolsFor('awwaliyan-fima-baynahuma', { earlierOnly: true }).all.map((t) => t.id)).toContain('common');
+  });
+
   it('« الجمع والطرح والضرب » (1AM): its operations are true, in their ranges, and a slip is named', () => {
     const item = '1am.m1.r01';
     const seen = new Set();
@@ -545,6 +669,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       '1am.m3.r02': ['three', 'nine', 'four'], // no form named `sort`: its own order
       '4am.m1.r01': ['sentences', 'pick'], // no form named `sort`: its own order
       '4am.m1.r02': ['sort', 'write'],
+      '4am.m1.r03': ['sort', 'write'],
     });
     for (const item of Object.keys(FAMILIES)) {
       expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered
