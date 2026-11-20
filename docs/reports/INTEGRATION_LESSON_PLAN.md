@@ -305,7 +305,10 @@ depot plays every line); what changes is WHERE he works.
 > **The teacher's page of this lesson (owner, 2026-11-20).** A v2 lesson that has its world before its board gets, like
 > the others: the teacher's OWN bank behind « بنك التمارين » (read, show on the class board, print —
 > `boardLessons.js › hasTeacherBank`, `TeacherBankGate`); a header with ONLY the tools that have content (« الدرس »,
-> « بنك التمارين » — `toolHasContent`); no « المذكّرة الكاملة » door (its memo comes with its board); no site footer and
+> « بنك التمارين », « متابعة القسم » — `toolHasContent`); **the teacher follows his students on this lesson** (owner:
+> « the teacher must track the work of his student »): the door « متابعة القسم » and a button « أين وصل كلّ تلميذ؟ »
+> under « ما يتعلّمه تلاميذك » open the existing tracking (per الكفاءة and per exercise of the bank — the sittings and
+> mission 3; missions 1 and 2 and the endless game are never tracked: they are not evidence); no « المذكّرة الكاملة » door (its memo comes with its board); no site footer and
 > no floating « كرّاسي » on the page (`LessonIndex`, `LessonNotebookAnchor`). Checked by `e2e/missionLesson.mjs` and
 > `boardLessons.test.js`.
 > NOT built: the board script and memo, the class test (status prints ❌ 2 parts), the save of a mission left
@@ -330,8 +333,10 @@ depot plays every line); what changes is WHERE he works.
 > over the arches are text of the page placed each frame (a real fraction bar). His best is saved with his world.
 > A GAME: never evidence, sends nothing. Walk kept: `e2e/missionRun.mjs` (six right gates and a level passed, the
 > screen arrows, three wrong gates with their facts, the end card, the best kept) — passes at 1366×768; four screens
-> looked at. NOT built: a pause button, the hearts of « مدار » (it costs nothing), phones; the speed was not tried
-> by a student.
+> looked at. **A PAUSE** (owner, 2026-11-20): « توقّف » in the pill or the space bar freezes the run where it is (the
+> gate, the speed, the hearts) under a card « السباق متوقّف »; a hidden page pauses by itself. NOT built: the hearts
+> of « مدار » (OPEN — see the question put to the owner: by `MADAR_GAME.md` a maths game is free), phones; the speed
+> was not tried by a student.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,

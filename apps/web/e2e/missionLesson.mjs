@@ -81,10 +81,21 @@ for (const [name, address] of [
     '| « كرّاسي »',
     text.includes('كرّاسي'),
   );
-  if (tabs.join() !== 'lesson,bank') bad.push(`header tabs: ${tabs.join(', ')}`);
+  if (tabs.join() !== 'lesson,bank,track') bad.push(`header tabs: ${tabs.join(', ')}`);
   if (await page.locator('[data-teacher-memo]').count()) bad.push('the memo door is still there');
   if (text.includes('Abdennour') || text.includes('كرّاسي'))
     bad.push('the footer or the floating notebook is still on the page');
+  // « ما يتعلّمه تلاميذك » leads to the tracking of the class on this lesson, and so does the door « متابعة »
+  if (!(await page.locator('[data-teacher-track]').count())) bad.push('no tracking door on the card');
+  await page.click('[data-teacher-learns-track]');
+  await page
+    .waitForFunction(() => location.pathname.includes('/enseignant/mutabaa/'), null, { timeout: 20000 })
+    .catch(() => bad.push('« ما يتعلّمه تلاميذك » does not open the tracking'));
+  await page.waitForTimeout(1500);
+  await page.screenshot({ path: `${walk.out}/teacher-tracking.png` });
+  console.log('tracking page:', (await page.evaluate(() => document.body.innerText)).replace(/\s+/g, ' ').slice(-120));
+  await page.goBack();
+  await page.waitForSelector('[data-teacher-bank]', { timeout: 20000 });
   // « بنك التمارين » is the teacher's own bank (read, show on the board, print), as for the other v2 lessons
   await page.click('[data-teacher-bank]');
   await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});

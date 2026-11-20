@@ -29,11 +29,13 @@ export const hasTeacherBank = (lessonId) => hasClassBoard(lessonId) || hasWorld(
 
 /**
  * Which tools of the common header have CONTENT for this lesson (owner, 2026-11-20: « display only the buttons that
- * has the content »). A v2 lesson without its board has no script, no memo, no lesson file, no knowledge card and no
- * tracking of its own yet: its header is the lesson and its bank. Every other lesson keeps every tool.
+ * has the content »). A v2 lesson without its board has no script, no memo, no lesson file and no knowledge card
+ * yet: its header is the lesson, its bank and « متابعة القسم » — the tracking reads what the students did on the bank,
+ * which every lesson has (owner, the same day: « the teacher must track the work of his student »). Every other lesson
+ * keeps every tool.
  */
 export const toolHasContent = (lessonId, toolId) =>
-  !hasWorld(lessonId) || hasClassBoard(lessonId) || toolId === 'lesson' || toolId === 'bank';
+  !hasWorld(lessonId) || hasClassBoard(lessonId) || ['lesson', 'bank', 'track'].includes(toolId);
 
 /** The four moments of the hour, in order (the set-up screen and the teacher's card show them the same way). */
 export const MOMENTS = Object.freeze(['start', 'revise', 'lesson', 'end']);

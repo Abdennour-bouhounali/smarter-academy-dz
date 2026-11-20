@@ -120,6 +120,12 @@ export class MissionIsleGame extends WorldRuntime {
     this.scene.add(g);
     this.track = g;
     this.gateEls = [null, null, null];
+    this.onHidden = () => document.visibilityState === 'hidden' && this.pauseRun(true);
+    document.addEventListener('visibilitychange', this.onHidden);
+  }
+  dispose() {
+    document.removeEventListener('visibilitychange', this.onHidden);
+    super.dispose();
   }
   dressGates(set, good = null, picked = null) {
     set.userData.arches.forEach((ar, lane) => {
@@ -198,6 +204,15 @@ export class MissionIsleGame extends WorldRuntime {
     this.dressGates(set);
     this.publishRun();
   }
+  /** « إيقاف مؤقّت »: the run freezes where it is — the gate, the speed, the hearts — until he comes back to it. */
+  pauseRun(on = true) {
+    const r = this.runner;
+    if (!r || r.pause > 0 || Boolean(r.held) === on) return;
+    r.held = on;
+    this.audio.fast = !on;
+    this.input.clear();
+    this.publishRun(on ? { stage: 'paused' } : {});
+  }
   /** His lane, from the keys or from the two buttons of the screen: -1 is left, +1 is right. */
   runLane(d) {
     const r = this.runner;
@@ -222,6 +237,14 @@ export class MissionIsleGame extends WorldRuntime {
     this.board.rotation.y = Math.PI / 2;
     this.board.rotation.z = r ? (RUN.lanes[r.lane] - r.v) * -0.25 : 0;
     if (!r) return;
+    // Space pauses and resumes; a run left alone (the page hidden) pauses by itself
+    if (this.input.take('jump')) this.pauseRun(!r.held);
+    if (r.held) {
+      this.input.take('left');
+      this.input.take('right');
+      this.placeGates();
+      return;
+    }
     if (this.input.take('left')) this.runLane(-1);
     if (this.input.take('right')) this.runLane(1);
     if (r.pause > 0) {
@@ -336,7 +359,7 @@ export class MissionIsleGame extends WorldRuntime {
   }
   robotPose(ph) {
     if (ph !== 'run' || !this.runner) return super.robotPose(ph);
-    const stopped = this.runner.pause > 0;
+    const stopped = this.runner.pause > 0 || Boolean(this.runner.held);
     return { lift: 0, speed: stopped ? 0 : speedOf(this.runner.level, this.runner.score), sad: stopped };
   }
   spawnPoint() {

@@ -89,6 +89,18 @@ await shot('gates-far');
 await p.waitForFunction(() => window.__world.runner?.x < 12, null, { timeout: 20000 });
 await shot('gates-near');
 
+// the pause: the gate stays where it was, and « متابعة » gives the run back
+await p.click('[data-mi-run-pause]');
+await p.waitForSelector('[data-mi-run-paused]');
+const x0 = (await state()).x;
+await p.waitForTimeout(900);
+const x1 = (await state()).x;
+await shot('paused');
+if (Math.abs(x0 - x1) > 0.01) bad.push('the gate moved during the pause');
+await p.click('[data-mi-run-resume]');
+await p.waitForTimeout(400);
+if ((await state()).x >= x1) bad.push('the run did not resume');
+
 // six right gates: the score rises and level 2 opens after the fifth
 for (let k = 0; k < 6; k += 1) {
   const s = await gate();

@@ -89,6 +89,7 @@ const L = {
   mapSay: 'معارف الدرس على السبّورة: مراجعة سريعة مع القسم كلّه، وروابط الدروس السابقة.',
   know: 'قبل أن تبدأ',
   learns: 'ما يتعلّمه تلاميذك',
+  learnsTrack: 'أين وصل كلّ تلميذ؟',
   stands: 'ما يقوم عليه الدرس',
   core: 'أساسي',
   support: 'مساعد',
@@ -308,7 +309,8 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
       </div>
 
       {/* ── follow: the class on this lesson, student by student ── */}
-      {board && (
+      {/* a v2 lesson is followed even before it has its board: the tracking reads the bank (owner, 2026-11-20) */}
+      {(board || hasWorld) && (
         <Block label={L.follow} data-teacher-group="follow">
           <Door
             icon={Users}
@@ -336,6 +338,16 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
                   </li>
                 ))}
               </ul>
+              {/* « ما يتعلّمه تلاميذك » leads somewhere (owner, 2026-11-20): where each student stands on these الكفاءات */}
+              {(board || hasWorld) && !phone && (
+                <Link
+                  to={classTrackingPath(config.id)}
+                  data-teacher-learns-track
+                  className="mt-2 inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-nav-accent px-4 text-[15px] font-extrabold text-white transition-colors hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2"
+                >
+                  <Users size={17} aria-hidden="true" /> {L.learnsTrack} <ArrowLeft size={17} aria-hidden="true" />
+                </Link>
+              )}
             </Fact>
           )}
           {tools.length > 0 && (

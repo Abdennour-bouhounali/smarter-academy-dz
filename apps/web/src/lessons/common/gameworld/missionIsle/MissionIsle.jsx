@@ -12,6 +12,7 @@ import {
   FileText,
   Flame,
   Heart,
+  Pause,
   PenLine,
   Play,
   Star,
@@ -172,11 +173,20 @@ function Run({ s, game }) {
           <span data-mi-run-level={r.level}>
             المستوى {r.level} · {r.levelName}
           </span>
+          <button
+            type="button"
+            className="mi-quit"
+            data-mi-run-pause
+            onClick={() => game.pauseRun(r.stage !== 'paused')}
+          >
+            {r.stage === 'paused' ? <Play size={18} aria-hidden="true" /> : <Pause size={18} aria-hidden="true" />}
+            {r.stage === 'paused' ? 'متابعة' : 'توقّف'}
+          </button>
           <button type="button" className="mi-quit" data-mi-run-leave onClick={() => game.leaveRun()}>
             <X size={18} aria-hidden="true" /> خروج
           </button>
         </div>
-        {r.stage === 'go' && (
+        {(r.stage === 'go' || r.stage === 'paused') && (
           <div className="di-dash__say" key={r.n} data-mi-run-ask>
             <small>مرّ من الباب الصحيح</small>
             <strong>
@@ -206,6 +216,21 @@ function Run({ s, game }) {
           <Option o={o} />
         </b>
       ))}
+      {r.stage === 'paused' && (
+        <div className="mi-paused" data-mi-run-paused>
+          <div className="mi-runcard">
+            <Pause size={52} aria-hidden="true" />
+            <h2>السباق متوقّف</h2>
+            <p>الأبواب تنتظرك حيث تركتها. اضغط « متابعة » أو مفتاح المسافة.</p>
+            <button type="button" className="mi-btn" data-mi-run-resume onClick={() => game.pauseRun(false)}>
+              <Play size={20} aria-hidden="true" /> متابعة
+            </button>
+            <button type="button" className="mi-door" data-mi-run-leave onClick={() => game.leaveRun()}>
+              الرجوع إلى الجزيرة
+            </button>
+          </div>
+        </div>
+      )}
       {r.up && r.stage === 'go' && (
         <p className="mi-up" key={r.level} data-mi-run-up>
           مستوى جديد: {r.levelName}

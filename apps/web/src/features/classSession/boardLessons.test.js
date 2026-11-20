@@ -115,7 +115,7 @@ describe("a v2 lesson that has its world before its board (a unit's last lesson)
     expect(hasClassBoard(id)).toBe(false);
     expect(hasTeacherBank(id)).toBe(true);
     expect(['lesson', 'session', 'memo', 'file', 'bank', 'track', 'card'].filter((t) => toolHasContent(id, t))).toEqual(
-      ['lesson', 'bank'],
+      ['lesson', 'bank', 'track'],
     );
     // a lesson with its board keeps every tool; so does a lesson that is not v2
     expect(toolHasContent('ikhtizal-kasr', 'session')).toBe(true);

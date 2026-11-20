@@ -256,7 +256,8 @@ island's content and its test), M3 (the bank mission and the recap declared), th
 **The teacher of a v2 lesson that has no board yet** (`features/classSession/boardLessons.js`, 2026-11-20): his page is
 his card alone (no list of the deleted modules, no site footer, no floating « كرّاسي »); `hasTeacherBank` gives him the
 teacher's own bank; `toolHasContent` keeps in the common header only the tools that have content for the lesson
-(« الدرس », « بنك التمارين » until its board is written); the memo door comes back with the board.
+(« الدرس », « بنك التمارين », « متابعة القسم » until its board is written); the memo door comes back with the board;
+« ما يتعلّمه تلاميذك » carries a button to the tracking.
 
 `apps/web/scripts/lesson-v2-status.mjs` reads files and markers and judges nothing. Its parts, for one lesson:
 

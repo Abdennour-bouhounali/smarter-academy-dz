@@ -307,6 +307,7 @@
 .mi-run .di-dash__meta {
   font-size: 1.2rem;
   pointer-events: auto;
+  white-space: nowrap; /* one line: a second one would push the order over the far gates */
 }
 .mi-run .di-dash__say small {
   font-size: 1.125rem;
@@ -378,4 +379,14 @@
 .mi-door--game {
   border-color: #fbbf24;
   color: #fbbf24;
+}
+
+.mi-paused {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  background: rgba(5, 14, 36, 0.55);
+  pointer-events: auto;
 }
