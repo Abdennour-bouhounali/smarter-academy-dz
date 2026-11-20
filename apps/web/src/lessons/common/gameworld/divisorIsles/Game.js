@@ -804,20 +804,17 @@ export class DivisorIslesGame extends WorldRuntime {
 
   /** Puts the world in the state of the save: earlier bridges rebuilt, flags applied. */
   /**
-   * PROTOTYPE (dev builds only): the QA page `/__qa/mission-1` hands a mission over (its data, in the session's storage)
-   * and opens a v2 lesson to host it. The mission starts by itself — no title screen, no launch kit — and is handed over
-   * ONCE: leaving it gives the host lesson back as it is.
+   * PROTOTYPE (dev builds only): the QA page `/__qa/mission-1` mounts this world to play a mission and names it in
+   * `window.__qaMission`. Every world built on a `/__qa/` address starts it by itself (in dev React builds the world
+   * twice; owner, 2026-11-20: he saw the host lesson's title screen instead of the mission).
    */
   qaMission() {
-    if (!import.meta.env.DEV || typeof sessionStorage === 'undefined') return;
-    const raw = sessionStorage.getItem('qa-mission');
-    if (!raw) return;
+    if (!import.meta.env.DEV || typeof window === 'undefined' || !window.__qaMission) return;
+    if (!window.location.pathname.startsWith('/__qa/')) return; // a lesson opened afterwards is a lesson
     setTimeout(() => {
-      // a world built and thrown away at once (React mounts twice in dev) must not take the mission with it
-      if (this.dead || !sessionStorage.getItem('qa-mission')) return;
-      sessionStorage.removeItem('qa-mission');
+      if (this.dead || !window.__qaMission || this.state.mission) return;
       this.start();
-      this.startMission(JSON.parse(raw));
+      this.startMission(window.__qaMission);
     }, 900);
   }
 
