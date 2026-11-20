@@ -158,7 +158,16 @@ a new scene is added only when a family of §1 needs it.
 - Not verified: that every story exercise of the bank (22 of the 50 of `wadiya-idmajiya-aadad`) fits one of the three scenes.
 
 
-## 8. The mission, redesigned (council of 2026-11-20 — PROPOSED, awaiting the owner; nothing of it is coded)
+## 8. The mission, redesigned (council of 2026-11-20 — accepted by the owner « go on »; MISSION 1 IS BUILT on it)
+
+> **Built 2026-11-20** (`http://localhost:5173/__qa/mission-1`, dev builds only): `missions/MissionPlayer.jsx` (the
+> paper, one question, one gesture, the notebook), `missions/lots.js` (the lines, tested), `divisorIsles/Depot.js ›
+> runLots / runPairing` (the depot deals lots; one stock is laid along the other), the situation as data
+> (`…/wadiya-idmajiya-aadad/missions/bem2021.js`, tested). Played end to end in a browser at 1366×768: 14 screens,
+> none overflows, no page error; five looked at. The seven steps on screen are the table's eight (steps 2–3 are one
+> screen: free tries; step 6 follows step 5 on the same screen). NOT built: hearts (coins are), the save, sound cues of
+> its own, missions 2 and 3, the lesson's home; the page still borrows the pilot's content to build the world. The first
+> prototype of §3 (five stations) is deleted.
 
 The owner played the prototype of §6 step 1 and said: « it is not clear at all […] the student must never feel lost,
 everything that happens in the game should be translated to numbers as an operation ». A council of five advisors and

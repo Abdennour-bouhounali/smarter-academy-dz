@@ -426,14 +426,20 @@ export class Depot {
     const from = new THREE.Vector3(this.pallet.position.x, 2.2, this.pallet.position.z);
     this.counter.visible = lots.length > 0;
     const per = game.instantSim ? 0.001 : Math.min(0.32, Math.max(0.03, 3.2 / Math.max(1, lots.length)));
+    // past 140 lots they land several at a time: 1188 lots are dealt in the time of 140, never in half a minute
+    const batch = Math.max(1, Math.ceil(lots.length / 140));
     for (let k = 0; k < lots.length; k += 1) {
       if (game.dead) return;
       const c = pallet(lots[k]);
-      c.position.copy(from);
-      c.scale.setScalar(0.2);
       this.group.add(c);
       this.items.push(c);
       const home = slot(k);
+      if (k % batch) {
+        c.position.copy(home);
+        continue;
+      }
+      c.position.copy(from);
+      c.scale.setScalar(0.2);
       await game.tween(
         per,
         (t) => {
@@ -496,6 +502,62 @@ export class Depot {
           3,
           1,
         );
+    }
+  }
+
+  /**
+   * ONE STOCK MEASURED WITH ANOTHER (a mission's Euclidean division, `big = small × q + r`): the big stock lies on the
+   * floor as one long row; the small one is laid along it, `q` times, each copy landing after the one before; what the
+   * copies do not cover — `r` crates — stands alone at the end, lit and counted. `colors = { big, small }`.
+   */
+  async runPairing({ big, small, q, r }, colors) {
+    const game = this.game;
+    this.clearSim();
+    const W = PAD.w * 0.92;
+    const x0 = -W / 2;
+    const unit = W / big;
+    const put = (m) => {
+      this.group.add(m);
+      this.items.push(m);
+      return m;
+    };
+    const row = put(new THREE.Mesh(new THREE.BoxGeometry(W, 0.5, 1.5), std(colors.big)));
+    row.position.set(0, 0.35, PAD.z - 1.5);
+    row.castShadow = true;
+    const tag = (text, x, z, h = 1.25) => {
+      const s = put(textSprite(text, { h, bg: 'rgba(10,26,60,0.9)', stroke: null, color: '#fff7d6' }));
+      s.position.set(x, 2.3, z);
+      return s;
+    };
+    tag(String(big), 0, PAD.z - 3.2);
+    const from = new THREE.Vector3(this.pallet.position.x, 2.2, this.pallet.position.z);
+    for (let k = 0; k < q; k += 1) {
+      if (game.dead) return;
+      const len = small * unit;
+      const copy = put(new THREE.Mesh(new THREE.BoxGeometry(len - 0.08, 0.5, 1.5), std(colors.small)));
+      copy.castShadow = true;
+      const home = new THREE.Vector3(x0 + k * len + len / 2, 0.35, PAD.z + 0.6);
+      copy.position.copy(from);
+      await game.tween(
+        game.instantSim ? 0.001 : 0.55,
+        (t) => {
+          copy.position.lerpVectors(from, home, t);
+          copy.position.y += Math.sin(t * Math.PI) * 2;
+        },
+        easeOut,
+      );
+      game.audio.play('plank', k);
+      tag(String(small), home.x, PAD.z + 2.3, 1.05);
+    }
+    await game.wait(game.instantSim ? 0.001 : 0.3);
+    if (r > 0) {
+      const len = r * unit;
+      const rest = put(new THREE.Mesh(new THREE.BoxGeometry(len, 0.62, 1.62), glow(0xffd24a, 0.55)));
+      rest.position.set(x0 + q * small * unit + len / 2, 0.36, PAD.z - 1.5);
+      tag(String(r), rest.position.x, PAD.z - 0.2, 1.5);
+      game.audio.play('key');
+    } else {
+      game.audio.play('success');
     }
   }
 

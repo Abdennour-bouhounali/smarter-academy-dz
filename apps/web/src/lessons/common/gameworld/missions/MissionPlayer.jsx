@@ -1,23 +1,19 @@
 /**
- * AN INTEGRATION MISSION, played IN THE 3D DEPOT of the world (`docs/reports/INTEGRATION_LESSON_PLAN.md` §3) — PROTOTYPE
- * of mission 1 (2026-11-20; the first version, a flat screen, had « no game feeling » — owner).
+ * AN INTEGRATION MISSION, played in the 3D depot (`docs/reports/INTEGRATION_LESSON_PLAN.md` §8 — the design of the
+ * council of 2026-11-20; PROTOTYPE of mission 1, the scene « lots »).
  *
- * The student is the engineer of the cooperative: whatever he reads, the depot BUILDS — his misreadings too. This file
- * is the screen over the 3D scene; `world.run(spec)` makes the depot pack what `lots.js` computed from HIS reading
- * (pallets fly from the quay, a lot that differs is seen, what was not packed stays on the red mat), `ship: true` sends
- * the lots away on the truck. Five stations:
- *   1. the story without its numbers — he sends the robot to count what he needs;
- *   2. he builds the situation — the sentences of the text placed on his model; the depot rehearses HIS model;
- *   3. the goal flags — each answer sentence built before any computation, and their order;
- *   4. a bridge for each step — the key of the unit, the computation, and the depot carries the result out;
- *   5. the seal — the numbers enter their sentences; the four habits get their names; the exam text is revealed.
- * The situation is DATA (`situation`); this file names no lesson. The verdict is what the depot does, never « wrong ».
- * Not built yet (prototype): the save, the replay with other numbers, missions 2 and 3.
+ * THE RULE: ONE SENTENCE OF THE EXAM TEXT ↔ ONE LINE OF NUMBERS. The screen never changes: the exam paper with its
+ * numbers (a phrase lights when his act has produced its line), the depot, ONE instruction — the question of the
+ * moment —, ONE thing to touch, and a notebook that keeps every line: at the end it is his copy. ONE gesture all along:
+ * he types a number or fills an operation in its shape; the depot carries it out (`world.run`), a line is written.
+ * Nothing is ever « wrong »: the depot deals what he typed and the line says what is left.
+ *
+ * The situation is DATA (`situation`); this file names no lesson. Not built yet: the save, hearts, missions 2 and 3.
  */
-import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, Check, Flag, Play, RotateCcw, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { ArrowLeft, Check, Coins, Play, X } from 'lucide-react';
 import { M } from '../kit/parts';
-import { euclid, fill, MISREADINGS, NEEDED, pack, rehearse } from './lots';
+import { deal, euclid, fill, gcd, line, slip } from './lots';
 import './mission.css';
 
 const NB = '\u00a0';
@@ -29,583 +25,505 @@ const counted = (n, forms) => {
   return last >= 3 && last <= 10 ? `${n}${NB}${forms[2]}` : `${n}${NB}${forms[3]}`;
 };
 const CRATES = ['صندوق واحد', 'صندوقان', 'صناديق', 'صندوقًا'];
-const HOUSES = ['دار واحدة', 'داران', 'دور', 'دارًا'];
-
-const STEPS = ['القصّة', 'الوضعية', 'الأعلام', 'الجسور', 'الختم'];
-
-function Legend({ kinds }) {
-  return (
-    <p className="ms-legend">
-      {['a', 'b'].map((k) => (
-        <span key={k}>
-          <i style={{ background: kinds[k].color }} />
-          {kinds[k].crates}
-        </span>
-      ))}
-    </p>
-  );
-}
-
-/** Station 1 — the story without its numbers: he decides what he needs and sends the robot to count it. */
-function Story({ sit, asked, onAsk }) {
-  const need = sit.asks.filter((a) => a.needed);
-  return (
-    <>
-      <div className="ms-main">
-        <p className="ms-story ms-card" data-ms-story>
-          {sit.story.map((part, i) =>
-            typeof part === 'string' ? (
-              <span key={i}>{part}</span>
-            ) : (
-              <b key={i} className={`ms-hole ${asked.includes(part.ask) ? 'is-known' : ''}`} data-ms-hole={part.ask}>
-                {asked.includes(part.ask) ? sit.asks.find((a) => a.id === part.ask).said : '؟ صندوقًا'}
-              </b>
-            ),
-          )}
-        </p>
-      </div>
-      <aside className="ms-side">
-        <h3>أرسل الروبوت ليعدّ ما تحتاجه</h3>
-        <div className="ms-asks">
-          {sit.asks.map((a) => (
-            <button
-              key={a.id}
-              type="button"
-              className={`ms-ask ${asked.includes(a.id) ? 'is-asked' : ''}`}
-              data-ms-ask={a.id}
-              onClick={() => onAsk(a.id)}
-            >
-              <span>{a.label}</span>
-              {asked.includes(a.id) && <b>{a.said}</b>}
-            </button>
-          ))}
-        </div>
-        <p className="ms-note" data-ms-asked={asked.length}>
-          {need.every((a) => asked.includes(a.id))
-            ? asked.length > need.length
-              ? 'عدّ الروبوت كلّ ما طلبتَه. هل تحتاج القصّة إليه كلّه؟ سنرى.'
-              : 'للقصّة الآن أعدادها.'
-            : 'في القصّة عددان مخفيّان.'}
-        </p>
-      </aside>
-    </>
-  );
-}
-
-/** What the world says after rehearsing his model — facts about what it built, never a judgement. */
-const REHEARSED = {
-  apart: (r, sit) =>
-    `الروبوت كوّن ${counted(r.lots.length, sit.lot.forms)}: كلّ تشكيلة من نوع واحد. دار تستلم البطاطا وحدها، ودار الجزر وحده.`,
-  equalAB: (r, sit) =>
-    `في كلّ تشكيلة صندوق بطاطا وصندوق جزر: ${counted(r.lots.length, sit.lot.forms)}، وبقي على الرصيف ${counted(r.left.a, CRATES)} من البطاطا.`,
-  unequal: (r, sit) =>
-    `${counted(r.lots.length, sit.lot.forms)}، ولا صندوق باقٍ — لكنّ التشكيلات ليست متماثلة: انظر ما في كلّ واحدة.`,
-  left: (r, sit) =>
-    `${counted(r.lots.length, sit.lot.forms)} متماثلة — وبقي على الرصيف ${counted(r.left.a, CRATES)} من البطاطا و${counted(r.left.b, CRATES)} من الجزر.`,
-  few: (r, sit) =>
-    `${counted(r.lots.length, sit.lot.forms)} متماثلة ولا صندوق باقٍ: ${counted(r.lots.length, HOUSES)} فقط تستفيد.`,
-  fair: (r, sit) =>
-    `${counted(r.lots.length, sit.lot.forms)} متماثلة، لا صندوق باقٍ، ولا يمكن تكوين أكثر: هذا ما يريده الفلّاح.`,
-};
-
-/** Station 2 — he builds the situation: the sentences of the text on his model; the world rehearses HIS model. */
-function Model({ sit, placed, onToggle, run, onRun, busy }) {
-  return (
-    <>
-      <div className="ms-main ms-main--scene">
-        {run ? (
-          <>
-            <Legend kinds={sit.kinds} />
-            <p className="ms-fact" data-ms-rehearsed={run.outcome}>
-              {REHEARSED[run.outcome](run, sit)}
-            </p>
-          </>
-        ) : (
-          <p className="ms-story ms-card">
-            قبل الأعداد الكبيرة، تجربة صغيرة: {sit.small.a} صندوق بطاطا و{sit.small.b} صناديق جزر. الروبوت سيجمّعها كما
-            تقول له وضعيتك — بالشروط التي تضعها، وبها فقط.
-          </p>
-        )}
-      </div>
-      <aside className="ms-side">
-        <h3>ضع على وضعيتك ما يقوله النصّ</h3>
-        <div className="ms-phrases">
-          {sit.phrases.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              className={`ms-phrase ${placed.includes(p.id) ? 'is-on' : ''}`}
-              data-ms-phrase={p.id}
-              aria-pressed={placed.includes(p.id)}
-              onClick={() => onToggle(p.id)}
-            >
-              {placed.includes(p.id) && <Check size={16} aria-hidden="true" />}
-              {p.text}
-            </button>
-          ))}
-        </div>
-        <button type="button" className="ms-btn" data-ms-run onClick={onRun} disabled={!placed.length || busy}>
-          <Play size={18} aria-hidden="true" />
-          جرّب وضعيتي
-        </button>
-      </aside>
-    </>
-  );
-}
-
-/** Station 3 — the goal flags: each answer sentence built before any computation, then their order. */
-function Flags({ sit, picks, onPick, first, onFirst }) {
-  const [f1, f2] = sit.flags;
-  const s1 = f1.starts.find((s) => s.id === picks.start1);
-  const u1 = f1.units.find((u) => u.id === picks.unit1);
-  const s2 = f2.starts.find((s) => s.id === picks.start2);
-  const said =
-    [s1, u1, s2].find((x) => x && !x.right)?.built ?? (first && first !== sit.chain.first ? sit.chain.built : null);
-  const tiles = (list, key, row = false) => (
-    <div className={`ms-tiles ${row ? 'ms-tiles--row' : ''}`}>
-      {list.map((s) => (
-        <button
-          key={s.id}
-          type="button"
-          className={`ms-tilebtn ${picks[key] === s.id ? 'is-on' : ''}`}
-          data-ms-pick={`${key}:${s.id}`}
-          onClick={() => onPick(key, s.id)}
-        >
-          {s.text}
-        </button>
-      ))}
-    </div>
-  );
-  return (
-    <>
-      <div className="ms-main ms-main--flags">
-        <div className={`ms-flag ${s1?.right && u1?.right ? 'is-up' : ''}`} data-ms-flag="1">
-          <Flag size={22} aria-hidden="true" />
-          <span>{s1 ? s1.text : '…'}</span>
-          <b className="ms-box">▢</b>
-          <span>{u1 ? u1.text : '…'}</span>
-        </div>
-        <div className={`ms-flag ${s2?.right ? 'is-up' : ''}`} data-ms-flag="2">
-          <Flag size={22} aria-hidden="true" />
-          <span>{s2 ? s2.text : '…'}</span>
-        </div>
-        {said && (
-          <p className="ms-fact" data-ms-flag-built>
-            {said}
-          </p>
-        )}
-      </div>
-      <aside className="ms-side">
-        <h3>{f1.ask}</h3>
-        {tiles(f1.starts, 'start1')}
-        {tiles(f1.units, 'unit1', true)}
-        <h3>{f2.ask}</h3>
-        {tiles(f2.starts, 'start2')}
-        <h3>{sit.chain.ask}</h3>
-        <div className="ms-tiles ms-tiles--row">
-          {[
-            ['lots', 'عدد التشكيلات'],
-            ['content', 'ما في التشكيلة'],
-          ].map(([id, text]) => (
-            <button
-              key={id}
-              type="button"
-              className={`ms-tilebtn ${first === id ? 'is-on' : ''}`}
-              data-ms-first={id}
-              onClick={() => onFirst(id)}
-            >
-              {text}
-            </button>
-          ))}
-        </div>
-      </aside>
-    </>
-  );
-}
-
+/** « 3 صناديق من البطاطا و6 صناديق من الجزر » — only the stocks of which something is left. */
+const leftOf = (left, kinds) =>
+  ['a', 'b']
+    .filter((k) => left[k] > 0)
+    .map((k) => `${counted(left[k], CRATES)} من ${kinds[k].name}`)
+    .join(' و');
 const num = (v) => (/^\d+$/.test(String(v ?? '').trim()) ? Number(v) : null);
+const tex = (l) => `${l.a} = ${l.b} \\times ${l.q} + ${l.r}`;
+const STEPS = 7;
 
-function Box({ value, onChange, label, name, w = 4 }) {
+function Box({ value, onChange, label, name, w = 4, onEnter }) {
   return (
     <input
       className="ms-in"
       inputMode="numeric"
       dir="ltr"
-      style={{ width: `${w + 1.4}ch` }}
+      style={{ width: `${w + 1.6}ch` }}
       value={value ?? ''}
       aria-label={label}
       data-ms-in={name}
       onChange={(e) => onChange(e.target.value.replace(/[^\d]/g, '').slice(0, 5))}
+      onKeyDown={(e) => e.key === 'Enter' && onEnter?.()}
     />
   );
 }
 
-/** What the world says after packing the real stock in the lots he computed. */
-const PACKED = {
-  left: (p, sit) =>
-    `${counted(p.n, sit.lot.forms)} متماثلة — لكن بقي على الرصيف ${counted(p.left.a, CRATES)} من البطاطا و${counted(p.left.b, CRATES)} من الجزر.`,
-  more: (p, sit) =>
-    `${counted(p.n, sit.lot.forms)} متماثلة ولا صندوق باقٍ. لكنّ الروبوت قسم كلّ تشكيلة إلى ${counted(p.split, sit.lot.forms)} متماثلة: يمكن أن تستفيد دور أكثر.`,
-  most: (p, sit) => `${counted(p.n, sit.lot.forms)} متماثلة، لا صندوق باقٍ، ولا تشكيلة تنقسم: لا يمكن تكوين أكثر.`,
-};
-const FILLED = {
-  short: (f, sit) =>
-    `امتلأت ${counted(f.full, sit.lot.forms)} ثمّ انتهى المحصول: ${counted(f.empty, sit.lot.forms)} بقيت فارغة.`,
-  left: (f) =>
-    `امتلأت التشكيلات كلّها، وبقي على الرصيف ${counted(f.left.a, CRATES)} من البطاطا و${counted(f.left.b, CRATES)} من الجزر.`,
-  exact: () => 'امتلأت التشكيلات كلّها ولم يبقَ صندوق.',
-};
-
-/** Station 4 — a bridge for each step: the key of the unit, the computation, and the world carries the result out. */
-function Bridges({ sit, st, set, world, busy }) {
-  const { a, b } = sit.stock;
-  const rows = useMemo(() => euclid(a, b), [a, b]);
-  const tool = sit.tools.find((t) => t.id === st.tool);
-  const n = num(st.n);
-  const per = { a: num(st.pa), b: num(st.pb) };
-  const second = st.packed?.outcome === 'most';
-  const shown = second && st.filled ? st.filled : st.packed;
-  const packIt = async () => {
-    const packed = pack(n, sit.stock);
-    await world.run(
-      { lots: Array(packed.n).fill(packed.per), left: packed.left },
-      { cheer: packed.outcome === 'most' },
-    );
-    set({ packed });
-  };
-  const fillIt = async () => {
-    const filled = fill(st.packed.n, per, sit.stock);
-    await world.run(
-      filled.outcome === 'short'
-        ? { lots: Array(filled.full).fill(per), left: { a: 0, b: 0 }, empty: filled.empty }
-        : { lots: Array(st.packed.n).fill(per), left: filled.left },
-      { ship: filled.outcome === 'exact', cheer: filled.outcome === 'exact' },
-    );
-    set({ per, filled });
-  };
+/** The exam paper: its text whole, the phrases that light, and (step 1) its numbers to tap. */
+function Paper({ sit, lit, known, step, onTap }) {
   return (
-    <>
-      <div className="ms-main ms-main--scene">
-        {shown ? (
-          <>
-            <Legend kinds={sit.kinds} />
-            <p className="ms-fact" data-ms-built={shown.outcome}>
-              {second && st.filled
-                ? FILLED[st.filled.outcome](st.filled, sit)
-                : PACKED[st.packed.outcome](st.packed, sit)}
-            </p>
-          </>
-        ) : (
-          <p className="ms-story ms-card">
-            الجسر الأوّل: عدد التشكيلات. اختر المفتاح الذي يفتحه، احسب، ثمّ اكتب العدد: العالم سيكوّن التشكيلات كما
-            حسبتَ، بـ{NB}
-            {a} صندوق بطاطا و{b} صندوق جزر.
-          </p>
-        )}
-      </div>
-      <aside className="ms-side">
-        {!second ? (
-          <>
-            <h3>الجسر 1 — أيّ مفتاح يفتحه؟</h3>
-            <div className="ms-tools">
-              {sit.tools.map((t) => (
-                <button
-                  key={t.id}
-                  type="button"
-                  className={`ms-tool ${st.tool === t.id ? 'is-on' : ''}`}
-                  data-ms-tool={t.id}
-                  onClick={() => set({ tool: t.id, packed: null })}
-                >
-                  <span aria-hidden="true">{t.icon}</span>
-                  {t.text}
-                </button>
-              ))}
-            </div>
-            {tool?.right && (
-              <div className="ms-work" dir="ltr" data-ms-work>
-                {rows.map((r, i) => (
-                  <p key={r.a}>
-                    <M>{`${r.a} = ${r.b} \\times`}</M>
-                    <Box
-                      value={st[`q${i}`]}
-                      onChange={(v) => set({ [`q${i}`]: v })}
-                      label={`حاصل القسمة ${i + 1}`}
-                      name={`q${i}`}
-                      w={2}
-                    />
-                    <M>+</M>
-                    <Box
-                      value={st[`r${i}`]}
-                      onChange={(v) => set({ [`r${i}`]: v })}
-                      label={`باقي القسمة ${i + 1}`}
-                      name={`r${i}`}
-                      w={3}
-                    />
-                  </p>
-                ))}
-              </div>
-            )}
-            {tool && (
-              <p className="ms-answer">
-                <span>عدد التشكيلات:</span>
-                <Box value={st.n} onChange={(v) => set({ n: v })} label="عدد التشكيلات" name="n" />
-                <span>{sit.lot.one}</span>
-                <button type="button" className="ms-btn" data-ms-pack disabled={!n || busy} onClick={packIt}>
-                  <Play size={18} aria-hidden="true" />
-                  كوّنها
-                </button>
-              </p>
-            )}
-          </>
-        ) : (
-          <>
-            <h3>الجسر 2 — ما في كلّ تشكيلة من {counted(st.packed.n, sit.lot.forms)}؟</h3>
-            <p className="ms-answer ms-answer--stack">
-              <span>
-                <Box
-                  value={st.pa}
-                  onChange={(v) => set({ pa: v, filled: null })}
-                  label="صناديق البطاطا في التشكيلة"
-                  name="pa"
-                  w={3}
-                />
-                صندوقًا من {sit.kinds.a.name}
-              </span>
-              <span>
-                <Box
-                  value={st.pb}
-                  onChange={(v) => set({ pb: v, filled: null })}
-                  label="صناديق الجزر في التشكيلة"
-                  name="pb"
-                  w={3}
-                />
-                صندوقًا من {sit.kinds.b.name}
-              </span>
-              <button
-                type="button"
-                className="ms-btn"
-                data-ms-fill
-                disabled={!per.a || !per.b || busy}
-                onClick={fillIt}
-              >
-                <Play size={18} aria-hidden="true" />
-                املأ التشكيلات
-              </button>
-            </p>
-          </>
-        )}
-      </aside>
-    </>
+    <aside className="ms-paper" data-ms-paper>
+      <h3>{sit.session}</h3>
+      <p>
+        {sit.paper.map((p, i) => {
+          const el = p.stock ? (
+            <button
+              key={i}
+              type="button"
+              className={`ms-num ${known[p.stock] ? 'is-known' : step === 0 ? 'is-ask' : ''}`}
+              data-ms-tap={p.stock}
+              disabled={step !== 0 || known[p.stock]}
+              onClick={() => onTap(p.stock)}
+            >
+              {p.t}
+            </button>
+          ) : p.id ? (
+            <mark
+              key={i}
+              className={`ms-phrase ${lit[p.id] ? `is-${lit[p.id]}` : ''}`}
+              data-ms-lit={`${p.id}:${lit[p.id] ?? 'off'}`}
+            >
+              {p.t}
+            </mark>
+          ) : (
+            <span key={i}>{p.t}</span>
+          );
+          return p.br ? [el, <br key={`b${i}`} />] : el;
+        })}
+      </p>
+    </aside>
   );
 }
 
-/** Station 5 — the seal: the numbers in their sentences, the four habits named, the exam text revealed. */
-function Seal({ sit, st, page, onPage }) {
-  const [f1, f2] = sit.flags;
-  const s1 = f1.starts.find((s) => s.right);
-  const u1 = f1.units.find((u) => u.right);
-  const [head, mid, tail] = f2.starts.find((s) => s.right).text.split('▢');
+/** The notebook: every line the depot has written for him, the newest last — at the end, his copy. */
+function Notebook({ lines }) {
   return (
-    <>
-      <div className="ms-main ms-main--flags">
-        {page === 0 && (
-          <>
-            <div className="ms-flag is-up is-sealed" data-ms-sealed="1">
-              <Flag size={22} aria-hidden="true" />
-              <span>{s1.text}</span>
-              <b className="ms-box">{st.packed.n}</b>
-              <span>{u1.text}</span>
-            </div>
-            <div className="ms-flag is-up is-sealed" data-ms-sealed="2">
-              <Flag size={22} aria-hidden="true" />
-              <span>{head}</span>
-              <b className="ms-box">{st.per.a}</b>
-              <span>{mid}</span>
-              <b className="ms-box">{st.per.b}</b>
-              <span>{tail}</span>
-            </div>
-            <p className="ms-fact">
-              {counted(st.packed.n, HOUSES)} تستلم كلّ واحدة تشكيلتها: {counted(st.per.a, CRATES)} من البطاطا و
-              {counted(st.per.b, CRATES)} من الجزر — المحصول كلّه وُزّع.
-            </p>
-          </>
-        )}
-        {page === 1 && (
-          <div className="ms-habits" data-ms-habits>
-            {sit.habits.map((h) => (
-              <div key={h.title} className="ms-habit">
-                <span aria-hidden="true">{h.icon}</span>
-                <b>{h.title}</b>
-                <p>{h.text}</p>
-              </div>
-            ))}
-          </div>
-        )}
-        {page === 2 && (
-          <div className="ms-paper" data-ms-exam>
-            <h3>{sit.session}</h3>
-            {sit.exam.lines.map((l) => (
-              <p key={l}>{l}</p>
-            ))}
-          </div>
-        )}
-      </div>
-      <aside className="ms-side">
-        <h3>{['جملتا الجواب', 'ما فعلتَه له اسم', 'هذا ما حللتَه'][page]}</h3>
-        <p className="ms-note">
-          {
-            [
-              'كتبتَ الجملتين قبل أن تحسب؛ الأعداد دخلت الآن مكانها.',
-              'أربع عادات عشتَها في هذه المهمّة — ستجدها في كلّ وضعية.',
-              'هذا نصّ الوضعية كما جاء في الامتحان: قرأتَه، بنيتَه، وحللتَه.',
-            ][page]
-          }
-        </p>
-        {page < 2 && (
-          <button type="button" className="ms-btn" data-ms-seal-next onClick={() => onPage(page + 1)}>
-            {page === 0 ? 'العادات الأربع' : 'نصّ الامتحان'}
-            <ArrowLeft size={18} aria-hidden="true" />
-          </button>
-        )}
-      </aside>
-    </>
+    <aside className="ms-book" data-ms-book={lines.length}>
+      <h3>كرّاسي</h3>
+      <ol dir="ltr">
+        {lines.map((l) => (
+          <li key={l.id} className={`is-${l.tone ?? 'plain'}`} data-ms-line={l.id}>
+            {l.text ? <span dir="rtl">{l.text}</span> : <M>{l.tex}</M>}
+          </li>
+        ))}
+      </ol>
+    </aside>
   );
 }
-
-const SAY = [
-  'أنا زيرو. هذه قصّة فلّاح… لكنّ أعدادها مخفيّة. اقرأها أوّلًا، ثمّ قل لي ماذا أعدّ.',
-  'سأجمّع الصناديق كما تقول وضعيتك، لا أكثر. ضع عليها كلّ ما يشترطه النصّ.',
-  'قبل أيّ حساب: ماذا نبحث عنه؟ ابنِ جملة كلّ جواب، وقل أيّهما أوّلًا.',
-  'لكلّ خطوة مفتاح من مفاتيح المقطع. اختر، احسب، وسأبني ما وجدتَ.',
-  'ختمتَ المهمّة الأولى!',
-];
 
 export default function MissionPlayer({ situation: sit, world: depot, onClose }) {
+  const { a, b } = sit.stock;
+  const g = gcd(a, b);
+  const [first, second] = euclid(a, b);
   const [step, setStep] = useState(0);
-  const [asked, setAsked] = useState([]);
-  const [placed, setPlaced] = useState([]);
-  const [run, setRun] = useState(null);
-  const [picks, setPicks] = useState({});
-  const [first, setFirst] = useState(null);
-  const [st, setSt] = useState({});
-  const [page, setPage] = useState(0);
-  const set = (patch) => setSt((s) => ({ ...s, ...patch }));
+  const [known, setKnown] = useState({ a: false, b: false });
+  const [lines, setLines] = useState([]);
+  const [lit, setLit] = useState({});
+  const [worked, setWorked] = useState([]);
+  const [fails, setFails] = useState([]);
+  const [tested, setTested] = useState([]);
+  const [paired, setPaired] = useState(false);
+  const [v, setV] = useState({});
+  const [fact, setFact] = useState(null);
   const [busy, setBusy] = useState(false);
-  // the depot packs, the screen waits: nothing can be pressed while pallets fly
-  const world = {
-    run: async (spec, opts) => {
-      setBusy(true);
-      await depot.run(spec, opts);
-      setBusy(false);
-    },
+  const [coins, setCoins] = useState(0);
+  const [name, setName] = useState(null);
+  const set = (patch) => setV((s) => ({ ...s, ...patch }));
+
+  // the quay shows a stock's count only once he said what the number counts
+  useEffect(() => {
+    depot.stock?.(known.a ? a : null, known.b ? b : null);
+  }, [depot, known.a, known.b, a, b]);
+
+  const write = (fresh, drop = () => false) =>
+    setLines((ls) => [...ls.filter((l) => !drop(l) && !fresh.some((f) => f.id === l.id)), ...fresh]);
+  const run = async (spec, opts) => {
+    setBusy(true);
+    await depot.run(spec, opts);
+    setBusy(false);
+  };
+  const next = (n, pay = 10) => {
+    setStep(n);
+    setCoins((c) => c + pay);
+    setV({});
   };
 
-  // the quay shows a stock's count only once the robot was sent to count it
-  const knownA = asked.includes('a');
-  const knownB = asked.includes('b');
-  useEffect(() => {
-    depot.stock?.(knownA ? sit.stock.a : null, knownB ? sit.stock.b : null);
-  }, [depot, knownA, knownB, sit.stock.a, sit.stock.b]);
+  // ── step 1: what does each number of the text count? ──
+  const tap = (k) => {
+    const now = { ...known, [k]: true };
+    setKnown(now);
+    write([{ id: `stock-${k}`, text: `${sit.stock[k]} ${sit.kinds[k].crates}`, tone: 'plain' }]);
+    setFact(`${sit.stock[k]}: عدد صناديق ${sit.kinds[k].name}.`);
+    if (now.a && now.b) next(1);
+  };
 
-  const [f1, f2] = sit.flags;
-  const ready = [
-    sit.asks.filter((a) => a.needed).every((a) => asked.includes(a.id)),
-    run?.outcome === 'fair' &&
-      NEEDED.every((id) => placed.includes(id)) &&
-      !MISREADINGS.some((id) => placed.includes(id)),
-    Boolean(
-      f1.starts.find((s) => s.id === picks.start1)?.right &&
-        f1.units.find((u) => u.id === picks.unit1)?.right &&
-        f2.starts.find((s) => s.id === picks.start2)?.right &&
-        first === sit.chain.first,
-    ),
-    st.packed?.outcome === 'most' && st.filled?.outcome === 'exact',
-    false,
-  ][step];
-  const unused = sit.asks.filter((a) => !a.needed && asked.includes(a.id));
+  // ── steps 2–3: a number of lots — any; the depot deals, two lines are written ──
+  const tryLots = async (n, where) => {
+    const d = deal(n, sit.stock);
+    setFact(null);
+    await run({ lots: Array(n).fill(d.per), left: d.left }, { cheer: d.outcome === 'most' });
+    const tone = d.outcome === 'left' ? 'left' : 'ok';
+    const id = d.outcome === 'left' ? 'try' : `ok-${n}`;
+    write(
+      d.lines.map((l, i) => ({ id: `${id}-${i}`, tex: tex(l), tone })),
+      (l) => l.id.startsWith('try-'),
+    );
+    if (d.outcome === 'left') {
+      setFails((f) => [...f.filter((x) => x.n !== n), { n, left: d.left }]);
+      setLit((s) => ({ ...s, all: 'red' }));
+      setFact(`${counted(n, sit.lot.forms)}: بقي على البساط الأحمر ${leftOf(d.left, sit.kinds)}.`);
+    } else {
+      if (where === 'free') setWorked((w) => (w.includes(n) ? w : [...w, n].slice(-2)));
+      setLit((s) => ({ ...s, all: 'on', same: 'on' }));
+      setFact(
+        `${counted(n, sit.lot.forms)} متماثلة، ولا صندوق على البساط: في كلّ واحدة ${d.per.a} من ${sit.kinds.a.name} و ${d.per.b} من ${sit.kinds.b.name}.`,
+      );
+    }
+    return d;
+  };
+
+  // ── step 4: the second stock laid against the first — Euclid's first line, in the depot ──
+  const pair = async (row, id) => {
+    const q = num(v.q);
+    const r = num(v.r);
+    const s = slip(row.a, row.b, q, r);
+    if (s) {
+      setFact(
+        s.kind === 'sum'
+          ? `${row.b} × ${q} + ${r} = ${s.value}، وليس ${row.a}.`
+          : `الباقي ${s.value} ليس أصغر من ${row.b}: يمكن وضع ${row.b} مرّة أخرى.`,
+      );
+      return false;
+    }
+    setFact(null);
+    await run({
+      pairing: { big: row.a, small: row.b, q: row.q, r: row.r },
+      colors:
+        id === 'e0'
+          ? { big: sit.kinds.a.color, small: sit.kinds.b.color }
+          : { big: sit.kinds.b.color, small: sit.kinds.a.color },
+    });
+    write([{ id, tex: tex(row), tone: 'key' }]);
+    return true;
+  };
+
+  // ── step 5: his numbers that worked, tried on the crates left alone ──
+  const test = async (n) => {
+    const l = line(first.r, n);
+    setFact(null);
+    await run({ lots: Array(n).fill({ a: l.q, b: 0 }), left: { a: l.r, b: 0 } });
+    write([{ id: `rest-${n}`, tex: tex(l), tone: l.r ? 'left' : 'ok' }]);
+    setTested((t) => [...t, n]);
+    setFact(
+      `${counted(n, sit.lot.forms)} تقسم الصناديق الـ${NB}${first.r} التي بقيت وحدها: ${first.r} = ${n} × ${l.q}.`,
+    );
+  };
+
+  const big = num(v.n);
+  const per = { a: num(v.pa), b: num(v.pb) };
+  const stuck = fails.length >= 3 && !worked.length;
+
+  const ASK = [
+    'اضغط على كلّ عدد في النصّ: ماذا يعدّ؟',
+    worked.length
+      ? 'هل تستفيد دور أكثر؟ جرّب عددًا آخر، أو ابحث عن الأكبر.'
+      : 'كم تشكيلة تكوّن؟ اكتب عددًا: المستودع سيوزّع الصناديق.',
+    `ضع صناديق ${sit.kinds.b.name} بجانب صناديق ${sit.kinds.a.name}: كم مرّة؟ وكم صندوقًا يبقى وحده؟`,
+    paired
+      ? `هل يوجد عدد تشكيلات أكبر من ${first.r}؟ اكتب واحدًا.`
+      : tested.length
+        ? `والعدد ${first.r} نفسه: هل يقسم ${sit.kinds.b.name}؟`
+        : `${first.r} صندوقًا بقيت وحدها. جرّب عليها عددًا من أعدادك التي نجحت.`,
+    `ما في كلّ تشكيلة من ${counted(g, sit.lot.forms)}؟`,
+    'أكمل جملة ورقتك.',
+    'هذه ورقتك: كلّ سطر فيها كتبتَه أنت.',
+  ][Math.min(step, 6)];
 
   return (
-    <div className="ms-root" dir="rtl" data-ms-step={step} data-ms-ready={ready} data-ms-busy={busy}>
+    <div className="ms-root" dir="rtl" data-ms-step={step} data-ms-busy={busy}>
       <header className="ms-head">
-        <h2>{sit.title}</h2>
-        <ol className="ms-steps">
-          {STEPS.map((s, i) => (
-            <li key={s} className={i === step ? 'is-on' : i < step ? 'is-done' : ''}>
-              <b>{i < step ? <Check size={14} aria-hidden="true" /> : i + 1}</b>
-              {s}
-            </li>
-          ))}
-        </ol>
+        <b className="ms-count" dir="ltr" data-ms-progress>
+          {Math.min(step + 1, STEPS)}
+          {'\u00a0/\u00a0'}
+          {STEPS}
+        </b>
+        <h2 data-ms-ask>{ASK}</h2>
+        <span className="ms-coins" data-ms-coins={coins}>
+          <Coins size={18} aria-hidden="true" />
+          {coins}
+        </span>
         <button type="button" className="ms-x" aria-label="خروج" data-ms-close onClick={onClose}>
           <X size={20} aria-hidden="true" />
         </button>
       </header>
+
       <div className="ms-body">
-        {step === 0 && (
-          <Story sit={sit} asked={asked} onAsk={(id) => setAsked((a) => (a.includes(id) ? a : [...a, id]))} />
-        )}
-        {step === 1 && (
-          <Model
-            sit={sit}
-            placed={placed}
-            run={run}
-            busy={busy}
-            onToggle={(id) => {
-              setPlaced((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
-              setRun(null);
-            }}
-            onRun={async () => {
-              const r = rehearse(placed, sit.small);
-              setRun(null);
-              await world.run({ lots: r.lots, left: r.left }, { cheer: r.outcome === 'fair' });
-              setRun(r);
-            }}
-          />
-        )}
-        {step === 2 && (
-          <Flags
-            sit={sit}
-            picks={picks}
-            onPick={(k, v) => setPicks((p) => ({ ...p, [k]: v }))}
-            first={first}
-            onFirst={setFirst}
-          />
-        )}
-        {step === 3 && <Bridges sit={sit} st={st} set={set} world={world} busy={busy} />}
-        {step === 4 && <Seal sit={sit} st={st} page={page} onPage={setPage} />}
+        <Paper sit={sit} lit={lit} known={known} step={step} onTap={tap} />
+        <div className="ms-stage">
+          {step === 6 && (
+            <div className="ms-copy" data-ms-copy>
+              <h3>{sit.session} — الحلّ</h3>
+              <p>
+                (ا) نبحث عن أكبر عدد يقسم {a} و {b}:
+              </p>
+              <p dir="ltr">
+                <M>{tex(first)}</M>
+              </p>
+              <p dir="ltr">
+                <M>{tex(second)}</M>
+              </p>
+              <p dir="ltr">
+                <M>{`\\mathrm{PGCD}(${a} ; ${b}) = ${g}`}</M>
+              </p>
+              <p>أكبر عدد من التشكيلات هو {counted(g, sit.lot.forms)}.</p>
+              <p dir="ltr">
+                <M>{`${a} = ${g} \\times ${a / g} \\qquad ${b} = ${g} \\times ${b / g}`}</M>
+              </p>
+              <p>
+                (ب) في كلّ تشكيلة {counted(a / g, CRATES)} من {sit.kinds.a.name} و{counted(b / g, CRATES)} من{' '}
+                {sit.kinds.b.name}.
+              </p>
+            </div>
+          )}
+          {fact && step < 6 && (
+            <p className="ms-fact" data-ms-fact>
+              {fact}
+            </p>
+          )}
+          {stuck && step === 1 && (
+            <p className="ms-fact ms-fact--calm" data-ms-tries>
+              محاولاتك: {fails.map((f) => `${f.n} ← بقي ${f.left.a} و${f.left.b}`).join(' ؛ ')}.
+            </p>
+          )}
+          <div className="ms-act" data-ms-act>
+            {step === 0 && <span className="ms-hint">الأعداد في النصّ، على اليمين.</span>}
+            {step === 1 && (
+              <>
+                <span>عدد التشكيلات:</span>
+                <Box
+                  value={v.n}
+                  onChange={(x) => set({ n: x })}
+                  label="عدد التشكيلات"
+                  name="n"
+                  onEnter={() => big && !busy && tryLots(big, 'free')}
+                />
+                <button
+                  type="button"
+                  className="ms-btn"
+                  data-ms-try
+                  disabled={!big || big > a || busy}
+                  onClick={() => tryLots(big, 'free')}
+                >
+                  <Play size={18} aria-hidden="true" />
+                  وزّع
+                </button>
+                {worked.some((n) => n > 1) && (
+                  <button
+                    type="button"
+                    className="ms-btn ms-btn--go"
+                    data-ms-more
+                    disabled={busy}
+                    onClick={() => next(2)}
+                  >
+                    أبحث عن الأكبر
+                    <ArrowLeft size={18} aria-hidden="true" />
+                  </button>
+                )}
+              </>
+            )}
+            {step === 2 && (
+              <>
+                <span className="ms-shape" dir="ltr">
+                  <M>{`${first.a} = ${first.b} \\times`}</M>
+                  <Box value={v.q} onChange={(x) => set({ q: x })} label="عدد المرّات" name="q" w={2} />
+                  <M>+</M>
+                  <Box value={v.r} onChange={(x) => set({ r: x })} label="ما يبقى وحده" name="r" w={3} />
+                </span>
+                <button
+                  type="button"
+                  className="ms-btn"
+                  data-ms-pair
+                  disabled={num(v.q) == null || num(v.r) == null || busy}
+                  onClick={async () => {
+                    if (!(await pair(first, 'e0'))) return;
+                    setFact(
+                      `${sit.kinds.b.name} وُضع ${first.q === 2 ? 'مرّتين' : `${first.q} مرّات`} بجانب ${sit.kinds.a.name}: ${first.r} صندوقًا من ${sit.kinds.a.name} بقيت وحدها.`,
+                    );
+                    next(3);
+                  }}
+                >
+                  <Play size={18} aria-hidden="true" />
+                  ضعها
+                </button>
+              </>
+            )}
+            {step === 3 && !paired && (
+              <>
+                {worked
+                  .filter((n) => n > 1 && !tested.includes(n))
+                  .map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      className="ms-btn ms-btn--ghost"
+                      data-ms-test={n}
+                      disabled={busy}
+                      onClick={() => test(n)}
+                    >
+                      جرّب {n}
+                    </button>
+                  ))}
+                {tested.length > 0 && (
+                  <>
+                    <span className="ms-shape" dir="ltr">
+                      <M>{`${second.a} = ${second.b} \\times`}</M>
+                      <Box value={v.q} onChange={(x) => set({ q: x })} label="عدد المرّات" name="q" w={2} />
+                      <M>+</M>
+                      <Box value={v.r} onChange={(x) => set({ r: x })} label="ما يبقى وحده" name="r" w={3} />
+                    </span>
+                    <button
+                      type="button"
+                      className="ms-btn"
+                      data-ms-pair
+                      disabled={num(v.q) == null || num(v.r) == null || busy}
+                      onClick={async () => {
+                        if (!(await pair(second, 'e1'))) return;
+                        setPaired(true);
+                        setLit((s) => ({ ...s, most: 'on' }));
+                        setV({});
+                        setFact(
+                          `${second.b} يقسم ${second.a} ولا يبقى شيء. كلّ عدد تشكيلات ينجح يقسم الـ${NB}${first.r}: فلا عدد ينجح أكبر من ${first.r}.`,
+                        );
+                      }}
+                    >
+                      <Play size={18} aria-hidden="true" />
+                      ضعها
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+            {step === 3 && paired && (
+              <>
+                <span>عدد أكبر من {g}:</span>
+                <Box value={v.n} onChange={(x) => set({ n: x })} label="عدد أكبر" name="n" />
+                <button
+                  type="button"
+                  className="ms-btn"
+                  data-ms-attack
+                  disabled={!big || big <= g || big > a || busy}
+                  onClick={async () => {
+                    const d = await tryLots(big, 'attack');
+                    write([{ id: 'attack', tex: `${first.r} = ${big} \\times 0 + ${first.r}`, tone: 'left' }]);
+                    setLit((s) => ({ ...s, all: 'on', most: 'on' }));
+                    setFact(
+                      `${counted(big, sit.lot.forms)}: بقي ${leftOf(d.left, sit.kinds)}. والعدد ${big} لا يقسم الـ${NB}${first.r}: أكبر عدد ينجح هو ${first.r}.`,
+                    );
+                    next(4);
+                  }}
+                >
+                  <Play size={18} aria-hidden="true" />
+                  وزّع
+                </button>
+              </>
+            )}
+            {step === 4 && (
+              <>
+                <span>
+                  <Box
+                    value={v.pa}
+                    onChange={(x) => set({ pa: x })}
+                    label={`صناديق ${sit.kinds.a.name}`}
+                    name="pa"
+                    w={3}
+                  />
+                  صندوقًا من {sit.kinds.a.name}
+                </span>
+                <span>
+                  <Box
+                    value={v.pb}
+                    onChange={(x) => set({ pb: x })}
+                    label={`صناديق ${sit.kinds.b.name}`}
+                    name="pb"
+                    w={3}
+                  />
+                  صندوقًا من {sit.kinds.b.name}
+                </span>
+                <button
+                  type="button"
+                  className="ms-btn"
+                  data-ms-fill
+                  disabled={!per.a || !per.b || busy}
+                  onClick={async () => {
+                    const f = fill(g, per, sit.stock);
+                    setFact(null);
+                    await run(
+                      f.outcome === 'short'
+                        ? { lots: Array(f.full).fill(per), left: { a: 0, b: 0 }, empty: f.empty }
+                        : { lots: Array(g).fill(per), left: f.left },
+                      { ship: f.outcome === 'exact', cheer: f.outcome === 'exact' },
+                    );
+                    if (f.outcome === 'short')
+                      setFact(
+                        `امتلأت ${counted(f.full, sit.lot.forms)} ثمّ انتهى المحصول: ${a} = ${per.a} × ${Math.floor(a / per.a)} + ${a % per.a}.`,
+                      );
+                    else if (f.outcome === 'left')
+                      setFact(
+                        `${g} × ${per.a} = ${g * per.a} و ${g} × ${per.b} = ${g * per.b}: بقي على البساط ${f.left.a} و${f.left.b}.`,
+                      );
+                    else {
+                      write([
+                        { id: 'pa', tex: `${a} = ${g} \\times ${per.a}`, tone: 'key' },
+                        { id: 'pb', tex: `${b} = ${g} \\times ${per.b}`, tone: 'key' },
+                      ]);
+                      setLit((s) => ({ ...s, content: 'on' }));
+                      setFact(
+                        `${counted(g, sit.home.forms)} تستلم كلّ واحدة ${counted(per.a, CRATES)} من ${sit.kinds.a.name} و${counted(per.b, CRATES)} من ${sit.kinds.b.name}.`,
+                      );
+                      next(5);
+                    }
+                  }}
+                >
+                  <Play size={18} aria-hidden="true" />
+                  املأ التشكيلات
+                </button>
+              </>
+            )}
+            {step === 5 && (
+              <span className="ms-sentence">
+                العدد
+                <Box value={v.sn} onChange={(x) => set({ sn: x })} label="العدد" name="sn" w={3} />
+                يقسم
+                <Box value={v.sa} onChange={(x) => set({ sa: x })} label="العدد الأوّل" name="sa" />
+                و
+                <Box value={v.sb} onChange={(x) => set({ sb: x })} label="العدد الثاني" name="sb" w={3} />
+                وهو الأكبر: إذن هو
+                {sit.names.map((n) => (
+                  <button
+                    key={n.id}
+                    type="button"
+                    className={`ms-btn ms-btn--ghost ${name === n.id ? 'is-on' : ''}`}
+                    data-ms-name={n.id}
+                    onClick={() => {
+                      setName(n.id);
+                      const whole =
+                        num(v.sn) === g && [num(v.sa), num(v.sb)].sort((x, y) => y - x).join() === `${a},${b}`;
+                      if (!whole) setFact(`أكمل الأعداد أوّلًا: أيّ عدد وجدتَ، ولأيّ عددين؟`);
+                      else if (!n.right) setFact(n.said);
+                      else {
+                        write([{ id: 'name', tex: `${n.tex}(${a} ; ${b}) = ${g}`, tone: 'key' }]);
+                        setFact(null);
+                        next(6, 20);
+                      }
+                    }}
+                  >
+                    {n.text}
+                  </button>
+                ))}
+                للعددين.
+              </span>
+            )}
+            {step === 6 && (
+              <span className="ms-hint">
+                <Check size={18} aria-hidden="true" /> أنهيتَ المهمّة: {coins} قطعة.
+              </span>
+            )}
+          </div>
+        </div>
+        <Notebook lines={lines} />
       </div>
-      <footer className="ms-foot">
-        <p className="ms-say" data-ms-say>
-          <span className="ms-bot" aria-hidden="true" />
-          {step === 3 && unused.length
-            ? `طلبتَ منّي ${unused.map((a) => a.label).join(' و')}: هل دخل في حسابك؟ ليس كلّ عدد في القصّة يُستعمل.`
-            : SAY[step]}
-        </p>
-        {step === 3 && st.packed && st.packed.outcome !== 'most' && (
-          <button
-            type="button"
-            className="ms-btn ms-btn--ghost"
-            data-ms-again
-            disabled={busy}
-            onClick={() => set({ packed: null })}
-          >
-            <RotateCcw size={18} aria-hidden="true" />
-            أعيد الحساب
-          </button>
-        )}
-        {step < 4 && (
-          <button
-            type="button"
-            className="ms-btn ms-btn--go"
-            data-ms-next
-            disabled={!ready || busy}
-            onClick={() => setStep(step + 1)}
-          >
-            {['إلى الوضعية', 'إلى الأعلام', 'إلى الجسور', 'إلى الختم'][step]}
-            <ArrowLeft size={18} aria-hidden="true" />
-          </button>
-        )}
-      </footer>
     </div>
   );
 }

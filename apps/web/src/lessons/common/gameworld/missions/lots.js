@@ -1,12 +1,9 @@
 /**
- * THE SCENE « lots » of an integration mission (`docs/reports/INTEGRATION_LESSON_PLAN.md` §6) — PURE logic, no React.
+ * THE SCENE « lots » of an integration mission (`docs/reports/INTEGRATION_LESSON_PLAN.md` §8) — PURE logic, no React.
  *
- * Two stocks are packed in lots. The student never hears « wrong »: the world BUILDS what he read — his misreadings too
- * — and what it builds looks unfair, wasteful or small. Two moments use this file:
- *   - `rehearse(conditions, stock)`: on a SMALL rehearsal stock (12 and 8 crates), the world packs by the conditions he
- *     placed on his model of the situation — and only by them;
- *   - `pack(n, stock)`: on the real stock, the world makes the `n` lots he computed and says what that leaves.
- * A condition is an id; the situation's data gives each one its sentence of the text.
+ * The rule of a mission: ONE SENTENCE OF THE EXAM TEXT ↔ ONE LINE OF NUMBERS. Whatever the student types, the depot
+ * carries it out and this file says the line it writes — never « wrong »: what the depot built looks unfair, wasteful
+ * or small, and the numbers say why. Two stocks (`{ a, b }`) are dealt into lots.
  */
 export const gcd = (a, b) => (b ? gcd(b, a % b) : a);
 
@@ -21,77 +18,22 @@ export function euclid(a, b) {
   return rows;
 }
 
-/** What a model MUST hold for the lots to be the text's lots, and the two classic misreadings. */
-export const NEEDED = ['all', 'sameA', 'sameB', 'most'];
-export const MISREADINGS = ['equalAB', 'apart'];
-
-const spread = (total, n) =>
-  // an UNFAIR share of `total` between n lots: the first lots take more
-  Array.from({ length: n }, (_, i) => Math.floor(total / n) + (i === 0 ? (total % n) + 1 : i === n - 1 ? -1 : 0));
+/** `total = n × q + r`: what dealing `total` things into `n` lots gives each lot and leaves. */
+export const line = (total, n) => ({ a: total, b: n, q: Math.floor(total / n), r: total % n });
 
 /**
- * The rehearsal: the world packs a small stock `{ a, b }` by the conditions of HIS model. Returns the lots it made
- * (`[{ a, b }]`), what stays on the quay (`left`) and `outcome`, the name of what happened:
- *   'apart'    each lot holds one kind only            (he read « lots for one, lots for the other »)
- *   'equalAB'  as many of one kind as of the other     (he read « the same number » ACROSS the kinds): crates are left
- *   'unequal'  the lots do not hold the same thing     (a « the same number in every lot » is missing)
- *   'left'     identical lots, but crates stay         (« every crate goes » is missing)
- *   'few'      identical, nothing left, but few lots   (« the greatest number » is missing)
- *   'fair'     the text's lots
+ * He types a number of lots `n`: each stock is dealt into n lots — two lines — and what does not fit stays on the red
+ * mat. `outcome`: 'left' (crates stay), 'more' (identical lots, nothing left, but a lot could still be split into
+ * `split` identical lots: more houses could be served), 'most' (the greatest number of identical lots).
  */
-export function rehearse(conditions, { a, b }) {
-  const has = (id) => conditions.includes(id);
-  const g = gcd(a, b);
-  if (has('apart')) {
-    const n = Math.max(2, g / 2);
-    return {
-      outcome: 'apart',
-      lots: [
-        ...Array.from({ length: n }, () => ({ a: a / n, b: 0 })),
-        ...Array.from({ length: n }, () => ({ a: 0, b: b / n })),
-      ],
-      left: { a: 0, b: 0 },
-    };
-  }
-  if (has('equalAB')) {
-    const n = Math.min(a, b);
-    return {
-      outcome: 'equalAB',
-      lots: Array.from({ length: n }, () => ({ a: 1, b: 1 })),
-      left: { a: a - n, b: b - n },
-    };
-  }
-  if (!has('sameA') || !has('sameB')) {
-    const as = has('sameA') ? Array(g).fill(a / g) : spread(a, g);
-    const bs = has('sameB') ? Array(g).fill(b / g) : spread(b, g);
-    return { outcome: 'unequal', lots: as.map((x, i) => ({ a: x, b: bs[i] })), left: { a: 0, b: 0 } };
-  }
-  if (!has('all')) {
-    const n = g - 1;
-    return {
-      outcome: 'left',
-      lots: Array.from({ length: n }, () => ({ a: a / g, b: b / g })),
-      left: { a: a / g, b: b / g },
-    };
-  }
-  if (!has('most')) {
-    const n = [2, 3, 5, 7].find((d) => g % d === 0 && d < g) ?? 1;
-    return { outcome: 'few', lots: Array.from({ length: n }, () => ({ a: a / n, b: b / n })), left: { a: 0, b: 0 } };
-  }
-  return { outcome: 'fair', lots: Array.from({ length: g }, () => ({ a: a / g, b: b / g })), left: { a: 0, b: 0 } };
-}
-
-/**
- * The real stock packed in the `n` lots he computed: each lot takes ⌊a / n⌋ and ⌊b / n⌋, the rest stays on the quay.
- * `outcome`: 'left' (crates stay: n does not divide both), 'more' (identical lots, nothing left — but each lot could
- * still be split into `split` identical lots: n is not the greatest), 'most' (the greatest number of identical lots).
- */
-export function pack(n, { a, b }) {
-  const per = { a: Math.floor(a / n), b: Math.floor(b / n) };
-  const left = { a: a - per.a * n, b: b - per.b * n };
-  if (left.a || left.b) return { outcome: 'left', n, per, left, split: 1 };
+export function deal(n, { a, b }) {
+  const la = line(a, n);
+  const lb = line(b, n);
+  const per = { a: la.q, b: lb.q };
+  const left = { a: la.r, b: lb.r };
+  if (left.a || left.b) return { n, lines: [la, lb], per, left, split: 1, outcome: 'left' };
   const split = gcd(per.a, per.b);
-  return { outcome: split > 1 ? 'more' : 'most', n, per, left, split };
+  return { n, lines: [la, lb], per, left, split, outcome: split > 1 ? 'more' : 'most' };
 }
 
 /**
@@ -106,4 +48,14 @@ export function fill(n, per, { a, b }) {
   }
   const left = { a: a - need.a, b: b - need.b };
   return { outcome: left.a || left.b ? 'left' : 'exact', full: n, empty: 0, left };
+}
+
+/**
+ * A division he typed in its shape, `a = b × q + r`: `null` when it is the Euclidean division; otherwise the fact that
+ * shows it is not — the product he wrote, or a remainder that is not smaller than the divisor.
+ */
+export function slip(a, b, q, r) {
+  if (b * q + r !== a) return { kind: 'sum', value: b * q + r };
+  if (r >= b) return { kind: 'rest', value: r };
+  return null;
 }

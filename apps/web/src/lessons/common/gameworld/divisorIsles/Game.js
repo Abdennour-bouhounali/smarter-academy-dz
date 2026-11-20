@@ -45,7 +45,7 @@ import { ShareScene, TileScene } from './Worlds';
 import { markVerdict, signChain } from './mark';
 
 const WORLDS = { depot: Depot, share: ShareScene, tiling: TileScene };
-const MISSION_PAN = new THREE.Vector3(-4.8, 1.2, 1.6);
+const MISSION_PAN = new THREE.Vector3(0, 2.4, 3.2); // the notebook and the paper stand on the two sides
 
 const BRIDGE_HALF = 1.15;
 
@@ -2238,7 +2238,8 @@ export class DivisorIslesGame extends WorldRuntime {
     const { ship = false } = opts;
     const sit = this.state.mission;
     if (!sit) return;
-    await this.depot.runLots(spec, sit.kinds, { cheer: Boolean(opts.cheer) });
+    if (spec.pairing) await this.depot.runPairing(spec.pairing, spec.colors);
+    else await this.depot.runLots(spec, sit.kinds, { cheer: Boolean(opts.cheer) });
     if (ship && !this.dead && this.state.mission === sit) {
       this.robot.cheer();
       await this.wait(0.9);
