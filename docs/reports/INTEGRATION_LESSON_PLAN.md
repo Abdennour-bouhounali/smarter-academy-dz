@@ -1,6 +1,13 @@
 # The last lesson of each unit — « أدمج تعلّماتي » as three missions
 
-**Status: PLAN, accepted by the owner on 2026-11-19. Nothing is built.** It is built after the other lessons of the unit
+**Status: PLAN, accepted by the owner on 2026-11-19. Step 1 of §6 is BUILT (2026-11-20): mission 1 as a playable
+prototype — `http://localhost:5173/__qa/mission-1` (dev builds only; not in the catalogue, no lesson links to it).
+STOP: the owner plays it. Nothing else is built.** The prototype: `apps/web/src/lessons/common/gameworld/missions/`
+(`lots.js` — the scene « lots », pure and tested; `MissionPlayer.jsx` — the five stations, on one screen each) and the
+situation as data, `…/wadiya-idmajiya-aadad/missions/bem2021.js` (tested). What the prototype is NOT: it is a 2D screen
+(drawn in SVG), not a scene of the 3D archipelago; a condition is placed by a tap, not dragged; nothing is saved; no
+sound; « change the numbers and replay » is absent; missions 2 and 3, the recap, the training exams, the board, the
+pack and the walk are not built; the integration lesson itself still opens on its old page. It is built after the other lessons of the unit
 are v2 (for 4AM unit 1: after lessons 4–8 of `LESSON_V2_MASTER_PLAN.md` §9). First lesson: `wadiya-idmajiya-aadad`.
 
 The owner's brief (2026-11-19): the last lesson of every unit trains the last exercise of the BEM paper, the integration

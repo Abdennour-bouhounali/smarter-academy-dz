@@ -26,7 +26,9 @@ function LeafPager({ n, on, go }) {
       <span className="xs-leafnav__count">
         {on < n - 1 && <small>{LEAF.more}</small>}
         <b dir="ltr" data-xs-leaf-count>
-          {on + 1} / {n}
+          {on + 1}
+          {'\u00a0/\u00a0'}
+          {n}
         </b>
       </span>
       <button

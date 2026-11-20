@@ -657,6 +657,19 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
      1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
 
+  23. [~] **The integration lesson `wadiya-idmajiya-aadad` — step 1 of its plan: mission 1 as a playable PROTOTYPE
+     (2026-11-20). STOP: the owner plays it** (`INTEGRATION_LESSON_PLAN.md` §6) — `http://localhost:5173/__qa/mission-1`.
+     BEM 2021, the identical lots, in five stations: the story without its numbers (he sends the robot to count), his
+     model of the situation rehearsed by the world on 12 and 8 crates (each missing or misread condition shows in what
+     is built), the two goal sentences and their order, a bridge per step (the key of the unit, the divisions, then
+     the world packs the 1188 and 528 crates in the lots he computed), the seal with the four habits and the paper as
+     printed. Played end to end in a browser at 1366×768: 21 screens, none overflows, no page error; 7 looked at.
+     Three defects seen and fixed (the first bridge showed the content of a lot — the next answer; « 3 + 1 » read
+     reversed; the title too dark). NOT built: everything else of the plan (see its status line).
+     Lesson 8's checks, on a worktree of its commit: lint passes; the web unit suite 19,057 of 19,058 — the sitting's
+     new page counter could break onto two lines (fixed); `check:lessons` passes; the two reference walks owed after
+     the world changes pass (lesson 6's story 1,063 checks, lesson 7's 973, 0 FAIL).
+
 ## 4ter. When each item of 4bis is done
 
 | When | Items | Why then |

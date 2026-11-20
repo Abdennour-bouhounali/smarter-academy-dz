@@ -208,6 +208,8 @@ const QA_FIXTURES_ENABLED =
 const RtlLessonFixture = QA_FIXTURES_ENABLED
   ? lazy(() => Promise.all([import('./qa/rtlLessonFixture/FixtureRoutes.jsx'), loadLessonManipulationStrings()]).then(([m]) => m))
   : null;
+// The prototype of an integration mission (dev builds only, like the fixture above).
+const MissionPrototype = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx')) : null;
 import { AuthProvider } from './context/AuthContext';
 import { WorkspaceLayoutProvider } from './context/WorkspaceLayoutContext';
 import { NotebookProvider } from './features/practice/notebook/NotebookProvider';
@@ -642,6 +644,7 @@ function AppRoutes() {
         {QA_FIXTURES_ENABLED && (
           <Route path="/__qa/rtl-lesson/*" element={<RtlLessonFixture />} />
         )}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-1" element={<MissionPrototype />} />}
       </Route>
     </Routes>
   );

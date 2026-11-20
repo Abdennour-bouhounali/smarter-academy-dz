@@ -36,7 +36,7 @@ describe('the answer sheet in leaves', () => {
     expect(liOf(html, 'q1')).not.toContain('hidden');
     expect(liOf(html, 'q3')).toContain('hidden');
     expect(html).toContain('data-answer="q4"'); // still mounted: it keeps what was typed
-    expect(html).toMatch(/data-xs-leaf-count[^>]*>1<!-- --> \/ <!-- -->2</);
+    expect(html).toMatch(/data-xs-leaf-count[^>]*>1(<!-- -->)?\u00a0\/\u00a0(<!-- -->)?2</);
     expect(html).toMatch(/<button[^>]*disabled[^>]*data-xs-leaf-prev/);
     expect(html).toContain('التالي');
     expect(html).toContain('تتمّة الأجوبة في الصفحة التالية');
@@ -52,7 +52,7 @@ describe('the answer sheet in leaves', () => {
     );
     expect(liOf(html, 'q1')).toContain('hidden');
     expect(liOf(html, 'q4')).not.toContain('hidden');
-    expect(html).toMatch(/data-xs-leaf-count[^>]*>2<!-- --> \/ <!-- -->2</);
+    expect(html).toMatch(/data-xs-leaf-count[^>]*>2(<!-- -->)?\u00a0\/\u00a0(<!-- -->)?2</);
     expect(html).toMatch(/<button[^>]*disabled[^>]*data-xs-leaf-next/);
     expect(html).not.toMatch(/<button[^>]*disabled[^>]*data-xs-leaf-prev/);
     expect(html).not.toContain('تتمّة الأجوبة');

@@ -1,0 +1,423 @@
+/* An integration mission (missions/MissionPlayer.jsx): one screen, nothing scrolls, built for 1366×768. */
+.ms-root {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  padding: 0.9rem 1.2rem;
+  background: linear-gradient(160deg, #0b1b3f 0%, #10306b 60%, #123a7c 100%);
+  color: #eef5ff;
+  font-family: Cairo, system-ui, sans-serif;
+  overflow: hidden;
+}
+.ms-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ms-head h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+.ms-steps {
+  display: flex;
+  gap: 0.4rem;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+.ms-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #b9cdf0;
+}
+.ms-steps b {
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 0.8rem;
+}
+.ms-steps li.is-on {
+  background: #a5f3fc;
+  color: #072042;
+}
+.ms-steps li.is-on b {
+  background: #072042;
+  color: #fff;
+}
+.ms-steps li.is-done {
+  color: #86efac;
+}
+.ms-x {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+}
+.ms-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 0;
+}
+.ms-main,
+.ms-side {
+  min-height: 0;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(165, 243, 252, 0.28);
+  background: rgba(7, 22, 54, 0.6);
+  padding: 1rem 1.2rem;
+  overflow: hidden;
+}
+.ms-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.ms-main--flags {
+  gap: 1rem;
+}
+.ms-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.ms-side h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #a5f3fc;
+}
+.ms-story {
+  margin: 0;
+  font-size: 1.45rem;
+  line-height: 2.05;
+  font-weight: 700;
+  text-align: center;
+}
+.ms-hole {
+  display: inline-block;
+  margin: 0 0.2rem;
+  padding: 0 0.7rem;
+  border-radius: 0.6rem;
+  border: 2px dashed #fbbf24;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+.ms-hole.is-known {
+  border-style: solid;
+  border-color: #34d399;
+  color: #d1fae5;
+  background: rgba(52, 211, 153, 0.16);
+}
+.ms-asks,
+.ms-phrases,
+.ms-tools,
+.ms-tiles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.ms-tiles--row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.ms-ask,
+.ms-phrase,
+.ms-tool,
+.ms-tilebtn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 0.8rem;
+  border: 1.5px solid rgba(165, 243, 252, 0.35);
+  background: rgba(255, 255, 255, 0.06);
+  color: #eef5ff;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: start;
+  cursor: pointer;
+}
+.ms-phrase,
+.ms-tool {
+  justify-content: flex-start;
+}
+.ms-ask.is-asked {
+  border-color: #34d399;
+}
+.ms-ask b {
+  color: #86efac;
+  white-space: nowrap;
+}
+.ms-phrase.is-on,
+.ms-tool.is-on,
+.ms-tilebtn.is-on {
+  background: #a5f3fc;
+  border-color: #a5f3fc;
+  color: #072042;
+}
+.ms-note {
+  margin: auto 0 0;
+  font-size: 0.98rem;
+  color: #cfe0ff;
+}
+.ms-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 1.2rem;
+  border: 0;
+  border-radius: 0.9rem;
+  background: #a5f3fc;
+  color: #072042;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ms-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.ms-btn--go {
+  background: #fbbf24;
+}
+.ms-btn--ghost {
+  background: transparent;
+  border: 1.5px solid #a5f3fc;
+  color: #a5f3fc;
+}
+.ms-side > .ms-btn {
+  margin-top: auto;
+}
+.ms-scene {
+  width: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+.ms-lot {
+  fill: rgba(165, 243, 252, 0.08);
+  stroke: #7dd3fc;
+  stroke-width: 1.5;
+}
+.ms-lot__count {
+  unicode-bidi: isolate;
+  fill: #eef5ff;
+  font-size: 15px;
+  font-weight: 800;
+}
+.ms-tile {
+  fill: #2f6fe0;
+  stroke: #a5f3fc;
+  stroke-width: 0.6;
+}
+.ms-tile--empty {
+  fill: transparent;
+  stroke-dasharray: 3 3;
+}
+.ms-quay {
+  fill: rgba(251, 146, 60, 0.12);
+  stroke: #fb923c;
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+}
+.ms-quay__title {
+  fill: #fdba74;
+  font-size: 16px;
+  font-weight: 800;
+}
+.ms-quay__n {
+  fill: #fff;
+  font-size: 22px;
+  font-weight: 800;
+}
+.ms-legend {
+  display: flex;
+  justify-content: center;
+  gap: 1.4rem;
+  margin: 0;
+  font-size: 0.95rem;
+  color: #cfe0ff;
+}
+.ms-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.ms-legend i {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 0.2rem;
+}
+.ms-fact {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(251, 191, 36, 0.14);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+.ms-flag {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.8rem 1.1rem;
+  border-radius: 1rem;
+  border: 2px dashed rgba(165, 243, 252, 0.45);
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+.ms-flag.is-up {
+  border-style: solid;
+  border-color: #34d399;
+  background: rgba(52, 211, 153, 0.12);
+}
+.ms-box {
+  display: inline-grid;
+  place-items: center;
+  min-width: 3.2rem;
+  padding: 0 0.5rem;
+  border-radius: 0.6rem;
+  border: 2px solid #a5f3fc;
+  color: #a5f3fc;
+}
+.ms-flag.is-sealed .ms-box {
+  background: #a5f3fc;
+  color: #072042;
+}
+.ms-work {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 1.15rem;
+}
+.ms-work p {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+}
+.ms-in {
+  height: 2.3rem;
+  border-radius: 0.6rem;
+  border: 2px solid #a5f3fc;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 800;
+  text-align: center;
+}
+.ms-answer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: auto 0 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.ms-answer--stack {
+  flex-direction: column;
+  align-items: stretch;
+  margin-top: 0.4rem;
+}
+.ms-answer--stack span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ms-habits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+.ms-habit {
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 244, 214, 0.96);
+  color: #3b2a06;
+}
+.ms-habit span {
+  font-size: 1.5rem;
+}
+.ms-habit b {
+  display: block;
+  font-size: 1.1rem;
+}
+.ms-habit p {
+  margin: 0.2rem 0 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+}
+.ms-paper {
+  padding: 1rem 1.4rem;
+  border-radius: 0.6rem;
+  background: #fdfbf3;
+  color: #1c2437;
+}
+.ms-paper h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+  text-align: center;
+  color: #1e4fa8;
+}
+.ms-paper p {
+  margin: 0.3rem 0;
+  font-size: 1.08rem;
+  line-height: 1.9;
+}
+.ms-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.ms-say {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  background: #fff;
+  color: #10244a;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.ms-bot {
+  flex: none;
+  width: 2.1rem;
+  height: 1.7rem;
+  border-radius: 0.6rem;
+  border: 2px solid #22d3ee;
+  background: radial-gradient(circle at 32% 50%, #22d3ee 0.2rem, transparent 0.22rem),
+    radial-gradient(circle at 68% 50%, #22d3ee 0.2rem, transparent 0.22rem), #10244a;
+}
