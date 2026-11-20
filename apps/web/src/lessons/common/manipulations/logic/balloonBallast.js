@@ -15,11 +15,11 @@
  */
 import * as R from '@smarter-academy/core/arithmetic/relative.js';
 
-export const MAX_LOAD = 24;
+const MAX_LOAD = 24;
 const H = (x) => R.parse(x);
 const int = (h) => Number(h / 100n);
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 't1', a: '6', op: '+', b: '-4' },
     { id: 't2', a: '-3', op: '+', b: '-5' },
@@ -35,7 +35,7 @@ export const PRESETS = Object.freeze({
 });
 
 /** Le geste que la carte demande : { g: 'tie'|'throw', object: 'token'|'bag', n }. */
-export function needOf(task) {
+function needOf(task) {
   const b = task.b;
   const n = Math.abs(int(b));
   const object = b < 0n ? 'bag' : 'token';
@@ -78,7 +78,6 @@ export const altitude = (s) => s.t - s.s;
 /** Les paires verrouillées : une flamme et un sac sur la même rangée de cordes. */
 export const lockedPairs = (s) => Math.min(s.t, s.s);
 export const gesturesOpen = (s) => (s.free ? true : s.phase === 'act' && !taskDone(s));
-export const needText = (task) => task.need;
 
 /** Le journal contre la carte : { ok, over, wrong, count }. */
 export function gestureJudge(task, log) {
@@ -129,7 +128,7 @@ export const throwOut = (s, o) => apply(s, 'throw', o);
 export const tiePair = (s) => apply(s, 'pair', 'pair');
 
 /* ── Lectures typées ── */
-export function parseTyped(raw) {
+function parseTyped(raw) {
   try {
     const h = R.parse(String(raw ?? '').replace(/[⁦⁩]/g, ''));
     return h % 100n === 0n ? h : null;
@@ -158,7 +157,7 @@ export function judgeValue(task, raw) {
   return { ok: false, model, want, value: got };
 }
 /** Le fantôme (altitude écrite) qui MONTRE l'erreur. */
-export const ghostOf = (model, value) => (model === 'format' || value == null ? null : { kind: model, at: int(value) });
+const ghostOf = (model, value) => (model === 'format' || value == null ? null : { kind: model, at: int(value) });
 
 /** مبتدئ : exécuter puis écrire. Refuse si les gestes ne sont pas ceux de la carte. */
 export function answer(s, raw) {

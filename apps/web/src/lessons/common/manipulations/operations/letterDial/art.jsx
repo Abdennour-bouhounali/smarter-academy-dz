@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -7,15 +6,15 @@ import KidFigure from '../../primitives/KidFigure';
  * (un par lettre : la lettre au centre, la valeur en grand, les graduations autour). Aucun chiffre n'est écrit ici sauf ceux que la scène lui donne. Les personnes sont toujours `KidFigure`
  * (la fille en hijab). Les cadrans sont dessinés en géométrie LTR (`direction: ltr`), l'aiguille tourne de −150° (le minimum) à +150° (le maximum) en passant par le haut.
  */
-export const SW = 640;
-export const SH = 150;
+const SW = 640;
+const SH = 150;
 
-export const COL = {
+const COL = {
   wall: '#E0F2FE', wall2: '#BAE6FD', counter: '#B45309', counterTop: '#D97706', floor: '#E7E5E4', ink: '#0F172A', paper: '#FFFFFF', copier: '#64748B', copierDark: '#334155',
   screen: '#0F172A', screenText: '#5EEAD4', ok: '#059669', miss: '#E11D48', amber: '#F59E0B',
 };
 /** Une couleur par lettre : la même sur la carte, dans la fente, sur le cadran et dans les questions. */
-export const LETTER_COLOR = { n: '#0D9488', a: '#4F46E5', b: '#D97706', c: '#7C3AED', x: '#0D9488', y: '#D97706' };
+const LETTER_COLOR = { n: '#0D9488', a: '#4F46E5', b: '#D97706', c: '#7C3AED', x: '#0D9488', y: '#D97706' };
 export const colorOf = (letter, i = 0) => LETTER_COLOR[letter] ?? ['#0D9488', '#4F46E5', '#D97706'][i % 3];
 
 const iso = (s) => `⁦${s}⁩`;
@@ -108,8 +107,8 @@ export function KidChip({ mood = 'happy', size = 40 }) {
 }
 
 /* ── Le cadran ── */
-export const SWEEP = 300;
-export const START = -150;
+const SWEEP = 300;
+const START = -150;
 export const angleOf = (v, min, max) => START + (SWEEP * (v - min)) / (max - min);
 export const valueAtAngle = (deg, min, max) => {
   const a = Math.abs(deg) > 150 ? (deg > 0 ? 150 : -150) : deg;

@@ -42,6 +42,24 @@ class TeacherClassroomLearningPointController extends Controller
         return response()->json(['success' => true, ...$map]);
     }
 
+    /**
+     * GET /teacher/classrooms/{id}/lesson-tracking/{lessonCode}
+     *
+     * « متابعة القسم » d'une leçon : chaque élève actif, son état sur chaque كفاءة et ce qu'il a fait de chaque exercice.
+     */
+    public function lessonTracking(Request $request, int $id, string $lessonCode)
+    {
+        $classroom = TeacherClassroomController::ownedClassroom($request, $id);
+
+        try {
+            $tracking = $this->points->lessonTracking($classroom, $lessonCode);
+        } catch (DomainException $e) {
+            return TeacherClassroomController::refuse($e);
+        }
+
+        return response()->json(['success' => true, ...$tracking]);
+    }
+
     public function show(Request $request, int $id, string $code)
     {
         $classroom = TeacherClassroomController::ownedClassroom($request, $id);

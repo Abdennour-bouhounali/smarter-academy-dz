@@ -47,7 +47,7 @@ export const rText = (rt) => (rt % 10 === 0 ? String(rt / 10) : `${Math.floor(rt
 /** R en LaTeX : 3, 1{,}4. */
 export const rTex = (rt) => rText(rt).replace(',', '{,}');
 /** Un nombre décimal écrit avec la virgule (LaTeX). */
-export const decTex = (s) => String(s).replace('.', ',').replace(',', '{,}');
+const decTex = (s) => String(s).replace('.', ',').replace(',', '{,}');
 /** Une fraction exacte en LaTeX : décimale quand elle est finie (7{,}84), sinon \frac{…}{…}. */
 export function fracTex(p) {
   const d = Q.fracDecimal(p, 6);
@@ -118,7 +118,7 @@ export function setK(s, k) {
 }
 
 /** Le verdict d'une peau entièrement posée dans k disques (comparaison EXACTE de 𝒜 et k·πR²). */
-export function judgePeel(rt, k) {
+function judgePeel(rt, k) {
   const discs = skinDiscs(rt);
   const c = Q.cmp(Q.frac(k), discs);
   const area = skin(rt);
@@ -181,7 +181,7 @@ export function pickAreaCard(s, id) {
 
 /* ── phase 2 : presser ────────────────────────────────────────────────────── */
 
-export const canOpenPour = (s) => s.phase === 'peel' && s.areaOk;
+const canOpenPour = (s) => s.phase === 'peel' && s.areaOk;
 export function openPour(s) {
   if (!canOpenPour(s)) return s;
   return Object.freeze({ ...s, phase: 'pour', q: 0, poured: null, volumeCard: null, last: null });
@@ -198,7 +198,7 @@ export function setMark(s, m) {
 }
 
 /** Le verdict d'une marque (en douzièmes de 2R) contre la hauteur réelle du jus (𝒱 / 𝒱_cyl, exact). */
-export function judgePour(rt, m) {
+function judgePour(rt, m) {
   const ratio = juiceRatio(rt);
   const f = Q.frac(m, MARK_DEN);
   const c = Q.cmp(f, ratio);
@@ -240,7 +240,7 @@ export function pickVolumeCard(s, id) {
 
 /** Les rayons où une expérience a été réussie (peau ou jus). */
 export const triedRadii = (s) => [...new Set([...s.okPeelR, ...s.okPourR])].sort((a, b) => a - b);
-export const hasContrast = (s) => s.refusals > 0 || s.okPeelR.length >= 2 || s.okPourR.length >= 2;
+const hasContrast = (s) => s.refusals > 0 || s.okPeelR.length >= 2 || s.okPourR.length >= 2;
 export const discoveryReady = (s) => s.areaOk && s.volumeOk && hasContrast(s);
 
 /* ── phase 3 (متقدم) : l'exemple du manuel, R = 1,4 cm, arrondi au mm² et au mm³ ── */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -13,7 +13,6 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
-const texOf = (w) => { const [a, b] = String(w).split('/'); return b === undefined ? String(a).replace(',', '{,}') : `\\frac{${a.replace(',', '{,}')}}{${b}}`; };
 
 export default function Module01Nashat() {
   const [trials, setTrials] = useState([]);

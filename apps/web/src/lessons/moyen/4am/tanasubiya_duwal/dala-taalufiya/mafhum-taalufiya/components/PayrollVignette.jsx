@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La vignette de la carte d'activité du نشاط 1 : l'atelier — une pointeuse, une horloge, une fiche de

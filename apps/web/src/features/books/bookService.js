@@ -20,9 +20,6 @@ async function publicCall(path, options, fallback) {
   return data;
 }
 
-// ── Vitrine publique ─────────────────────────────────────────────────────
-export const fetchBooks = () => publicCall('/books', undefined, 'Impossible de charger les livres.');
-export const fetchBook = (slug) => publicCall(`/books/${encodeURIComponent(slug)}`, undefined, 'Livre introuvable.');
 export const fetchWilayas = () => publicCall('/books/wilayas', undefined, 'Impossible de charger les wilayas.');
 
 export const submitBookOrder = (slug, payload) => publicCall(

@@ -60,7 +60,6 @@ async function visibleManip(page, type) {
   if (await scoped.count()) return scoped;
   return page.locator(`[data-manipulation="${type}"]`).first();
 }
-const text = async (loc) => ((await loc.textContent()) ?? '').replace(/\s/g, '');
 /** Toucher la source puis la zone : le chemin non-glisser du moteur de port. */
 async function tapCarry(page, m, source, zone) {
   await m.locator(`[data-drag-source="${source}"]`).last().click();

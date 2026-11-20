@@ -2918,7 +2918,7 @@
         "خواص متوازي الأضلاع وتحديد الاتجاهات والمنحنيات في الأشكال الهندسية"
       ],
       "prerequisiteLessonCodes": [
-        "tarrid-muthallathiya"
+        "suwar-ashkal-insihab"
       ],
       "pointsToLearn": [
         "التعرف على مفهوم الانسحاب والربط بينه وبين الشعاع الممكِّن له",
@@ -3183,7 +3183,8 @@
         "مفهوم الشعاع والانسحاب والمستوى المنسوب إلى معلم"
       ],
       "prerequisiteLessonCodes": [
-        "barahin-ashia"
+        "insihab-shuaa",
+        "talim-nuqta-mustawi"
       ],
       "pointsToLearn": [
         "القراءة البيانية لمركبتي شعاع $\\vec{u}\\begin{pmatrix} x \\\\ y \\end{pmatrix}$ في معلم متعامد ومتجانس (الإزاحة الأفقية $x$ والعمودية $y$)",
@@ -3551,7 +3552,8 @@
         "مجموع قياسات زوايا المثلث وحساب قياسات الزوايا"
       ],
       "prerequisiteLessonCodes": [
-        "khawas-dawaran"
+        "daira-mustalahat",
+        "mudallaat-zawiya"
       ],
       "pointsToLearn": [
         "التمييز بين الزاوية المركزية (رأسها مركز الدائرة $O$) والزاوية المحيطية (رأسها ينتمي للدائرة وضلعاها يقطعانها)",
@@ -3712,7 +3714,7 @@
         "قواعد التمثيل بالمنظور متساوي القياس للأشكال ثنائية وثلاثية الأبعاد"
       ],
       "prerequisiteLessonCodes": [
-        "mudalaat-muntazama"
+        "daira-mustalahat"
       ],
       "pointsToLearn": [
         "التمييز بين مفهوم الكرة $\\mathcal{S}(O, R)$ كسطح كروي أجوف يضم جميع نقاط الفضاء التي تبعد بمسافة $OM = R$ عن المركز $O$، ومفهوم الجلة $\\mathcal{B}(O, R)$ كمجسم كروي مملوء يضم جميع نقاط الفضاء التي تبعد بمسافة $OM \\le R$",
@@ -3721,9 +3723,6 @@
         "تعيين وتمثيل موقع نقطة تنتمي للكرة أو داخل الجلة في المعلم الفضائي"
       ],
       "pointPrerequisites": {
-        "P1": [
-          "4am_mudalaat-muntazama_P1"
-        ],
         "P2": [
           "4am_kura-julla_P1"
         ],

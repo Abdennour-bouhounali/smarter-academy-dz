@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getLoadedLessonConfig, isLessonBuilt, loadLessonConfig } from './registry';
 
 /**
@@ -24,26 +24,3 @@ export function useLessonConfig(lessonId) {
   return config;
 }
 
-/**
- * Les configs de plusieurs leçons (une page d'unité) : une Map id → config, qui
- * se remplit à mesure que les configs arrivent. Les leçons non construites n'y
- * figurent jamais.
- *
- * @param {string[]} lessonIds
- * @returns {Map<string, object>}
- */
-export function useLessonConfigs(lessonIds) {
-  const key = lessonIds.join('|');
-  const [, setVersion] = useState(0);
-  const ids = useMemo(() => (key ? key.split('|') : []), [key]);
-  const missing = ids.filter((id) => isLessonBuilt(id) && !getLoadedLessonConfig(id));
-  const missingKey = missing.join('|');
-  useEffect(() => {
-    if (!missingKey) return undefined;
-    let alive = true;
-    Promise.all(missingKey.split('|').map((id) => loadLessonConfig(id)))
-      .then(() => { if (alive) setVersion((v) => v + 1); }, () => {});
-    return () => { alive = false; };
-  }, [missingKey]);
-  return new Map(ids.map((id) => [id, getLoadedLessonConfig(id)]).filter(([, c]) => c));
-}

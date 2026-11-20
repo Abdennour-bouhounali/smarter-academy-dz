@@ -28,13 +28,13 @@
  * Les cercles des solides de révolution sont horizontaux (axe vertical) ; un `circles[]` peut avoir `normal: 'x' | 'y' | 'z'`
  * ou un vecteur [nx, ny, nz] (un grand cercle méridien d'une sphère : normal horizontal).
  */
-export const SPACE_FIGURE_KEYS = Object.freeze([
+const SPACE_FIGURE_KEYS = Object.freeze([
   'kind', 'view', 'points', 'solids', 'circles', 'planes', 'sections', 'segments', 'rightAngles', 'labels', 'hidden',
   'ariaLabel', 'maxWidth', 'caption', 'inline',
 ]);
-export const SPACE_TONES = Object.freeze(['slate', 'indigo', 'rose', 'emerald', 'amber', 'sky', 'violet']);
-export const SOLID_TYPES = Object.freeze(['sphere', 'polyhedron', 'cylinder', 'cone', 'frustum']);
-export const DEFAULT_VIEW = Object.freeze({ azimuth: -62, elevation: 18 });
+const SPACE_TONES = Object.freeze(['slate', 'indigo', 'rose', 'emerald', 'amber', 'sky', 'violet']);
+const SOLID_TYPES = Object.freeze(['sphere', 'polyhedron', 'cylinder', 'cone', 'frustum']);
+const DEFAULT_VIEW = Object.freeze({ azimuth: -62, elevation: 18 });
 const DIRS = { n: [0, -1], s: [0, 1], e: [1, 0], w: [-1, 0], ne: [0.71, -0.71], nw: [-0.71, -0.71], se: [0.71, 0.71], sw: [-0.71, 0.71] };
 const RAD = Math.PI / 180;
 

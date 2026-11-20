@@ -40,7 +40,7 @@ export default function ParentView() {
 
   return (
     <div className="sa-page space-y-6 py-8 sm:py-10">
-      <Link to="/espace/profil" className="inline-flex items-center gap-1 font-inter text-sm text-slate-600 hover:text-indigo-700">
+      <Link to="/espace/profil" className="inline-flex items-center gap-1 font-inter text-sm text-slate-600 hover:text-nav-accent">
         <ChevronBack size={16} aria-hidden="true" />
         {t('student.title')}
       </Link>

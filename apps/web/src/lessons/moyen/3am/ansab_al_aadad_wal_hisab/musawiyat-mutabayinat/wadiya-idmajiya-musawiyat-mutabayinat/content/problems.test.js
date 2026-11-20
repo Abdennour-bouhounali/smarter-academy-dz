@@ -20,7 +20,6 @@ const dec = (s) => { const neg = s.startsWith('-'); const [i, f = ''] = s.replac
 const solve = ([a, b], [c, d]) => div(sub(d, b), sub(a, c));
 /** Arrondi demi supérieur au pas p (rationnel positif). */
 const roundTo = (x, p) => { const q = div(x, p); const fl = q.n / q.d; const frac = sub(q, F(fl)); return mul(F(le(dec('0,5'), frac) ? fl + 1n : fl), p); };
-const asNum = (x) => Number(x.n) / Number(x.d);
 const answers = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric' && s.role === 'answer').map((s) => s.expected);
 const nums = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric').map((s) => s.expected);
 const choices = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'choice');

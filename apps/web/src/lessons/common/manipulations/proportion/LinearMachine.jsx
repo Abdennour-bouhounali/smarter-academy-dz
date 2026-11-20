@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, CheckCheck, Ban } from 'lucide-react';
@@ -96,7 +96,7 @@ const MACHINE_TONES = [
   { fill: '#7C3AED', soft: '#EDE9FE', ring: 'border-violet-500', text: 'text-violet-800' },
 ];
 export default function LinearMachine({
-  rules: rules0 = '0,8x', cards, targets, theme, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
+  rules: rules0 = '0,8x', cards, targets, title, lead, mission, level, levels: withLevels = true, checkpoints: cpOn = true,
   initialMode = 'student', allowModeSwitch = false, onTrial, onVerdict, onReverse, onFinished, onCheckpoint,
 }) {
   const { t } = useTranslation('lesson');

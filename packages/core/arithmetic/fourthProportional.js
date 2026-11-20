@@ -32,13 +32,12 @@
  *
  * Importé PAR CHEMIN (`@smarter-academy/core/arithmetic/fourthProportional.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §4).
  */
-import { frac, parseNumber, mul, div, sub, add, cmp, eq, isZero, fracText } from './linear.js';
+import { frac, parseNumber, mul, div, sub, add, cmp, isZero, fracText } from './linear.js';
 
 export const HOLES = Object.freeze(['a', 'b', 'c', 'd']);
-export const GAUGES = Object.freeze(['unit', 'between', 'cross', 'diff']);
 export const ROUTES = Object.freeze(['coefficient', 'unit', 'additive', 'multiplicative', 'cross']);
 /** Borne du quatrième proportionnel affichable sur une règle (au-delà : « جرّب أعدادك » refuse). */
-export const MAX_ANSWER = 99999;
+const MAX_ANSWER = 99999;
 
 const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
 
@@ -85,7 +84,7 @@ export const showValue = (p) => decimalText(p, 4) ?? fracText(p);
 /* ── Le tableau et le trou ───────────────────────────────────────────────────────────────────── */
 
 /** Les nombres connus (trois des quatre), sous forme de fractions ; lève si un nombre manque ou si le trou est inconnu. */
-export function known(hole, nums) {
+function known(hole, nums) {
   if (!HOLES.includes(hole)) throw new Error(`trou inconnu : ${hole}`);
   const out = {};
   for (const k of HOLES) {
@@ -261,4 +260,3 @@ export function freeAnswer(a, b, c) {
   return { kind: 'inexact', text: long ?? fracText(h), finite: long != null, step: 1, max };
 }
 
-export { eq, cmp };

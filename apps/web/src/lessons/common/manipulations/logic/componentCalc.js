@@ -209,7 +209,7 @@ export function twin(s, i = s.idx) {
 // ── mission « place » : le point aux coordonnées inconnues ──────────────────
 
 /** Le nœud entier le plus proche, borné à la carte. */
-export function nodeAt(s, x, y) {
+function nodeAt(s, x, y) {
   return V.point(Math.min(s.win.xMax, Math.max(s.win.xMin, Math.round(x))), Math.min(s.win.yMax, Math.max(s.win.yMin, Math.round(y))));
 }
 
@@ -304,7 +304,7 @@ export const nextMission = (s) => (s.solved[s.idx] && s.idx < s.missions.length 
 /** Revenir voir une mission résolue. */
 export const goMission = (s, i) => (i >= 0 && i < s.missions.length && (i <= s.idx || s.solved[i - 1]) ? Object.freeze({ ...s, idx: i, last: null }) : s);
 
-export const allSolved = (s) => s.solved.every(Boolean);
+const allSolved = (s) => s.solved.every(Boolean);
 /** La découverte : toutes les missions résolues (un code calculé ET un point aux coordonnées inconnues). */
 export const discoveryReady = (s) => allSolved(s);
 

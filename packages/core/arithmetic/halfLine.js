@@ -10,8 +10,7 @@
  * Importé PAR CHEMIN (`@smarter-academy/core/arithmetic/halfLine.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §4).
  */
 
-export const SCALE = 1000;
-export const MAX_WHOLE = 99;
+const SCALE = 1000;
 
 const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
 const clean = (x) => String(x).trim().replace(/−/g, '-').replace(/[٠-٩]/g, (c) => String(ARABIC_DIGITS.indexOf(c))).replace(/[,٫،]/g, '.').replace(/\s+/g, '');
@@ -50,7 +49,7 @@ export const markValue = (w, m) => w.from + m * w.step;
 /** `v` tombe-t-il exactement sur une petite graduation ? */
 export const onTick = (w, v) => v >= w.from && (v - w.from) % (w.step / 10) === 0;
 /** L'indice de la petite graduation à gauche de `v` (celle de `v` si `v` est dessus). */
-export const tickBelow = (w, v) => Math.floor((v - w.from) / (w.step / 10));
+const tickBelow = (w, v) => Math.floor((v - w.from) / (w.step / 10));
 /** L'encadrement de `v` par deux petites graduations CONSÉCUTIVES : `{ i, lo, hi, exact }` (`exact` : `v` est sur `lo`, alors `hi = lo + pas`). */
 export function bracket(w, v) {
   const i = tickBelow(w, v);

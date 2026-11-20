@@ -6,8 +6,6 @@ import { simplifyFrames } from './simplifyFrames.js';
 import { factorFrames } from './factorFrames.js';
 import { SIMPLIFY_EXAMPLES, FACTOR_EXAMPLES } from './examples.js';
 
-const settled = (frames) => frames.filter((f) => f.settle).map((f) => f.settle);
-
 describe('تبسيط — le tableau terme par terme', () => {
   it('3x + 2(x + 4) − x : [2] ⌒× (x + 4) → 2 × x, 2 × 4 → ↓2x ↓8 → termes semblables → ↓4x → 4x + 8 (dernier)', () => {
     const frames = simplifyFrames(simplifyExpression('3x + 2(x + 4) - x'));

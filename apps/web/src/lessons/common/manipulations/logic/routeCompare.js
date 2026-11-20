@@ -45,7 +45,7 @@ function prepare(route, idx) {
 }
 
 /** Le cadre de la scène (en carreaux, entiers) : tous les points, le sommet de chaque arc, une marge d'un carreau. */
-export function frameOf(routes) {
+function frameOf(routes) {
   const xs = []; const ys = [];
   for (const r of routes) {
     xs.push(num(r.start.x)); ys.push(num(r.start.y));

@@ -60,7 +60,7 @@ export const relTex = (rel) => relationLatex(rel);
 
 /** La même inéquation en texte simple (titres, aria) : « −3x + 5 ≤ 20 », « 2,5x + 100 ≤ 150 ». */
 const REL_PLAIN = { '<': '<', '<=': '≤', '>': '>', '>=': '≥' };
-export function exprPlain(P) {
+function exprPlain(P) {
   return exprTex(P).replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1/$2').replace(/\{,\}/g, ',').replace(/-/g, '−');
 }
 export const ineqPlain = (I) => `${exprPlain(I.L)} ${REL_PLAIN[I.rel]} ${exprPlain(I.R)}`;
@@ -170,7 +170,7 @@ export const hasContrast = (lab) => lab.traces.some((t) => t.ok) && lab.traces.s
 // ── Le crochet ───────────────────────────────────────────────────────────────
 
 /** x appartient-il au rayon posé par l'élève ({ k, side, toward }) ? */
-export function inPlaced(lab, placed, k) {
+function inPlaced(lab, placed, k) {
   const c = k - placed.k;
   if (c === 0) return placed.toward;
   return placed.side === 'left' ? c < 0 : c > 0;
@@ -337,11 +337,6 @@ export function strictRedTrace(lab) {
   return null;
 }
 export const greyTrace = (lab) => { const t = lab.traces.find((u) => !u.ok); return t ? evaluate(lab, t.k) : null; };
-
-/** Les graduations rouges et grises, pour les listes de preuves. */
-export const tracesText = (lab, ok) => lab.traces.filter((t) => t.ok === ok).map((t) => numText(xOfK(lab, t.k)));
-
-export { cmp, toNumber };
 
 /**
  * La graduation PAR DÉFAUT du mobile à l'ouverture (jamais une trace) : celle, hors

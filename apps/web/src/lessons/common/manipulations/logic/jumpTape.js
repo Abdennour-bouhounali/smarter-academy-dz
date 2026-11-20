@@ -22,25 +22,25 @@ import * as H from '@smarter-academy/core/arithmetic/halfLine.js';
 
 export const WIN = 600;
 export const PIT_END = 580;
-export const MIN_TICK_PX = 10;
+const MIN_TICK_PX = 10;
 export const U_MIN = 40;
 export const U_MAX = 230;
-export const U_START = 60;
+const U_START = 60;
 export const READ_U = 200;
 export const X0 = 20;
-export const FREE_U = 140;
-export const FREE_WINDOW = Object.freeze({ from: 0, step: 1000 });
-export const FREE_MAX = 4000;
+const FREE_U = 140;
+const FREE_WINDOW = Object.freeze({ from: 0, step: 1000 });
+const FREE_MAX = 4000;
 
-export const LETTERS = Object.freeze(['A', 'B', 'C', 'D']);
+const LETTERS = Object.freeze(['A', 'B', 'C', 'D']);
 /** Les couleurs des drapeaux, dans l'ordre des sauts : le 1er est ROUGE, le 2e BLEU, le 3e VERT. */
-export const COLORS = Object.freeze(['red', 'blue', 'green', 'amber']);
+const COLORS = Object.freeze(['red', 'blue', 'green', 'amber']);
 
 const T = (v) => H.text(v);
 const perTick = (w) => w.step / 10;
 
 /** Le plus petit et le plus grand `u` acceptés pour un saut le plus long de `longest` (millièmes). */
-export function unitRange(w, longest) {
+function unitRange(w, longest) {
   const need = H.marksNeeded(w, longest);
   return { min: MIN_TICK_PX * 10, max: Math.floor(PIT_END / need), need };
 }
@@ -51,7 +51,7 @@ export const xOfValue = (w, u, v) => X0 + ((v - w.from) / w.step) * u;
 export const tickAtX = (u, x, max = maxTickAt(u)) => Math.max(0, Math.min(max, Math.round(((x - X0) * 10) / u)));
 
 /** Les tâches normalisées. Lève si mal formées. */
-export function normalizeTasks(list) {
+function normalizeTasks(list) {
   return list.map((t, i) => {
     const id = t.id ?? `t${i}`;
     const from = H.parse(t.from ?? '0');
@@ -121,7 +121,7 @@ export const windowOf = (s) => (s.free ? FREE_WINDOW : taskOf(s).w);
 export const uOf = (s) => (s.free ? FREE_U : s.u);
 export const flagsOf = (s) => (taskOf(s).kind === 'read' ? taskOf(s).flags : taskOf(s).jumps);
 export const plantedCount = (s) => Object.keys(s.planted).length;
-export const nthFlag = (s, id) => flagsOf(s).find((f) => f.id === id);
+const nthFlag = (s, id) => flagsOf(s).find((f) => f.id === id);
 /** La valeur d'une petite graduation de la fenêtre courante. */
 export const valueAtTick = (s, i) => H.tickValue(windowOf(s), i);
 
@@ -150,7 +150,7 @@ export function releaseUnit(s) {
 }
 
 /* ── Étape 2 : planter les drapeaux ── */
-export function judgePlant(task, jump, tick) {
+function judgePlant(task, jump, tick) {
   const pv = H.tickValue(task.w, tick);
   const v = jump.v;
   if (pv === v) return { ok: true, model: 'right', value: pv };

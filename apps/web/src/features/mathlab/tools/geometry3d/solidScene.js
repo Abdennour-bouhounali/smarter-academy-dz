@@ -60,7 +60,7 @@ const CAMERA_REPORT_MS = 400;
 const GRID_SIZE = 24;
 
 /** (x, y, z) mathématique → Vector3 three.js. */
-export function toThree(x, y, z) {
+function toThree(x, y, z) {
   return new Vector3(x, z, -y);
 }
 
@@ -69,7 +69,7 @@ export function toThree(x, y, z) {
  * maillage, les arêtes et le lancer de rayons partagent le même repère.
  * Exportée pour les tests : le solide et ses groupes de faces.
  */
-export function buildSolidGeometry(shape, d) {
+function buildSolidGeometry(shape, d) {
   switch (shape) {
     case 'cube': return new BoxGeometry(d.side, d.side, d.side).translate(d.side / 2, d.side / 2, -d.side / 2);
     case 'cuboid': return new BoxGeometry(d.length, d.height, d.width).translate(d.length / 2, d.height / 2, -d.width / 2);
@@ -81,7 +81,7 @@ export function buildSolidGeometry(shape, d) {
 }
 
 /** Le centre et le rayon englobant du solide (repère three.js) — ce que la caméra cadre. */
-export function boundsOf(shape, d) {
+function boundsOf(shape, d) {
   switch (shape) {
     case 'cube': return { center: new Vector3(d.side / 2, d.side / 2, -d.side / 2), radius: (d.side * Math.sqrt(3)) / 2, extent: d.side };
     case 'cuboid': return {
@@ -104,7 +104,7 @@ export function boundsOf(shape, d) {
  * et l'apothème. `param` est le nom de la dimension (ou 'slant' pour
  * l'apothème calculé), `value` sa valeur.
  */
-export function measurementSegments(shape, d) {
+function measurementSegments(shape, d) {
   const q = Math.SQRT1_2;
   switch (shape) {
     case 'cube': return [

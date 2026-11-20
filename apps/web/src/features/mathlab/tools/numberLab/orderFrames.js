@@ -61,7 +61,7 @@ export function splitAtHighlight(latex) {
 }
 
 /** Retirer la couleur : le LaTeX d'une ligne acquise. */
-export function stripHighlight(latex) {
+function stripHighlight(latex) {
   const split = splitAtHighlight(latex);
   if (!split) return latex;
 
@@ -75,7 +75,7 @@ const around = (split, middle) => [
 ];
 
 /** La clé de la phrase d'un pas : la règle, « dans les parenthèses » ou non. */
-export const orderRuleKey = (step) => (step.inGroup
+const orderRuleKey = (step) => (step.inGroup
   ? `tools.numberLab.steps.order.inGroup.${step.rule}`
   : `tools.numberLab.order.rules.${step.rule}`);
 

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
 
 const TONE = {
-  blue: 'bg-blue-50 text-blue-600',
+  blue: 'bg-nav-accent-soft text-nav-accent',
   amber: 'bg-amber-50 text-amber-600',
   violet: 'bg-violet-50 text-violet-600',
   emerald: 'bg-emerald-50 text-emerald-600',
@@ -27,7 +27,7 @@ export default function SectionHeading({ id, icon: Icon, tone = 'blue', title, a
       {action && (
         <Link
           to={action.to}
-          className="inline-flex items-center gap-1 min-h-[36px] px-1.5 rounded-lg text-sm font-semibold text-blue-600 hover:text-blue-700 whitespace-nowrap flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          className="inline-flex items-center gap-1 min-h-[36px] px-1.5 rounded-lg text-sm font-semibold text-nav-accent hover:text-nav-accent whitespace-nowrap flex-shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
         >
           {action.label} <ArrowForward size={14} aria-hidden="true" />
         </Link>

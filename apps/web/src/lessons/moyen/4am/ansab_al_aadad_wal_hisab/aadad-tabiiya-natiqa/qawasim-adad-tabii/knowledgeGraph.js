@@ -53,27 +53,45 @@ export const KNOWLEDGE_GRAPH = {
   root: 'qawasim',
   nodes: [
     {
-      id: 'qawasim', kind: 'concept', lane: 'center', requires: 'jidaa-aamilayn',
-      title: 'قواسم عدد طبيعي', subtitle: 'كلّها، دون أن ننسى أيّ واحد',
+      id: 'qawasim',
+      kind: 'concept',
+      lane: 'center',
+      requires: 'jidaa-aamilayn',
+      title: 'قواسم عدد طبيعي',
+      subtitle: 'كلّها، دون أن ننسى أيّ واحد',
       // La question de l'activité 2 (أ puis ب).
       context: { text: stripLabel(ACTIVITY.questions[0]), note: stripLabel(ACTIVITY.questions[3]) },
       reveals: ['jidaa'],
     },
     {
-      id: 'jidaa', kind: 'method', lane: 'center', requires: 'jidaa-aamilayn', notebook: true,
-      title: 'جداء عاملين', subtitle: '$a = d \\times e$',
+      id: 'jidaa',
+      kind: 'method',
+      lane: 'center',
+      requires: 'jidaa-aamilayn',
+      notebook: true,
+      title: 'جداء عاملين',
+      subtitle: '$a = d \\times e$',
       reveals: ['rappel', 'ex60'],
     },
     {
       // 📌 تذكّر — l'item « تذكير » du module 1 : SI a = d × e, ALORS d et e
       // sont des قواسم — c'est la définition du درس 1 qui le dit.
-      id: 'rappel', kind: 'prerequisite', lane: 'start', requires: 'qasim-rappel', notebook: true,
-      title: 'قاسم عدد طبيعي', subtitle: '$a = b \\times q$',
+      id: 'rappel',
+      kind: 'prerequisite',
+      lane: 'start',
+      requires: 'qasim-rappel',
+      notebook: true,
+      title: 'قاسم عدد طبيعي',
+      subtitle: '$a = b \\times q$',
       reveals: [],
     },
     {
-      id: 'ex60', kind: 'example', lane: 'end', requires: 'jidaa-aamilayn',
-      title: `قواسم ${n60}`, subtitle: `$${n60} = ${lastD} \\times ${lastE}$`,
+      id: 'ex60',
+      kind: 'example',
+      lane: 'end',
+      requires: 'jidaa-aamilayn',
+      title: `قواسم ${n60}`,
+      subtitle: `$${n60} = ${lastD} \\times ${lastE}$`,
       context: {
         formula: `$${n60} = ${pairs60.map(([d, e]) => `${d} \\times ${e}`).join(' = ')}$`,
         text: `قواسم العدد ${n60}: ${divisors60.join(' ، ')}.`,
@@ -83,8 +101,12 @@ export const KNOWLEDGE_GRAPH = {
     {
       // ⛔ خطأ شائع — l'exercice 3 : son `commonError`, son explication (six
       // جداءات → douze قواسم) et sa réponse.
-      id: 'khata-nisyan', kind: 'common_mistake', lane: 'end', requires: 'jidaa-aamilayn',
-      title: 'نسيان قاسم', subtitle: '1 والعدد نفسه، والشريك',
+      id: 'khata-nisyan',
+      kind: 'common_mistake',
+      lane: 'end',
+      requires: 'jidaa-aamilayn',
+      title: 'نسيان قاسم',
+      subtitle: '1 والعدد نفسه، والشريك',
       context: {
         parts: [
           { role: 'wrong', text: ex3.commonError },
@@ -95,34 +117,55 @@ export const KNOWLEDGE_GRAPH = {
       reveals: [],
     },
     {
-      id: 'tariqa', kind: 'method', lane: 'center', requires: 'tariqa-qawasim', notebook: true,
-      title: 'الطريقة المنظّمة', subtitle: '$d^2 \\leq a$',
+      id: 'tariqa',
+      kind: 'method',
+      lane: 'center',
+      requires: 'tariqa-qawasim',
+      notebook: true,
+      title: 'الطريقة المنظّمة',
+      subtitle: '$d^2 \\leq a$',
       context: { text: METHOD.rule[0] },
       reveals: ['ex105', 'qawaid'],
     },
     {
-      id: 'ex105', kind: 'example', lane: 'start', requires: 'tariqa-qawasim',
-      title: 'قواسم 105', subtitle: '$10^2 \\leq 105 < 11^2$',
+      id: 'ex105',
+      kind: 'example',
+      lane: 'start',
+      requires: 'tariqa-qawasim',
+      title: 'قواسم 105',
+      subtitle: '$10^2 \\leq 105 < 11^2$',
       context: { text: METHOD.solution[0], list: [METHOD.solution[2]], note: METHOD.solution[4] },
       reveals: ['khata-nisf'],
     },
     {
       // ⛔ خطأ شائع — Module 2, question 1 (et l'évaluation, E4) : le
       // distracteur « إلى 52، أي نصف 105 » et son explication.
-      id: 'khata-nisf', kind: 'common_mistake', lane: 'start', requires: 'tariqa-qawasim',
-      title: 'حتى النصف؟', subtitle: 'نتوقّف عند 10، لا عند 52',
+      id: 'khata-nisf',
+      kind: 'common_mistake',
+      lane: 'start',
+      requires: 'tariqa-qawasim',
+      title: 'حتى النصف؟',
+      subtitle: 'نتوقّف عند 10، لا عند 52',
       context: {
         parts: [
           { role: 'wrong', text: 'نختبر قابلية قسمة 105 على الأعداد حتى 52، أي نصف 105.' },
-          { role: 'why', text: 'إذا كان $105 = d \\times e$ مع $d \\leq e$ فإن $d^2 \\leq 105$: كل قاسم أكبر من 10 هو شريك قاسم أصغر.' },
+          {
+            role: 'why',
+            text: 'إذا كان $105 = d \\times e$ مع $d \\leq e$ فإن $d^2 \\leq 105$: كل قاسم أكبر من 10 هو شريك قاسم أصغر.',
+          },
           { role: 'right', text: METHOD.solution[0] },
         ],
       },
       reveals: [],
     },
     {
-      id: 'qawaid', kind: 'retain', lane: 'end', requires: 'qawaid-qisma', notebook: true,
-      title: 'قابلية القسمة', subtitle: '2 · 3 · 4 · 5 · 9',
+      id: 'qawaid',
+      kind: 'retain',
+      lane: 'end',
+      requires: 'qawaid-qisma',
+      notebook: true,
+      title: 'قابلية القسمة',
+      subtitle: '2 · 3 · 4 · 5 · 9',
       // La ligne du manuel, puis l'explication de la question 3 du module 2.
       context: {
         text: METHOD.rule[1].replace(/^•\s*/, ''),
@@ -132,8 +175,12 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       // ⛔ خطأ شائع — l'exercice 6 : son `commonError`, son explication, sa réponse.
-      id: 'khata-9', kind: 'common_mistake', lane: 'end', requires: 'qawaid-qisma',
-      title: 'مضاعف لـ 9، لا 9', subtitle: 'مجموع الأرقام',
+      id: 'khata-9',
+      kind: 'common_mistake',
+      lane: 'end',
+      requires: 'qawaid-qisma',
+      title: 'مضاعف لـ 9، لا 9',
+      subtitle: 'مجموع الأرقام',
       context: {
         parts: [
           { role: 'wrong', text: ex6.commonError },
@@ -145,8 +192,12 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       // 🎯 خلاصة — l'item « جداء عاملين » et la طريقة du manuel, réunis.
-      id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqa-qawasim',
-      title: 'قواسم تأتي أزواجًا', subtitle: '$a = d \\times e$',
+      id: 'khulasa',
+      kind: 'takeaway',
+      lane: 'center',
+      requires: 'tariqa-qawasim',
+      title: 'قواسم تأتي أزواجًا',
+      subtitle: '$a = d \\times e$',
       context: {
         text: 'كل كتابة $a = d \\times e$ تعطي قاسمين للعدد $a$: $d$ و $e$. لذلك يكفي أن نختبر الأعداد التي مربع كل منها أصغر من $a$ أو يساويه.',
         note: 'ولا ننسى 1 والعدد نفسه: $a = 1 \\times a$.',

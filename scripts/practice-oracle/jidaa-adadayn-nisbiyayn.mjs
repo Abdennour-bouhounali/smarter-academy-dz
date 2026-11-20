@@ -30,14 +30,13 @@ class Q {
   eq(o) { return this.cmp(o) === 0; }
   toString() { return this.d === 1n ? String(this.n) : `${this.n}/${this.d}`; }
 }
-const ZERO = new Q(0n);
 const num = (s) => { const [i, f = ''] = s.split('.'); return new Q(BigInt(i + f), 10n ** BigInt(f.length)); };
 
 /** Du LaTeX de l'énoncé vers la syntaxe de l'oracle. */
 const norm = (s) => s
   .replace(/\$/g, '').replace(/\\left|\\right/g, '').replace(/\\times|\\cdot/g, '*').replace(/\\div/g, '/')
   .replace(/\{,\}/g, '.').replace(/(\d),(\d)/g, '$1.$2').replace(/[−‒–]/g, '-')
-  .replace(/\\,|\;|\\ /g, '').replace(/\s+/g, '').replace(/\)\(/g, ')*(').replace(/(\d)\(/g, '$1*(');
+  .replace(/\\,|\\?;|\\ /g, '').replace(/\s+/g, '').replace(/\)\(/g, ')*(').replace(/(\d)\(/g, '$1*(');
 
 /** expr = terme ((+|−) terme)* ; terme = unaire ((*|/) unaire)* ; unaire = (+|−) unaire | primaire ; primaire = nombre | (expr) | [expr]. */
 function evaluate(src) {

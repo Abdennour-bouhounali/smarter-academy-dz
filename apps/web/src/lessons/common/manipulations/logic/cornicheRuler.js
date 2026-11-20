@@ -21,11 +21,11 @@ export const HALF = 6;
 /** Les crans du levier (mètres par graduation). */
 export const NOTCHES = Object.freeze(['0,1', '0,5', '1', '2', '5', '10', '20', '25', '50', '100']);
 /** Les repères du front de mer : position monde en mètres (cachée de l'élève). */
-export const LANDMARKS = Object.freeze({ fountain: '0', kiosk: '30', bench: '-20', lamp: '-40', palm: '20', bus: '-35', fish: '50', bench2: '60' });
+const LANDMARKS = Object.freeze({ fountain: '0', kiosk: '30', bench: '-20', lamp: '-40', palm: '20', bus: '-35', fish: '50', bench2: '60' });
 const H = (x) => R.parse(x);
 const tx = (h) => R.text(h);
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 'b1', kind: 'read', pin: '0', ask: ['kiosk', 'bench'] },
     { id: 'b2', kind: 'move', pin: '0', target: '-20', ask: ['kiosk'] },
@@ -40,7 +40,7 @@ export const PRESETS = Object.freeze({
 });
 
 /** Les tâches normalisées en centièmes. Lève si mal formées. */
-export function normalizeTasks(list) {
+function normalizeTasks(list) {
   return list.map((t, i) => {
     const id = t.id ?? `t${i}`;
     if (t.kind === 'fit') {
@@ -81,13 +81,13 @@ export const markById = (s, id) => marksOf(s).find((m) => m.id === id);
 /** L'abscisse (centièmes) d'un repère par rapport à l'origine courante (beginner) ; en fit : sa valeur fixe. */
 export const abscissa = (s, id) => (isFit(s) ? markById(s, id).x : R.abscissaOf(markById(s, id).x, s.pin));
 /** La cellule (entier, −6 … 6) du point `id` à la graduation courante, et si elle est exactement sur une graduation / hors planche. */
-export function cellOf(s, id) {
+function cellOf(s, id) {
   const x = abscissa(s, id); const st = stepH(s);
   return { cell: x / st, exact: x % st === 0n, off: (x < 0n ? -x : x) > BigInt(HALF) * st, frac: x * 2n / st };
 }
 export const fit = (s) => R.boardFit(marksOf(s).map((m) => m.x), stepH(s), HALF);
 /** Les repères à lire dans la tâche courante. */
-export const askList = (s) => { const t = taskOf(s); return t.kind === 'opp' || t.kind === 'fit' ? [] : t.ask; };
+const askList = (s) => { const t = taskOf(s); return t.kind === 'opp' || t.kind === 'fit' ? [] : t.ask; };
 export const currentAsk = (s) => askList(s)[s.ai] ?? null;
 export const currentTap = (s) => (!s.free && isFit(s) && s.confirmed ? marksOf(s)[s.qi]?.id ?? null : null);
 /** Une lecture est permise ? (`move` : seulement une fois l'origine sous la cible). */
@@ -114,7 +114,7 @@ export function setPin(s, pin) {
 export const movePin = (s, dir) => setPin(s, Number(s.pin) + dir * 1000);
 
 /** Les lectures typées : « -30 », « −30 », « ٣٠ ». null si illisible. */
-export function parseTyped(raw) {
+function parseTyped(raw) {
   try {
     const h = R.parse(String(raw ?? '').replace(/[⁦⁩]/g, ''));
     return h;
@@ -137,7 +137,7 @@ export function judgeRead(s, id, raw) {
   return { ok: false, model, want, value: got };
 }
 /** Un repère fantôme (mètres depuis l'origine) qui MONTRE l'erreur : null si rien à montrer. */
-export function ghostOf(s, model, value) {
+function ghostOf(s, model, value) {
   if (!value && value !== 0n) return null;
   // `at` : la distance (m, signée) depuis l'origine à laquelle le fantôme se tient — celle que l'élève a ÉCRITE
   if (model === 'unitIgnored') return { kind: 'unit', at: value };

@@ -121,7 +121,7 @@ function NowCard({ lesson, n, total, icon, progress, first, compact, t, onDetail
     <article className={`relative grid ${compact ? 'grid-cols-1' : 'grid-cols-[minmax(0,1fr)_8.5rem]'} gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm`} data-unit-now={lesson.id}>
       <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-l from-violet-600 to-indigo-600" aria-hidden="true" />
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-2 text-sm font-black text-indigo-600">
+        <div className="flex flex-wrap items-center gap-2 text-sm font-black text-nav-accent">
           {first ? t('unit.mission.startTag') : t('unit.mission.nowTag')}
           <span className="rounded-full bg-amber-50 px-2.5 text-amber-800">{t('unit.mission.lessonOf', { n, total })} · {t('unit.mission.minutes', { n: lesson.durationMinutes })}</span>
         </div>
@@ -140,7 +140,7 @@ function NowCard({ lesson, n, total, icon, progress, first, compact, t, onDetail
         )}
         <div className="mt-4 flex gap-2.5">
           <Link to={lesson.path} data-unit-continue
-            className="inline-flex min-h-[58px] flex-1 items-center justify-center whitespace-nowrap rounded-2xl bg-indigo-600 px-4 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700 active:translate-y-0.5">
+            className="inline-flex min-h-[58px] flex-1 items-center justify-center whitespace-nowrap rounded-2xl bg-nav-accent px-4 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-[#3350c4] active:translate-y-0.5">
             {first ? t('unit.mission.startUnit') : progress > 0 ? t('unit.mission.continue') : t('unit.mission.startLesson')} <span aria-hidden="true" className="ms-2">←</span>
           </Link>
           <button type="button" onClick={onDetails} data-unit-whats-in
@@ -168,7 +168,7 @@ function LessonWindow({ lesson, n, total, icon, status, unmet, onOpenLesson, ava
     <div className="space-y-3" data-unit-window={lesson.id} data-more={more ? 'true' : 'false'}>
       {/* le titre tient sur une ligne ; s'il en faut deux, elles sont CENTRÉES (propriétaire, 2026-11-09) */}
       <div className="flex items-center justify-center gap-3.5 px-12 text-center" data-unit-window-head>
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 text-3xl" aria-hidden="true">{icon}</span>
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-nav-accent-soft text-3xl" aria-hidden="true">{icon}</span>
         <div className="min-w-0">
           <h3 className="text-balance text-[22px] font-black leading-snug text-slate-900"><Bidi text={lesson.title} /></h3>
           <p className="text-sm font-bold text-slate-500">{t('unit.mission.lessonOf', { n, total })} · {t('unit.mission.minutes', { n: lesson.durationMinutes })} · {statusText}</p>
@@ -203,7 +203,7 @@ function LessonWindow({ lesson, n, total, icon, status, unmet, onOpenLesson, ava
           </div>
         </div>
       )}
-      <button type="button" onClick={() => setMore((m) => !m)} data-unit-more className="min-h-[36px] text-sm font-black text-indigo-600">
+      <button type="button" onClick={() => setMore((m) => !m)} data-unit-more className="min-h-[36px] text-sm font-black text-nav-accent">
         {more ? t('unit.mission.less') : t('unit.mission.more')}
       </button>
       {!more && unmet.length > 0 && (
@@ -214,7 +214,7 @@ function LessonWindow({ lesson, n, total, icon, status, unmet, onOpenLesson, ava
       )}
       {available ? (
         <Link to={lesson.path} data-unit-open
-          className="flex min-h-[58px] w-full items-center justify-center rounded-2xl bg-indigo-600 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-indigo-700">
+          className="flex min-h-[58px] w-full items-center justify-center rounded-2xl bg-nav-accent text-xl font-black text-white shadow-[0_5px_0_0_#3730A3] hover:bg-[#3350c4]">
           {button} <span aria-hidden="true" className="ms-2">←</span>
         </Link>
       ) : (
@@ -256,7 +256,7 @@ export default function UnitMissionView({ unit, mission }) {
         <header className="flex items-center gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="whitespace-nowrap rounded-full bg-indigo-50 px-3 py-0.5 text-sm font-black text-indigo-700">{t('unit.unitNumber', { n: unit.number })}</span>
+              <span className="whitespace-nowrap rounded-full bg-nav-accent-soft px-3 py-0.5 text-sm font-black text-nav-accent">{t('unit.unitNumber', { n: unit.number })}</span>
               <h1 className="text-[28px] font-black leading-tight text-slate-900"><MathLabel>{unit.title}</MathLabel></h1>
             </div>
           </div>
@@ -282,12 +282,12 @@ export default function UnitMissionView({ unit, mission }) {
             <article className="relative grid grid-cols-[minmax(0,1fr)_8.5rem] gap-4 overflow-hidden rounded-3xl border border-slate-200 bg-white p-5 shadow-sm" data-unit-finished>
               <span className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-l from-violet-600 to-indigo-600" aria-hidden="true" />
               <div className="min-w-0">
-                <div className="text-sm font-black text-indigo-600">{t('unit.mission.finishedTag')} <span className="rounded-full bg-amber-50 px-2.5 text-amber-800">⭐ {starsTotal}</span></div>
+                <div className="text-sm font-black text-nav-accent">{t('unit.mission.finishedTag')} <span className="rounded-full bg-amber-50 px-2.5 text-amber-800">⭐ {starsTotal}</span></div>
                 <h2 className="mt-1.5 text-2xl font-black text-slate-900">{t('unit.mission.finishedTitle')}</h2>
                 <p className="font-bold text-slate-600">{t('unit.mission.finishedLine')}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">{mission.keys.map((k) => <span key={k.label} className="rounded-full bg-amber-100 px-2.5 py-0.5 text-sm font-bold text-amber-900">{k.icon} {k.label}</span>)}</div>
                 <button type="button" onClick={() => setWin({ kind: 'challenge' })} data-unit-solve
-                  className="mt-4 min-h-[58px] w-full rounded-2xl bg-indigo-600 text-xl font-black text-white shadow-[0_5px_0_0_#3730A3]">{t('unit.mission.solve')} ←</button>
+                  className="mt-4 min-h-[58px] w-full rounded-2xl bg-nav-accent text-xl font-black text-white shadow-[0_5px_0_0_#3730A3]">{t('unit.mission.solve')} ←</button>
               </div>
               <div className="flex items-center justify-center rounded-2xl bg-gradient-to-b from-amber-100 to-amber-200 text-7xl" aria-hidden="true">🏆</div>
             </article>
@@ -296,7 +296,7 @@ export default function UnitMissionView({ unit, mission }) {
           <article className="flex flex-col gap-2.5 rounded-3xl border border-slate-200 bg-gradient-to-b from-amber-50 to-white p-5 shadow-sm" data-unit-challenge-card>
             <div className="flex items-center justify-between gap-2">
               <h3 className="text-[15px] font-black text-amber-800">{t('unit.mission.challengeTitle')}</h3>
-              <button type="button" onClick={() => setWin({ kind: 'challenge' })} className="whitespace-nowrap text-sm font-black text-indigo-600">{t('unit.mission.readChallenge')} ←</button>
+              <button type="button" onClick={() => setWin({ kind: 'challenge' })} className="whitespace-nowrap text-sm font-black text-nav-accent">{t('unit.mission.readChallenge')} ←</button>
             </div>
             <p className="text-[17px] font-bold leading-relaxed text-slate-900"><Highlighted text={mission.challenge.lead} numbers={mission.challenge.numbers} /></p>
             <div className="mt-auto flex items-center gap-2" data-unit-keys={state.keysEarned}>
@@ -325,9 +325,9 @@ export default function UnitMissionView({ unit, mission }) {
                 <button key={r.id} type="button" onClick={() => openLesson(r.id)} data-unit-station={r.id} data-status={st}
                   aria-label={`${t('unit.mission.lessonOf', { n: i + 1, total })}: ${r.lesson.title}`}
                   className="group relative flex flex-col items-center gap-1.5 px-0.5 pt-6 text-center">
-                  {st === 'now' && <span className="absolute top-0 z-10 whitespace-nowrap rounded-full bg-indigo-600 px-2.5 text-[11px] font-black text-white">{t('unit.mission.here')}</span>}
+                  {st === 'now' && <span className="absolute top-0 z-10 whitespace-nowrap rounded-full bg-nav-accent px-2.5 text-[11px] font-black text-white">{t('unit.mission.here')}</span>}
                   <span className={`relative flex h-16 w-16 items-center justify-center rounded-full border-[3px] text-[28px] transition-transform group-hover:-translate-y-0.5 ${
-                    st === 'done' ? 'border-emerald-500 bg-emerald-50' : st === 'now' ? 'border-indigo-600 bg-indigo-50 shadow-[0_0_0_7px_rgba(79,70,229,0.14)]' : 'border-slate-200 bg-white opacity-60 grayscale'}`} aria-hidden="true">
+                    st === 'done' ? 'border-emerald-500 bg-emerald-50' : st === 'now' ? 'border-nav-accent bg-nav-accent-soft shadow-[0_0_0_7px_rgba(79,70,229,0.14)]' : 'border-slate-200 bg-white opacity-60 grayscale'}`} aria-hidden="true">
                     {mission.icons[r.id] ?? '📘'}
                     {st === 'done' && <span className="absolute -end-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs font-black text-white">✓</span>}
                   </span>
@@ -347,7 +347,7 @@ export default function UnitMissionView({ unit, mission }) {
         <nav className="flex flex-wrap gap-2" aria-label="المزيد" data-unit-chips>
           {[['goals', 'chipGoals'], ['challenge', 'chipChallenge'], ['history', 'chipHistory'], ['review', 'chipReview']].map(([kind, key]) => (
             <button key={kind} type="button" onClick={() => setWin({ kind })} data-unit-chip={kind}
-              className="min-h-[40px] rounded-full border border-slate-200 bg-white px-3.5 text-sm font-extrabold text-slate-700 hover:border-indigo-300 hover:text-indigo-700">{t(`unit.mission.${key}`)}</button>
+              className="min-h-[40px] rounded-full border border-slate-200 bg-white px-3.5 text-sm font-extrabold text-slate-700 hover:border-indigo-300 hover:text-nav-accent">{t(`unit.mission.${key}`)}</button>
           ))}
         </nav>
       </div>

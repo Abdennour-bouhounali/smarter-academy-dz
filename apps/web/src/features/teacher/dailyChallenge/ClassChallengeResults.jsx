@@ -10,7 +10,7 @@ import MathLabel from '../../../lessons/common/components/MathLabel';
 
 function Tile({ label, value, hint, testId }) {
   return (
-    <div className="glass-card p-4" data-tile={testId}>
+    <div className="rounded-2xl border border-nav-line bg-white p-4" data-tile={testId}>
       <p className="font-inter text-xs text-slate-500">{label}</p>
       <p className="mt-1 font-space text-2xl font-black text-slate-900" dir="ltr">{value}</p>
       {hint && <p className="font-inter text-[11px] text-slate-400">{hint}</p>}
@@ -23,7 +23,7 @@ function RateBar({ rate, flagged }) {
   const width = rate === null || rate === undefined ? 0 : Math.round(rate * 100);
   return (
     <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-100" aria-hidden="true">
-      <div className={`h-full rounded-full ${flagged ? 'bg-amber-500' : 'bg-teal-600'}`} style={{ width: `${width}%` }} />
+      <div className={`h-full rounded-full ${flagged ? 'bg-amber-500' : 'bg-nav-accent'}`} style={{ width: `${width}%` }} />
     </div>
   );
 }
@@ -60,7 +60,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
       </div>
 
       {!summary ? (
-        <p className="glass-card p-6 text-center text-sm text-slate-500">{t('teacher.results.noChallenge')}</p>
+        <p className="rounded-2xl border border-nav-line bg-white p-6 text-center text-sm text-slate-500">{t('teacher.results.noChallenge')}</p>
       ) : (
         <>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
@@ -71,7 +71,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
             <Tile testId="streak" label={t('teacher.results.streak')} value={percent(summary.streakContinuationRate)} />
           </div>
 
-          <section className="glass-card p-5" aria-labelledby="dc-q-analysis">
+          <section className="rounded-2xl border border-nav-line bg-white p-5" aria-labelledby="dc-q-analysis">
             <h4 id="dc-q-analysis" className="font-space text-base font-bold text-slate-900">{t('teacher.results.questions')}</h4>
             <ol className="mt-3 space-y-2.5">
               {data.questions.map((q) => (
@@ -108,7 +108,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
         </>
       )}
 
-      <section className="glass-card p-5" aria-labelledby="dc-ranking">
+      <section className="rounded-2xl border border-nav-line bg-white p-5" aria-labelledby="dc-ranking">
         <h4 id="dc-ranking" className="flex items-center gap-2 font-space text-base font-bold text-slate-900"><Trophy size={16} className="text-amber-500" aria-hidden="true" /> {t('teacher.results.ranking')}</h4>
         {data.ranking === null ? (
           <p className="mt-2 text-sm text-slate-500">{t('teacher.results.rankingOff')}</p>
@@ -119,7 +119,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
               {data.ranking.map((r) => (
                 <li key={r.userId} className="flex items-center gap-3 py-2">
                   <span className="w-8 font-mono-jetbrains text-sm font-bold text-slate-500" dir="ltr">{r.rank}</span>
-                  <Link to={`/enseignant/classes/${classGroupId}/eleves/${r.userId}`} className="min-w-0 flex-1 truncate font-inter text-sm font-semibold text-slate-900 hover:text-teal-700">{studentName(r.student, t('teacher.title'))}</Link>
+                  <Link to={`/enseignant/classes/${classGroupId}/eleves/${r.userId}`} className="min-w-0 flex-1 truncate font-inter text-sm font-semibold text-slate-900 hover:text-nav-accent">{studentName(r.student, t('teacher.title'))}</Link>
                   <span className="font-mono-jetbrains text-xs text-slate-500" dir="ltr">{r.totalCorrect} ✓</span>
                   <span className="w-20 text-end font-space font-black text-slate-900" dir="ltr">{r.score.toLocaleString('fr-FR')}</span>
                 </li>
@@ -130,7 +130,7 @@ export default function ClassChallengeResults({ classGroupId, data, onOpenPoint,
       </section>
 
       {summary && (
-        <section className="glass-card overflow-x-auto p-5" aria-labelledby="dc-students">
+        <section className="rounded-2xl border border-nav-line bg-white overflow-x-auto p-5" aria-labelledby="dc-students">
           <h4 id="dc-students" className="font-space text-base font-bold text-slate-900">{t('teacher.results.students')}</h4>
           <table className="mt-3 w-full min-w-[32rem] text-sm">
             <thead><tr className="text-start text-xs text-slate-500">

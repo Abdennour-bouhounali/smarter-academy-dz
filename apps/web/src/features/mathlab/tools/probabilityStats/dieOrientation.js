@@ -17,7 +17,7 @@
 
 import { Quaternion, Vector3 } from 'three';
 
-export const UP = Object.freeze(new Vector3(0, 1, 0));
+const UP = Object.freeze(new Vector3(0, 1, 0));
 
 /**
  * La valeur de chaque face, dans l'ordre des GROUPES de BoxGeometry

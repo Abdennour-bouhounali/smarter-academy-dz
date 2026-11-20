@@ -19,7 +19,7 @@ function Slide({ slide, report, hidden, t }) {
         <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
           <p className="font-inter text-2xl text-slate-500">{report.school.name}</p>
           <h1 className="font-space text-5xl font-bold text-slate-900">{t(`reports.types.${report.type}`)}</h1>
-          <p className="font-space text-3xl text-indigo-700">
+          <p className="font-space text-3xl text-nav-accent">
             {report.type === 'student' && hidden ? placeholder(1) : report.title}
           </p>
           <p className="font-inter text-xl text-slate-500">

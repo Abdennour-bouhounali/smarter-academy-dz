@@ -5,6 +5,12 @@ One entry per generated lesson, newest last. Each lesson is generated INTO its c
 `docs/architecture/LEARNING_NET.md` §4, `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §11 « Publish a lesson » and
 § « Generating a 1AM–3AM unit LESSON BY LESSON ».
 
+> **2026-11-18: `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` (1AM) and `qisma-iqlidiya-hasr` (2AM) are v2 and their
+> module pages are DELETED** (with `content/problems.js`, `moduleContext.js`, `lessonProblem`, and the 1AM unit's
+> `_unit/prepDiagnostic.jsx` + `_unit/moduleContext.js`) — `LESSON_V2.md` §2, `OLD_VERSION_TRACE_2026-11-18.md` §8.
+> Their sections below are history: the module files they cite no longer exist; their configs, knowledge maps, banks and
+> class tests remain.
+
 ## Batch 1 (2026-10-14) — queue entries 1–3
 
 ### 1. `mana-jam-tarh` « معنى الجمع والطرح » (1AM, unit 2 `jam-tarh-ashriya`) — published

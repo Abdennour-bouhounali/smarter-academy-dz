@@ -31,13 +31,11 @@ export function makeLinear(a, b) {
   return { a, b };
 }
 
-export const ZERO_FORM = Object.freeze({ a: R.ZERO, b: R.ZERO });
-
 export function isConstant(form) { return R.isZero(form.a); }
 
 export function addForms(f, g) { return makeLinear(R.add(f.a, g.a), R.add(f.b, g.b)); }
 export function subtractForms(f, g) { return makeLinear(R.subtract(f.a, g.a), R.subtract(f.b, g.b)); }
-export function negateForm(f) { return makeLinear(R.negate(f.a), R.negate(f.b)); }
+function negateForm(f) { return makeLinear(R.negate(f.a), R.negate(f.b)); }
 export function scaleForm(f, k) { return makeLinear(R.multiply(f.a, k), R.multiply(f.b, k)); }
 
 class LinearError extends Error {

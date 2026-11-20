@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus, Scissors, SearchCheck } from 'lucide-react';
 import ManipulationShell from '../ManipulationShell';
@@ -20,7 +20,7 @@ import { playSfx } from '../../utils/playEffect';
 import * as B from '../logic/equationBalance';
 import * as P from '../logic/equationBalancePlayer';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
-import { W, PIVOT, ARM, PW, CX, KINDS, beamGeometry, layoutPan, Item, Ball, Icon } from './equationBalanceParts';
+import { W, PIVOT, ARM, PW, CX, KINDS, beamGeometry, layoutPan, Item, Icon } from './equationBalanceParts';
 
 /*
  * equation-balance — LECTEUR DE MISSION (rollout 2026-11-11, unité 4 leçon 1 `muadala-ula` ; conseil du 2026-11-11, verdict « L1 »).
@@ -39,8 +39,8 @@ import { W, PIVOT, ARM, PW, CX, KINDS, beamGeometry, layoutPan, Item, Ball, Icon
  *   - Journal « 📋 جدول تجاربك » et verdict dans la colonne ; commandes figées pendant une prédiction ou une question (`aria-disabled`) ;
  *     région vivante TOUJOURS montée ; AUCUN défilement : la scène est cadrée par la largeur du labo ET la hauteur de la zone du lecteur.
  */
-export const PRED_MAX = 2;
-export const PRED_HOLD_MS = 1600;
+const PRED_MAX = 2;
+const PRED_HOLD_MS = 1600;
 const PLAYER_CHROME = 150;
 const ringP = 'focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const $ = (x) => `$${x}$`;
@@ -134,7 +134,7 @@ export const QUESTIONS = {
 };
 
 export default function EquationBalancePlayer({
-  eq: eq0 = '2x+3=11', title, lead, mission, level, checkpoints: cpOn = true, onFinished, onTrial, onCheckpoint,
+  eq: eq0 = '2x+3=11', title, lead, mission, level, checkpoints: cpOn = true, onFinished, onTrial,
   coach: coachOn = true,
   onVerdict, chains: chainsMode = 'none', predict: predictList = [], choices, kinds = ['ball', 'balloon', 'bag'], handDone = false,
 }) {
@@ -681,4 +681,3 @@ export default function EquationBalancePlayer({
   );
 }
 
-export { Ball };

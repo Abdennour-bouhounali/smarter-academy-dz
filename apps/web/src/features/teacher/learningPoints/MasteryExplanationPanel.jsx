@@ -136,7 +136,7 @@ export default function MasteryExplanationPanel({ open, onClose, classGroupId, s
             <div className="mb-2 flex items-center justify-between gap-2">
               <h3 className="font-space text-sm font-bold text-slate-900">{t('learningPoints.evidence.notebookTitle')}</h3>
               {evidence?.notebook?.total > 0 && (
-                <Link to={`/enseignant/classes/${classGroupId}/eleves/${studentId}/cahier`} className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800 hover:underline">
+                <Link to={`/enseignant/classes/${classGroupId}/eleves/${studentId}/cahier`} className="inline-flex items-center gap-1 text-xs font-semibold text-nav-accent hover:underline">
                   <NotebookPen size={12} /> {t('learningPoints.evidence.openNotebook')}
                 </Link>
               )}

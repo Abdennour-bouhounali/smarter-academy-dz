@@ -15,7 +15,7 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 export const DIVISOR_RANGE = Object.freeze([-12, 12]);
 
 /** Les tâches par défaut de chaque niveau (la leçon peut passer les siennes). */
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [{ left: '3x+2', right: 'x+8' }, { left: '4x-3', right: '2x+7' }] },
   advanced: { tasks: [{ left: '9x+1', right: '5x-7' }, { left: '-2x+5', right: '3x-10' }, { left: '7x-190', right: '6x+110' }] },
 });
@@ -128,7 +128,7 @@ export function setFree(s, raw) {
 export const toGuided = (s) => (s.free ? { ...s, free: null, cur: taskOf(s).eq, hist: [], last: null, lines: null, c: 1 } : s);
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /* ── Onboarding (LabCoach) ───────────────────────────────────────────────────────────────────── */
 

@@ -63,14 +63,14 @@ export const DEFAULT_CONICS_VIEWPORT = Object.freeze({ xMin: -8, xMax: 8, yMin: 
 
 /** Les couleurs des objets — distinctes et lisibles sur la grille. */
 export const CONIC_PALETTE = Object.freeze(['#2563eb', '#059669', '#b45309', '#7c3aed']);
-export const LINE_COLOR = '#db2777';
+const LINE_COLOR = '#db2777';
 
 const isPlainObject = (value) => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const finite = Number.isFinite;
 
 let idCounter = 0;
 /** Un identifiant court, stable le temps d'une session. */
-export function newId(prefix) {
+function newId(prefix) {
   idCounter += 1;
 
   return `${prefix}-${Date.now().toString(36)}-${idCounter.toString(36)}`;
@@ -81,13 +81,13 @@ export const COORD_LIMIT = 1e4;
 /** Un demi-axe ou un rayon : strictement positif, et borné de même. */
 export const SIZE_LIMIT = 1e4;
 
-export function clampCoord(value) {
+function clampCoord(value) {
   if (!finite(value)) return 0;
 
   return C.cleanNumber(Math.min(COORD_LIMIT, Math.max(-COORD_LIMIT, value)));
 }
 
-export function clampSize(value, fallback = 1) {
+function clampSize(value, fallback = 1) {
   if (!finite(value) || value <= 0) return fallback;
 
   return C.cleanNumber(Math.min(SIZE_LIMIT, Math.max(1e-3, value)));
@@ -140,7 +140,7 @@ function readPoint(raw) {
  * rejeté : un rayon de 10⁹ enregistré par une version future doit rouvrir
  * en un cercle visible, pas en un document vide.
  */
-export function normalizeConicObject(raw, index = 0) {
+function normalizeConicObject(raw, index = 0) {
   if (!isPlainObject(raw)) return null;
   if (!C.CONIC_KINDS.includes(raw.kind)) return null;
   const h = clampCoord(Number(raw.h));
@@ -180,7 +180,7 @@ export function normalizeConicObject(raw, index = 0) {
 }
 
 /** Une DROITE relue (§26) — `y = mx + p`, ou verticale. */
-export function normalizeLineObject(raw) {
+function normalizeLineObject(raw) {
   if (!isPlainObject(raw)) return null;
   const base = {
     id: readId(raw.id) ?? newId('line'),
@@ -474,7 +474,7 @@ export function redo(data) {
 }
 
 /** Deux scènes « les mêmes » — la comparaison qui évite d'empiler du vide. */
-export function sameScene(a, b) {
+function sameScene(a, b) {
   if (!a || !b) return a === b;
   if (a.objects.length !== b.objects.length) return false;
   if (a.selectedId !== b.selectedId) return false;

@@ -131,7 +131,7 @@ export function stepPills(s) {
 }
 
 /** La mission est-elle réussie par (a, b) ? (Pour `fill` : selon les colonnes allumées.) */
-export function judge(task, a, b, lit) {
+function judge(task, a, b, lit) {
   const product = productOf(a, b);
   if (task.kind === 'fill') {
     const need = COLUMNS.filter((x) => x <= task.from && x >= task.to);
@@ -230,7 +230,7 @@ export function nextTask(s) {
 }
 
 /** « إعادة » : le tableau de la mission repart de b = 4, les essais restent. */
-export function restartTask(s) {
+function restartTask(s) {
   const task = taskOf(s);
   return { ...s, a: aOpening(task, s.a), b: B_START, lit: { [B_START]: true }, last: null, picked: null, free: null };
 }
@@ -263,7 +263,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, last: null } : s);
 /* ── Preuves (onTrial) ──────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
 
 /* ── Onboarding (LabCoach) ──────────────────────────────────────────────────────────────────── */
 

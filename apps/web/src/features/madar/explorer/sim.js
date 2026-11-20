@@ -18,7 +18,6 @@ import LEVELS from '../../../../../api/resources/games/explorer/levels.json';
 export const PHYSICS = LEVELS.physics;
 export const SCORING = LEVELS.scoring;
 export const LEVEL_COUNT = LEVELS.levels.length;
-export const WORLDS = LEVELS.worlds;
 export const H = 14;
 const STEP = 1 / 120;
 
@@ -26,10 +25,6 @@ const SOLID = new Set(['#', 'B', '?', 'U', 'P', 'S']);
 
 export function levelData(n) {
   return LEVELS.levels.find((l) => l.n === n) ?? null;
-}
-
-export function worldOf(n) {
-  return levelData(n)?.world ?? 'moon';
 }
 
 const ENEMY = {

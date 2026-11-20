@@ -96,7 +96,7 @@ export default function InterventionForm({ open, onClose, onCreated, classGroupI
           <legend className="mb-2 text-sm font-semibold text-slate-800">{t('interventions.form.kind')}</legend>
           <div className="grid gap-2 sm:grid-cols-2">
             {kinds.map((k) => (
-              <label key={k} className={`flex cursor-pointer gap-2 rounded-xl border p-3 text-sm ${kind === k ? 'border-teal-600 bg-teal-50/60' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
+              <label key={k} className={`flex cursor-pointer gap-2 rounded-xl border p-3 text-sm ${kind === k ? 'border-nav-accent bg-nav-page' : 'border-slate-200 bg-white hover:border-slate-300'}`}>
                 <input type="radio" name="kind" value={k} checked={kind === k} onChange={() => setKind(k)} className="mt-1" data-intervention-kind={k} />
                 <span>
                   <span className="block font-semibold text-slate-800">{t(`interventions.kinds.${k}`)}</span>
@@ -112,14 +112,14 @@ export default function InterventionForm({ open, onClose, onCreated, classGroupI
             <legend className="text-sm font-semibold text-slate-800">{t('interventions.form.students')}</legend>
             {candidates.length > 1 && (
               <span className="flex gap-2 text-[11px]">
-                <button type="button" className="text-teal-800 hover:underline" onClick={() => setSelected(new Set(candidates.map((c) => c.id)))}>{t('interventions.form.selectAll')}</button>
+                <button type="button" className="text-nav-accent hover:underline" onClick={() => setSelected(new Set(candidates.map((c) => c.id)))}>{t('interventions.form.selectAll')}</button>
                 <button type="button" className="text-slate-500 hover:underline" onClick={() => setSelected(new Set())}>{t('interventions.form.selectNone')}</button>
               </span>
             )}
           </div>
           <div className="flex max-h-40 flex-wrap gap-1.5 overflow-y-auto">
             {candidates.map((s) => (
-              <label key={s.id} className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${selected.has(s.id) ? 'border-teal-600 bg-teal-50 text-teal-900' : 'border-slate-200 bg-white text-slate-600'}`}>
+              <label key={s.id} className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${selected.has(s.id) ? 'border-nav-accent bg-nav-page text-nav-accent' : 'border-slate-200 bg-white text-slate-600'}`}>
                 <input type="checkbox" checked={selected.has(s.id)} onChange={() => toggle(s.id)} className="h-3.5 w-3.5" data-intervention-student={s.id} />
                 {studentName(s, unnamed)}
               </label>

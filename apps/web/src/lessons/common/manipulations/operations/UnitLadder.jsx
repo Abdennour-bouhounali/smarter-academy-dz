@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Hand, FlaskConical, Undo2, RotateCcw, ChevronLeft, ShieldAlert, Plus, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -193,7 +193,6 @@ export function colsText(n, k) {
   return k(a <= 10 ? 'cols.few' : 'cols.many', { n: a });
 }
 const unitName = (k, u, mode) => `${k(`units.${u}`)}${mode === 2 ? '²' : mode === 3 ? '³' : ''}`;
-const perUnit = (k, mode) => (mode === 1 ? colsText(1, k) : colsText(mode, k));
 
 /* ══════════════ Le laboratoire ══════════════ */
 

@@ -1,32 +1,52 @@
-import { House, BookOpen, PencilRuler, NotebookPen, Users, ClipboardCheck, BadgeCheck, UserRound, Gamepad2, Building2, Brain } from 'lucide-react';
+import { Sun, BookOpen, Users, FlaskConical } from 'lucide-react';
 
 /**
- * L'espace ENSEIGNANT (« فضاء الأستاذ ») — sa propre navigation, comme
- * data/studentNavigation.js : des DONNÉES, pas du balisage. `labelKey` →
- * i18n `nav`.
+ * The TEACHER's navigation: FOUR doors and the account menu under his picture (owner, 2026-11-16; plan
+ * `docs/reports/NAVIGATION_REBUILD_PLAN.md`). DATA, like `data/studentNavigation.js`: the rail, the bottom bar and the
+ * line of pages under a door read this file. `labelKey` → i18n `nav`.
  *
- * Deux moitiés. APPRENDRE comme un élève — les leçons (le même moteur,
- * tous les modules ouverts, rien d'écrit), le مختبر, son cahier — puis
- * ENSEIGNER : les classes (leur suivi vit dans la page de la classe), l'offre. Les mêmes mots que
- * l'espace élève (الدروس, المختبر, كرّاسي) : c'est la même plateforme.
- * `mobile: false` retire une entrée de la barre basse (six onglets au plus).
+ * « تصحيح الإجابات » is no longer a menu entry: its count (`badge: 'reviews'`) shows on « أقسامي » and on its page line.
+ * `rest: true` marks the door that stays lit on every other page of his space (a lesson and its tools).
  */
-export const teacherNavLinks = [
-  { labelKey: 'teacherHome', path: '/enseignant', icon: House, end: true },
-  { labelKey: 'courses', path: '/enseignant/cours', icon: BookOpen },
-  { labelKey: 'mathLab', path: '/enseignant/atelier', icon: PencilRuler },
-  // « مختبر التفكير » en « معاينة الأستاذ » (2026-10-31, THINKING_LAB.md §8bis) : tous les défis ouverts, la réponse
-  // et la relecture visibles, une réponse à tester — rien n'est écrit.
-  { labelKey: 'thinkingLab', path: '/enseignant/tafkir', icon: Brain, mobile: false },
-  { labelKey: 'notebook', path: '/enseignant/cahier', icon: NotebookPen },
-  { labelKey: 'myClasses', path: '/enseignant/classes', icon: Users },
-  // « تصحيح الإجابات » (2026-10-06) : les copies de SES élèves en « تصحيح الأستاذ ».
-  // `badge` : le nombre en attente (useReviewCount).
-  { labelKey: 'answerReviews', path: '/enseignant/tashih', icon: ClipboardCheck, badge: 'reviews' },
-  // « فضاء الألعاب » : gérer les trois jeux de ses classes (MADAR_GAME.md §8).
-  { labelKey: 'teacherGames', path: '/enseignant/jeux', icon: Gamepad2, mobile: false },
-  { labelKey: 'myPlan', path: '/enseignant/offre', icon: BadgeCheck, mobile: false },
-  // « مؤسستي » : l'établissement, ce qu'il voit de l'enseignant (SCHOOL_ADMIN_SPACE.md, D4).
-  { labelKey: 'mySchool', path: '/enseignant/muassasa', icon: Building2, mobile: false },
-  { labelKey: 'profile', path: '/enseignant/profil', icon: UserRound, mobile: false },
+export const teacherDoors = [
+  { id: 'today', labelKey: 'doors.today', icon: Sun, path: '/enseignant', end: true, pages: [] },
+  {
+    id: 'lessons',
+    labelKey: 'doors.lessons',
+    icon: BookOpen,
+    path: '/enseignant/cours',
+    match: ['/courses'],
+    rest: true,
+    pages: [],
+  },
+  {
+    id: 'classes',
+    labelKey: 'doors.classes',
+    icon: Users,
+    path: '/enseignant/classes',
+    badge: 'reviews',
+    pages: [
+      { labelKey: 'myClasses', path: '/enseignant/classes' },
+      { labelKey: 'answerReviews', path: '/enseignant/tashih', badge: 'reviews' },
+      { labelKey: 'teacherGames', path: '/enseignant/jeux' },
+    ],
+  },
+  {
+    id: 'tools',
+    labelKey: 'doors.tools',
+    icon: FlaskConical,
+    path: '/enseignant/atelier',
+    pages: [
+      { labelKey: 'mathLab', path: '/enseignant/atelier' },
+      { labelKey: 'thinkingLab', path: '/enseignant/tafkir' },
+      { labelKey: 'notebook', path: '/enseignant/cahier' },
+    ],
+  },
+];
+
+/** The account, not the work: reached from his picture, never from a door. */
+export const teacherAccountLinks = [
+  { labelKey: 'doors.account', path: '/enseignant/profil' },
+  { labelKey: 'myPlan', path: '/enseignant/offre' },
+  { labelKey: 'mySchool', path: '/enseignant/muassasa' },
 ];

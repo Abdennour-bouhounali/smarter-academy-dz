@@ -12,7 +12,6 @@
  */
 import * as M from '@smarter-academy/core/arithmetic/missingNumber.js';
 
-export const KINDS = M.KINDS;
 export const FREE_KINDS = Object.freeze(['add', 'sub', 'rsub', 'mul']);
 const bad = (m) => { throw new Error(`rewind-belt : ${m}`); };
 
@@ -70,7 +69,7 @@ export const isAdvanced = (s) => s.tasks.some((t) => t.advanced);
 /** On ne change de carte qu'au bord du tapis : phase `rewind`, caisse encore sur le plateau de sortie. */
 export const canPick = (s) => !s.free && s.phase === 'rewind' && s.pos === 0;
 /** Ce que la machine inverse rendrait si on tirait la caisse jusqu'au bout avec la carte choisie (`null` : pas de carte, ou un négatif : le tapis se bloque). */
-export function peekFound(s) {
+function peekFound(s) {
   if (!s.pick) return null;
   const t = taskOf(s);
   const j = M.judgePick(t.card, s.pick, t.out);
@@ -141,7 +140,7 @@ export function retryTask(s) {
 }
 
 /* ── « جرّب أعدادك » : une machine de l'élève (carte + nombre a + sortie b), ouverte en permanence ── */
-export const FREE_DEFAULT = Object.freeze({ kind: 'add', a: '9', b: '54' });
+const FREE_DEFAULT = Object.freeze({ kind: 'add', a: '9', b: '54' });
 export function setFree(s, patch) {
   const cur = s.free ?? FREE_DEFAULT;
   const next = { ...cur, ...patch };

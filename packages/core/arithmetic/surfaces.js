@@ -21,7 +21,6 @@
  */
 
 export const key = (r, c) => `${r},${c}`;
-const parseKey = (k) => k.split(',').map(Number);
 const uniq = (cells) => {
   const seen = new Set();
   const out = [];
@@ -260,4 +259,4 @@ export function validPairing(cells, pairs) {
   return true;
 }
 
-export { parseKey, uniq as uniqueCells };
+export { uniq as uniqueCells };

@@ -4,7 +4,7 @@
  */
 export const LOCKER_W = 30;
 export const LOCKER_H = 40;
-export const GAP = 6;
+const GAP = 6;
 
 /** Les positions x des `n` petits casiers, rangés dans [x0, x1] (jamais plus de 8, centrés, pas qui rétrécit si trop étroit). */
 export function lockerSlots(n, x0, x1) {

@@ -1,7 +1,7 @@
 import * as LIN from '@smarter-academy/core/arithmetic/linear.js';
 import * as PR from '@smarter-academy/core/arithmetic/proportional.js';
 
-const { frac, parseNumber, mul, sub, add, div, eq, cmp, toNumber, fracDecimal, fracLatex, isZero } = LIN;
+const { frac, parseNumber, mul, sub, add, div, eq, cmp, toNumber, fracDecimal, fracLatex } = LIN;
 
 /**
  * percent-tag — L'ÉTIQUETTE QU'ON ÉTIRE (unité 6 « الدالة الخطية والتناسبية », leçon 4
@@ -43,7 +43,7 @@ export const BET_RANGE = Object.freeze({ min: -100, max: 20 });
 export const CHAIN_MAX = 3;
 
 /** Les articles de la vitrine (monde `mall`) : le premier est celui de la leçon. */
-export const MALL_ARTICLES = Object.freeze([
+const MALL_ARTICLES = Object.freeze([
   Object.freeze({ id: 'sneakers', price: null }),       // le prix de la leçon (1200 DA, نشاط 5)
   Object.freeze({ id: 'jersey', price: '3000' }),       // plateforme : le maillot de l'équipe nationale
   Object.freeze({ id: 'cap', price: '800' }),           // plateforme : la casquette
@@ -201,7 +201,7 @@ export const current = (lab, steps = lab.chain) => mul(lab.start, chainK(steps))
 export const preview = (lab, s = lab.s) => mul(current(lab), multiplier(s));
 
 /** Pourquoi un pas ne peut pas être ajouté : null si possible. */
-export function canCommit(lab, s = lab.s) {
+function canCommit(lab, s = lab.s) {
   if (lab.bet == null) return 'betFirst';
   if (s === 0) return 'needT';
   if (lab.chain.length >= CHAIN_MAX) return 'full';
@@ -313,8 +313,6 @@ export function decTex(p, max = 6) {
   const d = fracDecimal(F(p), max);
   return d ? d.replace(',', '{,}') : fracLatex(F(p));
 }
-/** Un nombre exact est-il écrit exactement par `dec` (sinon « ≈ ») ? */
-export const exactDec = (p, max = 6) => fracDecimal(F(p), max) != null;
 
 /** « +5\% » / « -30\% » (pourcentage signé, entier ou décimal). */
 export function pctTex(p) {
@@ -386,4 +384,3 @@ export function percentTicks(x, scale, narrow = false) {
   return out;
 }
 
-export const isZeroFrac = (p) => isZero(F(p));

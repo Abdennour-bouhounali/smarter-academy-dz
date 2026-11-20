@@ -12,7 +12,6 @@ import GradeLessonSearch, { filterLessonsByQuery } from '../../components/studen
 
 export default function Explorer() {
   const { t } = useTranslation('student');
-  const { t: tc } = useTranslation('common');
   useDocumentMeta(t('explorer.metaTitle'), t('explorer.metaDescription'));
   const { user } = useContext(AuthContext);
 
@@ -85,7 +84,7 @@ export default function Explorer() {
                 ? 'text-white shadow-md'
                 : 'bg-white text-slate-700 border-2 border-blue-200 hover:border-blue-300'
             }`}
-            style={selectedGradeId === myGrade.id ? { background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' } : {}}
+            style={selectedGradeId === myGrade.id ? { background: '#3B5BDB' } : {}}
           >
             <Star size={15} className={selectedGradeId === myGrade.id ? 'text-white' : 'text-blue-500'} />
             {myGrade.name}
@@ -132,7 +131,7 @@ export default function Explorer() {
                   key={chapter.id}
                   onClick={() => setActiveChapter(chapter.id)}
                   className={`flex-shrink-0 inline-flex items-center px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
-                    isSelected ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                    isSelected ? 'bg-nav-accent text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                   }`}
                 >
                   <span>{chapter.icon && <span className="me-1.5" aria-hidden="true">{chapter.icon}</span>}{chapter.title}</span>

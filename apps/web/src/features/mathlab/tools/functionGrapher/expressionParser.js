@@ -99,7 +99,7 @@ class ParseError extends Error {
 }
 
 /** Découpe la source en jetons. `variables` : les lettres qui sont des variables (x, et demain a, b…). */
-export function tokenize(source, variables = ['x']) {
+function tokenize(source, variables = ['x']) {
   const tokens = [];
   const text = String(source ?? '');
   const isLetter = (ch) => /[a-zA-Z]/.test(ch);

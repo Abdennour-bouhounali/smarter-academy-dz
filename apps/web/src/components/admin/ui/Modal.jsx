@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
@@ -92,7 +92,7 @@ export default function Modal({ open, onClose, title, children, footer, size = '
  * accès ou retire du contenu aux élèves.
  */
 export function ConfirmDialog({ open, onClose, onConfirm, title, message, confirmLabel, tone = 'default', busy = false, cancelLabel, busyLabel, closeLabel }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
 
   return (
     <Modal
@@ -108,7 +108,7 @@ export function ConfirmDialog({ open, onClose, onConfirm, title, message, confir
             onClick={onClose}
             className="rounded-xl border border-slate-300 bg-white px-4 py-2 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50"
           >
-            {cancelLabel ?? t('common.cancel')}
+            {cancelLabel ?? t('ui.cancel')}
           </button>
           <button
             type="button"
@@ -118,7 +118,7 @@ export function ConfirmDialog({ open, onClose, onConfirm, title, message, confir
               tone === 'danger' ? 'bg-rose-600 hover:bg-rose-700' : 'bg-violet-600 hover:bg-violet-700'
             }`}
           >
-            {busy ? (busyLabel ?? t('common.busy')) : (confirmLabel ?? t('common.confirm'))}
+            {busy ? (busyLabel ?? t('ui.busy')) : (confirmLabel ?? t('ui.confirm'))}
           </button>
         </>
       )}

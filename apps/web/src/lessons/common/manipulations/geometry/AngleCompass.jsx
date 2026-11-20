@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, RotateCcw, ArrowLeft, Ruler } from 'lucide-react';
@@ -97,8 +97,6 @@ const BTN = 'inline-flex h-11 min-w-[44px] items-center justify-center gap-1 rou
 const NAME = { h: 'B', v: 'A' };
 const KIND_TEX = { sin: '\\sin', cos: '\\cos', tan: '\\tan' };
 const num = (x) => TR.surdNumber(x);
-/** Une longueur exacte en texte de scène (LTR) : 4, √21, 2√3. */
-const lenText = (x) => TR.surdText(x);
 
 export default function AngleCompass({
   targets: targets0, numbers: numbers0, theme = 'kite', discovery: discoveryKind, title, lead, mission, level,
@@ -612,7 +610,7 @@ function CompassTrack({ st, value, max, label, valueText }) {
 }
 
 /* ── la construction : équerre, graduations, reports, arc, hypoténuse (le fil), sommets, rapporteur ── */
-function ConstructionSvg({ lab, Ls, P, W, H, scale, ptH, ptV, tipAt, pivot, shownTrial, success, reduce }) {
+function ConstructionSvg({ lab, P, W, H, scale, ptH, ptV, tipAt, pivot, shownTrial, success, reduce }) {
   const O = P([0, 0]);
   const reach = 12.2;
   const ends = { h: P([reach, 0]), v: P([0, reach]) };
@@ -677,7 +675,7 @@ function ConstructionSvg({ lab, Ls, P, W, H, scale, ptH, ptV, tipAt, pivot, show
   );
 }
 
-function AngleMark({ at, other, base, deg, ok, scale }) {
+function AngleMark({ at, other, base, ok, scale }) {
   const r = Math.max(22, 1.6 * scale);
   const a0 = Math.atan2(base[1] - at[1], base[0] - at[0]);
   const a1 = Math.atan2(other[1] - at[1], other[0] - at[0]);

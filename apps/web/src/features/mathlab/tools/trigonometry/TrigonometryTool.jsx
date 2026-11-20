@@ -17,7 +17,6 @@ import {
 } from './trigState.js';
 import { getExperiment } from './presets.js';
 import { generateChallenge, checkAnswer, revealTarget, kindsForMode } from './practice.js';
-import { useCompactCharts } from '../probabilityStats/useMediaQuery.js';
 import { clampToFeatures, trigonometryFeatures } from './scope.js';
 
 /** Le délai entre un changement et sa remise à la coquille (qui attend encore avant d'enregistrer). */
@@ -62,7 +61,6 @@ export default function TrigonometryTool({ initialData, onChange, onReady, capab
   const [direction, setDirection] = useState(1);
   const [announcement, setAnnouncement] = useState('');
   const [experiment, setExperiment] = useState(null);
-  const compact = useCompactCharts();
 
   const timerRef = useRef(null);
   const dataRef = useRef(data);

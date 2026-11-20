@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -12,8 +11,8 @@ import KidFigure from '../../primitives/KidFigure';
 export const W = 640;
 export const H = 300;
 export const GX = 330;                 // l'axe de la jauge
-export const Y_TOP = 30;
-export const Y_BOT = 250;
+const Y_TOP = 30;
+const Y_BOT = 250;
 
 export const COL = {
   sky: '#E0F2FE', skyDark: '#BAE6FD', snow: '#F8FAFC', snowShade: '#E2E8F0', stone: '#CBD5E1', stoneDark: '#94A3B8', ink: '#0F172A',

@@ -1,4 +1,3 @@
-import React from 'react';
 
 const TONES = {
   neutral: 'bg-slate-100 text-slate-800 border-slate-200',

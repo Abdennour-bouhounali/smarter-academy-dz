@@ -12,7 +12,7 @@ import { pieSectors } from './descriptiveStats.js';
  * DOM à côté répète valeur, pourcentage et angle.
  */
 
-export const PIE_COLORS = ['#008443', '#F36D21', '#2563eb', '#a21caf', '#0891b2', '#ca8a04', '#be123c', '#475569'];
+const PIE_COLORS = ['#008443', '#F36D21', '#2563eb', '#a21caf', '#0891b2', '#ca8a04', '#be123c', '#475569'];
 
 const polar = (cx, cy, r, degrees) => {
   const a = ((degrees - 90) * Math.PI) / 180;

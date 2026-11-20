@@ -32,7 +32,7 @@ import { MAX_SUBSTITUTION_TERMS, sortedMarks } from './descriptiveStats.js';
 
 export const STAT_KINDS = Object.freeze(['mean', 'median', 'quartiles', 'range', 'variance', 'sd']);
 /** Au-delà, la série ordonnée ne s'écrit plus terme à terme : ses extrémités et les rangs lus. */
-export const MAX_SORTED_TOKENS = 12;
+const MAX_SORTED_TOKENS = 12;
 
 const K = 'tools.probabilityStats.explain.frames';
 const num = (value, decimals = 4) => latexNumber(value, decimals);

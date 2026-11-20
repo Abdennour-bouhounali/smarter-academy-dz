@@ -119,7 +119,7 @@ effect and is the contract the audit checks.
 demand into a ladder · disclose progressively. Never a generic "Rappel", a theory dump, a
 post-answer definition, or a lost interaction.
 
-Reference implementation: `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/modules/Module02Maarif.jsx` (every question declares `requires={[…]}`); verify with `npm run audit:knowledge:gate`.
+Reference implementation: `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-mushtarak-akbar/modules/Module02Maarif.jsx` (every question declares `requires={[…]}`); verify with `npm run audit:knowledge:gate`.
 
 ---
 

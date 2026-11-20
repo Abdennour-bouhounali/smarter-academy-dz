@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
 import TrigCalculator, { QUESTIONS, chainFor } from './TrigCalculator';
@@ -56,7 +55,6 @@ describe('trig-calculator — rendu', () => {
 describe('trig-calculator — questions pendant le labo (LabCheckpoint)', () => {
   const RAWK = /manipulation\.[a-zA-Z]/;
   const press = (lab, keys) => keys.reduce((s, kk) => TL.key(s, kk), lab);
-  const round = (lab, cut, choice) => TL.decide(TL.setCut(lab, cut), choice);
   /** Une cellule ARRONDIE : le trait au centième, puis la bonne décision. */
   const cell = (lab, kind, angle) => {
     let s = press(lab, [kind, ...String(angle).split(''), '=']);

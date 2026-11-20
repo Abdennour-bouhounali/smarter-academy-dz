@@ -13,7 +13,7 @@
  */
 
 import {
-  makeFrac, simplify, fracToNumber, multiplyFrac, compareFrac, fracToDecimal,
+  makeFrac, simplify, fracToNumber, multiplyFrac, fracToDecimal,
 } from './fraction.js';
 import { gcd, roundTo } from './numberTheory.js';
 
@@ -101,7 +101,7 @@ export function reversePercentage(result, percent) {
  * On les calcule TOUS, pour que l'écran les montre ensemble et que la
  * proportionnalité saute aux yeux — 10 % vaut 20, donc 20 % vaut 40.
  */
-export const LADDER_STOPS = Object.freeze([1, 5, 10, 20, 25, 50, 75, 100]);
+const LADDER_STOPS = Object.freeze([1, 5, 10, 20, 25, 50, 75, 100]);
 
 export function percentageLadder(quantity, stops = LADDER_STOPS) {
   if (!Number.isFinite(quantity)) return [];
@@ -289,5 +289,3 @@ export function ratiosEqual(a, b, c, d) {
   };
 }
 
-/** Comparer deux fractions vues comme des rapports — réexporté pour §45. */
-export { compareFrac };

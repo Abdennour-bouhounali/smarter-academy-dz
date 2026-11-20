@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * UN JOUEUR — un personnage dessiné, pas un rond.
@@ -19,7 +18,7 @@ import React from 'react';
  */
 
 /** Les tenues des équipes : des combinaisons originales, numérotées. */
-export const TEAM_KITS = [
+const TEAM_KITS = [
   { id: 0, shirt: '#4F46E5', shorts: '#312E81', trim: '#C7D2FE' },
   { id: 1, shirt: '#059669', shorts: '#064E3B', trim: '#A7F3D0' },
   { id: 2, shirt: '#EA580C', shorts: '#7C2D12', trim: '#FED7AA' },

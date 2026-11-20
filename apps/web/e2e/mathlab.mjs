@@ -196,7 +196,6 @@ async function addFiles(page, files) {
 const filesMessage = (page) => page.locator('[data-ml-files-message]').innerText();
 const filesCount = (page) => page.locator('[data-ml-file]').count();
 const boardCounter = (page) => page.getAttribute('[data-ml-files-board]', 'data-ml-files-board');
-const importVia = (page, file) => addFiles(page, file);
 
 const libraryUnits = (page) => page.locator('[data-ml-whiteboard] .library-unit').count();
 

@@ -134,6 +134,7 @@ Three kinds of question, and only two sources of evidence:
 | Module questions (`discovery`, `practice`, trigger, manipulation) | inside a lesson's modules | **never** — mistakes there are information, not evidence | — |
 | Final test (« إختبار أولي », `BossFinal`, `evaluation` stage) | the lesson's evaluation module | yes | `assessment` |
 | Practice engine exercises | `content/practice/**`, the practice hub | yes, at practice weight | `practice_exercise` |
+| Game world of a lesson (trial, `qasim-adad-tabii`, 2026-11-15) | generated arithmetic, no stored key | yes, on strict terms: written format, first try, no help — the server RE-COMPUTES the verdict from the numbers (`POST /lessons/{code}/game-evidence`, `GameEvidenceController`, `Domain/GameWorld/ClaimVerifier`), difficulty 2–3; never enough alone for « mastered » (`GAME_WORLD.md` §4) | `practice_exercise` |
 
 **Daily challenge answers** (« التحدّي اليومي », 2026-09-25) are practice
 engine questions served by the server: they enter through the same door as

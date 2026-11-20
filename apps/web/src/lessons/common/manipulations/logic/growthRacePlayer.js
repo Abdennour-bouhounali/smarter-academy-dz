@@ -72,7 +72,7 @@ export function shownValues({ left, right, maxX, goal = 'equal', chains }) {
 /* ── les prédictions du lecteur ── */
 
 /** Les cartes à poser : les éléments qui changent (un nombre fixe, comme « 31 », n'en prend pas). */
-export const cardCount = (model) => storyCarried(model).length;
+const cardCount = (model) => storyCarried(model).length;
 
 /** Les choix d'une prédiction (des nombres/clés ; le texte vient de i18n), dans un ordre tournant `pos` (la bonne place varie). */
 export function predictOptions(model, kind, pos = 0) {
@@ -105,7 +105,7 @@ export function judgedPredictions(lab, preds, range) {
 }
 
 /* ── les suites de questions du lecteur ── */
-export const CHAINS_PLAYER = Object.freeze({
+const CHAINS_PLAYER = Object.freeze({
   sum4: { build: ['slopeTap', 'buildEq'], race: ['whereTap'] },
   mult: { build: ['buildEq'], race: ['whereTap', 'afterTap', 'ruleP'] },
   sum2: { build: ['buildEq'], race: ['whereTap'] },

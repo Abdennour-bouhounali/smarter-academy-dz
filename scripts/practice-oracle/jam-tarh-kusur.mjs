@@ -40,12 +40,11 @@ const sum = (terms) => terms.reduce((a, t) => a.add(q(t)), new Q(0n));
 const S = (...terms) => sum(terms).toString();
 const dens = (terms) => terms.filter((t) => String(t).includes('/')).map((t) => BigInt(String(t).slice(String(t).lastIndexOf('/') + 1)));
 const bruteLcm = (ds) => { for (let m = 1n; ; m++) if (ds.every((d) => m % d === 0n)) return m; };
-const NUM = (t, D) => { const f = q(t); const d = BigInt(String(t).slice(String(t).lastIndexOf('/') + 1)); if (BigInt(D) % d !== 0n) throw new Error(`${D} n'est pas un multiple de ${d}`); return String(BigInt(String(t).slice(0, String(t).lastIndexOf('/'))) * (BigInt(D) / d)); };
+const NUM = (t, D) => { const d = BigInt(String(t).slice(String(t).lastIndexOf('/') + 1)); if (BigInt(D) % d !== 0n) throw new Error(`${D} n'est pas un multiple de ${d}`); return String(BigInt(String(t).slice(0, String(t).lastIndexOf('/'))) * (BigInt(D) / d)); };
 const FAC = (t, D) => { const d = BigInt(String(t).slice(String(t).lastIndexOf('/') + 1)); if (BigInt(D) % d !== 0n) throw new Error(`${D} n'est pas un multiple de ${d}`); return String(BigInt(D) / d); };
 const RED = (...terms) => { const D = bruteLcm(dens(terms)); let N = 0n; for (const t of terms) { const v = q(t); if (D % v.d !== 0n) throw new Error('dénominateur'); N += v.n * (D / v.d); } return gcd(N, D) > 1n; };
 const EQV = (a, b) => q(a).eq(q(b));
 const GE = (a, b) => !q(a).lt(q(b));
-const GT = (a, b) => q(b).lt(q(a));
 const LCMD = (...fr) => String(bruteLcm(fr.map((t) => BigInt(String(t).slice(String(t).lastIndexOf('/') + 1)))));
 /** Division longue de la valeur v (≥ 0) : partie entière puis k chiffres ; rend { int, digits, rest }. */
 const longDiv = (v, k) => {
@@ -242,7 +241,6 @@ export const ORACLE = {
 const MISC_OK = /^MISC-JAMKASR-(ACROSS|NOSCALE|DENSUM|PART|NATURAL)$/;
 const islands = (s) => [...String(s ?? '').matchAll(/\$([^$]+)\$/g)].map((m) => m[1]);
 const FR = /\\dfrac\{([0-9{},]+)\}\{([0-9]+)\}/g;
-const num = (s) => decQ(s.replace('{,}', '.'));
 /** Valeur d'une expression « 3 + \dfrac{5}{6} - … » (littéraux seulement : naturels, décimaux, \dfrac) ; null si illisible. */
 function evalLatex(expr) {
   let t = expr.replace(/^\s*[A-Za-z](\s*[+-]\s*[A-Za-z])?\s*=\s*/, '').replace(/\\left|\\right/g, '');

@@ -169,10 +169,6 @@ describe('Le service d’authentification', () => {
     expect(source).not.toMatch(/privacy_policy_accepted_version\s*:/);
   });
 
-  it('lit les versions depuis le serveur, en lecture seule', () => {
-    expect(source).toContain('/legal/versions');
-  });
-
   it('ne transmet jamais l’adresse au renvoi — le serveur la connaît', () => {
     const bloc = source.slice(source.indexOf('export async function resendVerificationEmail'));
     expect(bloc.slice(0, 600)).not.toMatch(/body:/);

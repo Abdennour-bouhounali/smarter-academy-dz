@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les figures des exercices de la leçon (réécrites avec les nombres de la PLATEFORME, rollout 2026-11-11), dessinées en SVG (jamais d'image) : elles

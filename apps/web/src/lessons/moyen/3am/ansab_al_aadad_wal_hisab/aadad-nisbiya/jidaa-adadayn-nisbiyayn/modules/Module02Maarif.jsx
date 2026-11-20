@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -85,7 +85,7 @@ export default function Module02Maarif() {
           content: (
             <div className="space-y-3">
               <NumericQuestion
-                prompt={<MathText>{'أكمل: $(-3) \\times 4 + (-3) \\times (-4) = (-3) \\times \\big(4 + (-4)\\big) = (-3) \\times 0 = \;?$'}</MathText>}
+                prompt={<MathText>{'أكمل: $(-3) \\times 4 + (-3) \\times (-4) = (-3) \\times \\big(4 + (-4)\\big) = (-3) \\times 0 = \\;?$'}</MathText>}
                 expected={0} requires={['jidaa-jamaa']}
                 explain={<MathText>{'العددان $4$ و $-4$ معاكسان فمجموعهما $0$ ، وأيّ عدد في $0$ يعطي $0$ .'}</MathText>}
                 onAnswered={answered('b')}

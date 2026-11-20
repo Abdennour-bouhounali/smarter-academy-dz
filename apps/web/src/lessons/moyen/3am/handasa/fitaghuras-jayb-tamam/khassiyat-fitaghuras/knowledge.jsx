@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, METHOD_SIDE, METHOD_NOT_RIGHT } from './content/textbook';
 

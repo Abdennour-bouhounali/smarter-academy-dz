@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import ManipulationShell from '../ManipulationShell';
@@ -626,7 +626,7 @@ const KINDI = { surface: 0, inside: 1, outside: 2 };
 
 /** Chaque question est construite sur LES nombres de l'élève (rien n'est écrit en dur) ; `k` : les textes de `sphereProbe`. */
 export const QUESTIONS = {
-  om2: ({ lab, step }, k) => {
+  om2: ({ step }, k) => {
     const tr = step.trial; const [x, y, z] = tr.at;
     const o = { name: $(tr.name), p: $(pointTex(tr.name, tr.at)), x: $(x), y: $(y), z: $(z), calc: $(`${x * x} + ${y * y} + ${z * z}`), n: tr.OM2 };
     return {
@@ -693,7 +693,7 @@ export const QUESTIONS = {
       prompt: Cq(k, 'gcRadius.prompt', o), hints: [Cq(k, 'gcRadius.hint1', o), Cq(k, 'gcRadius.hint2', o)], explain: Cq(k, 'gcRadius.explain', o),
     };
   },
-  gcCentre: ({ lab, step }, k) => {
+  gcCentre: ({ lab }, k) => {
     const o = { R: lab.R };
     return {
       id: 'gcCentre', kind: 'choice', cols: 1, prompt: Cq(k, 'gcCentre.prompt', o),

@@ -18,10 +18,8 @@
  */
 import * as D from '@smarter-academy/core/arithmetic/decimals.js';
 
-export const PHASES = Object.freeze({ least: 'least', most: 'most', heavyLight: 'heavyLight', lightHeavy: 'lightHeavy' });
-
 /** Les tâches par défaut de chaque niveau (la leçon peut passer les siennes). Les nombres sont du TEXTE exact. */
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: {
     tasks: [
       { id: 't1', kind: 'least', rank: 1, res: 2, reading: '1,3', start: '1,00' },
@@ -94,7 +92,7 @@ export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 
 export const massAt = (s, m = s.m) => D.make(m, taskOf(s).res);
 export const massText = (s, m = s.m) => D.format(massAt(s, m));
 /** Ce que l'écran affiche pour m : l'arrondi au rang de la tâche (trap : la masse exacte à la résolution). */
-export const readingAt = (s, m = s.m) => {
+const readingAt = (s, m = s.m) => {
   const t = taskOf(s);
   return D.format(D.roundAt(massAt(s, m), t.kind === 'trap' ? t.res : t.rank));
 };
@@ -106,7 +104,6 @@ export function marksAround(s, m = s.m) {
   const k = t.kind === 'trap' ? t.res : t.rank;
   return { lo: D.floorAt(v, k), hi: D.ceilAt(v, k), exact: D.eq(D.floorAt(v, k), D.ceilAt(v, k)) };
 }
-export const unitStep = (s) => { const t = taskOf(s); return D.make(1, t.res); };
 
 /** La lampe du sac contre le sachet modèle : '<' (plus léger), '>' (plus lourd) ou '=' (il balance). */
 export function lamp(s, m = s.m) {
@@ -238,7 +235,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, phase: 0, m: s.task
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /**
  * Le prochain geste utile — jamais la réponse : `pour` (verser), `remove` (reprendre une pincée), `deliver`, `tryEnd` (une fois : le contraste, une

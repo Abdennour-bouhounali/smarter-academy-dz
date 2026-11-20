@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 
 /**
@@ -10,20 +9,6 @@ import MathText from '../../../../../../common/components/MathText';
 /** Un دستور de tableur : code latin, gauche à droite, jamais KaTeX. */
 export function Dustur({ children, className = '' }) {
   return <code dir="ltr" className={`rounded bg-slate-100 px-1 font-mono text-[0.95em] text-slate-900 ${className}`}>{children}</code>;
-}
-
-/** La série d'un énoncé, case par case (comme la ligne du livre), de gauche à droite. */
-export function SeriesRow({ values, label }) {
-  return (
-    <div className="space-y-1" data-series-row>
-      {label && <p className="text-xs font-bold text-slate-600">{label}</p>}
-      <div dir="ltr" className="flex flex-wrap gap-1">
-        {values.map((v, i) => (
-          <span key={i} className="inline-flex h-9 min-w-[2.25rem] items-center justify-center rounded-md border border-slate-300 bg-white font-mono text-sm font-bold text-slate-900">{v}</span>
-        ))}
-      </div>
-    </div>
-  );
 }
 
 /** Un tableau à deux lignes (en-têtes arabes, cellules en $…$ ou nombres). */

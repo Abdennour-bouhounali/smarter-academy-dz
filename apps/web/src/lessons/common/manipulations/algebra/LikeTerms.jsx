@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -298,7 +298,6 @@ export default function LikeTerms({
       <ManipulationStage className="bg-gradient-to-b from-amber-50/50 to-white">
         <div ref={boxRef} data-like-terms data-world={lab.world} data-task={task} data-solved={lab.solvedNow ? 'true' : 'false'}>
           <style dangerouslySetInnerHTML={{ __html: MOTION_CSS }} />
-          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
           <div className="relative mx-auto space-y-2.5" style={{ maxWidth: MAX_W }} data-lt-glance onKeyDown={onKeyDown}>
             {party.node}
             {cp.node}

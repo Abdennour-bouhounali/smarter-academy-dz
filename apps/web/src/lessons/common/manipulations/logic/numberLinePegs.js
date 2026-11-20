@@ -23,13 +23,12 @@
 import { rat, ratText, eq, sign, sub, mul } from '@smarter-academy/core/arithmetic/powers.js';
 import { writingValue, normalize, isDecimalRational, twelfths, unitOf } from '@smarter-academy/core/arithmetic/fractions3.js';
 
-export const WORLDS = Object.freeze(['rope', 'writings']);
 export const SNAP_HANG = 12;
-export const SNAP_ORDER = 48;
-export const RANGE = Object.freeze([-4, 4]);
-export const FREE_MAX_A = 48;
-export const FREE_MAX_B = 12;
-export const FREE_MAX_CARDS = 8;
+const SNAP_ORDER = 48;
+const RANGE = Object.freeze([-4, 4]);
+const FREE_MAX_A = 48;
+const FREE_MAX_B = 12;
+const FREE_MAX_CARDS = 8;
 
 export const PRESETS = Object.freeze({
   beginner: { tasks: [
@@ -100,10 +99,10 @@ export const isLanded = (s, id) => !!s.landed[id];
 const unlanded = (s) => hungCards(s).filter((c) => !s.landed[c.id]);
 
 /** La position (rationnel) k / snap d'un entier k. */
-export const posOf = (s, k) => rat(k, taskOf(s).snap);
+const posOf = (s, k) => rat(k, taskOf(s).snap);
 /** L'abscisse en UNITÉS (flottant, POUR LE DESSIN seulement) d'un k / snap. */
 export const unitsOf = (s, k) => k / taskOf(s).snap;
-export const kRange = (s) => { const t = taskOf(s); return [t.range[0] * t.snap, t.range[1] * t.snap]; };
+const kRange = (s) => { const t = taskOf(s); return [t.range[0] * t.snap, t.range[1] * t.snap]; };
 
 /** La position où une carte atterrit (sa vraie valeur, flottant pour le dessin). */
 export const trueUnits = (c) => Number(c.value.n) / Number(c.value.d);
@@ -144,11 +143,6 @@ export function hang(s) {
   const e = ev(s, { kind: 'hang', card: id, x: ratText(posOf(s, k)) });
   return { ...s, hung: { ...s.hung, [id]: k }, held: null, last: null, verdict: null, trials: [...s.trials, e] };
 }
-export function unhang(s, id) {
-  if (s.landed[id] || !(id in s.hung)) return s;
-  const hung = { ...s.hung }; delete hung[id];
-  return { ...s, hung, last: null, verdict: null };
-}
 
 /* ── « تحقّق » : le vent ───────────────────────────────────────────────────────────────────── */
 
@@ -160,7 +154,7 @@ export function canCheck(s) {
 }
 
 /** Les piquets (valeurs) où des cartes ATTERRIES se sont empilées : [[id, id…]] (≥ 2 cartes de la même valeur). */
-export function stacksOf(s, ids = Object.keys(s.landed).filter((id) => s.landed[id])) {
+function stacksOf(s, ids = Object.keys(s.landed).filter((id) => s.landed[id])) {
   const t = taskOf(s);
   const groups = [];
   for (const id of ids) {
@@ -172,7 +166,7 @@ export function stacksOf(s, ids = Object.keys(s.landed).filter((id) => s.landed[
 }
 
 /** Le déplacement d'une carte : de sa position accrochée à son vrai piquet. */
-export function moveOf(s, c) {
+function moveOf(s, c) {
   const k = s.hung[c.id];
   const from = posOf(s, k);
   const to = c.value;
@@ -186,7 +180,7 @@ export function moveOf(s, c) {
  * Le verdict de l'ORDRE (tâche `order`, toutes les cartes accrochées) : chaque carte dans le bon intervalle unité [k, k+1[ ET, pour deux valeurs DIFFÉRENTES, la plus petite
  * à gauche (deux valeurs égales peuvent être accrochées n'importe comment l'une par rapport à l'autre).
  */
-export function verdictOrder(s) {
+function verdictOrder(s) {
   const t = taskOf(s);
   const items = t.cards.map((c) => ({ c, x: posOf(s, s.hung[c.id]) }));
   for (const { c, x } of items) {
@@ -273,7 +267,6 @@ export function decimalDigits(x, n = 12) {
 
 /** La première carte accrochée du mauvais côté du zéro (pour le verdict de مبتدئ), ou null. */
 export function wrongSide(s) {
-  const t = taskOf(s);
   for (const c of hungCards(s)) { const k = s.hung[c.id]; if (sign(rat(k, 1)) * sign(c.value) < 0) return c; }
   return null;
 }

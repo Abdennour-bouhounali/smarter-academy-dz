@@ -73,7 +73,6 @@ function ev(n, env, allowNeg = false) {
   return l.div(r);
 }
 const envQ = (e) => Object.fromEntries(Object.entries(e ?? {}).map(([k, v]) => [k, dq(String(v))]));
-const val = (s, env) => ev(parse(s), envQ(env));
 const letters = (n, acc = new Set()) => { if (n.k === 'v') acc.add(n.n); if (n.k === 'b') { letters(n.l, acc); letters(n.r, acc); } return acc; };
 
 /* ── équations : « G = D », résolues par annulation de la chaîne d'opérations ── */
@@ -456,7 +455,7 @@ function judge(S, keyOf) {
 }
 
 /* ── ORACLE : la clé de chaque question, calculée ici ── */
-const keysOfSheet = (id) => (qid) => { const S = SPEC[`${id}:${qid}`]; if (!S) throw new Error(`${id}:${qid} inconnue`); const { answer, info } = judge(S, keysOfSheet(id)); if (!info.key) throw new Error(`${id}:${qid} n'est pas une valeur`); return info.key; };
+const keysOfSheet = (id) => (qid) => { const S = SPEC[`${id}:${qid}`]; if (!S) throw new Error(`${id}:${qid} inconnue`); const { info } = judge(S, keysOfSheet(id)); if (!info.key) throw new Error(`${id}:${qid} n'est pas une valeur`); return info.key; };
 export const ORACLE = {};
 for (const [key, S] of Object.entries(SPEC)) { const { answer } = judge(S, keysOfSheet(sheetOf(key))); if (answer) ORACLE[key] = answer; }
 

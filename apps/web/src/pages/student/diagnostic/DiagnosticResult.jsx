@@ -27,7 +27,7 @@ export default function DiagnosticResult() {
   if (!profile && loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600" />
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-nav-accent" />
       </div>
     );
   }
@@ -51,7 +51,7 @@ export default function DiagnosticResult() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
           <div
             className="w-14 h-14 mx-auto rounded-2xl flex items-center justify-center text-white mb-4"
-            style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            style={{ background: '#3B5BDB' }}
           >
             <Sparkles size={24} />
           </div>

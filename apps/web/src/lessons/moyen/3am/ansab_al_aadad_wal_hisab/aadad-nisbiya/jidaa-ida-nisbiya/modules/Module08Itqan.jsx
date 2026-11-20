@@ -1,11 +1,9 @@
-import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';
 import { LESSON_CONFIG } from '../lesson.config';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { FINAL } from '../content/exercises';
 import { addition } from '../../_unit/unitMeta.js';
 
 /**

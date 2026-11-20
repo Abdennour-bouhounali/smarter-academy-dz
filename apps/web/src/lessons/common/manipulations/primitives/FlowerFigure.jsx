@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * UNE FLEUR ET SON BOUQUET, dessinés en SVG (2026-10-14, labo `division-jumps`, 1AM) — des `<g>` à poser DANS une scène
@@ -15,7 +14,7 @@ import React from 'react';
  * pure et testée ; ce fichier ne fait que dessiner.
  */
 
-export const FLOWER_HUES = Object.freeze([
+const FLOWER_HUES = Object.freeze([
   { petal: '#F472B6', edge: '#DB2777', light: '#FBCFE8' },
   { petal: '#FB7185', edge: '#E11D48', light: '#FECDD3' },
   { petal: '#C084FC', edge: '#9333EA', light: '#E9D5FF' },

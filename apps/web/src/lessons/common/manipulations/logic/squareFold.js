@@ -142,7 +142,7 @@ export function declareNone(s) {
 }
 
 /** Toutes les cartes résolues ? */
-export const allSolved = (s) => s.targets.every((_, i) => cardSolved(s, i));
+const allSolved = (s) => s.targets.every((_, i) => cardSolved(s, i));
 
 /**
  * LE GUIDE (LabCoach, MANIPULATION_CONTRACT §8quater) : le geste nécessaire MAINTENANT — jamais la réponse. Tenir x et le déplacer ;

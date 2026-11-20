@@ -1,4 +1,3 @@
-import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import MathText from '../../../../../../common/components/MathText';
 import { SourceTag } from '../../../../../../common/textbook';

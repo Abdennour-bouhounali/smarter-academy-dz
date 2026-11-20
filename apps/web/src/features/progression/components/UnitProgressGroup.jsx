@@ -34,14 +34,14 @@ export default function UnitProgressGroup({ group, defaultOpen = false, profileS
           aria-controls={built ? panelId : undefined}
           aria-label={built ? (open ? t('progression.curriculum.collapseUnit') : t('progression.curriculum.expandUnit')) : undefined}
           disabled={!built}
-          className="w-full text-start p-4 flex items-start gap-3 rounded-2xl min-h-[56px] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:cursor-default"
+          className="w-full text-start p-4 flex items-start gap-3 rounded-2xl min-h-[56px] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent disabled:cursor-default"
         >
-          <span className={`inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${isOther ? 'bg-slate-200 text-slate-600' : 'bg-indigo-600 text-white'}`} aria-hidden="true">
+          <span className={`inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${isOther ? 'bg-slate-200 text-slate-600' : 'bg-nav-accent text-white'}`} aria-hidden="true">
             {isOther ? <FolderOpen size={18} /> : <Layers size={18} />}
           </span>
           <span className="flex-1 min-w-0">
             {!isOther && group.number != null && (
-              <span className="block text-[11px] font-mono-jetbrains uppercase tracking-wider text-indigo-600">{t('unit.unitNumber', { n: group.number })}</span>
+              <span className="block text-[11px] font-mono-jetbrains uppercase tracking-wider text-nav-accent">{t('unit.unitNumber', { n: group.number })}</span>
             )}
             <span className="block font-space font-bold text-slate-900 text-base leading-snug">{title}</span>
             {group.subtitle && <span className="block text-xs text-slate-500 mt-0.5 line-clamp-2">{group.subtitle}</span>}

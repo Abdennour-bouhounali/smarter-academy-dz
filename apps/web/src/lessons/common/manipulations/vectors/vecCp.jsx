@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import MathText from '../../components/MathText';
 import { playSfx } from '../../utils/playEffect';
 
@@ -8,10 +8,6 @@ import { playSfx } from '../../utils/playEffect';
  * Aucun texte arabe ici : les textes sont dans `lesson.manipulation.json › <labo>.cp.*`.
  */
 export const $ = (s) => `$${s}$`;
-export const tex = (v) => (v < 0 ? `-${Math.abs(v)}` : `${v}`);
-export const par = (v) => (v < 0 ? `(-${Math.abs(v)})` : `${v}`);
-export const col = ([x, y]) => `\\begin{pmatrix} ${tex(x)} \\\\ ${tex(y)} \\end{pmatrix}`;
-export const arrow = (name) => `\\overrightarrow{${name}}`;
 
 /** Le texte d'une clé `cp.<key>` du labo (île KaTeX). */
 export const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;

@@ -32,7 +32,7 @@
 
 import { DEFAULT_LAYERS, LAYER_KEYS } from './layers.js';
 import { getPreset } from './presets.js';
-import { SEQUENCE_KINDS, MAX_TERMS, MAX_ITERATIONS, OVERFLOW_LIMIT } from './sequenceMath.js';
+import { SEQUENCE_KINDS, MAX_TERMS, MAX_ITERATIONS } from './sequenceMath.js';
 
 export { DEFAULT_LAYERS, LAYER_KEYS };
 
@@ -484,5 +484,3 @@ function clampCursor(data) {
   return cursor === data.cursor ? data : { ...data, cursor };
 }
 
-/** Le plafond des valeurs, ré-exporté pour l'interface (bornes de curseur). */
-export { OVERFLOW_LIMIT };

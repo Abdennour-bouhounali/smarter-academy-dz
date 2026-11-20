@@ -55,7 +55,7 @@ export default function IntegerSetInput({ question, value, onChange, disabled })
         disabled={disabled}
         onChange={(e) => onChange({ value: e.target.value })}
         className={`w-full min-h-[76px] resize-y overflow-hidden rounded-xl border-2 px-3 py-2.5 text-start font-mono text-lg sm:text-xl leading-relaxed tabular-nums transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200 ${
-          disabled ? 'border-slate-200 bg-slate-50 text-slate-500' : 'border-slate-300 bg-white text-slate-800 focus:border-blue-500'
+          disabled ? 'border-slate-200 bg-slate-50 text-slate-500' : 'border-slate-300 bg-white text-slate-800 focus:border-nav-accent'
         }`}
       />
       {question.answerFormat && <span className="block font-mono text-xs text-slate-500"><MathLabel>{question.answerFormat}</MathLabel></span>}

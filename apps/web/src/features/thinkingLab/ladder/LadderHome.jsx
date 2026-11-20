@@ -15,7 +15,7 @@ const STONE = {
   learned: 'bg-sky-500 text-white ring-sky-600',
   trying: 'bg-amber-100 text-amber-900 ring-amber-400',
   postponed: 'bg-slate-100 text-slate-600 ring-slate-300',
-  open: 'bg-white text-indigo-700 ring-indigo-300',
+  open: 'bg-white text-nav-accent ring-indigo-300',
   locked: 'bg-slate-50 text-slate-300 ring-slate-200',
 };
 
@@ -39,7 +39,7 @@ export default function LadderHome({ home }) {
     <div className="space-y-6" data-thinking-ladder>
       <motion.header {...enter(0)} className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 font-inter text-xs font-bold text-indigo-700 ring-1 ring-indigo-200">
+          <p className="inline-flex items-center gap-1.5 rounded-full bg-nav-accent-soft px-3 py-1 font-inter text-xs font-bold text-nav-accent ring-1 ring-indigo-200">
             <Brain size={14} aria-hidden="true" /> {t('brand')}
           </p>
           <h1 className="mt-3 font-space text-3xl font-black text-slate-900">{t('ladderName')}</h1>
@@ -64,7 +64,7 @@ export default function LadderHome({ home }) {
                 <p className="mt-4 rounded-2xl bg-white/15 px-4 py-3 font-inter text-sm">{t('ladder.full', { max: home.maxOpen })}</p>
               ) : (
                 <Link to={`/espace/tafkir/${home.next.id}`} data-start-next
-                  className="mt-5 inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-white px-6 font-space text-base font-black text-indigo-700 transition hover:bg-indigo-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300">
+                  className="mt-5 inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-white px-6 font-space text-base font-black text-nav-accent transition hover:bg-nav-accent-soft focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300">
                   {t('ladder.start', { number: home.next.number })} <ArrowLeft size={18} aria-hidden="true" />
                 </Link>
               )}
@@ -91,7 +91,7 @@ export default function LadderHome({ home }) {
                       <p className="font-space text-xl font-black text-slate-900" dir="ltr">{o.summit ? '▲ ' : ''}{o.number}</p>
                       <Lines state={o.state} />
                     </div>
-                    <span className="shrink-0 font-inter text-sm font-bold text-indigo-700">{t('ladder.resume')}</span>
+                    <span className="shrink-0 font-inter text-sm font-bold text-nav-accent">{t('ladder.resume')}</span>
                   </Link>
                 </li>
               ))}

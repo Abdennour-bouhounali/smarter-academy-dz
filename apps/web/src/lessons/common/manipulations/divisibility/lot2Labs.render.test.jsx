@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
 import CoprimeExplorer, { CHAINS as COPRIME_CHAINS, QUESTIONS as COPRIME_Q } from './CoprimeExplorer';

@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlaskConical, ZoomIn, ZoomOut, RotateCcw, Search } from 'lucide-react';
-import MathText from '../../../../lessons/common/components/MathText.jsx';
 import { StepList, LabPanel } from '../../shared/LabKit.jsx';
 import StepPlayer from '../../shared/StepPlayer.jsx';
 import useStepReveal from '../../shared/useStepReveal.js';

@@ -51,9 +51,23 @@ jobs:
       # une leçon, un namespace ou un moteur qui y fuit fait échouer la CI
       # (docs/architecture/BUNDLE_BOUNDARIES.md §4 règle 10). Mesuré sur le build ci-dessus.
       - name: Entry bundle budget
-        run: node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 245
+        run: node scripts/analyze-entry-bundle.mjs --dist apps/web/dist --budget 212
 
       # L'index des leçons (lessons/lessonIndex.generated.json) suit leurs lesson.config.js.
+      - name: Format of the lesson v2 areas (Prettier)
+        run: npm run check:format
+
+      - name: No dead file in apps/web/src
+        run: npm run check:unreached
+
+      # Unused imports and variables, a name that does not exist, a duplicated key (docs/architecture/CODE_HEALTH.md).
+      - name: Lint (ESLint)
+        run: npm run lint
+
+      # Unused exports, i18n keys and string-table entries (web, core), unused classes and unrouted actions (api).
+      - name: Nothing new is unused
+        run: npm run check:unused
+
       - name: Lesson index is fresh
         run: npm run check:lesson-index && npm run check:routes
 
@@ -165,6 +179,11 @@ jobs:
       - name: Verify Laravel boots
         working-directory: apps/api
         run: php artisan --version
+
+      # One Pint rule only — no unused `use` line (docs/architecture/CODE_HEALTH.md). Not the code style.
+      - name: No unused import (Pint)
+        working-directory: apps/api
+        run: php vendor/bin/pint --test --config pint.unused.json app routes database config bootstrap tests
 
       # Catches a route file that references a missing controller or a
       # malformed binding - the kind of error that would otherwise only

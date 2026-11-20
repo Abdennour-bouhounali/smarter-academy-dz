@@ -20,7 +20,7 @@ function Section({ icon: Icon, title, children }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
       <h3 className="mb-3 flex items-center gap-2 font-space text-base font-bold text-slate-900">
-        <Icon size={18} className="text-indigo-600" aria-hidden="true" />
+        <Icon size={18} className="text-nav-accent" aria-hidden="true" />
         {title}
       </h3>
       {children}
@@ -46,7 +46,7 @@ export default function WeekReport({ report, audience = 'parent' }) {
   return (
     <div className="space-y-5" data-week-report>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Tile icon={Clock} tone="bg-indigo-50 text-indigo-600" label={t('report.studyTime')} value={formatDuration(t, time.studySeconds)} />
+        <Tile icon={Clock} tone="bg-nav-accent-soft text-nav-accent" label={t('report.studyTime')} value={formatDuration(t, time.studySeconds)} />
         <Tile icon={CalendarCheck} tone="bg-emerald-50 text-emerald-600" label={t('report.activeDays')} value={t('report.activeDaysValue', { count: time.activeDays })} />
         <Tile
           icon={LogOut}
@@ -89,7 +89,7 @@ export default function WeekReport({ report, audience = 'parent' }) {
                 <span className="sm:hidden">{daysShort[weekdayOf(d.date)]}</span>
                 <span className="hidden sm:inline">{days[weekdayOf(d.date)]}</span>
               </p>
-              <p className="font-inter text-[11px] font-semibold text-indigo-700 sm:hidden">{d.studySeconds >= 60 ? Math.floor(d.studySeconds / 60) : ''}</p>
+              <p className="font-inter text-[11px] font-semibold text-nav-accent sm:hidden">{d.studySeconds >= 60 ? Math.floor(d.studySeconds / 60) : ''}</p>
               <p className="font-inter text-[11px] text-slate-400">{shortDate(d.date)}</p>
               {d.awaySeconds >= 60 && (
                 <p className="mt-0.5 font-inter text-[10px] font-semibold text-rose-600 sm:text-[11px]">↗ {formatDuration(t, d.awaySeconds)}</p>

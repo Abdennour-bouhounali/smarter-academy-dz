@@ -27,7 +27,7 @@ import { resolveMasteryState, findLessonMasteryRows } from '../../lessons/common
 export const ACTIVITY_STATES = ['not_started', 'in_progress', 'done'];
 export const MASTERY_STATE_KEYS = ['mastered', 'reinforce', 'gap', 'unassessed'];
 
-export function emptyCounts() {
+function emptyCounts() {
   return { mastered: 0, reinforce: 0, gap: 0, unassessed: 0 };
 }
 
@@ -41,7 +41,7 @@ function activityStateOf(entry) {
  * du catalogue, l'état vient du profil. Un point absent du profil est
  * « unassessed » — jamais autre chose.
  */
-export function mergeLearningPoints(lesson, currentMastery, gradeId) {
+function mergeLearningPoints(lesson, currentMastery, gradeId) {
   const rows = findLessonMasteryRows(currentMastery, gradeId, lesson.id);
   const byCode = new Map(rows.map((r) => [r.code, r]));
   return (lesson.learningPoints || []).map((lp) => {
@@ -61,7 +61,7 @@ export function mergeLearningPoints(lesson, currentMastery, gradeId) {
   });
 }
 
-export function countStates(points) {
+function countStates(points) {
   const counts = emptyCounts();
   for (const p of points) counts[p.state] = (counts[p.state] || 0) + 1;
   return counts;

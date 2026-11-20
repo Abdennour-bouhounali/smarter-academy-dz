@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -75,7 +75,7 @@ const sub = (k) => String(k).split('').map((d) => SUB[Number(d)]).join('');
 const pairTex = ([i, j]) => `P_{${i + 1}}P_{${j + 1}}`;
 
 export default function LampRing({
-  n: n0, r: r0, extra: extra0, numbers: nums, theme = 'flower-bed', title, lead, mission, level, levels: withLevels = true,
+  n: n0, r: r0, extra: extra0, numbers: nums, title, lead, mission, level, levels: withLevels = true,
   initialMode = 'student', allowModeSwitch = false, checkpoints: cpOn = true, onTrial, onFinished,
 }) {
   const { t } = useTranslation('lesson');
@@ -185,7 +185,6 @@ export default function LampRing({
   const shown = phase === 'hand' ? lab.posts : rotPosts;
   const half = (360 / n) / 2;
   const cards = L.formulaCards(n, r);
-  const unit = '\\,\\mathrm{m}';
 
   const reading = (() => {
     if (phase === 'hand') return k('readHand', { min: L.decTex(gaps.min), max: L.decTex(gaps.max) });

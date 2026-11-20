@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { LogOut, ExternalLink, Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

@@ -57,7 +57,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
                 layout
                 type="button"
                 onClick={() => place(it.id)}
-                className="px-4 py-3 rounded-xl bg-white border-2 border-slate-200 hover:border-blue-400 hover:bg-blue-50 transition-all min-h-[48px] font-mono-jetbrains font-extrabold text-slate-800 text-base sm:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="px-4 py-3 rounded-xl bg-white border-2 border-slate-200 hover:border-blue-400 hover:bg-nav-accent-soft transition-all min-h-[48px] font-mono-jetbrains font-extrabold text-slate-800 text-base sm:text-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                 aria-label={t('diagnostic.questions.placeCard', { label: it.label })}
               >
                 {it.label}
@@ -81,7 +81,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
                   layout
                   type="button"
                   onClick={() => remove(id)}
-                  className="px-3 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-mono-jetbrains font-extrabold text-sm sm:text-base text-slate-800 hover:border-slate-400 transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  className="px-3 py-2.5 rounded-xl border-2 border-slate-300 bg-white font-mono-jetbrains font-extrabold text-sm sm:text-base text-slate-800 hover:border-slate-400 transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                   aria-label={t('diagnostic.questions.removeCard', { label: byId(id).label })}
                 >
                   {byId(id).label}
@@ -95,7 +95,7 @@ export default function OrderingQuestion({ question, onChange, disabled }) {
           <button
             type="button"
             onClick={reset}
-            className="px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-500 hover:border-slate-400 font-mono-jetbrains text-xs font-bold min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="px-4 py-2.5 rounded-xl bg-white border-2 border-slate-200 text-slate-500 hover:border-slate-400 font-mono-jetbrains text-xs font-bold min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
           >
             <RotateCcw className="inline w-3.5 h-3.5 me-1" aria-hidden="true" /> {t('diagnostic.questions.restart')}
           </button>

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import MathText from '../components/MathText';
 import StatementFigure from '../components/StatementFigure';

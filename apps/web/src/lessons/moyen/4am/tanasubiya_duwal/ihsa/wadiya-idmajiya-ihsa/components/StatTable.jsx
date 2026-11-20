@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Le tableau statistique du manuel, redessiné (p. 100 : القيمة / التكرار ; la situation : عدد الميداليات
@@ -6,7 +5,7 @@ import React from 'react';
  * valeurs. Une valeur `null` est l'hexagone coloré du manuel (une valeur cachée), dessiné en SVG et
  * annoncé « قيمة مخفية ». Le tableau défile seul sur un téléphone étroit (jamais la page).
  */
-export function HiddenHex({ n = 1 }) {
+function HiddenHex({ n = 1 }) {
   return (
     <span role="img" aria-label={n === 1 ? 'القيمة المخفية الأولى' : 'القيمة المخفية الثانية'} className="inline-flex align-middle" data-hidden-cell={n}>
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">

@@ -128,14 +128,3 @@ function formatNumber(value) {
   return rounded.toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
 }
 
-/**
- * Le retour : une écriture Nerdamer → du LaTeX affichable.
- *
- * Nerdamer sait déjà le faire (`toTeX`), donc ce module ne le refait pas ;
- * cette fonction n'existe que pour les cas où l'on n'a que du texte.
- */
-export function nerdamerTextToLatex(text) {
-  return String(text ?? '')
-    .replace(/\*/g, ' \\cdot ')
-    .replace(/\bpi\b/g, '\\pi');
-}

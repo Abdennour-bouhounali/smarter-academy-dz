@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { STEPS, TRANSLATION_RULE, CHECK_RULE, ACTIVITY_SOLUTION } from './content/textbook';
 

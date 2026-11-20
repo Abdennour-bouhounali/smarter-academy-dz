@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import WordFraction from '../../../../../common/components/WordFraction';
 import { SourceTag } from '../../../../../common/textbook';

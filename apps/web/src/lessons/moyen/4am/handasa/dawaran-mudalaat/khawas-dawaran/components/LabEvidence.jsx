@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../../common/components/MathText';
 
 /**
@@ -9,7 +8,7 @@ import MathText from '../../../../../../common/components/MathText';
 const tx = (s) => String(s ?? '').replace(/(\d*)√(\d+)/, '$1\\sqrt{$2}').replace(',', '{,}');
 const dir = (t) => (t < 0 ? 'في الاتجاه غير المباشر' : 'في الاتجاه المباشر');
 
-export function evidenceLine(e) {
+function evidenceLine(e) {
   if (!e) return null;
   switch (e.kind) {
     case 'stamp': return `النسخة ${e.n} طُبعت في $${e.at}^\\circ$ ✓`;

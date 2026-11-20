@@ -29,10 +29,10 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
  */
 
 export const MAX_COLUMNS = 5;
-export const PLAN_IDS = Object.freeze(['A', 'B']);
+const PLAN_IDS = Object.freeze(['A', 'B']);
 
 /** « 15x|10x+50 » → les tarifs, dans l'ordre (A, B). */
-export function parsePlans(plans) {
+function parsePlans(plans) {
   const src = String(plans).split('|').map((s) => s.trim()).filter(Boolean);
   if (src.length < 1 || src.length > 2) throw new Error(`ratio-ride: un ou deux tarifs (« ${plans} »)`);
   return src.map((s, i) => {
@@ -65,7 +65,7 @@ export function init({ plans = '15x', max, ghostX } = {}) {
 }
 
 const with_ = (s, patch) => Object.freeze({ ...s, ...patch });
-export const plan = (s, id) => s.plans.find((p) => p.id === id);
+const plan = (s, id) => s.plans.find((p) => p.id === id);
 /** Le tarif proportionnel du niveau (le seul qu'on complète et qu'on écrit y = a × x). */
 export const linearPlan = (s) => s.plans.find((p) => p.linear) ?? null;
 

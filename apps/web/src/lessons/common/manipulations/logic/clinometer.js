@@ -40,7 +40,7 @@ const EPS = 1e-9;
 export const MODES = Object.freeze(['height', 'ladder', 'align']);
 
 /** Ce que chaque mode connaît et cherche, nommé RELATIVEMENT à l'angle du triangle (α, θ ou x). */
-export const ROLES = Object.freeze({
+const ROLES = Object.freeze({
   height: Object.freeze({ known: 'adjacent', wanted: 'opposite' }),
   ladder: Object.freeze({ known: 'opposite', wanted: 'hypotenuse' }),
   // align : l'inconnue est l'ANGLE ; les deux côtés connus sont les côtés de l'angle droit.
@@ -122,13 +122,13 @@ export function valueAt(s, i = s.i) {
   if (s.mode === 'height') return frac(i);
   return mul(s.step, frac(i));
 }
-export const clampI = (s, i) => Math.min(s.iMax, Math.max(s.iMin, Math.round(i)));
-export const clampA = (s, a) => Math.min(s.aMax, Math.max(s.aMin, Math.round(a)));
+const clampI = (s, i) => Math.min(s.iMax, Math.max(s.iMin, Math.round(i)));
+const clampA = (s, a) => Math.min(s.aMax, Math.max(s.aMin, Math.round(a)));
 
 /* ── height : la visée ───────────────────────────────────────────────────── */
 
 /** L'angle d'élévation VRAI (degrés, flottant) du sommet depuis la distance d. */
-export const trueAngle = (s, i = s.i) => TR.anglePlan({ opposite: s.rise, adjacent: valueAt(s, i) }).angle;
+const trueAngle = (s, i = s.i) => TR.anglePlan({ opposite: s.rise, adjacent: valueAt(s, i) }).angle;
 /** Ce que l'appli affiche une fois visé : l'angle arrondi au degré (le manuel lit les angles au degré). */
 export const readAngle = (s, i = s.i) => Number(TR.roundTo(trueAngle(s, i), 0));
 /** L'écart (degrés) entre le sommet et le réticule : > 0 le sommet est AU-DESSUS du réticule. */
@@ -176,7 +176,7 @@ export function alignKind(s, i = s.i) {
 export const poleAngle = (s, i = s.i) => TR.anglePlan({ opposite: s.P, adjacent: valueAt(s, i) }).angle;
 export const monumentAngle = (s, i = s.i) => TR.anglePlan({ opposite: s.H, adjacent: add(s.a, valueAt(s, i)) }).angle;
 /** L'angle x de l'alignement (tan x = pole ÷ d), arrondi au degré comme le demande le manuel. */
-export const angleX = (s, i = s.iStar) => TR.roundTo(poleAngle(s, i), 0);
+const angleX = (s, i = s.iStar) => TR.roundTo(poleAngle(s, i), 0);
 
 /* ── les gestes ─────────────────────────────────────────────────────────── */
 

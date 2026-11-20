@@ -9,7 +9,7 @@ import { fetchNotifications, markAllNotificationsRead, markNotificationRead } fr
  * Plusieurs cloches peuvent être montées (barre latérale + en-tête mobile) :
  * après un « lu », chacune se relit sur cet événement.
  */
-export const NOTIFICATIONS_CHANGED = 'sa:notifications-changed';
+const NOTIFICATIONS_CHANGED = 'sa:notifications-changed';
 
 /**
  * UNE requête pour toutes les cloches montées. La barre latérale et l'en-tête
@@ -31,7 +31,7 @@ function loadNotifications(token, { force = false } = {}) {
 }
 
 /** Où mène une notification (null : rien à ouvrir). */
-export function notificationTarget(notification) {
+function notificationTarget(notification) {
   if (notification?.type === 'answer_reviewed' && notification.data?.reviewId) {
     return `/espace/tashih/${encodeURIComponent(notification.data.reviewId)}`;
   }
@@ -133,7 +133,7 @@ export default function NotificationBell({ className = '', align = 'start', dire
           <div className="mb-1 flex items-center justify-between gap-2 px-2 py-1">
             <p className="text-sm font-bold text-slate-900">{t('notifications.title')}</p>
             {data.unread > 0 && (
-              <button type="button" onClick={readAll} className="text-xs font-semibold text-indigo-700 hover:underline">{t('notifications.markAll')}</button>
+              <button type="button" onClick={readAll} className="text-xs font-semibold text-nav-accent hover:underline">{t('notifications.markAll')}</button>
             )}
           </div>
           {data.notifications.length === 0 && <p className="px-2 py-3 text-sm text-slate-500">{t('notifications.empty')}</p>}

@@ -15,8 +15,8 @@
 
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 
-export const BLOCK_LIMIT = 120;
-export const SEGMENT_LIMIT = 200;
+const BLOCK_LIMIT = 120;
+const SEGMENT_LIMIT = 200;
 export const DIVISION_MAX = 10_000_000;
 
 /**

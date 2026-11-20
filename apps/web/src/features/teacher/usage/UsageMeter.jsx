@@ -7,10 +7,10 @@ import { describeMeter } from '../entitlementSummary';
  */
 export default function UsageMeter({ label, meter, hint }) {
   const m = describeMeter(meter);
-  const tone = m.overLimit ? 'bg-amber-500' : m.atLimit ? 'bg-slate-500' : 'bg-teal-600';
+  const tone = m.overLimit ? 'bg-amber-500' : m.atLimit ? 'bg-slate-500' : 'bg-nav-accent';
 
   return (
-    <div className="glass-card p-4">
+    <div className="rounded-2xl border border-nav-line bg-white p-4">
       <div className="flex items-baseline justify-between gap-3">
         <p className="font-inter text-slate-600 text-xs">{label}</p>
         <p dir="ltr" className="font-mono-jetbrains font-bold text-slate-900 text-sm tabular-nums">{m.text}</p>

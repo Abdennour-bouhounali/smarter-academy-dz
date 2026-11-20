@@ -83,7 +83,6 @@ function checkText(text, where, env = {}) {
 // ── Lecture des données : TOUT vient du tableau de l'énoncé, jamais d'une valeur retapée. ──
 const rowOf = (id, k) => PROBLEM[id].table.rows[k].slice(1);
 const headOf = (id) => PROBLEM[id].table.head.slice(1);
-const known = (cells) => cells.filter((c) => c !== '…').map(Q);
 const ratios = (xs, ys) => xs.map((x, i) => (ys[i] === '…' || x === '…' ? null : div(Q(ys[i]), Q(x)))).filter(Boolean);
 const proportional = (xs, ys) => { const r = ratios(xs, ys); return r.length >= 2 && r.every((q) => eq(q, r[0])); };
 

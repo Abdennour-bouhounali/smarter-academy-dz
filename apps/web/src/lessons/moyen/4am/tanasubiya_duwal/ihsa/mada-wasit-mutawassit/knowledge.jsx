@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { ACT3, ACT3_LINES, MEAN_REMINDER, ACT4_LINES, KNOW3, KNOW4, METHOD_1B, METHOD_2 } from './content/textbook';
 

@@ -13,7 +13,7 @@
  *
  * En local (localhost) rien n'est envoyé, sauf avec `?pixel=1` dans l'URL (test).
  */
-export const META_PIXEL_ID = '29440028942323985';
+const META_PIXEL_ID = '29440028942323985';
 
 function allowed() {
   if (typeof window === 'undefined') return false;
@@ -23,7 +23,7 @@ function allowed() {
 }
 
 /** Le code officiel de Meta (init sans PageView : la fiche envoie ses événements elle-même). */
-export function loadMetaPixel() {
+function loadMetaPixel() {
   if (!allowed() || window.fbq) return;
   // eslint-disable-next-line
   (function (f, b, e, v, n, t, s) {

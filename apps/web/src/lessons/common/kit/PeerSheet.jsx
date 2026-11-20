@@ -8,7 +8,7 @@ import SavedAnswerChip from '../answers/SavedAnswerChip';
 import { startSheet, tapLine, pickFix, rightFix, peerFixOrder } from './peerSheet';
 
 /**
- * « ورقة زميل » — l'élève corrige la copie d'un camarade (conseil + propriétaire, 2026-11-08, PILOTE `qasim-adad-tabii`).
+ * « ورقة زميل » — l'élève corrige la copie d'un camarade (conseil + propriétaire, 2026-11-08, d'abord sur la leçon pilote).
  *
  *   <PeerSheet sheet={{ id, task, lines, errorLine, fixes: [{ text, ok?, why? }], fixedLines?, why }}
  *              kid={{ name, hairStyle?, outfit?, scarf? }} onDone={(foundFirst) => …} />

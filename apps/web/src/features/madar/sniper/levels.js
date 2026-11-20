@@ -15,7 +15,7 @@
  */
 export const SUB_LEVELS = 3;
 
-export const DOMAINS = [
+const DOMAINS = [
   'naturals', 'priorities', 'arith', 'fractions', 'decimals', 'relatives', 'powers', 'roots', 'literal', 'equations', 'trig',
 ];
 
@@ -74,15 +74,8 @@ export const LEVELS = [
   L('trigRel', 'trig', 'trigRel'),
 ].map((l, i) => ({ ...l, n: i + 1 }));
 
-export const LEVEL_COUNT = LEVELS.length;
+const LEVEL_COUNT = LEVELS.length;
 export const POSITIONS = LEVEL_COUNT * SUB_LEVELS;
-
-/**
- * Le niveau d'entrée de chaque année (tout ce qui précède est ouvert). Règle du
- * propriétaire : on ne commence JAMAIS par du difficile — l'entrée est prise
- * dans ce que l'élève a déjà travaillé les années d'avant, puis le jeu monte.
- */
-export const ENTRY = { '1am': 1, '2am': 5, '3am': 12, '4am': 19 };
 
 export const levelAt = (n) => LEVELS[Math.min(LEVEL_COUNT, Math.max(1, n)) - 1];
 export const clampPos = (p) => Math.min(POSITIONS - 1, Math.max(0, Math.round(p)));

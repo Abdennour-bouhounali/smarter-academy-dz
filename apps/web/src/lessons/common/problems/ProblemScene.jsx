@@ -1,4 +1,4 @@
-import React, { useId, useState } from 'react';
+import { useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { problemTone } from './problemTone';
 import { divide, clampStep, equalityLine, fenceFits, fenceEdges, tileGrid } from './problemScene';

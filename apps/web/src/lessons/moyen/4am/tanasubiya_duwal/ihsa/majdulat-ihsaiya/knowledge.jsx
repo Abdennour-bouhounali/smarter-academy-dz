@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOW, EX7, EX7_OUTLIER, EX15, CALC } from './content/textbook';
 

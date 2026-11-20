@@ -33,10 +33,10 @@ function PinForm({ onSubmit, submitLabel, busy, error }) {
         maxLength={4}
         value={pin}
         onChange={(e) => setPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center font-mono text-3xl tracking-[0.5em] text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+        className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center font-mono text-3xl tracking-[0.5em] text-slate-900 focus:border-nav-accent focus:outline-none focus:ring-2 focus:ring-indigo-200"
       />
       <button type="submit" disabled={busy || pin.length !== 4}
-        className="min-h-[48px] w-full rounded-xl bg-indigo-600 px-4 font-space font-bold text-white hover:bg-indigo-700 disabled:opacity-50">
+        className="min-h-[48px] w-full rounded-xl bg-nav-accent px-4 font-space font-bold text-white hover:bg-[#3350c4] disabled:opacity-50">
         {submitLabel}
       </button>
       {error && <p role="alert" className="rounded-xl bg-red-50 p-3 font-inter text-sm text-red-700">{error}</p>}
@@ -118,7 +118,7 @@ export default function ParentLinkPage() {
       <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-5xl items-center gap-2 px-4 sm:px-6">
           <img src="/brand/mark-color.svg" width="200" height="200" decoding="async" alt="Smarter Academy" className="h-8 w-8" />
-          <span className="font-space text-sm font-bold text-indigo-700">{t('linkPage.brand')}</span>
+          <span className="font-space text-sm font-bold text-nav-accent">{t('linkPage.brand')}</span>
         </div>
       </header>
 
@@ -137,7 +137,7 @@ export default function ParentLinkPage() {
 
         {state.status === 'locked' && (
           <section className="mx-auto max-w-sm rounded-2xl border border-slate-200 bg-white p-6" data-link-locked>
-            <Lock size={28} className="mx-auto text-indigo-600" aria-hidden="true" />
+            <Lock size={28} className="mx-auto text-nav-accent" aria-hidden="true" />
             <h1 className="mt-3 text-center font-space text-lg font-bold text-slate-900">{t('linkPage.pinTitle')}</h1>
             <p className="mb-4 mt-1 text-center font-inter text-sm text-slate-600">{t('linkPage.pinText')}</p>
             <PinForm onSubmit={withPin(unlockLink)} submitLabel={t('linkPage.pinSubmit')} busy={pinBusy} error={pinError} />
@@ -164,7 +164,7 @@ export default function ParentLinkPage() {
             {!state.pinSet && !protectedNow && (
               <section className="rounded-2xl border border-indigo-200 bg-white p-4 sm:p-5" data-link-protect>
                 <h2 className="flex items-center gap-2 font-space text-base font-bold text-slate-900">
-                  <ShieldCheck size={18} className="text-indigo-600" aria-hidden="true" />
+                  <ShieldCheck size={18} className="text-nav-accent" aria-hidden="true" />
                   {t('linkPage.protectTitle')}
                 </h2>
                 <p className="mb-3 mt-1 font-inter text-sm text-slate-600">{t('linkPage.protectText')}</p>
@@ -183,10 +183,10 @@ export default function ParentLinkPage() {
               </div>
             </section>
 
-            <Link to="/himaya" className="flex min-h-[56px] items-center gap-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 hover:bg-indigo-100">
-              <ShieldCheck size={24} className="flex-shrink-0 text-indigo-600" aria-hidden="true" />
+            <Link to="/himaya" className="flex min-h-[56px] items-center gap-3 rounded-2xl border border-indigo-200 bg-nav-accent-soft p-4 hover:bg-indigo-100">
+              <ShieldCheck size={24} className="flex-shrink-0 text-nav-accent" aria-hidden="true" />
               <span className="flex-1 font-space font-bold text-indigo-950">{t('linkPage.guide')}</span>
-              <ChevronForward size={18} className="text-indigo-600" aria-hidden="true" />
+              <ChevronForward size={18} className="text-nav-accent" aria-hidden="true" />
             </Link>
           </>
         )}

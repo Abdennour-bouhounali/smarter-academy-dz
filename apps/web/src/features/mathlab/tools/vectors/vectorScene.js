@@ -48,7 +48,7 @@ export const MAX_POLYGONS = 4;
 export const MAX_POLYGON_VERTICES = 8;
 
 /** Les coordonnées vivent dans un carré raisonnable : au-delà, ce n'est plus du 4AM. */
-export const COORD_LIMIT = 1e4;
+const COORD_LIMIT = 1e4;
 
 /** Le pas d'aimantation : un glissement s'arrête sur les valeurs du quadrillage. */
 export const SNAP_STEP = 0.5;

@@ -25,24 +25,22 @@ import {
   toDegrees, normalizeAngle, isPoint, unitsToCm,
 } from './geoMath.js';
 
-export const GEO_STROKE = '#1e1e1e';
-export const POINT_SIZE = 7;
-export const LABEL_FONT_SIZE = 20;
-export const MEASURE_FONT_SIZE = 18;
-export const MEASURE_COLOR = '#1971c2';
+const GEO_STROKE = '#1e1e1e';
+const POINT_SIZE = 7;
+const LABEL_FONT_SIZE = 20;
+const MEASURE_FONT_SIZE = 18;
+const MEASURE_COLOR = '#1971c2';
 /** Excalidraw : FONT_FAMILY.Nunito — une écriture nette, auto-hébergée (public/excalidraw/fonts). */
-export const GEO_FONT_FAMILY = 6;
+const GEO_FONT_FAMILY = 6;
 
 const LINEAR_KINDS = new Set(['segment', 'line', 'ray']);
-export const isLinearKind = (kind) => LINEAR_KINDS.has(kind);
-/** Ce qui a une place dans « إعادة البناء » : les étiquettes et les mesures suivent leur objet. */
-export const isConstructionKind = (kind) => kind === 'point' || LINEAR_KINDS.has(kind) || kind === 'circle' || kind === 'arc';
+const isLinearKind = (kind) => LINEAR_KINDS.has(kind);
 
 export const geoOf = (el) => (el && !el.isDeleted && el.customData?.geo && typeof el.customData.geo === 'object' ? el.customData.geo : null);
 
 let idCounter = 0;
 /** Un identifiant d'élément : aléatoire, et unique dans la session même à la même milliseconde. */
-export function newGeoId(prefix = 'geo') {
+function newGeoId(prefix = 'geo') {
   idCounter = (idCounter + 1) % 1_000_000;
 
   return `${prefix}-${Date.now().toString(36)}-${idCounter.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -51,7 +49,7 @@ export function newGeoId(prefix = 'geo') {
 // ── Lire la scène ───────────────────────────────────────────────────────
 
 /** Le centre de rotation d'un élément, tel qu'Excalidraw le calcule (boîte de ses points pour une ligne). */
-export function elementCenter(el) {
+function elementCenter(el) {
   if (Array.isArray(el.points) && el.points.length > 0) {
     const xs = el.points.map((p) => p[0]);
     const ys = el.points.map((p) => p[1]);
@@ -166,7 +164,7 @@ export function pointSkeletons(p, { label = '', seq = 0, via = null } = {}) {
 }
 
 /** Le prolongement d'une droite ou d'une demi-droite au-delà de ses points de définition. */
-export const lineExtension = (a, b) => Math.max(3 * UNITS_PER_CM, 0.5 * dist(a, b));
+const lineExtension = (a, b) => Math.max(3 * UNITS_PER_CM, 0.5 * dist(a, b));
 
 /** Les deux extrémités DESSINÉES d'un segment, d'une droite ou d'une demi-droite définis par a et b. */
 export function drawnEnds(kind, a, b) {
@@ -180,7 +178,7 @@ export function drawnEnds(kind, a, b) {
 }
 
 /** La géométrie d'une ligne Excalidraw qui dessine `kind` défini par a et b. */
-export function linearGeometry(kind, a, b) {
+function linearGeometry(kind, a, b) {
   const [p0, p1] = drawnEnds(kind, a, b);
   const d = sub(p1, p0);
 
@@ -215,7 +213,7 @@ export function circleSkeleton(c, r, style, { centerId = null, seq = 0, via = nu
   };
 }
 
-export function arcGeometry(c, r, start, sweep) {
+function arcGeometry(c, r, start, sweep) {
   const pts = arcPoints(c, r, start, sweep);
   const o = pts[0];
   const rel = pts.map((p) => [p.x - o.x, p.y - o.y]);

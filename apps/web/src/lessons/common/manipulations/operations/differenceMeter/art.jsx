@@ -1,4 +1,3 @@
-import React from 'react';
 import { ratText } from '@smarter-academy/core/arithmetic/powers.js';
 
 /**
@@ -9,10 +8,10 @@ import { ratText } from '@smarter-academy/core/arithmetic/powers.js';
 export const VB_W = 600;
 export const VB_H = 340;
 export const RAIL_Y = 262;
-export const PIVOT = { x: 300, y: 128 };
-export const MAX_DEG = 62;
-export const RED = '#DC2626';
-export const GREEN = '#16A34A';
+const PIVOT = { x: 300, y: 128 };
+const MAX_DEG = 62;
+const RED = '#DC2626';
+const GREEN = '#16A34A';
 export const AMBER = '#F59E0B';
 export const BLUE = '#2563EB';
 

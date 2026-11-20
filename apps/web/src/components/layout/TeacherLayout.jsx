@@ -1,7 +1,9 @@
 import { useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import TeacherNavbar from '../teacher/TeacherNavbar';
-import BackgroundLayer from '../common/BackgroundLayer';
+import { DoorTabs, RAIL_WIDTH } from '../common/WorkspaceNav';
+import { teacherDoors } from '../../data/teacherNavigation';
+import { useReviewCount } from '../../features/teacher/reviews/useReviewCount';
 import ScrollToTop from '../common/ScrollToTop';
 import { AuthContext } from '../../context/AuthContext';
 import { useWorkspaceLayout } from '../../context/WorkspaceLayoutContext';
@@ -21,16 +23,15 @@ import PageTourProvider from '../../features/tours/PageTourProvider';
  * lisent sous ce nom ; un compte qui n'en a pas encore passe par l'étape
  * /enseignant/bienvenue, puis revient à la page qu'il visait.
  *
- * MÊME ESPACE DE TRAVAIL que l'élève (2026-09-29) : <main> porte
- * `.sa-workspace-main` et les variables `--sa-sidebar-w` / `--sa-gutter-w`,
- * donc un enseignant qui lit une leçon obtient la même colonne « Ma carte »
- * (la leçon fait de la place au lieu d'être recouverte) et la même barre
- * latérale repliable. Avant, `lg:ps-64` en dur : la carte en colonne se
- * posait PAR-DESSUS 380 px de leçon.
+ * SAME WORKSPACE as the student's: <main> carries `.sa-workspace-main`, `data-rail` and the variables
+ * `--sa-sidebar-w` (the fixed 80 px rail) / `--sa-gutter-w`, so a teacher reading a lesson gets the same « بطاقتي »
+ * column — the lesson makes room instead of being covered.
  */
 export default function TeacherLayout() {
   const { user } = useContext(AuthContext);
-  const { isPrior, contentGutter, sidebarWidth } = useWorkspaceLayout();
+  const { isPrior, contentGutter } = useWorkspaceLayout();
+  // ONE count for the menu and for the line of pages: the answers waiting for his correction.
+  const reviews = useReviewCount();
   const location = useLocation();
 
   if (needsName(user)) {
@@ -41,18 +42,20 @@ export default function TeacherLayout() {
   // (features/tours, docs/architecture/PAGE_TOURS.md).
   return (
     <PageTourProvider>
-    <div className="relative min-h-screen bg-[#FAFAFA]">
+    <div className="relative min-h-screen bg-nav-page">
       <ScrollToTop />
-      <BackgroundLayer />
-      <TeacherNavbar />
+      {/* Pas de halos colorés dans l'espace ENSEIGNANT (propriétaire, 2026-11-18 : « not professional ») : un fond uni. */}
+      <TeacherNavbar reviews={reviews} />
       <main
-        className="sa-workspace-main relative z-10 pt-14 pb-20 lg:pt-0 lg:pb-0 min-h-screen"
+        className="sa-workspace-main relative z-10 pt-14 pb-20 md:pt-0 md:pb-0 min-h-screen"
         style={{
-          '--sa-sidebar-w': `${sidebarWidth}px`,
+          '--sa-sidebar-w': `${RAIL_WIDTH}px`,
           '--sa-gutter-w': `${contentGutter}px`,
         }}
         data-workspace-prior={isPrior ? 'true' : undefined}
+        data-rail
       >
+        <DoorTabs account="teacher" doors={teacherDoors} counts={{ reviews }} />
         <Outlet />
       </main>
     </div>

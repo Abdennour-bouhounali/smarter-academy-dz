@@ -24,10 +24,9 @@ import {
   parseChain, links, linkStatus, stepOf, mergeLink, flipTile, flipStatus, findTile, tileValue, tileCount, nextLink, chainScale, tileTex,
 } from '@smarter-academy/core/arithmetic/fractions3.js';
 
-export const WORLDS = Object.freeze(['board', 'signs']);
-export const STRIKES = 3;
-export const FREE_MAX_TILES = 4;
-export const FREE_MAX_ABS = 20;
+const STRIKES = 3;
+const FREE_MAX_TILES = 4;
+const FREE_MAX_ABS = 20;
 export const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 'c1', chain: '-5/4 + 11/6' },
@@ -54,7 +53,7 @@ export const PRESETS = Object.freeze({
 const latin = (text) => String(text ?? '').replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/٫|،/g, ',').replace(/−|–/g, '-');
 export { latin };
 
-export function buildTask(raw, i = 0) {
+function buildTask(raw, i = 0) {
   const text = latin(raw.chain);
   const root = parseChain(text);
   return Object.freeze({ id: raw.id ?? `t${i}`, chain: text, root, hidden: !!raw.hidden, signOnly: !!raw.signOnly, scale: chainScale(text), free: !!raw.free });

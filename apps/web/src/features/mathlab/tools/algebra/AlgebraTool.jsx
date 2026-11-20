@@ -13,7 +13,6 @@ import {
   setSection,
   updateSection,
   enforceSizeBudget,
-  ALGEBRA_SECTIONS,
 } from './algebraState.js';
 import PathSection from './PathSection.jsx';
 import SimplifySection from './SimplifySection.jsx';

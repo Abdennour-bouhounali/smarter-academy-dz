@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { buildScene, compileFunction } from './buildScene.js';
-import { createAnalysisData, setSource, setLab, toggleLayer, setBounds, setRiemann, setLimitPoint } from './analysisState.js';
+import { createAnalysisData, setSource, setLab, toggleLayer, setBounds, setRiemann } from './analysisState.js';
 import { layersForLab } from './layers.js';
 
 const VIEW = { xMin: -3.92, xMax: 7.92, yMin: -2, yMax: 9 };

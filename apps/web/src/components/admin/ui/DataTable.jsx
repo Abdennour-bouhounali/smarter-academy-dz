@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronUp, ChevronDown } from 'lucide-react';
 import { LoadingState, ErrorState, EmptyState } from './states';
@@ -47,18 +46,18 @@ export default function DataTable({
    */
   labels = {},
 }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
 
   const text = {
-    emptyTitle: t('common.emptyTitle'),
-    emptyHint: t('common.emptyHint'),
-    unselectAll: t('common.unselectAllPage'),
-    selectAll: (count) => t('common.selectAllPage', { count }),
+    emptyTitle: t('ui.emptyTitle'),
+    emptyHint: t('ui.emptyHint'),
+    unselectAll: t('ui.unselectAllPage'),
+    selectAll: (count) => t('ui.selectAllPage', { count }),
     retry: undefined,
     loading: undefined,
     ...labels,
   };
-  const rowLabel = selectionLabel ?? ((row) => t('common.selectRow', { title: row.title ?? row.id }));
+  const rowLabel = selectionLabel ?? ((row) => t('ui.selectRow', { title: row.title ?? row.id }));
 
   if (loading) return <LoadingState rows={6} label={text.loading} />;
   if (error) return <ErrorState message={error} onRetry={onRetry} retryLabel={text.retry} />;

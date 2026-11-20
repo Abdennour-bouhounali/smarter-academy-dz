@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import {
-  Triangle, Square, Minus, Dot, Hexagon, Plus, Trash2, Undo2, Redo2,
+  Triangle, Square, Minus, Dot, Hexagon, Trash2, Undo2, Redo2,
 } from 'lucide-react';
 import { PRESETS, EXPERIMENTS, MAX_PATTERN_COPIES } from './practice.js';
 import { displayToggles } from './scope.js';

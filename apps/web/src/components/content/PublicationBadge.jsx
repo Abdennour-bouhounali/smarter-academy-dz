@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { EyeOff } from 'lucide-react';
 import { STATUS_TONES } from '../admin/ui/StatusBadge';

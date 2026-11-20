@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback } from 'react';
+import { Suspense, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAdminResource } from '../../../hooks/useAdminResource';
 import { fetchUserFeatureUsage } from '../../../services/admin/accessPolicyService';

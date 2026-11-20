@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as S from '@smarter-academy/core/arithmetic/surfaces.js';
 import KidFigure from '../primitives/KidFigure';
 import * as L from '../logic/tileYard';
@@ -14,7 +14,7 @@ import useHand from './useHand';
  * le fantôme de la cour qu'on aurait (avec sa clôture en pointillés et son nombre de bâtons) suit le doigt ; un refus rend le carreau en
  * secouant, avec la raison écrite dans le bandeau (jamais un rouge muet).
  */
-export const GARDENER = Object.freeze({ hairStyle: 'hijab', scarf: 'mint', outfit: 'teal', skin: 'wheat' });
+const GARDENER = Object.freeze({ hairStyle: 'hijab', scarf: 'mint', outfit: 'teal', skin: 'wheat' });
 const ring = 'outline-none';
 
 /** La géométrie du plateau pour une cellule de `c` px. */
@@ -32,7 +32,7 @@ export function geometry(c, rope) {
   return { padL, padT, gridW, gridH, heapX: padL + gridW + gap, heapW, w, h, ox: padL, oy: padT };
 }
 
-export default function YardBoard({ lab, setLab, k, c, walk, lastRefusedId, setWobbleKey, wobble, reduce }) {
+export default function YardBoard({ lab, setLab, k, c, walk, setWobbleKey, wobble, reduce }) {
   const rope = lab.mode === 'rope';
   const g = useMemo(() => geometry(c, rope), [c, rope]);
   const svgRef = useRef(null);

@@ -28,13 +28,12 @@ import { parseValue, parsePoints, niceStep, numText, numTex } from './originLine
 const { frac, sub, mul, div, eq, cmp, isZero, toNumber } = Lin;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseValue(v));
 
-export const MODES = Object.freeze(['rule', 'points']);
 export const THEMES = Object.freeze(['stadium', 'thermo']);
 
 /* ── lecture des props ─────────────────────────────────────────────────── */
 
 /** « 0|1|4|6 » → fractions triées, sans doublon. */
-export function parseMarks(raw) {
+function parseMarks(raw) {
   if (!raw) return [];
   const xs = String(raw).split('|').filter((s) => s !== '').map((s) => parseValue(s));
   const out = [];
@@ -46,7 +45,7 @@ export function parseMarks(raw) {
 const onGrid = (p, s) => F(div(p, s)).d === 1;
 
 /** Le pas des marqueurs : 1 jusqu'à 20 unités (les matchs du manuel), sinon un pas « rond » qui garde chaque nombre donné. */
-export function snapFor(span, values = []) {
+function snapFor(span, values = []) {
   if (span <= 20 && values.every((v) => F(v).d === 1)) return frac(1);
   let s = niceStep(span, 10);
   // un nombre donné (marque, couple, 0) doit être un nœud : sinon on raffine
@@ -59,7 +58,7 @@ export const indexOf = (x, s) => Math.round(toNumber(x) / toNumber(s));
 export const valueAt = (i, s) => mul(F(s), frac(i));
 
 /** La fenêtre (nombres JS pour le dessin) : contient 0, les marques, les couples, et la droite. */
-export function windowFor({ mode, f, marks, given }, props = {}) {
+function windowFor({ mode, f, marks, given }, props = {}) {
   const xs = mode === 'rule' ? marks.map(toNumber) : given.map((p) => toNumber(p.x));
   const X = Math.max(1, ...xs.map(Math.abs));
   let xMax;
@@ -165,7 +164,7 @@ export function stairDraw(st) {
 }
 
 /** Le numéro de la marche fantôme du manuel que (x₁ ; x₂) recouvre, ou −1. */
-export function ghostIndex(s, x1, x2) {
+function ghostIndex(s, x1, x2) {
   const lo = cmp(x1, x2) < 0 ? F(x1) : F(x2);
   const hi = cmp(x1, x2) < 0 ? F(x2) : F(x1);
   return s.ghosts.findIndex((g) => eq(g.from, lo) && eq(g.to, hi));
@@ -306,9 +305,6 @@ export function quotientTex(t) {
     + ` = \\dfrac{${numTex(t.df)}}{${numTex(t.dx)}} = ${numTex(t.q)}`;
 }
 
-/** Les deux images lues (première ligne de la lecture) : « f(4) = 2800 ,\ f(1) = 2200 ». */
-export const imagesTex = (t) => `f(${numTex(t.x1)}) = ${numTex(t.y1)} ,\\quad f(${numTex(t.x2)}) = ${numTex(t.y2)}`;
-
 /** Le quotient du manuel, forme compacte (seconde ligne) : « \dfrac{f(4) - f(1)}{4 - 1} = \dfrac{600}{3} = 200 ». */
 export const quotientShortTex = (t) => `\\dfrac{f(${numTex(t.x1)}) - f(${numTex(t.x2)})}{${numTex(t.x1)} - ${par(t.x2)}} = \\dfrac{${numTex(t.df)}}{${numTex(t.dx)}} = ${numTex(t.q)}`;
 
@@ -323,9 +319,6 @@ export function bTex(r) {
   const prod = mul(r.a, r.via);
   return `b = f(0) = f(${numTex(r.via)}) - ${par(r.a)} \\times ${par(r.via)} = ${numTex(r.yVia)} - ${par(prod)} = ${numTex(r.b)}`;
 }
-
-/** « (10 ; 50) ». */
-export const pairTex = (x, y) => `(${numTex(x)} ; ${numTex(y)})`;
 
 export { numText, numTex };
 export const toNum = (p) => toNumber(F(p));

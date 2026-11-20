@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -13,7 +13,6 @@ import { MODULE_CTX, getNavLinks } from '../moduleContext';
  * tâche suivante ; les étapes ci-dessous en gardent la TRACE (événements `checkpoint-done`) puis posent les noms (briques). Seule la cible fractionnaire (متقدم)
  * reste une question d'étape. Le نشاط 1 du manuel est posé en application au module 4.
  */
-const M = (s) => <MathText key={s}>{s}</MathText>;
 const Ltr = ({ children }) => <bdi dir="ltr">{String(children)}</bdi>;
 
 export default function Module01Nashat() {

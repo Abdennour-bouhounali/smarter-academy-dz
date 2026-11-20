@@ -258,7 +258,7 @@ export default function JoinClassLink() {
                   <div className="space-y-2">
                     <p className="text-xs font-semibold text-slate-500">{t('qism.joinLink.existingStudent')}</p>
                     <button type="button" onClick={() => consentThen('/login')} data-join-link-login
-                      className="flex min-h-[3.5rem] w-full items-center justify-center gap-2.5 rounded-xl border border-slate-300 bg-white px-6 py-3 text-[15px] font-semibold leading-snug text-slate-800 hover:bg-slate-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30">
+                      className="flex min-h-[3.5rem] w-full items-center justify-center gap-2.5 rounded-xl border border-slate-300 bg-white px-6 py-3 text-[15px] font-semibold leading-snug text-slate-800 hover:bg-slate-50 focus:outline-none focus-visible:ring-4 focus-visible:ring-nav-accent/30">
                       <LogIn size={17} aria-hidden="true" /> {t('qism.joinLink.loginAndJoin')}
                     </button>
                   </div>
@@ -277,7 +277,7 @@ function ClassSummary({ preview, gradeName }) {
   const { t } = useTranslation('student');
   return (
     <div className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-slate-50/70 p-4 sm:p-5" data-join-link-class>
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600"><Users size={22} aria-hidden="true" /></div>
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-nav-accent"><Users size={22} aria-hidden="true" /></div>
       <div className="min-w-0">
         <p className="break-words font-display text-xl font-bold text-slate-900" data-join-link-name>{preview.classroomName}</p>
         {preview.teacherName && <p className="mt-1 text-sm text-slate-600">{t('qism.joinLink.teacher', { teacher: preview.teacherName })}</p>}
@@ -312,7 +312,7 @@ function PrimaryButton({ onClick, disabled, icon: Icon, dataAttr, children }) {
       onClick={onClick}
       disabled={disabled}
       {...{ [dataAttr]: '' }}
-      className="flex min-h-[3.5rem] w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-[15px] font-semibold leading-snug text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 disabled:translate-y-0 disabled:opacity-70"
+      className="flex min-h-[3.5rem] w-full items-center justify-center gap-2.5 rounded-xl px-6 py-3 text-[15px] font-semibold leading-snug text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-nav-accent/30 disabled:translate-y-0 disabled:opacity-70"
       style={{ background: AUTH_TONES.student.gradient }}
     >
       {Icon && <Icon size={17} aria-hidden="true" />}

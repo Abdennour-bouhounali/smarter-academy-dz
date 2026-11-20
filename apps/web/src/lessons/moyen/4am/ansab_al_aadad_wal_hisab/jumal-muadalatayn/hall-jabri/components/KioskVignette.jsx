@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La vignette de la carte d'activité (MissionBrief.visual) : le kiosque du quartier, son

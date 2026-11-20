@@ -1118,6 +1118,11 @@ search labels, buttons, dialog titles and messages, empty/loading/error states,
 status badges, pagination and every `aria-label`. There is no "internal tool"
 exemption — see `ARABIC_RTL_CONTRACT.md` §1.
 
+Since 2026-11-17 the `admin` namespace is loaded **on demand, together with `AdminLayout`** — it is no longer part
+of what every visitor downloads (`BUNDLE_BOUNDARIES.md` §3). Only `pages/admin/` and `components/admin/` may read
+it. The primitives of `components/admin/ui/` that other spaces render too (`Modal`, `FilterBar` / `Pagination`,
+`DataTable`, `states`) read the eager `common › ui.*` instead; a new string of such a primitive goes there.
+
 Technical and mathematical identifiers are **not** translated (PGCD, PPCM, API,
 CSV, HTML, activity-log action codes, the brand name *Smarter Academy*), but
 the Arabic sentence around them is. `إدارة درس PGCD`, never `إدارة PGCD Lesson`.

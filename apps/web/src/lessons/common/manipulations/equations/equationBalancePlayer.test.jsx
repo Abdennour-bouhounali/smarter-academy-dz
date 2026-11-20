@@ -1,11 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import i18n from '../../../../i18n';
 import EquationBalance from './EquationBalance';
 import { QUESTIONS } from './EquationBalancePlayer';
 import { InMissionPlayerContext } from '../../mission/missionPlayerContext';
-import * as B from '../logic/equationBalance';
 import * as P from '../logic/equationBalancePlayer';
 import { isCorrect } from '../primitives/labCheckpoint';
 

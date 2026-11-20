@@ -34,7 +34,7 @@ export default function ProgressionStats({ activity, agg, profileStatus, gradeLa
         value={masteredValue}
         label={gradeLabel ? t('progression.statMasteredWithGrade', { grade: gradeLabel }) : t('progression.statMastered')}
         hint={masteredHint}
-        accent="bg-blue-50 text-blue-600"
+        accent="bg-nav-accent-soft text-nav-accent"
       />
       <StatTile icon={Zap} value={activity.totalXp} label={t('progression.statXpTotal')} hint={t('progression.statXpHint')} accent="bg-slate-100 text-slate-500" />
     </div>

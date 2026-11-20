@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { X, Check, TriangleAlert, Camera, ImagePlus, Send } from 'lucide-react';
@@ -32,7 +32,7 @@ import ScreenSnipper from './ScreenSnipper';
  * problème descend en pastilles facultatives — sans choix, « other » part au
  * serveur. Une image se colle (Ctrl+V) ou se dépose aussi sur la zone.
  */
-export const NOTE_MIN_LENGTH = 3;
+const NOTE_MIN_LENGTH = 3;
 
 export default function ReportDialog({ open, onClose, onSubmit, busy, error, submitted }) {
   const { t } = useTranslation('common');
@@ -229,7 +229,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 rounded-lg bg-slate-900 px-5 py-2.5 font-inter text-sm font-semibold text-white"
+              className="mt-4 rounded-lg bg-nav-accent px-5 py-2.5 font-inter text-sm font-semibold text-white"
             >
               {t('continue')}
             </button>
@@ -272,7 +272,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                   minLength={NOTE_MIN_LENGTH}
                   maxLength={2000}
                   placeholder={t('report.notePlaceholder')}
-                  className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50/60 p-3 font-inter text-[15px] leading-relaxed text-slate-900 focus:border-blue-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/30"
+                  className="mt-2 w-full resize-y rounded-xl border border-slate-300 bg-slate-50/60 p-3 font-inter text-[15px] leading-relaxed text-slate-900 focus:border-nav-accent focus:bg-white focus:outline-none focus:ring-2 focus:ring-nav-accent/30"
                 />
               </div>
 
@@ -294,7 +294,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                     onDragLeave={() => setDragging(false)}
                     onDrop={dropImage}
                     className={`flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed px-4 py-6 text-center transition-colors ${
-                      dragging ? 'border-blue-400 bg-blue-50' : 'border-slate-300 bg-slate-50/60'
+                      dragging ? 'border-blue-400 bg-nav-accent-soft' : 'border-slate-300 bg-slate-50/60'
                     }`}
                   >
                     <div className="flex flex-wrap justify-center gap-2">
@@ -302,7 +302,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                         type="button"
                         onClick={capture}
                         disabled={capturing}
-                        className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-blue-600 px-4 font-inter text-sm font-semibold text-white shadow-sm hover:bg-blue-700 disabled:opacity-50"
+                        className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-nav-accent px-4 font-inter text-sm font-semibold text-white shadow-sm hover:bg-[#3350c4] disabled:opacity-50"
                       >
                         <Camera size={18} aria-hidden="true" />
                         {capturing ? t('report.screenshot.capturing') : t('report.screenshot.capture')}
@@ -336,9 +336,9 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
                       <label
                         key={option.id}
                         title={t(`report.categories.${option.id}.hint`, option.hint)}
-                        className={`inline-flex min-h-[36px] cursor-pointer items-center rounded-full border px-3 font-inter text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-blue-500 ${
+                        className={`inline-flex min-h-[36px] cursor-pointer items-center rounded-full border px-3 font-inter text-sm transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-nav-accent ${
                           selected
-                            ? 'border-blue-500 bg-blue-600 font-semibold text-white'
+                            ? 'border-nav-accent bg-nav-accent font-semibold text-white'
                             : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-50'
                         }`}
                       >
@@ -381,7 +381,7 @@ export default function ReportDialog({ open, onClose, onSubmit, busy, error, sub
               <button
                 type="submit"
                 disabled={!noteReady || busy}
-                className="inline-flex items-center gap-2 rounded-lg bg-slate-900 px-6 py-2.5 font-inter text-sm font-semibold text-white disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-lg bg-nav-accent px-6 py-2.5 font-inter text-sm font-semibold text-white disabled:opacity-40"
               >
                 <Send size={16} aria-hidden="true" className="rtl:-scale-x-100" />
                 {busy ? t('report.sending') : t('report.send')}

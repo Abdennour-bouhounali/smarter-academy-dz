@@ -139,7 +139,7 @@ function Hero({ reduce }) {
             dernière pastille). Le défilement l'anime ensuite (fondu et montée). */}
         {/* La carte du voyage : les neuf stations, d'un coup d'œil */}
         <ol className="flex flex-wrap justify-center gap-2" aria-label={t('method.eyebrow')}>
-          {all.map((s, i) => {
+          {all.map((s) => {
             const Icon = s.icon;
             const last = s.id === GOLD.id;
             return (
@@ -279,7 +279,6 @@ function Station({ step, n, flip, reduce, onEnter, children }) {
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const tilt = useTransform(scrollYProgress, [0, 0.5, 1], reduce ? [0, 0, 0] : [flip ? -3 : 3, 0, flip ? 2 : -2]);
-  const numY = useTransform(scrollYProgress, [0, 1], reduce ? ['0%', '0%'] : ['40%', '-40%']);
   const Icon = step.icon;
 
   return (

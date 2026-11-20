@@ -21,7 +21,7 @@
  */
 
 /** En deçà, deux nombres flottants issus d'un glissement sont « le même ». */
-export const EPSILON = 1e-9;
+const EPSILON = 1e-9;
 
 export const ZERO = Object.freeze({ x: 0, y: 0 });
 
@@ -88,11 +88,6 @@ export function scale(v, k) {
 /** ‖u‖ = √(x² + y²). `Math.hypot` évite le dépassement de x² pour de grandes valeurs. */
 export function norm(v) {
   return isVector(v) ? Math.hypot(v.x, v.y) : NaN;
-}
-
-/** Le carré de la norme — exact sur les entiers, donc sans √ parasite dans les comparaisons. */
-export function normSquared(v) {
-  return isVector(v) ? v.x * v.x + v.y * v.y : NaN;
 }
 
 /** La distance AB = ‖⃗AB‖ (§19). */
@@ -171,7 +166,7 @@ export function dot(u, v) {
  * décide du parallélisme et de l'alignement — pas une comparaison de pentes,
  * qui exploserait sur une droite verticale.
  */
-export function cross(u, v) {
+function cross(u, v) {
   if (!isVector(u) || !isVector(v)) return NaN;
 
   return u.x * v.y - u.y * v.x;

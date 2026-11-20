@@ -523,7 +523,7 @@ record('a11y : les flèches font tourner le point (§37)', (await theta(page)) !
   `${thetaPreKey} → ${await theta(page)}`);
 
 // La ligne courante de la table n'est pas signalée par la COULEUR SEULE (§37).
-const currentRowText = await page.locator('[data-ml-trig-signrow] [class*="sr"]').first().innerText().catch(() => '');
+await page.locator('[data-ml-trig-signrow] [class*="sr"]').first().innerText().catch(() => '');
 const ariaCurrent = await page.locator('tr[aria-current="true"]').count();
 record('a11y : la ligne courante est annoncée, pas seulement colorée (§37)',
   ariaCurrent === 1, `aria-current ×${ariaCurrent}`);

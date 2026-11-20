@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Ban, ArrowUpToLine, ArrowDownToLine, Lock } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -229,7 +229,6 @@ function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const stageW = wide ? width - SIDE_W - 12 : width;
   const done = L.taskDone(lab);
   const last = lab.last;
-  const j = L.judgeNow(lab);
   const marks = L.marksOf(lab);
   const locked = L.sideLocked(lab);
 
@@ -419,7 +418,7 @@ function SeaStage({ lab, setLab, k, uid, width, screenH, wide, mood, lit }) {
   const W = Math.max(300, width);
   const H = stageHeight(screenH, wide, W < 420);
   const geo = useMemo(() => layout(W, H), [W, H]);
-  const { sx, sy } = useBox(svgRef, W, H);
+  const { sy } = useBox(svgRef, W, H);
   const [drag, setDrag] = useState(false);
   const task = L.taskOf(lab);
   const marks = L.marksOf(lab);

@@ -16,7 +16,7 @@ export const DEFAULT_VIEWPORT = Object.freeze({ xMin: -8, xMax: 8, yMin: -6, yMa
 
 /** Les bornes de zoom : une fenêtre ne descend pas sous 1e-3 unités ni ne dépasse 1e6. */
 export const MIN_SPAN = 1e-3;
-export const MAX_SPAN = 1e6;
+const MAX_SPAN = 1e6;
 
 const finite = Number.isFinite;
 

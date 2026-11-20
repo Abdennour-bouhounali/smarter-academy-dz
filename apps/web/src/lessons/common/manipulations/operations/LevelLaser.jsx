@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, ChevronUp, ChevronDown, FlaskConical, Undo2, Eraser } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -179,8 +179,6 @@ export default function LevelLaser({
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-const KIND_STEP = { compare: 'choose', predict: null, rewrite: 'rewrite', one: 'one', order: 'order' };
-
 function Lab({ lab, setLab, k, width, screenH, lead, cp, advanced }) {
   const task = L.taskOf(lab);
   const free = L.isFree(lab);
@@ -341,7 +339,6 @@ function Scene({ lab, setLab, k, width, screenH, mood, girl }) {
     const mp = { ArrowUp: ['n', 1], ArrowDown: ['n', -1], PageUp: ['p', 1], PageDown: ['p', -1] };
     if (e.key in mp) { e.preventDefault(); const [kind, d] = mp[e.key]; setLab((s) => (kind === 'n' ? L.nudgeLaser(s, d) : L.pageLaser(s, d))); }
   };
-  const lab2 = (n, d) => `${n}/${d}`;
   const reading = (i) => L.crossing(task.tanks[i].den, w.p, task.L);
   const showChips = !locked;
 
@@ -542,7 +539,7 @@ function FreeCard({ lab, setLab, k }) {
   const clean = (s) => s.replace(/[^0-9٠-٩]/g, '').slice(0, 2);
   const setField = (f) => (e) => { const nv = { ...v, [f]: clean(e.target.value) }; setV(nv); if (L.freeCheck(nv.a, nv.b, nv.c, nv.d).ok) setLab((s) => L.freeTask(s, nv.a, nv.b, nv.c, nv.d)); };
   const inp = `h-11 w-16 rounded-xl border-2 border-amber-300 bg-white px-1 text-center text-xl font-black tabular-nums text-indigo-950 ${ring}`;
-  const Frac = ({ top, bottom, ta, tb }) => (
+  const Frac = ({ top, bottom }) => (
     <span className="flex flex-col items-center gap-1">
       <input type="text" inputMode="numeric" autoComplete="off" value={v[top]} aria-label={k(`free.${top}`)} {...{ [`data-ll-free-${top}`]: true }} onChange={setField(top)} className={inp} />
       <span className="h-0.5 w-12 bg-slate-500" aria-hidden="true" />

@@ -112,10 +112,6 @@ export function fetchClassLearningPoint(token, id, code) {
   return call(`/teacher/classrooms/${encodeURIComponent(id)}/learning-points/${encodeURIComponent(code)}`, get(token), 'progressLoadClass');
 }
 
-export function fetchStudentLearningPointExplanation(token, id, studentId, code) {
-  return fetchStudentLearningPointEvidence(token, id, studentId, code).then((d) => d.explanation);
-}
-
 /**
  * La PREUVE d'un point pour un élève : l'explication du moteur, l'histoire
  * de son état, ses notes de cahier sur ce point, et les interventions qui

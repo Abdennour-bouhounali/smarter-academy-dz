@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search } from 'lucide-react';
 import { ChevronBack, ChevronForward } from '../../common/DirectionalIcons';
@@ -16,7 +15,7 @@ export function FilterBar({ children }) {
 }
 
 export function SearchInput({ value, onChange, placeholder, label }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
 
   return (
     <div className="relative min-w-[200px] flex-1">
@@ -26,10 +25,10 @@ export function SearchInput({ value, onChange, placeholder, label }) {
       <Search size={15} className="pointer-events-none absolute start-3 top-1/2 -translate-y-1/2 text-slate-400" />
       <input
         type="search"
-        aria-label={label ?? t('common.searchLabel')}
+        aria-label={label ?? t('ui.searchLabel')}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder={placeholder ?? t('common.search')}
+        placeholder={placeholder ?? t('ui.search')}
         className="w-full rounded-xl border border-slate-300 bg-white py-2 ps-9 pe-3 font-inter text-xs text-slate-800 placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
       />
     </div>
@@ -37,7 +36,7 @@ export function SearchInput({ value, onChange, placeholder, label }) {
 }
 
 export function SelectFilter({ value, onChange, options, label, allLabel }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
 
   return (
     <label className="flex items-center gap-1.5">
@@ -48,7 +47,7 @@ export function SelectFilter({ value, onChange, options, label, allLabel }) {
         onChange={(event) => onChange(event.target.value || undefined)}
         className="rounded-xl border border-slate-300 bg-white px-2.5 py-2 font-inter text-xs text-slate-700 focus:border-violet-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
       >
-        <option value="">{allLabel ?? t('common.all')}</option>
+        <option value="">{allLabel ?? t('ui.all')}</option>
         {options.map((option) => (
           <option key={option.value} value={option.value}>{option.label}</option>
         ))}
@@ -65,15 +64,15 @@ export function SelectFilter({ value, onChange, options, label, allLabel }) {
  * La position « 3 / 10 » reste LTR : un ratio ne se lit pas à l'envers.
  */
 export function Pagination({ meta, onPage, labels = {} }) {
-  const { t } = useTranslation('admin');
+  const { t } = useTranslation('common');
 
   if (!meta || meta.last_page <= 1) return null;
 
   const { current_page: page, last_page: last, total, from, to } = meta;
   const text = {
-    range: (f, to_, n) => t('common.rangeOf', { from: f, to: to_, total: n }),
-    previous: t('common.previous'),
-    next: t('common.next'),
+    range: (f, to_, n) => t('ui.rangeOf', { from: f, to: to_, total: n }),
+    previous: t('ui.previous'),
+    next: t('ui.next'),
     ...labels,
   };
 

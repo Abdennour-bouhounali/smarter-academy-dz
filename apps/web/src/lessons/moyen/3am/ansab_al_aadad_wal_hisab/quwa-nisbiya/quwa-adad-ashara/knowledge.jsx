@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, METHOD, GUIDE } from './content/textbook';
 
@@ -11,7 +10,6 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  * prérequis (`priorKnowledge`), mesurés par « أستعدّ ». Les règles sur les produits et quotients de puissances de 10 sont celles de la leçon SUIVANTE.
  */
 const { definition, zero, inverse, names, prefixes } = KNOWLEDGE;
-const L = (s) => <p className="text-center" dir="ltr"><MathText>{s}</MathText></p>;
 
 /** `memo` — la FICHE DE MÉMOIRE (MemoCard, prototype 2026-10-28) : ce qui CHANGE est en rouge (`R`). */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;

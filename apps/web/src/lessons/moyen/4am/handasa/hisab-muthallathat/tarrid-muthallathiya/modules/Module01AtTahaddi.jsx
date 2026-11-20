@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import { parseDec } from '@smarter-academy/core';
-import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
+import { useState } from 'react';
+import { ContentModule, TapQuestion, KnowledgeBrick, PredictRule } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
 import { Manipulation, ManipulationWorkspace } from '../../../../../../common/manipulations';
-import { TextbookBox } from '../../../../../../common/textbook';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';
-import { CHALLENGE, LAB, STADIUM, REMARKS } from '../content/textbook';
-import LadderFigure from '../components/LadderFigure';
+import { LAB, STADIUM, REMARKS } from '../content/textbook';
 import LabEvidence from '../components/LabEvidence';
 
 /**
@@ -32,7 +29,6 @@ import LabEvidence from '../components/LabEvidence';
  * laboratoire vit dans l'`intro`, aux deux niveaux.
  */
 const M = (s) => <MathText key={s}>{s}</MathText>;
-const close = (v) => (n) => Number.isFinite(n) && Math.abs(n - v) < 1e-9;
 const isLadder = (e) => e?.mode === 'ladder';
 const isHeight = (e) => e?.mode === 'height';
 

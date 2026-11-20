@@ -19,10 +19,8 @@
 import * as C from '@smarter-academy/core/arithmetic/chainOps.js';
 import { eq } from '@smarter-academy/core/arithmetic/powers.js';
 
-export const MAX_KEYS = 24;
+const MAX_KEYS = 24;
 export const FREE_LIMITS = Object.freeze({ maxKeys: 24, maxDepth: 2 });
-export const DIGITS = Object.freeze(['7', '8', '9', '4', '5', '6', '1', '2', '3', '0']);
-export const OPS = Object.freeze(['+', '−', '×', '÷']);
 
 /**
  * Les tâches. `pre` : la ligne tapée sans parenthèses (insert) ; `truthLine` : une ligne qui donne la vérité (sert à CALCULER la vérité, jamais montrée) ; `traps` : des lignes
@@ -66,7 +64,7 @@ const normKey = (key) => {
 export const tokensOf = (text, fixed = false) => C.tokenizeB(text).map((tk) => ({ k: tk.t === 'num' ? tk.text : tk.t === 'op' ? tk.o : tk.ch === '[' ? '(' : tk.ch === ']' ? ')' : tk.ch, ...(fixed ? { f: true } : {}) }));
 export const textOf = (line) => line.map((x) => x.k).join(' ');
 export const depthsOf = (line) => C.bracketDepths(line.map((x) => (x.k === '(' ? { t: 'open' } : x.k === ')' ? { t: 'close' } : { t: 'x' })));
-export const keyCount = (line) => line.reduce((n, x) => n + (/^\d/.test(x.k) ? x.k.length : 1), 0);
+const keyCount = (line) => line.reduce((n, x) => n + (/^\d/.test(x.k) ? x.k.length : 1), 0);
 
 /**
  * Presser UNE touche sur une ligne à la position du curseur (`cur` = nombre de jetons à sa gauche). Les chiffres et la virgule se collent au nombre qui précède le curseur.
@@ -140,15 +138,14 @@ export const taskOf = (s) => s.tasks[s.ti];
 export const taskDone = (s) => !!s.done[s.ti];
 export const canNext = (s) => taskDone(s) && s.ti < s.tasks.length - 1;
 export const allDone = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const frozen = (s) => taskDone(s);
-export const refusalsOf = (s) => s.refusals[s.ti] ?? 0;
+const frozen = (s) => taskDone(s);
+const refusalsOf = (s) => s.refusals[s.ti] ?? 0;
 /** La carte « ما تقوله الوضعية » : seulement quand la tâche est faite ou après le deuxième refus de l'histoire (jamais avant : elle donnerait la réponse). */
 export const truthShown = (s) => taskDone(s) || refusalsOf(s) >= 2;
 export const lineText = (s) => textOf(s.line);
 export const hasPairs = (s) => s.line.some((x) => x.k === '(' || x.k === ')');
 export const cursorSet = (s) => s.cur != null;
 export const canPrint = (s) => !frozen(s) && s.line.length > 0;
-export const printed = (s) => s.tape.length > 0;
 export const lastEntry = (s) => s.tape.at(-1) ?? null;
 
 /** Toucher un INTERVALLE (0 … n) : le curseur s'y pose. */
@@ -194,7 +191,7 @@ const sameNumbers = (task, line) => {
  * Juge une ligne : `{ status, value, display, ok, reason, useless, trap }`. `reason` : `null` (juste) | `'syntax'` | `'math'` | `'numbers'` | `'story'` | `'nopair'`.
  * `useless` : les paires qui ne changent pas l'arbre de calcul (acceptées, avec remarque).
  */
-export function judge(task, line) {
+function judge(task, line) {
   const text = textOf(line);
   const r = C.calculatorRead(text);
   if (r.status !== 'ok') return { status: r.status, value: null, display: r.status === 'syntax' ? 'Syntax ERROR' : 'Math ERROR', ok: false, reason: r.status, useless: [], trap: null };

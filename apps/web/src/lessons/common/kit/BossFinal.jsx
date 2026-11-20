@@ -663,7 +663,7 @@ export default function BossFinal({
           // « كشف النتائج » EST le submit du moteur : mêmes notes, même
           // evidence, même tentative persistée, une seule fois.
           onRevealAll={() => { setRevealed(revealAll(epreuves)); submitBoss(); }}
-          renderQuestion={({ question: ep, index: i, revealed: isRevealed }) => (
+          renderQuestion={({ question: ep, revealed: isRevealed }) => (
             <div className="space-y-4">
               <p className="text-base leading-relaxed text-slate-700">{ep.prompt}</p>
               {ep.extra && <div className="rounded-xl border border-slate-200 bg-white p-3">{ep.extra}</div>}

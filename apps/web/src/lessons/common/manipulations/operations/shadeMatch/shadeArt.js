@@ -5,8 +5,8 @@
  * (`WHITE`) vers le bleu du club (`BLUE`). Deux rapports égaux donnent donc la MÊME couleur au bit près ; 3/4 et 7/10 diffèrent d'environ 2 % de part de bleu :
  * l'œil ne tranche pas, l'aiguille tranche.
  */
-export const WHITE = [244, 247, 252];
-export const BLUE = [29, 78, 216];
+const WHITE = [244, 247, 252];
+const BLUE = [29, 78, 216];
 const hex = (n) => Math.round(n).toString(16).padStart(2, '0');
 
 /** `depth` ∈ [0, 1] → '#rrggbb'. */

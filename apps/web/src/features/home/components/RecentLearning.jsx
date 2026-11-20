@@ -30,12 +30,12 @@ export default function RecentLearning({ items, treeIndex }) {
               <li key={entry.lesson.id}>
                 <Link
                   to={to}
-                  className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-xl hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  className="group flex items-center gap-3 py-3 -mx-2 px-2 rounded-xl hover:bg-slate-50 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                   data-home-recent-item={entry.lesson.id}
                 >
                   <span className="text-2xl leading-none flex-shrink-0 w-9 text-center" aria-hidden="true">{entry.lesson.icon}</span>
                   <div className="flex-1 min-w-0">
-                    <p className="font-space font-bold text-slate-800 text-sm truncate group-hover:text-blue-600 transition-colors">{entry.lesson.title}</p>
+                    <p className="font-space font-bold text-slate-800 text-sm truncate group-hover:text-nav-accent transition-colors">{entry.lesson.title}</p>
                     {context && <p className="font-inter text-slate-500 text-xs truncate">{context}</p>}
                     {!done && <PathProgress percent={entry.progressPercent} size="sm" className="mt-1.5 max-w-[240px]" />}
                   </div>

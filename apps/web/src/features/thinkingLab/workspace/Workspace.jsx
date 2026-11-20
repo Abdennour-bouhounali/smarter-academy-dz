@@ -115,7 +115,7 @@ export default function Workspace({ challenge, busy, result, error, onSubmit, on
             </div>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <button type="button" onClick={submit} disabled={busy || !answer.trim()} data-check
-                className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-indigo-600 px-8 font-space text-base font-black text-white transition hover:bg-indigo-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-50">
+                className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-nav-accent px-8 font-space text-base font-black text-white transition hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300 disabled:opacity-50">
                 <Check size={18} aria-hidden="true" /> {busy ? t('workspace.checking') : t('workspace.check')}
               </button>
               {state.status !== 'open' && (
@@ -150,7 +150,7 @@ export default function Workspace({ challenge, busy, result, error, onSubmit, on
                     </div>
                   ) : (
                     <button type="button" disabled={key.state === 'locked' || busy} onClick={() => onOpenKey(key.k)}
-                      className="flex w-full items-center justify-between gap-2 rounded-2xl px-4 py-3 font-inter text-sm font-bold ring-1 transition enabled:bg-white enabled:text-indigo-700 enabled:ring-indigo-200 enabled:hover:bg-indigo-50 disabled:bg-slate-50 disabled:text-slate-400 disabled:ring-slate-200">
+                      className="flex w-full items-center justify-between gap-2 rounded-2xl px-4 py-3 font-inter text-sm font-bold ring-1 transition enabled:bg-white enabled:text-nav-accent enabled:ring-indigo-200 enabled:hover:bg-nav-accent-soft disabled:bg-slate-50 disabled:text-slate-400 disabled:ring-slate-200">
                       <span className="inline-flex items-center gap-2">
                         {key.state === 'locked' ? <Lock size={16} aria-hidden="true" /> : <KeyRound size={16} aria-hidden="true" />}
                         {key.state === 'locked' ? t('workspace.keyLocked', { k: key.k }) : t('workspace.keyOpen', { k: key.k })}

@@ -23,7 +23,6 @@
 import { parseRelation, testAt } from '@smarter-academy/core/arithmetic/equation2.js';
 
 export const COUNT_MAX = 60;
-export const PALLET = 5;
 export const FREE_RANGE = { e: { min: 0, max: 9000, step: 500 }, a: { min: 10, max: 100, step: 10 }, b: { min: 10, max: 100, step: 10 }, s: { min: 500, max: 12000, step: 500 } };
 export const SIGNS = Object.freeze(['<', '≤', '=']);
 
@@ -46,7 +45,7 @@ export const PRESETS = Object.freeze({
 const num = (r) => Number(r.n) / Number(r.d);
 const ARABIC = '٠١٢٣٤٥٦٧٨٩';
 /** Un entier tapé (chiffres arabes ou latins, espaces tolérés) → nombre, ou null. */
-export function readInt(text) {
+function readInt(text) {
   const t = String(text ?? '').replace(/[٠-٩]/g, (d) => String(ARABIC.indexOf(d))).replace(/[\s⁦⁩]/g, '');
   return /^\d{1,6}$/.test(t) ? Number(t) : null;
 }
@@ -57,7 +56,7 @@ const coef = (txt, letter) => { const m = new RegExp(`(\\d+)\\*?${letter}`).exec
 const emptyOf = (txt) => { const m = /^(\d+)/.exec(txt.replace(/\s+/g, '')); return m ? Number(m[1]) : 0; };
 
 /** L'essai exact d'une règle (texte) pour une charge (x, y) → { holds, left, right, lines: { a, b, cmp } }. */
-export function weighRule(rule, x, y = 0) {
+function weighRule(rule, x, y = 0) {
   const r = testAt(rule, { x, y });
   return { holds: r.holds, left: num(r.leftValue), right: num(r.rightValue), lines: { a: r.lines.leftEq, b: r.lines.rightEq, cmp: r.lines.cmp } };
 }
@@ -118,11 +117,6 @@ const clamp = (v) => Math.max(0, Math.min(COUNT_MAX, Math.round(v)));
 
 /** La charge courante de la benne (guidée ou libre). */
 export const bedOf = (s) => (s.free ? { x: s.free.x, y: s.free.y } : { x: s.w.x, y: s.w.y });
-/** Ce que dirait le pèse-camion pour la charge courante (sans rien changer). → { holds, left, right, lines } */
-export function weigh(s) {
-  const b = bedOf(s);
-  return s.free ? weighRule(freeRule(s.free), b.x, b.y) : weighAt(taskOf(s), b.x, b.y);
-}
 
 /* ── Gestes : la main charge et décharge les sacs ────────────────────────────────────────────── */
 
@@ -140,7 +134,7 @@ export function load(s, kind, delta) {
   return { ...s, w: unweighed(s.w, { [key]: v }), last: null };
 }
 /** Pose exactement `v` sacs (un geste de pointeur, une carte déposée). */
-export function setCount(s, kind, v) { const key = kind === 'y' ? 'y' : 'x'; return load(s, key, clamp(v) - (s.free ? s.free[key] : s.w[key])); }
+function setCount(s, kind, v) { const key = kind === 'y' ? 'y' : 'x'; return load(s, key, clamp(v) - (s.free ? s.free[key] : s.w[key])); }
 export function setBed(s, x, y = 0) { return setCount(setCount(s, 'x', x), 'y', y); }
 
 /** « اعبر إلى الميزان » : le pèse-camion écrit la substitution de la charge présente sur la benne. */

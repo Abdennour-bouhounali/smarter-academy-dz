@@ -503,3 +503,16 @@ reprise ; `php artisan migrate:status` y voit ensuite les cinq migrations
 « Ran ».
 
 Contrats : `docs/architecture/MATH_LAB.md`, `docs/architecture/NOTEBOOK.md`.
+
+## Registrations closed while the platform is under test (2026-11-20)
+
+`apps/api/config/registration.php`, read from the production `.env`:
+
+| Variable | Default | Effect |
+|---|---|---|
+| `REGISTRATION_OPEN` | `false` | `false`: no account is created by the public sign-up (form or Google); `/register` shows « المنصّة في مرحلة التجربة » and takes a phone number (`POST /waitlist` → table `contacts`, `objectif = waitlist`, read by the admin in « رسائل التواصل », with the usual push). Existing accounts sign in as before. `true` reopens everything. |
+| `REGISTRATION_CLASS_LINKS` | `true` | While closed, a STUDENT who arrives by the link of his teacher's class (valid link, class still accepting members) still signs up — the way to let invited students try the platform. `false` closes that too. |
+
+Nothing to migrate. The default is CLOSED: a production `.env` without the variable closes the sign-up. To reopen: set
+`REGISTRATION_OPEN=true` and clear the config cache (`php artisan config:clear`). Tests: `RegistrationClosedTest`
+(the API suite runs with registrations open, `phpunit*.xml`); the page: `node apps/web/e2e/waitlist.mjs`.

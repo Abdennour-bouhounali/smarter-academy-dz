@@ -1,0 +1,74 @@
+/**
+ * The TITLE SCREEN of a lesson's game world: the lesson's name, the world's own title and story, « ابدأ » / « واصل », and the
+ * doors that open without replaying the story — the knowledge map, the practice space, « تقدّمي », « مختبري », « عُدّتي ».
+ */
+import { RotateCcw, Map as MapIcon, BookOpen, Trophy, FlaskConical, Backpack } from 'lucide-react';
+import { KT, TX } from './text';
+
+export default function Title({ s, game, world, lessonTitle, onBegin, onRestart, coarse }) {
+  return (
+    <div className="di-title">
+      <div className="di-title__box">
+        <p className="di-title__eyebrow">{lessonTitle}</p>
+        <h1>{world.text.title}</h1>
+        <p className="di-title__sub">{world.text.subtitle}</p>
+        <button type="button" className="di-btn di-btn--primary di-btn--xl" onClick={onBegin} data-di-start>
+          {s.hasSave ? KT.resume : KT.start}
+        </button>
+        <div className="di-row di-row--wrap di-title__doors">
+          <button type="button" className="di-btn di-btn--map" onClick={() => game.openKnow()} data-di-know-open>
+            <BookOpen size={18} /> {TX.know.open}
+          </button>
+          <button type="button" className="di-btn di-btn--map" onClick={() => game.openMap()} data-di-map>
+            <MapIcon size={18} /> {TX.hub.open}
+          </button>
+          <button
+            type="button"
+            className="di-btn di-btn--map"
+            onClick={() => game.openProgress()}
+            data-di-progress-open
+          >
+            <Trophy size={18} /> {TX.progress.open}
+          </button>
+          <button
+            type="button"
+            className="di-btn di-btn--map di-btn--lab"
+            onClick={() => game.openLab()}
+            data-di-lab-open
+          >
+            <FlaskConical size={18} /> {TX.lab.open}
+          </button>
+          <button
+            type="button"
+            className="di-btn di-btn--map di-btn--kit"
+            onClick={() => game.openLaunch(false)}
+            data-di-launch-open
+          >
+            <Backpack size={18} /> {TX.launch.open}
+          </button>
+        </div>
+        {s.hasSave && (
+          <button type="button" className="di-link" onClick={onRestart}>
+            <RotateCcw size={14} /> {KT.restart}
+          </button>
+        )}
+        {!coarse && (
+          <ul className="di-title__keys">
+            <li>
+              <kbd>←</kbd>
+              <kbd>↑</kbd>
+              <kbd>↓</kbd>
+              <kbd>→</kbd> {KT.controls.move}
+            </li>
+            <li>
+              <kbd>{KT.controls.space}</kbd> {KT.controls.jump}
+            </li>
+            <li>
+              <kbd>E</kbd> {KT.controls.act}
+            </li>
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}

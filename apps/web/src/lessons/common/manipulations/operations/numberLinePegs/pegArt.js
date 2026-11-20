@@ -12,7 +12,7 @@ export const CARD_H = 46;
 export const CHIP_H = 22;
 export const ROW_PITCH = CARD_H + CHIP_H + 20;
 export const STACK_DX = 7;
-export const STACK_DY = 4;
+const STACK_DY = 4;
 
 /** L'abscisse (unités de conception) d'une valeur `v` (flottant, pour le DESSIN) sur le حبل gradué de lo à hi. */
 export const xOfValue = (v, [lo, hi]) => PAD + ((v - lo) / (hi - lo)) * (W - 2 * PAD);

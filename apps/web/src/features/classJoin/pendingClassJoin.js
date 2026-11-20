@@ -30,7 +30,7 @@ const STORAGE_KEY = 'sa.pendingClassJoin';
 export const PENDING_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 /** Le format du jeton, identique au serveur (JoinLinkToken : 32 base62). */
-export const JOIN_LINK_PATTERN = /^[A-Za-z0-9]{32}$/;
+const JOIN_LINK_PATTERN = /^[A-Za-z0-9]{32}$/;
 
 export function isJoinLinkToken(value) {
   return typeof value === 'string' && JOIN_LINK_PATTERN.test(value);

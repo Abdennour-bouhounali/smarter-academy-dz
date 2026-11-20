@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import * as S from '@smarter-academy/core/arithmetic/substitution.js';
 import MathText from '../../../components/MathText';
 import * as L from '../../logic/marbleRun';
-import { MarbleBall, Pegboard, Basket, StationCard, iso } from './Parts';
+import { MarbleBall, Basket, StationCard, iso } from './Parts';
 
 /** Les panneaux annexes de « مسار الكريات » : la prédiction (متقدم), « جرّب أعدادك », les deux murs jumeaux. */
 

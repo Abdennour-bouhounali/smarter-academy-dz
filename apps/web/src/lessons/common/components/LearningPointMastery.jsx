@@ -6,7 +6,7 @@ import { reasonLabel, freshnessLabel } from './masteryLabels';
 
 // Le vocabulaire (raisons, fraîcheur, tooltip) vit dans masteryLabels.js —
 // pur, sans React — et se lit aussi depuis ce module.
-export { reasonLabel, freshnessLabel, stateLabel, masteryTooltip, MASTERY_STATE_KEYS } from './masteryLabels';
+export { reasonLabel, freshnessLabel, masteryTooltip } from './masteryLabels';
 
 /**
  * LearningPointMastery — student-facing rendering of a Learning Point's

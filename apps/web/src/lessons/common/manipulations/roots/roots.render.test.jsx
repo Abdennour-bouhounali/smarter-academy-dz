@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import SquareFold from './SquareFold';
@@ -41,7 +40,6 @@ const RAW = /manipulation\.[a-zA-Z]/;
 const kT = (key, o) => i18n.t(`lesson:manipulation.squareTiling.${key}`, o);
 const kF = (key, o) => i18n.t(`lesson:manipulation.squareFold.${key}`, o);
 const kR = (key, o) => i18n.t(`lesson:manipulation.squareRoot.${key}`, o);
-const SEL = '[data-lab-checkpoint]';
 
 function check(q, label) {
   const out = renderToString(<div>{q.prompt}{q.options?.map((o, i) => <span key={i}>{o.text}{o.why}</span>)}{q.hints}{q.explain}</div>);

@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import GeoFigure from '../../../../../common/components/GeoFigure';
 import { SourceTag } from '../../../../../common/textbook';

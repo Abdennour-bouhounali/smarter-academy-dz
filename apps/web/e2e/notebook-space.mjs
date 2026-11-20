@@ -104,7 +104,6 @@ const ctx = await authedContext({ viewport: { width: 1440, height: 900 }, locale
 const page = await ctx.newPage();
 attach(page);
 const cards = () => page.locator('[data-note-card]');
-const results$ = () => page.locator('[data-nb-results]');
 // On attend la RÉPONSE de la liste, puis que les cartes (ou l'état vide) soient posées.
 const isList = (r) => r.url().includes('/practice/notes?') && r.request().method() === 'GET';
 const settle = () => page.waitForFunction(() => !document.querySelector('[aria-busy="true"]') && document.querySelector('[data-note-card], [data-nb-empty], [data-nb-space] .text-rose-700'), null, { timeout: 15000 });

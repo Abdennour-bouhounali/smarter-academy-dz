@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -13,7 +12,7 @@ export const COL = {
 };
 
 /** Une barque peinte : coque, bande, cabine ; `flip` la tourne. */
-export function Boat({ x, y, s = 1, hull = '#E5533D', band = '#FFFFFF', flip = false }) {
+function Boat({ x, y, s = 1, hull = '#E5533D', band = '#FFFFFF', flip = false }) {
   const f = flip ? -1 : 1;
   return (
     <g transform={`translate(${x} ${y}) scale(${f * s} ${s})`} aria-hidden="true">
@@ -66,7 +65,7 @@ export function HarborBackdrop({ W, H, quayEnd, uid }) {
 }
 
 /** Les deux enfants au bord du quai : Yacine (le garçon) et, au niveau مبتدئ, sa sœur Lina (hijab) ; l'humeur suit l'essai. */
-export function Kids({ W, mood, lina }) {
+export function Kids({ mood, lina }) {
   return (
     <g aria-hidden="true">
       {lina && <KidFigure cx={64} top={58} foot={112} hairStyle="hijab" scarf="rose" outfit="pink" skin="light" mood={mood} />}

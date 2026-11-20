@@ -151,7 +151,7 @@ export default function PracticeSummary() {
       <div className="flex gap-3 flex-wrap">
         <Link
           to={`/espace/pratique/${lessonCode}`}
-          className="flex-1 px-5 py-3 rounded-xl bg-slate-900 text-white font-bold min-h-[48px] inline-flex items-center justify-center gap-2"
+          className="flex-1 px-5 py-3 rounded-xl bg-nav-accent text-white font-bold min-h-[48px] inline-flex items-center justify-center gap-2"
         >
           {t('practice.keepPracticing')} <ArrowForward className="w-4 h-4" aria-hidden="true" />
         </Link>

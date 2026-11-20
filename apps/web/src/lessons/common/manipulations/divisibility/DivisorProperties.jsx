@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
@@ -518,7 +518,7 @@ const BUILD = {
     };
   },
   // l'égalité de la division BÂTIE : a = b × k + r (chaque emplacement porte son sens)
-  remBuild: ({ n, a, b, lab }, k) => ({
+  remBuild: ({ a, b, lab }, k) => ({
     id: 'remBuild', kind: 'build', prompt: Mx(k, 'remBuild.prompt'),
     slots: [k('cp.remBuild.slotA'), k('cp.remBuild.slotB'), k('cp.remBuild.slotK'), k('cp.remBuild.slotR')],
     tiles: buildTiles({ n: a, g: b, q: lab.k, r: lab.r }), expected: [a, b, lab.k, lab.r],
@@ -576,7 +576,7 @@ const BUILD = {
       explain: Mx(k, 'diffWhole.explain', o),
     };
   },
-  remPanels: ({ n, a, b, lab }, k) => ({
+  remPanels: ({ a, b, lab }, k) => ({
     id: 'remPanels', kind: 'number', expected: String(lab.k), answer: <MathText>{$(lab.k)}</MathText>,
     prompt: Mx(k, 'remPanels.prompt', { a, b }),
     hints: [Mx(k, 'remPanels.hint1', { b }), Mx(k, 'remPanels.hint2', { a, b })],

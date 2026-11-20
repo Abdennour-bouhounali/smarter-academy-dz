@@ -21,7 +21,7 @@ export function fnv1a32(text) {
 }
 
 /** Noms des variables, triés. */
-export function paramNames(params) {
+function paramNames(params) {
   return Object.keys(params?.vars ?? {}).sort();
 }
 
@@ -31,7 +31,7 @@ export function tupleCount(params) {
 }
 
 /** Le tuple d'indice `index` (base mixte, dernière variable la plus rapide). */
-export function tupleAt(params, index) {
+function tupleAt(params, index) {
   const names = paramNames(params);
   const values = {};
   let rest = index;

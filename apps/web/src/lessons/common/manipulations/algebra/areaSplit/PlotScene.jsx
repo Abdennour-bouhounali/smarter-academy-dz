@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Plus, Minus, Scissors } from 'lucide-react';
 import * as E from '@smarter-academy/core/arithmetic/expansion.js';
 import * as L from '../../logic/areaSplit';
@@ -53,7 +53,7 @@ function drawSegs(s, x, cut) {
 const FILL = { lawn: 'url(#as-lawn)', bed: 'url(#as-bed)', path: 'url(#as-path)' };
 const RANK = { lawn: 0, bed: 1, path: 2 };
 
-export default function PlotScene({ lab, setLab, k, u, hot = null, ghost = null, showArea = false, compact = false }) {
+export default function PlotScene({ lab, setLab, k, u, hot = null, ghost = null, showArea = false }) {
   const { h, w, x } = lab;
   const frame = frameOf(h, w, u, lab.scaffold);
   const geo = geometry({ h, w, x, u, scaffold: lab.scaffold, patches: lab.patches });

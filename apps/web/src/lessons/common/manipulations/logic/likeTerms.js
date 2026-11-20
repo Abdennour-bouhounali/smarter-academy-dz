@@ -25,15 +25,14 @@
 import * as B from '@smarter-academy/core/arithmetic/brackets.js';
 import { termTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 
-export const WORLDS = Object.freeze(['collect', 'brackets']);
 /** Les صواني, de gauche à droite dans l'écriture : x², x, nombres. */
 export const TRAYS = Object.freeze([2, 1, 0]);
 export const X_MIN = 1;
 export const X_MAX = 6;
-export const X_DEFAULT = 3;
+const X_DEFAULT = 3;
 /** Le panneau « جرّب أعدادك » : au plus 12 pièces AJOUTÉES par forme (depuis le début ou « امسح »), au plus 3 termes dans une caisse. */
-export const MAX_PIECES = 12;
-export const MAX_CRATE_TERMS = 3;
+const MAX_PIECES = 12;
+const MAX_CRATE_TERMS = 3;
 export const COEF_MIN = -24;
 export const COEF_MAX = 24;
 
@@ -63,7 +62,7 @@ const termOf = (b) => ({ c: b.c, p: b.p });
 /* ═════════════ Construction ═════════════ */
 
 /** La table d'une expression : une pile par terme (`slot` = son rang dans l'écriture sans parenthèses), une caisse par groupe. */
-export function tableOf(expr) {
+function tableOf(expr) {
   const bundles = [];
   const crates = [];
   let slot = 0;
@@ -116,7 +115,7 @@ export const inCrate = (s) => s.bundles.filter((b) => b.place === 'crate').sort(
 export const loose = (s) => s.bundles.filter((b) => b.place === 'row').sort((a, b) => a.slot - b.slot);
 export const inTray = (s, p) => s.bundles.filter((b) => b.place === 'tray' && b.p === p).sort((a, b) => a.order - b.order);
 export const cratesFull = (s) => s.bundles.some((b) => b.place === 'crate');
-export const crateHasTerms = (s, item) => s.bundles.some((b) => b.place === 'crate' && b.crate === item);
+const crateHasTerms = (s, item) => s.bundles.some((b) => b.place === 'crate' && b.crate === item);
 export const crateOf = (s, item) => s.crates.find((k) => k.item === item) ?? null;
 /** Le coefficient EXACT d'une صينية (somme des piles qu'on y a posées). */
 export const trayCoef = (s, p) => inTray(s, p).reduce((a, b) => a + b.c, 0);
@@ -148,9 +147,6 @@ function tableExpr(s, override = null) {
   });
   return items;
 }
-
-/** Le résultat attendu (la forme réduite), en termes. */
-export const reduced = (s) => B.simplify(s.expr);
 
 /* ═════════════ Gestes ═════════════ */
 
@@ -245,7 +241,7 @@ export function setX(s, x) {
 /* ── متقدم : le coefficient de chaque صينية, puis « تحقّق » ── */
 
 /** La valeur par défaut d'un réglage de coefficient : jamais la réponse (MANIPULATION_CONTRACT §6bis « default parameters »). */
-export function defaultCoef(s, p) {
+function defaultCoef(s, p) {
   const list = inTray(s, p);
   const answer = trayCoef(s, p);
   const sumAbs = list.reduce((a, b) => a + Math.abs(b.c), 0);

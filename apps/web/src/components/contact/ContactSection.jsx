@@ -20,7 +20,7 @@ const STEPS = [
 ];
 
 const inputClass =
-  'w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/90 font-inter text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition-all';
+  'w-full px-4 py-3 rounded-xl border border-slate-200 bg-white/90 font-inter text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-nav-accent/30 focus:border-blue-400 transition-all';
 
 const EMPTY_FORM = { name: '', email: '', phone: '', message: '' };
 
@@ -194,7 +194,7 @@ export default function ContactSection() {
                             className={`px-4 py-2 rounded-full font-inter text-sm font-medium border transition-all duration-200 ${
                               selected
                                 ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white border-transparent shadow-md shadow-blue-500/25'
-                                : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-blue-700'
+                                : 'bg-white text-slate-600 border-slate-200 hover:border-blue-300 hover:text-nav-accent'
                             }`}
                           >
                             {t(`contact.subjects.${key}`)}

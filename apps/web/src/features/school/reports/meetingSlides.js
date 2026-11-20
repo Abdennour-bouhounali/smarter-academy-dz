@@ -13,7 +13,7 @@
  * (متحكَّم فيها, تعزيز ou ثغرة) : l'année entière, encore vierge, ferait
  * soixante-dix diapositives vides. Le rapport imprimé, lui, reste complet.
  */
-export function hasEvidence(lesson) {
+function hasEvidence(lesson) {
   return (lesson.learningPoints ?? []).some((lp) => {
     const cells = lp.counts ? [lp.counts] : Object.values(lp.byClass ?? {});
     return cells.some((c) => (c?.mastered ?? 0) + (c?.reinforce ?? 0) + (c?.gap ?? 0) > 0);

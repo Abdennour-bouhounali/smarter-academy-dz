@@ -28,7 +28,7 @@ const AXIS_Y = 50;
 const MARGIN = 26;
 
 /** Le pas de graduation « rond » le plus proche pour cette portée. */
-export function tickStepFor(span) {
+function tickStepFor(span) {
   const rough = span / 10;
   const magnitude = 10 ** Math.floor(Math.log10(rough));
   const normalized = rough / magnitude;

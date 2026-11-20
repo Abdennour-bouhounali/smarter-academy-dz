@@ -32,12 +32,6 @@ const level = courseLevels[0];
 function entry(l, { percent = 0, last = 0, modules = new Set() } = {}) {
   return { lesson: l, chapter: field1, grade, level, progressPercent: percent, lastVisitedAt: last, uniqueModules: modules, totalCount: 4 };
 }
-function mastery(lessonId, states) {
-  return [{
-    grade: '4am',
-    lessons: [{ lesson: lessonId, learningPoints: states.map((status, i) => ({ code: `4am_${lessonId}_P${i + 1}`, status, title: `نقطة ${i + 1}` })) }],
-  }];
-}
 const getModulePath = (id, n) => `/courses/moyen/4am/ch/${id}/m${n}`;
 
 describe('pickCurriculumContext — la tranche « أين أنت »', () => {

@@ -12,14 +12,11 @@
   "open": "افتح",
   "myWork": "أعمالي",
   "myWorkHint": "كل أعمالك الرياضية التي أنشأتها وحفظتها في المختبر.",
-  "myWorkEmpty": "لم تحفظ أيّ عمل بعد. افتح أداة وابدأ: يُحفظ عملك تلقائيًا.",
   "myWorkError": "تعذّر تحميل أعمالك.",
   "myWorkLoading": "جارٍ تحميل أعمالك…",
   "openDocument": "افتح «{{title}}»",
-  "deleteDocument": "حذف «{{title}}»",
   "deleteTitle": "حذف «{{title}}»؟",
   "deleteBody": "لا يمكن التراجع عن الحذف.",
-  "deleteError": "تعذّر حذف هذا العمل.",
   "updatedAt": "آخر تعديل: {{date}}",
   "untitled": "بدون عنوان",
   "labs": {
@@ -5590,8 +5587,7 @@
         "normal": "عادي",
         "fast": "سريع"
       },
-      "restartShort": "من البداية",
-      "readyShort": "جاهز"
+      "restartShort": "من البداية"
     },
     "practice": {
       "prompt": {

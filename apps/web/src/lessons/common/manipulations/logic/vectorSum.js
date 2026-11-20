@@ -24,7 +24,6 @@
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
 
-export const MODES = Object.freeze(['chasles', 'parallelogram']);
 const DECOY_IDS = ['P', 'Q', 'R'];
 const num = (v) => (typeof v === 'number' ? v : Number(String(v).replace(',', '.')));
 
@@ -48,7 +47,7 @@ function initChasles({ A = [1, 1], u = [3, 1], legs = [[1, 3], [3, 1], [-3, -1]]
 }
 
 /** La station `id` de la carte. */
-export const stationOf = (s, id) => s.stations.find((st) => st.id === id) ?? null;
+const stationOf = (s, id) => s.stations.find((st) => st.id === id) ?? null;
 
 /**
  * Peut-on poser la QUEUE du trajet `leg` sur la station `id` ? true | 'origin' (c'est A, l'origine du premier trajet :

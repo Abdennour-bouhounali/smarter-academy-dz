@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 
 /**
@@ -11,15 +10,15 @@ export const H = 212;
 export const TY = 118;        // le haut du ruban
 export const TH = 38;         // la hauteur du ruban
 export const POLE = 60;       // la hauteur d'une hampe
-export const SAND_Y = 100;
-export const SAND_H = 98;
+const SAND_Y = 100;
+const SAND_H = 98;
 
 export const COL = {
   sky: '#E0F2FE', skyDark: '#BAE6FD', grass: '#86EFAC', grassDark: '#4ADE80', sand: '#FCE7A8', sandDark: '#E8C97A', board: '#FFFFFF', boardEdge: '#CBD5E1',
   tape: '#FACC15', tapeDark: '#A16207', tapeInk: '#1F2937', ink: '#0F172A', miss: '#E11D48', hatch: '#FB7185', cursor: '#4F46E5', bleacher: '#CBD5E1', wood: '#92400E',
   red: '#E11D48', blue: '#2563EB', green: '#16A34A', amber: '#D97706',
 };
-export const FLAG_FILL = { red: COL.red, blue: COL.blue, green: COL.green, amber: COL.amber };
+const FLAG_FILL = { red: COL.red, blue: COL.blue, green: COL.green, amber: COL.amber };
 
 /** Le ciel, les gradins, la pelouse, la fosse de sable ratissé, la planche d'appel (à gauche de O = `x0`) et la bordure du bout (à `xEnd`). `cut` : le ruban est coupé à gauche (O hors champ). */
 export function Backdrop({ uid, x0, xEnd, cut }) {
@@ -47,7 +46,7 @@ export function Backdrop({ uid, x0, xEnd, cut }) {
 }
 
 /** Le ruban jaune de `x0` à `x0 + 600`. Le bord gauche est déchiré quand la fenêtre n'a pas son origine (`cut`). */
-export function TapeBand({ uid, x0, len, cut }) {
+export function TapeBand({ x0, len, cut }) {
   return (
     <g aria-hidden="true">
       <rect x={x0} y={TY + 2} width={len} height={TH} rx={3} fill="#000" opacity={0.12} />

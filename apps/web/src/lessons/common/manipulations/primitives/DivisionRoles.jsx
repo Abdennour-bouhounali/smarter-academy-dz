@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LES TROIS RÔLES de a = b × q + r, nommés dans les mots de la scène.

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Minus, Plus } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -41,7 +41,7 @@ import * as L from '../logic/coneCylinder';
  */
 const ringCls = 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const PRED_MAX = 2;
-export const PRED_HOLD_MS = 1600;
+const PRED_HOLD_MS = 1600;
 const BELOW = 46;
 const TONE = { inscribed: 'text-emerald-800', gap: 'text-sky-900', pierce: 'text-rose-800', repeat: 'text-slate-700' };
 const Num = ({ children }) => <bdi dir="ltr" className="font-mono font-black">{children}</bdi>;

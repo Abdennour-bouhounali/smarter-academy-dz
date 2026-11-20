@@ -73,9 +73,6 @@ export function direction(a) {
   return c > 0 ? 'rising' : c < 0 ? 'falling' : 'flat';
 }
 
-// ── Pourcentages ────────────────────────────────────────────────────────────
-export const PERCENT_KINDS = Object.freeze(['take', 'increase', 'decrease']);
-
 /** Le multiplicateur de « prendre t % », « augmenter de t % », « diminuer de t % ». */
 export function percentMultiplier(t, kind) {
   const r = div(F(t), frac(100));

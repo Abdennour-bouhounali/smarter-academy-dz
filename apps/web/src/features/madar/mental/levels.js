@@ -15,10 +15,7 @@
 import { createRng } from '../engine/rng';
 import { decimalOf, rat } from '../sniper/cards';
 
-export const MENTAL_DOMAINS = ['addSub', 'mul', 'div', 'big', 'tricks', 'mixed', 'decimals', 'relatives', 'powers'];
-
-/** Le niveau d'entrée de chaque année (tout ce qui précède est ouvert). MIROIR : config/madar.php › mental.entry. */
-export const MENTAL_ENTRY = { '1am': 3, '2am': 7, '3am': 11, '4am': 15 };
+const MENTAL_DOMAINS = ['addSub', 'mul', 'div', 'big', 'tricks', 'mixed', 'decimals', 'relatives', 'powers'];
 
 const by = (sub, a, b, c) => [a, b, c][sub - 1];
 const minus = (n) => (n < 0 ? `−${-n}` : String(n));
@@ -198,7 +195,7 @@ export const MENTAL_LEVELS = [
   L('div2d', 'div'), L('relMix', 'relatives'), L('powers', 'powers'), L('chain', 'mixed'), L('champion', 'mixed'),
 ].map((l, i) => ({ ...l, n: i + 1 }));
 
-export const mentalLevelAt = (n) => MENTAL_LEVELS[Math.min(MENTAL_LEVELS.length, Math.max(1, n)) - 1];
+const mentalLevelAt = (n) => MENTAL_LEVELS[Math.min(MENTAL_LEVELS.length, Math.max(1, n)) - 1];
 
 /** Les familles, chacune avec ses niveaux (la carte de l'accueil). */
 export function mentalLevelsByDomain() {

@@ -1,13 +1,11 @@
-import React from 'react';
-import { tileValue } from '@smarter-academy/core/arithmetic/fractions3.js';
 
 /**
  * Le dessin de « لوحة الدمج » (merge-board) : la barre signée d'une tuile, l'aimant, la mini-droite des barres et le CSS des animations.
  * Tout est dessiné en code (CLAUDE.md « Images ») ; aucune image. Les couleurs ne portent JAMAIS seules le signe : « + » / « − » est toujours imprimé.
  */
-export const BLUE = '#2563EB';
-export const RED = '#DC2626';
-export const colorOf = (sg) => (sg < 0 ? RED : sg > 0 ? BLUE : '#64748B');
+const BLUE = '#2563EB';
+const RED = '#DC2626';
+const colorOf = (sg) => (sg < 0 ? RED : sg > 0 ? BLUE : '#64748B');
 
 export const CSS = `
 @keyframes mbPop { 0% { transform: scale(.55); opacity: .2 } 60% { transform: scale(1.1); opacity: 1 } 100% { transform: scale(1) } }
@@ -81,4 +79,3 @@ export function MiniLine({ a, b, scale, width = 300 }) {
   );
 }
 
-export const valueNum = (node) => { const v = tileValue(node); return Number(v.n) / Number(v.d); };

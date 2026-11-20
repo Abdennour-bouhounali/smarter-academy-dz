@@ -32,7 +32,7 @@ export function initRound({ system, theme, ranges, start }) {
 }
 
 /** Le départ par défaut : (0 ; 0) s'il n'allume rien, sinon la ثنائية de la page (`defaultPair`). */
-export function startFor(lab) {
+function startFor(lab) {
   const inR = (r, v) => v >= r.min && v <= r.max;
   if (inR(lab.range.x, 0) && inR(lab.range.y, 0) && !L.okPair(lab, 0, 0).some(Boolean)) return { x: 0, y: 0 };
   return L.defaultPair(lab);
@@ -138,7 +138,7 @@ export function parallelFacts(lab) {
 /** La réponse REFUSÉE d'une manche couverte dont la jauge (1) était allumée (« الموسم ممتلئ » est vrai). */
 export const fullRefused = (lab) => lab.claimed.find((c) => !c.accepted && c.ok[0] && !c.ok[1]) ?? null;
 
-export const CHAIN_SPECS = Object.freeze({
+const CHAIN_SPECS = Object.freeze({
   season: [{ id: 'season', reached: (lab) => discovered(lab, 'contrast'), qs: ['halfWhich', 'buildLine'] }],
   coins: [{ id: 'coins', reached: (lab) => discovered(lab, 'many'), qs: ['buildEq2', 'rule'] }],
   covered: [{ id: 'covered', reached: (lab) => discovered(lab, 'covered'), qs: ['readCovered', 'coveredWhy'] }],

@@ -25,13 +25,13 @@ export const RULER_LENGTHS_CM = Object.freeze([10, 15, 20, 30]);
 export const RULER_WIDTH = 1.6 * UNITS_PER_CM;
 export const RULER_MARGIN = 0.5 * UNITS_PER_CM;
 
-export const COMPASS_MIN_RADIUS = 0.2 * UNITS_PER_CM;
-export const COMPASS_MAX_RADIUS = 25 * UNITS_PER_CM;
+const COMPASS_MIN_RADIUS = 0.2 * UNITS_PER_CM;
+const COMPASS_MAX_RADIUS = 25 * UNITS_PER_CM;
 
 /** Le rayon de l'évidement de la منقلة, en fraction de son rayon (le bord courbe intérieur). */
 export const PROTRACTOR_INNER = 0.42;
 
-export const SET_SQUARE_KINDS = Object.freeze(['45', '3060']);
+const SET_SQUARE_KINDS = Object.freeze(['45', '3060']);
 
 const DEFAULTS = Object.freeze({
   ruler: { visible: false, x: 0, y: 0, angle: 0, lengthCm: 15 },
@@ -287,7 +287,7 @@ const bounded = (v, min, max, fallback) => (Number.isFinite(v) ? Math.min(max, M
 const COORD = 1e6;
 
 /** Un instrument venu du document — nombres vérifiés, bornes respectées ; le reste retombe sur le défaut. */
-export function sanitizeInstrument(kind, raw) {
+function sanitizeInstrument(kind, raw) {
   const base = defaultInstrument(kind);
   if (!raw || typeof raw !== 'object') return base;
   const out = {
@@ -326,7 +326,7 @@ export const PENCIL_STYLES = Object.freeze(['solid', 'dashed', 'dotted']);
  * « التثبيت الذكي » est l'interrupteur général ; chaque aimant a le sien,
  * et ne marche que si l'interrupteur général est ouvert (`snapOn`).
  */
-export const DEFAULT_SETTINGS = Object.freeze({
+const DEFAULT_SETTINGS = Object.freeze({
   snap: true, // التثبيت الذكي — l'interrupteur général
   attach: true, // التثبيت على الأداة : le crayon s'accroche au bord, à la pointe, au sommet
   graduations: true, // التثبيت على التدريج : le mm toujours, le cm quand on en passe près
@@ -341,7 +341,7 @@ export const DEFAULT_SETTINGS = Object.freeze({
 /** Un aimant est-il actif ? L'interrupteur général ET le sien. */
 export const snapOn = (settings, key) => Boolean(settings?.snap) && Boolean(settings?.[key]);
 
-export const DESK_SCHEMA_VERSION = 1;
+const DESK_SCHEMA_VERSION = 1;
 
 export function createDesk() {
   return {

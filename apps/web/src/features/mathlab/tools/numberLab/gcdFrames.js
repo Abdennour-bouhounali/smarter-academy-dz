@@ -29,8 +29,8 @@ const K = 'tools.numberLab.steps';
 const PRACTICE = 'tools.numberLab.practice.board';
 const PHASES = Object.freeze(['select', 'operate', 'result']);
 
-export const pairLatex = (x, y) => `(${x}\\ ;\\ ${y})`;
-export const pgcdLatex = (a, b) => `\\mathrm{PGCD}(${a}\\ ;\\ ${b})`;
+const pairLatex = (x, y) => `(${x}\\ ;\\ ${y})`;
+const pgcdLatex = (a, b) => `\\mathrm{PGCD}(${a}\\ ;\\ ${b})`;
 
 /** L'énoncé posé au tableau avant le premier pas. */
 export const pgcdProblem = (a, b) => `${pgcdLatex(a, b)} = \\ ?`;

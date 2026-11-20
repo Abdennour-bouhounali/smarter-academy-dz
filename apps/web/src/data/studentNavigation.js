@@ -1,40 +1,58 @@
-import { House, BookOpen, Compass, TrendingUp, NotebookPen, PencilRuler, Users, Flame, Rocket, Brain } from 'lucide-react';
+import { Sun, BookOpen, Target, UserRound } from 'lucide-react';
 
-// The authenticated student area's own navigation — deliberately separate
-// from data/navigation.js (the visitor IA). A student's workspace is a
-// different kind of surface (LEARN → PRACTICE → PROGRESS → MASTER) with a
-// different shape, not a filtered view of the marketing nav.
-// `labelKey` → i18n `nav` namespace (src/i18n/locales/ar/nav.json).
-export const studentNavLinks = [
-  { labelKey: 'home', path: '/espace', icon: House, end: true },
-  { labelKey: 'myCourses', path: '/espace/cours', icon: BookOpen },
-  // « التحدّي اليومي » : cinq minutes par jour pour RETROUVER ce qu'on a
-  // appris — l'habitude quotidienne, juste après les cours.
-  { labelKey: 'dailyChallenge', shortLabelKey: 'dailyChallengeShort', path: '/espace/defi', icon: Flame },
-  // « فضاء الألعاب » : trois jeux, des cœurs communs gagnés par des réponses
-  // justes à SES كفاءات — juste après le défi, l'autre porte « jouer pour
-  // réviser » (docs/architecture/MADAR_GAME.md). Plein écran, hors de la coquille.
-  { labelKey: 'madar', shortLabelKey: 'madarShort', path: '/espace/jeux', icon: Rocket },
-  // « مختبر التفكير » : des défis HORS programme, un numéro à la fois — essayer d'abord, puis
-  // voir comment pense un رياضي (docs/architecture/THINKING_LAB.md). Tablette et ordinateur.
-  { labelKey: 'thinkingLab', shortLabelKey: 'thinkingLabShort', path: '/espace/tafkir', icon: Brain },
-  { labelKey: 'explore', path: '/espace/explorer', icon: Compass },
-  // Le مختبر الرياضيات : les instruments LIBRES (سبّورة, et demain les
-  // autres), hors de toute leçon. Après « explorer » (le programme) vient
-  // « expérimenter » (docs/architecture/MATH_LAB.md).
-  { labelKey: 'mathLab', path: '/espace/atelier', icon: PencilRuler },
-  { labelKey: 'progression', path: '/espace/progression', icon: TrendingUp },
-  // Le cahier de l'élève : ses notes, ses erreurs, ses questions, sa
-  // révision. Après la progression (« où en suis-je ? ») vient « qu'ai-je
-  // écrit pour y arriver ? ».
-  { labelKey: 'notebook', path: '/espace/cahier', icon: NotebookPen },
-  // « قسمي » : la classe de l'enseignant que l'élève a rejointe (ou peut
-  // rejoindre par code). Un CONTEXTE d'étude, pas un contenu : le programme
-  // reste le même, l'enseignant règle seulement ce qui est visible.
-  { labelKey: 'myClass', path: '/espace/qism', icon: Users },
-  // NI « activation » NI « profil » ici : le profil est le bloc d'identité
-  // au bas de la barre (avatar + nom + classe, dans StudentNavbar), et la
-  // saisie d'un code n'a qu'une seule porte, l'encart ambré juste au-dessus,
-  // qui n'apparaît qu'à qui n'a pas encore accès. Deux entrées pour la même
-  // destination, c'était une de trop.
+/**
+ * The STUDENT's navigation: FOUR doors, named by what he wants (owner, 2026-11-16; plan
+ * `docs/reports/NAVIGATION_REBUILD_PLAN.md`). It is DATA: the rail (tablet, laptop), the bottom bar (phone) and the
+ * line of pages under a door (`DoorTabs`) all read this file, and no menu entry is written anywhere else.
+ *
+ * A door = `path` (where a tap goes), `pages` (what lives behind it, shown as one line on those pages) and `match`
+ * (other addresses that keep the door lit). `labelKey` → i18n `nav`.
+ */
+export const studentDoors = [
+  {
+    id: 'today',
+    labelKey: 'doors.today',
+    icon: Sun,
+    path: '/espace',
+    end: true,
+    match: ['/espace/bawsala'],
+    pages: [],
+  },
+  {
+    id: 'lessons',
+    labelKey: 'doors.lessons',
+    icon: BookOpen,
+    path: '/espace/cours',
+    match: ['/courses'],
+    pages: [
+      { labelKey: 'myCourses', path: '/espace/cours' },
+      { labelKey: 'explore', path: '/espace/explorer' },
+    ],
+  },
+  {
+    id: 'train',
+    labelKey: 'doors.train',
+    icon: Target,
+    path: '/espace/defi',
+    match: ['/espace/pratique'],
+    pages: [
+      { labelKey: 'dailyChallenge', path: '/espace/defi' },
+      { labelKey: 'madar', path: '/espace/jeux' },
+      { labelKey: 'thinkingLab', path: '/espace/tafkir' },
+      { labelKey: 'mathLab', path: '/espace/atelier' },
+    ],
+  },
+  {
+    id: 'me',
+    labelKey: 'doors.me',
+    icon: UserRound,
+    path: '/espace/progression',
+    match: ['/espace/activation'],
+    pages: [
+      { labelKey: 'progression', path: '/espace/progression' },
+      { labelKey: 'notebook', path: '/espace/cahier' },
+      { labelKey: 'myClass', path: '/espace/qism' },
+      { labelKey: 'doors.account', path: '/espace/profil' },
+    ],
+  },
 ];

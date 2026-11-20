@@ -1,4 +1,3 @@
-import React from 'react';
 import * as M from '@smarter-academy/core/arithmetic/missingNumber.js';
 import KidFigure from '../../primitives/KidFigure';
 
@@ -11,18 +10,18 @@ import KidFigure from '../../primitives/KidFigure';
  */
 export const W = 640;
 export const H = 330;
-export const X_IN = 112;      // le centre du bac d'entrée (pos = 1)
-export const X_OUT = 530;     // le centre du plateau de sortie (pos = 0)
-export const X_M = 321;       // le centre de la machine
+const X_IN = 112;      // le centre du bac d'entrée (pos = 1)
+const X_OUT = 530;     // le centre du plateau de sortie (pos = 0)
+const X_M = 321;       // le centre de la machine
 export const Y_BELT = 214;    // le dessus du tapis
 export const CRATE_W = 88;
-export const CRATE_H = 54;
+const CRATE_H = 54;
 
 /** La position (0 : sortie, 1 : entrée) d'une abscisse SVG, et inversement. */
 export const posOfX = (x) => (X_OUT - x) / (X_OUT - X_IN);
 export const xOfPos = (p) => X_OUT - (X_OUT - X_IN) * p;
 
-export const COL = {
+const COL = {
   wall: '#FEF3C7', wall2: '#FDE68A', floor: '#E7E5E4', floorDark: '#D6D3D1', belt: '#334155', beltLight: '#64748B', roller: '#94A3B8', ink: '#0F172A',
   machine: '#0F766E', machineDark: '#115E59', brass: '#D97706', glass: '#CCFBF1', crate: '#D9A760', crateDark: '#A16207', tape: '#FEF3C7', tray: '#E0E7FF', trayDark: '#6366F1',
   bin: '#FEE2E2', binDark: '#E11D48', reverse: '#0D9488', miss: '#E11D48', ok: '#059669',
@@ -30,9 +29,6 @@ export const COL = {
 /** La couleur d'une carte d'opération : la même dans le rack, sur la machine et dans les questions. */
 export const CARD_COLOR = { add: '#059669', sub: '#E11D48', mul: '#4F46E5', div: '#D97706', rsub: '#7C3AED' };
 export const SIGN = { add: '+', sub: '−', mul: '×', div: '÷', rsub: '−' };
-
-/** Le texte d'une carte pour une étiquette SVG / une aria : « + 9 », « − 14 », « × 6 », « ÷ 6 », « 80 − ▢ ». */
-export const cardLabel = (kind, a) => (kind === 'rsub' ? `${a} − ▢` : `${SIGN[kind]} ${a}`);
 
 const iso = (s) => `⁦${s}⁩`;
 
@@ -80,7 +76,7 @@ export function Belt({ dir, drag }) {
 }
 
 /** Une carte d'opération dessinée dans le SVG (centre `cx`, `cy`) : le signe et le nombre en gras ; « a − ▢ » porte un petit carré vide dessiné. */
-export function CardPlate({ kind, a, cx, cy, w = 96, h = 40, fontSize = 24, muted = false, dashed = false, ...rest }) {
+function CardPlate({ kind, a, cx, cy, w = 96, h = 40, fontSize = 24, muted = false, dashed = false, ...rest }) {
   const col = CARD_COLOR[kind];
   const at = typeof a === 'object' && a !== null ? M.text(a) : a;
   const text = kind === 'rsub' ? `${at} −` : `${SIGN[kind]} ${at}`;

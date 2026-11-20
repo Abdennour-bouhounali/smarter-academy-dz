@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 import ManipulationShell from '../ManipulationShell';
@@ -191,7 +191,6 @@ export default function EuclidAlgorithm({
       : divisibility.euclidSteps(x.a, x.b).steps.length > 12 ? t('manipulation.euclid.tooManySteps') : '');
 
   const div = L.currentDivision(lab);
-  const finished = L.isEuclidFinished(lab);
   const done = lab.steps.slice(0, lab.confirmed);
   const rest = div ? L.remainderOf(lab) : null;
   const quotientReached = L.quotientReached(lab);

@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La droite d'un nombre dont on connaît le mudawwar (معارف, « حصر عدد علمنا مدوّره ») : trois repères (r − ½u, r, r + ½u), le segment peint entre eux,

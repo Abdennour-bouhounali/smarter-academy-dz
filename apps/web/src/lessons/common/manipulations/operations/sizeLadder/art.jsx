@@ -8,7 +8,7 @@ import * as L from '../../logic/sizeLadder';
  */
 export const ROW = 66;
 export const ZONE = 36;
-export const BOARD = 30;
+const BOARD = 30;
 
 export const CSS = `
 @keyframes slShakeA { 0%,100% { transform: translateX(0) } 20% { transform: translateX(-6px) } 40% { transform: translateX(6px) } 60% { transform: translateX(-4px) } 80% { transform: translateX(3px) } }
@@ -26,7 +26,7 @@ export const CSS = `
 
 const NBSP = ' ';
 /** 10ⁿ avec un vrai exposant (les chiffres en exposant Unicode manquent dans la police : « ⁴ » devenait une tache). */
-export const Pow = ({ n }) => <>10<sup className="text-[0.72em] font-black leading-none" style={{ verticalAlign: '0.5em' }}>{String(n).replace('-', '−')}</sup></>;
+const Pow = ({ n }) => <>10<sup className="text-[0.72em] font-black leading-none" style={{ verticalAlign: '0.5em' }}>{String(n).replace('-', '−')}</sup></>;
 /** « 1 950 000 » → groupes insécables ; « 0,048 × 10^-3 » → 0,048 × 10⁻³ (vrai exposant). */
 export function Given({ given }) {
   const m = /^(.*?)\s*×\s*10\^(-?\d+)$/.exec(String(given));

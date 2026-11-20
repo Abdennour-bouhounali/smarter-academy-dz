@@ -93,7 +93,7 @@ export function untested(state) {
   return small.filter((d) => !state.tested.includes(d));
 }
 
-export function allShared(state) {
+function allShared(state) {
   return state.common.every((d) => state.shared.includes(d));
 }
 

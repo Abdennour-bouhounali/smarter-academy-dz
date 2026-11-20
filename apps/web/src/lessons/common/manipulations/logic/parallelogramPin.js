@@ -24,8 +24,7 @@
  */
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
-export const MODES = Object.freeze(['midpoint', 'parallelogram']);
-export const STEPS = 8;
+const STEPS = 8;
 
 const toPt = (p) => (p && typeof p.x === 'object' ? p : V.point(p[0], p[1]));
 const key = (p) => V.coords(p).join(';');
@@ -35,7 +34,7 @@ export const xy = (p) => V.coords(toPt(p));
 // ── le mode « midpoint » ─────────────────────────────────────────────────────
 
 /** L'état initial : [AB], N parts, I à l'encoche `start` (jamais le milieu). */
-export function initMidpoint({ A = [0, 0], B = [4, 2], steps = STEPS, start = 2 } = {}) {
+function initMidpoint({ A = [0, 0], B = [4, 2], steps = STEPS, start = 2 } = {}) {
   const N = Number(steps);
   if (!Number.isInteger(N) || N < 4 || N % 2 !== 0) throw new Error(`parallelogram-pin: steps pair ≥ 4 (« ${steps} »)`);
   const a = toPt(A); const b = toPt(B);
@@ -126,7 +125,7 @@ function windowOf(points) {
   });
 }
 
-export function initParallelogram({ A = [1, 4], B = [2, 1], C = [5, 3] } = {}) {
+function initParallelogram({ A = [1, 4], B = [2, 1], C = [5, 3] } = {}) {
   const a = toPt(A); const b = toPt(B); const c = toPt(C);
   if (V.collinear(a, b, c)) throw new Error('parallelogram-pin: A, B, C alignés');
   for (const p of [a, b, c]) if (!xy(p).every(Number.isInteger)) throw new Error('parallelogram-pin: nœuds entiers');
@@ -229,7 +228,7 @@ export function commitPoint(s, which, P = s[which]) {
 export const openE = (s) => (s.dDone ? Object.freeze({ ...s, stage: 'E', last: null }) : s);
 export const backToD = (s) => Object.freeze({ ...s, stage: 'D', last: null });
 
-export const paraDiscoveryReady = (s) => s.dDone && s.eDone;
+const paraDiscoveryReady = (s) => s.dDone && s.eDone;
 
 // ── commun ───────────────────────────────────────────────────────────────────
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, CheckCircle2, ArrowLeft, ArrowRight, X as XIcon } from 'lucide-react';
@@ -963,7 +963,7 @@ export function raceOptions(c) {
 
 /** La règle formelle du cas (modèle, résolution, vérification, interprétation). */
 export function RaceFormal({ c }) {
-  const { model, range, goal, ans, kind, sol, k, tw, titleL, titleR, unitsLabel } = c;
+  const { model, goal, ans, kind, sol, k, tw, titleL, titleR, unitsLabel } = c;
   const lead2 = L.leaders(model);
   const s = sol.x != null ? L.toNumber(sol.x) : null;
   const relWord = goal === 'less' ? tw('lessWord') : tw('greaterWord');

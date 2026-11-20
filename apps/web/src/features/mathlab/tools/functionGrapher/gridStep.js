@@ -7,7 +7,7 @@
  * en 2), pour que les lignes fines tombent sur des valeurs rondes.
  */
 
-export const MIN_GRID_PIXELS = 56;
+const MIN_GRID_PIXELS = 56;
 
 /**
  * @param {number} pixelsPerUnit  combien de pixels fait une unité du plan

@@ -20,7 +20,7 @@ function pick(flags) {
 const sameLength = (u, v, L0) => { if (n2(u) !== n2(v)) throw new Error('normes différentes'); return R(L0); };
 
 // ex-17 : J centre de ABCD (A(0;0) B(6;0) C(8;4) D(2;4)), JO = JA + JB ; AD = 6 ⇒ JO = 6.
-const A17 = [0, 0]; const B17 = [6, 0]; const C17 = [8, 4]; const D17 = [2, 4]; const J17 = [4, 2];
+const A17 = [0, 0]; const B17 = [6, 0]; const D17 = [2, 4]; const J17 = [4, 2];
 const JO = add(sub(A17, J17), sub(B17, J17));
 // L4 : O milieu de [AB] et de [CD] ⇒ ACBD parallélogramme, BC = AD = 4.
 const A9 = [0, 0]; const B9 = [6, 0]; const C9 = [2, 3]; const O9 = [3, 0]; const D9 = sub([2 * O9[0], 2 * O9[1]], C9);

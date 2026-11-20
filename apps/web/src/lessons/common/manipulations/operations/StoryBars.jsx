@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ChevronsUpDown, ArrowLeft, Check, Move, CheckCircle2, XCircle, Info, Minus, Plus } from 'lucide-react';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -106,7 +106,6 @@ import * as L from '../logic/storyBars';
  * [data-sb-formal], [data-lab-fold=story-bars.trials], et la bande `[data-arc-tape][data-tape-closed]`.
  */
 const NS = 'manipulation.storyBars';
-const btn = 'inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 px-2 text-sm font-bold focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-40';
 
 export default function StoryBars({
   story: story0 = 'checkup', title, lead, level, levels: withLevels = true,

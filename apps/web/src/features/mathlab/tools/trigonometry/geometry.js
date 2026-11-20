@@ -14,7 +14,7 @@
  * sin(30°) se dessine sous l'axe alors que le panneau affiche `+1/2`.
  */
 
-import { degToRad, normalizeDegrees, sinOf, cosOf } from './trigMath.js';
+import { degToRad, sinOf, cosOf } from './trigMath.js';
 
 /**
  * Math → pixels. `unit` est le nombre de pixels d'une unité du plan.
@@ -277,7 +277,3 @@ export function betweenArc(fromDegrees, toDegrees, origin, unit, radius) {
   return points.join(' ');
 }
 
-/** Le chemin d'un arc de cercle simple (§16, §17) — l'arc qu'on mesure. */
-export function measuredArc(degrees, origin, unit, radius) {
-  return betweenArc(0, normalizeDegrees(degrees) === 0 && degrees !== 0 ? 360 : degrees, origin, unit, radius);
-}

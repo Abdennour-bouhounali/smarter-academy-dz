@@ -22,7 +22,7 @@
  * graphe. Ce module ne fait qu'écrire ces valeurs dans leur substitution.
  */
 
-import { generate, termAt } from './sequenceMath.js';
+import { termAt } from './sequenceMath.js';
 import { buildDefinition } from './sequenceModel.js';
 
 /** Au-delà de ce rang, on montre les premiers termes puis la formule du terme lointain. */

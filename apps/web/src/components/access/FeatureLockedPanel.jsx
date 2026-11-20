@@ -44,7 +44,7 @@ export default function FeatureLockedPanel({ reason, quota = null, resource = nu
         <p className="font-inter text-sm text-slate-600 max-w-md">{t(`feature.${key}.body`)}</p>
       )}
       {canActivate && (
-        <Link to="/espace/activation" className="mt-1 inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 font-inter text-sm font-semibold text-white hover:bg-blue-700">
+        <Link to="/espace/activation" className="mt-1 inline-flex items-center rounded-xl bg-nav-accent px-4 py-2 font-inter text-sm font-semibold text-white hover:bg-[#3350c4]">
           {t('feature.cta')}
         </Link>
       )}

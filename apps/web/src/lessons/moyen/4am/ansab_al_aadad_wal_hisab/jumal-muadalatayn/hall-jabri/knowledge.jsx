@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { IDEAS, METHOD, METHOD_BOX, CHOICE } from './content/textbook';
 

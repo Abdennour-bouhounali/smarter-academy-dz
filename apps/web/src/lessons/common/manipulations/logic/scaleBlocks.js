@@ -31,7 +31,7 @@ function parseK(v) {
 }
 
 /** Les rapports que la poignée et le pas à pas proposent (la scène montre au plus le plus grand solide visé). */
-export const CANDIDATES = Object.freeze(['1/2', '3/5', 1, '3/2', 2, 3].map(F));
+const CANDIDATES = Object.freeze(['1/2', '3/5', 1, '3/2', 2, 3].map(F));
 
 /** Une écriture courte d'une fraction : « 2 », « 3/5 ». */
 export const kText = (k) => fracText(F(k));
@@ -254,5 +254,3 @@ export function evidenceOf(lab) {
 /** V′ ÷ V (exact) : « combien de fois » le volume du pavé de départ — la colonne et les « pourquoi » de la découverte. */
 export const volumeRatio = (lab, volume) => div(F(volume), Sp.cuboid(...lab.dims).volume);
 
-/** Le texte « lisible » d'un volume (« 12,96 », « 480 ») — la vue n'arrondit jamais elle-même. */
-export const volumeText = (q) => decText(q);

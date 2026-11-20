@@ -42,7 +42,7 @@ import { NORMAL_VALUE_BOUND, QUERY_TYPES, SCALES } from './normalDistribution.js
 export const PROBABILITY_STATS_SCHEMA_VERSION = 2;
 
 export const MODES = Object.freeze(['experiment', 'dataset', 'tree', 'normal']);
-export const DEFAULT_MODE = 'experiment';
+const DEFAULT_MODE = 'experiment';
 
 /** Assez long pour porter MAX_DATASET_VALUES nombres, assez court pour borner le document. */
 const MAX_DATASET_TEXT = MAX_DATASET_VALUES * 12;

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../context/AuthContext';
@@ -83,7 +83,7 @@ export default function Login() {
       footer={(
         <>
           {t('noAccountYet')}{' '}
-          <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700">
+          <Link to="/register" className="font-semibold text-nav-accent hover:text-nav-accent">
             {t('registerLink')}
           </Link>
         </>
@@ -155,7 +155,7 @@ export default function Login() {
         </div>
 
         <div className="text-end">
-          <Link to="/mot-de-passe-oublie" className="text-sm font-medium text-blue-600 hover:text-blue-700">
+          <Link to="/mot-de-passe-oublie" className="text-sm font-medium text-nav-accent hover:text-nav-accent">
             {t('forgotPasswordLink')}
           </Link>
         </div>

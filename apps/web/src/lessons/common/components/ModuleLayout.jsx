@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, ArrowRight, CheckCircle, Lock, ListChecks } from 'lucide-react';
@@ -28,7 +28,7 @@ import { useDeclarePageTour } from '../../../features/tours/PageTourProvider';
  * ModuleLayout — shared layout wrapper for every lesson module.
  *
  * Props:
- *   coursePath    — base URL of the lesson (e.g. /courses/moyen/4am/ansab_al_aadad_wal_hisab/qasim-adad-tabii)
+ *   coursePath    — base URL of the lesson (e.g. /courses/moyen/4am/<chapter>/<lesson>)
  *   courseTitle   — lesson title for breadcrumb
  *   unitTitle     — الوحدة, the textbook unit (a GROUP OF LESSONS) shown first
  *                   in the breadcrumb « الوحدة / الدرس / المحور »
@@ -75,13 +75,6 @@ export default function ModuleLayout({
   // « الوحدة / الدرس / المحور ». Absentes, on retombe sur le المجال.
   unitTitle,
   unitPath,
-  // Pas de défaut FRANÇAIS ici : ce libellé part dans le fil d'Ariane ET
-  // dans le lien `?level=`. Un défaut « Cours » donnait à la fois un mot
-  // français au milieu de l'arabe et une requête `?level=cours` cassée, sans
-  // la moindre erreur. La leçon nomme sa classe (voir moduleContext.js) ;
-  // si elle oublie, on préfère un fil d'Ariane court à un mot faux.
-  levelLabel,
-  gradeLabel,
   moduleNumber,
   totalModules,
   firstModuleNumber,

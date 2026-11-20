@@ -26,7 +26,7 @@ export default function RecommendationCard({ recommendation }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.15 }}
       className="rounded-2xl p-6 sm:p-7 text-white relative overflow-hidden"
-      style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+      style={{ background: '#3B5BDB' }}
     >
       <p className="font-mono-jetbrains text-blue-100 text-xs font-semibold uppercase tracking-widest mb-2 flex items-center gap-1.5">
         <Target size={13} /> {t('diagnostic.yourPriority')}
@@ -37,7 +37,7 @@ export default function RecommendationCard({ recommendation }) {
       )}
       <Link
         to={startingPoint.lessonPath}
-        className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white text-blue-700 font-space font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
+        className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white text-nav-accent font-space font-bold text-sm shadow-lg hover:-translate-y-0.5 transition-all"
       >
         {t('diagnostic.startFirstMission')}
         <ArrowForward size={16} />

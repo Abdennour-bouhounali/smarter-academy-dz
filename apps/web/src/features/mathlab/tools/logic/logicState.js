@@ -37,7 +37,7 @@
 
 import {
   STATEMENTS, IMPLICATIONS, EQUIVALENCES, COUNTEREXAMPLE_CHALLENGES, CONDITIONS,
-  QUANTIFIER_STATEMENTS, PROOFS, INDUCTIONS, DIRECT_PROOFS, FALLACIES,
+  QUANTIFIER_STATEMENTS, PROOFS, INDUCTIONS, FALLACIES,
   INDUCTION_SEQUENCES, DEFAULT_SEQUENCE_ID,
   DEFAULT_STATEMENT_ID, DEFAULT_IMPLICATION_ID, DEFAULT_EQUIVALENCE_ID,
   DEFAULT_COUNTEREXAMPLE_ID, DEFAULT_CONDITION_ID, DEFAULT_QUANTIFIER_ID, DEFAULT_PROOF_ID,
@@ -392,10 +392,6 @@ export const setEquivalence = (data, id) => (readId(id, EQUIVALENCES, null)
   ? { ...data, equivalence: { ...data.equivalence, id } }
   : data);
 
-export const setEquivalenceX = (data, x) => ({
-  ...data, equivalence: { ...data.equivalence, x: readNumber(x, data.equivalence.x, -1e4, 1e4) },
-});
-
 export function setCounterexampleChallenge(data, id) {
   if (!readId(id, COUNTEREXAMPLE_CHALLENGES, null)) return data;
 
@@ -431,10 +427,6 @@ export function tryCandidate(data, value, isCounterexample) {
 export const setCondition = (data, id) => (readId(id, CONDITIONS, null)
   ? { ...data, conditions: { ...data.conditions, id } }
   : data);
-
-export const setConditionX = (data, x) => ({
-  ...data, conditions: { ...data.conditions, x: readNumber(x, data.conditions.x, -1e4, 1e4) },
-});
 
 export function setQuantifier(data, id) {
   if (!readId(id, QUANTIFIER_STATEMENTS, null)) return data;

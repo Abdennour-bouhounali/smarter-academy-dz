@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../i18n';
 import i18n from '../../../../i18n';
@@ -113,8 +112,6 @@ describe('egg-trays — rendu', () => {
     for (const lv of ['beginner', 'advanced']) {
       const out = html({ ...LEVELS['egg-trays'][lv].numbers });
       const w = lv === 'beginner' ? 'carton' : 'tray';
-      const a = LEVELS['egg-trays'][lv].numbers.a;
-      const b = LEVELS['egg-trays'][lv].numbers.b;
       expect(out).not.toContain('data-manipulation-mission');
       expect(out).not.toContain('data-manipulation-hints');
       const lead = say(`instruction.frame.${w}`, { div: "@@" }).split("@@")[0];

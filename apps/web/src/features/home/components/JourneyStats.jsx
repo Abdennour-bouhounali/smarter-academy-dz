@@ -53,7 +53,7 @@ export default function JourneyStats({ activity, agg, profileStatus }) {
       </h2>
       <div className="rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm p-1.5 grid grid-cols-2 lg:grid-cols-4 gap-1">
         <Cell icon={CircleCheckBig} accent="bg-emerald-50 text-emerald-600" value={activity.completedCount} label={t('home.statLessonsCompleted')} testId="completed" />
-        <Cell icon={Target} accent="bg-blue-50 text-blue-600" value={masteredValue} label={t('home.statMastered')} hint={masteredHint} ariaLabel={masteredAria} testId="mastered" />
+        <Cell icon={Target} accent="bg-nav-accent-soft text-nav-accent" value={masteredValue} label={t('home.statMastered')} hint={masteredHint} ariaLabel={masteredAria} testId="mastered" />
         <Cell icon={Flame} accent="bg-amber-50 text-amber-600" value={activity.inProgressCount} label={t('home.statInProgress')} testId="in-progress" />
         <Cell icon={Zap} accent="bg-violet-50 text-violet-600" value={activity.totalXp} label={t('home.statXpEarned')} testId="xp" />
       </div>

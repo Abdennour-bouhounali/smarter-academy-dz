@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Check, Minus, Plus, Lightbulb } from 'lucide-react';
+import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Lightbulb } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import * as F from '@smarter-academy/core/arithmetic/fourthProportional.js';
 import { div as fdiv, mul as fmul } from '@smarter-academy/core/arithmetic/linear.js';
@@ -249,7 +249,7 @@ export const gaugeNames = (task, k) => ({ unit: unitGaugeName(task, k), between:
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, wide, width, stageW, geo, lead, cp }) {
+function Lab({ lab, setLab, k, wide, width, geo, lead, cp }) {
   const free = L.isFree(lab);
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);

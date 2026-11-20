@@ -44,7 +44,7 @@ import * as C from './conicMath.js';
 /** Le degré maximal admis : au-delà, ce n'est plus une conique. */
 const MAX_DEGREE = 2;
 /** La longueur maximale d'une saisie — une borne, pas une opinion. */
-export const MAX_EQUATION_LENGTH = 200;
+const MAX_EQUATION_LENGTH = 200;
 
 const finite = Number.isFinite;
 const { abs, sqrt } = Math;

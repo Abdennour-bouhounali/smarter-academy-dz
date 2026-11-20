@@ -49,7 +49,7 @@ function factorBody(coefs, variable) {
  * `{ constant, power, factors: [{ coefs, exp }] }` → `3x\left(2x + 3\right)`,
  * `2\left(x - 2\right)\left(x + 2\right)`, `-\left(x - 1\right)^{2}`.
  */
-export function factorizationLatex(result, variable) {
+function factorizationLatex(result, variable) {
   const { constant, power, factors } = result;
   let head = '';
   if (R.equals(constant, R.makeRational(-1))) head = '-';
@@ -70,7 +70,7 @@ export function factorizationLatex(result, variable) {
 }
 
 /** Le polynôme qu'une factorisation représente (pour la VÉRIFICATION). */
-export function expandFactorization(result, variable) {
+function expandFactorization(result, variable) {
   let poly = constantPoly(result.constant);
   if (result.power > 0) poly = mulPoly(poly, makePoly([{ coef: R.ONE, mono: { [variable]: result.power } }]));
   for (const factor of result.factors) poly = mulPoly(poly, powPoly(fromCoefficients(factor.coefs, variable), factor.exp));

@@ -1,7 +1,7 @@
 /**
  * Carte PROGRESSIVE — le modèle pur (aucun React, aucun stockage, aucun DOM).
  * La carte de toutes les leçons depuis la migration du 2026-09-29 (référence :
- * qasim-adad-tabii) — docs/architecture/KNOWLEDGE_MAP.md, Part A.
+ * la leçon pilote) — docs/architecture/KNOWLEDGE_MAP.md, Part A.
  *
  * Un graphe de leçon (`KNOWLEDGE_GRAPH`, fourni par la leçon) :
  *
@@ -28,9 +28,9 @@
  * (`context`) et n'est pas un item de knowledge.jsx. Une leçon n'emploie que
  * les types que SA mathématique justifie.
  */
-export const CORE_KINDS = ['concept', 'definition', 'idea', 'relationship', 'method', 'example', 'term', 'retain'];
+const CORE_KINDS = ['concept', 'definition', 'idea', 'relationship', 'method', 'example', 'term', 'retain'];
 export const GUIDE_KINDS = ['common_mistake', 'warning', 'tip', 'check', 'prerequisite', 'takeaway'];
-export const NODE_KINDS = [...CORE_KINDS, ...GUIDE_KINDS];
+const NODE_KINDS = [...CORE_KINDS, ...GUIDE_KINDS];
 
 /** Le graphe est-il exploitable ? Renvoie la liste des problèmes (vide = valide). */
 export function validateGraph(graph) {

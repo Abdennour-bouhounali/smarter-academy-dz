@@ -21,7 +21,7 @@
 import * as R from '@smarter-academy/core/arithmetic/relativeOps.js';
 import * as P from '@smarter-academy/core/arithmetic/powers.js';
 
-export const LAYOUTS = Object.freeze({
+const LAYOUTS = Object.freeze({
   int: ['s', 't', 'u'],
   dec: ['s', 'u', 'd1', 'd2'],
   free: ['s', 't', 'u', 'd1', 'd2'],
@@ -30,10 +30,9 @@ export const LAYOUTS = Object.freeze({
 export const SIGN_KEYS = Object.freeze(['s', 'ns', 'ds']);
 export const FREE_B = Object.freeze([-20, 20]);
 export const FREE_A = Object.freeze([-99, 99]);
-export const MISC_SIDE = Object.freeze({ sign: 'MISC-QISMA-SIGN', order: 'MISC-QISMA-ORDER', dist: 'MISC-QISMA-DIST', zero: 'MISC-QISMA-ZERO', fracSign: 'MISC-QISMA-FRACSIGN', decimal: 'MISC-QISMA-DECIMAL' });
 
 /** Les missions par défaut de chaque monde. */
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: {
     world: 'lockers',
     tasks: [
@@ -86,7 +85,7 @@ export const sentenceOf = (task, q) => `${wrap(task.a)} ÷ ${wrap(task.b)} = ${t
 export const answerOf = (task) => (P.sign(rat(task.b)) === 0 ? null : R.divide(task.a, task.b));
 
 /** Le nombre de décimales d'un nombre fini (ou null). */
-export function decimalPlaces(r) {
+function decimalPlaces(r) {
   if (!R.isFiniteDecimal(r)) return null;
   const s = R.relText(r);
   const i = s.indexOf(',');
@@ -104,7 +103,6 @@ export function decimalReachable(task, places) {
 /* ── Les molettes ───────────────────────────────────────────────────────────────────────────── */
 
 const RANGE = Object.freeze({ s: [-1, 1], ns: [-1, 1], ds: [-1, 1], t: [0, 9], u: [0, 9], d1: [0, 9], d2: [0, 9], n: [0, 20], d: [1, 20] });
-export const wheelRange = (key) => RANGE[key];
 /** Les graduations d'une molette, dans l'ordre : [−1, 1] pour un signe, 0…9 pour un chiffre. */
 export function wheelItems(key) {
   const [lo, hi] = RANGE[key];
@@ -127,7 +125,7 @@ export function writingKey(w, layout) {
 }
 
 /** Une mission est-elle solvable avec ses molettes ? (init lève une erreur sinon). */
-export function solvable(task) {
+function solvable(task) {
   const q = answerOf(task);
   if (P.sign(rat(task.a)) === 0 && P.sign(rat(task.b)) !== 0) return true;
   if (!q) return false;
@@ -172,12 +170,11 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
-export const pullsOnTask = (s, i = s.ti) => guidedTrials(s, i).length;
+const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
+const pullsOnTask = (s, i = s.ti) => guidedTrials(s, i).length;
 
 /** Le bouton « وضع الكسر » : après deux essais sur une mission `switch`, ou toujours dans la zone libre. */
 export const switchReady = (s) => (s.free ? true : !!taskOf(s).switch && pullsOnTask(s) >= 2 && !taskDone(s));
-export const layoutNow = (s) => s.layout;
 export const wheelKeys = (s) => LAYOUTS[s.layout];
 /** Les molettes de chiffres sont verrouillées tant que le signe n'est pas posé (missions `commit`). */
 export const digitsLocked = (s) => !s.free && !!taskOf(s).commit && s.committed == null && !taskDone(s);

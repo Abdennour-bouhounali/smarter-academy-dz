@@ -202,7 +202,6 @@ const SPECS = [
   {"key":"ex-2am-masafa-nuqtatayn-l5-010:q4","kind":"dist","mode":"r","lp":1,"cf":false,"a":"-8","b":"35","n1":"N","n2":"P","sigs":["MISC-MASAFA2-SUBDIST","MISC-MASAFA2-NEGDIST"]}
 ];
 
-const NUMERIC = new Set(['dist', 'at', 'mid', 'endpoint', 'deduce', 'diffsum', 'opp', 'oppdist', 'cost', 'gradgap', 'range', 'route', 'shift']);
 const UNCOUNTED = new Set(['ptsext', 'diffsum', 'opp', 'cost']);
 const P2 = new Set(['at', 'atpair', 'atcount', 'mid', 'endpoint', 'ynsym', 'ynneg', 'ismid']);
 const lpOf = (s) => (P2.has(s.kind) || (s.kind === 'dist' && s.rev) ? 2 : 1);

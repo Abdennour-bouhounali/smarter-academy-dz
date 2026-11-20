@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, Ruler, Check } from 'lucide-react';
@@ -901,7 +901,7 @@ function Shadow({ o, G, yG, kLive }) {
 }
 
 /** Les objets de la place — chacun a SA hauteur exacte : son sommet est le point d'où part le rayon. */
-function Thing({ o, G, yG, lab, reduce, inShadow }) {
+function Thing({ o, G, yG, reduce, inShadow }) {
   const x = G.X(o.x);
   const top = yG - (o.H / 100) * G.k;
   const k = G.k;

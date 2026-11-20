@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, PenLine, Droplets } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -67,7 +67,6 @@ const SLOT_DX = 27;
 const TANK = { x: 22, y: 30, w: 92, h: 146 };
 const WIN = { x: 34, y: 40, w: 54, h: 126 };   // la fenêtre graduée : 30 L en 126 px
 const MOULD = { x: 478, w: 52, pxPerCl: 0.5 };
-const lit = (c) => iso(L.lText(c));
 
 export function numbersFor({ tasks, level }) {
   const lv = resolveLevelId(level ?? 'beginner');

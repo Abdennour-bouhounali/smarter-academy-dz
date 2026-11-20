@@ -28,7 +28,6 @@ import { fracToText } from './fraction.js';
  */
 
 const HEIGHT = 132;
-const AXIS_Y = 74;
 const MARGIN = 34;
 
 export default function NumberLineStage({

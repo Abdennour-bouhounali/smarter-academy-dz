@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Un champ pour UN entier naturel, borné. Le champ est LTR (un nombre est une

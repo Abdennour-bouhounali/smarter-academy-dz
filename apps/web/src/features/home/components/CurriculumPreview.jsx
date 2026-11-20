@@ -39,12 +39,12 @@ export default function CurriculumPreview({ context }) {
       <p className="font-mono-jetbrains text-[11px] font-bold tracking-wider uppercase text-slate-400 mb-1.5">{t('home.whereLesson')}</p>
       <Link
         to={context.lesson.path}
-        className="group block rounded-xl border border-slate-200 bg-slate-50/60 p-3.5 hover:border-blue-300 hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+        className="group block rounded-xl border border-slate-200 bg-slate-50/60 p-3.5 hover:border-blue-300 hover:bg-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
         data-home-where-lesson={context.lesson.id}
       >
         <div className="flex items-center gap-3 min-w-0">
           <span className="text-2xl leading-none flex-shrink-0" aria-hidden="true">{context.lesson.icon}</span>
-          <p className="font-space font-bold text-slate-900 text-base truncate group-hover:text-blue-600 transition-colors">{context.lesson.title}</p>
+          <p className="font-space font-bold text-slate-900 text-base truncate group-hover:text-nav-accent transition-colors">{context.lesson.title}</p>
         </div>
         <PathProgress percent={context.lesson.percent} className="mt-3" />
       </Link>

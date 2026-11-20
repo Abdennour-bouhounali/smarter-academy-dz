@@ -81,19 +81,6 @@ export function formatFactor(k, decimals = 2) {
   return formatValue(k, decimals);
 }
 
-/**
- * Le nom d'un شعاع tel qu'on le NOMME à l'oral et à l'écrit :
- * ⃗AB pour un شعاع tenu par deux points, `u` pour un شعاع libre. La flèche
- * est posée par le composant (un SVG, pas un caractère combinant — les
- * polices arabes rendent mal U+20D7).
- */
-export function vectorLabel(resolved) {
-  if (!resolved) return '';
-  if (resolved.kind === 'points' && resolved.source?.from && resolved.source?.to) return resolved.name;
-
-  return resolved.name;
-}
-
 /** La pente (§20) : un nombre, ou le mot que l'interface traduira. */
 export function formatSlope(slope, decimals = 2) {
   if (!slope || slope.undefined) return { kind: 'undefined', text: null };

@@ -10,7 +10,6 @@ use App\Http\Controllers\Admin\AdminBookController;
 use App\Http\Controllers\Admin\AdminBookManagerController;
 use App\Http\Controllers\Admin\AdminBookMessageController;
 use App\Http\Controllers\Admin\AdminBookOrderController;
-use App\Http\Controllers\Admin\AdminPushController;
 use App\Http\Controllers\Admin\AdminClassroomController;
 use App\Http\Controllers\Admin\AdminContentController;
 use App\Http\Controllers\Admin\AdminDailyChallengeController;
@@ -21,6 +20,7 @@ use App\Http\Controllers\Admin\AdminManualSubscriptionController;
 use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
+use App\Http\Controllers\Admin\AdminPushController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\Admin\AdminStudentController;
@@ -33,10 +33,10 @@ use App\Http\Controllers\BillingCheckoutController;
 use App\Http\Controllers\BillingSubscriptionController;
 use App\Http\Controllers\BookStoreController;
 use App\Http\Controllers\ClassJoinLinkController;
+use App\Http\Controllers\CompassController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContentAvailabilityController;
 use App\Http\Controllers\CurriculumController;
-use App\Http\Controllers\CompassController;
 use App\Http\Controllers\DailyChallengeController;
 use App\Http\Controllers\DiagnosticController;
 use App\Http\Controllers\EmailVerificationController;
@@ -44,6 +44,7 @@ use App\Http\Controllers\Family\ParentController;
 use App\Http\Controllers\Family\ParentLinkController;
 use App\Http\Controllers\Family\StudentFamilyController;
 use App\Http\Controllers\FeatureAccessController;
+use App\Http\Controllers\GameEvidenceController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LearningEvidenceController;
 use App\Http\Controllers\LearningPointExplanationController;
@@ -51,7 +52,6 @@ use App\Http\Controllers\LearningProfileController;
 use App\Http\Controllers\LegalController;
 use App\Http\Controllers\LessonFinalTestAttemptController;
 use App\Http\Controllers\LessonProgressController;
-use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\MadarController;
 use App\Http\Controllers\MathLabDocumentController;
 use App\Http\Controllers\MathLabFileController;
@@ -70,6 +70,7 @@ use App\Http\Controllers\School\SchoolReportController;
 use App\Http\Controllers\School\SchoolStructureController;
 use App\Http\Controllers\School\SchoolStudentController;
 use App\Http\Controllers\StudentClassroomController;
+use App\Http\Controllers\StudentLessonAnswersController;
 use App\Http\Controllers\StudentReportController;
 use App\Http\Controllers\StudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherAnswerReviewController;
@@ -82,6 +83,7 @@ use App\Http\Controllers\Teacher\TeacherClassroomLessonController;
 use App\Http\Controllers\Teacher\TeacherClassroomMadarController;
 use App\Http\Controllers\Teacher\TeacherClassroomNotebookController;
 use App\Http\Controllers\Teacher\TeacherClassroomStudentController;
+use App\Http\Controllers\Teacher\TeacherClassSessionController;
 use App\Http\Controllers\Teacher\TeacherDashboardController;
 use App\Http\Controllers\Teacher\TeacherLabSettingsController;
 use App\Http\Controllers\Teacher\TeacherMadarPlayController;
@@ -90,6 +92,7 @@ use App\Http\Controllers\Teacher\TeacherSchoolController;
 use App\Http\Controllers\Teacher\TeacherStudentSettingsController;
 use App\Http\Controllers\Teacher\TeacherThinkingLabController;
 use App\Http\Controllers\ThinkingLabController;
+use App\Http\Controllers\WaitlistController;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Session\Middleware\StartSession;
@@ -99,6 +102,10 @@ use Laravel\Sanctum\Http\Middleware\AuthenticateSession;
 Route::prefix('v1')->group(function () {
     // Public routes
     Route::post('/contact', [ContactController::class, 'store']);
+
+    // Les inscriptions sont-elles ouvertes ? Et, fermées, la liste d'attente (config/registration.php).
+    Route::get('/registration', [WaitlistController::class, 'status'])->middleware('throttle:60,1');
+    Route::post('/waitlist', [WaitlistController::class, 'store'])->middleware('throttle:6,1');
 
     // ── La LIBRAIRIE : vitrine publique (livres papier, commande sans paiement
     // en ligne). Voir docs/architecture/BOOKS_STORE.md.
@@ -253,6 +260,8 @@ Route::prefix('v1')->group(function () {
             // leçon, tous les modules ouverts, sans jamais y écrire une ligne.
             Route::middleware('learner')->group(function () {
                 Route::post('/lessons/{lessonCode}/evidence', [LearningEvidenceController::class, 'store']);
+                // le monde de jeu d'une leçon : le serveur RECALCULE le verdict (GameEvidenceController, 2026-11-15)
+                Route::post('/lessons/{lessonCode}/game-evidence', [GameEvidenceController::class, 'store']);
                 Route::put('/lessons/{lessonCode}/progress', [LessonProgressController::class, 'upsert']);
                 // les réponses de l'élève pendant la leçon : à LUI seul (StudentLessonAnswersController, pilote 2026-11-07)
                 Route::get('/lessons/{lessonCode}/answers', [StudentLessonAnswersController::class, 'show']);
@@ -623,6 +632,8 @@ Route::prefix('v1')->group(function () {
             // l'état canonique, en lecture seule, cadrée sur les leçons
             // effectives de la classe. `?lesson=` est obligatoire sur l'index.
             Route::get('/classrooms/{id}/learning-points', [TeacherClassroomLearningPointController::class, 'index'])->whereNumber('id');
+            // « متابعة القسم » d'une leçon : état de chaque élève sur chaque كفاءة + ses exercices (lecture seule)
+            Route::get('/classrooms/{id}/lesson-tracking/{lessonCode}', [TeacherClassroomLearningPointController::class, 'lessonTracking'])->whereNumber('id');
             Route::get('/classrooms/{id}/learning-points/{code}', [TeacherClassroomLearningPointController::class, 'show'])->whereNumber('id');
             Route::get('/classrooms/{id}/students/{studentId}/learning-points/{code}/explanation', [TeacherClassroomLearningPointController::class, 'explanation'])
                 ->whereNumber('id')->whereNumber('studentId');
@@ -661,6 +672,18 @@ Route::prefix('v1')->group(function () {
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/revive', [TeacherMadarPlayController::class, 'revive'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::post('/classrooms/{id}/madar/play/runs/{uuid}/finish', [TeacherMadarPlayController::class, 'finish'])->whereNumber('id')->whereUuid('uuid')->middleware('throttle:60,1');
             Route::patch('/classrooms/{id}/madar/play/ship', [TeacherMadarPlayController::class, 'ship'])->whereNumber('id')->middleware('throttle:30,1');
+
+            // « حصّة القسم » : le plan de la classe, le test d'une leçon (défaut + copie), les séances terminées (CLASS_SESSION.md).
+            Route::get('/classrooms/{id}/seating', [TeacherClassSessionController::class, 'seating'])->whereNumber('id');
+            Route::put('/classrooms/{id}/seating', [TeacherClassSessionController::class, 'updateSeating'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::get('/classrooms/{id}/class-sessions', [TeacherClassSessionController::class, 'sessions'])->whereNumber('id');
+            Route::post('/classrooms/{id}/class-sessions', [TeacherClassSessionController::class, 'storeSession'])->whereNumber('id')->middleware('throttle:60,1');
+            Route::get('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'test']);
+            Route::put('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'updateTest'])->middleware('throttle:60,1');
+            Route::delete('/class-tests/{lessonCode}', [TeacherClassSessionController::class, 'resetTest'])->middleware('throttle:30,1');
+            // « ملفّ الدرس » : la leçon → le document de la سبّورة (مختبر) de l'enseignant — un seul, à lui
+            Route::get('/lesson-files/{lessonCode}', [TeacherClassSessionController::class, 'lessonFile']);
+            Route::put('/lesson-files/{lessonCode}', [TeacherClassSessionController::class, 'saveLessonFile'])->middleware('throttle:120,1');
         });
 
     // « فضاء الإدارة » — le directeur d'un établissement (SCHOOL_ADMIN_SPACE.md).
@@ -918,7 +941,6 @@ Route::prefix('v1')->group(function () {
             // ── « التحدّي اليومي » : barème et défauts globaux ──
             Route::get('/daily-challenge/config', [AdminDailyChallengeController::class, 'show']);
             Route::put('/daily-challenge/config', [AdminDailyChallengeController::class, 'update']);
-
 
             Route::get('/activity-log', [AdminActivityLogController::class, 'index']);
 

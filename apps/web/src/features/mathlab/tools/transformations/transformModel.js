@@ -29,9 +29,6 @@ export const TRANSFORM_KINDS = Object.freeze(['translation', 'rotation', 'reflec
 /** Les axes de réflexion que l'élève peut choisir (§14). */
 export const AXIS_TYPES = Object.freeze(['xAxis', 'yAxis', 'origin', 'horizontal', 'vertical', 'diagonal', 'antidiagonal', 'line', 'twoPoints']);
 
-/** Les façons de désigner un centre (§11). */
-export const CENTER_TYPES = Object.freeze(['origin', 'point', 'vertex']);
-
 // ── La résolution d'un centre et d'un axe contre la figure ───────────────
 
 /**

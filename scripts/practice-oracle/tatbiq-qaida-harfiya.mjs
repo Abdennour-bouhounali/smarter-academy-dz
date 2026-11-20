@@ -125,7 +125,7 @@ const TEST_ENVS = (letters) => [0, 1, 2, 3, 4, 5].map((i) => Object.fromEntries(
 const lettersOf = (expr) => [...new Set(tokens(expr).filter(isVar))];
 
 const YES = 'نعم، يكفي'; const NO = 'لا، لا يكفي';
-const ONE = 'مثال مضادّ واحد'; const TWO = 'مثالان مضادّان'; const MANY = 'عدّة أمثلة مضادّة';
+const ONE = 'مثال مضادّ واحد';
 const CLYES = 'نعم، قوله صحيح'; const CLNO = 'لا، قوله غير صحيح';
 const LPC = (p) => `1am_tatbiq-qaida-harfiya_${p}`;
 
@@ -395,7 +395,7 @@ export function audit(bank) {
         for (const l of Object.keys(s.env)) if (!q.statement.includes(`${l}=${s.env[l].replace('.', '{,}')}`)) errs.push(`${id} : « ${l}=${s.env[l]} » absent de l'énoncé`);
       } else if (s.k === 'W') {
         const letters = lettersOf(s.target); const envs = s.env ? [s.env] : TEST_ENVS(letters);
-        expect = s.opts.map((o, i) => {
+        expect = s.opts.map((o) => {
           if (o.kind) {
             const same = envs.filter((e) => eq(evalTokens(written(o.text), envVal(e)), read(s.target, e, null))).length;
             const readSame = envs.filter((e) => eq(evalTokens(written(o.text), envVal(e)), read(s.target, e, o.kind))).length;

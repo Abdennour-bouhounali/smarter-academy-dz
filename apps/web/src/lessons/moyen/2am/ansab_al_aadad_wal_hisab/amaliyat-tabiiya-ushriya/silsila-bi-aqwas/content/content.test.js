@@ -178,7 +178,7 @@ describe('le درس « سلسلة عمليات تتضمّن أقواسا » — 
     expect(/-\s*\d+(\{,\}\d+)?\s*\$/.test(all.replace(/\$[^$]*-[^$]*\$/g, ''))).toBe(false);
     for (const ex of EXERCISES) for (const r of ex.question.rows) for (const o of r.options) {
       const s = plain(o);
-      if (/[\d)]/.test(s) && /^[\d(\[]/.test(s.trim()) && !/FRAC|=/.test(s)) expect(ev(s).n >= 0n, `${ex.id} ${o}`).toBe(true);
+      if (/[\d)]/.test(s) && /^[\d([]/.test(s.trim()) && !/FRAC|=/.test(s)) expect(ev(s).n >= 0n, `${ex.id} ${o}`).toBe(true);
     }
   });
 });

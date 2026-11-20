@@ -29,9 +29,8 @@
 import { frac, mul, eq, isInteger, fracText, fracDecimal } from '@smarter-academy/core/arithmetic/linear.js';
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 
-export const WORLDS = Object.freeze(['tray', 'paper']);
 /** Les dénominateurs d'un كسر عشري. */
-export const DECIMAL_DS = Object.freeze([10, 100, 1000]);
+const DECIMAL_DS = Object.freeze([10, 100, 1000]);
 /** Le nombre maximal d'épingles de prédiction (متقدم). */
 export const MAX_PINS = 3;
 
@@ -90,8 +89,6 @@ export function judgeClaim(p, q, [a, b]) {
 
 /** La valeur de la part (exacte). */
 export const shareValue = (p, q) => frac(p, q);
-/** Deux écritures de la même part ? (exact) */
-export const sameShare = (w1, w2) => eq(frac(w1[0], w1[1]), frac(w2[0], w2[1]));
 
 /* ── État ───────────────────────────────────────────────────────────────────────────── */
 
@@ -172,9 +169,6 @@ function judgePassedPins(s, from, to) {
   });
   return changed ? put(s, { pins: Object.freeze(pins), trials: Object.freeze(trials) }) : s;
 }
-
-/** Le couteau peut-il bouger ? (pas pendant la prédiction) */
-export const knifeFree = (s) => !s.predicting;
 
 /** Pendant le geste : les coupes suivent le doigt (pas un essai) ; une épingle que le couteau traverse est jugée. */
 export function setD(s, d) {
@@ -380,7 +374,7 @@ export function totalGlue(s) {
 /* ── Géométrie : le tout en bandes (px), pure et testée ─────────────────────────────── */
 
 /** La largeur minimale confortable d'un morceau (px) ; le contrat en exige ≥ 6 (testé par balayage). */
-export const MIN_PIECE = 10;
+const MIN_PIECE = 10;
 
 /**
  * Le nombre de bandes B pour dessiner le tout jusqu'à `max` morceaux dans `width` px : B = 1 si chaque morceau fait au

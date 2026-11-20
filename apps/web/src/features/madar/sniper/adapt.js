@@ -21,9 +21,9 @@
  */
 import { POSITIONS, SUB_LEVELS, clampPos } from './levels';
 
-export const BAD_FAULTS = 2;
+const BAD_FAULTS = 2;
 /** L'échauffement commence deux niveaux sous la position de l'élève. MIROIR : config/madar.php › sniper.warmup_drop. */
-export const WARMUP_DROP = 2 * SUB_LEVELS;
+const WARMUP_DROP = 2 * SUB_LEVELS;
 
 /** La position où commence une partie dont la position de l'élève est `home`. */
 export const warmStart = (home) => clampPos(home - WARMUP_DROP);

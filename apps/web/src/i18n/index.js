@@ -24,20 +24,6 @@ import student from './locales/ar/student.json';
 // Les pages VISITEUR (accueil, méthode, mission, FAQ, pied de page, palette
 // de commandes). Le discours produit, pas le contenu pédagogique.
 import marketing from './locales/ar/marketing.json';
-// L'espace ENSEIGNANT (« فضاء الأستاذ ») : ses classes, ses élèves, son
-// offre. Le chrome seulement — l'enseignant lit les leçons dans la coquille
-// visiteur, il n'a pas de contenu à lui.
-import teacher from './locales/ar/teacher.json';
-
-// LA LOUVE DE L'ADMINISTRATION (« لوحة الإدارة ») : le chrome du panneau —
-// navigation, titres, colonnes, états, pastilles, dialogues. Le panneau parle
-// la MÊME langue que l'espace élève : le produit algérien est arabe pour tous
-// ses rôles, l'administration comprise (master spec §14, ARABIC_RTL_CONTRACT).
-// Livré avec l'application et NON à la demande : ses primitives (Modal,
-// DataTable, FilterBar, states) sont aussi rendues par l'espace enseignant et
-// par « قسمي » — un dialogue qui suspend à son ouverture ferait disparaître
-// la page derrière son repli.
-import admin from './locales/ar/admin.json';
 
 // ── Le namespace CHARGÉ À LA DEMANDE : `mathlab` ─────────────────────────
 // Le chrome du مختبر الرياضيات (Math Lab) — instruments et accueil,
@@ -54,6 +40,15 @@ import admin from './locales/ar/admin.json';
 // frontière, jamais par un composant partagé. Voir
 // docs/architecture/BUNDLE_BOUNDARIES.md.
 const ON_DEMAND_NAMESPACES = {
+  // « لوحة الإدارة » : le chrome du panneau d'administration (≈ 22 Ko gzip). Lu seulement par pages/admin et
+  // components/admin, sous AdminLayout (lot paresseux) ; App.jsx le demande EN MÊME TEMPS que le lot du cadre
+  // (`preloadNamespace`). Ses primitives partagées avec l'espace enseignant et « قسمي » (Modal, FilterBar,
+  // DataTable, states) lisent `common › ui.*`, livré avec l'application : un dialogue ne suspend jamais.
+  admin: () => import('./locales/ar/admin.json'),
+  // « فضاء الأستاذ » : ses classes, ses élèves, son offre (≈ 11 Ko gzip). Lu seulement sous TeacherLayout (lot
+  // paresseux, demandé avec lui) et par trois composants rendus POUR un enseignant ailleurs : la carte du بنك
+  // (TeacherPracticeEntry), PracticeHub et TeacherLessonActions. Un élève ne le télécharge jamais.
+  teacher: () => import('./locales/ar/teacher.json'),
   mathlab: () => import('./locales/ar/mathlab.json'),
   // « التحدّي اليومي » : les écrans du défi (élève, onglet enseignant, mode
   // d'affichage). Chacun est un lot paresseux sous <Suspense> ; la carte de
@@ -97,17 +92,25 @@ i18n.use(onDemandBackend).use(initReactI18next).init({
   lng: LOCALE,
   fallbackLng: LOCALE,
   resources: {
-    [LOCALE]: { common, nav, auth, access, lesson, student, marketing, teacher, admin },
+    [LOCALE]: { common, nav, auth, access, lesson, student, marketing },
   },
   // Les namespaces ci-dessus sont livrés avec l'application ; les autres
   // passent par `onDemandBackend`.
   partialBundledLanguages: true,
   defaultNS: 'common',
-  // Chargés à l'initialisation. `mathlab` n'y est PAS : il est demandé par le
-  // premier `useTranslation('mathlab')`.
-  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing', 'teacher', 'admin'],
+  // Chargés à l'initialisation. Les namespaces à la demande n'y sont PAS : chacun est demandé par le
+  // premier `useTranslation('<ns>')`, ou plus tôt par `preloadNamespace`.
+  ns: ['common', 'nav', 'auth', 'access', 'lesson', 'student', 'marketing'],
   interpolation: { escapeValue: false }, // React already escapes.
   returnEmptyString: false,
 });
+
+/**
+ * Demande un namespace à la demande SANS attendre : à appeler dans le `lazy()` du cadre qui le lit, pour que
+ * le texte voyage en parallèle du lot au lieu de le suivre (BUNDLE_BOUNDARIES.md §4 règle 11).
+ */
+export function preloadNamespace(namespace) {
+  i18n.loadNamespaces(namespace);
+}
 
 export default i18n;

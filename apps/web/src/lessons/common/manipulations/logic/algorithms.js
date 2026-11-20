@@ -1,6 +1,6 @@
 import * as divisibility from '@smarter-academy/core/arithmetic/divisibility.js';
 
-const { differenceSteps, euclidSteps, divmod, differenceStepCount } = divisibility;
+const { differenceSteps, euclidSteps, differenceStepCount } = divisibility;
 
 /* ── الفروق المتتابعة ─────────────────────────────────────────────────────── */
 
@@ -208,8 +208,6 @@ export function remainingEuclidGestures(state) {
 export function comparison(a, b) {
   return { differences: differenceStepCount(a, b), divisions: euclidSteps(a, b).steps.length };
 }
-
-export { divmod };
 
 /* ── LabCoach (2026-11-09 : les deux labos de rubans n'avaient pas de guide) ─────────────────────────────────────────── */
 

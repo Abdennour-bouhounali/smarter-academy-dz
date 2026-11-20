@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Domain\Progress\MasteryRecalculator;
+use App\Domain\Progress\Replay\ReplayService;
 use App\Domain\Progress\ProgressEngine;
 use App\Models\Chapter;
 use App\Models\Grade;
@@ -114,7 +114,7 @@ class PracticeEvidenceConvergenceTest extends TestCase
         }
 
         // L'état est explicable depuis l'historique (invariant 15).
-        $this->assertTrue(app(MasteryRecalculator::class)->matchesStored($user, $this->p9->id),
+        $this->assertTrue(app(ReplayService::class)->matchesStored($user->id, $this->p9->id),
             'le rejeu des preuves doit reproduire exactement l’agrégat enregistré');
     }
 

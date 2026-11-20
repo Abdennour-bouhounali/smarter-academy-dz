@@ -11,7 +11,7 @@ export default function ClassGroupCard({ classGroup }) {
   const archived = classGroup.status === 'archived';
 
   return (
-    <Link to={`/enseignant/classes/${classGroup.id}`} className={`glass-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow ${archived ? 'opacity-70' : ''}`} data-class-card={classGroup.id}>
+    <Link to={`/enseignant/classes/${classGroup.id}`} className={`rounded-2xl border border-nav-line bg-white p-5 flex flex-col gap-3 hover:shadow-md transition-shadow ${archived ? 'opacity-70' : ''}`} data-class-card={classGroup.id}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="font-space font-bold text-slate-900 text-lg truncate">{classGroup.name}</h3>
@@ -23,9 +23,9 @@ export default function ClassGroupCard({ classGroup }) {
       </div>
       <div className="flex items-center justify-between text-sm">
         <span className="inline-flex items-center gap-1.5 text-slate-600"><Users size={14} /> {t('home.studentsCount', { count: classGroup.studentsCount ?? 0 })}</span>
-        <span dir="ltr" className="font-mono-jetbrains text-xs font-bold tracking-[0.2em] text-teal-800">{classGroup.joinCode}</span>
+        <span dir="ltr" className="font-mono-jetbrains text-xs font-bold tracking-[0.2em] text-nav-accent">{classGroup.joinCode}</span>
       </div>
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal-800">{t('classes.settings')} <ArrowForward size={12} /></span>
+      <span className="inline-flex items-center gap-1 text-xs font-semibold text-nav-accent">{t('classes.settings')} <ArrowForward size={12} /></span>
     </Link>
   );
 }

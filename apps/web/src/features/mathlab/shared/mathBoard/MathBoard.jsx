@@ -14,7 +14,7 @@ const katexCache = new Map();
  * quand le tableau s'allonge, l'élève n'a pas à faire défiler pour suivre.
  * Doux, sauf en mouvement réduit.
  */
-export function centerOnScreen(node) {
+function centerOnScreen(node) {
   if (!node || typeof node.scrollIntoView !== 'function') return;
   const reduced = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   node.scrollIntoView({ block: 'center', inline: 'nearest', behavior: reduced ? 'auto' : 'smooth' });
@@ -420,7 +420,6 @@ function PracticeCanvas({ frame, onSolved, answer = null, answerContext = null }
             onChange={(event) => setTyped(event.target.value)}
             aria-label={t('kit.practice.answerLabel')}
             placeholder="?"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             data-mb-answer-input
           />

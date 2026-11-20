@@ -21,11 +21,11 @@ import * as R from '@smarter-academy/core/arithmetic/relativeOps.js';
 import * as P from '@smarter-academy/core/arithmetic/powers.js';
 
 export const SLOTS = 6;
-export const FREE_RANGE = Object.freeze([-10, 10]);
+const FREE_RANGE = Object.freeze([-10, 10]);
 export const A_RANGE = Object.freeze([-6, 6]);
 export const N_RANGE = Object.freeze([1, 20]);
-export const MAT_STEPS = Object.freeze([10, 20, 30, 40]);
-export const MISC_SIDE = Object.freeze({ anyNeg: 'MISC-IDA-ANYNEG', moreNeg: 'MISC-IDA-MORENEG', order: 'MISC-IDA-ORDER', squareNeg: 'MISC-IDA-SQUARENEG', minusOne: 'MISC-IDA-MINUSONE', zero: 'MISC-IDA-ZERO' });
+const MAT_STEPS = Object.freeze([10, 20, 30, 40]);
+const MISC_SIDE = Object.freeze({ anyNeg: 'MISC-IDA-ANYNEG', moreNeg: 'MISC-IDA-MORENEG', order: 'MISC-IDA-ORDER', squareNeg: 'MISC-IDA-SQUARENEG', minusOne: 'MISC-IDA-MINUSONE', zero: 'MISC-IDA-ZERO' });
 
 /** Les missions par défaut de chaque niveau (la leçon peut passer les siennes). */
 export const PRESETS = Object.freeze({
@@ -100,7 +100,7 @@ export function lineText(values) {
 }
 
 /** L'échelle du tapis : le plus petit palier ≥ la plus grande position atteignable. */
-export function reachableMax(task) {
+function reachableMax(task) {
   if (task.kind === 'predict') return Math.max(...run(task.cards).map((s) => Math.abs(num(text(s.value)))), 1);
   if (task.kind === 'repeat') return Math.abs(num(task.card)) * 1;
   if (task.kind === 'sqNeg' || task.kind === 'sqVal') return 36;
@@ -130,7 +130,7 @@ function boardOf(task) {
   return { slots, tray: task.tray.map((v, i) => card(task, 't', i, v)) };
 }
 
-function normalize(list, world) {
+function normalize(list) {
   return list.map((t, i) => {
     const kind = t.kind ?? 'goal';
     const base = { ...t, id: t.id ?? `t${i}`, kind };
@@ -385,7 +385,7 @@ export function nextTask(s) {
 }
 
 /** « إعادة » : la mission repart (programme de départ), les essais restent. */
-export function restartTask(s) {
+function restartTask(s) {
   const task = taskOf(s);
   return { ...s, board: boardOf(task), last: null, pred: { side: null, dist: null, ran: false }, n: 2, predicted: false, flipped: false, moved: false, a: s.world === 'square' ? 2 : null };
 }
@@ -427,7 +427,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, last: null } : s);
 /* ── Preuves, registre, onboarding ──────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((x) => !x.free && x.task === i);
 
 /** Les lignes du « سجلّ التجارب » : chaque arrêt validé, avec le nombre de cartes négatives (écrit par le labo, pas par l'élève). */
 export function recordRows(s) {

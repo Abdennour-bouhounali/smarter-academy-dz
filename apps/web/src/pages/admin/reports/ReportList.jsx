@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Flag, Image as ImageIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

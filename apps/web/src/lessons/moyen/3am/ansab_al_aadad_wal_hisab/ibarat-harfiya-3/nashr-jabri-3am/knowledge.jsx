@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, METHOD_EXPAND, METHOD_DOUBLE } from './content/textbook';
 
@@ -92,7 +91,7 @@ export const LESSON_KNOWLEDGE = {
       {
         id: 'jidaa-qawsayn', type: 'regles', title: 'نشر (a + b)(c + d)',
         memo: {
-          rule: `\\begin{aligned}&(a+b)(c+d)\\\\=\;&${R('ac+ad')}\\\\+\;&${R('bc+bd')}\\end{aligned}`,
+          rule: `\\begin{aligned}&(a+b)(c+d)\\\\=\\;&${R('ac+ad')}\\\\+\\;&${R('bc+bd')}\\end{aligned}`,
           hook: 'كل حدّ في كل حدّ',
           example: `(x+3)(x+2)=x^2+${R('5x')}+6`,
           trap: 'أربعة جداءات لا اثنان',

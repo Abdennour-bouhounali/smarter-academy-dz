@@ -28,10 +28,9 @@
  */
 import { frac, mul, sub, neg, cmp, fracText, fracDecimal } from '@smarter-academy/core/arithmetic/linear.js';
 
-export const SCENES = Object.freeze(['canteen', 'family']);
 export const SPLIT_LIMITS = Object.freeze([1, 12]);
 /** La coupe « décimale » : les dixièmes. */
-export const DECIMAL_SPLIT = 10;
+const DECIMAL_SPLIT = 10;
 
 /** La plus grande part que l'élève peut poser (en gâteaux) : ⌈a / b⌉, plus un gâteau quand b divise a (la part juste ne doit pas être au bout). */
 export const railMax = (a, b) => Math.floor((a + b - 1) / b) + (a % b === 0 ? 1 : 0);
@@ -123,7 +122,7 @@ export const shownVerdict = (s) => (s.last && s.last.i === s.i && s.last.n === s
 
 const ofOrder = (s, i) => s.trials.filter((t) => t.i === i);
 /** Les essais en DIXIÈMES (n = 10) de la demande i, un seul par valeur distincte. */
-export function decimalTrials(s, i = s.i) {
+function decimalTrials(s, i = s.i) {
   const seen = new Set();
   return ofOrder(s, i).filter((t) => t.n === DECIMAL_SPLIT).filter((t) => { if (seen.has(t.m)) return false; seen.add(t.m); return true; });
 }

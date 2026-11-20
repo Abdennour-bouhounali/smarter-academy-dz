@@ -54,7 +54,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
           onChange={(e) => set({ query: e.target.value })}
           placeholder={t('progression.curriculum.searchPlaceholder')}
           aria-label={t('progression.curriculum.searchAria')}
-          className="w-full min-h-[48px] ps-11 pe-11 rounded-2xl border-2 border-slate-200 bg-white text-sm font-inter text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/30"
+          className="w-full min-h-[48px] ps-11 pe-11 rounded-2xl border-2 border-slate-200 bg-white text-sm font-inter text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-nav-accent focus-visible:ring-2 focus-visible:ring-nav-accent/30"
           data-progression-search
         />
         {view.query && (
@@ -62,7 +62,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
             type="button"
             onClick={() => set({ query: '' })}
             aria-label={t('progression.curriculum.clearSearch')}
-            className="absolute top-1/2 -translate-y-1/2 end-2 w-9 h-9 rounded-xl inline-flex items-center justify-center text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+            className="absolute top-1/2 -translate-y-1/2 end-2 w-9 h-9 rounded-xl inline-flex items-center justify-center text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
           >
             <X size={16} aria-hidden="true" />
           </button>
@@ -84,7 +84,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
                 type="button"
                 aria-pressed={on}
                 onClick={() => set({ filter: f })}
-                className={`flex-shrink-0 min-h-[44px] px-4 rounded-xl text-sm font-inter font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                className={`flex-shrink-0 min-h-[44px] px-4 rounded-xl text-sm font-inter font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${
                   on ? 'bg-slate-900 text-white' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                 }`}
                 data-progression-filter={f}
@@ -103,7 +103,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
               value={view.sort}
               onChange={(e) => set({ sort: e.target.value })}
               aria-label={t('progression.curriculum.sortLabel')}
-              className="min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm font-inter text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm font-inter text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
               data-progression-sort
             >
               {SORTS.map((s) => <option key={s} value={s}>{t(SORT_KEY[s])}</option>)}
@@ -114,13 +114,13 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
             onClick={() => setAdvancedOpen((o) => !o)}
             aria-expanded={advancedOpen}
             aria-controls={panelId}
-            className={`min-h-[44px] px-3.5 rounded-xl border text-sm font-inter font-semibold inline-flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-              advancedCount ? 'border-blue-300 bg-blue-50 text-blue-800' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            className={`min-h-[44px] px-3.5 rounded-xl border text-sm font-inter font-semibold inline-flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${
+              advancedCount ? 'border-blue-300 bg-nav-accent-soft text-nav-accent' : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
             }`}
             data-progression-advanced-toggle
           >
             <SlidersHorizontal size={15} aria-hidden="true" /> {t('progression.curriculum.advanced')}
-            {advancedCount > 0 && <span className="rounded-full bg-blue-600 text-white px-1.5 text-[11px] font-mono-jetbrains font-bold">{advancedCount}</span>}
+            {advancedCount > 0 && <span className="rounded-full bg-nav-accent text-white px-1.5 text-[11px] font-mono-jetbrains font-bold">{advancedCount}</span>}
           </button>
         </div>
       </div>
@@ -133,7 +133,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
               <button
                 type="button"
                 onClick={() => onChange({ ...view, fieldId: '', unitId: '', masteryStates: [], activityStates: [] })}
-                className="min-h-[36px] px-3 rounded-lg text-xs font-mono-jetbrains font-bold text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="min-h-[36px] px-3 rounded-lg text-xs font-mono-jetbrains font-bold text-slate-600 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
               >
                 {t('progression.curriculum.advancedReset')}
               </button>
@@ -141,7 +141,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
                 type="button"
                 onClick={() => setAdvancedOpen(false)}
                 aria-label={t('progression.curriculum.advancedClose')}
-                className="w-9 h-9 rounded-lg inline-flex items-center justify-center text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="w-9 h-9 rounded-lg inline-flex items-center justify-center text-slate-500 hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
               >
                 <X size={16} aria-hidden="true" />
               </button>
@@ -153,7 +153,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
             <select
               value={view.fieldId}
               onChange={(e) => set({ fieldId: e.target.value, unitId: '' })}
-              className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
             >
               <option value="">{t('progression.curriculum.advancedAny')}</option>
               {fields.map((f) => <option key={f.id} value={f.id}>{mathToPlain(f.title)}</option>)}
@@ -166,7 +166,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
               value={view.unitId}
               onChange={(e) => set({ unitId: e.target.value })}
               disabled={unitsOfField.length === 0}
-              className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-60"
+              className="w-full min-h-[44px] px-3 rounded-xl border border-slate-200 bg-white text-sm text-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent disabled:opacity-60"
             >
               <option value="">{t('progression.curriculum.advancedAny')}</option>
               {unitsOfField.map((u) => <option key={u.id} value={u.id}>{mathToPlain(u.title)}</option>)}
@@ -184,7 +184,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
                     type="button"
                     aria-pressed={on}
                     onClick={() => set({ masteryStates: toggleIn(view.masteryStates, s) })}
-                    className={`min-h-[40px] px-3 rounded-xl border text-xs font-inter font-semibold inline-flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
+                    className={`min-h-[40px] px-3 rounded-xl border text-xs font-inter font-semibold inline-flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${on ? 'bg-nav-accent text-white border-nav-accent' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
                   >
                     <span aria-hidden="true">{MASTERY_STATES[s].emoji}</span> {t(MASTERY_STATES[s].labelKey)}
                   </button>
@@ -204,7 +204,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
                     type="button"
                     aria-pressed={on}
                     onClick={() => set({ activityStates: toggleIn(view.activityStates, s) })}
-                    className={`min-h-[40px] px-3 rounded-xl border text-xs font-inter font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${on ? 'bg-slate-900 text-white border-slate-900' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
+                    className={`min-h-[40px] px-3 rounded-xl border text-xs font-inter font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${on ? 'bg-nav-accent text-white border-nav-accent' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
                   >
                     {t(ACTIVITY_KEY[s])}
                   </button>
@@ -224,7 +224,7 @@ export default function ProgressionToolbar({ view, onChange, fields, matched, to
             <button
               type="button"
               onClick={() => onChange({ ...DEFAULT_VIEW, sort: view.sort })}
-              className="underline decoration-dotted text-blue-700 hover:text-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded"
+              className="underline decoration-dotted text-nav-accent hover:text-blue-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent rounded"
               data-progression-reset
             >
               {t('progression.curriculum.advancedReset')}

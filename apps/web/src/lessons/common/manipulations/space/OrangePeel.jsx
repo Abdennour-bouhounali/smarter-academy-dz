@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Group, Mesh, SphereGeometry, CircleGeometry, MeshStandardMaterial, DoubleSide } from 'three';
@@ -17,7 +17,7 @@ import LabFold from '../primitives/LabFold';
 import MathText from '../../components/MathText';
 import SpaceFigure from '../../components/SpaceFigure';
 import Stage3D from './stage3d/Stage3D';
-import { sphere, ball, cylinder, ring, line, segment, handle, setAt, COLORS } from './stage3d/solids3d';
+import { sphere, ball, cylinder, ring, line, segment, handle, setAt } from './stage3d/solids3d';
 import * as L from '../logic/orangePeel';
 
 /**
@@ -442,7 +442,6 @@ export default function OrangePeel({
   /* ── les textes ── */
   const rT = L.rTex(lab.rt);
   const rP = rT.includes('{,}') ? `(${rT})` : rT; // une puissance d'un décimal : (1{,}4)^2
-  const unit = (d) => `\\,\\mathrm{cm}${d === 1 ? '' : `^${d}`}`;
   const phase = lab.phase;
   const markTex = (m) => { const g = gcd(m, L.MARK_DEN); return `\\frac{${m / g}}{${L.MARK_DEN / g}}`; };
   const discCount = (n) => k('discs', { count: n });

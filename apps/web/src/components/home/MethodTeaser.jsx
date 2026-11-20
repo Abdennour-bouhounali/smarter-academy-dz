@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowForward } from '../common/DirectionalIcons';
 
@@ -33,15 +33,15 @@ export default function MethodTeaser() {
   return (
     <section className="section-wrapper bg-slate-50/50">
       <div className="max-w-4xl mx-auto text-center">
-        <motion.p
+        <m.p
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="font-mono-jetbrains text-blue-500 text-xs font-semibold tracking-widest uppercase mb-3"
         >
           {t('method.eyebrow')}
-        </motion.p>
-        <motion.h2
+        </m.p>
+        <m.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -49,9 +49,9 @@ export default function MethodTeaser() {
           className="section-title !mb-10"
         >
           {t('method.teaserTitle')}
-        </motion.h2>
+        </m.h2>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -72,11 +72,11 @@ export default function MethodTeaser() {
               {t(`method.steps.${step}.title`)}
             </button>
           ))}
-        </motion.div>
+        </m.div>
 
         <div className="h-14 flex items-center justify-center mb-8">
           <AnimatePresence mode="wait">
-            <motion.p
+            <m.p
               key={active}
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function MethodTeaser() {
               className="font-inter text-slate-600 text-base sm:text-lg max-w-lg px-4"
             >
               {t(`method.steps.${LOOP[active]}.desc`)}
-            </motion.p>
+            </m.p>
           </AnimatePresence>
         </div>
 

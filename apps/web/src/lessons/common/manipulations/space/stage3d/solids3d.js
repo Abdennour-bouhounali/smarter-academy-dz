@@ -22,7 +22,7 @@ import {
 } from 'three';
 import { toThree } from './spaceStage';
 
-export const COLORS = Object.freeze({
+const COLORS = Object.freeze({
   indigo: '#4f46e5', sky: '#0284c7', emerald: '#059669', amber: '#d97706', rose: '#e11d48', slate: '#334155', violet: '#7c3aed',
   glass: '#93c5fd', water: '#38bdf8', ink: '#0f172a', white: '#ffffff',
 });
@@ -40,7 +40,7 @@ const NORMALS = { x: [1, 0, 0], y: [0, 1, 0], z: [0, 0, 1] };
 const asNormal = (n) => (typeof n === 'string' ? NORMALS[n] : n ?? NORMALS.z);
 
 /** Un matériau de verre (surface translucide, les deux faces). */
-export const glass = (color = 'glass', opacity = 0.28) => new MeshPhysicalMaterial({
+const glass = (color = 'glass', opacity = 0.28) => new MeshPhysicalMaterial({
   color: col(color), transparent: true, opacity, roughness: 0.15, metalness: 0, side: DoubleSide, depthWrite: false, clearcoat: 0.6,
 });
 /** Un matériau mat (solide plein). */

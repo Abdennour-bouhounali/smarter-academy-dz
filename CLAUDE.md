@@ -1,216 +1,172 @@
 # smarter-academy-dz
 
-Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط,
-starting with 4AM). Lesson content lives in `apps/web/src/lessons/moyen/`;
-shared engine in `apps/web/src/lessons/common/`; pure logic in `packages/core`;
-API in `apps/api` (Laravel). The lesson content in the repository is fourteen 4AM
-textbook units. Since 2026-10-05 unit 14 « الهندسة في الفضاء » (4 lessons + a synthesis, `lessons/moyen/4am/handasa/handasa-fada/`) is the
-sixth unit under « ميدان الهندسة » and the first IN SPACE (exact spheres, sections and k / k² / k³ in `packages/core/arithmetic/space.js`;
-static 3D figures `SpaceFigure` with hidden lines dashed; live three.js labs on ONE kit `lessons/common/manipulations/space/stage3d/`;
-its topic `handasa_fada` was added to the programme file and declared; brief and lock in `docs/sources/4am/unit14/`). Since 2026-10-04 unit 13 « الدوران - الزوايا - المضلّعات المنتظمة » (4 lessons + a synthesis,
-`lessons/moyen/4am/handasa/dawaran-mudalaat/`) is the fifth unit under « ميدان الهندسة » (exact rotations, inscribed angles and regular
-polygons in `packages/core/arithmetic/rotation.js`, labs in `lessons/common/manipulations/rotation/`, GeoFigure centred `arcs` with `arrow`,
-`angles[].arrow`, `circles[].radius`; brief and lock in `docs/sources/4am/unit13/`). Since 2026-10-04 units 11 « الأشعة والانسحاب » and 12 « الأشعة في معلم » (4 lessons + a synthesis each,
-`lessons/moyen/4am/handasa/ashia-insihab/` and `…/ashia-maalam/`) are the third and fourth units under « ميدان الهندسة » (exact vectors
-in `packages/core/arithmetic/vectors.js`, labs in `lessons/common/manipulations/vectors/`, GeoFigure `vectors`/`grid`/`axes`/`arcs`/`circles`;
-one brief and one lock for both in `docs/sources/4am/unit11/`; textbook figures are ANALYSED then reproduced or REDESIGNED, guide §5).
-Also since 2026-10-04 unit 10 « حساب المثلثات في المثلث القائم » (4 lessons + its synthesis,
-`lessons/moyen/4am/handasa/hisab-muthallathat/`) is the second unit under « ميدان الهندسة » (exact trigonometry with
-surds in `packages/core/arithmetic/trigonometry.js`; authors' brief and lock in `docs/sources/4am/unit10/`). Since 2026-10-02 unit 9 « خاصية طالس » (3 lessons + its synthesis,
-`lessons/moyen/4am/handasa/khassiyat-talis/`) is the first unit under the programme's « ميدان الهندسة »
-(no `placement`; geometry figures are `GeoFigure` data, Thales maths in `packages/core/arithmetic/thales.js`). Since 2026-10-02 unit 6 « الدالة الخطية والتناسبية » (5 lessons + its synthesis,
-`lessons/moyen/4am/tanasubiya_duwal/tanasubiya-dala-khattiya/`) and unit 7 « الدالة التآلفية » (5 lessons + its synthesis,
-`…/tanasubiya_duwal/dala-taalufiya/`, the same day) and unit 8 « الإحصاء » (4 lessons + its synthesis,
-`…/tanasubiya_duwal/ihsa/`, the same day; programme domain « ميدان تنظيم المعطيات ») sit under « ميدان التناسبية والدوال »,
-a DISPLAY ميدان decided by the owner (`units_4am_2026_2027.json › ownerChapters`; the programme file is
-untouched and each unit declares its programme domain in `placement`). The other five are units of
-ميدان أنساب الأعداد والحساب: « الأعداد الطبيعيّة والأعداد
-النّاطقة » (9 lessons), since 2026-09-30 « الحساب على الجذور » (5 lessons + its synthesis,
-`…/hisab-judhur/`) and, since 2026-10-01, « الحساب الحرفي » (3 lessons + its synthesis,
-`…/hisab-harfi/`, placed under this ميدان by the owner) and, the same day, « معادلات ومتراجحات
-من الدرجة الأولى بمجهول واحد » (4 lessons + its synthesis, `…/muadalat-mutarajihat/`, placed likewise) and
-« جمل معادلتين من الدرجة الأولى بمجهولين » (3 lessons + its synthesis, `…/jumal-muadalatayn/`, placed likewise).
-Since 2026-10-06 the practice space of every
-lesson is being converted, unit by unit, to the BEM « exam sheet » (prototype `bahth-pgcd`; corpus index
-`docs/sources/4am/bem-practice/annals-index.md`; a lesson switches when listed in `content/practice/exam-style.json`;
-contract `docs/architecture/EXERCISE_CONTRACT.md` § « Présentation examen (BEM) »). The French-era
-lessons (`lessons/college/`, `lessons/lycee/`) and the French reference
-catalogue were **deleted on 2026-09-25** — older docs that cite them describe
-code that no longer exists.
+Arabic-first, RTL mathematics platform for the Algerian curriculum (المتوسط: 1AM–4AM, starting with 4AM).
 
-Unit 1 is the **pilot unit**: rules are tried there, then extended. Three unit-1 rules — values woven into story contexts
-(2026-10-10), the « discover, don't be told » pass on module text (2026-10-09) and the synthesis with six training situations
-(2026-10-13) — were **extended to units 2–14 on 2026-10-13**; every synthesis lesson now has modules 1–6 « وضعيات تدريبية » and
-every `ContentModule` has `objectives` for the Classroom Mode entry slide. Report: `docs/reports/UNIT1_REFERENCE_CHANGES_2026-10-13.md`.
+| Where | What |
+|---|---|
+| `apps/web` | the React app (Vite, JSX — no TypeScript). Lessons: `src/lessons/moyen/<grade>/…`; the shared lesson engine: `src/lessons/common/` |
+| `packages/core` | pure logic: the curriculum (catalogue, programme, learning net, school calendar), exact arithmetic, progress |
+| `apps/api` | the Laravel API (tests: `php8.4 artisan test --configuration phpunit.local.xml`) |
+| `content/` | the exercise banks, the class tests, the thinking-lab challenges |
+| `docs/` | the contracts (`docs/architecture/`), the lesson guide (`docs/lessons/`), the plans and reports (`docs/reports/`) |
 
-Since 2026-11-03 the pilot lesson `qasim-adad-tabii` tries the **student « focus » view** (owner: Gen Alpha reads little):
-- `studentView: 'focus'` in its config makes the student see only what they need now: one step on screen, the lesson home reduced
-  to title + progress + « واصل », and details behind « المزيد » (`MoreToggle`, `lessons/common/components/StudentFocus.jsx`).
-- The teacher and Classroom Mode are unchanged.
-- **Reduce what shows at once, never delete** (owner, 2026-11-04): whatever leaves the student's screen stays reachable.
-- If the owner validates it, it is rolled out lesson by lesson. Rules and checklist: guide §4sexies; numbers:
-  `docs/reports/STUDENT_FOCUS_VIEW_2026-11-03.md`.
-- Since 2026-11-04 the same lesson tries the **mission mode** (`studentView: 'mission'`, implies focus): the lesson is a journey
-  toward its « مسألة الدرس » (opening scene, tools = knowledge items, mission bar, map with the real lock, one checkpoint between
-  modules). It is built on the student's normal pages, NEVER on Classroom Mode. Stage 2 (same day): the lesson plays in a
-  full-window player with **no scrolling anywhere** (owner rule): one unit per screen, tall units paged (`ClassroomPaged` via
-  `PagingContext`, not Classroom Mode), last-resort fit by zoom; no « المزيد » in the player (every block has its own screen). Since 2026-11-07 its first view lists the lessons to revise first (« راجع قبل أن تنطلق », one-click return), and « أستعدّ » opens on a 5 s message then goes question to question by itself. « أستعدّ » v2 (same day): 10 platform questions from very easy to harder, a ✓ / « سنعود إليه » signal per question (never the answer), « غير متأكّد », 1 s undo, a one-screen review with ONE priority lesson to revise (guide §4septies). Lab questions v2 (same day, council): a column beside the pitch (no shade), predict → observe by tapping → build the equality, the trials table inside the lab instead of « رتّب أفكارك », stars for predictions. Saving (same day, council): the student's in-lesson answers are restored, synced and private (`student_lesson_answers`, `GET/PUT /lessons/{code}/answers`, student only, never evidence), and the rule written in « أتوقّع القاعدة » becomes a « قاعدتي » note in « كرّاسي » that the teacher may read. Competitor review (2026-11-08, council): a struggling student gets a smaller practice round in the lab (« لا بأس — جرّب أصغر », `easier` on a round) and module 2 ends with « ورقة زميل » (`kit/PeerSheet.jsx`: find and fix an invented classmate's error); the knowledge map is totally open from the start (`knowledgeMapOpen: true`; coins and « أتوقّع القاعدة » still read `learnedItems`) and reachable from the mission bar (« 🧠 بطاقتي » opens it full-screen, « 📓 كرّاسي »). « إختبار أولي » plays like « أستعدّ » in the player (5 s notice, one question per screen, automatic result, optional timer). Since 2026-11-08 the knowledge map is ONLY the interactive mind map in every lesson: the old stratified presentation was deleted (`KNOWLEDGE_MAP.md` Part B). **The owner VALIDATED the pilot on 2026-11-08: every change on it is now BINDING for other and new lessons** and is rolled out lesson by lesson (`docs/reports/MISSION_ROLLOUT_PROGRESS.md`; plan `PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md`). Converted so far: `qawasim-adad-tabii` (2026-11-08, lab `factor-pairs`; scene registry `mission.scene`, guide § « Rollout recipe ») `khawass-qawasim` (2026-11-08, lab `divisor-properties`) `qasim-mushtarak-akbar` (2026-11-08, lab `common-divisors`) `tayin-pgcd` (2026-11-08, same lab, content only) `bahth-pgcd` (2026-11-09, labs `pgcd-differences` and `euclidean-algorithm`) `ikhtizal-kasr` (2026-11-09, lab `fraction-reduction`) and `awwaliyan-fima-baynahuma` (2026-11-09, lab `coprime-explorer`, scene `math-club`), and its synthesis `wadiya-idmajiya-aadad` (2026-11-12); unit 2 « الحساب على الجذور » (prompt `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md`): `jidhr-tarbii` (2026-11-09, lab `square-root-side` in both modes, scene `garden-bed`), `natiqa-ghayr-natiqa` (2026-11-09, the same lab in graduation mode, scene `carpet-loom`) `muadalat-x-murabba` (2026-11-10, lab `square-fold`, scene `fold-strip`), `amaliyat-judhur` (2026-11-10, lab `square-tiling` in both modes, scene `courtyard-slabs`) and `tawzif-khawass-judhur` (2026-11-10, the same lab in simplest mode, scene `courtyard-big`; its climax numbers forbidden by ROLE, `content/forbidden.js`); unit 9 « خاصية طالس » (prompt `docs/reports/UNIT9_KHASSIYAT_TALIS_MISSION_PROMPT.md`, one council for the unit's three labs on 2026-11-10, work order L2 → L3 → L1): `aksiya-talis` (2026-11-10, lab `parallel-level` with « ضع الميزان », scene `paint-wall` on the unit's shared `mission/thalesSceneKit.jsx`) and `inshaat-talis` (2026-11-10, lab `segment-divider` with `sameUnitOnly` and at most 3 marks per line, scene `tifo-banner`) and `talis-hisab-atwal` (2026-11-10, a NEW player-only lab `shadow-meet` beside the untouched page lab `shadow-world`, scene `night-cinema`); unit 9's synthesis `wadiya-idmajiya-talis` is converted too (owner rule 2026-11-10: every unit's synthesis is built, after its lessons; unit 9 is the pilot): module 7 « وضعية الوحدة » plays its labs as rounds (a new player version `geometry/ConeCylinderPlayer.jsx`, `shadow-meet` with `hideHeight`), the keys are owned from the start (`mission.toolsOwned`), scene `shadow-square`; the synthesis recipe is PROVISIONAL until one real student is timed (`MISSION_ROLLOUT_PROGRESS.md` « The synthesis recipe »); unit 3 « الحساب الحرفي » (prompt `docs/reports/UNIT3_HISAB_HARFI_MISSION_PROMPT.md`, one council for the unit's three lessons on 2026-11-11): `nashr-tabsit` (2026-11-11, lab `pitch-expansion` with the zones' AREAS as numbers and a ruler that skips every x where two zones of different kinds show the same area — `zoneText`, `areaCollisions` — scene `neighbourhood-pitch` on the unit's shared `mission/pitchSceneKit.jsx`), `mutatabiqat-shahira` (2026-11-11, the same lab on square fields: sides relabelled a / b, the « 0 » chip of the sum × difference, scene `stands-pitch`) and `tahlil-ibara` (2026-11-11, lab `turf-factoring` in rows and square modes, scene `turf-rolls`); its synthesis `wadiya-idmajiya-harfi` is converted (2026-11-12, scene `fountain-plaza`, lab `pitch-expansion` with the additive ring chains); unit 4 « معادلات ومتراجحات » (prompt `docs/reports/UNIT4_MUADALAT_MUTARAJIHAT_MISSION_PROMPT.md`, one council for the unit's four labs on 2026-11-11): `muadala-ula` (lab `equation-balance`, scene `locker-balance`), `jidaa-maadum` (lab `vanishing-pitch` with the covered pitch, scene `pitch-planner`), `mutarajiha-ula` (lab `solution-ray`, scene `phone-credit`) and `tarrid-mushkila` (lab `growth-race`, scene `family-heights`); its synthesis `wadiya-idmajiya-muadalat` is converted (2026-11-12, scene `club-counter`, lab `growth-race` with the additive tariff chains). Unit 5 « جمل معادلتين » (prompt `docs/reports/UNIT5_JUMAL_MUADALATAYN_MISSION_PROMPT.md`, one council for the unit's three labs on 2026-11-11; each lab a `<Lab>Player.jsx` behind a ≤ 10-line dispatcher, collision test `_unit/unitCollisions.test.js`): `mafhum-jumla` (2026-11-12, lab `pair-scoreboard` with the gauges masked while dragging and module 2's special-case rounds `lab-pair-m2`, scene `civil-registry`), `hall-jabri` (lab `elimination-cards`, scene `kiosk-cards`) and `mushkilat-jumla` (lab `story-modeller`, scene `museum-desk`); its synthesis `wadiya-idmajiya-jumal` is converted too, with the provisional recipe (owner, 2026-11-12; module 7 analyses the 🏆’s own situation, scene `party-table`; units 1–4's syntheses: owner go-ahead the same day, converted one by one — unit 1's `wadiya-idmajiya-aadad` first, 2026-11-12, scene `apron-store`, Euclid's additive `share` chain; unit 2's `wadiya-idmajiya-judhur`, scene `rug-market`). Since 2026-11-09 a unit whose lessons are all converted gives its STUDENTS a one-screen unit page (`pages/unit/UnitMissionView.jsx`, content in `pages/unit/unitMissions.js`, no-scroll check `e2e/unit-mission-view.mjs`) — owner rule: each time a unit's lessons are converted, write its entry there; unit 1 is the first, unit 2 « الحساب على الجذور » the second (2026-11-10), unit 9 « خاصية طالس » the third (2026-11-10), unit 3 « الحساب الحرفي » the fourth (2026-11-11), unit 4 « المعادلات والمتراجحات » the fifth (2026-11-11), unit 5 « جمل معادلتين » the sixth (2026-11-12). In the player a lab is played as ROUNDS with 1–3 ★
-  (`manipulations/rounds/LabRounds.jsx`) instead of مبتدئ / متقدم, and this lesson uses only the football lab.
-  Guide §4septies, plan `docs/reports/MISSION_PLAYER_PLAN_2026-11-04.md`; the rollout to all lessons (after validation):
-  `docs/reports/PILOT_PROTOTYPE_ROLLOUT_PLAN_2026-11-08.md`.
-- **No back-and-forth** (owner, 2026-11-11, BINDING for every lesson, existing and new): in the player, what a question asks the student to
-  look at — the figure, the table, the statement's numbers, the student's earlier result — is on the question's screen; the student never goes
-  back a screen and forward again. A figure and the question after it share one screen automatically (`ClassroomPaged › pairFigures`,
-  `data-paging-pair`); the other cases are written into the lesson (guide §4septies « NO BACK-AND-FORTH »). Check: `e2e/no-back-and-forth.mjs`
-  + a walk that answers; the lessons converted before the rule: `docs/reports/NO_BACK_AND_FORTH_PROMPT.md`.
+**This file is a MAP of what binds every task. The history of each feature, with its dates and the owner's words, is
+`docs/reports/CLAUDE_MD_BEFORE_CUT_2026-11-17.md` (this file as it was before 2026-11-17, kept whole) and the contracts
+below.** The French-era lessons and catalogue were deleted on 2026-09-25: an older doc that cites `lessons/college/` or
+`lessons/lycee/` describes code that no longer exists.
 
-Since 2026-11-09 **« بوصلتي » (the year compass)** is being built (owner plan approved; contract `docs/architecture/YEAR_COMPASS.md`):
-a start check « جولة الانطلاق » scoped by the date and the class position (2 steps back in the net), a report « خريطة نقاطي »
-(positive bands, never evidence) and a plan « خطّتي ». P0 is done: ONE school calendar for the four grades and each grade's
-progression (week → catalogue lesson codes) in `packages/core/curriculum/dz/calendar/` (`schoolCalendar.js`, by path), checked by
-`check:year-calendar`. **The calendar is renewed EVERY school year** (owner): the check fails when the current year has none.
-P1 is done (4AM): `/espace/bawsala` + the home card; questions from the practice bank through the server-only
-`content/compass/index.generated.json` (`check:compass-index`), served WITHOUT key and graded by the server (`Domain/Compass`),
-bands recomputed server-side (`ItemBand` = `engine.js`, one fixture); never `learning_evidence`. Since the same day the student home `/espace`
-is LED by بوصلتي when it is open for the grade (`YEAR_COMPASS.md` §6bis: one card before the first check, then « مهمّة اليوم », the week,
-the bands, the year strip; the rest folded under « المزيد »). Every statement screen now renders `formulas` and `table` (`ExerciseStatement`).
-**Two owner standards since 2026-11-09, binding for EVERY question:** a typed answer is entered in its own shape
-(« الإجابة تُكتب في شكلها »: `templateFor()` + `TemplateInput`, « A = ax + [b] », a real fraction bar, printed units — applied to
-the « بوصلتي » check first, rollout planned), and **a formula never breaks across two lines** (`.katex{white-space:nowrap}`;
-widen the card instead). Contract: `EXERCISE_CONTRACT.md` § « قوالب الإجابة » and § « A formula never breaks ».
+## Start of a session
 
-Since 2026-10-13 the **learning net « شبكة الكفاءات »** covers the WHOLE cycle moyen (1AM–4AM): the official
-programme of the four years as data (224 items transcribed from `docs/Math-Moyenne-programme/`, stable ids
-`<g>am.m<مقطع>.r<nn>`), typed links between items (`requires` / `extends` with its added value / `consolidates` —
-the no-duplication rule), the PLANNED 1AM–3AM lessons (codes, units, items — no content), and each 4AM lesson's
-`programmeItems` (`packages/core/curriculum/dz/net/`, contract `docs/architecture/LEARNING_NET.md`, generated map
-`docs/curriculum/LEARNING_NET_MAP.md`). Every « أستعدّ » shows « راجع قبل أن تنطلق » from the net. The resolver is
-imported by path or by `import()`, never from the core barrel.
+1. `docs/README.md` — which document is authoritative for what.
+2. **`docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0 — the LIVE state of the lesson v2 rollout and the ordered list of
+   what is left** (the first unticked line is the next thing to do). `npm run status:lesson-v2` prints the same from the
+   code: which lessons are v2, and how many still stand on each old system.
+3. **Rebuilding a lesson: never read the old lesson** (owner, 2026-11-18 — it is rebuilt from scratch). What it must teach is
+   `npm run lesson:brief -- <id>` (the learning net: الكفاءات, learning-point ids, prerequisites, what not to rebuild, and a
+   digest of what its exercises ask, learning point by learning point); its
+   **exercise bank is used as it is** (`content/practice/<grade>/<id>/`), never regenerated. The pipeline is
+   `LESSON_V2_MASTER_PLAN.md` §9.
+4. **Working on a lesson (designing, briefing an agent, reviewing screenshots, finishing): the project skill
+   `.claude/skills/lesson-v2/`** (owner, 2026-11-19; versioned, the only part of `.claude/` that is) — the pipeline, the
+   brief of each agent, the ledger of every defect met so far with the check that catches it, the screenshot review. A
+   lesson is not finished until what it taught is written back into that skill (its §5).
+5. The contract of the area you touch (table below), then the code.
 
-Since 2026-10-14 (rollout phase 2) **1AM, 2AM and 3AM are active grades**. Their 196 lessons (39 units, 523 draft
-الكفاءات) are catalogue entries `coming_soon` in `dz/{lessons,units,programme}_<g>_2026_2027.json`:
-- in the UI: non-clickable « قيد الإعداد » cards, and `getLessonPath` gives `null`;
-- in the database: imported `draft`, with all their LPs, ignored by Mastery V2 (`LEARNING_NET.md` §3bis).
+## The lesson, today: v2 (BINDING since 2026-11-17, owner decision D6)
 
-A 1AM–3AM lesson is generated INTO its entry (contract §4), then **published = status `available` + export/import +
-commit + push to `dev`** (owner decision; guide §11 « Publish a lesson »). A wrong answer shows « راجع: <درس> (<السنة>) »
-toward earlier years (`features/learning/EarlierYearReview.jsx`). Practice modelled on the 1AM–3AM term exams uses
-`source.type: "term_exam"` / `term_exam_modelled` and the badge « على منوال اختبار الفصل … » (`EXERCISE_CONTRACT.md`).
+Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH, never held back by old code or old docs
+(owner). A v2 lesson is **content plus, at most once per unit, one world mechanic**:
 
-Since 2026-10-14 (rollout phase 3) the 1AM–3AM lessons are **generated one by one along `docs/curriculum/GENERATION_QUEUE.md`** and each
-is published on `dev` before the next; progress and the next batch's prompt: `docs/reports/MOYEN_ROLLOUT_PROGRESS.md`. Since 2026-10-20 the queue
-opens with **Phase A « what 4AM needs NOW »** (owner): 4AM units in textbook order, each lesson's DIRECT earlier-year prerequisites taken from
-the most recent year (3AM, otherwise 2AM, otherwise 1AM) — 35 entries; the full chains come after (`LEARNING_NET.md` §4bis). A unit's extraction is
-written whole (`docs/sources/<g>/unit<N>/`), elements of lessons not yet generated are « pending » in `check:textbook`; the textbook's tape
-diagram « مخطط بأقواس » is the shared figure `ArcTape` (statement figure `kind: 'tape'`). Owner rule: a generated lesson is also imported
-and its modules/exercises published in the LOCAL database so the owner can browse it. **Nothing generated stays `draft`** (owner,
-2026-10-26): every lesson, module and exercise you generate must end `published` — never leave a `draft` module or exercise behind
-(guide §11 « Publish a lesson », step 4).
+- **the kit** `lessons/common/gameworld/kit/` (screens, frames, the world runtime, the shell, the rule forge) names no
+  lesson and no world; **a world** `gameworld/<world>/` is a mechanic; **the lesson's content** is in ITS folder
+  (`world/`, `board/`, `knowledge.jsx`) and is declared in ITS **`lesson.pack.js`** — no list anywhere else names a
+  lesson. After writing or changing a pack: `npm run generate:lesson-index`. Shared code reads a part with
+  `lessons/lessonPack.js › loadPackPart` / `usePackPart`, never by the lesson's path (a test fails otherwise).
+- **No rule is told**: each key of a lesson is FORGED by the student (predict → write his rule with tiles → the mirror
+  tests it on his own evidence → attacks it → seal → use → only then its name). Exactly one rule holds; every other is
+  refuted in front of him. The verdict is what the world does, never « wrong ».
+- **Each rule has its own nature and its own way of discovery** (owner, 2026-11-17): the same mirror is not asked for every
+  rule. A rule that is a search, a pattern or a procedure is FOUND FIRST by an experiment made for it (`forge.inquiry` —
+  « استكشف »: he tries, predicts, claims, and the world answers with facts), starting from what he has just done; a help
+  never narrows to a choice between written rules. `GAME_WORLD.md` « استكشف »; reference: `qawasim-adad-tabii`.
+- **The LAST lesson of each unit** (« أدمج تعلّماتي ») is not a lesson of keys: it is three missions on the BEM's
+  integration situation, a recap of the unit and the bank as training exams. It is built after the unit's other lessons,
+  by `docs/reports/INTEGRATION_LESSON_PLAN.md` (owner, 2026-11-19; BUILT for 4AM unit 1 on 2026-11-20: world « جزيرة المهمّات » `gameworld/missionIsle/`, missions as data played by `gameworld/missions/MissionRunner.jsx`; its board and class test are not), and it is designed and coded by Fable.
+- A lesson is done when `npm run status:lesson-v2 -- --lesson <id>` prints ✅ AND its tests, its walks at 1366×768 pass AND its screenshots were looked at with the eyes.
+- Contracts: `LESSON_V2.md` (the pack, the folder, the definition of done), `GAME_WORLD.md` (the kit, a world, the
+  forge, the phone rules), `LAUNCH_KIT.md`, `LESSON_LAB.md`, `CLASS_SESSION.md`.
 
-Since 2026-11-01 (phase 1 of 7) the student space has **« مختبر التفكير »**, the thinking space at `/espace/tafkir`. It is a ladder of
-NUMBERED challenges outside the curriculum: the band, primary → university, is hidden, and every challenge is `content/thinking-lab/challenges/*.json`.
-- **The student tries first.** The server alone grades (`AnswerChecker.php`: the `expression` check is a safe parser written in
-  JS and PHP over one shared fixture), counts only honest attempts, opens one key per attempt, and opens the replay of a
-  mathematician's thinking after 3 attempts + 24 h (primary band: no wait).
-- **Nothing of the answer reaches the client before that gate** (`ChallengePresenter`, `ThinkingLabLeakTest`).
-- **Content follows the pipeline** schema → `validate:thinking-lab --strict` (in `check:lessons`) → oracle → server-only
-  generated index. Figures are SVG components in `features/thinkingLab/figures/`.
-- **Teachers get a read-only preview** (`/enseignant/tafkir`, owner 2026-10-31): everything open, the answer and the replay visible, an
-  answer to test, nothing written (`THINKING_LAB.md` §8bis).
-- Build plan, phases 2–7: `docs/reports/THINKING_LAB_PLAN_2026-10-30.md`. Contract: `docs/architecture/THINKING_LAB.md`.
+The lessons NOT yet rebuilt keep what they have: the module lesson of `LESSON_DEVELOPMENT_GUIDE.md` §14 (its reference
+architecture), the mission player (guide §4septies; state `docs/reports/MISSION_ROLLOUT_PROGRESS.md`), the lab prototype
+(`LAB_PROTOTYPE_ROLLOUT.md`, `MANIPULATION_CONTRACT.md`, `MANIPULATION_DNA.md` §17), « وضع القسم ». Do not extend them:
+a legacy system is deleted in the commit that converts its last lesson.
+While one of their labs is touched, its rules still hold: the student's hand controls a mathematical variable, the
+onboarding `LabCoach`, the questions over the lab after each step, one screen, and
+`node apps/web/scripts/lab-rollout-status.mjs --lesson <id>` printing ✅.
 
-Since 2026-10-17 the platform has a **printed-books store** (`/books`, `/books/:slug`, admin « الكتب » at `/admin/livres/*`): orders WITHOUT online
-payment, delivery fee set later by the admin, payments recorded as lines; the first book is « بروتوكول SMART » (`BookSeeder`, slug
-`smart-protocol`). Since 2026-11-13 a **book manager** (« مسيّر المكتبة », role `book_manager`) is created ONLY by the platform admin
-in « مسيّرو المكتبة » `/admin/livres/gestionnaires` (one-time password); he opens only the orders, books and book messages (+ his
-account) — gate `can:books`, sidebar filtered by `roles`, every other `/admin/*` is 403 / redirected (`BOOKS_STORE.md` §6ter).
-Contract: `docs/architecture/BOOKS_STORE.md`.
+## The other areas and their contracts
 
-Since 2026-10-26 a **school is a first-class object** with its **director** (« فضاء الإدارة », `/idara`, role `school_admin`,
-created ONLY by the platform admin in « المؤسسات » `/admin/etablissements` with a one-time password). Owner decisions: the school buys a
-licence of seats, the director may enrol students directly (the student confirms), one role (the director), teacher activity shown as
-facts the teacher sees too, a student without e-mail gets a generated school login. The school reads a student only through `SchoolAccess` (active member of an active class of that school
-WITH `school_consent_at`), never an e-mail, never an average; every new `/school` read joins `SchoolPrivacyContractTest`. Phases 0–7 are
-built (structure: terms, teachers by link + « مؤسستي » — since 2026-10-28 joining by the link attaches all the teacher's active classes, with the students who accepted the class sharing text that announces it, classes, roster import with generated « معرّف الدخول » (no mail ever sent to it),
-transfer, login cards; tracking: the الكفاءات map class by class as COUNTS, the student file = the parent's « التقدّم بالتفصيل », no study
-time; reports FROZEN as snapshots, A4 print, CSV built in the browser; the meeting view `/idara/ijtimaa/:id` with « إخفاء الأسماء »);
-and the school LICENCE (model C: access reason `school_licence` before `teacher_subscription`; a covered class uses the school's seats). Contract: `docs/architecture/SCHOOL_ADMIN_SPACE.md`.
+| Area | Contract |
+|---|---|
+| Navigation — FOUR DOORS per workspace (doors are data; one menu renders them); colour tokens `nav-*` | `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0 |
+| Exercises, the BEM « exam sheet », answer templates, the exam coach | `docs/architecture/EXERCISE_CONTRACT.md` |
+| The learning net « شبكة الكفاءات » (224 programme items, typed and weighted links) | `LEARNING_NET.md` — after editing a link: `npm run generate:learning-net` |
+| « بوصلتي », the year compass; ONE school calendar, renewed EVERY school year | `YEAR_COMPASS.md` (`check:year-calendar`) |
+| 1AM–3AM lessons: catalogue entries `coming_soon`, generated one by one | `docs/curriculum/GENERATION_QUEUE.md`, `docs/reports/MOYEN_ROLLOUT_PROGRESS.md` |
+| « مختبر التفكير », the thinking space | `THINKING_LAB.md` |
+| The game space `/espace/jeux` | `MADAR_GAME.md` |
+| Parents: « رابط الوليّ », no account | `PARENT_SPACE.md` |
+| A school and its director « فضاء الإدارة » | `SCHOOL_ADMIN_SPACE.md` |
+| The printed-books store | `BOOKS_STORE.md` |
+| The Math Lab `/espace/atelier` (NOT « مختبري ») | `MATH_LAB.md` |
+| The entry bundle and lazy boundaries | `BUNDLE_BOUNDARIES.md` |
+| Lint, unused code, dead files, formatting | `CODE_HEALTH.md` |
+| Arabic and RTL | `ARABIC_RTL_CONTRACT.md` |
+| The brand and the logo | `BRAND.md` |
 
-Since 2026-10-22 the platform answers parents' fear of an open laptop (« فضاء الوليّ »).
-It works in three layers and claims nothing more, because a web page cannot block other sites:
-- since 2026-10-23 the parent needs **NO account** (owner): they read through « رابط الوليّ », a private link `/w/:token`. The student creates it
-  after consenting in « حسابي » (share sheet, copy, or a QR on screen), or the teacher prints it as a QR on « بطاقات الأولياء ». An optional
-  4-digit parent code protects it. The parent reads ONE week report, the same one the student sees at « ما يراه وليّك »: REAL study time measured
-  on the platform's own pages (active / idle / away, bounded server-side), exercises, lessons and الكفاءات. The `parent` account (`/wali`)
-  is kept in code but is no longer self-registerable;
-- a public device-lock guide `/himaya`;
-- a closed-garden test that keeps every external link out of the student space.
-Since 2026-10-23 the parent also has « التقدّم بالتفصيل »: the whole year lesson by lesson, the الكفاءات that need support and the activity timeline,
-shared with the student too, on the link page as well. The parent pages are phone-first. Contract: `docs/architecture/PARENT_SPACE.md`.
+## Rules that hold in EVERY task (the owner's)
 
-## Read before any task
+**Git and production**
 
-- `docs/README.md` — the documentation map: which document is authoritative
-  for what, and which ones are historical.
-- `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` — the entry point before creating
-  or modifying a lesson, a module, a manipulation or an exercise.
-  Its §14 is the lesson reference architecture, **frozen for generation on
-  2026-09-29**: a generated lesson implements that contract and reuses that
-  architecture — never a parallel one.
-- `docs/architecture/MANIPULATION_DNA.md` before designing or redesigning a
-  manipulation: the student's hand must control a mathematical variable, and
-  the platform must not converge toward one manipulation style.
-- The contract that governs the area you touch (`docs/architecture/*.md`).
-- `docs/architecture/BUNDLE_BOUNDARIES.md` before adding a provider, a route,
-  a heavy dependency, an `import.meta.glob` or an i18n namespace — it says
-  what may enter the entry bundle and where lazy boundaries sit.
-- The entry bundle has a budget (245 KB gzip since 2026-10-26 — it was 330 before the catalogue left the entry, measured 233.1 — `npm run check:entry-budget`, CI; no entry module may import a catalogue name: use `utils/gradeSummary.js`): lessons are mounted by ONE lazy
-  route boundary fed by the generated `lessons/lessonIndex.generated.json` (run `npm run generate:lesson-index` after
-  adding a lesson or changing its modules — never touch `App.jsx`), lab strings live in
-  `i18n/locales/ar/lesson.manipulation.json`, unit maths are imported by path, not from the core barrel
-  (`BUNDLE_BOUNDARIES.md` §3–§4, since 2026-10-14).
-- **The textbook is the REFERENCE of the الكفاءات, not the script of the lesson** (owner, 2026-10-14): the entry point,
-  examples, contexts and order of ideas are designed by the platform (the book's activity is one candidate, often posed
-  later as an application), and every module is ONE track — the action (lab) at the top with nothing above it, then
-  questions on what the student did, then the name (`LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4quinquies; reference
-  `kitabat-adad-tabii`, validated; applies to every new lesson; existing lessons: `docs/reports/LESSON_METHOD_RETROFIT.md`).
-- **Supported screens: tablet and laptop only (owner, 2026-10-15)** — widths ≥ 768 px (768×1024, 1024×768, 1280×800, 1366×768, 1920×1080). Phones are NOT supported: do not design, tune or test for phone widths (320–430 px); older mentions of them below are superseded.
-  **Enforced (owner, 2026-10-27):** lessons and exercises are behind `components/auth/RequireLargeScreen.jsx`; a phone sees « محتوى الدروس يظهر فقط في شاشة الحاسوب … » instead (guide, « Supported screens »).
-  **Exception (owner, 2026-10-17): the printed-books pages `/books` and `/books/:slug`** are opened from WhatsApp on phones —
-  they are designed and tested mobile-first for conversion too (`docs/architecture/BOOKS_STORE.md` §4).
-  **Exception (owner, 2026-10-23): the parent pages — the link page `/w/:token`, `/wali/*` and the guide `/himaya`** — are opened
-  from WhatsApp or a QR on phones. They are designed phone-first and tested at 390×844 and 1366×768
-  (`docs/architecture/PARENT_SPACE.md` « Screens »).
-  **Exception (owner, 2026-10-22): « فضاء الألعاب », the game space `/espace/jeux`** is played on phones AND laptops — designed and tested at
-  390×844 and 1366×768 (`docs/architecture/MADAR_GAME.md` §11). Since 2026-10-23 it has two families:
-  - « ألعاب رياضيات » (« قنّاص القيم », « الدخيل », « الحساب الذهني »), shown FIRST: free, the maths is the gameplay. They have 50 levels × 3 sub-levels covering
-    1AM–4AM. They NEVER start hard (owner): each game opens with a free warm-up round two levels below the student, then the
-    level rises progressively and adapts every round (`MADAR_GAME.md` §16);
-  - « ألعاب ترفيهية » (the orbit runner, « دفاع الكوكب », the « المستكشف » platformer), below: their hearts are earned in the
-    « محطة التزوّد » (correct answers on the student's own الكفاءات).
+- **Never push and never merge to `main` without the owner's word** — `main` deploys to production. Work on `dev`.
+- Commit a lesson right after it is done: `feat(lessons): <id> — v2`.
+- **Nothing generated stays `draft`**: a generated lesson, its modules and exercises end `published` in the LOCAL database
+  too (guide §11 « Publish a lesson »).
 
-  The teacher closes a game for the class or for one student, and can PLAY with each class (« نافس أستاذك »: one score per class,
-  name in that class's ranking with a « الأستاذ » badge, no hearts, never learning evidence — `MADAR_GAME.md` §18).
-  Finishing a lesson unlocks NOTHING in the game (owner).
-- **INDEPENDENCE FROM THE BOOK** (owner, 2026-10-15, CRITICAL): the platform is self-sufficient. Read the textbook, analyse it, get the idea, then
-  GENERATE YOUR OWN content — own boxes, own contexts, own numbers, own wording. Never copy the book's text to the student and never write a
-  student-visible line that sends them to the book (« الكتاب ص 55 », « اقرأ ما يقوله الكتاب », « تمارين من الكتاب »); `SourceTag` is muted for
-  students (`LESSON_DEVELOPMENT_GUIDE.md` §4ter-bis).
-- **The lab prototype goes to EVERY lesson — rollout DONE (112/112) and now BINDING on every NEW lab and lesson** (owner, 2026-10-28; a generated lesson is not done until `lab-rollout-status.mjs --lesson <id>` prints ✅; `LESSON_DEVELOPMENT_GUIDE.md` §6ter): questions OVER the lab after each step (mandatory for students; a teacher
-  may switch them off for his own account), a clear stepper and a success celebration, game sounds (off by default, a « الصوت » switch in
-  every lab), « إعادة » that restarts everything, full screen in every lab, and the end-of-module card as a memo sheet with its timed
-  challenge « اختبر ذاكرتك ». Ground truth, batches of 20 lessons and per-session prompt: `docs/reports/LAB_PROTOTYPE_ROLLOUT.md`;
-  status: `node apps/web/scripts/lab-rollout-status.mjs`.
-- **Every manipulation has the onboarding** (owner, 2026-10-14): `LabCoach` — at each moment a ring + one-sentence bubble on the button or
-  gesture needed now, shown once, hidable, re-summonable; same design in every lab, every lesson, every grade
-  (`MANIPULATION_CONTRACT.md` §8quater, `MANIPULATION_DNA.md` §17.11; rollout and its prompt: `docs/reports/LAB_COACH_ROLLOUT.md`).
-- **Respect Islam in every generated string, icon and emoji** (owner, 2026-10-26): never use the pig (🐷 — a piggy bank is drawn as 💰/a money box),
-  alcohol, gambling (cards, dice as a game, casino, lottery), usury/interest, pork, non-Islamic festivals or religious symbols, or any word or
-  situation that touches them — in lesson text, contexts, problems, bank sheets, icons and badges. Use neutral Algerian everyday contexts.
-  Checked by `LESSON_DEVELOPMENT_GUIDE.md` § « Cultural and religious respect ».
-- Terminology: a learning point is « الكفاءة / الكفاءات » in every visible
-  string since 2026-10-05 — never « نقطة التعلّم / نقاط التعلّم »; identifiers
-  (`learningPoint`…) are unchanged (`docs/architecture/ARABIC_RTL_CONTRACT.md`).
+**Pedagogy**
+
+- **The textbook is the REFERENCE of the الكفاءات, never the script of the lesson**, and the platform is INDEPENDENT FROM
+  THE BOOK: own contexts, own numbers, own wording; never a line that sends a student to the book
+  (`LESSON_DEVELOPMENT_GUIDE.md` §4ter–§4ter-bis).
+- **Discover, don't be told**: the student acts first; a rule gets its name only after he has it.
+- **Show your limit**: a lesson or a lab that merely works is not done (`MANIPULATION_DNA.md` §17 — for 11–13 year olds).
+- A learning point is « الكفاءة / الكفاءات » in every visible string — never « نقطة التعلّم » (identifiers unchanged).
+- **The exercise bank is used AS IT IS, in every generation** (owner, 2026-11-18): a lesson's practice space and exam sitting
+  serve `content/practice/<grade>/<id>/` unchanged — never generated look-alike exercises. A defect of the bank (a « DA »
+  price, a textbook citation) is reported to the owner, never silently replaced. Where the code stands (review of
+  2026-11-19): the exam sitting « الامتحان الأبيض » and the practice page serve the bank; the per-key drills « تدرّب » of a
+  world still generate their own questions — OPEN, the owner decides whether they move to the bank; a « DA » of the bank is
+  shown as « دج » on screen (the file is not changed) and the sheets are listed in `BANK_AS_IS_2026-11-18.md`. **A lesson is rebuilt from scratch and its
+  old version is never read**: what it must teach is `npm run lesson:brief -- <id>` (`LESSON_V2_MASTER_PLAN.md` §9).
+- **A class test never changes a student's progress.** Only exam-format first tries of the game are evidence, and the
+  SERVER re-computes their verdict (`LESSON_V2.md` §1bis). The student's private answers and his world save are never
+  evidence and never read by a teacher, a school or a parent.
+
+**Respect and content**
+
+- **Respect Islam in every string, icon and emoji**: never the pig (a money box is 💰), alcohol, gambling (cards, dice as
+  a game, casino, lottery), usury or interest, pork, non-Islamic festivals or religious symbols. Neutral Algerian
+  everyday contexts (guide § « Cultural and religious respect »).
+- **People are ONE shared character, `primitives/KidFigure.jsx`**: boys in a hoodie, girls ALWAYS in Islamic dress.
+  Never draw a person locally.
+- **Lesson content is drawn in code, never a generated image** (§ « Images » below).
+
+**Screens and writing**
+
+- **ONE SCREEN SIZE: 1366×768, alone (owner, 2026-11-19, after a council; « all the lessons must work for this size only: 1366×768, alone, no other size is needed »).** A lesson is built, walked and looked at at 1366×768 and at no other size: no walk at 1024×768 or 1840×900, no tablet, no phone. An older document that names three sizes or « laptop and tablet » describes the rule before this date. Known and NOT measured: the real window of such a laptop is shorter than 768 px (the browser's bars), and no lesson has been tried on a weak school machine.
+- **PHONES ARE PAUSED (owner, 2026-11-18): lessons are built for the laptop and the tablet only; every pack says `phone: false`, the phone walk is not part of « done ». The phone rules below are kept for when phones resume (known phone debt of `qawasim-adad-tabii`: `docs/reports/LESSON_V2_MASTER_PLAN.md` §4ter-0 step 8).**
+- **Laptop first, then tablet, then phone.** Lessons are behind `components/auth/RequireLargeScreen.jsx`; a phone opens
+  only the HOME of a lesson whose pack says `phone: true` (its world, played sideways) and the pages listed as
+  exceptions: `/books`, the parent pages (`/w/:token`, `/wali/*`, `/himaya`), the game space. The teacher's side is not
+  built for phones. Phone rules: `GAME_WORLD.md` « On a phone » (one scale, 12 px floor, readable beats unscrolled).
+- **Nothing scrolls** in a world, a player or a lab, and **no back-and-forth**: what a question asks the student to look
+  at is on the question's screen.
+- **A typed answer is entered in its own shape** (templates, a real fraction bar, printed units) and **a formula never
+  breaks across two lines**. LaTeX in an ordinary JS string takes TWO backslashes (`'\\times'`).
+- **Money is « دج »**, never « DA », with no thousands space. Counters use the no-break space.
+- **Reduce what shows at once, never delete** (the student's focus view): what leaves the screen stays reachable.
+- **Shapes are the brand blue (`nav-accent`), never black; dark ink is for text only.** No raw colour class and no
+  gradient in the menus, the teacher's pages, the lesson and unit cards. **A card is four lines at most.**
+
+**Who does what, and working limits** (owner, 2026-11-17)
+
+- **Fable orchestrates, Opus codes.** The main session (Fable) designs, briefs the agents, reviews what they return, runs
+  the walks and reports. The code is written by agents on `opus` — except **the 3D** (the world runtime and its scenes)
+  and **a task judged complicated**, which Fable codes itself.
+- **No fixed cap on the number of agents** (the old cap of 2 was for VS Code, which was killed when memory ran out; the
+  work now runs in the terminal). Agents that write code at the same time touch files that do not overlap, or each
+  works in its own worktree.
+- **ONE heavy check at a time** (`check:lessons`, a build, a walk, the whole suite) until two at once have been tried in
+  the terminal: every crash measured before came from heavy runs overlapping, on a machine of 13 GB. Never edit source
+  while a walk runs (hot reload contaminates it).
+- **Report honestly**: what failed, what was not checked, what you are unsure of. Never « all green » on something that
+  was not run.
+
+## Checks (all in CI except the walks)
+
+| Command | What it guards |
+|---|---|
+| `npm run lint` | ESLint on the whole tree (a function that is not a hook is never named `use…`) |
+| `npm run check:unused` | unused exports, i18n keys and sentences; its baseline only SHRINKS — never park new code in it |
+| `npm run check:unreached` | no dead file: delete what a change makes useless in the SAME change |
+| `npm run check:format` / `format:v2` | Prettier, 120 columns, on the areas listed in `package.json` (a new or rebuilt area joins both lists) |
+| `npm run check:lessons` | lesson and exercise validators, the generated indexes, the calendar, the entry budget |
+| `npm run check:entry-budget` | the entry bundle: 212 KB gzip (measured 197.8). No entry module imports a catalogue name; lessons mount through ONE lazy boundary |
+| `npm test` (core, web, scripts) — or `npx vitest run` in `apps/web` / `packages/core` | unit tests |
+| `node apps/web/e2e/<walk>.mjs` | the walks (dev server on :5173): `E2E_SIZE=WxH`; the ONE size is `E2E_SIZE=1366x768`, the default; a sitting walk opens every sheet of the bank (`E2E_PARTS=<part>` runs one part, not a full run); `E2E_TOUCH=1 E2E_SIZE=800x370` for a phone (paused). WebGL is drawn by the GPU when the machine has one (`e2e/lib/gpu.mjs`; `E2E_GPU=0` forces software): measured 15× less CPU than software rendering, which had frozen the laptop. NOT in CI yet |
+
+Generators to run after a change: `generate:lesson-index` (a lesson, its modules or its pack), `generate:lab-order`
+(a lesson added or re-ordered), `generate:learning-net` (a link of the net), `generate:compass-index`.
 
 ## DOCUMENTATION SYNCHRONIZATION RULE (permanent, applies to every prompt)
 
@@ -292,8 +248,8 @@ content.** If a manipulation needs a new visual, extend its SVG. Four reasons:
 
 1. **It must react.** A shelf re-shelves 420 books while the student drags its
    bookend; a player shakes when a full team refuses it. A flat JPG takes no
-   props. See the hand-drawn book at `manipulations/primitives/BookFigure.jsx`
-   and the shelf in `manipulations/divisibility/DivisorExplorerBooks.jsx`.
+   props. See the shelf and its hand-drawn books in
+   `manipulations/divisibility/DivisorExplorerBooks.jsx`.
 2. **Arabic.** Diffusion models mangle Latin text and cannot render RTL Arabic
    at all. Labels like `رفّ ناقص` are DOM text so they stay correct and selectable.
 3. **Determinism.** `logic/bookshelf.test.js` asserts on computed geometry.
@@ -334,6 +290,8 @@ and one left out) then `apps/web/scripts/crop-methode.py` →
 `apps/web/public/images/methode/lesson/*.webp`. The copy beside each capture
 describes only what that lesson really does; if the lesson changes, re-run both
 scripts and re-read the story strings (`marketing.json › method.steps.*.story`).
+**Since 2026-11-18 the captured module pages no longer exist** (the lesson is v2, its old version deleted): the
+captures and `capture-methode.mjs` are out of date until the page is re-captured on the world (plan C2).
 The page uses NO generated image at all (owner decision, 2026-10-07): hero and
 summit are typographic — simple and professional.
 

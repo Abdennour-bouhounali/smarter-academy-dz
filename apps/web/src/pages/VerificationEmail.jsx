@@ -110,7 +110,7 @@ export default function VerificationEmail() {
       >
         <div className="bg-white/70 backdrop-blur-xl py-8 px-6 shadow-xl shadow-slate-200/50 sm:rounded-2xl sm:px-10 border border-white/50">
           <div className="flex justify-center">
-            <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600">
+            <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-nav-accent-soft text-nav-accent">
               <MailCheck className="h-7 w-7" aria-hidden="true" />
             </span>
           </div>
@@ -158,7 +158,7 @@ export default function VerificationEmail() {
           </p>
 
           {feedback && (
-            <p role="status" className="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-3 text-center text-sm text-blue-800">
+            <p role="status" className="mt-5 rounded-xl border border-blue-200 bg-nav-accent-soft p-3 text-center text-sm text-nav-accent">
               {feedback}
             </p>
           )}
@@ -178,7 +178,7 @@ export default function VerificationEmail() {
                   handleResend();
                 }}
                 disabled={sending}
-                className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-70"
+                className="flex w-full justify-center rounded-xl border border-transparent bg-nav-accent py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#3350c4] focus:outline-none focus:ring-2 focus:ring-nav-accent focus:ring-offset-2 disabled:opacity-70"
               >
                 {sending ? t('sending') : t('resendEmail')}
               </button>
@@ -186,7 +186,7 @@ export default function VerificationEmail() {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="flex w-full justify-center rounded-xl border border-slate-300 bg-white py-3 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="flex w-full justify-center rounded-xl border border-slate-300 bg-white py-3 px-4 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-nav-accent focus:ring-offset-2"
               >
                 {t('logout')}
               </button>
@@ -195,7 +195,7 @@ export default function VerificationEmail() {
             <div className="mt-6">
               <Link
                 to="/login"
-                className="flex w-full justify-center rounded-xl border border-transparent bg-blue-600 py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-blue-700"
+                className="flex w-full justify-center rounded-xl border border-transparent bg-nav-accent py-3 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-[#3350c4]"
               >
                 {t('login')}
               </Link>
@@ -204,7 +204,7 @@ export default function VerificationEmail() {
 
           <p className="mt-6 text-center text-xs text-slate-500">
             {t('wrongAddress')}{' '}
-            <a href="mailto:abdennour.bouhounali@gmail.com" className="font-medium text-blue-600 hover:text-blue-700">
+            <a href="mailto:abdennour.bouhounali@gmail.com" className="font-medium text-nav-accent hover:text-nav-accent">
               abdennour.bouhounali@gmail.com
             </a>
             .

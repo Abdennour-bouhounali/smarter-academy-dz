@@ -268,7 +268,7 @@ export function pick(s, vertex) {
 }
 
 /** Le facteur d'échelle d'une réussite rationnelle : 4 et 10 pour 2/5 → 2. */
-function scaleOf(s, vertex, tg, [n, d]) {
+function scaleOf(s, vertex, tg, [, d]) {
   const L = lengths(s);
   const sd = sidesAt(L, vertex);
   const { den } = T.RATIO_SIDES[tg.ratio];

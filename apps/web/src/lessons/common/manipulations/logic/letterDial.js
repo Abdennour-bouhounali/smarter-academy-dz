@@ -16,9 +16,9 @@ import * as R from '@smarter-academy/core/arithmetic/letterRule.js';
 
 const bad = (m) => { throw new Error(`letter-dial : ${m}`); };
 
-export const KINDS = Object.freeze(['set', 'find', 'claim']);
+const KINDS = Object.freeze(['set', 'find', 'claim']);
 export const FREE_MAX = 20;
-export const FREE_LETTERS = 2;
+const FREE_LETTERS = 2;
 
 export function normalizeTasks(list) {
   return (list ?? []).map((t) => {
@@ -122,7 +122,7 @@ export function view(s, t = taskOf(s), env = s.env) {
   return { kind: t.kind, rows, value: R.evaluate(t.tree, e), letters: t.letters };
 }
 /** La tâche courante est-elle faite avec ces valeurs ? (`find` : la valeur demandée ; `set` : les valeurs demandées ; `claim` : le signe ≠.) */
-export function isSolution(t, env) {
+function isSolution(t, env) {
   if (t.kind === 'set' || t.kind === 'find') return t.letters.every((l) => env[l] === t.target[l]);
   return !R.compare(t.left, t.right, Qenv(env)).eq;
 }
@@ -170,7 +170,7 @@ export function retryTask(s) {
 }
 
 /* ── « جرّب قاعدتك أنت » : une règle tapée par l'élève, ouverte en permanence ── */
-export const FREE_DEFAULT = Object.freeze({ text: '3n+7', env: Object.freeze({}) });
+const FREE_DEFAULT = Object.freeze({ text: '3n+7', env: Object.freeze({}) });
 const FREE_RE = /^[0-9a-z+\-−*×(),.\s٠-٩]*$/;
 /** Lit ce que l'élève a tapé : la règle, ses lettres (une ou deux), ou la raison pour laquelle elle est refusée. */
 export function freeInfo(s) {

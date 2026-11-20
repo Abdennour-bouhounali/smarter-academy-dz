@@ -139,7 +139,7 @@ export function operationFrames(steps, { stepBase = 0, variable = 'x' } = {}) {
 }
 
 /** Le dernier frame : la réponse, et elle seule. */
-export function finalFrame(final, { step, variable = 'x' } = {}) {
+function finalFrame(final, { step, variable = 'x' } = {}) {
   if (final.kind === 'solved') {
     const row = [tok('fx', variable), tok('frel', RELATION_LATEX[final.relation]), tok('fs', R.toLatex(final.solution), 'result')];
     if (!final.inequality) {
@@ -175,7 +175,7 @@ export function finalFrame(final, { step, variable = 'x' } = {}) {
  * de simplify.js, un membre après l'autre, l'autre membre restant en place.
  * Le dernier frame pose l'équation réduite (celle que la balance porte).
  */
-export function expansionFrames(expansion, start, { relation = '=' } = {}) {
+function expansionFrames(expansion, start, { relation = '=' } = {}) {
   if (!expansion) return { frames: [], steps: 0 };
   const frames = [];
   const current = {

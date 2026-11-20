@@ -441,7 +441,7 @@ units). Every such DISPLAY now goes through **`MathLabel`** (`lessons/common/com
 when a string carries a formula, the fallback meanwhile being `mathToPlain`. Where only a STRING fits (`<option>`,
 `title` / `aria-label`, a template literal), use **`mathToPlain(text)`** (`utils/mathPlain.js`, dependency-free):
 each island becomes isolated Unicode (« x ⟼ ax + b », « (f(x₁) − f(x₂))/(x₁ − x₂) »). The kit does the same for a
-STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`, `PredictionChips`).
+STRING prompt, batch-row label or option (`TapQuestion`, `BatchChoiceQuestion`, `ChoiceGrid`).
 Applied in: `LessonIndex`, `ModuleLayout`, `LessonUI`, `KnowledgeBrick`, `KnowledgeSnapshot`, `KnowledgeMap`,
 `LinearKnowledgeView`, `UnitPage`, `UnitGroup`, `LessonCard`, `LessonRow`, the home's `CompassHomeSections`, the progression tree, practice
 hub / summary, the teacher's memo, lessons, learning-points and overview tabs. **Never print a content string with
@@ -523,6 +523,9 @@ the term it just left, which reads as the opposite claim.
 and never mirrors.
 
 While in Arabic prose, prefer the Arabic comma `،` to `,` as a list separator.
+A list of numbers written « 1 ، 2 ، 3 » puts a NO-BREAK space before each comma (`'\u00a0، '`): a list that
+wraps then breaks only after a comma and never starts a line with « ، » (2026-11-19; the rule and where it is applied:
+`GAME_WORLD.md` « A list never starts a line with its comma »).
 
 ### Charts read left to right
 

@@ -23,7 +23,6 @@ for (const vp of [{ width: 1280, height: 800, n: 'd' }, { width: 390, height: 84
   }).map((e) => e.className.toString().slice(0, 40)));
   async function walk(name, prefix = 'data-ml-alg-step') {
     let i = 0;
-    const board = page.locator('[data-ml-alg-board]').first();
     check(await page.locator(`[${prefix}-player]`).count() > 0, `${name}: player shown`);
     await page.screenshot({ path: `${OUT}/${vp.n}-${name}-00.png` });
     for (; i < 40; i++) {

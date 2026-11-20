@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../manipulations/primitives/KidFigure';
 import { SceneBackdrop, Projector, LightBeam, CinemaScreen, ChairRows } from './thalesSceneKit';
 

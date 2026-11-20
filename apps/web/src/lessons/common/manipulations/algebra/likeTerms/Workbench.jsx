@@ -1,4 +1,3 @@
-import React from 'react';
 import { Equal, Repeat } from 'lucide-react';
 import { termTex } from '@smarter-academy/core/arithmetic/polynomials.js';
 import * as B from '@smarter-academy/core/arithmetic/brackets.js';
@@ -99,7 +98,7 @@ function BundleCard({ lab, b, k, u, drag, wobble, movable }) {
   );
 }
 
-export const plainTerm = (c, p) => termTex({ c, p }).replace('^2', '²').replace(/^-/, '−');
+const plainTerm = (c, p) => termTex({ c, p }).replace('^2', '²').replace(/^-/, '−');
 
 function Paren({ right = false }) {
   return (
@@ -145,7 +144,7 @@ function Row({ lab, k, u, drag, wobble, narrow }) {
 }
 
 /** Les deux sorties d'une caisse : « كما هي » et « بعكس إشارتها ». Aucune n'est jugée avant le dépôt. */
-function Exits({ lab, k, drag }) {
+function Exits({ k, drag }) {
   const zone = (id) => {
     const zp = drag.zoneProps(`exit:${id}`);
     return (

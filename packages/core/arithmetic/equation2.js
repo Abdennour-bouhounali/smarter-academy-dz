@@ -16,7 +16,7 @@ import {
 } from './substitution.js';
 
 /** Un nombre (entier JS, texte « 1,5 », rationnel) → rationnel. */
-export const asRat = (v) => (v && typeof v === 'object' && 'n' in v ? rat(v.n, v.d) : typeof v === 'number' ? rat(v) : parseRat(v));
+const asRat = (v) => (v && typeof v === 'object' && 'n' in v ? rat(v.n, v.d) : typeof v === 'number' ? rat(v) : parseRat(v));
 
 const parse = (text) => parseExpression(text, { letters: LETTERS_2AM });
 
@@ -60,7 +60,7 @@ export function sameCount(textA, textB, letter = 'n') {
 /* ── La forme simplifiée ─────────────────────────────────────────────────────────────────────── */
 
 /** Polynôme multivarié : { 'a2b1': { c: rat, e: { a: 2, b: 1 } } } ; la clé est vide pour le terme constant. */
-export function polyOf(tree) {
+function polyOf(tree) {
   const key = (e) => Object.keys(e).sort().filter((k) => e[k] > 0).map((k) => `${k}${e[k]}`).join('');
   const addP = (a, b, k = 1) => {
     const r = { ...a };
@@ -226,7 +226,7 @@ export function formOf(text) {
 const REL_TOKENS = [['<=', '≤'], ['>=', '≥'], ['≤', '≤'], ['≥', '≥'], ['=', '='], ['<', '<'], ['>', '>']];
 const REL_SIGN = { '=': '=', '<': '<', '>': '>', '≤': '≤', '≥': '≥' };
 /** Le signe d'une relation, écrit comme dans le cahier (« ≤ » reste « ≤ »). */
-export const relText = (rel) => REL_SIGN[rel];
+const relText = (rel) => REL_SIGN[rel];
 
 /**
  * Lit « 4000 + 50x < 5000 » (ou =, >, ≤, ≥, aussi « <= » et « >= ») → { left, rel, right, leftText, rightText } : les deux membres sont des arbres de `parseExpression`
@@ -299,4 +299,3 @@ export function identityVerdict(textA, textB, candidates = [0, 1, 2, 3, 4, 5, 10
   return { counterexample: hit };
 }
 
-export { eq as sameValue };

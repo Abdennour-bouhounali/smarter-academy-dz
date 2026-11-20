@@ -20,10 +20,7 @@
  * à l'affichage, jamais pour calculer.
  */
 
-import * as R from '../algebra/rational.js';
 import { gcd, lcm } from './numberTheory.js';
-
-export { gcd, lcm };
 
 /**
  * Une fraction TELLE QUE L'ÉLÈVE L'ÉCRIT : `{n, d}`, d > 0, non réduite.
@@ -73,22 +70,6 @@ export function simplifyFactor(frac) {
 
 export const fracToNumber = (frac) => (frac && frac.d !== 0 ? frac.n / frac.d : NaN);
 
-/** Le rationnel RÉDUIT du مختبر الجبر — le pont vers son moteur exact. */
-export function toRational(frac) {
-  if (!frac) return null;
-  try {
-    return R.makeRational(frac.n, frac.d);
-  } catch {
-    return null;
-  }
-}
-
-/** Le chemin inverse : un rationnel réduit → une fraction brute. */
-export const fromRational = (r) => (r ? { n: r.n, d: r.d } : null);
-
-export const isProper = (frac) => Boolean(frac) && Math.abs(frac.n) < frac.d;
-export const isWhole = (frac) => Boolean(frac) && frac.n % frac.d === 0;
-export const isUnit = (frac) => Boolean(frac) && Math.abs(frac.n) === 1;
 
 /**
  * Une fraction ÉQUIVALENTE, obtenue en multipliant haut et bas par le même

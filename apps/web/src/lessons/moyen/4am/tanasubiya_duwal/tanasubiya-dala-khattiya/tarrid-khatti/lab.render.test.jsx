@@ -1,5 +1,4 @@
 import { it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as proportional from '@smarter-academy/core/arithmetic/proportional.js';
 import '../../../../../../i18n';

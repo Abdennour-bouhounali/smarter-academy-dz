@@ -6,7 +6,11 @@ import {
   getItem, getLesson, homeLessonOf, itemRank,
   reviewLinksForLesson, forwardLinksForLesson, noRebuildForLesson,
   earlierYearReviewFor, lessonCodeOfLearningPoint,
+  WEIGHTS, WEIGHTED_GRADES, weightOf, corePrerequisitesOf, coreDependentsOf, toolsForLesson, linksInto,
 } from './learningNet.js';
+import lessons1am from '../lessons_1am_2026_2027.json';
+import lessons2am from '../lessons_2am_2026_2027.json';
+import lessons3am from '../lessons_3am_2026_2027.json';
 
 /**
  * Le RÉSEAU DES الكفاءات (docs/architecture/LEARNING_NET.md).
@@ -223,5 +227,122 @@ describe('résolveur — navigation', () => {
     // 1AM n'a pas d'année antérieure dans le cycle.
     expect(earlierYearReviewFor({ lessonCode: LESSONS.find((l) => l.grade === '1am').code })).toEqual([]);
     expect(earlierYearReviewFor({})).toEqual([]);
+  });
+});
+
+/**
+ * LE POIDS DES LIENS (2026-11-17) et la COHÉRENCE avec les deux autres graphes de prérequis du catalogue.
+ * Ce que ces tests protègent :
+ *  - une année classée l'est entièrement, et un lien « support » dit pourquoi ;
+ *  - chaque كفاءة d'une année classée repose sur au moins UN lien « core » (sinon rien ne peut être nommé comme cause) ;
+ *  - ce que les leçons déclarent (`prerequisiteLessonCodes`, `pointPrerequisites`) ne CONTREDIT jamais le réseau : toute
+ *    paire de leçons liée là-bas l'est aussi ici, sauf une liste FERMÉE d'écarts connus, chacun avec sa raison.
+ */
+describe('poids des liens — core / support', () => {
+  it('classe TOUS les liens entrants des années classées, et seulement avec les deux poids', () => {
+    // une année classée = ses items ET les items d'une autre année que ses leçons enseignent (leçon de rappel : muadala-ula → 3am.m5.r06)
+    const taught = new Set(LESSONS.filter((l) => WEIGHTED_GRADES.includes(l.grade)).flatMap((l) => l.programmeItems));
+    expect([...taught].filter((id) => !WEIGHTED_GRADES.includes(gradeOf(id)))).toEqual(['3am.m5.r06']);
+    for (const link of LINKS) {
+      if (WEIGHTED_GRADES.includes(gradeOf(link.to)) || taught.has(link.to)) expect(WEIGHTS, `${link.from} → ${link.to} n’est pas classé`).toContain(weightOf(link));
+      if (link.weight !== undefined) expect(WEIGHTS).toContain(link.weight);
+      if (link.weight === 'support') expect((link.weightNote ?? '').length, `${link.from} → ${link.to} : un lien support dit pourquoi`).toBeGreaterThan(20);
+      if (link.weight === 'core') expect(link.weightNote).toBeUndefined();
+    }
+    const into4 = LINKS.filter((k) => gradeOf(k.to) === '4am');
+    expect(into4.length).toBe(120);
+    expect(into4.filter((k) => k.weight === 'core').length).toBe(84); // + 2am.m1.r04 → 4am.m1.r02 (2026-11-18)
+  });
+
+  it('donne à chaque كفاءة d’une année classée au moins un prérequis « core »', () => {
+    for (const item of ITEMS.filter((i) => WEIGHTED_GRADES.includes(i.grade))) {
+      expect(corePrerequisitesOf(item.id).length, `${item.id} n’a aucun prérequis core`).toBeGreaterThanOrEqual(1);
+    }
+    expect(corePrerequisitesOf('4am.m1.r01')).toEqual(['1am.m3.r01']); // la division, pas les règles de divisibilité
+    expect(coreDependentsOf('4am.m1.r03')).toEqual(['4am.m1.r04', '4am.m1.r05']);
+    expect(coreDependentsOf('1am.m3.r02').filter((id) => id.startsWith('4am'))).toEqual([]); // un lien support ne porte aucune déduction
+  });
+
+  it('ordonne les outils d’une leçon : core d’abord, l’année la plus récente d’abord, quatre au plus', () => {
+    expect(toolsForLesson('qasim-adad-tabii').map((t) => [t.id, t.weight, t.lesson.code])).toEqual([
+      ['1am.m3.r01', 'core', 'qisma-iqlidiya-baqi'], ['1am.m3.r02', 'support', 'qawaid-qabiliyat-qisma'],
+    ]);
+    // « قواسم عدد طبيعي » and « خواص قواسم » share 4am.m1.r02: the divisor (4AM) first, then the Euclidean division (2AM)
+    for (const code of ['qawasim-adad-tabii', 'khawass-qawasim'])
+      expect(toolsForLesson(code).map((t) => [t.id, t.weight, t.lesson.code])).toEqual([
+        ['4am.m1.r01', 'core', 'qasim-adad-tabii'], ['2am.m1.r04', 'core', 'qisma-iqlidiya-hasr'],
+      ]);
+    expect(toolsForLesson('jidaa-maadum').map((t) => [t.id, t.weight])).toEqual([['4am.m3.r02', 'core'], ['3am.m5.r06', 'core']]);
+    const sections = toolsForLesson('maqati-mustawiya'); // six prérequis : les quatre « core » passent, les deux « support » restent dehors
+    expect(sections).toHaveLength(4); expect(sections.every((t) => t.weight === 'core')).toBe(true);
+    expect(toolsForLesson('maqati-mustawiya', { max: 9 }).map((t) => t.weight)).toEqual(['core', 'core', 'core', 'core', 'support', 'support']);
+    for (const lesson of LESSONS.filter((l) => l.grade === '4am' && l.kind !== 'synthesis')) {
+      const tools = toolsForLesson(lesson.code); const all = reviewLinksForLesson(lesson.code).flatMap((g) => g.items);
+      expect(tools.length, lesson.code).toBeGreaterThanOrEqual(1); expect(tools.length).toBeLessThanOrEqual(4);
+      if (all.some((i) => i.weight === 'core')) expect(tools[0].weight, `${lesson.code} : le premier outil est core`).toBe('core');
+      for (const t of tools) expect(t.lesson, `${t.id} a une leçon d’accueil`).toBeTruthy();
+    }
+    expect(toolsForLesson('inconnue')).toEqual([]);
+    // a tool is an EARLIER الكفاءة: 2am.m1.r06, which the lesson of order 5 shares, requires 2am.m1.r05 (home « الكسر: نسبة
+    // وحاصل قسمة », order 6; the link goes from r05 to r06) — r05 is a review link of lesson 5, never one of its tools
+    expect(reviewLinksForLesson('qisma-iqlidiya-hasr').flatMap((g) => g.items.map((i) => i.id))).toContain('2am.m1.r05');
+    expect(toolsForLesson('qisma-iqlidiya-hasr').map((t) => [t.id, t.lesson.code])).toEqual([
+      ['1am.m3.r01', 'qisma-iqlidiya-baqi'],
+    ]);
+    for (const lesson of LESSONS.filter((l) => l.kind !== 'synthesis'))
+      for (const t of toolsForLesson(lesson.code, { max: 9 }))
+        if (t.lesson)
+          expect(LESSONS.findIndex((l) => l.code === t.lesson.code), `${lesson.code} ← ${t.id}`).toBeLessThan(
+            LESSONS.findIndex((l) => l.code === lesson.code),
+          );
+  });
+
+  it('garde le poids le plus fort quand un item est atteint par deux liens', () => {
+    for (const lesson of LESSONS.filter((l) => l.grade === '4am' && l.kind !== 'synthesis')) {
+      for (const item of reviewLinksForLesson(lesson.code).flatMap((g) => g.items)) {
+        const weights = lesson.programmeItems.flatMap((own) => linksInto(own)).filter((k) => k.from === item.id).map((k) => k.weight);
+        expect(item.weight, `${lesson.code} ← ${item.id}`).toBe(weights.includes('core') ? 'core' : 'support');
+      }
+    }
+  });
+});
+
+describe('cohérence — le catalogue ne contredit pas le réseau', () => {
+  const catalogue = [lessons1am, lessons2am, lessons3am, lessons4am].flatMap((f) => f.lessons);
+  const byCode = new Map(catalogue.map((l) => [l.code, l]));
+  const ancestors = (ids) => { const seen = new Set(ids); const todo = [...ids]; while (todo.length) for (const k of linksInto(todo.pop())) if (!seen.has(k.from)) { seen.add(k.from); todo.push(k.from); } return seen; };
+  /** La leçon `a` déclare avoir besoin de `b` : le réseau le dit-il aussi (un item de b est un ancêtre d'un item de a, ou ils partagent un item) ? */
+  const explained = (a, b) => {
+    const ia = byCode.get(a).programmeItems ?? []; const ib = byCode.get(b).programmeItems ?? [];
+    if (!ia.length || !ib.length) return true; // une leçon sans item du programme ne peut pas être jugée ici
+    const up = ancestors(ia); return ib.some((id) => up.has(id));
+  };
+  /**
+   * Les écarts CONNUS (2026-11-17), chacun avec sa raison. La liste est fermée : un nouvel écart fait échouer le test,
+   * et un écart résolu doit en sortir. Quatre FAUX prérequis « suite du manuel » (la sphère après les polygones réguliers…)
+   * ont été retirés du catalogue ce jour-là sur décision du propriétaire, et remplacés par les leçons des prérequis « core »
+   * du réseau (`docs/architecture/LEARNING_NET.md` §8bis).
+   */
+  const KNOWN = {
+    'mafhum-dawaran<insihab-shuaa': 'analogie entre transformations, pas un besoin (le réseau porte l’analogie par 3am.m6.r03 → 4am.m6.r02, support)',
+    'zawiya-muhitiya<mafhum-dawaran': 'analogie (angle au centre / angle de la rotation), pas un besoin',
+    'tahlil-ibara<mutatabiqat-shahira': 'grain : l’item 4am.m3.r02 couvre le développement (avant les identités) ET la factorisation (après)',
+    'tarrid-taalufi<mafhum-taalufiya': 'grain : les items 4am.m5.r12–r13 sont partagés par la leçon linéaire (avant) et la leçon affine (après)',
+    'tarrid-taalufi<tamthil-bayani-taalufi': 'grain : mêmes items partagés',
+    'muadala-ula<nashr-tabsit': 'leçon de rappel : elle porte un item de 3AM, un lien 4AM → 3AM remonterait le temps',
+    'muqarana-kasrayn<jam-tarh-kusur': '2AM, à revoir avec le classement de cette année : le réseau dit l’inverse (2am.m1.r08 → 2am.m1.r09)',
+  };
+
+  it('explique chaque paire de leçons liée dans le catalogue, sauf la liste fermée des écarts connus', () => {
+    const pairs = new Set();
+    for (const lesson of catalogue) {
+      if (lesson.kind === 'synthesis') continue;
+      for (const b of lesson.prerequisiteLessonCodes ?? []) pairs.add(`${lesson.code}<${b}`);
+      for (const list of Object.values(lesson.pointPrerequisites ?? {})) for (const lp of list) { const b = lessonCodeOfLearningPoint(lp); if (b && b !== lesson.code) pairs.add(`${lesson.code}<${b}`); }
+    }
+    expect(pairs.size).toBeGreaterThan(350);
+    const gaps = [...pairs].filter((p) => { const [a, b] = p.split('<'); return byCode.has(a) && byCode.has(b) && !explained(a, b); }).sort();
+    expect(gaps).toEqual(Object.keys(KNOWN).sort());
+    for (const reason of Object.values(KNOWN)) expect(reason.length).toBeGreaterThan(10);
   });
 });

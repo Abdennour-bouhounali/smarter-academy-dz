@@ -20,7 +20,7 @@ const TEN = 10n;
 
 const absBig = (x) => (x < ZERO ? -x : x);
 
-export function gcdBig(a, b) {
+function gcdBig(a, b) {
   let x = absBig(a);
   let y = absBig(b);
   while (y !== ZERO) [x, y] = [y, x % y];
@@ -40,7 +40,7 @@ export function rat(n, d = ONE) {
 }
 
 export const isInteger = (r) => r.d === ONE;
-export const isZero = (r) => r.n === ZERO;
+const isZero = (r) => r.n === ZERO;
 export const isNegative = (r) => r.n < ZERO;
 export const neg = (r) => ({ n: -r.n, d: r.d });
 export const add = (a, b) => rat(a.n * b.d + b.n * a.d, a.d * b.d);

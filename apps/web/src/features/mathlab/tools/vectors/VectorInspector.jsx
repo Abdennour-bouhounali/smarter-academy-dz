@@ -215,7 +215,7 @@ function SlopeReading({ slope }) {
  * renversement, étirement, شعاع nul — sont annoncés en toutes lettres
  * sous le curseur, pour que ce que l'œil voit ait un nom.
  */
-export function ScalarSlider({ value, name, baseName = 'u', onChange }) {
+function ScalarSlider({ value, name, baseName = 'u', onChange }) {
   const { t } = useTranslation('mathlab');
   const k = Number.isFinite(value) ? value : 1;
   const state = Math.abs(k) < 1e-9 ? 'zero' : k < 0 ? 'reversed' : Math.abs(k) > 1 ? 'longer' : Math.abs(k) < 1 ? 'shorter' : 'same';

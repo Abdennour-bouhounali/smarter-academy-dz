@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, XCircle, Sparkles, ChevronLeft, FlaskConical, Undo2, Plus, Check } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -292,7 +292,6 @@ function Lab({ lab, setLab, k, width, screenH, overhead, glanceRef, bodyHRef, le
   const stageW = wide ? width - SIDE_W - 12 : width;
   const iw = stageW - 24;
   const done = L.taskDone(lab);
-  const ready = L.discoveryReady(lab);
 
   // le budget de hauteur : ce que l'écran laisse à la scène (zones du plateau, ou deux bandes de chiffres)
   const bodyH = Math.round(Math.max(machine ? 100 : 130, Math.min(machine ? 176 : 236, screenH - overhead - 40)));
@@ -512,7 +511,7 @@ function SlipBlock({ a, lay, ranks, written, release, k, changed = null, onRemov
 
 /* ══════════════ Monde « machine » : l'entrée, la machine, la sortie ══════════════ */
 
-function MachineStage({ lab, a, setLab, k, iw, bodyH, ranks, written, release, uid }) {
+function MachineStage({ lab, a, setLab, k, iw, bodyH, ranks, written, release }) {
   const task = lab.tasks[lab.ti];
   const core = a.core;
   const inPoint = a.startPoint;

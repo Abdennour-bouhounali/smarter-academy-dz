@@ -1,4 +1,3 @@
-import React from 'react';
 import { BossFinal } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
 import MathText from '../../../../../../common/components/MathText';
@@ -44,7 +43,7 @@ export default function Module08Itqan() {
         },
         {
           id: 'E2', skill: 'muqarana', requires: ['ikhtiyar-tariqa'],
-          prompt: <Q source={PLATFORM}><MathText>{'$\\frac{5}{7}\;\\square\;\\frac{7}{10}$'}</MathText></Q>,
+          prompt: <Q source={PLATFORM}><MathText>{'$\\frac{5}{7}\\;\\square\\;\\frac{7}{10}$'}</MathText></Q>,
           options: ['$>$', '$<$', '$=$'], correct: 0, cols: 3,
           explain: <MathText>{'$5\\times10=50$ و $7\\times7=49$ ، و $50>49$ ، فـ $\\frac{5}{7}>\\frac{7}{10}$ . (بالمقام $70$ : $\\frac{50}{70}>\\frac{49}{70}$ .)'}</MathText>,
           assessment: { enabled: true, type: 'assessment', learningPointIds: ['3am_tasawi-muqaranat-kasrayn_P3'] },

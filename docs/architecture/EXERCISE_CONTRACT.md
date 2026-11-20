@@ -1496,3 +1496,28 @@ counters), `notebookAvailability.test.js`, `pageFrame.test.js` (`--flush`);
 browser: `e2e/lesson-kit/practice-progress.mjs` § 3bis, § 6 (history on
 `wadiya-idmajiya-aadad`, «الدنّان») and § 7 (the Learning Point module equals
 the server's overview row).
+
+
+## « مدرّب الامتحان » — the exam coach of an exam sheet (PILOT, 2026-11-15)
+
+**Status: pilot on the lessons whose pack has `coach` (`lesson.pack.js`, `LESSON_V2.md` §1 — today: `qasim-adad-tabii`; the
+list `content/practice/exam-coach.json` was deleted on 2026-11-17). Not a rollout rule.**
+The sheet, its steps, its timer and the server's grading are unchanged; the coach changes what surrounds them
+(`features/practice/exam/examCoach.js`, `ExamCoach.jsx`, four small edits in `PracticeSession.jsx`):
+
+- **« قاعة الامتحان »** stands before the sheet: phone away, paper and pen out, silence, the clock — and « أبدأ الامتحان » waits for
+  a mode and for « ورقتي وقلمي أمامي ». On a coached sheet the medal jingle is silent, and a strip above the answer keeps
+  « وضع الامتحان · بلا موسيقى · حلّ على ورقتك أوّلًا ».
+- **Two modes, chosen by the student and changeable at any time** (saved per student):
+  - `guide` « أرشدني فقط » — the answer is NEVER shown: after a mistake, three nudges one by one (re-read what is asked, the rule,
+    the trap), and « أعد المحاولة » is offered even on an exam sheet. A test checks on the 172 questions of the bank that no line of
+    the solution appears in this mode.
+  - `explain` « اشرح لي الحلّ » — the solution is told as a lesson, one step per tap: what is asked, the rule used, each written
+    line, the result, the trap, the exam tip, then « rewrite it in your notebook without looking ». Once it is shown there is no
+    retry (retyping a visible answer proves nothing — the existing rule).
+- **« دفتر أخطائي »** — after ANY mistake, in both modes: « خذ كرّاسك واكتب خطأك، حتّى لا تكرّره », with the lines to copy on paper
+  (the question, « خطئي » in the student's own words, what to remember; the right answer only in explain mode).
+- **The rule reminded is the lesson's own** (`loadRule`: the memo sheet of `knowledge.jsx`, by the question's primary learning
+  point) — never retyped. A lesson joins the pilot by being listed AND by having its entry in `KNOWLEDGE` (examCoach.js).
+- Check (needs the local API and a student token): `node apps/web/e2e/practice-exam-coach.mjs <outDir> <token file>`.
+  Unit: `examCoach.test.js`. The practice page is a paper sheet and scrolls like one; the no-scroll rule is the game world's.

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { parseDec } from '@smarter-academy/core';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -41,7 +41,7 @@ function SignThenProduct({ id, tex, plus, expected, display, why, onDone, requir
 
 export default function Module03Tariqa() {
   const [q, setQ] = useState({});
-  const [read, setRead] = useState(false);
+  const [, setRead] = useState(false);
   const done = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   return (
     <ContentModule

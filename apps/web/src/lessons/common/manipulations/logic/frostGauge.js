@@ -13,11 +13,11 @@
  */
 import * as G from '@smarter-academy/core/arithmetic/signedGauge.js';
 
-export const SCENES = Object.freeze(['frost', 'altitude', 'floors']);
-export const KINDS = Object.freeze(['set', 'mirror', 'pair']);
+const SCENES = Object.freeze(['frost', 'altitude', 'floors']);
+const KINDS = Object.freeze(['set', 'mirror', 'pair']);
 
-export const FREE_GAUGE = G.gauge({ step: 1, min: -10, max: 10 });
-export const FREE_LIMIT = 10;
+const FREE_GAUGE = G.gauge({ step: 1, min: -10, max: 10 });
+const FREE_LIMIT = 10;
 
 const bad = (m) => { throw new Error(`frost-gauge : ${m}`); };
 

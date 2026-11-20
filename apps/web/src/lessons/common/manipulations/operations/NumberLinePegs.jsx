@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Sparkles, Wind, FlaskConical, Undo2, RotateCcw, ChevronLeft, Plus, Hand } from 'lucide-react';
-import { ratText, sub, sign } from '@smarter-academy/core/arithmetic/powers.js';
+import { sub, sign } from '@smarter-academy/core/arithmetic/powers.js';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import MathText from '../../components/MathText';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -19,7 +19,7 @@ import { playSfx } from '../../utils/playEffect';
 import { LEVELS } from '../levels';
 import * as L from '../logic/numberLinePegs';
 import RopeScene, { CSS as SCENE_CSS } from './numberLinePegs/RopeScene';
-import { W, SVG_H, ROPE_Y, CARD_W, CARD_H, CHIP_H, ROW_PITCH, STACK_DX, STACK_DY, xOfValue, valueOfX, unitPx, layoutCards } from './numberLinePegs/pegArt';
+import { W, SVG_H, ROPE_Y, CARD_W, CARD_H, CHIP_H, ROW_PITCH, STACK_DX, xOfValue, valueOfX, unitPx, layoutCards } from './numberLinePegs/pegArt';
 
 /**
  * number-line-pegs — LA POSITION D'UNE ÉCRITURE SOUS LA MAIN : « حبل الأعداد » (3AM, unité 2 « العمليات على الكسور والأعداد الناطقة », درس « العدد الناطق », 2026-10-26).
@@ -356,7 +356,6 @@ function Lab({ lab, setLab, k, width, screenH, lead, cp }) {
   const stackBadges = stacks.map((ids) => {
     const first = L.cardOf(lab, ids[0]);
     const px = xPx(L.trueUnits(first)) + (ids.length - 1) * STACK_DX;
-    const row = place[ids[0]]?.row ?? 0;
     return (
       <span key={ids.join('-')} data-npp-stack data-count={ids.length} className="npp-pop absolute z-20 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-amber-400 bg-amber-50 px-2 text-[11.5px] font-black text-amber-950 shadow"
         style={{ left: px, top: ROPE_Y * scale - 40, minHeight: 20 }}>
@@ -605,7 +604,7 @@ export function discoveryOptions(k) {
   ];
 }
 
-export function Formal({ lab, k }) {
+export function Formal({ k }) {
   return (
     <div className="space-y-2 text-sm font-bold text-indigo-950" data-npp-formal>
       <p><MathText>{k('formal.rational')}</MathText></p>

@@ -39,7 +39,7 @@ export default function SessionProgress({
 
   const segmentClass = (i) => {
     if (i < questionIndex) return TONE_STYLE[questionTones[i] ?? 'correct'].segment;
-    if (i === questionIndex) return currentTone ? TONE_STYLE[currentTone].segment : 'bg-indigo-600';
+    if (i === questionIndex) return currentTone ? TONE_STYLE[currentTone].segment : 'bg-nav-accent';
 
     return 'bg-indigo-100';
   };

@@ -19,9 +19,9 @@ export function Q(n, d = 1) {
   const g = gcd(n, d);
   return Object.freeze({ n: (s * n) / g, d: (s * d) / g });
 }
-export const add = (x, y) => Q(x.n * y.d + y.n * x.d, x.d * y.d);
-export const sub = (x, y) => Q(x.n * y.d - y.n * x.d, x.d * y.d);
-export const mul = (x, y) => Q(x.n * y.n, x.d * y.d);
+const add = (x, y) => Q(x.n * y.d + y.n * x.d, x.d * y.d);
+const sub = (x, y) => Q(x.n * y.d - y.n * x.d, x.d * y.d);
+const mul = (x, y) => Q(x.n * y.n, x.d * y.d);
 export const eq = (x, y) => x.n === y.n && x.d === y.d;
 
 /** « 12 », « 2,5 », « 2.5 » (et les chiffres arabes) → rationnel ; `null` si illisible. */
@@ -203,7 +203,3 @@ export function compare(left, right, env) {
   return { l, r, eq: eq(l, r) };
 }
 
-/** La règle imprimée en TeX (sans espace insécable) pour une explication : « 5\times n+20 ». */
-export function tex(tree) {
-  return printed(tree).map((t) => (t.k === 'op' ? (t.v === '×' ? '\\times ' : t.v === '−' ? '-' : '+') : t.v.replace(',', '{,}'))).join('');
-}

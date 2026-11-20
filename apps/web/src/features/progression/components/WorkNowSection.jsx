@@ -60,7 +60,7 @@ export default function WorkNowSection({ items, total, nextStep, unassessedCount
                   </dl>
                   <Link
                     to={lesson.lesson.path}
-                    className="mt-auto min-h-[44px] px-4 rounded-xl bg-slate-900 text-white text-sm font-bold inline-flex items-center justify-center gap-1.5 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 self-start"
+                    className="mt-auto min-h-[44px] px-4 rounded-xl bg-nav-accent text-white text-sm font-bold inline-flex items-center justify-center gap-1.5 hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent self-start"
                     aria-label={`${t('progression.workNow.cta')}: ${mathToPlain(lesson.lesson.title)}`}
                   >
                     {t('progression.workNow.cta')} <ArrowForward size={15} aria-hidden="true" />
@@ -75,7 +75,7 @@ export default function WorkNowSection({ items, total, nextStep, unassessedCount
               <button
                 type="button"
                 onClick={onShowAll}
-                className="min-h-[36px] px-3 rounded-lg border border-slate-200 bg-white text-xs font-mono-jetbrains font-bold text-blue-700 hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                className="min-h-[36px] px-3 rounded-lg border border-slate-200 bg-white text-xs font-mono-jetbrains font-bold text-nav-accent hover:border-blue-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
                 data-work-now-show-all
               >
                 {t('progression.workNow.showAll')}

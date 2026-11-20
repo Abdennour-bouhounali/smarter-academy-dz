@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Le مخطط بالأعمدة du نشاط 3 (p. 93), DESSINÉ en SVG (jamais une image) : une barre par valeur, hauteur = effectif,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getLessonPath } from '@smarter-academy/core';
 import { ContentModule, KnowledgeBrick, BatchChoiceQuestion } from '../../../../../../common/kit';

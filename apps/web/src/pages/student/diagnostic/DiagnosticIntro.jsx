@@ -31,7 +31,7 @@ export default function DiagnosticIntro() {
         <div className="glass-card p-7 sm:p-9 text-center">
           <div
             className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white mb-5"
-            style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            style={{ background: '#3B5BDB' }}
           >
             <Brain size={28} />
           </div>
@@ -64,7 +64,7 @@ export default function DiagnosticIntro() {
             onClick={() => navigate(isCompleted ? '/espace/diagnostic/resultat' : '/espace/diagnostic/run')}
             disabled={loading}
             className="w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-space font-bold text-white shadow-lg transition-all hover:-translate-y-0.5 disabled:opacity-60"
-            style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+            style={{ background: '#3B5BDB' }}
           >
             {loading
               ? t('diagnostic.loadingCta')

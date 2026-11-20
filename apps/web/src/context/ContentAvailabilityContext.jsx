@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { AuthContext } from './AuthContext';
 import { fetchClosedContent } from '../services/contentAvailabilityService';
 
@@ -55,7 +55,7 @@ function readClosed(result) {
  * pendant que l'élève a la page ouverte doit l'atteindre sans rechargement
  * complet, mais sans transformer chaque changement d'onglet en requête.
  */
-export const AVAILABILITY_REFRESH_MIN_MS = 30_000;
+const AVAILABILITY_REFRESH_MIN_MS = 30_000;
 
 export function ContentAvailabilityProvider({ children }) {
   const { token } = useContext(AuthContext);

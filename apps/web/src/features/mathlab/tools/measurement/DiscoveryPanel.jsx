@@ -157,7 +157,7 @@ export default function DiscoveryPanel({
         <div className="sa-ml-ms__unseen">
           <h4 className="sa-ml-ms__evidenceTitle">{t('tools.measurement.test.unseenHeading')}</h4>
           <ul className="sa-ml-ms__unseenList" dir="ltr">
-            {record.tests.slice(-3).map((row, index) => {
+            {record.tests.slice(-3).map((row) => {
               const result = evidence.testCheck.results.find((entry) => entry.id === row.id);
 
               return (

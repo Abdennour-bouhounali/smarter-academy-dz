@@ -24,14 +24,14 @@
  * not close the tape. A STATEMENT figure must close: `validateArcTape` refuses one whose numbers do not add up.
  */
 
-export const TAPE_KEYS = Object.freeze(['kind', 'parts', 'whole', 'ariaLabel', 'caption', 'maxWidth', 'inline']);
-export const TAPE_TONES = Object.freeze(['amber', 'emerald', 'sky', 'violet', 'indigo', 'rose', 'slate']);
+const TAPE_KEYS = Object.freeze(['kind', 'parts', 'whole', 'ariaLabel', 'caption', 'maxWidth', 'inline']);
+const TAPE_TONES = Object.freeze(['amber', 'emerald', 'sky', 'violet', 'indigo', 'rose', 'slate']);
 const PART_TONES = ['amber', 'emerald', 'sky', 'violet'];
 export const MIN_PART = 0.16;
 const ARABIC = /[؀-ۿ]/;
 
 /** A value given as a number or a decimal-comma string ('24,3'), or null when absent / unreadable. */
-export function tapeValue(v) {
+function tapeValue(v) {
   if (v == null || v === '') return null;
   if (typeof v === 'number') return Number.isFinite(v) ? v : null;
   const n = Number(String(v).trim().replace(/\s/g, '').replace(',', '.'));

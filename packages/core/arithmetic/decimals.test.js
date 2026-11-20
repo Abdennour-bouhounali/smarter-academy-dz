@@ -278,7 +278,6 @@ describe('decimals — the graduated ruler (ruler-compare)', () => {
 });
 
 describe('decimals — approximations, rounding, rounding interval, calculator quotients (hasr-adad-ushri)', () => {
-  const t = (x, k) => formatTrim(x) + (k === undefined ? '' : '');
   it('known values', () => {
     expect(format(roundAt(parse('1,25'), 1))).toBe('1,3');
     expect(format(roundAt(parse('9,8462'), 1))).toBe('9,8');

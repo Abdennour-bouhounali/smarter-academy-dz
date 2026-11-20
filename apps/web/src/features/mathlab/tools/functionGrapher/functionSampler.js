@@ -24,10 +24,10 @@
  * peut pas être représentée fidèlement — limitation assumée et documentée.
  */
 
-export const SAMPLES_PER_PIXEL = 1.5;
-export const MIN_SAMPLES = 64;
-export const MAX_SAMPLES = 4000;
-export const PROBE_DEPTH = 4;
+const SAMPLES_PER_PIXEL = 1.5;
+const MIN_SAMPLES = 64;
+const MAX_SAMPLES = 4000;
+const PROBE_DEPTH = 4;
 export const CLAMP_FACTOR = 2;
 const EDGE_BISECTIONS = 14;
 

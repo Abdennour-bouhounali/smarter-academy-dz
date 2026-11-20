@@ -1,12 +1,21 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import ProblemIllustration from './ProblemIllustration';
 import { validateIllustration, ILLUSTRATION_KINDS } from './problemIllustration';
-import { PROBLEMS } from '../../moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/content/problems';
+
+// Six situations of the six FIGURE kinds, written for this test (2026-11-20: the lesson whose problems were the fixtures
+// is a v2 lesson, its old pages are deleted). The drawing shows the statement's numbers and never the answer.
+const PROBLEMS = [
+  { id: 'wadiya-1', statement: 'في مكتبة 1512 كرّاسًا و 840 كتابًا تُوزَّع في رزم متماثلة.', illustration: { kind: 'books', notebooks: 1512, books: 840, ariaLabel: 'كراريس وكتب' } },
+  { id: 'wadiya-2', statement: 'عند بائع 154 زهرة بيضاء و 126 زهرة حمراء يصنع منها باقات متماثلة.', illustration: { kind: 'bouquets', white: 154, red: 126, ariaLabel: 'أزهار بيضاء وحمراء' } },
+  { id: 'wadiya-3', statement: 'حقل مستطيل طوله 468 م وعرضه 156 م يُحاط بأعمدة.', illustration: { kind: 'field', length: 468, width: 156, unit: 'م', ariaLabel: 'حقل مستطيل' } },
+  { id: 'wadiya-4', statement: 'أرض مثلّثة أضلاعها 168 م و 126 م و 84 م تُغرس أشجارًا.', illustration: { kind: 'orchard', sides: [168, 126, 84], unit: 'م', ariaLabel: 'أرض مثلّثة' } },
+  { id: 'wadiya-5', statement: 'صفيحة زجاجية طولها 240 سم وعرضها 150 سم تُقطَّع مربّعات.', illustration: { kind: 'glass', length: 240, width: 150, unit: 'سم', ariaLabel: 'صفيحة زجاجية' } },
+  { id: 'wadiya-6', statement: 'قاعة طولها 720 سم وعرضها 480 سم تُبلَّط ببلاطات مربّعة.', illustration: { kind: 'hall', length: 720, width: 480, unit: 'سم', ariaLabel: 'قاعة تُبلَّط' } },
+];
 
 describe('ProblemIllustration — le dessin de la situation', () => {
-  it('chaque وضعية de أدمج تعلّماتي a son illustration, d\'un genre différent, valide', () => {
+  it('each of the six figure kinds has a valid illustration', () => {
     expect(PROBLEMS.map((p) => p.illustration.kind)).toEqual(['books', 'bouquets', 'field', 'orchard', 'glass', 'hall']);
     for (const p of PROBLEMS) expect(validateIllustration(p.illustration), p.id).toEqual([]);
     expect(new Set(PROBLEMS.map((p) => p.illustration.kind)).size).toBe(6);

@@ -27,12 +27,10 @@
  *     s = carry(tie(s, 1, 10), 2); s = carry(tie(s, 2, 10), 3);   // 1000 — taskDone(s) === true, 3 paquets
  */
 import {
-  digitsByRank, countOfRank, valueOfCounts, isWritable, decompose, spaced, toArabicWords,
+  digitsByRank, countOfRank, valueOfCounts, isWritable, decompose, spaced,
 } from '@smarter-academy/core/arithmetic/placeValue.js';
 
-export const WORLDS = Object.freeze(['pencils', 'tokens', 'money']);
-export const TASKS = Object.freeze(['pack', 'unpack', 'next', 'previous', 'borrow', 'dictation']);
-export const REFUSALS = Object.freeze(['short-pack', 'wrong-column', 'overflow', 'no-unit', 'wrong-board']);
+const TASKS = Object.freeze(['pack', 'unpack', 'next', 'previous', 'borrow', 'dictation']);
 
 /** Le nombre de colonnes d'un monde : 4 (crayons, argent : 1000 … 1) ou 7 (jetons : la classe des millions). */
 export const columnsOf = (world) => (world === 'tokens' ? 7 : 4);
@@ -47,7 +45,7 @@ const GESTURES = Object.freeze({
   dictation: ['tie', 'add', 'remove'],
 });
 /** Une colonne de la dictée ne monte pas au-delà (± ne sert qu'à poser un chiffre ; 10 et plus restent possibles). */
-export const MAX_ADD = 19;
+const MAX_ADD = 19;
 /** Les tâches dont le premier geste est une PRÉDICTION (une carte choisie, jugée par le tableau à la fin). */
 const PREDICTED = Object.freeze(['pack', 'unpack']);
 
@@ -306,7 +304,6 @@ export function digitCountPairs(n) {
 /** Les chiffres non nuls d'un nombre, sans ses zéros : 7065 → 765 (la conjecture « le zéro ne vaut rien »). */
 export const withoutZeros = (n) => Number(String(n).replace(/0/g, '') || '0');
 export const zeroCount = (n) => (String(n).match(/0/g) ?? []).length;
-export const wordsOf = (n) => toArabicWords(n);
 
 /* ── Géométrie d'une colonne (px), pure et testée ────────────────────────────────────────────────────────── */
 
@@ -318,7 +315,7 @@ export function aspectOf(world, rank) {
 }
 
 /** Au-delà, une colonne dessine `MAX_SHOWN` objets et sa pastille dit le compte exact. */
-export const MAX_SHOWN = 60;
+const MAX_SHOWN = 60;
 
 /**
  * Les places des objets d'une colonne de `width` × `height` : empilés depuis le BAS, en rangées centrées, chacun une

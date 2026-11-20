@@ -59,7 +59,7 @@ function lessonPassesActivity(node, view) {
   return true;
 }
 
-export function isViewActive(view) {
+function isViewActive(view) {
   return Boolean(
     normalizeText(view.query)
     || view.filter !== 'all'

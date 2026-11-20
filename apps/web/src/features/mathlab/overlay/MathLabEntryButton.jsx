@@ -71,7 +71,7 @@ export default function MathLabEntryButton({ className = '', scope = null }) {
           36 px de visuel. Le mot apparaît à partir de `sm` — sur un
           téléphone la barre n'a pas la place, et l'étiquette accessible
           porte alors seule le sens. */}
-      <span className="flex h-9 items-center gap-1.5 rounded-full border border-blue-200 bg-white px-2.5 font-mono text-xs font-bold text-blue-600 shadow-sm transition-colors group-hover:border-blue-300 group-hover:bg-blue-50 group-hover:text-blue-700 group-focus-visible:ring-2 group-focus-visible:ring-blue-400 sm:px-3">
+      <span className="flex h-9 items-center gap-1.5 rounded-full border border-blue-200 bg-white px-2.5 font-mono text-xs font-bold text-nav-accent shadow-sm transition-colors group-hover:border-blue-300 group-hover:bg-nav-accent-soft group-hover:text-nav-accent group-focus-visible:ring-2 group-focus-visible:ring-blue-400 sm:px-3">
         <FlaskConical size={14} aria-hidden="true" />
         <span className="hidden sm:inline">{t('mathLabEntry.openLabShort')}</span>
       </span>

@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as D from '@smarter-academy/core/arithmetic/decimals.js';
 import { blocksOf } from '../logic/decimalComma';

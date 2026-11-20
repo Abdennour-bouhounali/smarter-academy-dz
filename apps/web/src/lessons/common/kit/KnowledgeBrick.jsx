@@ -56,7 +56,7 @@ import { usePredictGate, PredictPanel, PredictionEcho } from './PredictRule';
  */
 export default function KnowledgeBrick({
   id,
-  establishes,          // lu par scripts/audit-knowledge-dependencies.mjs
+  // establishes : lu par scripts/audit-knowledge-dependencies.mjs
   variant = 'new',
   lead,
   unlock = true,

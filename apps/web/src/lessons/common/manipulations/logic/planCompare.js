@@ -28,10 +28,10 @@ const { frac, parseNumber, add, sub, mul, div, cmp, eq, isZero, isInteger, toNum
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(String(v)));
 
 export const THEMES = Object.freeze(['stadium', 'gaming', 'rental']);
-export const MODES = Object.freeze(['model', 'compare']);
-export const PLAN_IDS = Object.freeze(['A', 'B', 'C']);
+const MODES = Object.freeze(['model', 'compare']);
+const PLAN_IDS = Object.freeze(['A', 'B', 'C']);
 /** Le nom de la fonction de chaque formule, dans les lignes écrites (« f(x) = g(x) »). */
-export const FN = Object.freeze(['f', 'g', 'h']);
+const FN = Object.freeze(['f', 'g', 'h']);
 export const COLORS = Object.freeze(['#2563EB', '#E11D48', '#059669']);
 
 /* ── lecture des props (chaînes écrites comme le manuel) ───────────────── */
@@ -84,7 +84,7 @@ export function parseAsk(raw) {
 /* ── les comparaisons exactes ───────────────────────────────────────────── */
 
 /** Toutes les paires (i < j) et leur comparaison (`affine.comparePlans`). */
-export function pairs(plans) {
+function pairs(plans) {
   const out = [];
   for (let i = 0; i < plans.length; i++) {
     for (let j = i + 1; j < plans.length; j++) out.push({ i, j, ...AF.comparePlans(plans[i].f, plans[j].f) });
@@ -93,14 +93,14 @@ export function pairs(plans) {
 }
 
 /** Les croisements strictement à l'intérieur de ]0 ; xMax[. */
-export const crossingsIn = (plans, xMax) => pairs(plans).filter((p) => p.kind === 'cross' && cmp(p.x, 0) > 0 && cmp(p.x, xMax) < 0);
+const crossingsIn = (plans, xMax) => pairs(plans).filter((p) => p.kind === 'cross' && cmp(p.x, 0) > 0 && cmp(p.x, xMax) < 0);
 
 /**
  * L'ENVELOPPE INFÉRIEURE sur [0 ; xMax] : les intervalles où une formule est la moins chère, et les
  * changements (`breaks`) — ce que l'élève marque puis peint. Deux formules distinctes ne sont égales
  * qu'en leur croisement : au milieu de deux croisements consécutifs, la moins chère est unique.
  */
-export function envelope(plans, xMax) {
+function envelope(plans, xMax) {
   const X = F(xMax);
   const cand = [];
   for (const c of crossingsIn(plans, X)) if (!cand.some((v) => eq(v, c.x))) cand.push(c.x);
@@ -127,7 +127,7 @@ const ceilTo = (v, step) => Math.ceil(v / step - 1e-9) * step;
  * La fenêtre : xMax ENTIER (unités) assez long pour que l'« après » du croisement se voie autant que
  * l'« avant » (deux fois le dernier croisement), les cibles comprises ; yMax couvre tous les coûts.
  */
-export function defaultWindow(plans, asks = [], { xMax, yMax } = {}) {
+function defaultWindow(plans, asks = [], { xMax, yMax } = {}) {
   let xm;
   if (xMax != null && xMax !== '') xm = Math.max(1, Math.ceil(toNumber(parseValue(xMax))));
   else {
@@ -158,7 +158,7 @@ export function defaultWindow(plans, asks = [], { xMax, yMax } = {}) {
  * Les graduations (xStep, yStep) et la grille EXACTE de la marque (dx, dy) : chaque croisement de la
  * fenêtre est un nœud, de sorte qu'il soit atteint exactement — jamais « à peu près ».
  */
-export function grids(plans, win) {
+function grids(plans, win) {
   const xStep = niceStep(win.xMax, 10);
   const yStep = niceStep(win.yMax, 8);
   const cs = crossingsIn(plans, F(win.xMax));
@@ -219,8 +219,8 @@ export function init({ plans: rawPlans, mode, ask, xMax, yMax } = {}) {
 
 /* ── MODÈLE : porter les deux montants dans la facture ──────────────────── */
 
-export const chipValue = (s, chip) => (chip === 'fixed' ? s.plans[0].f.b : s.plans[0].f.a);
-export const slotOf = (s, chip) => (s.slots.once === chip ? 'once' : s.slots.each === chip ? 'each' : null);
+const chipValue = (s, chip) => (chip === 'fixed' ? s.plans[0].f.b : s.plans[0].f.a);
+const slotOf = (s, chip) => (s.slots.once === chip ? 'once' : s.slots.each === chip ? 'each' : null);
 export const reserve = (s) => s.chips.filter((c) => !slotOf(s, c));
 
 /** Poser un montant dans une case ; un montant déjà là revient à la réserve. Le modèle accepté est figé. */
@@ -367,7 +367,7 @@ export function placeMark(s, x, y) {
 }
 
 /** Chaque changement de formule a sa marque acceptée. */
-export const breaksMarked = (s) => s.env.breaks.map((b) => s.marks.some((m) => m.kind === 'cross' && eq(m.x, b.x)));
+const breaksMarked = (s) => s.env.breaks.map((b) => s.marks.some((m) => m.kind === 'cross' && eq(m.x, b.x)));
 export const marksDone = (s) => (s.env.breaks.length ? breaksMarked(s).every(Boolean) : s.noCross?.ok === true);
 
 /** « لا تتساوى التكلفتان » : juste seulement s'il n'y a aucun changement dans la fenêtre. */
@@ -382,7 +382,7 @@ export function claimNoCross(s) {
 
 /* ── COMPARER : peindre l'axe des x ─────────────────────────────────────── */
 
-export const canPaint = (s) => s.stage === 'compare' && marksDone(s);
+const canPaint = (s) => s.stage === 'compare' && marksDone(s);
 export const setBrush = (s, plan) => ({ ...s, brush: plan });
 
 /** Un x où montrer qu'une formule n'est pas la moins chère sur l'intervalle : un essai de l'élève d'abord. */
@@ -409,7 +409,7 @@ export function paint(s, segIndex, plan = s.brush) {
 export const paintDone = (s) => s.env.segments.every((seg) => s.painted[seg.index] === seg.plan);
 
 /** Le segment de l'enveloppe qui contient x (au bord : celui qui commence). */
-export function segmentOf(s, x) {
+function segmentOf(s, x) {
   const X = F(x);
   const segs = s.env.segments;
   for (const seg of segs) if (cmp(X, seg.from) >= 0 && cmp(X, seg.to) < 0) return seg.index;

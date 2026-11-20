@@ -23,7 +23,7 @@ export const BADGE_R = 11;
 export const U_MIN = 12;
 export const U_MAX = 48;
 /** Largeur estimée d'un libellé court (chiffres, x, signe) en px, pour la géométrie des collisions. */
-export const labelWidth = (text, size = 14) => Math.round(String(text).length * size * 0.62 + size * 0.6);
+const labelWidth = (text, size = 14) => Math.round(String(text).length * size * 0.62 + size * 0.6);
 
 /** Le cadre fixe de la scène (viewBox), calculé à x = X_MAX. */
 export function frameOf(h, w, u, scaffold = true) {

@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les dessins GÉNÉRIQUES d'une مسألة (2026-10-13) — huit genres paramétrés par des DONNÉES (jamais une image) :
@@ -8,14 +7,14 @@ import React from 'react';
  * Mots arabes = texte SVG vivant ; nombres = îlots LTR (`NUM`) ; direction LTR sur le SVG (piège RTL des SVG).
  * Les champs sont décrits dans `problemIllustration.js` (validateur) et docs/lessons/MASAIL_GENERATION_GUIDE.md.
  */
-export const NUM = { direction: 'ltr', unicodeBidi: 'isolate' };
+const NUM = { direction: 'ltr', unicodeBidi: 'isolate' };
 const AR = { direction: 'rtl' };
 const lerp = (a, b, t) => a + (b - a) * t;
 const UNK = '؟';
 
 /* ── les petits dessins (centrés en 0,0, ~22 px) ─────────────────────────── */
 
-export function Icon({ kind, x = 0, y = 0, s = 1 }) {
+function Icon({ kind, x = 0, y = 0, s = 1 }) {
   const body = (() => {
     switch (kind) {
       case 'book': return (<><rect x="-8" y="-10" width="16" height="20" rx="2" fill="#2563EB" stroke="#1E3A8A" strokeWidth="1.4" /><rect x="-8" y="-10" width="4" height="20" fill="#1E3A8A" opacity="0.6" /><rect x="-2" y="-5" width="7" height="2" fill="#fff" /></>);
@@ -54,7 +53,7 @@ export function Icon({ kind, x = 0, y = 0, s = 1 }) {
 const PILL_TONES = { blue: ['#EFF6FF', '#2563EB', '#1E3A8A'], amber: ['#FFFBEB', '#D97706', '#78350F'], green: ['#F0FDF4', '#16A34A', '#14532D'], rose: ['#FFF1F2', '#E11D48', '#881337'], violet: ['#F5F3FF', '#7C3AED', '#4C1D95'], slate: ['#fff', '#475569', '#0F172A'] };
 
 /** Une pastille numérique : un nombre en LTR, une unité arabe facultative, un mot arabe facultatif au-dessus. */
-export function Pill({ x, y, value, unit, word, tone = 'blue', w }) {
+function Pill({ x, y, value, unit, word, tone = 'blue', w }) {
   const col = PILL_TONES[tone] ?? PILL_TONES.blue;
   const text = `${value}${unit ? ` ${unit}` : ''}`;
   const width = w ?? Math.max(44, String(text).length * 8.5 + 18);

@@ -24,7 +24,7 @@ export default function StudentSnapshot({ snapshot, onExplain }) {
   const waiting = (learning.reasons?.insufficientEvidence ?? 0) + (learning.reasons?.needsAssessment ?? 0);
 
   return (
-    <section className="glass-card p-5 space-y-4" aria-labelledby="snapshot-title" data-student-snapshot>
+    <section className="rounded-2xl border border-nav-line bg-white p-5 space-y-4" aria-labelledby="snapshot-title" data-student-snapshot>
       <div className="flex flex-wrap items-center gap-3">
         <h2 id="snapshot-title" className="font-space text-lg font-bold text-slate-900">{t('snapshot.title')}</h2>
         <span className={`rounded-full px-3 py-1 text-xs font-bold ring-1 ring-inset ${TREND_TONE[evolution.trend] ?? TREND_TONE.stable}`} data-snapshot-trend={evolution.trend} title={t('snapshot.trendHint')}>

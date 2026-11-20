@@ -26,7 +26,7 @@ import { PROBE_STEPS } from './sequenceState.js';
  * calculé vingt termes.
  */
 export default function SequenceInspector({
-  data, model, probeResult, onProbe, onProbeIndex, compact = false,
+  data, model, probeResult, onProbe, onProbeIndex,
 }) {
   const { t } = useTranslation('mathlab');
   const { trend, fixed, cursorTerm, previousTerm, terms, range } = model;

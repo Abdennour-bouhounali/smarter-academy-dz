@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Hand, Sparkles, ChevronLeft, FlaskConical, Minus, Plus, Lock } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -316,7 +316,7 @@ function Belt({ lab, task, anim, width }) {
 
 /* ══════════════ Le laboratoire ══════════════ */
 
-function Lab({ lab, setLab, k, width, screenH, lead, cp, report }) {
+function Lab({ lab, setLab, k, width, lead, cp, report }) {
   const task = L.taskOf(lab);
   const done = L.taskDone(lab);
   const anim = useDealAnim(lab.dealt);

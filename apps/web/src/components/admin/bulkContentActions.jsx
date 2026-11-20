@@ -1,4 +1,3 @@
-import React from 'react';
 import i18n from '../../i18n';
 import { CONTENT_NOUNS } from './contentNouns';
 import { bulkChangeContentStatus, bulkChangeContentTier } from '../../services/admin/contentService';

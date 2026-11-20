@@ -30,7 +30,6 @@
  */
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
-export const KINDS = Object.freeze(['walk', 'walkCode', 'code', 'pin']);
 export const CODE_LIMIT = 12;
 
 const num = (q) => q.n / q.d;
@@ -44,9 +43,9 @@ export function at(lab, name) {
 }
 
 /** Les مركبتان de P→Q, par vectors.vec (exact), rendues en nombres. */
-export function vecOf(p, q) { return pair(V.vec(V.point(p[0], p[1]), V.point(q[0], q[1]))); }
+function vecOf(p, q) { return pair(V.vec(V.point(p[0], p[1]), V.point(q[0], q[1]))); }
 /** L'image de P par le déplacement u, par vectors.translate. */
-export function moveBy(p, u) { return pair(V.translate(V.point(p[0], p[1]), V.point(u[0], u[1]))); }
+function moveBy(p, u) { return pair(V.translate(V.point(p[0], p[1]), V.point(u[0], u[1]))); }
 const same = (u, v) => V.vecEq(V.point(u[0], u[1]), V.point(v[0], v[1]));
 
 /** La cible d'une commande : le nœud d'arrivée (pour 'pin' : from + u). */

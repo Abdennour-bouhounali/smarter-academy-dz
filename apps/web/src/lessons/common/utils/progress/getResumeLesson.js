@@ -1,6 +1,16 @@
 import { getLessonProgress } from './getLessonProgress';
 import { getNextIncompleteModule, getFlatAvailableLessons } from '@smarter-academy/core';
-import { getTotalModules, getModulePath, getFirstModuleNumber } from '../../../registry';
+import { getTotalModules, getModulePath, getFirstModuleNumber, lessonPackFlags } from '../../../registry';
+
+/**
+ * The address « واصل » opens for module `moduleNumber` of a lesson — or null, and the caller falls back to the lesson's
+ * home. A lesson whose pack has a WORLD (a v2 lesson, LESSON_V2.md §2) is resumed on its home, the world: its module
+ * pages are deleted and their addresses only redirect there (and the world never records a current module). Driven by
+ * the lesson's own pack, never by a list of lessons.
+ */
+export function getResumeModulePath(lessonId, moduleNumber) {
+  return lessonPackFlags(lessonId).world ? null : getModulePath(lessonId, moduleNumber);
+}
 
 /**
  * Le chemin de reprise d'une leçon : celui du module visé, ou à défaut
@@ -16,11 +26,11 @@ function resumeShape(entry, resumeModule) {
     progress: entry.progressPercent,
     resumeModule,
     totalModules: entry.totalCount,
-    // Le module d'abord ; l'index de la leçon si ce module n'est pas routé.
+    // Le module d'abord ; l'index de la leçon si ce module n'est pas routé (ou si la leçon est un monde : v2).
     // L'index existe toujours pour une leçon construite, donc ce chemin ne
     // peut pas être nul — l'élève atterrit au pire sur le sommaire, jamais
     // sur la page d'accueil.
-    resumePath: getModulePath(lesson.id, resumeModule) || lesson.path,
+    resumePath: getResumeModulePath(lesson.id, resumeModule) || lesson.path,
   };
 }
 

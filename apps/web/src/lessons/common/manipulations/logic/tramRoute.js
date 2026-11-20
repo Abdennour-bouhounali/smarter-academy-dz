@@ -26,7 +26,7 @@ import { eq, sign } from '@smarter-academy/core/arithmetic/powers.js';
 import { parseRel } from '@smarter-academy/core/arithmetic/relativeOps.js';
 
 export const FREE_LIMITS = Object.freeze({ maxStops: 4, maxNumber: 40, maxStart: 40 });
-export const STOP_KEYS = Object.freeze(['market', 'university', 'stadium', 'library', 'garden', 'station']);
+const STOP_KEYS = Object.freeze(['market', 'university', 'stadium', 'library', 'garden', 'station']);
 export const FREE_TYPES = Object.freeze(['on', 'off', 'groupsOn', 'groupsOff']);
 
 export const PRESETS = Object.freeze({
@@ -63,7 +63,7 @@ export function termsOf(chain) {
 }
 
 /** Le compteur du tram après chaque terme (la valeur conventionnelle, arrêt après arrêt). */
-export function trailOf(chain) {
+function trailOf(chain) {
   const ts = termsOf(chain);
   const out = [];
   let acc = null;
@@ -109,9 +109,8 @@ export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 
 export const allDone = (s) => s.tasks.every((_, i) => !!s.done[i]);
 /** La chaîne EFFECTIVE de la tâche : celle de l'histoire, ou — en متقدم — celle que l'élève a écrite (jugée équivalente). */
 export const chainNow = (s) => (s.builtText ?? taskOf(s).chain);
-export const opsNow = (s) => C.operatorsOf(chainNow(s));
 export const built = (s) => s.builtText != null;
-export const frozen = (s) => taskDone(s);
+const frozen = (s) => taskDone(s);
 export const canStamp = (s) => built(s) && !s.replay && !frozen(s);
 export const allStamped = (s) => built(s) && s.stamps.length === taskOf(s).nOps;
 export const canGo = (s) => canStamp(s) && allStamped(s);
@@ -123,7 +122,7 @@ export function stampOp(s, idx) {
   if (!canStamp(s) || s.stamps.includes(idx) || idx < 0 || idx >= taskOf(s).nOps) return s;
   return { ...s, stamps: [...s.stamps, idx] };
 }
-export function unstampOp(s, idx) {
+function unstampOp(s, idx) {
   if (!canStamp(s) || !s.stamps.includes(idx)) return s;
   return { ...s, stamps: s.stamps.filter((x) => x !== idx) };
 }
@@ -169,7 +168,7 @@ export function absurdOf(task, chain, order) {
 }
 
 /** La station (0 = le départ) où le tram s'arrête sur le plan refusé : celle du terme où l'étape fautive a fait son dégât. */
-export function stationOfStep(chain, step, absurd = null) {
+function stationOfStep(chain, step, absurd = null) {
   const ts = termsOf(chain);
   // « نزل 13 ؟ لم ينزل إلا 9 » : le dégât se lit à l'arrêt où le terme englobé (le 9) descend, pas à celui du nombre fusionné
   const pos = absurd?.numIndex ?? step.rightSpan[0];
@@ -177,7 +176,7 @@ export function stationOfStep(chain, step, absurd = null) {
   return Math.max(0, i);
 }
 
-export function replay(task, chain, order) {
+function replay(task, chain, order) {
   const r = C.valueInOrder(chain, order);
   const ok = eq(r.value, task.truth);
   const absurd = ok ? null : absurdOf(task, chain, order);
@@ -212,7 +211,7 @@ export function go(s) {
 
 /* ── la prédiction (متقدم) ───────────────────────────────────────────────────────────────────────────────────── */
 
-export const PRED_MAX = 7;
+const PRED_MAX = 7;
 export function setPred(s, raw) {
   if (!taskOf(s).predict || s.free || !built(s) || s.replay) return s;
   const clean = String(raw ?? '').replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[.٫]/g, ',').replace(/[^0-9,]/g, '').slice(0, PRED_MAX);
@@ -235,7 +234,7 @@ export function bankOf(task) {
   }
   return arr;
 }
-export const emptySlots = (task) => (task.build ? Array(task.nOps * 2 + 1).fill(null) : []);
+const emptySlots = (task) => (task.build ? Array(task.nOps * 2 + 1).fill(null) : []);
 export const slotKind = (pos) => (pos % 2 === 0 ? 'num' : 'op');
 
 /** Poser un jeton de la réserve dans la première case libre de son genre (plaque : positions paires ; puce : impaires). */
@@ -254,7 +253,7 @@ export function takeToken(s, pos) {
 }
 export const slotsFull = (s) => s.slots.length > 0 && s.slots.every((x) => x != null);
 /** Le texte écrit dans le ruban (jetons mis dans les cases). */
-export function writtenText(s) {
+function writtenText(s) {
   const bank = bankOf(taskOf(s));
   return s.slots.map((id) => bank.find((b) => b.id === id)?.text ?? '?').join(' ');
 }

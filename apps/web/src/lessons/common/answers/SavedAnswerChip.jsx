@@ -1,4 +1,3 @@
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 /** « ↺ إجابتك السابقة · <date> » : une réponse remise à l'écran est SIGNALÉE comme telle (jamais prise pour une nouvelle). */

@@ -15,7 +15,7 @@ const STATE_TONE = {
 
 const LESSON_TONE = {
   completed: 'bg-emerald-50 text-emerald-700',
-  in_progress: 'bg-indigo-50 text-indigo-700',
+  in_progress: 'bg-nav-accent-soft text-nav-accent',
   not_started: 'bg-slate-100 text-slate-600',
 };
 
@@ -34,7 +34,7 @@ function Card({ icon: Icon, title, children }) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-4 sm:p-5">
       <h3 className="mb-3 flex items-center gap-2 font-space text-base font-bold text-slate-900">
-        <Icon size={18} className="text-indigo-600" aria-hidden="true" />
+        <Icon size={18} className="text-nav-accent" aria-hidden="true" />
         {title}
       </h3>
       {children}
@@ -78,7 +78,7 @@ export default function ProgressDetail({ progress, audience = 'parent' }) {
           <>
             <div className="flex items-baseline justify-between gap-3">
               <p className="font-inter text-sm text-slate-700">{t('progress.yearValue', { done: s.gradeLessonsCompleted, total: s.gradeLessons })}</p>
-              <p className="font-space text-2xl font-bold text-indigo-700">{s.progressPercent}٪</p>
+              <p className="font-space text-2xl font-bold text-nav-accent">{s.progressPercent}٪</p>
             </div>
             <div className="mt-2 h-3 overflow-hidden rounded-full bg-slate-100">
               <div className="h-full rounded-full bg-indigo-500" style={{ width: `${barPercent(s.gradeLessonsCompleted, s.gradeLessons)}%` }} />

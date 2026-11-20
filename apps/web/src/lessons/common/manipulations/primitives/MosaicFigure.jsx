@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from './KidFigure';
 import { BUNDLE_OFF } from './mosaicLayout';
 
@@ -93,7 +92,7 @@ function Bundle({ w, h, mult, uid }) {
 }
 
 /** La loupe : un carreau agrandi, coupé en dix lamelles (les éclats, 1/10 de carreau chacune) — `icons` pleines. */
-function Lens({ w, icons, uid }) {
+function Lens({ w, icons }) {
   const P = PIECE.shard;
   const r = w / 2;
   const L = w * 0.56;
@@ -243,7 +242,6 @@ export function TenMachine({ width, height = 78, op, links = [], spin = true }) 
       {[inset + 10, width - inset - 10].map((x) => [inset + 6.5, height - inset - 6.5].map((y) => <circle key={`${x}-${y}`} cx={x} cy={y} r={2.4} fill="#C7D2FE" />))}
       {links.map((l, i) => {
         const moved = l.delta !== 0;
-        const my = height / 2;
         return (
           <g key={i} data-dc-link={i} data-delta={l.delta}>
             <line x1={l.x1} y1={0} x2={l.x2} y2={height} stroke={moved ? '#D97706' : '#94A3B8'} strokeWidth={moved ? 2.2 : 1.4} strokeDasharray={moved ? undefined : '3 3'} strokeLinecap="round" />

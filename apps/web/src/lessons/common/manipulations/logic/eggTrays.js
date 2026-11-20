@@ -25,7 +25,6 @@
  */
 import { divmod } from '@smarter-academy/core/arithmetic/divisibility.js';
 
-export const WORLDS = Object.freeze(['carton', 'tray']);
 /** Dix plateaux font une palette (متقدم) : la valeur de position du quotient se VOIT (7 palettes + 1 plateau = 71). */
 export const PALLET = 10;
 
@@ -196,7 +195,7 @@ export function claimExact(s) {
 }
 
 /** Une commande est accomplie : cadre juste (r ≠ 0) ou « يقع على عدد طبيعي » juste (r = 0). */
-export function orderDone(s, a) {
+function orderDone(s, a) {
   const exact = a % s.b === 0;
   return s.trials.some((tr) => tr.a === a && tr.ok && tr.kind === (exact ? 'exact' : 'frame'));
 }

@@ -26,7 +26,7 @@ import { ensureMathLive } from '../functionGrapher/mathliveSetup.js';
 export { ensureMathLive };
 
 /** Le clavier des EXPRESSIONS : x, puissances, racine, fraction, fonctions. */
-export const ANALYSIS_FUNCTION_KEYBOARD = Object.freeze({
+const ANALYSIS_FUNCTION_KEYBOARD = Object.freeze({
   label: 'f(x)',
   tooltip: 'f(x)',
   rows: [
@@ -80,7 +80,7 @@ export const ANALYSIS_FUNCTION_KEYBOARD = Object.freeze({
  * jamais « sin(x) ». Un clavier plus court se prend en main plus vite, et
  * §44 interdit le fouillis.
  */
-export const ANALYSIS_ANSWER_KEYBOARD = Object.freeze({
+const ANALYSIS_ANSWER_KEYBOARD = Object.freeze({
   label: '123',
   tooltip: '123',
   rows: [

@@ -1,4 +1,3 @@
-import React from 'react';
 import { SvgPill } from '../../primitives/SvgPill';
 
 /**
@@ -92,7 +91,7 @@ export function Shelves({ width, y1, y2 }) {
   );
 }
 
-export function Sack({ x, y, tilt }) {
+export function Sack({ x, y }) {
   return (
     <g aria-hidden="true">
       <path d={`M${x} ${y + 44} C${x - 6} ${y + 18} ${x + 8} ${y + 4} ${x + 26} ${y} L${x + 52} ${y} C${x + 70} ${y + 6} ${x + 80} ${y + 22} ${x + 74} ${y + 44} Z`} fill="#CDA872" stroke="#9C7A44" strokeWidth={1.6} />
@@ -176,7 +175,7 @@ export function ModelSachet({ x, y, lamp }) {
  * La bande : la masse EXACTE sous une aiguille fixe, les graduations défilent. `markStep` = le nombre d'unités entre deux repères de l'ÉCRAN (ils sont
  * plus hauts et portent leur nom) ; `tickStep` = l'espacement des petites graduations ; `refAt` = la position (en unités) du sachet modèle, s'il y en a un.
  */
-export function PrecisionStrip({ uid = 'ss', width, m, res, rank, markStep, tickStep, half, label, pillText, refAt, markLabel, glow, refLabel, labelStep = markStep }) {
+export function PrecisionStrip({ uid = 'ss', width, m, markStep, tickStep, half, label, pillText, refAt, markLabel, glow, refLabel, labelStep = markStep }) {
   const H = 86;
   const x0 = 14;
   const bw = width - 2 * x0;

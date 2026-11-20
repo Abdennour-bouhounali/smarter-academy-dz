@@ -316,7 +316,7 @@ function LimitReadout({ data, scene, t }) {
 }
 
 /** Une table d'approche : la suite de valeurs que §11 veut faire VOIR. */
-function ApproachTable({ rows, side, at, t }) {
+function ApproachTable({ rows, side, at }) {
   return (
     <table className="sa-ml-an__table" dir="ltr" data-ml-an-approach-table={side}>
       <caption className="sa-ml-an__caption">{formatApproach(at, side)}</caption>

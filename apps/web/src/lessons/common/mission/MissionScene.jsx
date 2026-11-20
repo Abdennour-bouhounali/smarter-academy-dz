@@ -1,12 +1,3 @@
-import React from 'react';
-import LibraryScene from './LibraryScene';
-import LibraryWallScene from './LibraryWallScene';
-import ConstructionWallScene from './ConstructionWallScene';
-import FlowerShopScene from './FlowerShopScene';
-import SchoolBagsScene from './SchoolBagsScene';
-import SewingWorkshopScene from './SewingWorkshopScene';
-import BakeryScene from './BakeryScene';
-import MathClubScene from './MathClubScene';
 import GardenBedScene from './GardenBedScene';
 import CarpetLoomScene from './CarpetLoomScene';
 import FoldStripScene from './FoldStripScene';
@@ -26,25 +17,16 @@ import CivilRegistryScene from './CivilRegistryScene';
 import KioskCardsScene from './KioskCardsScene';
 import MuseumDeskScene from './MuseumDeskScene';
 import PartyTableScene from './PartyTableScene';
-import ApronStoreScene from './ApronStoreScene';
 import RugMarketScene from './RugMarketScene';
 import FountainPlazaScene from './FountainPlazaScene';
 import ClubCounterScene from './ClubCounterScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
- * (`'library'` — la bibliothèque de 756 livres, valeur par défaut —, `'library-wall'` — le mur de 96 livres —, `'construction-wall'` — le chantier de la leçon khawass-qawasim, `'flower-shop'` — l'atelier du fleuriste de la leçon qasim-mushtarak-akbar, `'school-bags'` — les cartables de la leçon tayin-pgcd, `'sewing-workshop'` — l'atelier de couture de la leçon bahth-pgcd, `'bakery'` — la boulangerie de la leçon ikhtizal-kasr, `'math-club'` — le club de mathématiques de la leçon awwaliyan-fima-baynahuma, `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur, `'paint-wall'` — le mur du stade repeint devant un tréteau en X, leçon aksiya-talis, `'tifo-banner'` — la banderole du derby étendue dans la salle des jeunes, leçon inshaat-talis, `'night-cinema'` — le ciné-club de nuit de la place du quartier, leçon talis-hisab-atwal, `'shadow-square'` — la place à l'heure de l'ombre, la synthèse wadiya-idmajiya-talis). Une nouvelle scène =
+ * (les scènes des leçons 1–7 de l'unité 1 — `'library'`, `'library-wall'`, `'construction-wall'`, `'flower-shop'`, `'school-bags'`, `'sewing-workshop'`, `'math-club'` — et celle de la leçon 8, `'bakery'`, sont supprimées avec leur lecteur de mission : ces leçons sont v2, LESSON_V2.md §2 ; `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur, `'paint-wall'` — le mur du stade repeint devant un tréteau en X, leçon aksiya-talis, `'tifo-banner'` — la banderole du derby étendue dans la salle des jeunes, leçon inshaat-talis, `'night-cinema'` — le ciné-club de nuit de la place du quartier, leçon talis-hisab-atwal, `'shadow-square'` — la place à l'heure de l'ombre, la synthèse wadiya-idmajiya-talis). Une nouvelle scène =
  * un composant `<Nom>Scene({ fill, label, className })` dessiné en code, ajouté à ce registre ; `fill` ∈ [0, 1] suit les outils gagnés.
  */
 const SCENES = {
-  library: LibraryScene,
-  'library-wall': LibraryWallScene,
-  'construction-wall': ConstructionWallScene,
-  'flower-shop': FlowerShopScene,
-  'school-bags': SchoolBagsScene,
-  'sewing-workshop': SewingWorkshopScene,
-  bakery: BakeryScene,
-  'math-club': MathClubScene,
   'garden-bed': GardenBedScene,
   'carpet-loom': CarpetLoomScene,
   'fold-strip': FoldStripScene,
@@ -80,8 +62,6 @@ const SCENES = {
   'museum-desk': MuseumDeskScene,
   // unité 5, la synthèse wadiya-idmajiya-jumal (2026-11-12) : la table du goûter de l'école — rangées ÉGALES de jus et de gâteaux, un plateau de restes
   'party-table': PartyTableScene,
-  // unité 1, la synthèse wadiya-idmajiya-aadad (2026-11-12) : le magasin de la commune — deux piles de tabliers, des caisses d'école identiques
-  'apron-store': ApronStoreScene,
   // unité 2, la synthèse wadiya-idmajiya-judhur (2026-11-12) : le marché des tapis — un tapis deux fois plus long que large, un ruban à mesurer
   'rug-market': RugMarketScene,
   // unité 3, la synthèse wadiya-idmajiya-harfi (2026-11-12) : la place à la fontaine — une نافورة carrée et son ممرّ dallé de même largeur tout autour
@@ -95,6 +75,7 @@ function CourtyardBigScene(props) {
 }
 
 export default function MissionScene({ scene, ...props }) {
-  const Scene = SCENES[scene] ?? LibraryScene;
-  return <Scene {...props} />;
+  // every lesson on the mission player names its scene; an unknown name draws nothing rather than another lesson's scene
+  const Scene = SCENES[scene];
+  return Scene ? <Scene {...props} /> : null;
 }

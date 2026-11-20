@@ -18,12 +18,12 @@ import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 const { isZero, toNumber } = Lin;
 const { fracLatex, fracText } = B;
 
-export const REFUSALS = Object.freeze(['tipped', 'moveAcross', 'bagsUneven', 'cutMixed', 'noBags']);
+const REFUSALS = Object.freeze(['tipped', 'moveAcross', 'bagsUneven', 'cutMixed', 'noBags']);
 /** Un refus qui compte comme un essai (« noneHere » et « full » sont des gestes impossibles, pas des idées). */
 export const isRefusal = (reason) => REFUSALS.includes(reason);
 
 /** Une écriture TeX ramenée à sa forme nue : sans espaces, « − » → « - ». */
-export const bare = (v) => String(v).replace(/\s+/g, '').replace(/−/g, '-');
+const bare = (v) => String(v).replace(/\s+/g, '').replace(/−/g, '-');
 
 /** L'identifiant d'une ligne écrite (pour reconnaître une équation déjà écrite dans la manche). */
 export const lineSig = (pans) => bare(B.equationTex(pans));
@@ -31,7 +31,7 @@ export const lineSig = (pans) => bare(B.equationTex(pans));
 // ── jouer la balance (tests, balayage) ───────────────────────────────────────
 
 /** Le geste (objet + sens) qui réalise l'effet `effect` sur ce plateau, avec ce qu'il contient. */
-export function gestureFor(p, effect) {
+function gestureFor(p, effect) {
   if (effect === '-1') return toNumber(p.u) >= 1 ? 'remove:ball' : 'add:balloon';
   if (effect === '+1') return toNumber(p.u) <= -1 ? 'remove:balloon' : 'add:ball';
   if (effect === '-x') return p.a >= 1 ? 'remove:bag' : 'add:anti';
@@ -70,28 +70,28 @@ export function playPlan(src, plan, { open = false } = {}) {
 
 // ── moments d'une suite de questions ────────────────────────────────────────
 
-export const bothSteps = (lab) => lab.history.filter((s) => s.kind === 'both');
+const bothSteps = (lab) => lab.history.filter((s) => s.kind === 'both');
 /** L'équation réduite ax = b (ou b = ax) : des sacs seuls d'un côté, des unités seules de l'autre, la balance horizontale. */
-export function reducedForm(lab) {
+function reducedForm(lab) {
   if (lab.pending) return false;
   const { L, R } = lab.pans;
   return (L.a !== 0 && R.a === 0 && isZero(L.u)) || (R.a !== 0 && L.a === 0 && isZero(R.u));
 }
 /** Une première étape des deux plateaux est écrite et la balance est horizontale. */
-export const firstLineReached = (lab) => !lab.pending && bothSteps(lab).length > 0;
+const firstLineReached = (lab) => !lab.pending && bothSteps(lab).length > 0;
 /** Un sac seul en face des unités : on lit x. */
-export const bagReadReached = (lab) => B.isSolved(lab);
+const bagReadReached = (lab) => B.isSolved(lab);
 /** Un sac a été lu ET les sacs ouverts (la découverte du labo, verdict L1.1). */
 export const discoveryReached = (lab) => B.isSolved(lab) && lab.verified;
 /** Un partage a eu lieu. */
-export const hasDivided = (lab) => lab.history.some((s) => s.kind === 'divide');
+const hasDivided = (lab) => lab.history.some((s) => s.kind === 'divide');
 /** Le plateau des sacs, à la fin : l'équation est-elle réduite avec les sacs seuls, un seul plateau sans sac ? */
 const noBagPan = (pans) => (pans.L.a === 0 ? pans.L : pans.R.a === 0 ? pans.R : null);
 
 // ── la question « ce que la balance dessine » ──────────────────────────────
 
 /** Le premier geste de l'élève, décrit : { side, kind: 'ball'|'balloon'|'bag'|'anti', verb: 'take'|'put' }. */
-export function firstMove(moves) {
+function firstMove(moves) {
   const m = (moves ?? [])[0];
   if (!m) return { side: 'L', kind: 'ball', verb: 'take' };
   const [verb, kind] = m.g.split(':');
@@ -168,7 +168,7 @@ const reducedAfterStep = (lab) => bothSteps(lab).length > 0 && reducedForm(lab);
  * Chaque suite du lecteur : { id, reached(lab), qs }. L'id est le point d'étape de la manche (`{ checkpoint: id }`). `build`, `read`, `chips`
  * règlent les questions (voir `lineBuild`, `readOptions`, `lineChips`, `placedChips`).
  */
-export const CHAIN_SPECS = Object.freeze({
+const CHAIN_SPECS = Object.freeze({
   r1: [
     { id: 'line', reached: firstLineReached, qs: ['lineChips', 'lineBuild'], chips: 'taken', build: { when: 'first', decoy: 'untouched' } },
     { id: 'read', reached: bagReadReached, qs: ['readChips'], read: ['weight', 'bags'] },
@@ -225,7 +225,7 @@ export function predictTruth(src, key) {
 }
 
 /** La prédiction est-elle JUGÉE par la balance (l'événement dont elle parle a eu lieu) ? */
-export function predictJudged(lab, key) {
+function predictJudged(lab, key) {
   if (key === 'bagHolds' || key === 'whole') return B.isSolved(lab);
   if (key === 'parts') return hasDivided(lab);
   if (key === 'otherPanDo') return bothSteps(lab).length > 0;

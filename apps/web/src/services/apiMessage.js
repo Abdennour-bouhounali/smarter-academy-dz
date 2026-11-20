@@ -37,11 +37,11 @@ import i18n from '../i18n';
 
 /**
  * @param {string} key   clé sous `apiErrors` du catalogue `common`
- * @param {object} data  le corps JSON de la réponse, s'il y en a un
+ * @param {object} _data le corps JSON de la réponse, s'il y en a un
  * @param {number|null} status
  * @returns {string} un texte arabe, jamais une phrase du serveur
  */
-export function apiMessage(key, data = null, status = null) {
+export function apiMessage(key, _data = null, status = null) {
   // 429 a son propre message : « réessayez » sans dire quoi attendre serait
   // une invitation à marteler le bouton.
   if (status === 429) {

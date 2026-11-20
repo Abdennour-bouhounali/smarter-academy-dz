@@ -90,7 +90,7 @@ export default function MathLabToolPicker({ tools, onPick, lockedIds = [], scope
               className="group flex flex-col gap-3 rounded-2xl border-2 border-slate-200 bg-white p-5 text-start transition-colors hover:border-blue-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
               <span className="flex items-start justify-between gap-2">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-nav-accent-soft text-nav-accent">
                   <Icon size={24} aria-hidden="true" />
                 </span>
                 {lockedIds.includes(tool.id) && (
@@ -108,7 +108,7 @@ export default function MathLabToolPicker({ tools, onPick, lockedIds = [], scope
                 </span>
                 <span className="block font-inter text-sm text-slate-500 mt-1">{t(descriptionKey)}</span>
               </span>
-              <span className="mt-auto inline-flex items-center gap-1.5 font-mono-jetbrains text-xs font-bold text-blue-600 group-hover:text-blue-700">
+              <span className="mt-auto inline-flex items-center gap-1.5 font-mono-jetbrains text-xs font-bold text-nav-accent group-hover:text-nav-accent">
                 {t(tool.newLabelKey)}
                 <ArrowForward size={14} aria-hidden="true" />
               </span>

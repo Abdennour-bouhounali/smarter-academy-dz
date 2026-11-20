@@ -233,7 +233,7 @@ export function tokenizeB(text) {
 }
 
 /** Les paires de parenthèses d'une liste de jetons : `[{ open, close, depth }]` (indices de jetons ; depth 1 = la plus extérieure). Lève `syntax` si elles ne s'équilibrent pas. */
-export function bracketPairs(tokens) {
+function bracketPairs(tokens) {
   const stack = [];
   const pairs = [];
   tokens.forEach((tk, i) => {
@@ -259,7 +259,7 @@ export function bracketDepths(tokens) {
 }
 
 /** L'arbre avec priorités ET parenthèses : `{ t:'num' }` | `{ t:'op', o, l, r }` | `{ t:'group', e }`. `throw new Error('syntax')` si le mot n'est pas une expression. */
-export function parseB(input) {
+function parseB(input) {
   const tokens = typeof input === 'string' ? tokenizeB(input) : input;
   let pos = 0;
   const factor = () => {
@@ -462,7 +462,7 @@ export function chainName(x) { const n = nodeOf(x); return n.t === 'op' ? NAMES[
 export const CHAIN_NAMES = NAMES;
 
 /** Le texte d'un bloc (jetons lo … hi) ; les parenthèses non appariées sont retirées (une coupe peut en laisser), puis une paire qui entoure tout le bloc. */
-export function pieceText(tokens, lo, hi) {
+function pieceText(tokens, lo, hi) {
   let part = tokens.slice(lo, hi + 1);
   const stack = []; const drop = new Set();
   part.forEach((tk, i) => { if (tk.t === 'open') stack.push(i); else if (tk.t === 'close') { if (stack.length) stack.pop(); else drop.add(i); } });
@@ -478,7 +478,6 @@ export function pieceText(tokens, lo, hi) {
   return part.map(tokenText).join(' ').replace(/\[/g, '(').replace(/\]/g, ')');
 }
 
-const subText = (tokens, n) => pieceText(tokens, n.lo, n.hi);
 const hasOpChild = (n) => n.t === 'op' && (n.l.t === 'op' || n.r.t === 'op');
 
 /** La phrase d'un bloc non réduit à un nombre (« مجموع العدد 7 وجداء العددين 4 و 5 »). */
@@ -495,7 +494,7 @@ export function describe(input) {
 }
 
 /** La forme canonique d'un mot SANS ses parenthèses (deux mots ont la même structure si leurs arbres de calcul sont les mêmes). */
-export function structureOf(input) {
+function structureOf(input) {
   const walk = (n) => (n.t === 'num' ? n.text : `(${walk(n.l)}${n.o}${walk(n.r)})`);
   return walk(nodeOf(input));
 }
@@ -588,8 +587,6 @@ export function expand(k, a, b, op = '+') {
     value: numText(whole), valueText: numText(whole), equal: P.eq(whole, split),
   };
 }
-/** تحليل : de « k × a ± k × b » à « k × (a ± b) » — même résultat que `expand`, orienté dans l'autre sens. */
-export function factorOut(k, a, b, op = '+') { return expand(k, a, b, op); }
 
 /** Le facteur COMMUN visible de deux produits « k × a » et « a × k » (dans n'importe quel ordre) → `{ factor, rest: [x, y] }` ou `null`. */
 export function commonFactor(t1, t2) {

@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les deux horloges de معارف 1 (p. 154) : « الاتجاه المباشر » (+, contre les aiguilles) et « الاتجاه غير المباشر » (−, avec

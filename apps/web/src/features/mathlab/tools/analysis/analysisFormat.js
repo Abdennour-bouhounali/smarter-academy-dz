@@ -50,7 +50,7 @@ export function formatPoint(x, y, decimals = 2) {
 }
 
 /** L'infini signé : +∞ / −∞. */
-export function formatInfinity(sign) {
+function formatInfinity(sign) {
   return sign < 0 ? `${MINUS}∞` : '+∞';
 }
 
@@ -106,11 +106,6 @@ export function formatLine(slope, intercept, decimals = 2) {
   const sign = roundedIntercept > 0 ? '+' : MINUS;
 
   return `y = ${slopeText} ${sign} ${formatValue(Math.abs(roundedIntercept), decimals)}`;
-}
-
-/** « f(2) = 4 » — une évaluation, dans la notation de l'élève. */
-export function formatEvaluation(name, x, y, decimals = 2) {
-  return `${name}(${formatValue(x, decimals)}) = ${formatValue(y, decimals)}`;
 }
 
 /**

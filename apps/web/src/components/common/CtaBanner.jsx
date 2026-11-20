@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Sparkles } from 'lucide-react';
 import { ArrowForward } from './DirectionalIcons';
@@ -32,7 +32,7 @@ export default function CtaBanner({
   return (
     <section className="py-16 px-4 relative z-10">
       <div className="max-w-5xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -55,7 +55,7 @@ export default function CtaBanner({
                 className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-space font-bold text-slate-900 bg-white hover:bg-slate-100 shadow-xl transition-all duration-300 hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600"
               >
                 {resolvedPrimaryLabel}
-                <ArrowForward size={16} className="text-blue-600" />
+                <ArrowForward size={16} className="text-nav-accent" />
               </Link>
               {secondaryLabel && secondaryTo && (
                 <Link
@@ -67,7 +67,7 @@ export default function CtaBanner({
               )}
             </div>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

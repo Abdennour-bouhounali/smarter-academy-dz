@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Play, RotateCcw } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -14,7 +14,7 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
-import { W, H, X_M, X_IN, X_OUT, Y_BELT, CRATE_W, posOfX, xOfPos, COL, CARD_COLOR, SIGN, Backdrop, Belt, Machine, Bin, Tray, Crate, Observer, KidChip } from './rewindBelt/art';
+import { W, H, Y_BELT, CRATE_W, posOfX, xOfPos, CARD_COLOR, SIGN, Backdrop, Belt, Machine, Bin, Tray, Crate, Observer, KidChip } from './rewindBelt/art';
 import { LEVELS } from '../levels';
 import * as L from '../logic/rewindBelt';
 
@@ -442,7 +442,7 @@ function FreeCard({ lab, setLab, k }) {
   const info = L.freeInfo(lab);
   const badA = a.trim() !== '' && !M.parse(a);
   const badB = b.trim() !== '' && !M.parse(b);
-  const clean = (s) => s.replace(/[^0-9٠-٩,.\/٫]/g, '').slice(0, 8);
+  const clean = (s) => s.replace(/[^0-9٠-٩,./٫]/g, '').slice(0, 8);
   const pushFree = (patch) => setLab((s) => L.setFree(s, patch));
   const kind = lab.free?.kind ?? 'add';
   const btn = `inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border-2 px-3 text-base font-black ${ring}`;

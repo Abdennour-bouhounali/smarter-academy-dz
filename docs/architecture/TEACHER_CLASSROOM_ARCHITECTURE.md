@@ -861,6 +861,8 @@ for the lesson instead of covering it (`KNOWLEDGE_MAP.md` « The column »).
 One side effect, intended: teacher pages get the student pages' 16 px top
 padding on desktop (`.sa-workspace-main .sa-page`):
 
+> **Superseded on 2026-11-16:** the sidebar no longer folds. Both workspaces have a fixed 80 px rail (`components/common/WorkspaceNav.jsx`, `RAIL_WIDTH`) and `SidebarToggle` is deleted; the knowledge map's column sits beside the rail. See `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0.
+
 ```text
 /enseignant                      TeacherHome          usage tiles (UsageMeter, N / M in dir="ltr"), classes, next steps
 /enseignant/classes              ClassGroupList       « قسم جديد » opens ClassGroupForm in a centred Modal, on the page
@@ -919,6 +921,10 @@ Frontend code uses `classGroup` as the identifier; i18n namespace `teacher`
 label props so no French default reaches a teacher screen;
 `pages/teacherContract.test.js` scans `pages/teacher/**` for French defaults
 and for any billing import.
+
+Since 2026-11-17 the `teacher` namespace is loaded **on demand, together with `TeacherLayout`** (`BUNDLE_BOUNDARIES.md`
+§3). A component outside `pages/teacher/`, `features/teacher/` and `components/teacher/` that needs one of its strings
+reads it in its own component, mounted for a teacher only, and is named in `i18n/onDemandNamespaces.test.js`.
 
 Teachers may present in Classroom Mode: `'teacher'` is in
 `CLASSROOM_PRESENTER_ROLES` (`packages/core/auth.js`).
@@ -1172,6 +1178,23 @@ usesWorkspaceShell   StudentLayout  MainLayout     TeacherLayout  MainLayout
   browser in `localStorage`, guarded; below `xl` the column stays stacked
   above the exercise).
 
+
+### « حصّة القسم » — the class session (2026-11-18, steps 1–2, not validated)
+
+A teacher runs a lesson's test on the board with his class — the seating map, the editable test, the student's name on top,
+the podium of teams — from `/enseignant/hissa/:lessonId` (full screen, outside the teacher shell, like the challenge and
+مدار displays). It follows the three locks of every teacher route and writes four tables of its own
+(`class_seatings`, `class_tests`, `class_sessions`, `class_session_answers`), **never** `learning_evidence`. The whole
+contract is `docs/architecture/CLASS_SESSION.md`; this document only points to it.
+
+The same day the class session got its own during-the-lesson screens — the rules revised after the start test and « الدرس
+على السبّورة » (the class experiments, writes its rule, the board attacks it, then the name), with a pen, a curtain and a
+timer (`CLASS_SESSION.md` §5bis–§5ter; pilot lesson only, not validated). **Classroom Mode described in this document is
+unchanged for every lesson that has no board script**: it still presents the modules of a lesson page. **A lesson listed
+in `features/classSession/boardLessons.js` (today `qasim-adad-tabii` only) no longer has Classroom Mode at all** — its
+shell is mounted with `retired`, every entry button disappears (lesson page, modules, nested labs and tests), and the
+catalogue card and the مذكرة open « حصّة القسم » (`CLASS_SESSION.md` §2). The teacher's practice for such a lesson is the
+new bank and the class's board, not the shared hub and the old player (`TeacherBankGate`, `CLASS_SESSION.md` §5quater).
 
 ## 9. The admin control surface (French)
 

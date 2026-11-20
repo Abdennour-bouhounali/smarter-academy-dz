@@ -202,7 +202,6 @@ export default function UnitCircleStage({
 
   // ── Le glissement DANS LE GRAPHE (§32) : la relation marche à l'envers ──
 
-  const graphRef = useRef(null);
   useEffect(() => {
     const host = hostRef.current;
     const surface = host?.querySelector('[data-ml-trig-graphsurface]');
@@ -575,7 +574,7 @@ function SymmetryLayer({ state, origin, unit, radius }) {
  * point mathématique que celui du cercle, vu autrement — d'où le trait de
  * liaison, qui rend le lien littéral plutôt que théorique.
  */
-function GraphLayer({ box, span, angle, layers, reducedMotion, t }) {
+function GraphLayer({ box, span, angle, layers }) {
   const mid = waveY(0, box);
   const ticks = useMemo(() => {
     const out = [];

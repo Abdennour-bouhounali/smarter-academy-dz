@@ -6,7 +6,7 @@
  * Frontière 2AM : abscisses, coordonnées, ordre, sommes et différences de deux relatifs, sommes algébriques (parenthèses d'abord), distances sur une droite ; jamais un produit ni un quotient
  * de relatifs (3AM), jamais une équation (unité 4), jamais la symétrie centrale comme propriété (unité 8 du manuel), jamais la preuve de la nature d'un quadrilatère.
  */
-import { src, addition } from '../../_unit/unitMeta.js';
+import { addition } from '../../_unit/unitMeta.js';
 
 /**
  * « أستعدّ » — six affirmations de la plateforme qui mesurent UNE الكفاءة clé de chacune des six leçons de l'unité (l'ordre du catalogue : التعليم، المقارنة، المعلم، الجمع، المجموع الجبري، المسافة).

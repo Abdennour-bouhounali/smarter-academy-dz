@@ -1,4 +1,3 @@
-import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import { TextbookBox } from '../../../../../../common/textbook';
 import { prepQuestion } from '../../_unit/prepDiagnostic';

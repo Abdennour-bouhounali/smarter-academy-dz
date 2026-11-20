@@ -18,7 +18,7 @@
  * « مائة » avec alif, composés soudés ستمائة, accusatif « ألفا / مليونا / مليارا », pluriel « ملايير »).
  */
 
-export const MAX = 10 ** 12;
+const MAX = 10 ** 12;
 
 const isNatural = (n) => Number.isSafeInteger(n) && n >= 0 && n < MAX;
 

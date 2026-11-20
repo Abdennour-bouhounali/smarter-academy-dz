@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { parseDec } from '@smarter-academy/core';
 import { TapQuestion, NumericQuestion, BatchChoiceQuestion } from '../kit';

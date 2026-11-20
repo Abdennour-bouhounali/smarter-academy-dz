@@ -32,7 +32,7 @@ import { parseValue, niceStep, subdivide, indexOf, valueAt, indexRange, isMultip
 const { frac, mul, div, add, sub, eq, isZero, cmp, toNumber, fracDecimal } = Lin;
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseValue(v));
 
-export const MODES = Object.freeze(['shift', 'identify', 'draw', 'read']);
+const MODES = Object.freeze(['shift', 'identify', 'draw', 'read']);
 export const THEMES = Object.freeze(['ramp']);
 
 /* ── lecture des props ─────────────────────────────────────────────────── */
@@ -68,7 +68,7 @@ export const styleOf = (...raws) => (raws.some((r) => r != null && String(r).inc
 
 /* ── la fonction ───────────────────────────────────────────────────────── */
 
-export const fn = (a, b) => AF.affine(F(a), F(b));
+const fn = (a, b) => AF.affine(F(a), F(b));
 export const image = (a, b, x) => AF.imageOf(fn(a, b), F(x));
 /** L'antécédent EXACT de y (a ≠ 0), sinon null. */
 export function antecedent(a, b, y) {
@@ -84,7 +84,7 @@ export const dirOf = (a) => AF.direction(fn(a, 0));
  * La fenêtre par défaut : O, (0 ; b), chaque droite du laboratoire sur [xMin ; xMax], les cibles et les
  * points donnés. Deux unités à gauche de O (les lectures négatives du manuel), 4 à 6 à droite.
  */
-export function defaultWindow({ lines = [], reads = [], extraX = [], extraY = [] }) {
+function defaultWindow({ lines = [], reads = [], extraX = [], extraY = [] }) {
   const steep = lines.some((l) => Math.abs(toNumber(l.a)) > 1);
   const w = { xMin: -2, xMax: steep ? 4 : 6, yMin: 0, yMax: 0 };
   reads.forEach((r) => { if (r.axis === 'x') extraX.push(toNumber(r.v)); else extraY.push(toNumber(r.v)); });

@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ClassroomPresentation from './ClassroomPresentation';
 import { lessonNeighbours } from './classroomUnits';
 import { useClassroomMode } from './ClassroomContext';
 import { wantsClassroomStart } from '../../../features/teacher/lessonMemo/memoRoutes';
+import { hasClassBoard, classSessionPath } from '../../../features/classSession/boardLessons';
 
 /**
  * La coquille de présentation d'une LEÇON — un élément de route « layout »
@@ -52,8 +53,9 @@ export default function LessonClassroomShell({ config, basePath }) {
       routeScope={basePath}
       lessonNavigation={lessonNavigation}
       className="sa-classroom-lesson"
+      retired={hasClassBoard(config.id)}
     >
-      <StartOnArrival title={config.title} />
+      <StartOnArrival title={config.title} lessonId={config.id} />
       <Outlet />
     </ClassroomPresentation>
   );
@@ -73,12 +75,14 @@ export default function LessonClassroomShell({ config, basePath }) {
  * L'état est effacé aussitôt (`replace`) : un rafraîchissement ou un retour
  * arrière ne rouvre jamais la séance tout seul.
  */
-function StartOnArrival({ title }) {
+function StartOnArrival({ title, lessonId }) {
   const { state, pathname, search } = useLocation();
   const navigate = useNavigate();
   const { canPresent, isClassroomMode, enterClassroomMode } = useClassroomMode();
   const done = useRef(false);
   useEffect(() => {
+    // A lesson that has its own board: an old « وضع القسم » door (a bookmark, a link kept somewhere) opens « حصّة القسم ».
+    if (!done.current && wantsClassroomStart(state) && hasClassBoard(lessonId)) { done.current = true; navigate(classSessionPath(lessonId), { replace: true }); return; }
     // `canPresent` attend le compte (AuthContext) : tant qu'il n'est pas là,
     // on patiente sans consommer la demande.
     if (done.current || !wantsClassroomStart(state) || !canPresent) return;

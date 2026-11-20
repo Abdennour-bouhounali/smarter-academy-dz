@@ -49,7 +49,7 @@ export default function SchoolSettings() {
       <h1 className="font-space text-2xl font-bold text-slate-900">{t('settings.title')}</h1>
       <form onSubmit={save} className={`${card} max-w-3xl space-y-4`} data-school-terms>
         <div>
-          <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><CalendarRange size={18} className="text-indigo-600" aria-hidden="true" />{t('settings.termsTitle')}</h2>
+          <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><CalendarRange size={18} className="text-nav-accent" aria-hidden="true" />{t('settings.termsTitle')}</h2>
           <p className="mt-1 font-inter text-sm text-slate-600">{t('settings.termsHint')}</p>
         </div>
         <div className="max-w-xs">

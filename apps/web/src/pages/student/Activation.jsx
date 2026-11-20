@@ -218,7 +218,7 @@ export default function Activation() {
                   aria-invalid={error ? 'true' : undefined}
                   className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 bg-white
                              font-mono tracking-[0.2em] text-lg text-center text-slate-900
-                             focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                             focus:outline-none focus:ring-2 focus:ring-nav-accent focus:border-transparent"
                 />
               </div>
 
@@ -240,9 +240,9 @@ export default function Activation() {
             <button
               type="submit"
               disabled={pending}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold
-                         hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed
-                         focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-full sm:w-auto px-6 py-3 rounded-xl bg-nav-accent text-white font-semibold
+                         hover:bg-[#3350c4] disabled:opacity-60 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-2 focus:ring-nav-accent focus:ring-offset-2"
             >
               {pending ? t('submitLoading') : t('submit')}
             </button>

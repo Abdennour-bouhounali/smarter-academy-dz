@@ -26,7 +26,7 @@ export default function AnswerImageGallery({ images = [], loader, onRemove = nul
           <button
             type="button"
             onClick={() => setOpen(image)}
-            className={`${box} overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-300 hover:ring-slate-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500`}
+            className={`${box} overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-300 hover:ring-slate-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent`}
             aria-label={t('practice.exam.images.open', { n: i + 1 })}
             data-answer-image={image.id}
           >
@@ -90,7 +90,7 @@ function ImageViewer({ image, loader, onAnnotate }) {
 }
 
 /** Une image privée : chargée par le `loader` authentifié, affichée par URL d'objet. */
-export function BlobImage({ loader, id, annotated = false, className = '', alt = '' }) {
+function BlobImage({ loader, id, annotated = false, className = '', alt = '' }) {
   const [url, setUrl] = useState(null);
   const [failed, setFailed] = useState(false);
   useEffect(() => {

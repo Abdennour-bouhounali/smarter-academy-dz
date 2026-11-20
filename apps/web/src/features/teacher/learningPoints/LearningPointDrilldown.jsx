@@ -34,10 +34,10 @@ export default function LearningPointDrilldown({ classGroup, code, onBack }) {
   const gapIds = (data?.students ?? []).filter((s) => s.status === 'gap').map((s) => s.id);
 
   return (
-    <section className="glass-card p-4 sm:p-5 space-y-5" data-lp-drilldown={code}>
+    <section className="rounded-2xl border border-nav-line bg-white p-4 sm:p-5 space-y-5" data-lp-drilldown={code}>
       <div className="flex flex-wrap items-start gap-3">
         <div className="min-w-0 flex-1">
-          <p className="font-mono-jetbrains text-[11px] uppercase tracking-widest text-teal-700">{data?.lesson?.title ?? ''}</p>
+          <p className="font-mono-jetbrains text-[11px] uppercase tracking-widest text-nav-accent">{data?.lesson?.title ?? ''}</p>
           <h3 className="font-space text-lg font-bold text-slate-900">{data?.learningPoint?.title ?? '…'}</h3>
           <p className="text-xs text-slate-500">{t('learningPoints.drilldownHint')}</p>
           {data?.difficultyScope && data.difficultyScope !== 'none' && (
@@ -84,7 +84,7 @@ export default function LearningPointDrilldown({ classGroup, code, onBack }) {
                       <FreshnessMark freshness={s.freshness} />
                       <span className="ms-auto inline-flex items-center gap-1.5 text-xs text-slate-400">
                         {s.lastEvidenceAt ? formatDate(s.lastEvidenceAt) : t('students.never')}
-                        <HelpCircle size={13} className="text-teal-700" aria-hidden="true" />
+                        <HelpCircle size={13} className="text-nav-accent" aria-hidden="true" />
                       </span>
                     </button>
                   </li>

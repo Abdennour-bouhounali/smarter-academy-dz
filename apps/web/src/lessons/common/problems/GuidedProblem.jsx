@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSavedAnswer } from '../answers/useSavedAnswer';
 import { useTranslation } from 'react-i18next';
 import { parseDec } from '@smarter-academy/core';

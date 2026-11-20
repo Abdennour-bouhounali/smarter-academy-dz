@@ -30,9 +30,6 @@ export function norm(m, e = 0) {
   return Object.freeze({ m: M, e: E || 0 });
 }
 
-export const isZeroDec = (v) => v.m === 0n;
-export const eqDec = (u, v) => u.m === v.m && u.e === v.e;
-export const negDec = (v) => norm(-v.m, v.e);
 /** Comparaison exacte (−1, 0, 1). */
 export function compareDec(u, v) {
   const e = Math.min(u.e, v.e);
@@ -217,7 +214,6 @@ export function chainExp(steps, start = 0) {
 export const UNIT_SCALE = Object.freeze({
   km: 3, hm: 2, dam: 1, m: 0, dm: -1, cm: -2, mm: -3, um: -6, nm: -9,
 });
-export const UNIT_ORDER = Object.freeze(['km', 'hm', 'dam', 'm', 'dm', 'cm', 'mm', 'um', 'nm']);
 /** Le nombre de COLONNES entre deux unités dans le tableau de longueur (1), d'aire (2) ou de volume (3) : positif vers une unité PLUS PETITE. */
 export function unitColumns(from, to, mode = 1) {
   if (!(from in UNIT_SCALE) || !(to in UNIT_SCALE)) throw new RangeError('unité inconnue');
@@ -226,7 +222,6 @@ export function unitColumns(from, to, mode = 1) {
 }
 
 const sciOf = (k, p) => ({ k: typeof k === 'object' ? k : parseDec(String(k)), p });
-const toDec = (s) => timesPow10(s.k, s.p);
 /** Produit de k × 10ᵖ (NON normalisé) : [{k, p}] → { k (décimal exact), p } ; 7×10³ × 3×10⁹ → 21 × 10¹². */
 export function mulSci(list) {
   const items = list.map((x) => sciOf(x.k, x.p));
@@ -306,4 +301,3 @@ export function logPos(input) {
 }
 /** « 3{,}52\\times10^{5} » (LaTeX) pour a × 10ⁿ ; `n` omis quand n = 0 n'est PAS fait : l'écriture scientifique garde toujours sa puissance. */
 export const sciTex = (aText, n) => `${String(aText).replace('-', '−').replace(/[,.]/, '{,}')}\\times10^{${n}}`;
-export { toDec as sciValue };

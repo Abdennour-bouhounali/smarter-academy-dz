@@ -88,4 +88,3 @@ export const KIND_STYLE = {
 };
 
 export const kindStyle = (kind) => KIND_STYLE[kind] ?? KIND_STYLE.concept;
-export const isGuideKind = (kind) => kindStyle(kind).family === 'guide';

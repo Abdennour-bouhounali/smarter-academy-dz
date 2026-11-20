@@ -33,7 +33,7 @@ describe('contrat de mise en page du bandeau de leçon', () => {
     const a = getLessonChromeLayout({ authenticated: true });
     expect(a.headerHeight).toBe(STUDENT_MOBILE_HEADER_H);
     expect(a.headerHeightLg).toBe(0);
-    expect(a.stickyTopClass).toBe('top-14 lg:top-0');
+    expect(a.stickyTopClass).toBe('top-14 md:top-0');
   });
 
   it('n’utilise jamais de décalage négatif ni de translation compensatoire', () => {

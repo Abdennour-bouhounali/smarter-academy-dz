@@ -18,12 +18,12 @@ export const MAX_FILES_PER_USER = 50;
 export const ATTACHMENT_KINDS = Object.freeze({ png: 'image', jpg: 'image', jpeg: 'image', webp: 'image', svg: 'svg', pdf: 'pdf' });
 
 /** Ce qui se FOND dans la سبّورة (formes, dessin) sans devenir un fichier. */
-export const IMPORT_KINDS = Object.freeze({ excalidrawlib: 'library', excalidraw: 'scene', json: 'json' });
+const IMPORT_KINDS = Object.freeze({ excalidrawlib: 'library', excalidraw: 'scene', json: 'json' });
 
 export const ATTACHMENT_ACCEPT = '.png,.jpg,.jpeg,.webp,.svg,.pdf,.excalidraw,.excalidrawlib,.json';
 
 /** Les codes du serveur → les clés de `files.errors.*` (mathlab.json). */
-export const SERVER_ERROR_CODES = Object.freeze({
+const SERVER_ERROR_CODES = Object.freeze({
   math_lab_file_too_large: 'tooLarge',
   math_lab_file_unsupported: 'unsupported',
   math_lab_board_file_limit: 'boardLimit',

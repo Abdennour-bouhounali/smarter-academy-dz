@@ -49,17 +49,17 @@ export const MAX_HISTORY = 20;
 
 /** Autant de figures que de couleurs distinctes lisibles sur le plan. */
 export const MAX_FIGURES = 4;
-export const MAX_VERTICES = 12;
+const MAX_VERTICES = 12;
 export const MAX_STEPS = 6;
 
 /** La fenêtre d'ouverture : le repère du manuel, centré sur l'origine. */
 export const DEFAULT_TRANSFORM_VIEWPORT = Object.freeze({ xMin: -8, xMax: 8, yMin: -6, yMax: 6 });
 
 /** Les familles de figures que l'élève peut créer (§4). */
-export const FIGURE_KINDS = Object.freeze(['point', 'segment', 'triangle', 'rectangle', 'square', 'polygon']);
+const FIGURE_KINDS = Object.freeze(['point', 'segment', 'triangle', 'rectangle', 'square', 'polygon']);
 
 /** Les couleurs des figures : l'ORIGINALE. L'image en dérive (§46). */
-export const FIGURE_PALETTE = Object.freeze(['#2563eb', '#059669', '#b45309', '#7c3aed']);
+const FIGURE_PALETTE = Object.freeze(['#2563eb', '#059669', '#b45309', '#7c3aed']);
 
 /** Les noms de sommets, dans l'ordre du manuel. */
 export const VERTEX_NAMES = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L']);
@@ -69,7 +69,7 @@ const finite = Number.isFinite;
 
 let idCounter = 0;
 /** Un identifiant court, stable le temps d'une session. */
-export function newId(prefix) {
+function newId(prefix) {
   idCounter += 1;
 
   return `${prefix}-${Date.now().toString(36)}-${idCounter.toString(36)}`;
@@ -414,17 +414,10 @@ export function moveFigure(scene, figureId, dx, dy) {
   };
 }
 
-export function setFigureVisible(scene, figureId, visible) {
-  return {
-    ...scene,
-    figures: scene.figures.map((figure) => (figure.id === figureId ? { ...figure, visible: visible !== false } : figure)),
-  };
-}
-
 // ── La pile (§21) ────────────────────────────────────────────────────────
 
 /** Les paramètres d'ouverture d'un pas, par famille. */
-export function defaultStep(kind) {
+function defaultStep(kind) {
   switch (kind) {
     case 'rotation': return { id: newId('st'), kind, enabled: true, angle: 90, center: { type: 'origin' } };
     case 'reflection': return { id: newId('st'), kind, enabled: true, axis: { type: 'xAxis' } };

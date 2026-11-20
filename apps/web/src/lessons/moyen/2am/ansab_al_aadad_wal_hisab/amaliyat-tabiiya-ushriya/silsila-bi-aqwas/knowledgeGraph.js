@@ -63,7 +63,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'qaida', kind: 'term', lane: 'center', requires: 'qaidat-aqwas', notebook: true,
-      title: 'قاعدة الأقواس', subtitle: '$(\;) \\succ \\times \\div \\succ + -$',
+      title: 'قاعدة الأقواس', subtitle: '$(\\;) \\succ \\times \\div \\succ + -$',
       context: { text: KNOWLEDGE.brackets.text },
       reveals: ['tariqa'],
     },
@@ -81,7 +81,7 @@ export const KNOWLEDGE_GRAPH = {
     },
     {
       id: 'khulasa', kind: 'takeaway', lane: 'center', requires: 'tariqa-khatt-kasr-alat',
-      title: 'الخلاصة', subtitle: '$(\;) \\succ \\times \\div \\succ + -$ ، والكسر قوسان',
+      title: 'الخلاصة', subtitle: '$(\\;) \\succ \\times \\div \\succ + -$ ، والكسر قوسان',
       context: { text: KNOWLEDGE.brackets.text, note: KNOWLEDGE.bar.text },
       reveals: [],
     },

@@ -280,11 +280,11 @@ function tick(game, s, events) {
 
 // ── Gestes de l'élève ─────────────────────────────────────────────────────
 
-export function slotById(id) {
+function slotById(id) {
   return SLOTS.find((s) => s.id === id) ?? null;
 }
 
-export function canBuild(game, slotId, type) {
+function canBuild(game, slotId, type) {
   return game.status === 'running' && Boolean(slotById(slotId)) && !game.turrets.has(slotId)
     && game.unlocked.has(type) && game.crystals >= TURRETS[type].cost;
 }

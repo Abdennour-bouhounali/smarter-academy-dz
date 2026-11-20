@@ -113,7 +113,6 @@ export function solutions(task, stepH = STEP_TENTH) {
   }
   return out;
 }
-export const solutionsBeat = (task, stepH = STEP_TENTH) => { if (task.kind !== 'beat') throw new Error('pas une tâche beat'); return solutions(task, stepH); };
 export const solutionsBetween = (task, stepH = STEP_TENTH) => { if (task.kind !== 'between') throw new Error('pas une tâche between'); return solutions(task, stepH); };
 
 /** Aucune longueur ne convient ? (le bouton « لا يوجد طول يحقّق ذلك » est alors juste). */
@@ -143,9 +142,6 @@ export const opposite = (a) => -parse(a);
 export const abscissaOf = (pos, origin) => parse(pos) - parse(origin);
 /** Le point de position monde pour l'abscisse `x` quand l'origine est `origin`. */
 export const positionOf = (x, origin) => parse(x) + parse(origin);
-
-/** Le point d'abscisse x tombe-t-il sur une graduation (multiple entier du pas) ? */
-export const onGraduation = (x, step) => parse(x) % parse(step) === 0n;
 
 /**
  * `boardFit(values, step, half = 6)` : la planche a `half` graduations de chaque côté du zéro. `off` : valeurs hors de ±half graduations ;

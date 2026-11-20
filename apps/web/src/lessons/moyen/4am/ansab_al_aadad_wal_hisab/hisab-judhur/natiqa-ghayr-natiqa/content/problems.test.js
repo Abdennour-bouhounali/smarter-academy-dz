@@ -152,7 +152,7 @@ describe('les مسائل du درس 2 de l’unité 2 « الأعداد النا�
 
   it('every written equality / inequality (explain, prompts, solution lines, correct options) is exact', () => {
     let checked = 0;
-    for (const p of PROBLEMS) p.parts.forEach((part, pi) => part.steps.forEach((s, si) => {
+    for (const p of PROBLEMS) p.parts.forEach((part) => part.steps.forEach((s, si) => {
       const where = `${p.id} ${part.label} step ${si + 1}`;
       for (const t of [s.explain, s.prompt, ...(s.lines ?? [])].filter(Boolean)) checked += checkText(t, where);
       if (s.kind === 'choice') checked += checkText(s.options[s.correct], `${where} (correct option)`);

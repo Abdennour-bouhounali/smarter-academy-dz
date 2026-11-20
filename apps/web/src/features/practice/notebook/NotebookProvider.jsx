@@ -22,7 +22,7 @@ const loadNotebookWindow = () => import('./NotebookWindow');
 const NotebookWindow = lazy(loadNotebookWindow);
 let notebookWindowRequested = false;
 
-export function preloadNotebookWindow() {
+function preloadNotebookWindow() {
   if (notebookWindowRequested) return;
   notebookWindowRequested = true;
   const run = () => loadNotebookWindow().catch(() => { notebookWindowRequested = false; });

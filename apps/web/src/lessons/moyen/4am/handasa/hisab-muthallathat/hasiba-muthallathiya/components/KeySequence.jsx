@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Une suite de touches de la calculatrice (« ON sin 54 = », معارف 3) — du CODE LTR, jamais du KaTeX, jamais nu dans

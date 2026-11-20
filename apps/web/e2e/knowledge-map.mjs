@@ -15,7 +15,7 @@
 // Deux connexions API seulement (/auth/login est limité à 6/min).
 // Captures dans /tmp/knowledge-map-qa.
 import { chromium } from 'playwright';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, readFileSync } from 'node:fs';
 
 const BASE = process.env.QA_BASE || 'http://localhost:5173';
 const API = process.env.QA_API || 'http://localhost:8000/api/v1';
@@ -24,10 +24,17 @@ const TEACHER = { email: process.env.QA_TEACHER_EMAIL || 'qa-prof@smarter.dz', p
 const STUDENT = { email: process.env.QA_STUDENT_EMAIL || 'qa-eleve@smarter.dz', password: PASSWORD };
 const OUT = process.env.QA_OUT || '/tmp/knowledge-map-qa';
 const UNIT = '/courses/moyen/4am/ansab_al_aadad_wal_hisab';
-const ALL = [
+// A v2 lesson (its pack declares a WORLD, LESSON_V2.md §2) has no 🧠 map on its home: its only knowledge map is the
+// world's own « خريطة المعارف » (walked by its gameworld-*-hub walk). Which lessons are v2 is read from the generated index.
+const INDEX = JSON.parse(readFileSync(new URL('../src/lessons/lessonIndex.generated.json', import.meta.url), 'utf8'));
+const V2 = new Set(INDEX.lessons.filter((l) => l.pack?.world).map((l) => l.id));
+const UNIT_LESSONS = [
   'qasim-adad-tabii', 'qawasim-adad-tabii', 'khawass-qawasim', 'qasim-mushtarak-akbar', 'tayin-pgcd',
   'bahth-pgcd', 'awwaliyan-fima-baynahuma', 'ikhtizal-kasr', 'wadiya-idmajiya-aadad',
 ];
+const ALL = UNIT_LESSONS.filter((id) => !V2.has(id));
+/** A v2 lesson of this unit: its home must show NO 🧠 map button. */
+const V2_HERE = UNIT_LESSONS.find((id) => V2.has(id));
 const LESSONS = process.env.QA_LESSONS ? process.env.QA_LESSONS.split(',') : ALL;
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -134,6 +141,17 @@ const browser = await chromium.launch();
 const summary = [];
 
 try {
+  // a v2 lesson's home is its world: no « بطاقتي » 🧠 button (the world's « خريطة المعارف » is its only map)
+  if (V2_HERE) {
+    const ctx = await contextFor(browser, teacherToken, { width: 1440, height: 900 });
+    const page = await ctx.newPage();
+    await page.goto(`${BASE}${UNIT}/${V2_HERE}`, { waitUntil: 'networkidle' });
+    await closeTour(page);
+    const world = await page.locator('.di-root').first().waitFor({ timeout: 30000 }).then(() => true, () => false);
+    await page.waitForTimeout(800);
+    check(world && (await page.locator('[data-km-trigger]').count()) === 0, `${V2_HERE} (v2): its home is the world, with no 🧠 map button (world ${world}, ${await page.locator('[data-km-trigger]').count()} button)`);
+    await ctx.close();
+  } else check(false, 'a v2 lesson of this unit is found in lessonIndex.generated.json');
   for (const lesson of LESSONS) {
     console.log(`\n${lesson}`);
     for (const vp of VIEWPORTS) {

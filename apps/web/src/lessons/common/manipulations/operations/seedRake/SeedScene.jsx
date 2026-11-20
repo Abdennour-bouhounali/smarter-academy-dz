@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import * as L from '../../logic/seedRake';
 import { W, BED_X, BED_W, ROWS, RAKE, BRACKET_Y, ZONE_COLORS, HARVEST, segments, cellBox, wholeCells, straddled, borderOf, toNum, toothX, sceneH } from './seedArt';
@@ -23,10 +22,8 @@ export const CSS = `
 @media (prefers-reduced-motion: reduce) { .sr-plant, .sr-wilt, .sr-pulse { animation: none !important; } }
 `;
 
-const INK = '#1E1B4B';
 const WOOD = '#B45309';
 const WOOD_DARK = '#78350F';
-const iso = (s) => `⁦${s}⁩`;
 
 /** Un plant (deux feuilles et une tige) dans la case `b` : un point en dessous de 30 cases par mètre ; `wilted` : penché, brun. */
 function Plant({ b, rowTop, rowH, color, wilted, faded, dot, delay = 0 }) {
@@ -44,7 +41,7 @@ function Plant({ b, rowTop, rowH, color, wilted, faded, dot, delay = 0 }) {
   );
 }
 
-export default function SeedScene({ lab, k, uid, width, scale, mood, handle, grabProps, svgRef }) {
+export default function SeedScene({ lab, k, uid, scale, mood, grabProps, svgRef }) {
   const t = L.taskOf(lab);
   const free = L.isFree(lab);
   const done = L.taskDone(lab);
@@ -54,7 +51,6 @@ export default function SeedScene({ lab, k, uid, width, scale, mood, handle, gra
   const showTeeth = true;
   const locked = !L.canRake(lab);
   const colorOf = (i, z) => (z.sub ? HARVEST : ZONE_COLORS[i % 3]);
-  const total = t.total;
   const over = t.over && (shown ? pl.ok : !t.veil);
   const rowsUsed = over ? 2 : 1;
   const teeth = Array.from({ length: N + 1 }, (_, i) => BED_X + (i * BED_W) / N);
@@ -101,7 +97,6 @@ export default function SeedScene({ lab, k, uid, width, scale, mood, handle, gra
     const bad = pl.ok ? [] : straddled(t.zones.flatMap((z) => [z.from, z.to]), N);
     t.zones.forEach((z, zi) => {
       if (z.sub && !pl.ok) return;
-      const col = colorOf(zi, z);
       wholeCells(z.sub ? z.from : z.from, z.to, N).forEach((c, ci) => {
         const b = cellBox(c, N);
         if (b.row >= rowsUsed && !(b.row === 1 && over)) return;

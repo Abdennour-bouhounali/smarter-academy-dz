@@ -51,7 +51,7 @@
 import { toSymbolicSource } from './symbolicSyntax.js';
 
 /** Au-delà, on considère que le moteur ne rendra pas la main (§47). */
-export const SYMBOLIC_TIMEOUT_MS = 1500;
+const SYMBOLIC_TIMEOUT_MS = 1500;
 
 let enginePromise = null;
 let engine = null;

@@ -48,10 +48,6 @@ function evaluate(tex) {
   return v;
 }
 const strip = (o) => String(o).replace(/^\$|\$$/g, '');
-/** « 0.001 » ou « 1000 » en rationnel. */
-const plain = (t) => evaluate(t.replace(/\./g, '{,}'));
-/** L'exposant d'une option « 10^{k} ». */
-const expOf = (o) => { const m = /^10\^\{(-?\d+)\}$/.exec(strip(o)); expect(m, o).not.toBeNull(); return Number(m[1]); };
 
 
 const OPT_EXP = (o) => { const m = /^10\^\{(-?\d+)\}$/.exec(strip(o)); expect(m, o).not.toBeNull(); return Number(m[1]); };

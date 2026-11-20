@@ -20,11 +20,9 @@
  */
 import * as R from '@smarter-academy/core/arithmetic/relative.js';
 
-export const WORLDS = Object.freeze(['sea']);
+const WORLDS = Object.freeze(['sea']);
 /** La longueur du câble, en centièmes (0 … 10). */
 export const RANGE_H = Object.freeze([0, R.MAX_D * 100]);
-/** Les pas des niveaux, en centièmes. */
-export const STEPS = Object.freeze({ beginner: 100, advanced: 10 });
 
 /** Les tâches par défaut de chaque niveau (la leçon peut passer les siennes) — les mêmes que `levels.js`. */
 export const PRESETS = Object.freeze({
@@ -46,14 +44,14 @@ const snap = (dh, step) => clamp(Math.round(dh / step) * step);
 const T = (h) => R.text(BigInt(h));
 
 /** `step` du texte « 1 » / « 0,1 » (ou d'un nombre) en centièmes. */
-export function stepFrom(x) {
+function stepFrom(x) {
   const h = Number(R.parse(x ?? '1'));
   if (![10, 100].includes(h)) throw new Error(`pas inconnu : ${x}`);
   return h;
 }
 
 /** Les tâches normalisées (texte canonique, id, impossible). Lève si une tâche est mal formée. */
-export function normalizeTasks(list, step) {
+function normalizeTasks(list, step) {
   return list.map((t, i) => {
     const base = t.kind === 'between'
       ? { kind: 'between', lo: R.text(t.lo), hi: R.text(t.hi) }
@@ -80,11 +78,9 @@ export const isFree = (s) => !!s.free;
 /** Le côté qu'on ne peut pas changer (la tâche l'impose) ? */
 export const sideLocked = (s) => !s.free && !!taskOf(s).side;
 /** Le nombre relatif de B (centièmes) et son texte. */
-export const valueOf = (s) => R.fromSideDistance(s.side, BigInt(s.dh));
+const valueOf = (s) => R.fromSideDistance(s.side, BigInt(s.dh));
 export const valueText = (s) => R.text(valueOf(s));
 export const dText = (s) => T(s.dh);
-/** Le texte de A (la scène) : le nombre fixé de la tâche — ou celui de l'élève en libre ; null pour `between`. */
-export const aText = (s) => (s.free ? s.free.a : taskOf(s).kind === 'beat' ? taskOf(s).a : null);
 /** Les marques de repère de la scène : A, ou les deux bornes (`between`). */
 export function marksOf(s) {
   if (s.free) return [{ id: 'a', text: s.free.a }];
@@ -95,7 +91,7 @@ export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 /** Le jugement exact de la position actuelle (sans la consigner). */
-export function judgeNow(s) {
+function judgeNow(s) {
   if (s.free) {
     const order = R.cmp(valueOf(s), s.free.a);
     return { ok: false, value: valueOf(s), order, credit: s.dh > 0 ? s.side : null };
@@ -104,10 +100,10 @@ export function judgeNow(s) {
 }
 /** Les côtés déjà réussis d'une tâche `both`. */
 export const creditOf = (s, i = s.ti) => s.credit[i] ?? {};
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'release' && !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'release' && !t.free && t.task === i);
 const sideTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'side' && t.task === i);
 /** Les longueurs (côté + d) déjà essayées en vain dans la tâche. */
-export const failedLengths = (s, i = s.ti) => new Set(guidedTrials(s, i).filter((t) => !t.ok).map((t) => `${t.side}|${t.d}`));
+const failedLengths = (s, i = s.ti) => new Set(guidedTrials(s, i).filter((t) => !t.ok).map((t) => `${t.side}|${t.d}`));
 
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -179,7 +175,7 @@ export function nextTask(s) {
 }
 
 /** « إعادة » sur la même tâche : le câble remonte à 0, les essais restent (la découverte s'en sert). */
-export function restartTask(s) { return { ...s, dh: 0, last: null, side: s.free ? s.side : (taskOf(s).side ?? s.side) }; }
+function restartTask(s) { return { ...s, dh: 0, last: null, side: s.free ? s.side : (taskOf(s).side ?? s.side) }; }
 
 /** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de zéro — câble à 0, tâche et crédits effacés (les essais restent). */
 export function retryTask(s) {

@@ -65,7 +65,7 @@ export default function SchoolReport() {
 
       {report && (
         <article className="space-y-6 rounded-2xl border border-slate-200 bg-white p-8 print:border-0 print:p-0" data-school-print>
-          <header className="border-b-2 border-indigo-600 pb-3">
+          <header className="border-b-2 border-nav-accent pb-3">
             <p className="font-inter text-sm text-slate-500">{[report.school.name, report.school.wilaya, report.school.commune].filter(Boolean).join(' · ')}</p>
             <h1 className="font-space text-2xl font-bold text-slate-900">{t(`reports.types.${report.type}`)} — {report.title}</h1>
             <p className="mt-1 font-inter text-sm text-slate-600">

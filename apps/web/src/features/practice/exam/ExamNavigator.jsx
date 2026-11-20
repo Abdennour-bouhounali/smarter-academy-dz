@@ -67,7 +67,7 @@ export default function ExamNavigator({ exercise, questionIndex, history, onJump
             <>
               <span
                 className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                  state === 'current' ? 'bg-indigo-600 text-white'
+                  state === 'current' ? 'bg-nav-accent text-white'
                     : entry ? TONE_STYLE[entry.tone].node
                       : 'bg-white text-slate-400 ring-1 ring-slate-300'
                 }`}
@@ -88,7 +88,7 @@ export default function ExamNavigator({ exercise, questionIndex, history, onJump
                   type="button"
                   onClick={() => jump(q)}
                   aria-current={state === 'current' ? 'step' : undefined}
-                  className={`${base} font-semibold ${state === 'current' ? 'bg-indigo-50 text-indigo-900' : 'text-slate-800 hover:bg-slate-50'} focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}
+                  className={`${base} font-semibold ${state === 'current' ? 'bg-nav-accent-soft text-indigo-900' : 'text-slate-800 hover:bg-slate-50'} focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400`}
                 >
                   {content}
                 </button>
@@ -103,7 +103,7 @@ export default function ExamNavigator({ exercise, questionIndex, history, onJump
           <Bookmark className="h-4 w-4" aria-hidden="true" /> {t('practice.exam.nav.flagTitle')}
         </p>
         <label className="flex min-h-[40px] cursor-pointer items-center gap-2 text-sm text-slate-700">
-          <input type="checkbox" checked={flagged} onChange={toggleFlag} className="h-4 w-4 rounded border-slate-400 text-indigo-600 focus:ring-indigo-500" data-exam-flag />
+          <input type="checkbox" checked={flagged} onChange={toggleFlag} className="h-4 w-4 rounded border-slate-400 text-nav-accent focus:ring-nav-accent" data-exam-flag />
           {t('practice.exam.nav.flagLabel')}
         </label>
       </div>

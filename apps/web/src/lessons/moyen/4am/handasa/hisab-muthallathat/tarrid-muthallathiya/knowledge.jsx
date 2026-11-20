@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { REMARKS, METHOD, SOLVE_ALL, EX26, CHECKS, ANGLE_FROM_SIDES } from './content/textbook';
 

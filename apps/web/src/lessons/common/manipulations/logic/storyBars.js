@@ -115,7 +115,7 @@ const MINUS = '−';
 /** « 130 + 6 », « 31,02 − 22,60 » (l'opérande tel qu'écrit, le signe moins U+2212). */
 export const calcText = (c) => `${c.a} ${c.op === '-' ? MINUS : '+'} ${c.b}`;
 /** Une carte du manuel « 24,5 + 11,5 » → { a, op, b }. */
-export function parseCalc(src) {
+function parseCalc(src) {
   const m = String(src).trim().match(/^(\S+)\s*([+\-−])\s*(\S+)$/);
   if (!m) throw new Error(`story-bars: calcul illisible « ${src} »`);
   return { a: m[1], op: m[2] === '+' ? '+' : '-', b: m[3] };
@@ -185,7 +185,7 @@ export function tapeOf(id, i, value) {
 const put = (s, patch) => Object.freeze({ ...s, ...patch });
 
 /** Le défaut d'un item stretch : la taille de l'enfant connu (jamais une réponse : d > 0 partout). */
-export const defaultHeight = (id) => storyOf(id).known.h;
+const defaultHeight = (id) => storyOf(id).known.h;
 
 export function init(id) {
   const st = storyOf(id);
@@ -344,7 +344,7 @@ export function canPlace(s, c, t) {
 }
 
 /** Le refus d'une carte sur un texte : mêmes nombres (autre opération) ou autres nombres. */
-export function refusalKind(id, c, t) {
+function refusalKind(id, c, t) {
   const card = cardsOf(id)[c];
   const it = storyOf(id).items[t];
   const nums = [...it.parts, it.whole].filter((x) => x != null).map((x) => parseNumber(x));

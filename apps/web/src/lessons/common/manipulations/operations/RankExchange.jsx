@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, XCircle, ArrowLeft, Link2, PackageOpen, ChevronLeft, Sparkles, Minus, Plus, ArrowRight } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -734,7 +734,7 @@ function UnpackResult({ lab, k, nm }) {
 
 /* ══════════════ Une colonne du tableau ══════════════ */
 
-function Column({ r, lab, setLab, k, nm, names, colW, bodyH, sizeCap, tiny, drag, sweepProps, lifted, focused, onFocusCol, last }) {
+function Column({ r, lab, setLab, k, nm, names, colW, bodyH, sizeCap, drag, sweepProps, lifted, focused, onFocusCol, last }) {
   const world = lab.world;
   const count = lab.counts[r];
   const lay = L.columnLayout({ count, width: colW, height: bodyH, aspect: L.aspectOf(world, r), maxSize: sizeCap, minSize: 10, minPitch: L.pitchOf(world, r) });
@@ -1064,7 +1064,7 @@ function discoveryOptions(lab, dk, k, names) {
   ];
 }
 
-function Formal({ lab, dk, k, names }) {
+function Formal({ lab, dk, k }) {
   const cfg = lab.cfg;
   if (dk === 'rank') {
     const n = cfg.n;

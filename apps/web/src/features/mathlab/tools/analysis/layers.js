@@ -66,7 +66,7 @@ export const LAYER_KEYS = Object.freeze(Object.keys(DEFAULT_LAYERS));
  * C'est ce qui tient la promesse de §4 : « They should form one coherent
  * mathematical environment », et non sept pages séparées.
  */
-export const LAB_LAYERS = Object.freeze({
+const LAB_LAYERS = Object.freeze({
   secant: ['curve', 'pointA', 'pointB', 'secant', 'slopeReadout', 'riseRun'],
   tangent: ['curve', 'pointA', 'tangent', 'slopeReadout'],
   derivative: ['curve', 'pointA', 'tangent', 'derivativeCurve', 'criticalPoints'],

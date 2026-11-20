@@ -16,7 +16,7 @@ import { withLabScope } from './labScope.js';
 export const MATH_LAB_BASE_PATH = '/espace/atelier';
 
 /** Le segment du مختبر dans un espace de travail : `/espace/atelier`, `/enseignant/atelier`. */
-export const MATH_LAB_SEGMENT = 'atelier';
+const MATH_LAB_SEGMENT = 'atelier';
 
 /**
  * La racine du مختبر dans l'espace du lecteur — l'élève ET l'enseignant ont

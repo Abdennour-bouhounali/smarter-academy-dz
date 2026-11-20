@@ -54,7 +54,7 @@ export function witness(a, b, { prefer = null, range = [1, 9] } = {}) {
 }
 
 /** Deux termes SEMBLABLES ont la même partie littérale (la même puissance de x). */
-export const areLikeTerms = (s, t) => s.p === t.p;
+const areLikeTerms = (s, t) => s.p === t.p;
 
 /** Le témoin qui sépare deux termes NON semblables : une valeur de x où ils ne valent pas la même chose, s'ils ont le même coefficient. */
 export function kindWitness(s, t, { prefer = null, range = [1, 9] } = {}) {

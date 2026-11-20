@@ -22,7 +22,7 @@
 import * as C from './conicMath.js';
 
 /** La tolérance de la tangence, relative aux coefficients du trinôme (§52). */
-export const TANGENCY_EPSILON = 1e-7;
+const TANGENCY_EPSILON = 1e-7;
 
 const finite = Number.isFinite;
 const { abs, sqrt, max, hypot } = Math;
@@ -46,13 +46,6 @@ export function isLine(line) {
   if (!line) return false;
 
   return line.vertical ? finite(line.x) : finite(line.slope) && finite(line.intercept);
-}
-
-/** Le point de la droite d'abscisse (ou d'ordonnée) donnée — pour la dessiner. */
-export function linePointAt(line, t) {
-  if (!isLine(line)) return null;
-
-  return line.vertical ? { x: line.x, y: t } : { x: t, y: line.slope * t + line.intercept };
 }
 
 /**

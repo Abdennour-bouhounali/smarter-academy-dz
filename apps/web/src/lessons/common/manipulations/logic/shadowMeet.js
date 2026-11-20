@@ -23,15 +23,15 @@
  * écrit ici. Une manche nouvelle a besoin de `steps` (ou du raccourci object / height / hour / task / ask) ; `shownValues(props)` liste tout ce
  * que ses écrans peuvent montrer (balayage des valeurs interdites) ; `meetOf`, `heightOptions`, `ratioText` donnent ses nombres.
  */
-import { HOURS, K25, shadowAt, m, parseHundredths } from './shadowWorld.js';
+import { HOURS, shadowAt, m, parseHundredths } from './shadowWorld.js';
 
 export { HOURS, m };
 /** Le bâton : 1 m. */
 export const STICK = 100;
 /** Le pied du bâton ne colle jamais à l'objet, et peut dépasser le bout de son ombre de cette marge (cm). */
-export const STICK_MIN = 20;
-export const STICK_PAST = 40;
-export const TASKS = Object.freeze(['meet', 'ratio', 'flag']);
+const STICK_MIN = 20;
+const STICK_PAST = 40;
+const TASKS = Object.freeze(['meet', 'ratio', 'flag']);
 const fz = Object.freeze;
 
 /** « 14:00 » (ou un indice) → l'indice de la demi-heure dans HOURS ; une heure inconnue est une erreur de contenu. */
@@ -99,7 +99,7 @@ export function ratioText(step) {
  * Le DÉPART du bâton : jamais à la rencontre, et loin d'elle — au SOLEIL, au-delà du bout de l'ombre de l'objet (les deux ombres se voient
  * côte à côte, l'élève rapproche l'une de l'autre).
  */
-export function startX(step) {
+function startX(step) {
   // drapeau : le bâton reste planté À GAUCHE du poteau (son ombre finit avant A) — sa place ne dit rien de l'endroit où finira l'ombre du poteau
   if (step.task === 'flag') return -(step.OB + 60);
   return Math.min(step.max, step.OA + 30);
@@ -179,7 +179,7 @@ export function canAnswer(lab) {
 }
 
 /** Ce que l'étape attend (cm) : la hauteur de l'objet, ou — drapeau — la longueur de son ombre. */
-export const expectedOf = (step) => (step.task === 'flag' ? step.OA : step.H);
+const expectedOf = (step) => (step.task === 'flag' ? step.OA : step.H);
 
 /**
  * Le MODÈLE derrière une réponse (cm) — pour dire ce qui a été fait, jamais la règle :

@@ -4,7 +4,6 @@ import { Play, Square, Plus, Minus, FlaskConical } from 'lucide-react';
 import MathField from './MathField.jsx';
 import { PRESETS, PARAMETRIC_PRESETS, TRANSFORMATIONS } from './presets.js';
 import { EXPERIMENTS } from './practice.js';
-import { formatValue } from './analysisFormat.js';
 import { MIN_RIEMANN_N, MAX_RIEMANN_N, RIEMANN_MODES } from './analysisState.js';
 
 /**
@@ -22,7 +21,7 @@ import { MIN_RIEMANN_N, MAX_RIEMANN_N, RIEMANN_MODES } from './analysisState.js'
  * (§2, §39).
  */
 export default function AnalysisControls({
-  data, scene, compact, reducedMotion, approaching,
+  data, scene, reducedMotion, approaching,
   onSource, onPreset, onPoint, onSecondPoint, onLimitPoint, onBounds, onRiemann,
   onParameter, onConstant, onTransform, onToggleLayer, onAddSecond, onRemoveSecond,
   onApproach, onExperiment,
@@ -294,7 +293,7 @@ export default function AnalysisControls({
 }
 
 /** Les champs d'expression (§36) — la saisie de l'élève, jamais exécutée. */
-function FunctionFields({ data, scene, onSource, onAddSecond, onRemoveSecond, t }) {
+function FunctionFields({ data, onSource, onAddSecond, onRemoveSecond, t }) {
   return (
     <section className="sa-ml-an__section">
       <h3 className="sa-ml-an__sectiontitle">{t('tools.analysis.functionPanel.title')}</h3>

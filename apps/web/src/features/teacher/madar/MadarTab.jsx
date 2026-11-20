@@ -1,12 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { AlertTriangle, Eye, Gamepad2, Heart, Lock, MonitorPlay, Swords, Timer } from 'lucide-react';
+import { AlertTriangle, Eye, Gamepad2, Heart, Lock, MonitorPlay, Swords, Fuel, Settings2 } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import {
   adjustStudentHearts, fetchClassMadarItems, fetchClassMadarResults, fetchClassMadarSettings, setClassMadarItemLimit, setStudentMadarGames, updateClassMadarSettings,
 } from '../../../services/teacher/madarService';
-import { Loading, ErrorBox, btnPrimary, btnSecondary, input } from '../../../pages/teacher/teacherUi';
+import { Loading, ErrorBox, btnPrimary, btnSecondary, input, Fold } from '../../../pages/teacher/teacherUi';
 import Modal from '../../../components/admin/ui/Modal';
 import { Toggle } from '../dailyChallenge/ClassChallengeSettings';
 import ShipIcon from '../../madar/components/ShipIcon';
@@ -55,8 +55,7 @@ function Settings({ classGroupId, initial, options, onSaved }) {
   };
 
   return (
-    <form onSubmit={save} className="glass-card p-5" data-madar-settings>
-      <h3 className="font-space text-base font-bold text-slate-900">{t('teacher.settings.title')}</h3>
+    <form onSubmit={save} className="max-w-3xl" data-madar-settings>
       <div className="mt-2 divide-y divide-slate-100">
         <Toggle name="enabled" checked={s.enabled} onChange={set('enabled')} label={t('teacher.settings.enabled')} />
         <Toggle name="competitionEnabled" checked={s.competitionEnabled} onChange={set('competitionEnabled')} label={t('teacher.settings.competition')} disabled={!s.enabled} />
@@ -117,7 +116,7 @@ function Settings({ classGroupId, initial, options, onSaved }) {
       {error && <p role="alert" className="mt-2 rounded-xl bg-rose-50 p-2 text-sm text-rose-800">{error}</p>}
       <div className="mt-3 flex items-center gap-3">
         <button type="submit" className={btnPrimary} disabled={pending}>{t('teacher.settings.save')}</button>
-        {saved && <span role="status" className="font-inter text-sm text-teal-700">{t('teacher.settings.saved')}</span>}
+        {saved && <span role="status" className="font-inter text-sm text-nav-accent">{t('teacher.settings.saved')}</span>}
       </div>
     </form>
   );
@@ -298,8 +297,7 @@ function Items({ classGroupId, range }) {
   };
 
   return (
-    <section className="glass-card p-5" data-madar-items>
-      <h3 className="flex items-center gap-2 font-space text-base font-bold text-slate-900"><Timer size={18} aria-hidden="true" /> {t('teacher.items.title')}</h3>
+    <section data-madar-items>
       <p className="mt-0.5 font-inter text-xs text-slate-500">{t('teacher.items.subtitle')}</p>
       {error && <p role="alert" className="mt-2 rounded-xl bg-rose-50 p-2 text-sm text-rose-800">{error}</p>}
       {items === null && <Loading />}
@@ -310,7 +308,7 @@ function Items({ classGroupId, range }) {
           return (
             <li key={it.itemKey} className="flex flex-wrap items-start gap-3 py-3" data-item={it.itemKey}>
               <div className="min-w-0 flex-1 basis-72">
-                {it.learningPoint && <p className="font-inter text-[11px] font-semibold text-indigo-600"><MathLabel>{it.learningPoint}</MathLabel></p>}
+                {it.learningPoint && <p className="font-inter text-[11px] font-semibold text-nav-accent"><MathLabel>{it.learningPoint}</MathLabel></p>}
                 {it.statement && <p className="mt-0.5 line-clamp-2 text-sm font-semibold text-slate-800"><RichText>{it.statement}</RichText></p>}
                 <p className="mt-1 font-inter text-xs text-slate-500">
                   <span className="me-2 rounded bg-slate-100 px-1.5 py-0.5 font-bold text-slate-600">{t('teacher.items.difficulty', { n: it.difficulty ?? '—' })}</span>
@@ -320,13 +318,13 @@ function Items({ classGroupId, range }) {
               </div>
               <div className="flex items-end gap-2">
                 <label className="text-center">
-                  <span className="block font-inter text-[11px] text-slate-500">{t('teacher.items.limit')}{it.customized && <span className="ms-1 rounded bg-teal-50 px-1 text-teal-700">{t('teacher.items.custom')}</span>}</span>
+                  <span className="block font-inter text-[11px] text-slate-500">{t('teacher.items.limit')}{it.customized && <span className="ms-1 rounded bg-nav-page px-1 text-nav-accent">{t('teacher.items.custom')}</span>}</span>
                   <input type="number" min={range[0]} max={range[1]} value={draft ?? it.timeLimit} dir="ltr"
                     onChange={(e) => setDrafts((d) => ({ ...d, [it.itemKey]: e.target.value }))} className={`${input} mt-1 w-20 text-center`} />
                 </label>
                 <button type="button" className={btnSecondary} disabled={draft === undefined} onClick={() => save(it.itemKey, Number(draft))}>{t('teacher.items.save')}</button>
                 {it.customized && <button type="button" className="font-inter text-xs text-slate-500 underline" onClick={() => save(it.itemKey, null)}>{t('teacher.items.reset', { s: it.difficultyLimit })}</button>}
-                {saved === it.itemKey && <span role="status" className="font-inter text-xs text-teal-700">{t('teacher.items.saved')}</span>}
+                {saved === it.itemKey && <span role="status" className="font-inter text-xs text-nav-accent">{t('teacher.items.saved')}</span>}
               </div>
             </li>
           );
@@ -352,6 +350,7 @@ export default function MadarTab({ classGroup }) {
   const [error, setError] = useState(null);
   const [adjusting, setAdjusting] = useState(null);
   const [gamesFor, setGamesFor] = useState(null);
+  const [everyStudent, setEveryStudent] = useState(false);
 
   const load = useCallback(async () => {
     setError(null);
@@ -376,6 +375,9 @@ export default function MadarTab({ classGroup }) {
   // Les jeux de mathématiques montrent la manche et le niveau de chaque élève.
   const isSniper = ['sniper', 'odd', 'mental'].includes(results.game);
   const { summary, students, adjustments } = results;
+  // Who PLAYED this week first; a class where nobody played shows one line, not a table of zeros.
+  const players = students.filter((row) => row.runs > 0 || row.weekBest != null || row.alerts.length > 0);
+  const shownStudents = everyStudent ? students : players;
   const tiles = [
     ['players', `${summary.players}\u00A0/\u00A0${results.members}`],
     ['runs', summary.runs],
@@ -385,13 +387,12 @@ export default function MadarTab({ classGroup }) {
 
   return (
     <div className="space-y-5" data-madar-tab>
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="max-w-2xl font-inter text-sm text-slate-600">{t('teacher.intro')}</p>
-        <div className="flex flex-wrap items-center gap-2">
-          <div className="flex rounded-lg border border-slate-200 bg-white p-0.5" role="tablist" aria-label={t('teacher.games.label')}>
+      <div className="flex flex-wrap items-center gap-3" title={t('teacher.intro')}>
+        <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+          <div className="flex max-w-full overflow-x-auto rounded-xl border border-nav-line bg-white p-0.5 [scrollbar-width:none]" role="tablist" aria-label={t('teacher.games.label')}>
             {(settings.options.games ?? GAMES).map((g) => (
               <button key={g} type="button" role="tab" aria-selected={game === g} onClick={() => setGame(g)} data-teacher-game={g}
-                className={`rounded-md px-3 py-1.5 font-inter text-sm font-semibold ${game === g ? 'bg-teal-700 text-white' : 'text-slate-600 hover:bg-slate-50'}`}>
+                className={`min-h-[40px] shrink-0 rounded-lg px-3 font-inter text-sm font-bold ${game === g ? 'bg-nav-accent-soft text-nav-accent' : 'text-nav-muted hover:text-nav-ink'}`}>
                 {t(`teacher.games.${g}`)}
               </button>
             ))}
@@ -409,27 +410,27 @@ export default function MadarTab({ classGroup }) {
       </div>
 
       {/* « نافس أستاذك » : l'enseignant joue avec CETTE classe ; sa place dans le classement de la semaine. */}
-      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-fuchsia-200 bg-gradient-to-l from-fuchsia-50 to-amber-50 p-4" data-teacher-play-card>
-        <Swords size={22} className="text-fuchsia-700" aria-hidden="true" />
+      <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-nav-line bg-white p-4" data-teacher-play-card>
+        <Swords size={20} className="text-nav-accent" aria-hidden="true" />
         <p className="min-w-0 flex-1 font-inter text-sm font-semibold text-slate-800" data-teacher-standing>
           {results.teacher
             ? t('teacherPlay.standing', { rank: results.teacher.rank, best: formatScore(results.teacher.best) })
             : t('teacherPlay.notYet')}
         </p>
-        <Link to={`/enseignant/classes/${classGroup.id}/jeux`} className={btnPrimary} data-action="teacher-play">
+        <Link to={`/enseignant/classes/${classGroup.id}/jeux`} className={btnSecondary} data-action="teacher-play">
           <Gamepad2 size={16} aria-hidden="true" /> {t('teacherPlay.cta')}
         </Link>
       </div>
 
       {/* Les réglages passent SOUS le tableau jusqu'à 1536 px : à 1366 px, une colonne latérale
           repoussait « تستحق نظرة » et « القلوب » hors de l'écran. */}
-      <div className="grid grid-cols-1 gap-5 2xl:grid-cols-[minmax(0,1fr)_22rem]">
-        <div className="min-w-0 space-y-5">
-          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="space-y-4">
+        <div className="min-w-0 space-y-4">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 rounded-2xl border border-nav-line bg-white p-4 sm:grid-cols-4">
             {tiles.map(([key, value]) => (
-              <div key={key} className="glass-card p-4">
-                <dt className="font-inter text-xs text-slate-500">{t(`teacher.summary.${key}`)}</dt>
-                <dd className="mt-1 font-space text-2xl font-bold text-slate-900" dir="ltr">{value}</dd>
+              <div key={key}>
+                <dt className="font-inter text-xs font-bold text-nav-muted">{t(`teacher.summary.${key}`)}</dt>
+                <dd className="font-space text-2xl font-bold text-nav-ink" dir="ltr">{value}</dd>
               </div>
             ))}
           </dl>
@@ -441,9 +442,9 @@ export default function MadarTab({ classGroup }) {
             </p>
           )}
 
-          <div className="glass-card overflow-x-auto p-0">
-            {summary.players === 0 && <p className="p-6 text-center font-inter text-sm text-slate-500">{t('teacher.empty')}</p>}
-            {students.length > 0 && (
+          <div className="rounded-2xl border border-nav-line bg-white overflow-x-auto p-0">
+            {summary.players === 0 && <p className="p-6 text-center font-inter text-sm font-semibold text-nav-muted">{t('teacher.empty')}</p>}
+            {shownStudents.length > 0 && (
               <table className="w-full min-w-[820px] text-start font-inter text-sm" data-madar-students>
                 <thead className="bg-slate-50 text-xs text-slate-500">
                   <tr>
@@ -463,7 +464,7 @@ export default function MadarTab({ classGroup }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {students.map((row) => (
+                  {shownStudents.map((row) => (
                     <tr key={row.student.id} className={row.alerts.length ? 'bg-amber-50/40' : ''} data-student-row={row.student.id}>
                       <td className="px-3 py-3 font-space font-bold" dir="ltr">{row.rank ?? t('teacher.table.none')}</td>
                       <td className="px-3 py-3">
@@ -509,7 +510,7 @@ export default function MadarTab({ classGroup }) {
                         <button type="button" onClick={() => setGamesFor(row)} className="inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 font-semibold text-slate-700 hover:bg-slate-50" data-action="student-games">
                           {(row.disabledGames ?? []).length > 0
                             ? <><Lock size={14} className="text-amber-600" aria-hidden="true" /> {t('teacher.studentGames.closedCount', { count: row.disabledGames.length })}</>
-                            : <><Gamepad2 size={14} className="text-teal-700" aria-hidden="true" /> {t('teacher.studentGames.allOpen')}</>}
+                            : <><Gamepad2 size={14} className="text-nav-accent" aria-hidden="true" /> {t('teacher.studentGames.allOpen')}</>}
                         </button>
                       </td>
                     </tr>
@@ -519,11 +520,17 @@ export default function MadarTab({ classGroup }) {
             )}
           </div>
 
-          <section className="glass-card p-5" data-madar-adjustments>
+          {players.length < students.length && (
+            <button type="button" onClick={() => setEveryStudent((value) => !value)} className="min-h-[40px] font-inter text-sm font-bold text-nav-accent hover:underline" data-madar-every-student>
+              {everyStudent ? t('teacher.table.playersOnly') : t('teacher.table.everyStudent', { count: students.length })}
+            </button>
+          )}
+
+          {/* The hearts history shows only when there IS one: an empty box said nothing. */}
+          {adjustments.length > 0 && (
+          <section className="rounded-2xl border border-nav-line bg-white p-5" data-madar-adjustments>
             <h3 className="font-space text-base font-bold text-slate-900">{t('teacher.hearts.history')}</h3>
-            {adjustments.length === 0 ? (
-              <p className="mt-2 font-inter text-sm text-slate-500">{t('teacher.hearts.historyEmpty')}</p>
-            ) : (
+            {(
               <ul className="mt-2 divide-y divide-slate-100">
                 {adjustments.map((a) => (
                   <li key={a.id} className="flex flex-wrap items-center gap-2 py-2 font-inter text-sm">
@@ -539,11 +546,14 @@ export default function MadarTab({ classGroup }) {
               </ul>
             )}
           </section>
+          )}
 
-          <Items classGroupId={classGroup.id} range={settings.options.timeLimitRange} />
-        </div>
-        <div className="min-w-0">
-          <Settings classGroupId={classGroup.id} initial={settings.settings} options={settings.options} onSaved={load} />
+          <Fold name="madar-items" icon={Fuel} title={t('teacher.items.title')}>
+            <Items classGroupId={classGroup.id} range={settings.options.timeLimitRange} />
+          </Fold>
+          <Fold name="madar-settings" icon={Settings2} title={t('teacher.settings.title')}>
+            <Settings classGroupId={classGroup.id} initial={settings.settings} options={settings.options} onSaved={load} />
+          </Fold>
         </div>
       </div>
 

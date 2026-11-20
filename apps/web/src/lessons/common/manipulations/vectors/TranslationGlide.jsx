@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -481,7 +481,7 @@ export default function TranslationGlide({
 }
 
 /* ── le ciel : nuit, étoiles, la baie d'Alger, le minaret de جامع الجزائر, la foule aux téléphones (décor) ── */
-function Sky({ geo, lab, portrait, burst, reduce }) {
+function Sky({ geo, portrait, burst, reduce }) {
   const { width, height } = geo;
   const seaTop = geo.oy + geo.gh + geo.cell * 0.15;
   const stars = useMemo(() => Array.from({ length: 26 }, (_, i) => [((i * 37) % 100) / 100, ((i * 53) % 61) / 100, i % 3]), []);
@@ -733,7 +733,6 @@ function Deco({ led, onTap }) {
 
 const $ = (s) => `$${s}$`;
 const Mx = (k, key, o) => <MathText>{k(`cp.${key}`, o)}</MathText>;
-const AXES = ['h', 'v'];
 
 /** La suite de questions de l'étape `stepId` : `show0` la formation · `show1` le drone égaré · `t<i>` le tableau i du نشاط. */
 export function chainOf(lab, stepId) {

@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../components/MathText';
 
 /**

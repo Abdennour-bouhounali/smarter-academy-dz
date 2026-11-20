@@ -95,12 +95,12 @@ export function setTilt(s, t) {
 /* ── ce que la règle et l'écran lisent ── */
 
 /** B′C′² exact (Al-Kashi sur les abscisses signées). */
-export function bcSquared(s, i = s.i, t = s.t) {
+function bcSquared(s, i = s.i, t = s.t) {
   const b = bOf(s, i); const c = cOf(s, i, t);
   return sub(add(mul(b, b), mul(c, c)), mul(mul(frac(2), mul(b, c)), s.cosA));
 }
 /** La racine exacte d'un rationnel quand elle existe (sinon null). */
-export function exactSqrt(p) {
+function exactSqrt(p) {
   const r = (x) => { const q = Math.round(Math.sqrt(x)); return q * q === x ? q : null; };
   const n = r(p.n); const d = r(p.d);
   return n == null || d == null ? null : frac(n, d);
@@ -131,13 +131,13 @@ export function reading(s, i = s.i, t = s.t) {
 }
 
 /** Une longueur écrite comme sur la règle : décimal court exact, sinon ≈ au centième. */
-export function lengthTex(p, approx) {
+function lengthTex(p, approx) {
   if (p) { const d = fracDecimal(p, 2); if (d != null) return { tex: d.replace(',', '{,}'), exact: true }; }
   const x = p ? toNumber(p) : approx;
   return { tex: x.toFixed(2).replace('.', '{,}'), exact: false };
 }
 /** Le rapport tel que l'élève le lit (non simplifié) : \dfrac{3{,}2}{6}, ≈ si la mesure est arrondie. */
-export function rawRatioTex(num, den) {
+function rawRatioTex(num, den) {
   return `${num.exact ? '' : '\\approx '}\\dfrac{${num.tex}}{${lengthTex(den).tex}}`;
 }
 /** Les trois rapports lus, en LaTeX, pour la position courante. */
@@ -151,13 +151,6 @@ export function readingTex(s, i = s.i, t = s.t) {
     BC: { len: bc, tex: rawRatioTex(bc, s.tri.BC) },
   };
 }
-/** Le rapport exact simplifié (k, ou AC′/AC) ; B′C′/BC approché quand il n'est pas rationnel. */
-export const exactTex = (p) => fracLatex(p);
-export const ratioValueTex = (r, which) => {
-  if (which === 'AB') return fracLatex(r.rB);
-  if (which === 'AC') return fracLatex(r.rC);
-  return r.rBC ? fracLatex(r.rBC) : `\\approx ${r.rBCApprox.toFixed(3).replace('.', '{,}')}`;
-};
 
 /* ── un arrêt : l'élève enregistre, puis JUGE ── */
 
@@ -224,7 +217,7 @@ export function evidenceOf(s, stop) {
  * Les directions des deux rayons : la bissectrice de Â est horizontale, (d) au-dessus, (d′) en dessous
  * (y vers le HAUT). Renvoie un point du plan pour une abscisse signée sur chaque rayon.
  */
-export function rays(s) {
+function rays(s) {
   const half = Math.acos(Math.max(-1, Math.min(1, toNumber(s.cosA)))) / 2;
   const u = [Math.cos(half), Math.sin(half)];
   const v = [Math.cos(half), -Math.sin(half)];
@@ -235,7 +228,7 @@ export function rays(s) {
  * La boîte du dessin en unités (A à l'origine) : du côté « projecteur » jusqu'au-delà de B et C, du côté
  * « chambre noire » jusqu'à −AB (s'il existe). `layout` renvoie l'échelle et la projection en pixels.
  */
-export function sceneBox(s) {
+function sceneBox(s) {
   const R = rays(s);
   const AB = toNumber(s.tri.AB); const AC = toNumber(s.tri.AC);
   const reach = Math.max(AB, AC + toNumber(s.tiltStep) * TILT_MAX);

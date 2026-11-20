@@ -119,10 +119,10 @@ function CatalogueSelection({
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
                     <h3 className="font-bold text-slate-800">
                       {unit.icon && <span className="me-1.5" aria-hidden="true">{unit.icon}</span>}
-                      <span className="me-2 font-mono text-[11px] uppercase tracking-wider text-indigo-600">{t('unit.unitNumber', { n: unit.number })}</span>
+                      <span className="me-2 font-mono text-[11px] uppercase tracking-wider text-nav-accent">{t('unit.unitNumber', { n: unit.number })}</span>
                       {unit.title}
                     </h3>
-                    <Link to={unit.path} className="group inline-flex items-center gap-1 text-xs font-bold text-indigo-700 hover:text-indigo-900" data-unit-group={unit.id}>
+                    <Link to={unit.path} className="group inline-flex items-center gap-1 text-xs font-bold text-nav-accent hover:text-indigo-900" data-unit-group={unit.id}>
                       {t('unit.unitCard.open')} <ArrowForward size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:rtl:-translate-x-0.5" />
                     </Link>
                   </div>

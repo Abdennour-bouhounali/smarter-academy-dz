@@ -25,7 +25,7 @@
  * FUNCTION_GRAPHER_SCHEMA_VERSION est la version de CE format.
  */
 
-import { DEFAULT_VIEWPORT, isValidViewport, normalizeViewport } from './viewport.js';
+import { isValidViewport, normalizeViewport } from './viewport.js';
 
 export const FUNCTION_GRAPHER_SCHEMA_VERSION = 1;
 
@@ -63,7 +63,7 @@ export const FUNCTION_COLOR_CHOICES = Object.freeze([
 export const CONSTRUCTION_COLOR = '#334155';
 
 /** Le mode tangente d'un document neuf ou ancien : éteint, A en x = 1. */
-export const DEFAULT_TANGENT = Object.freeze({ enabled: false, functionId: null, x: 1, showDerivative: false, showTriangle: true });
+const DEFAULT_TANGENT = Object.freeze({ enabled: false, functionId: null, x: 1, showDerivative: false, showTriangle: true });
 
 /**
  * La couleur de f′ : la première de la palette que ne porte AUCUNE courbe
@@ -78,10 +78,10 @@ export function derivativeColorFor(color, usedColors = []) {
 }
 
 /** Les noms des fonctions, dans l'ordre des manuels : f, g, h, puis k, l, m. */
-export const FUNCTION_NAMES = Object.freeze(['f', 'g', 'h', 'k', 'l', 'm']);
+const FUNCTION_NAMES = Object.freeze(['f', 'g', 'h', 'k', 'l', 'm']);
 
 /** Les noms de points. */
-export const POINT_NAMES = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F']);
+const POINT_NAMES = Object.freeze(['A', 'B', 'C', 'D', 'E', 'F']);
 
 /** Les exemples proposés pour démarrer — des amorces d'exploration, pas un cours. */
 export const FUNCTION_PRESETS = Object.freeze([
@@ -158,7 +158,7 @@ export function normalizeFunction(raw, existing = []) {
   };
 }
 
-export function normalizePoint(raw, functions, existing = []) {
+function normalizePoint(raw, functions, existing = []) {
   const source = raw && typeof raw === 'object' ? raw : {};
   if (!functions.some((f) => f.id === source.functionId) || !Number.isFinite(source.x)) return null;
 
@@ -248,4 +248,3 @@ export function isGrapherEmpty(data) {
   return !Array.isArray(data?.functions) || data.functions.length === 0;
 }
 
-export { DEFAULT_VIEWPORT };

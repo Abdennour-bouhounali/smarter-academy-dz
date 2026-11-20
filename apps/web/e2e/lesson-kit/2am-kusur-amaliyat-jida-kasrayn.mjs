@@ -87,7 +87,7 @@ for (const vp of process.env.QA_LAB_ONLY ? [] : SIZES.filter((v) => !process.env
 
 // 2 → 5 — le labo.
 const vis = (page, sel) => page.locator(`${sel}:visible`).first();
-const glanceFits = async (page, label, tag) => {
+const glanceFits = async (page, label) => {
   const box = await page.evaluate(() => {
     const el = [...document.querySelectorAll('[data-wb-glance]')].find((e) => e.offsetHeight > 0);
     if (!el) return null;

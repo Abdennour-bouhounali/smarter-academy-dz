@@ -3,7 +3,7 @@ import { ChevronBack, ChevronForward } from '../../components/common/Directional
 import { shortDate } from './format';
 
 /** Le nombre de semaines passées que le serveur relit (config/family.php › report_weeks_back). */
-export const MAX_WEEKS_BACK = 8;
+const MAX_WEEKS_BACK = 8;
 
 /**
  * Le choix de la semaine du rapport. « الأسبوع السابق » recule dans le temps

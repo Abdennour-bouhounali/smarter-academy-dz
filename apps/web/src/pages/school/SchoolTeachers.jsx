@@ -64,7 +64,7 @@ export default function SchoolTeachers() {
 
       {data && (
         <section className={card} data-school-teacher-link>
-          <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><Link2 size={18} className="text-indigo-600" aria-hidden="true" />{t('teachers.linkTitle')}</h2>
+          <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><Link2 size={18} className="text-nav-accent" aria-hidden="true" />{t('teachers.linkTitle')}</h2>
           <p className="mt-1 font-inter text-sm text-slate-600">{t('teachers.linkHint')}</p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <code dir="ltr" className="min-w-0 flex-1 truncate rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 font-mono text-xs text-slate-800">{link}</code>

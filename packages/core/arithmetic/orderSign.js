@@ -8,15 +8,15 @@
  * Bâti sur les rationnels de `powers.js` (`rat`, `sub`, `sign`, `ratTex`, `parseRat`) et sur `substitution.js` (`parseExpression`, `toTerms`), importé PAR CHEMIN
  * (`@smarter-academy/core/arithmetic/orderSign.js`), jamais par le barrel du cœur (BUNDLE_BOUNDARIES §3–§4).
  */
-import { rat, parseRat, add, sub, mul, div, neg, sign, eq, ratText, ratTex } from './powers.js';
+import { rat, parseRat, add, sub, mul, div, neg, sign, eq } from './powers.js';
 import { parseExpression, toTerms } from './substitution.js';
 
 const DIGITS = { '٠': '0', '١': '1', '٢': '2', '٣': '3', '٤': '4', '٥': '5', '٦': '6', '٧': '7', '٨': '8', '٩': '9', '۰': '0', '۱': '1', '۲': '2', '۳': '3', '۴': '4', '۵': '5', '۶': '6', '۷': '7', '۸': '8', '۹': '9' };
 /** Latin digits, « , » decimal point, ASCII minus, no spaces. */
-export const latin = (text) => String(text ?? '').replace(/[٠-٩۰-۹]/g, (d) => DIGITS[d]).replace(/٫|،/g, ',').replace(/[−–—]/g, '-').replace(/\s+/g, '');
+const latin = (text) => String(text ?? '').replace(/[٠-٩۰-۹]/g, (d) => DIGITS[d]).replace(/٫|،/g, ',').replace(/[−–—]/g, '-').replace(/\s+/g, '');
 
-export const MAX_ABS = 9;
-export const MAX_DEN = 99;
+const MAX_ABS = 9;
+const MAX_DEN = 99;
 
 /** Le rationnel écrit : entier, décimal à virgule, fraction p/q (chiffres arabes-indiens et vrai moins acceptés). Lève une erreur sinon. */
 export function parseNumber(text) {
@@ -47,7 +47,6 @@ export function orderOf(a, b) {
   return s > 0 ? '>' : s < 0 ? '<' : '=';
 }
 export const CARD_OF = Object.freeze({ '>': 'gt', '<': 'lt', '=': 'eq' });
-export const ORDER_OF = Object.freeze({ gt: '>', lt: '<', eq: '=' });
 
 /**
  * Le verdict d'une carte d'ordre (`gt` « a > b », `lt` « a < b », `eq` « a = b ») pour deux nombres a et b, la sonde ROUGE étant sur `red` ('a' ou 'b').
@@ -88,9 +87,6 @@ export function writtenJudge(written, reading) {
   return { ok: eq(value, reading), value };
 }
 
-/** Le texte lu d'une différence en LaTeX, signe compris. */
-export const readingTex = (r) => ratTex(r);
-export { ratText };
 
 /* ═════════════ Deux expressions ═════════════ */
 

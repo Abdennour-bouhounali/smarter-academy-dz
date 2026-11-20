@@ -47,7 +47,7 @@ export function decideNextExercise({ response = null, fallbackIds = [], complete
 }
 
 /** Les raisons qui méritent une petite phrase sous le titre de l'exercice. */
-export const SELECTION_HINT_REASONS = ['weak_learning_point', 'recent_misconception'];
+const SELECTION_HINT_REASONS = ['weak_learning_point', 'recent_misconception'];
 
 /** La raison affichable (ou null) d'une décision. */
 export function selectionHintReason(decision) {

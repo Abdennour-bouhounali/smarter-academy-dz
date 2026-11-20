@@ -34,7 +34,7 @@ const gcd = (a, b) => { let x = Math.abs(a); let y = Math.abs(b); while (y) [x, 
 const lcm = (a, b) => (a / gcd(a, b)) * b;
 const arabicToLatin = (v) => String(v ?? '').replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[⁦⁩\s]/g, '').replace(/[−–]/g, '-').replace('⁄', '/');
 /** « 9/12 », « ٩/١٢ » → { num, den } (naturels) ou null. */
-export function parseWriting(txt) {
+function parseWriting(txt) {
   const m = /^(\d{1,4})\/(\d{1,4})$/.exec(arabicToLatin(txt));
   if (!m) return null;
   const den = Number(m[2]);
@@ -112,11 +112,8 @@ export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const stepOf = (s) => (s.free || taskDone(s) ? 'done' : taskOf(s).steps[s.w.si] ?? 'done');
 export const laserLocked = (s) => !s.free && !s.w.lifted;
-export const levelOf = (s) => (s.tasks[0].predict ? 'advanced' : 'beginner');
 /** Les boutons « على زيت الخزّان » : offerts APRÈS un premier geste de la main (la main d'abord). */
 export const snapOffered = (s) => s.free ? true : s.w.touched && !laserLocked(s);
-export const posOf = (task, i) => task.pos[i];
-export const hOf = (s) => { const t = taskOf(s); return { n: s.w.p, d: t.L }; };
 
 function pushTrial(s, ev, extra = {}) { return { ...s, last: ev, trials: [...s.trials, ev], ...extra }; }
 function solve(s) {
@@ -277,7 +274,7 @@ export function freeTask(s, aT, bT, cT, dT) {
 export const toGuided = (s) => (s.free ? { ...s, free: null, w: initW(s.tasks[s.ti]), last: null, flag: null } : s);
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /** Le prochain geste utile — jamais la réponse. */
 export function coachOf(s) {

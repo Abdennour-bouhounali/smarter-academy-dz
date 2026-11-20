@@ -34,7 +34,7 @@ import * as P from '../logic/storyModellerPlayer';
  *     muet (raison `unused`) ; `choices` : des histoires au choix (la manche libre) ; `coach` : le guide (`coachOf`, ancres `[data-coach]`).
  *   - Commandes figées pendant une prédiction ou une question (`aria-disabled`) ; région vivante TOUJOURS montée ; aucun défilement.
  */
-export const PRED_HOLD_MS = 1600;
+const PRED_HOLD_MS = 1600;
 const LETTER_COLORS = ['#2563EB', '#E11D48'];
 const ring = 'focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600 focus-visible:ring-offset-2';
 const btn = `inline-flex min-h-[44px] items-center gap-2 rounded-xl px-3 text-sm font-bold ${ring}`;
@@ -906,7 +906,7 @@ function Tray({ item, value, count, notCountable, index }) {
 }
 
 /** Un objet en 24 × 24 (dessiné, jamais une image) : crayon, cahier, stylo, règle, gomme, livre, ballon, ballon de volley, maillot, lait, yaourt, brique de jus, part de gâteau. */
-export function Glyph({ kind, color = '#2563EB' }) {
+function Glyph({ kind, color = '#2563EB' }) {
   switch (kind) {
     case 'pencil': return <g><rect x="3" y="9" width="15" height="6" rx="1" fill={color} /><path d="M18 9 L23 12 L18 15 Z" fill="#FCD9B6" /><path d="M21.5 11.2 L23 12 L21.5 12.8 Z" fill="#334155" /><rect x="1" y="9" width="2.5" height="6" fill="#F472B6" /></g>;
     case 'notebook': return <g><rect x="4" y="2" width="16" height="20" rx="2" fill={color} /><rect x="7" y="2" width="1.5" height="20" fill="#fff" fillOpacity="0.6" /><rect x="10" y="7" width="7" height="3" rx="1" fill="#fff" /></g>;

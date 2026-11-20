@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les deux représentations graphiques de l'exercice 18 (p. 73), redessinées en SVG paramétré (jamais

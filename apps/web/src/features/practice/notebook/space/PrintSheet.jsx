@@ -17,7 +17,7 @@ import { typeOf, contextTrail, formatDate } from './noteMeta';
  * @param {{ context?: boolean, date?: boolean, subtitle?: string }} options
  * @param {() => void} onDone
  */
-export function PrintSheet({ notes, options = {}, onDone }) {
+function PrintSheet({ notes, options = {}, onDone }) {
   const { t } = useTranslation('student');
   const root = useMemo(() => {
     let el = document.getElementById('nb-print-root');

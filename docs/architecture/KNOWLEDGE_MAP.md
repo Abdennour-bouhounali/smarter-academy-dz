@@ -542,6 +542,8 @@ the logo row (`top-4 -end-4`), with a 44 px hit area (`after:-inset-1.5`), shado
 accent on hover/focus (blue student, teal teacher), a chevron naming the action's direction
 (`DirectionalIcons`), `aria-expanded`, and an honest disabled state.
 
+> **Superseded on 2026-11-16:** the sidebar no longer folds. Both workspaces have a fixed 80 px rail (`components/common/WorkspaceNav.jsx`, `RAIL_WIDTH`) and `SidebarToggle` is deleted; the knowledge map's column sits beside the rail. See `docs/reports/NAVIGATION_REBUILD_PLAN.md` §0.
+
 **The teacher shell is the same workspace.** `TeacherLayout`'s `<main>` carries
 `.sa-workspace-main`, `--sa-sidebar-w`, `--sa-gutter-w` and `data-workspace-prior` like
 `StudentLayout`, and `TeacherNavbar` folds to icons (`w-20`) like `StudentNavbar`. Before
@@ -590,7 +592,6 @@ apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/<le
 
 apps/web/src/lessons/common/knowledge/
 ├── KnowledgeMap.jsx            ← the drawer UI (generic; do not fork)
-├── knowledgeVisuals.jsx        ← shared SVG mini-figures
 ├── knowledgeState.js (+ test)  ← pure cumulative reducer
 ├── knowledgeStructure.js       ← hierarchy / strata
 ├── knowledgeMastery.js (+ test)
@@ -841,10 +842,9 @@ later, edit that one item — do not re-declare it under a later module.
 
 ### Visuals
 
-Figures used by `knowledge.jsx` live in `apps/web/src/lessons/common/knowledge/knowledgeVisuals.jsx` and are self-contained
-SVG components: `MiniPlane` (compact coordinate plane with points/arrows), `RightTriangle`
-(Pythagoras), `ChaslesArrow` (A → B → C). They take student-space coordinates (y upward) and
-convert internally. They are plain SVG on purpose: they render identically on screen and in print.
+A figure used by a lesson's `knowledge.jsx` is written in that lesson, as a self-contained SVG component (student-space
+coordinates, y upward, converted inside). Plain SVG on purpose: it renders identically on screen and in print.
+(The shared file `knowledgeVisuals.jsx` was deleted on 2026-11-17: no lesson imported any of its figures.)
 
 They do **not** use `CoordPlane` or the lesson's `VectorScene`/`labelLayout` label placer. Map
 figures are small, static and hand-placed. Their labels are audited by the e2e layout audit like
@@ -1588,8 +1588,7 @@ common/knowledge/
 ├── knowledgeStructure.js    strata / hierarchy derivation
 ├── knowledgeState.js        cumulative reducer  (+ .test.js)
 ├── KnowledgeProvider.jsx    parameterised: lessonId, knowledge, printTitle, printSubject
-├── KnowledgeSnapshot.jsx    « À retenir »
-└── knowledgeVisuals.jsx     shared SVG figures (optional; write lesson-specific ones locally)
+└── KnowledgeSnapshot.jsx    « À retenir »
 ```
 
 The provider is parameterised, so nothing needs editing per lesson — pass `lessonId`, `knowledge`,
@@ -2123,7 +2122,6 @@ migrating:
 | `knowledgeState.js` | `cumulativeKnowledge`, `knowledgeModuleNumbers`, `toModuleSet`, `allKnowledge`, `groupByCategory` (+ `.test.js`) |
 | `KnowledgeProvider.jsx` | `LessonKnowledgeProvider` (parameterised), `useLessonKnowledge`; mounts the drawer |
 | `KnowledgeSnapshot.jsx` | the « À retenir » presentation (`compact` / `complete`) |
-| `knowledgeVisuals.jsx` | shared SVG figures |
 | `index.js` | the public entry point — import from here |
 | `progressive/` | the progressive map of every lesson — see [Progressive map — implementation](#progressive-map--implementation) |
 

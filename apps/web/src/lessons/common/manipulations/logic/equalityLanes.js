@@ -18,7 +18,7 @@ export const WHO = Q.WHO;
 export const C_RANGE = Q.C_RANGE;
 
 /** Les égalités de départ et les tâches par défaut de chaque niveau (la leçon peut passer les siennes). */
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { left: '10', right: '4x-2', x: '3', tasks: [[['add', -2]], [['add', 2]], [['mul', 3]], [['div', 2]]] },
   advanced: { left: '5', right: '-3x+1', x: '-4/3', tasks: [[['mul', -2]], [['mul', 2], ['add', -3]], [['add', -1], ['div', -3]]] },
 });
@@ -43,7 +43,7 @@ export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]) && s.o
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const values = (s) => Q.values(s.cur);
 export const equal = (s) => Q.holds(s.cur);
-export const reached = (s) => !s.free && Q.sameEq(s.cur, taskOf(s).target);
+const reached = (s) => !s.free && Q.sameEq(s.cur, taskOf(s).target);
 
 /** Les deux valeurs et les graduations du mur : contient 0, le départ, la cible et l'état courant (le dessin seul). */
 export function trackOf(s) {
@@ -110,7 +110,7 @@ export const toGuided = (s) => (s.free ? { ...s, free: null, cur: s.start, hist:
 /* ── Lecture ─────────────────────────────────────────────────────────────────────────────────── */
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'apply' && !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => t.kind === 'apply' && !t.free && t.task === i);
 
 /**
  * Le prochain geste utile — jamais la réponse : `grab` (le premier geste : la poignée de c), `apply` (« نفّذ »), `op` (ce qu'on a fait ne

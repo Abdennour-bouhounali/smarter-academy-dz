@@ -6,7 +6,7 @@
  * `buildQuiz` en tire au plus `size`, celles des apports du module D'ABORD (une par item, puis une seconde), puis celles des acquis ;
  * les options sont mélangées (`rng`, injectable pour les tests). Un tour : `answer(s, i)` ou `timeout(s)` → révélé ; `next(s)` → suivante ou fin.
  */
-export const QUIZ_SIZE = 5;
+const QUIZ_SIZE = 5;
 export const SECONDS = 12;
 
 function shuffle(list, rng) {

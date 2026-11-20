@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, ChevronRight, ChevronUp, ChevronDown, FlaskConical, Undo2, Camera, Lock, Unlock } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -55,9 +55,6 @@ import * as L from '../logic/courtyardDrone';
  * [data-cd-verdict], [data-cd-next], [data-cd-step=<i>], [data-cd-free], [data-cd-free-x], [data-cd-free-y], [data-cd-free-info], [data-cd-free-back], [data-cd-formal], [data-cd-kid][data-mood].
  */
 const NS = 'manipulation.courtyardDrone';
-const LRI = '⁦';
-const PDI = '⁩';
-const iso = (s) => `${LRI}${s}${PDI}`;
 const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-sky-300';
 /** Un couple dans une phrase arabe : une formule KaTeX (le signe moins reste à GAUCHE des chiffres en RTL). */
 const pt = (p) => `$${P.pairTex(p)}$`;
@@ -301,7 +298,6 @@ function Stage({ lab, setLab, k, svgRef }) {
   const locked = !free && L.taskDone(lab);
   const live = !free && !locked;
   const pos = L.dronePos(lab);
-  const read = L.readOf(lab);
   const axis = L.axisOf(lab);
 
   const apply = (p) => {

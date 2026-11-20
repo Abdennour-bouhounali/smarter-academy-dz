@@ -19,7 +19,12 @@ database_export.sql
 packages/core/curriculum/.generated/
 
 # ── Outils d'agent (config locale, pas du code du projet) ────────────────
-.claude/
+# Claude Code's local files stay out of git (settings, worktrees, skills installed on one machine) — EXCEPT the project's
+# own skill for generating lessons, which is versioned (owner, 2026-11-19): .claude/skills/lesson-v2/
+.claude/*
+!.claude/skills/
+.claude/skills/*
+!.claude/skills/lesson-v2/
 .agents/
 skills-lock.json
 

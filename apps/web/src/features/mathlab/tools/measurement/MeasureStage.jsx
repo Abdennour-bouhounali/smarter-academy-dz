@@ -194,7 +194,7 @@ function UnitGrid({ view, toPx, scale }) {
 
 /* ── Le rectangle (§5, §8) ──────────────────────────────────────────────── */
 
-function RectangleScene({ view, toPx, settings, measures, t }) {
+function RectangleScene({ view, toPx, settings }) {
   const { length, width } = view;
   const a = toPx(0, 0);
   const b = toPx(length, width);
@@ -342,7 +342,7 @@ function RightAngleMark({ toPx, at, along, up }) {
 }
 
 /** §15 — un carré sur chaque côté, dessiné vers l'extérieur. */
-function SideSquares({ vertices, toPx, t }) {
+function SideSquares({ vertices, toPx }) {
   const [A, B, C] = vertices;
   const squares = [[B, A], [B, C], [A, C]].map(([p, q], index) => {
     // Le carré est posé du côté opposé au troisième sommet.
@@ -423,7 +423,7 @@ function AngleArcs({ vertices, toPx, measures }) {
 
 /* ── Le cercle (§10, §11) ───────────────────────────────────────────────── */
 
-function CircleScene({ view, toPx, scale, settings, measures, params, investigation, t }) {
+function CircleScene({ view, toPx, scale, settings, params, investigation }) {
   const centre = toPx(0, 0);
   const radiusPx = view.radius * scale;
 
@@ -511,7 +511,7 @@ function SectorFan({ centre, radiusPx, sectors }) {
  * montrer vingt-quatre petits cubes serait absurde, et l'élève doit COMPTER,
  * pas tourner autour.
  */
-function CuboidScene({ view, toPx, scale, settings, t }) {
+function CuboidScene({ view, toPx, scale }) {
   const { length, width, height } = view;
   const unit = scale * 0.8;
   const dx = unit * 0.45;
@@ -593,7 +593,7 @@ function Quad({ points, cls }) {
  * montre la STRUCTURE avec un nombre de subdivisions lisible, et le tableau
  * porte le vrai compte. Dessiner dix mille carrés de 0,05 px serait un aplat.
  */
-function ConversionScene({ view, toPx, settings, t }) {
+function ConversionScene({ view, toPx, settings }) {
   const k = view.lengthFactor;
   // On dessine au plus dix subdivisions par côté : au-delà, l'œil ne compte
   // plus, et c'est le tableau qui porte le nombre exact.

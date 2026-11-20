@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Un objet que l'élève PREND et PORTE. Il pose les `sourceProps` du geste

@@ -28,7 +28,7 @@
  *   { sup: 'k' }       un exposant (porté par ce qui précède)
  */
 import { createRng } from '../engine/rng';
-import { LEVELS, levelAt } from './levels';
+import { levelAt } from './levels';
 
 // ── Valeurs exactes ─────────────────────────────────────────────────────────
 
@@ -69,7 +69,7 @@ export function surd(c, N) {
 const divBy = (v, k) => (v.kind === 'q' ? qDiv(v, rat(k)) : surd(rat(v.n, v.d * k), v.r));
 
 /** Un polynôme c0 + c1·x + c2·x². */
-export const poly = (c0, c1 = 0, c2 = 0) => ({ kind: 'p', c: [c0, c1, c2] });
+const poly = (c0, c1 = 0, c2 = 0) => ({ kind: 'p', c: [c0, c1, c2] });
 
 export function keyOf(v) {
   if (v.kind === 'q') return `q:${v.n}/${v.d}`;
@@ -1315,4 +1315,3 @@ export function makeRound(seed, k, { level = 1, sub = 1, cardsPerRound = 8 } = {
   };
 }
 
-export { LEVELS };

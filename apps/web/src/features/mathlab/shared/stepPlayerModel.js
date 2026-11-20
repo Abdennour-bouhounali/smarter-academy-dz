@@ -28,7 +28,7 @@
  * dans le DOM sous aucune forme (ni grisé, ni masqué en CSS).
  */
 
-export const STEP_MODES = Object.freeze(['manual', 'auto', 'practice']);
+const STEP_MODES = Object.freeze(['manual', 'auto', 'practice']);
 export const STEP_SPEEDS = Object.freeze({ slow: 2000, normal: 1200, fast: 700 });
 export const DEFAULT_MODE = 'manual';
 export const DEFAULT_SPEED = 'normal';

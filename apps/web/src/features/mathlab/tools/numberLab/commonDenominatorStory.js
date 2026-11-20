@@ -11,7 +11,7 @@
 import { lcm } from './numberTheory.js';
 
 /** Au-delà, la liste est abrégée : les premiers, « … », puis le PPCM. */
-export const MAX_LISTED = 10;
+const MAX_LISTED = 10;
 
 /**
  * @returns {null | {

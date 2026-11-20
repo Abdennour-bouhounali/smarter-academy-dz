@@ -60,6 +60,9 @@ class MathLabDocumentService
         return MathLabDocument::query()
             ->select(MathLabDocument::SUMMARY_COLUMNS)
             ->where('user_id', $user->id)
+            // « ملفّ الدرس » d'un enseignant est un document de la سبّورة, mais il n'est PAS un travail du مختبر :
+            // on l'ouvre depuis la leçon, il ne paraît jamais dans « أعمالي » (CLASS_SESSION.md §2ter).
+            ->whereNotIn('id', \App\Models\TeacherLessonFile::query()->where('teacher_id', $user->id)->whereNotNull('math_lab_document_id')->select('math_lab_document_id'))
             ->when($tool, fn ($q) => $q->where('tool', $tool))
             ->orderByDesc('updated_at')
             ->orderByDesc('id')

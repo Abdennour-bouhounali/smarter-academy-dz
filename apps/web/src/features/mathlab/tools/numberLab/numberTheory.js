@@ -51,9 +51,6 @@ export function lcm(a, b) {
   return (x / gcd(x, y)) * y;
 }
 
-/** Le PGCD d'une liste — §29 compare plus de deux nombres. */
-export const gcdAll = (list) => list.reduce((acc, n) => gcd(acc, n), 0);
-export const lcmAll = (list) => list.reduce((acc, n) => (acc === 0 ? Math.abs(n) : lcm(acc, n)), 0);
 
 /** Deux nombres sont-ils premiers entre eux ? (§29) */
 export const areCoprime = (a, b) => gcd(a, b) === 1;
@@ -185,7 +182,7 @@ export function digitSumChain(n) {
 }
 
 /** La somme ALTERNÉE des chiffres, de droite à gauche — le critère de 11. */
-export function alternatingDigitSum(n) {
+function alternatingDigitSum(n) {
   const digits = digitsOf(n).reverse();
 
   return digits.reduce((acc, d, i) => acc + (i % 2 === 0 ? d : -d), 0);

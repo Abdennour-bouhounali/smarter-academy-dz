@@ -20,7 +20,7 @@ import { CATEGORIES } from './KnowledgeMap';
  */
 
 /** Strates, dans l'ordre de lecture. `cats` = ids de CATEGORIES. */
-export const STRATA = [
+const STRATA = [
   {
     id: 'idees',
     labelKey: 'map.strata.ideas',
@@ -45,7 +45,7 @@ export const STRATA = [
 ];
 
 /** La catégorie mise en avant, hors strates. */
-export const HIGHLIGHT_CAT = 'memoriser';
+const HIGHLIGHT_CAT = 'memoriser';
 
 const catById = (id) => CATEGORIES.find((c) => c.id === id);
 

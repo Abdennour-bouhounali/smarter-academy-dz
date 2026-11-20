@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LE SAUTEUR — un petit lapin dessiné en SVG (2026-10-14, labo `division-jumps` متقدم, 1AM). Un `<g>` à poser DANS la

@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les figures du manuel (p. 61), REDESSINÉES en SVG (jamais d'image) : elles portent seulement des

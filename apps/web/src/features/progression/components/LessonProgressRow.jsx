@@ -24,8 +24,8 @@ const MASTERY_MESSAGE_KEY = {
 const STATE_ORDER = { gap: 0, reinforce: 1, unassessed: 2, mastered: 3 };
 
 const CTA_STYLE = {
-  start: 'bg-blue-600 text-white hover:bg-blue-700',
-  continue: 'bg-blue-600 text-white hover:bg-blue-700',
+  start: 'bg-nav-accent text-white hover:bg-[#3350c4]',
+  continue: 'bg-nav-accent text-white hover:bg-[#3350c4]',
   review: 'bg-white border-2 border-emerald-200 text-emerald-700 hover:border-emerald-400',
   reviewGaps: 'bg-white border-2 border-rose-200 text-rose-700 hover:border-rose-400',
 };
@@ -72,7 +72,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
           <span className="text-2xl leading-none flex-shrink-0 mt-0.5" aria-hidden="true">{node.lesson.icon}</span>
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
-              <Link to={node.lesson.path} className="font-space font-bold text-slate-900 text-base hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded">
+              <Link to={node.lesson.path} className="font-space font-bold text-slate-900 text-base hover:text-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent rounded">
                 <MathLabel>{node.lesson.title}</MathLabel>
               </Link>
               {node.isSynthesis && (
@@ -112,7 +112,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
               onClick={() => setOverride(!open)}
               aria-expanded={open}
               aria-controls={panelId}
-              className="min-h-[44px] px-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 text-xs font-mono-jetbrains font-bold text-slate-700 inline-flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+              className="min-h-[44px] px-3.5 rounded-xl border-2 border-slate-200 bg-white hover:border-blue-400 text-xs font-mono-jetbrains font-bold text-slate-700 inline-flex items-center gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent"
               data-progression-points-toggle
             >
               {open ? t('progression.curriculum.hidePoints') : t('progression.curriculum.showPoints')}
@@ -122,7 +122,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
           <Link
             to={node.cta.path}
             aria-label={t('progression.curriculum.ctaAria', { cta: ctaLabel, lesson: node.lesson.title })}
-            className={`min-h-[44px] px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${CTA_STYLE[node.cta.kind]}`}
+            className={`min-h-[44px] px-4 rounded-xl text-sm font-bold inline-flex items-center gap-1.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${CTA_STYLE[node.cta.kind]}`}
             data-progression-cta={node.cta.kind}
           >
             {ctaLabel} <ArrowForward size={15} aria-hidden="true" />
@@ -162,7 +162,7 @@ export default function LessonProgressRow({ node, profileStatus, onExplain }) {
                 message={t(MASTERY_MESSAGE_KEY[p.state])}
                 action={
                   p.state === 'gap' || p.state === 'reinforce' ? (
-                    <Link to={node.lesson.path} className="text-xs font-mono-jetbrains font-bold text-blue-600 hover:text-blue-800 underline decoration-dotted inline-flex items-center gap-1">
+                    <Link to={node.lesson.path} className="text-xs font-mono-jetbrains font-bold text-nav-accent hover:text-nav-accent underline decoration-dotted inline-flex items-center gap-1">
                       {t('progression.curriculum.reviewLesson')} <ArrowForward size={12} aria-hidden="true" />
                     </Link>
                   ) : null

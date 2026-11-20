@@ -5,10 +5,10 @@
  */
 
 /** Les phases SMART + 👁 + ↩, leur couleur (jamais de rouge) et leur signe. */
-export const PHASES = Object.freeze({
+const PHASES = Object.freeze({
   S: { sign: 'S', tone: 'bg-sky-50 text-sky-800 ring-sky-200', dot: 'bg-sky-500' },
   M: { sign: 'M', tone: 'bg-violet-50 text-violet-800 ring-violet-200', dot: 'bg-violet-500' },
-  A: { sign: 'A', tone: 'bg-indigo-50 text-indigo-800 ring-indigo-200', dot: 'bg-indigo-500' },
+  A: { sign: 'A', tone: 'bg-nav-accent-soft text-nav-accent ring-indigo-200', dot: 'bg-indigo-500' },
   R: { sign: 'R', tone: 'bg-emerald-50 text-emerald-800 ring-emerald-200', dot: 'bg-emerald-500' },
   T: { sign: 'T', tone: 'bg-teal-50 text-teal-800 ring-teal-200', dot: 'bg-teal-500' },
   O: { sign: '👁', tone: 'bg-amber-50 text-amber-800 ring-amber-200', dot: 'bg-amber-500' },

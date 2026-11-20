@@ -20,7 +20,7 @@ export const pt = (x, y) => Object.freeze({ x: num(x), y: num(y) });
 export const ORIGIN = pt(0, 0);
 
 /** Le y de la règle en x. */
-export function offerValue(rule, x) {
+function offerValue(rule, x) {
   const X = num(x);
   const a = num(rule.a);
   const b = rule.b != null ? num(rule.b) : Lin.frac(0);
@@ -43,7 +43,7 @@ export function lineThrough(P, Q) {
 export const onLine = (line, p) => !!line && Lin.eq(p.y, Lin.add(Lin.mul(line.a, p.x), line.b));
 
 /** Trois points alignés (produit en croix nul). */
-export const collinear = (P, Q, R) => Lin.isZero(Lin.sub(Lin.mul(Lin.sub(Q.x, P.x), Lin.sub(R.y, P.y)), Lin.mul(Lin.sub(Q.y, P.y), Lin.sub(R.x, P.x))));
+const collinear = (P, Q, R) => Lin.isZero(Lin.sub(Lin.mul(Lin.sub(Q.x, P.x), Lin.sub(R.y, P.y)), Lin.mul(Lin.sub(Q.y, P.y), Lin.sub(R.x, P.x))));
 
 /** 'prop' : tous sur une droite par O ; 'aligned' : alignés mais pas avec O ; 'bent' : pas alignés. Au moins deux points, abscisses > 0. */
 export function classify(points) {
@@ -73,7 +73,7 @@ export function hits(nodes, P, Q) {
 }
 
 /** Des graduations « rondes » : le plus petit pas dans 1, 2, 5 × 10^k tel que max/pas ≤ cible. */
-export function niceStep(max, target = 8) {
+function niceStep(max, target = 8) {
   const m = Lin.toNumber(num(max));
   let step = 1;
   for (const mult of [1, 2, 5]) for (let e = -2; e <= 5; e += 1) {

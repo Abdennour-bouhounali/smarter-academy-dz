@@ -13,10 +13,6 @@ export function createSchool(token, body) {
   return call('/admin/schools', send('POST', token, body), 'Impossible de créer l\'établissement.');
 }
 
-export function updateSchool(token, id, body) {
-  return call(`/admin/schools/${encodeURIComponent(id)}`, send('PATCH', token, body), 'Impossible d\'enregistrer l\'établissement.');
-}
-
 export function setSchoolStatus(token, id, status) {
   return call(`/admin/schools/${encodeURIComponent(id)}/status`, send('PATCH', token, { status }), 'Impossible de changer le statut.');
 }

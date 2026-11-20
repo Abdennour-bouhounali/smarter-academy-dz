@@ -167,7 +167,7 @@ const islands = (text) => String(text ?? '').split('$').filter((_, i) => i % 2 =
 function texToAscii(raw) {
   let s = raw;
   s = s.replace(/\\ ?\\mathrm\{[A-Za-z]+\}(\^\{\d\})?/g, '').replace(/\\mathrm\{[A-Za-z]+\}(\^\{\d\})?/g, '');
-  s = s.replace(/\\,|\;|\\ |~/g, '').replace(/\{,\}/g, '.').replace(/\\times/g, '*').replace(/\\div/g, '/');
+  s = s.replace(/\\,|\\?;|\\ |~/g, '').replace(/\{,\}/g, '.').replace(/\\times/g, '*').replace(/\\div/g, '/');
   let prev; do { prev = s; s = s.replace(/\\dfrac\{([^{}]*)\}\{([^{}]*)\}/g, '@($1,$2)'); } while (s !== prev);
   s = s.replace(/\^\{(\d+)\}/g, '^$1').replace(/\s+/g, '');
   s = s.replace(/(\d|[a-z]|\))(?=[a-z(@])/g, '$1*').replace(/@\(/g, 'frac(');
@@ -493,7 +493,6 @@ export function audit(bank) {
   for (const [id, sh] of Object.entries(sheets)) {
     sheetText[id] = [sh.statement.content, JSON.stringify((sh.statement.figure?.segments ?? []).map((s) => s.label ?? '')), ...sh.questions.map((q) => q.statement), ...sh.questions.flatMap((q) => (q.choices ?? []).map((c) => c.content))].join(' ');
   }
-  const prior = {}; // clés précédentes d'une feuille (valeurs rationnelles données plus haut)
   for (const { key, q } of bank) {
     const id = sheetOf(key); const sh = sheets[id]; const S = SPEC[key];
     if (!S) { P_(key, 'aucune spec'); continue; }

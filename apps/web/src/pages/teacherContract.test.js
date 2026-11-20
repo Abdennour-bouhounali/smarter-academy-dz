@@ -166,8 +166,9 @@ describe('aucun écran enseignant ne lit le courriel d’un élève', () => {
     expect(linkAt).toBeGreaterThan(-1);
     expect(codeAt).toBeGreaterThan(linkAt);
     const page = readFileSync(resolve(src, 'pages/teacher/ClassGroupDetail.jsx'), 'utf8');
-    expect(page).toMatch(/<JoinAccessCard /);
-    expect(page.indexOf('<JoinAccessCard ')).toBeLessThan(page.indexOf('role="tablist"'));
+    // The card is shown on demand (« دعوة التلاميذ »), by itself while the class is empty, and in « الإعدادات » — always above the tabs.
+    expect(page).toMatch(/<JoinAccessCard\s/);
+    expect(page.indexOf('<JoinAccessCard')).toBeLessThan(page.indexOf('role="tablist"'));
   });
 
   for (const rel of ['pages/teacher', 'features/teacher']) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { GuidedProblem } from '../../../../../../common/problems';
 import { TapQuestion } from '../../../../../../common/kit';
 import MathText from '../../../../../../common/components/MathText';

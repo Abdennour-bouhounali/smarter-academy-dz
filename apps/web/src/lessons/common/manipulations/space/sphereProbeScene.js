@@ -17,7 +17,7 @@
  */
 import { Group } from 'three';
 import { toThree } from './stage3d/spaceStage';
-import { sphere, ball, ring, disc, plane, line, segment, dot, handle, cone, COLORS } from './stage3d/solids3d';
+import { sphere, ball, ring, disc, plane, line, segment, dot, handle, cone } from './stage3d/solids3d';
 
 const KIND_COLOR = { surface: '#f59e0b', inside: '#0ea5e9', outside: '#e11d48' };
 const WORLD = {
@@ -215,4 +215,3 @@ export function buildSphereProbeScene(stage, bridge) {
   };
 }
 
-export { COLORS };

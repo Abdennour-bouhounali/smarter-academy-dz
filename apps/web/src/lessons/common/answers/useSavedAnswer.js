@@ -61,7 +61,7 @@ function saveAnswer(lessonId, key, v) {
 }
 
 /** Les réponses gardées sont-elles actives ici ? (leçon pilote, élève connecté) */
-export function useSavedAnswersOn(lessonId) {
+function useSavedAnswersOn(lessonId) {
   const viewer = useLearningViewer();
   const auth = useContext(AuthContext);
   const on = Boolean(lessonId) && viewer?.role === 'student' && Boolean(auth?.token) && getLoadedLessonConfig(lessonId)?.studentView === 'mission';

@@ -17,9 +17,6 @@
  * l'escalier est plus simple à lire pour un premier contact.
  */
 
-/** Les rangs affichés par défaut sur l'escalier. */
-export const DEFAULT_STEP_COUNT = 5;
-
 export const INDUCTION_EXERCISES = Object.freeze([
   /* ── §38 TEST CASE A — récurrence + inégalité ───────────────────────── */
   {

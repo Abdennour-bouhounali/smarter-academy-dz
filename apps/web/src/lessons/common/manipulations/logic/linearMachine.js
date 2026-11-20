@@ -35,7 +35,7 @@ const same = (p, q) => Lin.eq(F(p), F(q));
  * Les cartes par défaut (la carte vierge s'y ajoute : 8 + 1 = 3 × 3, 11 + 1 = 4 × 3) : les prix du نشاط 1
  * (50 → 200), quelques autres, 1 (son image est a) et 0.
  */
-export const DECKS = Object.freeze({
+const DECKS = Object.freeze({
   souk: Object.freeze(['50', '100', '150', '200', '10', '25', '1', '0']),
   // Les nombres des trois tableaux du نشاط 2 (−3 … 4,5), 0 compris.
   numbers: Object.freeze(['-3', '-2', '-1', '0', '0,5', '1', '1,5', '2', '2,5', '3', '4,5']),
@@ -60,7 +60,7 @@ export function dialIndex(dial, a) {
 }
 
 /** « 0,8x|2x » → les machines (règles lues par core). */
-export function parseRules(rules) {
+function parseRules(rules) {
   const src = String(rules).split('|').map((s) => s.trim()).filter(Boolean);
   if (src.length === 0) throw new Error('linear-machine: aucune règle');
   return src.map((s) => Pr.rule(s));
@@ -134,10 +134,6 @@ export function fixFrom(s, x) {
   return withMachine(s, { ...m, a }, { kind: 'fixed', x: t.x, fx: t.fx, a });
 }
 
-/** a·x de la machine-témoin (null tant que le cadran n'est pas réglé). */
-export const twin = (m, x) => (m.a == null ? null : Pr.image(m.a, x));
-/** La colonne x de la table s'accorde-t-elle avec la machine-témoin ? */
-export const agrees = (m, t) => (m.a == null ? null : same(Pr.image(m.a, t.x), t.fx));
 
 /** Le témoin, PRIS DANS LA TABLE de l'élève, que la machine n'est pas linéaire (ou null). */
 export function witnessInTrials(trials) {

@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 
 /**
  * Les figures de l'OUVERTURE d'unité (تحدّ, encadré historique). Leur texte dit « الشكل المقابل »,
@@ -42,10 +42,6 @@ function figureFor(key) {
   if (!FIGURES[key]) return null;
   lazyCache[key] ??= lazy(FIGURES[key]);
   return lazyCache[key];
-}
-
-export function hasUnitOpenerFigure(code, slot) {
-  return Boolean(FIGURES[`${code}:${slot}`]);
 }
 
 export default function UnitOpenerFigure({ code, slot }) {

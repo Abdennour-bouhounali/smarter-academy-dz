@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Presentation, User, Eye, EyeOff, Play, Pause, Hash, Undo2 } from 'lucide-react';
 import { ChevronForward, ChevronBack } from '../../../components/common/DirectionalIcons';

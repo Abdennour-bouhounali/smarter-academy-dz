@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Maximize2, GraduationCap } from 'lucide-react';
 import { useClassroomMode } from './ClassroomContext';

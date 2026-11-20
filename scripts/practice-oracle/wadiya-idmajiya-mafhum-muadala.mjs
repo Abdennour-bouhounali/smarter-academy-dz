@@ -36,7 +36,6 @@ class Q {
   eq(o) { return this.n === o.n && this.d === o.d; }
   neg() { return this.n < 0n; }
 }
-const ZERO = new Q(0n); const ONE = new Q(1n);
 const dq = (s) => { const m = /^(\d+)(?:\.(\d+))?$/.exec(String(s).trim()); if (!m) throw new Error(`nombre illisible : ${s}`); const f = m[2] ?? ''; return new Q(BigInt(m[1] + f), 10n ** BigInt(f.length)); };
 const isDec = (x) => { for (let k = 0n; k <= 12n; k++) if ((10n ** k) % x.d === 0n) return true; return false; };
 const D = (x) => {
@@ -79,7 +78,6 @@ function ev(n, env, allowNeg = false) {
   return l.div(r);
 }
 const envQ = (e) => Object.fromEntries(Object.entries(e ?? {}).map(([k, v]) => [k, dq(String(v))]));
-const val = (s, env) => ev(parse(s), envQ(env));
 const letters = (n, acc = new Set()) => { if (n.k === 'v') acc.add(n.n); if (n.k === 'b') { letters(n.l, acc); letters(n.r, acc); } return acc; };
 
 /* ── équations : « G = D », résolues par annulation de la chaîne d'opérations ── */
@@ -138,33 +136,10 @@ function readings(E) {
   if (F.f === 'dsub') { r.UNDOFIRST = m.mul(d.add(c)); r.SUBFORM = m.mul(d).sub(c); r.ADDFORM = d.add(c); }
   return { F, x, r };
 }
-/** une lecture n'est « nommée » que si elle est ≥ 0, décimale, ≠ de la clé et n'est PAS une solution. */
-const legal = (E, x, v) => !v.neg() && isDec(v) && !v.eq(x) && !holds(E, v);
 
-/* ── équations d'une histoire (une opération) : SWAP, ROLE, ADDFORM refaits depuis la forme de la vérité ── */
-function storyReadings(E) {
-  const F = formOf(E); const v = E.v; const s = (q) => D(q);
-  const out = {};
-  if (F.f === 'mul') { out.SWAP = `${s(F.b)}*${v}=${s(F.a)}`; out.ROLE = `${v}/${s(F.a)}=${s(F.b)}`; }
-  if (F.f === 'div') { out.SWAP = `${v}/${s(F.b)}=${s(F.a)}`; out.ROLE = `${s(F.a)}/${v}=${s(F.b)}`; }
-  if (F.f === 'ldiv') { out.SWAP = `${s(F.b)}/${v}=${s(F.a)}`; out.ROLE = `${v}/${s(F.a)}=${s(F.b)}`; }
-  out.ADDFORM = `${v}+${s(F.a)}=${s(F.b)}`;
-  return out;
-}
-/** après la première étape de annulation (équation à étape) : vérité et lecture UNDOFIRST. */
-function stepReadings(E) {
-  const F = formOf(E); const v = E.v; const s = (q) => D(q); const out = {};
-  if (F.f === 'lin') { out.TRUTH = `${s(F.m)}*${v}=${s(F.d.sub(F.c))}`; out.UNDOFIRST = `${v}+${s(F.c)}=${s(F.d.div(F.m))}`; out.ADDFORM = `${s(F.m)}*${v}=${s(F.d.add(F.c))}`; }
-  if (F.f === 'lsub') { out.TRUTH = `${s(F.m)}*${v}=${s(F.d.add(F.c))}`; out.UNDOFIRST = `${v}-${s(F.c)}=${s(F.d.div(F.m))}`; out.SUBFORM = `${s(F.m)}*${v}=${s(F.d.sub(F.c))}`; }
-  if (F.f === 'div2') { out.TRUTH = `${v}+${s(F.c)}=${s(F.m.mul(F.d))}`; out.UNDOFIRST = `${v}/${s(F.m)}=${s(F.d.sub(F.c))}`; }
-  if (F.f === 'dsub') { out.TRUTH = `${v}-${s(F.c)}=${s(F.m.mul(F.d))}`; out.UNDOFIRST = `${v}/${s(F.m)}=${s(F.d.add(F.c))}`; }
-  return out;
-}
 /** deux équations de même lettre sont « la même écriture » si G − D coïncide en plusieurs points. */
 const XS = ['1', '2', '3', '5', '7', '11', '13'].map((n) => new Q(BigInt(n)));
 const sameEq = (A, B) => { try { const f = (E, x) => ev(E.L, { [E.v]: x }, true).sub(ev(E.R, { [E.v]: x }, true)); return XS.every((x) => f(A, x).eq(f(B, x))) || XS.every((x) => f(A, x).eq(f(B, x).mul(new Q(-1n)))); } catch { return false; } };
-/** polynôme du 1er degré (m, c) d'une expression ASCII en x. */
-const affine = (s) => { const e = parse(s); const c = ev(e, { x: ZERO }, true); const m = ev(e, { x: ONE }, true).sub(c); return { m, c }; };
 
 
 /* ── SPEC : ce que la feuille demande (expressions / équations ASCII + recettes), jamais une réponse ── */
@@ -377,7 +352,7 @@ const PROV = {
 
 /* ── outils propres à cette synthèse ── */
 const PTS = [1, 2, 3, 5, 7, 11].map((k) => k);
-const fracAscii = (s) => { let t = String(s); for (;;) { const n = t.replace(/\[([^\[\]|]*)\|([^\[\]]*)\]/g, '(($1)/($2))'); if (n === t) break; t = n; } return t; };
+const fracAscii = (s) => { let t = String(s); for (;;) { const n = t.replace(/\[([^[\]|]*)\|([^[\]]*)\]/g, '(($1)/($2))'); if (n === t) break; t = n; } return t; };
 const P = (s) => parse(fracAscii(s));
 const allLetters = (...ss) => { const L = new Set(); for (const s of ss) letters(P(s), L); return [...L]; };
 /** deux expressions (plusieurs lettres) sont égales si elles coïncident en plusieurs points entiers */
@@ -386,7 +361,6 @@ const sameExpr = (a, b) => {
   return PTS.every((k, i) => { const env = Object.fromEntries(L.map((l, j) => [l, new Q(BigInt(k + 2 * j + i))])); try { return ev(P(a), env, true).eq(ev(P(b), env, true)); } catch { return false; } });
 };
 const valAt = (s, env) => ev(P(s), envQ(env), true);
-const keyQ = (x) => (x instanceof Q ? x : dq(String(x)));
 const relTest = (rel, a, b) => { const c = a.n * b.d - b.n * a.d; return rel === '=' ? c === 0n : rel === '<' ? c < 0n : rel === '<=' ? c <= 0n : rel === '>' ? c > 0n : c >= 0n; };
 const MISCS = JSON.parse(readFileSync(join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'content/practice/misconceptions.json'), 'utf8'));
 const sigId = (t) => (['FIXED', 'SIGN'].includes(t) ? `MISC-SYN-MUAD2-${t}` : `MISC-MAJHUL-${t}`);
@@ -525,7 +499,6 @@ export function audit(bank) {
     for (const q2 of sh.questions) { if (q2.id === q.id) break; for (const t of [q2.statement, ...(q2.choices ?? []).map((c) => c.content)]) numbersIn(t).forEach((n) => known.add(n)); }
     const lits = (s) => (fracAscii(s).match(/\d+(?:\.\d+)?/g) ?? []).map((n) => D(dq(n)));
     const checkLits = (s, what) => { for (const n of lits(s)) if (!known.has(n)) P_(key, `le nombre ${n} de ${what} « ${s} » n'est pas donné dans la feuille (ni clé précédente)`); };
-    const qn = Number(q.id.slice(1));
     if (S.t === 'val') {
       if (q.answerType !== 'rational') P_(key, 'une valeur est `rational`');
       if (q.expectedAnswer !== D(j.info.key)) P_(key, `l'oracle trouve ${D(j.info.key)}, la feuille ${q.expectedAnswer}`);

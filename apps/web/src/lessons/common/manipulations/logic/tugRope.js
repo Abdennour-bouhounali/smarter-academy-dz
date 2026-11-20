@@ -15,10 +15,10 @@
  */
 import * as R from '@smarter-academy/core/arithmetic/relative.js';
 
-export const MAX_KIDS = 6;
-export const MAX_ABS = 2000n; // 20 en centièmes
+const MAX_KIDS = 6;
+const MAX_ABS = 2000n; // 20 en centièmes
 
-export const PRESETS = Object.freeze({
+const PRESETS = Object.freeze({
   beginner: { tasks: [
     { id: 't1', chain: '(+7)+(-3)+(+5)+(-6)' },
     { id: 't2', chain: '(-8)-(+3)+(-6)-(-5)' },
@@ -51,13 +51,12 @@ export function normalizeTasks(list) {
 }
 
 /** Les enfants d'une étape : l'étape 0 d'un groupe = ses membres ; sinon la file écrite (le groupe réglé devient UN enfant). */
-export function kidsFor(task, stage) {
+function kidsFor(task, stage) {
   const src = task.gi >= 0 && stage === 0
     ? task.nodes[task.gi].group.map((n) => ({ op: n.op, v: n.value }))
     : task.nodes.map((n, k) => (k === task.gi ? { op: n.op, v: task.inner, fromGroup: true } : { op: n.op, v: n.value }));
   return src.map((k, i) => ({ i, op: k.op, v: k.v, fromGroup: !!k.fromGroup, turned: false, side: null }));
 }
-export const stagesOf = (task) => (task.gi >= 0 ? 2 : 1);
 
 export function init(numbers = {}) {
   const tasks = normalizeTasks(numbers.tasks ?? PRESETS.beginner.tasks);
@@ -77,7 +76,7 @@ export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const bib = (k) => (k.turned ? -k.v : k.v);
 /** La contribution VRAIE de l'enfant à la somme (+v pour « + », −v pour « − »). */
-export const contribution = (k) => (k.op === '+' ? k.v : -k.v);
+const contribution = (k) => (k.op === '+' ? k.v : -k.v);
 export const placedAll = (s) => s.kids.every((k) => k.side);
 export const gesturesOpen = (s) => (s.free ? true : s.phase === 'act' && !taskDone(s));
 export const stageTarget = (s) => {
@@ -105,7 +104,6 @@ export function badKids(s) {
   }
   return out;
 }
-export const arrangementOk = (s) => placedAll(s) && badKids(s).length === 0;
 
 /* ── Gestes ── */
 const touched = (s, patch, trial) => ({ ...s, ...patch, pulled: null, bad: [], ghost: null, trials: trial ? [...s.trials, trial] : s.trials, last: trial ?? s.last });
@@ -154,7 +152,7 @@ export function whistle(s) {
 }
 
 /* ── Lectures typées ── */
-export function parseTyped(raw) {
+function parseTyped(raw) {
   try {
     const h = R.parse(String(raw ?? '').replace(/[⁦⁩]/g, ''));
     return h;
@@ -172,7 +170,7 @@ export function judgeValue(task, raw) {
   else if (got === task.flip && want !== 0n) model = 'flipSign';
   return { ok: false, model, want, value: got };
 }
-export const ghostOf = (model, value) => (model === 'format' || value == null ? null : { kind: model, at: value });
+const ghostOf = (model, value) => (model === 'format' || value == null ? null : { kind: model, at: value });
 
 /** مبتدئ : lire où le ruban s'est arrêté (après un coup de sifflet JUSTE). */
 export function answer(s, raw) {

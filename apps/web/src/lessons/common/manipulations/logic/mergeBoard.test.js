@@ -70,7 +70,7 @@ describe('merge-board — logique', () => {
 
   it('la bulle : on ne fusionne pas à travers ; de gauche à droite pour les + −', () => {
     let s = one('(2/3 - 5/2) × -6/11');
-    const [a, b, c] = L.tilesOf(s.root);
+    const [, b, c] = L.tilesOf(s.root);
     s = L.tapTile(s, b.id); s = L.tapTile(s, c.id);
     expect(s.last).toMatchObject({ reason: 'bubble' });
     s = one('3/4 - 5/6 + 1/12');

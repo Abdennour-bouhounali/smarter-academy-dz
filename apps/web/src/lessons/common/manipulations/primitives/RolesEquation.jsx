@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * L'ÉGALITÉ QUI DIT LE SENS DE CHAQUE NOMBRE (propriétaire, 2026-11-04 : « 3 → 3 فرق، 15 → 15 لاعبًا »).

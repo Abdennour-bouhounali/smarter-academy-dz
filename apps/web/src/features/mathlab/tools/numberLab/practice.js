@@ -22,8 +22,8 @@
  */
 
 import {
-  makeFrac, simplify, isSimplified, fracToNumber, compareFrac, fracToText,
-  parseNumberInput, addFrac, equivalents,
+  makeFrac, fracToNumber, compareFrac, fracToText,
+  parseNumberInput, equivalents,
 } from './fraction.js';
 import {
   gcd, lcm, divisors, factorPairs, isPrime, primeFactorization, primesUpTo,
@@ -39,7 +39,7 @@ import { percentageOf, percentageChange } from './proportion.js';
  * rend un premier tirage quasi nul sur les petites graines, et toutes les
  * questions tomberaient dans la même famille.
  */
-export function makeRandom(seed) {
+function makeRandom(seed) {
   let state = Number.isFinite(seed) ? Math.floor(seed) : Date.now();
   state ^= 0x9e3779b9;
   state = Math.imul(state ^ (state >>> 16), 0x85ebca6b);
@@ -542,7 +542,7 @@ function normalizePair(raw) {
 }
 
 /** Lire un nombre écrit de n'importe quelle façon (§46). */
-export function readAnswerNumber(answer) {
+function readAnswerNumber(answer) {
   if (typeof answer === 'number') return Number.isFinite(answer) ? answer : null;
   if (typeof answer !== 'string') return null;
   const parsed = parseNumberInput(answer);
@@ -626,12 +626,6 @@ export function revealAnswer(challenge) {
 
 /* ── §54 : les expériences guidées, qui ne sont PAS des questions ──────── */
 
-/**
- * Les expériences de §21, §29 et §31 : on ne demande rien, on fait VARIER et
- * l'élève regarde. Chacune rend la suite de cas à montrer.
- */
-export const EXPERIMENTS = Object.freeze(['digitSum', 'coprime', 'gcdLcmProduct', 'equivalentChain']);
-
 export function runExperiment(name, seed = 1) {
   const random = makeRandom(seed);
   switch (name) {
@@ -693,5 +687,3 @@ function shuffle(random, list) {
   return out;
 }
 
-/** Réexporté pour l'écran : il doit pouvoir vérifier une somme sans réimporter. */
-export { addFrac, isSimplified, simplify };

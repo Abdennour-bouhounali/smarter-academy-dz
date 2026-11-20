@@ -1,4 +1,3 @@
-import React from 'react';
 import StatTable from './StatTable';
 import { SITUATION } from '../content/textbook';
 

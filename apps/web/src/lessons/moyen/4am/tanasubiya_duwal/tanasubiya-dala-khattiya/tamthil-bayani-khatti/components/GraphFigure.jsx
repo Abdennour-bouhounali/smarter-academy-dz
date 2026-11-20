@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Une FIGURE du manuel, dessinée (jamais une image) : un معلم gradué, des droites par O, des points,

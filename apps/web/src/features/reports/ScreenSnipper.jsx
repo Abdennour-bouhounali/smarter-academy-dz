@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Crop, Hand, Monitor, X } from 'lucide-react';
 import { IGNORE_ATTRIBUTE, isMeaningfulRect, normalizeRect } from './screenshot';

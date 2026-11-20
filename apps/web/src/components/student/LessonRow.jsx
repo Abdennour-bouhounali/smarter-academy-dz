@@ -2,132 +2,129 @@ import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Clock, Lock, Crown, EyeOff } from 'lucide-react';
+import { Crown } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import PublicationBadge from '../content/PublicationBadge';
 import { useLessonTileState } from './useLessonTileState';
+import { StatusDot, ProgressLine, minutesOf, tileKind } from './lessonTileParts';
 
 /**
- * La LIGNE d'une leçon — le dessin compact de `LessonCard`, pour la
- * disposition « قائمة » du catalogue (catalogueView.js). Mêmes quatre états
- * que la carte (masquée par l'enseignant, verrouillée, ouverte, bientôt),
- * lus par le même `useLessonTileState` : la ligne ne décide rien que la
- * carte ne décide pas.
+ * THE LESSON ROW — `LessonCard` on one line, for the « قائمة » layout of the catalogue (catalogueView.js). The same four
+ * states, read by the same `useLessonTileState(lesson)`: the row decides nothing the card does not.
  *
- * Une ligne tient sur un écran de téléphone : icône, titre, état, flèche ;
- * la description et la durée n'apparaissent qu'à partir de `sm`.
+ * One line: the state, the name, what a tap does now. Nothing else (owner, 2026-11-16: « small content »).
  */
+const MOTION = {
+  layout: true,
+  initial: { opacity: 0, y: 4 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.15 },
+};
+const ROW = 'group relative flex min-h-[52px] items-center gap-3 overflow-hidden rounded-xl border px-3 py-2 sm:px-4';
+
 const LessonRow = forwardRef(function LessonRow({ lesson, onClick, eyebrow = null }, ref) {
   const { t } = useTranslation('common');
   const { state, isPremiumLesson, progressPercent, publication } = useLessonTileState(lesson);
+  const kind = tileKind(state, progressPercent);
+  const minutes = minutesOf(lesson.duration);
+  const muted = state === 'soon' || state === 'hidden';
 
-  const motionProps = {
-    ref,
-    layout: true,
-    initial: { opacity: 0, y: 4 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0 },
-    transition: { duration: 0.15 },
-  };
+  const action = {
+    done: t('lessonDone'),
+    now: `${t('lessonContinue')} · ${progressPercent}%`,
+    start: t('lessonStart'),
+    locked: t('lockedCta', { ns: 'access' }),
+    hidden: t('hiddenByTeacherBadge', { ns: 'access' }),
+    soon: t('lessonComingSoonFooter'),
+  }[kind];
 
-  const body = (badge, cta, { muted = false } = {}) => (
+  const body = (
     <>
-      <span className={`text-2xl shrink-0 ${muted ? 'grayscale opacity-50' : ''}`} aria-hidden="true">{lesson.icon}</span>
+      <StatusDot kind={kind} />
       <div className="min-w-0 flex-1">
-        {eyebrow && <div className="text-[11px] font-semibold text-indigo-600">{eyebrow}</div>}
+        {eyebrow && <div className="truncate font-inter text-xs font-semibold text-nav-muted">{eyebrow}</div>}
         <div className="flex items-center gap-2">
-          <h4 className={`truncate font-space font-bold text-[15px] ${muted ? 'text-slate-600' : 'text-slate-900'}`}>
+          <h4 className={`truncate font-space text-[15px] font-bold ${muted ? 'text-nav-muted' : 'text-nav-ink'}`}>
             <MathLabel>{lesson.title}</MathLabel>
           </h4>
-          <PublicationBadge status={publication} />
+          {state === 'open' && <PublicationBadge status={publication} />}
         </div>
-        {lesson.description && (
-          <p className="hidden sm:block truncate font-inter text-xs text-slate-500"><MathLabel>{lesson.description}</MathLabel></p>
-        )}
       </div>
-      {badge}
-      <span className="hidden sm:flex shrink-0 items-center gap-1 text-xs font-mono-jetbrains text-slate-400"><Clock size={13} aria-hidden="true" /> <span dir="ltr">{lesson.duration}</span></span>
-      {cta}
+      {isPremiumLesson && state !== 'hidden' && (
+        <span className="sa-premium-badge flex-shrink-0" title={state === 'locked' ? undefined : t('premiumHasAccess')}>
+          <Crown size={10} aria-hidden="true" /> {t('premiumBadge')}
+        </span>
+      )}
+      {minutes != null && kind === 'start' && (
+        <span className="hidden flex-shrink-0 font-inter text-xs font-semibold text-nav-muted sm:inline">
+          {t('lessonMinutes', { n: minutes })}
+        </span>
+      )}
+      <span
+        className={`flex flex-shrink-0 items-center gap-1 font-inter text-sm font-bold ${kind === 'done' ? 'text-nav-done' : muted ? 'text-nav-muted' : 'text-nav-ink'}`}
+      >
+        <span className="hidden md:inline">{action}</span>
+        {!muted && <ArrowForward size={14} className="text-nav-muted" />}
+      </span>
+      {state === 'open' && <ProgressLine percent={progressPercent} />}
     </>
   );
 
-  const rowClass = 'relative flex items-center gap-3 rounded-xl border px-3 py-2.5 sm:px-4 overflow-hidden';
-
   if (state === 'hidden') {
     return (
-      <motion.div {...motionProps} className={`${rowClass} bg-teal-50/40 border-teal-200/60`} data-hidden-by-teacher={lesson.id} data-lesson-row={lesson.id}>
-        {body(
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-100 px-2 py-0.5 font-mono-jetbrains text-[10px] font-semibold text-teal-800" title={t('hiddenByTeacherHint', { ns: 'access' })}>
-            <EyeOff size={10} aria-hidden="true" /> {t('hiddenByTeacherBadge', { ns: 'access' })}
-          </span>,
-          null,
-          { muted: true },
-        )}
+      <motion.div
+        ref={ref}
+        {...MOTION}
+        className={`${ROW} border-dashed border-nav-line bg-nav-page`}
+        title={t('hiddenByTeacherHint', { ns: 'access' })}
+        data-hidden-by-teacher={lesson.id}
+        data-lesson-row={lesson.id}
+      >
+        {body}
       </motion.div>
     );
   }
 
   if (state === 'locked') {
     return (
-      <motion.div {...motionProps}>
-        <Link to="/espace/activation" className={`sa-premium-card-locked group ${rowClass} hover:shadow-sm transition-shadow`} data-lesson-row={lesson.id}>
-          {body(
-            <span className="sa-premium-badge shrink-0"><Lock size={10} aria-hidden="true" /> {t('premiumBadge')}</span>,
-            <span className="flex shrink-0 items-center gap-1 text-sm font-bold text-violet-700 transition-transform group-hover:translate-x-1 group-hover:rtl:-translate-x-1">
-              <span className="hidden md:inline">{t('lockedCta', { ns: 'access' })}</span> <ArrowForward size={14} />
-            </span>,
-          )}
+      <motion.div ref={ref} {...MOTION}>
+        <Link
+          to="/espace/activation"
+          className={`${ROW} border-nav-line bg-white hover:shadow-sm`}
+          data-lesson-row={lesson.id}
+        >
+          {body}
         </Link>
       </motion.div>
     );
   }
 
   if (state === 'open') {
-    const ctaLabel = progressPercent >= 100 ? t('lessonDone') : progressPercent > 0 ? t('lessonContinue') : t('lessonStart');
-    const ctaColor = progressPercent >= 100 ? 'text-emerald-600' : progressPercent > 0 ? 'text-blue-600' : isPremiumLesson ? 'text-violet-700' : 'text-blue-600';
     return (
-      <motion.div {...motionProps}>
+      <motion.div ref={ref} {...MOTION}>
         <Link
           to={lesson.path}
           onClick={onClick}
-          aria-label={`${lesson.title} — ${ctaLabel}`}
-          className={`group ${rowClass} bg-white hover:shadow-sm transition-all ${isPremiumLesson ? 'sa-premium-card' : 'border-slate-200 hover:border-blue-300'}`}
+          aria-label={`${lesson.title} — ${action}`}
+          className={`${ROW} bg-white hover:shadow-sm border-nav-line hover:border-nav-accent`}
           data-lesson-row={lesson.id}
         >
-          {body(
-            progressPercent > 0 ? (
-              <span dir="ltr" className={`shrink-0 rounded-full px-2 py-0.5 font-mono-jetbrains text-[10px] font-bold ${progressPercent >= 100 ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>
-                {progressPercent >= 100 ? '✓ ' : ''}{progressPercent}%
-              </span>
-            ) : isPremiumLesson ? (
-              <span className="sa-premium-badge shrink-0" title={t('premiumHasAccess')}><Crown size={10} aria-hidden="true" /> {t('premiumBadge')}</span>
-            ) : (
-              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" title={t('freeBadge', { ns: 'access' })} />
-            ),
-            <span className={`flex shrink-0 items-center gap-1 text-sm font-bold transition-transform group-hover:translate-x-1 group-hover:rtl:-translate-x-1 ${ctaColor}`}>
-              <span className="hidden md:inline">{ctaLabel}</span> <ArrowForward size={14} />
-            </span>,
-          )}
-          {progressPercent > 0 && (
-            <span className="absolute bottom-0 inset-x-0 h-0.5 bg-slate-100" aria-hidden="true">
-              <span className={`block h-full ${progressPercent >= 100 ? 'bg-emerald-500' : 'bg-blue-500'}`} style={{ width: `${progressPercent}%` }} />
-            </span>
-          )}
+          {body}
         </Link>
       </motion.div>
     );
   }
 
   return (
-    <motion.div {...motionProps} className={`${rowClass} bg-slate-50/50 border-slate-200/50 opacity-75`} data-lesson-row={lesson.id}>
-      {body(
-        <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-200/50 px-2 py-0.5 font-mono-jetbrains text-[10px] font-semibold text-slate-500">
-          <Lock size={10} aria-hidden="true" /> {t('lessonComingSoonBadge')}
-        </span>,
-        null,
-        { muted: true },
-      )}
+    <motion.div
+      ref={ref}
+      {...MOTION}
+      className={`${ROW} border-dashed border-nav-line bg-nav-page`}
+      data-lesson-row={lesson.id}
+    >
+      {body}
     </motion.div>
   );
 });

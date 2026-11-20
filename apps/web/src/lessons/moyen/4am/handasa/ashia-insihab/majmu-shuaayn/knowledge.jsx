@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import GeoFigure from '../../../../../common/components/GeoFigure';
 import { ACT3, KNOW4, KNOW5, KNOW6, METHOD, REMARKS } from './content/textbook';

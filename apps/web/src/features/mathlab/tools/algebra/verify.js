@@ -24,7 +24,7 @@ export function evaluateForm(form, value) {
 }
 
 /** La relation est-elle vraie pour ces deux nombres ? */
-export function relationHolds(left, right, relation) {
+function relationHolds(left, right, relation) {
   const diff = R.sign(R.subtract(left, right));
   switch (relation) {
     case '=': return diff === 0;
@@ -42,7 +42,7 @@ export function relationHolds(left, right, relation) {
  * la forme (et non de la saisie) garantit qu'elle correspond à ce que
  * l'équation dit vraiment.
  */
-export function substitutedLatex(form, value, variable = 'x') {
+export function substitutedLatex(form, value) {
   if (R.isZero(form.a)) return R.toLatex(form.b);
   const v = R.isNegative(value) || !R.isInteger(value) ? `\\left(${R.toLatex(value)}\\right)` : R.toLatex(value);
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { REMARKS, SITUATION, SYSTEM_LETTERS } from './content/textbook';
 

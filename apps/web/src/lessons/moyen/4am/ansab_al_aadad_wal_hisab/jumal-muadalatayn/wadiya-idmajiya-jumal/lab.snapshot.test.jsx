@@ -1,5 +1,4 @@
 import { it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import '../../../../../../i18n';
 import StoryModeller from '../../../../../common/manipulations/systems/StoryModeller';

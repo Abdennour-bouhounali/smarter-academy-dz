@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import * as F from './fourthProportional.js';
 import { fourthProportional as legacy } from './proportional.js';
-import { frac, mul, div, add, sub, eq, cmp } from './linear.js';
+import { frac, mul, div, add, sub, eq } from './linear.js';
 
 const GRID = ['0,5', '1', '2', '2,5', '3', '4', '6', '7,5', '8', '12', '25', '320', '625'];
 const HOLES = ['a', 'b', 'c', 'd'];

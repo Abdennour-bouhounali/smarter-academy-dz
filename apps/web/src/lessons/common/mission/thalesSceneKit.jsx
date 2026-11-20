@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LES PRIMITIVES DES SCÈNES DE L'UNITÉ 9 « خاصية طالس » (rollout 2026-11-10 ; conseil du 2026-11-10, verdict « Scenes: shared SVG primitives + one
@@ -27,7 +26,7 @@ export function SceneBackdrop({ width = 480, height = 260, ground = 232, sky = '
 }
 
 /** Le niveau à bulle : un tube, deux repères, une bulle — au centre quand `level`, poussée vers un bout sinon. */
-export function BubbleLevel({ x, y, w = 46, level = true, deg = 0 }) {
+function BubbleLevel({ x, y, w = 46, level = true, deg = 0 }) {
   const off = level ? 0 : (w / 2 - 8);
   return (
     <g transform={`translate(${x} ${y}) rotate(${deg})`} data-bubble-level={level ? 'level' : 'tilted'}>

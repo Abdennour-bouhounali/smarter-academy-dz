@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useState } from 'react';
+import { useCallback, useId, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DEFAULT_MANIPULATION_LEVEL, resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import ManipulationLevelSelector from './ManipulationLevelSelector';

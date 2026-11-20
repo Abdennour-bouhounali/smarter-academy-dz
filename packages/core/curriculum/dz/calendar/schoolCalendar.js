@@ -69,7 +69,7 @@ export function lessonOrder(progression) {
  * Index de la dernière semaine d'enseignement TERMINÉE à cette date (-1 si
  * aucune). Une semaine est terminée le lendemain de son `to`.
  */
-export function lastCompletedWeekIndex(calendar, date) {
+function lastCompletedWeekIndex(calendar, date) {
   let idx = -1;
   calendar.weeks.forEach((w, i) => {
     if (w.to < date) idx = i;

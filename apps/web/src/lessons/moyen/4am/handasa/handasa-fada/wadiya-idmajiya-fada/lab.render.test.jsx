@@ -1,5 +1,4 @@
 import { it, expect } from 'vitest';
-import React from 'react';
 import { renderToString } from 'react-dom/server';
 import * as SP from '@smarter-academy/core/arithmetic/space.js';
 import * as LN from '@smarter-academy/core/arithmetic/linear.js';

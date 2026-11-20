@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
 // Des CLÉS, pas des libellés : pas d'appel à `t()` au niveau module.
@@ -22,16 +22,16 @@ export default function SmarterEverydaySection() {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-bl from-blue-500/10 to-transparent rounded-full blur-3xl" />
 
       <div className="relative max-w-3xl mx-auto text-center">
-        <motion.p
+        <m.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           className="font-mono-jetbrains text-cyan-400 text-xs sm:text-sm font-semibold tracking-[0.2em] uppercase mb-10"
         >
           {t('everyday.brand')}
-        </motion.p>
+        </m.p>
 
-        <motion.div
+        <m.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -39,13 +39,13 @@ export default function SmarterEverydaySection() {
           className="space-y-3 mb-12"
         >
           {LINES.map((line) => (
-            <motion.p key={line} variants={lineVariants} className="font-space font-medium text-xl sm:text-2xl text-slate-200 leading-snug">
+            <m.p key={line} variants={lineVariants} className="font-space font-medium text-xl sm:text-2xl text-slate-200 leading-snug">
               {t(`everyday.${line}`)}
-            </motion.p>
+            </m.p>
           ))}
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -58,7 +58,7 @@ export default function SmarterEverydaySection() {
           <p className="font-space font-bold text-2xl sm:text-3xl gradient-text leading-snug text-balance mt-1">
             {t('everyday.closing2')}
           </p>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

@@ -105,18 +105,6 @@ function wire(page) {
 
 const shot = (page, name) => page.screenshot({ path: `${OUT}/${name}.png`, fullPage: false });
 
-/** Les coordonnées écran d'un point du plan, lues sur la fenêtre annoncée. */
-async function planeMap(page) {
-  const box = await page.locator('[data-ml-an-plane]').boundingBox();
-  const view = await page.locator('[data-ml-an-plane]').getAttribute('data-ml-view');
-  const [xMin, xMax, yMin, yMax] = view.split(',').map(Number);
-
-  return (x, y) => ({
-    x: box.x + ((x - xMin) / (xMax - xMin)) * box.width,
-    y: box.y + ((yMax - y) / (yMax - yMin)) * box.height,
-  });
-}
-
 const textOf = async (page, selector) => (await page.locator(selector).first().textContent().catch(() => ''))?.trim() ?? '';
 
 /** Ouvre l'instrument, plan prêt. */

@@ -12,7 +12,7 @@ import { mathToPlain } from '../../../utils/mathPlain';
  * l'écriture que lit Rational.parse — sans parenthèses autour d'un nombre, la
  * virgule décimale, sans espaces.
  */
-export function asciiToAnswer(ascii) {
+function asciiToAnswer(ascii) {
   return String(ascii ?? '')
     .replace(/\{,\}/g, ',')
     .replace(/\s+/g, '')
@@ -39,7 +39,7 @@ export default function RationalInput({ question, value, onChange, disabled, exa
       <div className="flex flex-col items-stretch gap-3 lg:flex-row lg:items-start" data-answer-box data-math-pad-answer>
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
           <div
-            className="flex cursor-text items-center rounded-xl bg-white ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-indigo-500"
+            className="flex cursor-text items-center rounded-xl bg-white ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-nav-accent"
             onMouseUp={(e) => { const f = e.currentTarget.querySelector('math-field'); if (f && document.activeElement !== f) f.focus(); }}
           >
             <LazyExamMathField

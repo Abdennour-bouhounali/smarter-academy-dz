@@ -30,7 +30,7 @@ class Q {
   /** Écriture décimale exacte si elle existe (dénominateur 2^a·5^b), sinon la fraction. */
   toString() {
     if (this.d === 1n) return String(this.n);
-    let d = this.d; let k = 0n;
+    let d = this.d;
     for (const p of [2n, 5n]) while (d % p === 0n) d /= p;
     if (d !== 1n) return `${this.n}/${this.d}`;
     let scale = 1n; let places = 0;
@@ -61,7 +61,6 @@ const WHOLE = (p, t) => q(p).mul(HUNDRED).div(q(t));
 const INC = (x, t) => q(x).mul(COEF(t));
 const DEC = (x, t) => q(x).mul(COEF(q(t).neg()));
 const BASE_INC = (n, t) => q(n).div(COEF(t));
-const BASE_DEC = (n, t) => q(n).div(COEF(q(t).neg()));
 const CHAIN = (x, ts) => ts.reduce((acc, t) => acc.mul(COEF(t)), q(x));
 const TOTAL = (ts) => CHAIN(ONE, ts).sub(ONE).mul(HUNDRED);
 /** Arrondi HALF-UP exact à d décimales (x ≥ 0). */

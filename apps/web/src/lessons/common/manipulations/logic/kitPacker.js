@@ -94,7 +94,6 @@ export function setDial(s, which, v) {
   if (!dialsOpen(s)) return s;
   return { ...s, [which]: clampDial(v), dealt: null, flash: null };
 }
-export function stepDial(s, which, d) { return setDial(s, which, s[which] + d); }
 export function setBags(s, v) {
   if (!bagsOpen(s)) return s;
   return { ...s, k: Math.max(1, Math.min(MAX_BAGS, Math.round(Number(v) || 1))), dealt: null, flash: null };

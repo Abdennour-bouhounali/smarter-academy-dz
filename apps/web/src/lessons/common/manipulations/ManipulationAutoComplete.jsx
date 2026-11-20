@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Wand2 } from 'lucide-react';
@@ -18,7 +18,7 @@ import { autoCompleteStatus, autoCompletePlan } from './autoComplete';
  * change ou que l'élève appuie sur « إعادة » : l'animation s'arrête, et
  * aucun geste de l'ancienne configuration n'est appliqué à la nouvelle.
  */
-export function useAutoComplete(auto, resetKey) {
+function useAutoComplete(auto, resetKey) {
   const reducedMotion = useReducedMotion();
   const [running, setRunning] = useState(false);
   const timer = useRef(null);

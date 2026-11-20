@@ -16,8 +16,8 @@
  *           { kind: 'tiles', length, width, unit, stepLabel, max, tone }
  * `start` (facultatif) : la valeur initiale du curseur (défaut 2). `ariaLabel` (arabe) est obligatoire, comme pour GeoFigure.
  */
-export const SCENE_KINDS = Object.freeze(['share', 'fence', 'tiles']);
-export const SCENE_TONES = Object.freeze(['indigo', 'violet', 'amber', 'emerald', 'teal', 'sky', 'rose']);
+const SCENE_KINDS = Object.freeze(['share', 'fence', 'tiles']);
+const SCENE_TONES = Object.freeze(['indigo', 'violet', 'amber', 'emerald', 'teal', 'sky', 'rose']);
 
 /** Division euclidienne de `total` par `d` : { q, r, exact }. */
 export function divide(total, d) {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Bell, ArrowLeft, ArrowRight } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -15,7 +15,7 @@ import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
 import { playSfx } from '../../utils/playEffect';
-import { Backdrop, Flag, Strip, Ribbon, Kid, COL, RANGE, unitFor, clampMark } from './tugRope/art';
+import { Backdrop, Flag, Strip, Ribbon, Kid, COL, unitFor, clampMark } from './tugRope/art';
 import { LEVELS } from '../levels';
 import * as L from '../logic/tugRope';
 

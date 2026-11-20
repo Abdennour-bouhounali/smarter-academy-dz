@@ -26,13 +26,13 @@ export const square = (x) => { const v = F(x); return mul(v, v); };
 export const hypotenuseSquare = (b, c) => add(square(b), square(c));
 
 /** BC² − AB² (le carré d'un côté de l'angle droit) ; null si l'« hypoténuse » n'est pas le plus long côté. */
-export function legSquare(hyp, leg) {
+function legSquare(hyp, leg) {
   const s = sub(square(hyp), square(leg));
   return cmp(s, frac(0)) > 0 ? s : null;
 }
 
 /** √v exacte (fraction) si v est le carré d'un rationnel, sinon null. */
-export function exactSqrt(v) {
+function exactSqrt(v) {
   const p = F(v);
   if (p.n < 0) return null;
   const r = rationalSqrt({ num: p.n, den: p.d });

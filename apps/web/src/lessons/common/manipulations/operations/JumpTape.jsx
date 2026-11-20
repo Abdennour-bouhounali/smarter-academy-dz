@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Lock } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -408,7 +408,6 @@ function Stage({ lab, setLab, k, svgRef, armed, setArmed }) {
       tickEls.push(<g key={i} data-jt-tick={val(H.tickValue(w, i))}><Tick x={X(i)} kind={kindT} i={i} animate={locked} /></g>);
     }
   }
-  const flagX = (f) => (plantT ? X(lab.planted[f.id]) : xv(f.v));
 
   return (
     <svg ref={svgRef} width="100%" viewBox={`0 0 ${W} ${SH}`} style={{ maxWidth: W, display: 'block', margin: '0 auto', touchAction: 'pan-y' }} role="img" aria-label={k('stageAria')} data-jt-svg dir="ltr"

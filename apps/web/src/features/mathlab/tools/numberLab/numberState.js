@@ -62,9 +62,9 @@ export const MODES = Object.freeze([
   'division', 'powers', 'order',
 ]);
 
-export const FRACTION_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide', 'compare']);
-export const FRACTION_MODELS = Object.freeze(['bar', 'circle', 'line']);
-export const ARITHMETIC_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide']);
+const FRACTION_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide', 'compare']);
+const FRACTION_MODELS = Object.freeze(['bar', 'circle', 'line']);
+const ARITHMETIC_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply', 'divide']);
 /**
  * `differences` en TÊTE : c'est la méthode par défaut d'un NOUVEAU document
  * (demande du propriétaire, 2026-09-30). Un document existant garde la
@@ -72,27 +72,27 @@ export const ARITHMETIC_OPERATIONS = Object.freeze(['add', 'subtract', 'multiply
  */
 export const GCD_METHODS = Object.freeze(['differences', 'euclid', 'factors', 'lists']);
 export const POWER_TABS = Object.freeze(['power', 'rules', 'scientific', 'roots']);
-export const MAX_SCIENTIFIC_TEXT = 32;
-export const PERCENT_TABS = Object.freeze(['of', 'change', 'reverse']);
-export const DECIMAL_DIRECTIONS = Object.freeze(['toFraction', 'toDecimal']);
+const MAX_SCIENTIFIC_TEXT = 32;
+const PERCENT_TABS = Object.freeze(['of', 'change', 'reverse']);
+const DECIMAL_DIRECTIONS = Object.freeze(['toFraction', 'toDecimal']);
 
 /** Les bornes du laboratoire. Ce sont des limites de DESSIN, dites franchement. */
-export const MAX_VALUE = MAX_EXPLORABLE;
-export const MIN_VALUE = -MAX_EXPLORABLE;
+const MAX_VALUE = MAX_EXPLORABLE;
+const MIN_VALUE = -MAX_EXPLORABLE;
 export const MAX_PLACE_VALUE = 99_999;
-export const MAX_PRACTICE_LEVEL = 5;
+const MAX_PRACTICE_LEVEL = 5;
 export const MAX_NOTES = 30;
 export const MAX_ROWS = 8;
 
 /** L'ouverture : 360. Il a neuf diviseurs, trois facteurs premiers, et se
  *  divise par 2, 3, 4, 5, 6, 8, 9 et 10 — un nombre qui a quelque chose à
  *  montrer dans CHAQUE mode. C'est celui de §4, §20 et §23. */
-export const DEFAULT_VALUE = 360;
+const DEFAULT_VALUE = 360;
 
 const isPlainObject = (v) => Boolean(v) && typeof v === 'object' && !Array.isArray(v);
 
 /** Un nombre borné, jamais NaN ni Infinity. */
-export function readNumber(raw, fallback, min = MIN_VALUE, max = MAX_VALUE) {
+function readNumber(raw, fallback, min = MIN_VALUE, max = MAX_VALUE) {
   const value = typeof raw === 'string' ? Number(raw.replace(',', '.')) : raw;
   if (!Number.isFinite(value)) return fallback;
 
@@ -100,7 +100,7 @@ export function readNumber(raw, fallback, min = MIN_VALUE, max = MAX_VALUE) {
 }
 
 /** Un ENTIER borné — la plupart des modes n'acceptent que des entiers. */
-export function readInteger(raw, fallback, min = MIN_VALUE, max = MAX_VALUE) {
+function readInteger(raw, fallback, min = MIN_VALUE, max = MAX_VALUE) {
   const value = readNumber(raw, fallback, min, max);
 
   return Math.trunc(value);
@@ -115,7 +115,7 @@ function readBoolean(raw, fallback) {
 }
 
 /** Une fraction stockée → une fraction sûre, ou le repli. Non réduite (§9). */
-export function readFrac(raw, fallback) {
+function readFrac(raw, fallback) {
   if (!isPlainObject(raw)) return fallback;
   const frac = makeFrac(Math.trunc(raw.n), Math.trunc(raw.d));
   if (!frac || frac.d > MAX_DENOMINATOR * 100) return fallback;
@@ -124,7 +124,7 @@ export function readFrac(raw, fallback) {
 }
 
 /** Une fenêtre de droite graduée, jamais dégénérée. */
-export function readView(raw, fallback) {
+function readView(raw, fallback) {
   if (!isPlainObject(raw)) return fallback;
   const center = readNumber(raw.center, fallback.center, -1e9, 1e9);
   const span = readNumber(raw.span, fallback.span, MIN_SPAN, MAX_SPAN);
@@ -132,9 +132,9 @@ export function readView(raw, fallback) {
   return { center: roundTo(center, 8), span: roundTo(span, 8) };
 }
 
-export const MIN_SPAN = 0.001;
-export const MAX_SPAN = 1e6;
-export const DEFAULT_VIEW = Object.freeze({ center: 0.5, span: 2 });
+const MIN_SPAN = 0.001;
+const MAX_SPAN = 1e6;
+const DEFAULT_VIEW = Object.freeze({ center: 0.5, span: 2 });
 
 /* ── L'état de départ de chaque mode ───────────────────────────────────── */
 
@@ -201,7 +201,7 @@ export function createNumberLabData(seed = null) {
  * reste — une leçon ne peut pas fabriquer un document que l'outil ne saurait
  * rouvrir.
  */
-export function applySeed(data, seed) {
+function applySeed(data, seed) {
   if (!isPlainObject(seed)) return data;
   const next = { ...data };
   if (MODES.includes(seed.mode)) next.mode = seed.mode;
@@ -342,7 +342,7 @@ export function normalizeNumberLabData(raw) {
  * tapé, même mal formé : l'écran lui dit où est l'erreur, il ne la corrige
  * pas en silence. Seule la longueur est bornée.
  */
-export function readExpression(raw, fallback) {
+function readExpression(raw, fallback) {
   if (typeof raw !== 'string') return fallback;
   const text = raw.replace(/[\r\n\t]/g, ' ').slice(0, MAX_EXPRESSION_LENGTH);
 

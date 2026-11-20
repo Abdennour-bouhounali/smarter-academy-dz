@@ -1,4 +1,3 @@
-import React from 'react';
 import { CHALLENGE_READ } from '../content/textbook';
 
 /**

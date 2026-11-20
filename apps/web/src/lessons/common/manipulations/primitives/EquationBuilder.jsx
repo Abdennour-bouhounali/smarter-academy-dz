@@ -1,4 +1,3 @@
-import React from 'react';
 import DropZone from './DropZone';
 import NumberTile from './NumberTile';
 

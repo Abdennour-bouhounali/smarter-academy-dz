@@ -14,10 +14,6 @@ export function changeTeacherStatus(token, id, status) {
     .then((data) => data.teacher);
 }
 
-export function fetchTeacherEntitlements(token, id) {
-  return call(`/admin/teachers/${encodeURIComponent(id)}/entitlements`, get(token), 'Impossible de charger les droits.');
-}
-
 export function grantTeacherOverride(token, id, { key, value, reason, endsAt }) {
   return call(`/admin/teachers/${encodeURIComponent(id)}/entitlements/overrides`, send('POST', token, { key, value, reason, endsAt }), 'Impossible d’accorder la dérogation.');
 }

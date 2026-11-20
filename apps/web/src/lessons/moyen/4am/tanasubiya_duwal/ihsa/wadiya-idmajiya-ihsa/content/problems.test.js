@@ -7,11 +7,9 @@ import { LESSON_CONFIG } from '../lesson.config';
 // ── Arithmétique EXACTE : statistics.js (fractions { n, d }) ; `num` ne sert qu'à comparer à un `expected`. ──
 const num = (f) => f.n / f.d;
 const stepsOf = (id, part) => PROBLEM[id].parts[part].steps;
-const expectedOf = (id, part) => stepsOf(id, part).filter((s) => s.kind === 'numeric').map((s) => s.expected);
 const answersOf = (id, part) => stepsOf(id, part).filter((s) => s.kind === 'numeric' && s.role === 'answer').map((s) => s.expected);
 const computesOf = (id, part) => stepsOf(id, part).filter((s) => s.kind === 'numeric' && s.role === 'compute').map((s) => s.expected);
 const choiceOf = (id, part, k) => stepsOf(id, part).filter((st) => st.kind === 'choice')[k];
-const correctOf = (id, part, k) => { const s = choiceOf(id, part, k); return s.options[s.correct]; };
 /** Le tableau `{ head, rows }` d'une مسألة, relu en nombres (première colonne = en-têtes ; « ؟ » = NaN). */
 const rowOf = (id, r = 0) => PROBLEM[id].table.rows[r].slice(1).map(Number);
 const headOf = (id) => PROBLEM[id].table.head.slice(1).map(Number);

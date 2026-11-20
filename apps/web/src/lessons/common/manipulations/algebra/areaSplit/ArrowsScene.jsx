@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import useDragInteraction from '../../useDragInteraction';
 import * as L from '../../logic/areaSplit';
@@ -12,7 +12,7 @@ import { plain, signed } from './format';
  */
 const ring = 'outline-none focus-visible:ring-4 focus-visible:ring-indigo-300';
 
-export function ArrowLine({ lab, setLab, k, width, drag }) {
+function ArrowLine({ lab, k, width, drag }) {
   const lay = lineLayout(lab.expr, { width });
   const boxRef = useRef(null);
   const linked = lab.arrows.filter((a) => lab.linked[a.id]);
@@ -114,7 +114,7 @@ export function ProductCards({ lab, setLab, k }) {
 }
 
 /** Le monde `arrows` entier : la ligne et ses flèches, les cartes, et la ligne écrite (dans `AreaSplit`, sous les cartes). */
-export default function ArrowsScene({ lab, setLab, k, width, side, screenH, mood }) {
+export default function ArrowsScene({ lab, setLab, k, width }) {
   const drag = useDragInteraction({
     accepts: (src, zone) => (zone === src ? '' : true),
     onDrop: (src, zone) => {
@@ -137,7 +137,6 @@ export default function ArrowsScene({ lab, setLab, k, width, side, screenH, mood
   }, [drag]);
   const w = Math.max(280, Math.min(width - 8, 620));
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
     <div className="space-y-2" onKeyDown={onKeyDown} data-as-arrows-scene>
       <div className="flex items-end justify-center gap-2 rounded-2xl bg-[#F3EEDA] px-2 pb-2 pt-1">
         <ArrowLine lab={lab} setLab={setLab} k={k} width={w} drag={drag} />

@@ -51,7 +51,7 @@ export default function TeacherSchoolPage() {
   return (
     <div className="sa-page space-y-6 py-6" data-teacher-school>
       <h1 className="flex items-center gap-2 font-space text-2xl font-bold text-slate-900">
-        <Building2 size={24} className="text-indigo-600" aria-hidden="true" />{t('teacher.title')}
+        <Building2 size={24} className="text-nav-accent" aria-hidden="true" />{t('teacher.title')}
       </h1>
 
       {error && <p role="alert" className="rounded-xl bg-rose-50 p-3 font-inter text-sm text-rose-700">{error}</p>}
@@ -69,7 +69,7 @@ export default function TeacherSchoolPage() {
           </section>
 
           <section className={card}>
-            <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><Eye size={18} className="text-indigo-600" aria-hidden="true" />{t('teacher.seenTitle')}</h2>
+            <h2 className="flex items-center gap-2 font-space font-bold text-slate-900"><Eye size={18} className="text-nav-accent" aria-hidden="true" />{t('teacher.seenTitle')}</h2>
             <p className="mb-3 mt-1 font-inter text-sm text-slate-600">{t('teacher.seenText')}</p>
             <TeacherFacts facts={data.facts} />
           </section>
@@ -84,7 +84,7 @@ export default function TeacherSchoolPage() {
                   <li key={c.id} className="flex flex-wrap items-center justify-between gap-2 py-3" data-teacher-school-class={c.id}>
                     <span className="font-inter font-semibold text-slate-900">
                       {c.name}
-                      {attached && <span className="ms-2 rounded-lg bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700">{t('teacher.attached')}</span>}
+                      {attached && <span className="ms-2 rounded-lg bg-nav-accent-soft px-2 py-0.5 text-xs font-medium text-nav-accent">{t('teacher.attached')}</span>}
                     </span>
                     <button type="button" className={btnSecondary} disabled={busy}
                       onClick={() => run(() => setClassroomAttached(token, c.id, !attached))}>

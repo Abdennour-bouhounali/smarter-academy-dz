@@ -71,7 +71,7 @@ export default function ResetPassword() {
       title={t('resetTitle')}
       subtitle={t('resetSubtitle')}
       footer={(
-        <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">
+        <Link to="/login" className="font-semibold text-nav-accent hover:text-nav-accent">
           {t('backToLogin')}
         </Link>
       )}
@@ -82,7 +82,7 @@ export default function ResetPassword() {
             <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />
             <p>{errorMsg || t('resetMissingLink')}</p>
           </div>
-          <Link to="/mot-de-passe-oublie" className="block text-center text-sm font-semibold text-blue-600 hover:text-blue-700">
+          <Link to="/mot-de-passe-oublie" className="block text-center text-sm font-semibold text-nav-accent hover:text-nav-accent">
             {t('resetRequestNew')}
           </Link>
         </div>

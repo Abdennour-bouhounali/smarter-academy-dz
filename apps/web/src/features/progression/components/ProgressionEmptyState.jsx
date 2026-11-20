@@ -12,7 +12,7 @@ export default function ProgressionEmptyState() {
   const { t } = useTranslation('student');
   return (
     <div className="glass-card p-8 sm:p-10 text-center mb-10" data-progression-empty>
-      <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 mb-4" aria-hidden="true">
+      <span className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-nav-accent-soft text-nav-accent mb-4" aria-hidden="true">
         <BookOpen size={26} />
       </span>
       <h2 className="font-space font-bold text-slate-900 text-xl">{t('progression.emptyTitle')}</h2>

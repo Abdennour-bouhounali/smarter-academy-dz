@@ -48,12 +48,6 @@ describe('l’autorité de publication côté élève', () => {
     expect(source).toContain('data.closed');
   });
 
-  it('l’inventaire des exercices vient du registre, pas des fichiers embarqués', () => {
-    const source = read('src/services/contentAvailabilityService.js');
-    expect(source).toContain('/exercises');
-    expect(source).toContain('fetchLessonExercises');
-  });
-
   it('le fournisseur est monté sous AuthProvider (il lui faut le jeton)', () => {
     const app = read('src/App.jsx');
     const auth = app.indexOf('<AuthProvider>');

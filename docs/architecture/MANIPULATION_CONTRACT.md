@@ -52,7 +52,7 @@ manipulations/
 ├── themeWords.js               the Arabic words of a theme (lesson.manipulation.json) merged with a lesson's `context`
 ├── primitives/                 shared building blocks, never duplicated by a type
 │   ├── PlayerFigure.jsx + PitchBackdrop.jsx   a drawn footballer and a real-proportioned pitch (2:3)
-│   ├── BookFigure.jsx + BookRectangle.jsx     the library's book, and n of them in shelves of `cols`
+│   ├── BookFigure.jsx                         `BOOK_PALETTE`, the cover tints shared by the labs that draw books
 │   ├── ItemFigure.jsx + itemThemes.js         the drawn objects of the other worlds (flower, ball,
 │   │                                          shirt, pen, notebook, spoon, cup) and which theme draws which
 │   ├── GroupingScene.jsx + groupingLayout.js  a and b objects in k identical groups, the rest apart
@@ -106,7 +106,7 @@ tile, a drop zone, or a piece of mathematics.
 
 **One unit, one set of objects.** Types that share a lesson's story draw the *same* objects:
 `divisor-explorer-books` shelves 420 books and `factor-pairs` lays the same books out as
-rectangles (`BookRectangle`), both coloured from `primitives/BookFigure.jsx`'s `BOOK_PALETTE`,
+rectangles, both coloured from `primitives/BookFigure.jsx`'s `BOOK_PALETTE`,
 so the student recognises the library from one module to the next instead of learning a
 second abstraction. (The palette was duplicated in the old standalone lab and locked by a
 test; the duplication and the test are gone since 2026-09-30.)
@@ -463,7 +463,7 @@ group too few leaves enough for another (`short`: a ghost bouquet over the lefto
 'short' | 'exact', ok })` (`r` null on `over`; `a` is 48 during the contrast), `onFinished({ a, b })`. Not eligible for « جرّب كل
 الإمكانيات ». Default q = 0. DOM: `[data-division-jumps][data-world][data-a][data-b][data-q][data-solved]`, `[data-dj-glance]`,
 `[data-dj-handle]`, `[data-dj-less]` / `[data-dj-more]`, `[data-dj-group]`, `[data-dj-left]`, `[data-dj-ghost]`, `[data-dj-verdict]`,
-`[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs`.
+`[data-dj-refused]`, `[data-dj-bracket]`, `[data-dj-next]`, `[data-dj-formal]`. Browser suite: `e2e/lesson-kit/1am-darb-qisma-ashriya.mjs` — it opens the lesson's module pages, DELETED on 2026-11-18 (the lesson is v2; `docs/reports/OLD_VERSION_TRACE_2026-11-18.md` §8): no page mounts this lab today.
 
 **Look (2026-10-14, kit §8ter).** A `PromptCard` on top in the §17.9 form — context with every number (« عند بائعة الأزهار 47 زهرةً، وفي كل باقة 6
 زهرات. »; a lesson `lead` replaces it for its own numbers, e.g. 253 pearls), the question « اصنع الباقات حتى تعرف كم باقة كاملة تخرج من
@@ -503,7 +503,7 @@ two gestures land in one render — `onFinished({ mode })`. Not eligible for « 
 `[data-dc-cell=<n>][data-colour][data-revealed]`, `[data-dc-ledger-row=<d>]`, `[data-dc-card=<digit>][data-placed]`,
 `[data-dc-slot=<i>][data-digit]` (slot 0 = leftmost digit), `[data-dc-lamp=<d>][data-state][data-flip]`, `[data-dc-claim=<d>]
 [data-claim]`, `[data-dc-task=<d>][data-done]`, `[data-dc-submit]`, `[data-dc-none]`, `[data-dc-verdict]`, `[data-dc-refused]`,
-`[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs`.
+`[data-dc-formal]`, `[data-dc-rule=<d>]`. Browser suite: `e2e/lesson-kit/1am-qawaid-qabiliyat-qisma.mjs` — it opens the lesson's module pages, DELETED on 2026-11-18 (the lesson is v2; `docs/reports/OLD_VERSION_TRACE_2026-11-18.md` §8): no page mounts this lab today.
 
 **Look (2026-10-14, kit §8ter).** Both worlds sit on the kit: a `PromptCard` in the §17.9 form (context « في الجدول الأعداد من 0 إلى 48. » /
 « عندك أربع بطاقات: 4 ، 5 ، 9 ، 3. », question « لوّن كل مضاعفات 2 ثم 5 ثم 3. » / « رتّب البطاقات حتى تكوّن أكبر عدد يقبل القسمة على
@@ -2344,7 +2344,7 @@ Ten steps, in this order. Steps 1, 2 and 5 are enforced by tests that fail other
 8. **Extend the e2e** `manipulations.mjs` with the drag, the tap alternative, the keyboard path,
    reset, and the no-mode-toggle assertion.
 9. If the manipulation must **draw a real object**, extend parameterised inline SVG (see
-   `primitives/BookFigure.jsx`, `PlayerFigure.jsx`) and put any exact geometry in a pure,
+   `primitives/PlayerFigure.jsx`, `KidFigure.jsx`) and put any exact geometry in a pure,
    unit-tested module swept over its whole range (see `logic/bookshelf.js` →
    `bookcaseLayout`, `teamFormation.js`). Never a raster image — root `CLAUDE.md`.
 10. **Write the design sheet** of `MANIPULATION_DNA.md` §7 in the header, next to the five

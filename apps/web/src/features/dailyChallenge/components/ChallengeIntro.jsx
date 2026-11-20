@@ -72,7 +72,7 @@ export default function ChallengeIntro({ today, onStart, onSeeResult, busy }) {
               <p className="font-space text-lg font-bold text-slate-900">✓ {t('intro.done')}</p>
               <p className="font-inter text-sm text-slate-500">{t('intro.doneHint')}</p>
               <button type="button" onClick={onSeeResult} disabled={busy}
-                className="mt-2 inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-indigo-600 px-7 font-space text-base font-black text-white transition hover:bg-indigo-700 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400 disabled:opacity-60">
+                className="mt-2 inline-flex min-h-[52px] items-center gap-2 rounded-2xl bg-nav-accent px-7 font-space text-base font-black text-white transition hover:bg-[#3350c4] focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400 disabled:opacity-60">
                 <Trophy size={18} aria-hidden="true" /> {t('intro.seeResult')}
               </button>
             </>
@@ -131,7 +131,7 @@ export default function ChallengeIntro({ today, onStart, onSeeResult, busy }) {
       </div>
 
       <div className="text-center">
-        <Link data-tour="challenge.history" to="/espace/defi/historique" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 font-inter text-sm font-semibold text-slate-600 hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+        <Link data-tour="challenge.history" to="/espace/defi/historique" className="inline-flex min-h-[44px] items-center gap-2 rounded-xl px-4 font-inter text-sm font-semibold text-slate-600 hover:bg-white hover:text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent">
           <History size={16} aria-hidden="true" /> {t('intro.history')}
         </Link>
       </div>

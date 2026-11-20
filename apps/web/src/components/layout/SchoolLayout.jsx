@@ -45,7 +45,7 @@ export default function SchoolLayout() {
         <div className="mx-auto flex h-16 max-w-7xl items-center gap-3 px-6">
           <Link to="/idara" className="flex flex-shrink-0 items-center gap-3">
             <img src="/brand/mark-color.svg" width="200" height="200" decoding="async" alt="Smarter Academy" className="h-9 w-9" />
-            <span className="font-space text-sm font-bold text-indigo-700">{t('nav.spaceName')}</span>
+            <span className="font-space text-sm font-bold text-nav-accent">{t('nav.spaceName')}</span>
           </Link>
           <nav className="flex min-w-0 flex-1 items-center gap-1" aria-label={t('nav.spaceName')}>
             {LINKS.map(({ to, end, icon: Icon, key }) => (
@@ -57,7 +57,7 @@ export default function SchoolLayout() {
                 aria-label={t(key)}
                 className={({ isActive }) =>
                   `flex min-h-[44px] min-w-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3 font-inter text-sm font-medium ${
-                    isActive ? 'bg-indigo-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+                    isActive ? 'bg-nav-accent text-white' : 'text-slate-600 hover:bg-slate-100'
                   }`
                 }
               >

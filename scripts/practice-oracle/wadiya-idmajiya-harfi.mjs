@@ -9,7 +9,7 @@
 //   • une équation produit nul : racine de chaque facteur affine, rangées (plus petite / plus grande) ;
 //   • une valeur : évaluation exacte de l'expression de l'énoncé ; une tâche ☜ : le calcul de la situation.
 // Aucune clé n'est recopiée du contenu : seuls les nombres de l'énoncé servent.
-import { R, C, poly, q } from './helpers.mjs';
+import { R, C, poly } from './helpers.mjs';
 
 const x = poly.x;
 const lin = (a, b) => x.mul(a).add(b);            // a·x + b

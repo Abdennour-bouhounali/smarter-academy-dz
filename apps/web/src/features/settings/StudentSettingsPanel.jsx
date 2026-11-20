@@ -55,7 +55,7 @@ export default function StudentSettingsPanel() {
       <p className="text-sm text-slate-600">{t('settings.subtitle')}</p>
       <section className="space-y-3 rounded-2xl bg-white p-5 ring-1 ring-slate-200" aria-labelledby="settings-practice" data-settings-practice>
         <h2 id="settings-practice" className="flex items-center gap-2 text-lg font-bold text-slate-900">
-          <Layers className="h-5 w-5 text-indigo-600" aria-hidden="true" /> {t('settings.practice.title')}
+          <Layers className="h-5 w-5 text-nav-accent" aria-hidden="true" /> {t('settings.practice.title')}
         </h2>
 
         {state === null && !error ? (
@@ -64,7 +64,7 @@ export default function StudentSettingsPanel() {
           <label className={`flex items-start gap-3 rounded-xl p-3 ring-1 ring-slate-200 ${managed ? 'bg-slate-50' : 'cursor-pointer hover:bg-slate-50'}`}>
             <input
               type="checkbox"
-              className="mt-1 h-5 w-5 rounded border-slate-400 text-indigo-600 focus:ring-indigo-500 disabled:opacity-60"
+              className="mt-1 h-5 w-5 rounded border-slate-400 text-nav-accent focus:ring-nav-accent disabled:opacity-60"
               checked={open}
               disabled={managed || saving || state === null}
               onChange={(e) => toggle(e.target.checked)}
@@ -78,7 +78,7 @@ export default function StudentSettingsPanel() {
         )}
 
         {managed && (
-          <p className="flex items-center gap-2 rounded-xl bg-indigo-50 px-3 py-2 text-sm text-indigo-900 ring-1 ring-indigo-100" data-settings-managed>
+          <p className="flex items-center gap-2 rounded-xl bg-nav-accent-soft px-3 py-2 text-sm text-indigo-900 ring-1 ring-indigo-100" data-settings-managed>
             <Users className="h-4 w-4 shrink-0" aria-hidden="true" /> {t('settings.managedByTeacher')}
           </p>
         )}
@@ -94,10 +94,10 @@ export default function StudentSettingsPanel() {
       </section>
       <section className="space-y-3 rounded-2xl bg-white p-5 ring-1 ring-slate-200" aria-labelledby="settings-sound" data-settings-sound>
         <h2 id="settings-sound" className="flex items-center gap-2 text-lg font-bold text-slate-900">
-          <Volume2 className="h-5 w-5 text-indigo-600" aria-hidden="true" /> {t('settings.sound.title')}
+          <Volume2 className="h-5 w-5 text-nav-accent" aria-hidden="true" /> {t('settings.sound.title')}
         </h2>
         <label className="flex cursor-pointer items-start gap-3 rounded-xl p-3 ring-1 ring-slate-200 hover:bg-slate-50">
-          <input type="checkbox" className="mt-1 h-5 w-5 rounded border-slate-400 text-indigo-600 focus:ring-indigo-500" checked={soundOn} onChange={toggleSound} data-setting="sound" />
+          <input type="checkbox" className="mt-1 h-5 w-5 rounded border-slate-400 text-nav-accent focus:ring-nav-accent" checked={soundOn} onChange={toggleSound} data-setting="sound" />
           <span className="space-y-0.5">
             <span className="block font-bold text-slate-900">{t('settings.sound.label')}</span>
             <span className="block text-sm text-slate-600">{t('settings.sound.help')}</span>

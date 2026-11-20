@@ -42,7 +42,7 @@ const { frac, sub, div, eq, cmp, toNumber, fracText } = LIN;
 
 /** [AB] dans la scène (mm). */
 export const AB = 100;
-export const MODES = Object.freeze(['equal', 'ratio']);
+const MODES = Object.freeze(['equal', 'ratio']);
 export const ANGLE = Object.freeze({
   equal: Object.freeze({ min: 20, max: 70, start: 40 }),
   ratio: Object.freeze({ min: 40, max: 90, start: 65 }),
@@ -52,11 +52,10 @@ export const OPEN = Object.freeze({
   ratio: Object.freeze({ min: 6, max: 20, start: 12 }),
 });
 /** L'équerre « accroche » une marque à 3 mm près. */
-export const SNAP = 3;
+const SNAP = 3;
 export const RAILS = Object.freeze({ equal: Object.freeze(['ray']), ratio: Object.freeze(['a+', 'a-', 'b+', 'b-']) });
 
 const clampInt = (v, lo, hi) => Math.min(hi, Math.max(lo, Math.round(Number(v))));
-const absFrac = (p) => (cmp(p, frac(0)) < 0 ? LIN.neg(p) : p);
 
 export function init({ mode = 'equal', parts = 3, p = 3, q = 2, marks = 5, length = 10, sameUnitOnly = false, player = false } = {}) {
   const m = MODES.includes(mode) ? mode : 'equal';
@@ -96,7 +95,7 @@ const put = (s, patch) => Object.freeze({ ...s, ...patch });
 
 export const markCount = (s) => Object.values(s.rails).reduce((n, r) => n + r.length, 0);
 /** L'angle se règle tant qu'aucune marque n'est posée : changer la direction en route déplacerait les marques. */
-export const angleLocked = (s) => markCount(s) > 0;
+const angleLocked = (s) => markCount(s) > 0;
 
 export function setAngle(s, deg) {
   if (angleLocked(s)) return put(s, { last: { kind: 'angleLocked' } });
@@ -136,7 +135,7 @@ export function carry(s, rail = RAILS[s.mode][0]) {
 }
 
 /** Les ouvertures d'un rail sont-elles toutes égales (sur les `upto` premières marques) ? */
-export function evenMarks(s, rail, upto = s.rails[rail].length) {
+function evenMarks(s, rail, upto = s.rails[rail].length) {
   const list = s.rails[rail].slice(0, upto);
   return list.every((m) => m.r === list[0].r);
 }
@@ -184,7 +183,7 @@ export function neighbourMark(s, dir) {
 }
 
 /** Le point de (AB) où tombe la parallèle passant à la position `pos` du rayon : pos / pos(jointe), en fraction de AB. */
-export function cutAt(s, pos) {
+function cutAt(s, pos) {
   const pj = rayMarks(s)[s.joined].pos;
   return TH.ratio(pos, pj);
 }
@@ -199,7 +198,7 @@ export function complete(s) {
 export const cutsOf = (s) => (s.joined == null ? [] : [...s.parallels].sort((a, b) => a - b).map((idx) => ({ idx, t: cutAt(s, rayMarks(s)[idx].pos) })));
 
 /** Les parts de [AB] (fractions de AB) quand la construction est finie : différences successives. */
-export function partsOf(s) {
+function partsOf(s) {
   if (!complete(s)) return null;
   const ts = cutsOf(s).filter((c) => c.idx < s.joined).map((c) => c.t);
   const pts = [frac(0), ...ts, frac(1)];
@@ -275,13 +274,13 @@ export function rulerPoint(s, a, b) {
 }
 
 /** Les ouvertures des graduations comptées jusqu'à la marque `signed` d'une droite (de A ou de B jusqu'à elle). */
-export function unitsTo(s, line, signed) {
+function unitsTo(s, line, signed) {
   const info = markInfo(s, line, signed);
   return info ? s.rails[info.rail].slice(0, info.rank).map((m) => m.r) : [];
 }
 
 /** La signature des ouvertures sous une règle posée (a sur (d₁), b sur (d₂)). */
-export const unitsKey = (s, a, b) => `${unitsTo(s, 'a', a).join(',')}|${unitsTo(s, 'b', b).join(',')}`;
+const unitsKey = (s, a, b) => `${unitsTo(s, 'a', a).join(',')}|${unitsTo(s, 'b', b).join(',')}`;
 
 /** Valide la règle posée : un ESSAI de point. */
 export function commitRuler(s) {
@@ -377,7 +376,6 @@ export function lengthTex(s, f) {
 }
 /** Une ouverture (mm) en cm : 15 → « 1,5 ». */
 export const cmText = (mm) => (mm / 10).toFixed(mm % 10 === 0 ? 0 : 1).replace('.', ',');
-export const fracTex = (f) => LIN.fracLatex(f);
 
 /* ── géométrie de dessin (flottants : jamais une décision) ────────────────── */
 

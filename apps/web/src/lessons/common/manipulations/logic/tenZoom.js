@@ -16,7 +16,6 @@
  */
 import * as T from '@smarter-academy/core/arithmetic/tenPowers.js';
 
-export const WORLDS = Object.freeze(['zoom', 'prefixes']);
 export const N_MIN = -12;
 export const N_MAX = 12;
 export const SCENE_MIN = -7;
@@ -59,7 +58,6 @@ export function unitPill(n, world) {
 
 /** Le côté du cadre en décimal : « 1 000 » (sans l'unité). */
 export const sideText = (n) => T.pow10Text(n);
-export const sideValue = (n) => T.pow10(n);
 
 /** La tally du مبتدئ : « 1 × 10 × 10 » ou « 1 ÷ 10 ÷ 10 » (rien à 0). */
 export function tallyOf(n) {

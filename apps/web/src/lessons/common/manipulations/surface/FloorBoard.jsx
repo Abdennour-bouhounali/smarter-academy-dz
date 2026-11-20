@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import * as S from '@smarter-academy/core/arithmetic/surfaces.js';
 import * as L from '../logic/tileYard';
 import { ZelligeTile, StarMark, TONES, toneOf } from './tileArt';
@@ -82,7 +82,7 @@ function HalfDoubleTile({ x, y, c, ghost = false, shadow = false }) {
   );
 }
 
-export function Piece({ kind, x, y, c, orient = 'h', tone, ghost = false, shadow = false, h }) {
+function Piece({ kind, x, y, c, orient = 'h', tone, ghost = false, shadow = false, h }) {
   if (kind === 'one') return <ZelligeTile x={x} y={y} s={c} tone={tone ?? toneOf(0)} ghost={ghost} shadow={shadow} />;
   if (kind === 'half') return <TriTile x={x} y={y} c={c} h={h ?? 'ul'} tone={tone ?? toneOf(1)} ghost={ghost} shadow={shadow} />;
   if (kind === 'two') return <DoubleTile x={x} y={y} c={c} vertical={orient === 'v'} ghost={ghost} shadow={shadow} />;

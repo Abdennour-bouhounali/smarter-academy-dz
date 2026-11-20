@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { sampleFunction, clipAffineToRange, imageAt, antecedentsOf } from '../utils/cartesian';
 
 /**

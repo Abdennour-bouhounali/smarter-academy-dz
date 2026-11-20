@@ -48,7 +48,7 @@ export const ATTACH_PX = 16;
 /** À quelle distance (px d'écran) du bord la mine le QUITTE en cours de tracé. */
 export const DETACH_PX = 90;
 /** Autour d'une graduation du cm, la mine s'arrête (px d'écran). */
-export const CM_SNAP_PX = 7;
+const CM_SNAP_PX = 7;
 
 /**
  * L'abscisse `s` (unités, depuis le zéro) calée sur les graduations : le
@@ -67,7 +67,7 @@ export function snapToGraduation(s, cmTolerance) {
  * Un bord droit : origine (le zéro de ses graduations), direction u, étendue
  * [from, to] le long de u. `graduated` : ses graduations comptent.
  */
-export function straightConstraint({ id, instrument, origin, u, from, to, graduated = false }) {
+function straightConstraint({ id, instrument, origin, u, from, to, graduated = false }) {
   const along = (p) => dot(sub(p, origin), u);
   const at = (s) => add(origin, scale(u, s));
   const off = (p) => Math.abs(dot(sub(p, origin), { x: -u.y, y: u.x }));
@@ -101,7 +101,7 @@ export function straightConstraint({ id, instrument, origin, u, from, to, gradua
 }
 
 /** La منقلة en construction : une demi-droite depuis son centre, dans la direction de l'aiguille. */
-export function rayConstraint({ id, instrument, origin, u, degrees, reach = 0 }) {
+function rayConstraint({ id, instrument, origin, u, degrees, reach = 0 }) {
   const along = (p) => Math.max(0, dot(sub(p, origin), u));
 
   return {
@@ -129,7 +129,7 @@ export function rayConstraint({ id, instrument, origin, u, degrees, reach = 0 })
  * peut qu'aller autour du centre, au rayon réglé. `sweep` cumule le tour
  * (au-delà de ±π, sans saut), plafonné à un tour complet.
  */
-export function arcConstraint({ id, instrument, center, radius, angle }) {
+function arcConstraint({ id, instrument, center, radius, angle }) {
   const tip = add(center, scale({ x: Math.cos(angle), y: Math.sin(angle) }, radius));
 
   return {
@@ -150,13 +150,13 @@ export function arcConstraint({ id, instrument, center, radius, angle }) {
 }
 
 /** Les angles « ronds » d'une منقلة scolaire : l'aimant s'y arrête. */
-export const ROUND_DEGREES = Object.freeze([0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180]);
+const ROUND_DEGREES = Object.freeze([0, 15, 30, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180]);
 
 /**
  * Le degré lu calé : sur un angle rond (0°, 15°, 30°… 180°) quand on en
  * passe à `tolerance` degrés, sinon au degré — la منقلة se lit au degré.
  */
-export function snapDegree(deg, { angles = true, tolerance = 2.5 } = {}) {
+function snapDegree(deg, { angles = true, tolerance = 2.5 } = {}) {
   if (angles) {
     for (const r of ROUND_DEGREES) if (Math.abs(deg - r) <= tolerance) return r;
   }
@@ -176,7 +176,7 @@ export function snapDegree(deg, { angles = true, tolerance = 2.5 } = {}) {
  * Écran : la graduation d monte du côté du demi-disque, donc l'angle
  * d'écran est `baseAngle − d` (y vers le bas).
  */
-export function protractorArcConstraint({ id, instrument, center, radius, baseAngle, reach }) {
+function protractorArcConstraint({ id, instrument, center, radius, baseAngle, reach }) {
   const u = { x: Math.cos(baseAngle), y: Math.sin(baseAngle) };
   const n = { x: u.y, y: -u.x };
   const degreeOf = (p) => {
@@ -280,9 +280,6 @@ export function pickConstraint(p, constraints, tolerance, focus = null) {
 
   return best;
 }
-
-/** Le degré lu, arrondi : la منقلة scolaire se lit au degré. */
-export const constructionDegrees = (deg) => Math.round(deg);
 
 /** Tolérance de calage sur le cm, en unités de scène, pour un zoom donné. */
 export const cmTolerance = (zoom) => Math.min(0.2 * UNITS_PER_CM, CM_SNAP_PX / zoom);

@@ -30,8 +30,6 @@
  */
 import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 
-export const SCENES = Object.freeze(['show', 'act1']);
-
 /**
  * Le نشاط 1 du manuel (p. 128), REDESSINÉ (règle du propriétaire, 2026-10-04 : le dessin du manuel est une bande 4 × 11
  * où les images se chevauchent et les étiquettes se heurtent) : même triangle ABC, même point K, quatre translations
@@ -52,7 +50,6 @@ export const ACT1 = Object.freeze({
 });
 
 const key = (p) => `${p[0]},${p[1]}`;
-const same = (p, q) => p[0] === q[0] && p[1] === q[1];
 const sub = (p, q) => [p[0] - q[0], p[1] - q[1]];
 const add = (p, u) => [p[0] + u[0], p[1] + u[1]];
 const neg = (u) => [-u[0], -u[1]];
@@ -134,7 +131,7 @@ export const allDone = (lab) => lab.tableaux.every((_, t) => tableauDone(lab, t)
 export const discoveryReady = allDone;
 
 /** Le drone égaré (scène `show`) : un nœud libre R tel que R + u et R − u restent dans la grille. */
-export function rogueSpot(lab, u) {
+function rogueSpot(lab, u) {
   if (!u) return null;
   const busy = new Set([...Object.values(lab.drones), ...Object.values(lab.drones).map((p) => add(p, u))].map(key));
   const { grid } = lab;
@@ -244,14 +241,6 @@ export function restartStep(lab, phase = 0) {
 
 /** Passer à un tableau (scène `act1`) ; les tableaux faits restent faits. */
 export const goTo = (lab, t) => (t >= 0 && t < lab.tableaux.length ? { ...lab, t, last: null } : lab);
-/** Le premier tableau non fini après t (ou t). */
-export const nextOpen = (lab) => {
-  for (let i = 1; i <= lab.tableaux.length; i += 1) {
-    const t = (lab.t + i) % lab.tableaux.length;
-    if (!tableauDone(lab, t)) return t;
-  }
-  return lab.t;
-};
 
 /** Le nœud le plus proche d'un point de la grille (flottants) — borné à la grille. */
 export function nodeNear(lab, x, y) {

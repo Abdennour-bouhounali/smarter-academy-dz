@@ -40,7 +40,7 @@ export default function ForgotPassword() {
       title={t('forgotTitle')}
       subtitle={t('forgotSubtitle')}
       footer={(
-        <Link to="/login" className="font-semibold text-blue-600 hover:text-blue-700">
+        <Link to="/login" className="font-semibold text-nav-accent hover:text-nav-accent">
           {t('backToLogin')}
         </Link>
       )}

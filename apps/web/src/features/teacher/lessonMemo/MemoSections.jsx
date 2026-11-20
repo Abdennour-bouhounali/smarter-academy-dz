@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import MathText from '../../../lessons/common/components/MathText';
 import { ArrowForward } from '../../../components/common/DirectionalIcons';
-import { CLASSROOM_START_STATE } from './memoRoutes';
+import { CLASSROOM_START_STATE, canPresentPath } from './memoRoutes';
 import { bidi } from '../../../utils/bidi';
 import MathLabel from '../../../lessons/common/components/MathLabel';
 import { mathToPlain } from '../../../utils/mathPlain';
@@ -22,11 +22,11 @@ import { mathToPlain } from '../../../utils/mathPlain';
  */
 
 /** Texte du contenu : les `$…$` passent par KaTeX, en ltr isolé (MathText). */
-export const M = ({ children }) => (typeof children === 'string' ? <MathText>{children}</MathText> : children ?? null);
+const M = ({ children }) => (typeof children === 'string' ? <MathText>{children}</MathText> : children ?? null);
 
 const STAGE_TONE = {
   prerequisite_check: { dot: 'bg-sky-600', ring: 'border-sky-200', soft: 'bg-sky-50', text: 'text-sky-800' },
-  trigger: { dot: 'bg-indigo-600', ring: 'border-indigo-200', soft: 'bg-indigo-50', text: 'text-indigo-800' },
+  trigger: { dot: 'bg-nav-accent', ring: 'border-indigo-200', soft: 'bg-nav-accent-soft', text: 'text-nav-accent' },
   discovery: { dot: 'bg-violet-600', ring: 'border-violet-200', soft: 'bg-violet-50', text: 'text-violet-800' },
   manipulation: { dot: 'bg-fuchsia-600', ring: 'border-fuchsia-200', soft: 'bg-fuchsia-50', text: 'text-fuchsia-800' },
   formalization: { dot: 'bg-emerald-600', ring: 'border-emerald-200', soft: 'bg-emerald-50', text: 'text-emerald-800' },
@@ -35,12 +35,12 @@ const STAGE_TONE = {
 };
 const toneOf = (stage) => STAGE_TONE[stage] ?? STAGE_TONE.discovery;
 
-export function Section({ id, icon: Icon, title, lead, children, className = '' }) {
+function Section({ id, icon: Icon, title, lead, children, className = '' }) {
   return (
     <section id={id} className={`sa-memo-section scroll-mt-28 rounded-3xl border border-slate-200 bg-white p-5 shadow-xs sm:p-6 ${className}`} aria-labelledby={`${id}-title`} data-memo-section={id.replace(/^memo-/, '')}>
       <header className="mb-4">
         <h2 id={`${id}-title`} className="flex items-center gap-2 font-space text-xl font-bold text-slate-900">
-          {Icon && <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-teal-50 text-teal-700"><Icon className="h-5 w-5" aria-hidden="true" /></span>}
+          {Icon && <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-nav-page text-nav-accent"><Icon className="h-5 w-5" aria-hidden="true" /></span>}
           {title}
         </h2>
         {lead && <p className="mt-1 text-sm text-slate-500">{lead}</p>}
@@ -76,11 +76,11 @@ export function MemoOverview({ header }) {
     [t('overview.modules'), String(header.moduleCount)],
   ].filter(Boolean);
   return (
-    <section id="memo-overview" className="scroll-mt-28 rounded-3xl border-2 border-teal-200 bg-gradient-to-br from-teal-50 via-white to-indigo-50 p-5 sm:p-7" data-memo-section="overview">
+    <section id="memo-overview" className="scroll-mt-28 rounded-3xl border-2 border-nav-line bg-gradient-to-br from-teal-50 via-white to-indigo-50 p-5 sm:p-7" data-memo-section="overview">
       <div className="flex flex-wrap items-start gap-4">
         {header.icon && <span className="text-5xl leading-none" aria-hidden="true">{header.icon}</span>}
         <div className="min-w-0 flex-1">
-          <p className="text-xs font-extrabold uppercase tracking-widest text-teal-700">{t('title')}{header.kind === 'synthesis' ? ` · ${t('overview.synthesis')}` : ''}</p>
+          <p className="text-xs font-extrabold uppercase tracking-widest text-nav-accent">{t('title')}{header.kind === 'synthesis' ? ` · ${t('overview.synthesis')}` : ''}</p>
           <h1 className="mt-1 font-space text-2xl font-extrabold leading-tight text-slate-900 sm:text-3xl" data-memo-title><MathLabel>{header.title}</MathLabel></h1>
           {header.description && <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600"><M>{bidi(header.description)}</M></p>}
         </div>
@@ -107,8 +107,8 @@ export function MemoObjectives({ objectives, prerequisites }) {
         <div className="grid gap-5 md:grid-cols-2">
           {skills.length > 0 && (
             <div>
-              <h3 className="mb-2 text-sm font-extrabold text-teal-800">{t('objectives.skills')}</h3>
-              <ul className="space-y-1.5">{skills.map((s) => <li key={s} className="flex gap-2 text-sm text-slate-800"><span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-teal-500" aria-hidden="true" /><span><M>{s}</M></span></li>)}</ul>
+              <h3 className="mb-2 text-sm font-extrabold text-nav-accent">{t('objectives.skills')}</h3>
+              <ul className="space-y-1.5">{skills.map((s) => <li key={s} className="flex gap-2 text-sm text-slate-800"><span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-nav-accent" aria-hidden="true" /><span><M>{s}</M></span></li>)}</ul>
             </div>
           )}
           {knowledge.length > 0 && (
@@ -163,7 +163,7 @@ export function MemoObjectives({ objectives, prerequisites }) {
             {prerequisites.lessons.length > 0 && (
               <div>
                 <h3 className="mb-1 text-xs font-extrabold text-slate-500">{t('prerequisites.lessons')}</h3>
-                <ul className="space-y-1">{prerequisites.lessons.map((l) => <li key={l.id}><Link to={l.path} className="text-sm font-bold text-indigo-700 hover:underline"><MathLabel>{l.title}</MathLabel></Link></li>)}</ul>
+                <ul className="space-y-1">{prerequisites.lessons.map((l) => <li key={l.id}><Link to={l.path} className="text-sm font-bold text-nav-accent hover:underline"><MathLabel>{l.title}</MathLabel></Link></li>)}</ul>
               </div>
             )}
           </div>
@@ -182,18 +182,18 @@ export function MemoStart({ start }) {
   return (
     <Section id="memo-start" icon={Rocket} title={t('start.title')} lead={start.title ? `${mathToPlain(start.title)}${start.subtitle ? ` — ${start.subtitle}` : ''}` : null}>
       {manipulations.length > 0 && (
-        <div className="mb-4 flex flex-wrap items-start justify-between gap-3 rounded-2xl border-2 border-indigo-200 bg-indigo-50 p-4" data-memo-start-manipulation>
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3 rounded-2xl border-2 border-indigo-200 bg-nav-accent-soft p-4" data-memo-start-manipulation>
           <div className="min-w-0">
             <h3 className="flex items-center gap-2 text-sm font-extrabold text-indigo-900"><Puzzle className="h-4 w-4" aria-hidden="true" /> {t('start.manipulation')}</h3>
             <p className="mt-1 text-sm text-indigo-900/80">{t('start.manipulationLead')}</p>
             <ul className="mt-2 flex flex-wrap gap-1.5">
               {manipulations.map((m) => (
-                <li key={bidi(m.title)}><Pill className="bg-white text-indigo-800">🧪 {m.level ? `${t(`timeline.level.${m.level}`)} · ` : ''}<M>{bidi(m.title)}</M></Pill></li>
+                <li key={bidi(m.title)}><Pill className="bg-white text-nav-accent">🧪 {m.level ? `${t(`timeline.level.${m.level}`)} · ` : ''}<M>{bidi(m.title)}</M></Pill></li>
               ))}
             </ul>
           </div>
-          {phase?.path && (
-            <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-4 text-sm font-extrabold text-white hover:bg-indigo-700 sa-memo-no-print">
+          {canPresentPath(phase?.path) && (
+            <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-xl border-2 border-nav-accent bg-nav-accent px-4 text-sm font-extrabold text-white hover:bg-[#3350c4] sa-memo-no-print">
               <GraduationCap className="h-5 w-5" aria-hidden="true" /> {t('start.present')}
             </Link>
           )}
@@ -288,8 +288,8 @@ export function MemoTimeline({ phases }) {
                       </span>
                     )}
                     {end != null && <span className="text-[11px] font-semibold text-slate-400">{t('timeline.at', { from: p.startsAt, to: end })}</span>}
-                    {p.path && (
-                      <Link to={p.path} state={CLASSROOM_START_STATE} aria-label={t('timeline.presentAria', { n: p.number })} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-200 bg-white px-3 text-xs font-extrabold text-indigo-800 hover:border-indigo-400 hover:bg-indigo-50 sa-memo-no-print">
+                    {canPresentPath(p.path) && (
+                      <Link to={p.path} state={CLASSROOM_START_STATE} aria-label={t('timeline.presentAria', { n: p.number })} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-200 bg-white px-3 text-xs font-extrabold text-nav-accent hover:border-indigo-400 hover:bg-nav-accent-soft sa-memo-no-print">
                         <GraduationCap className="h-4 w-4" aria-hidden="true" /> {t('timeline.present')}
                       </Link>
                     )}
@@ -297,9 +297,9 @@ export function MemoTimeline({ phases }) {
                 </header>
 
                 <div className="mt-4 grid gap-3 md:grid-cols-2">
-                  <RoleBlock icon={GraduationCap} label={t('timeline.teacher')} className="bg-teal-50 text-teal-900">{stageKey && t(`${stageKey}.teacher`)}</RoleBlock>
+                  <RoleBlock icon={GraduationCap} label={t('timeline.teacher')} className="bg-nav-page text-nav-accent">{stageKey && t(`${stageKey}.teacher`)}</RoleBlock>
                   <RoleBlock icon={Users} label={t('timeline.students')} className="bg-sky-50 text-sky-900">{stageKey && t(`${stageKey}.students`)}</RoleBlock>
-                  <RoleBlock icon={Wrench} label={t('timeline.support')} className="bg-indigo-50 text-indigo-900">
+                  <RoleBlock icon={Wrench} label={t('timeline.support')} className="bg-nav-accent-soft text-indigo-900">
                     {p.manipulations.length > 0 || p.otherResources.length > 0 ? (
                       <ul className="space-y-1">
                         {p.manipulations.map((m) => <li key={bidi(m.title)}>🧪 {m.level ? <b>{t(`timeline.level.${m.level}`)}: </b> : null}<M>{bidi(m.title)}</M></li>)}
@@ -324,7 +324,7 @@ export function MemoTimeline({ phases }) {
                   <div className="mt-3">
                     <h4 className="mb-1 flex items-center gap-1.5 text-xs font-extrabold text-slate-600"><MessageCircleQuestion className="h-4 w-4" aria-hidden="true" /> {t('timeline.questions')}</h4>
                     <ul className="space-y-1 text-sm text-slate-800">
-                      {p.questions.map((q) => <li key={q}>❓ <M>{q}</M> <Pill className="bg-indigo-50 text-indigo-700">{t('questions.textbook')}</Pill></li>)}
+                      {p.questions.map((q) => <li key={q}>❓ <M>{q}</M> <Pill className="bg-nav-accent-soft text-nav-accent">{t('questions.textbook')}</Pill></li>)}
                       {Array.isArray(moves) && moves.map((q) => <li key={q} className="text-slate-600">💬 {q}</li>)}
                     </ul>
                   </div>
@@ -376,8 +376,8 @@ export function MemoExamples({ examples }) {
                 <p className="text-sm text-slate-800"><M>{ex.commonError}</M></p>
               </div>
             )}
-            <div className="mt-2 rounded-xl bg-teal-50 p-3">
-              <h4 className="mb-0.5 text-xs font-extrabold text-teal-800">{t('examples.intervention')}</h4>
+            <div className="mt-2 rounded-xl bg-nav-page p-3">
+              <h4 className="mb-0.5 text-xs font-extrabold text-nav-accent">{t('examples.intervention')}</h4>
               <p className="text-sm text-slate-800">{t('examples.askFirst')}</p>
               {ex.hint?.summary && <p className="mt-1 text-sm text-slate-700">{t('examples.interventionText', { title: ex.hint.title, summary: ex.hint.summary })}</p>}
             </div>
@@ -402,7 +402,7 @@ export function MemoErrors({ errors }) {
                 <p className="mt-1 text-xs text-slate-500">{t('errors.where')}: <M>{ex.statement ?? ''}</M> <SourcePage source={ex.source} /></p>
               </div>
               <div className="space-y-1 text-sm">
-                {ex.hint?.summary && <p className="text-teal-900"><b>{t('errors.nudge')}:</b> {t('errors.nudgeText', { title: ex.hint.title, summary: ex.hint.summary })}</p>}
+                {ex.hint?.summary && <p className="text-nav-accent"><b>{t('errors.nudge')}:</b> {t('errors.nudgeText', { title: ex.hint.title, summary: ex.hint.summary })}</p>}
                 {ex.explain && <p className="text-slate-700"><b>{t('errors.fix')}:</b> <M>{ex.explain}</M></p>}
               </div>
             </li>
@@ -504,16 +504,16 @@ export function MemoEvaluation({ evaluation }) {
                 <h3 className="text-sm font-extrabold text-slate-800">🎯 {t('evaluation.test')}</h3>
                 <p className="text-sm text-slate-600">{t('evaluation.testLead', { title: phase.title, minutes: phase.minutes ?? '–' })}{phase.desc ? ` — ${mathToPlain(phase.desc)}` : ''}</p>
               </div>
-              {phase.path && (
-                <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-indigo-700 bg-indigo-600 px-3 text-xs font-extrabold text-white hover:bg-indigo-700 sa-memo-no-print">
+              {canPresentPath(phase.path) && (
+                <Link to={phase.path} state={CLASSROOM_START_STATE} className="inline-flex min-h-[40px] items-center gap-1.5 rounded-xl border-2 border-nav-accent bg-nav-accent px-3 text-xs font-extrabold text-white hover:bg-[#3350c4] sa-memo-no-print">
                   <GraduationCap className="h-4 w-4" aria-hidden="true" /> {t('timeline.present')}
                 </Link>
               )}
             </div>
           )}
           {exitTicket && (
-            <div className="rounded-2xl border-2 border-dashed border-teal-300 p-3" data-memo-exit-ticket>
-              <h3 className="text-sm font-extrabold text-teal-800">🎟️ {t('evaluation.exitTicket')}</h3>
+            <div className="rounded-2xl border-2 border-dashed border-nav-line p-3" data-memo-exit-ticket>
+              <h3 className="text-sm font-extrabold text-nav-accent">🎟️ {t('evaluation.exitTicket')}</h3>
               <p className="text-xs text-slate-500">{t('evaluation.exitTicketLead')}</p>
               <p className="mt-1 text-sm text-slate-900"><M>{exitTicket.statement}</M> <SourcePage source={exitTicket.source} /></p>
             </div>
@@ -527,12 +527,12 @@ export function MemoEvaluation({ evaluation }) {
 // ── La suite ──────────────────────────────────────────────────────────────
 export function MemoNext({ next }) {
   const { t } = useTranslation('memo');
-  const LessonLink = ({ l }) => <Link to={l.path} className="font-bold text-indigo-700 hover:underline"><MathLabel>{l.title}</MathLabel></Link>;
+  const LessonLink = ({ l }) => <Link to={l.path} className="font-bold text-nav-accent hover:underline"><MathLabel>{l.title}</MathLabel></Link>;
   return (
     <Section id="memo-next" icon={UserRound} title={t('next.title')}>
       <dl className="grid gap-3 text-sm md:grid-cols-2">
-        <div className="rounded-2xl bg-indigo-50 p-3">
-          <dt className="text-xs font-extrabold text-indigo-800">{t('next.nextLesson')}</dt>
+        <div className="rounded-2xl bg-nav-accent-soft p-3">
+          <dt className="text-xs font-extrabold text-nav-accent">{t('next.nextLesson')}</dt>
           <dd className="mt-1">{next.nextLesson ? <LessonLink l={next.nextLesson} /> : <span className="text-slate-500">{t('next.none')}</span>}</dd>
         </div>
         {next.remediation.length > 0 && (
@@ -548,8 +548,8 @@ export function MemoNext({ next }) {
           </div>
         )}
         {next.assignable > 0 && (
-          <div className="rounded-2xl bg-teal-50 p-3">
-            <dt className="text-xs font-extrabold text-teal-800">{t('next.assignable')}</dt>
+          <div className="rounded-2xl bg-nav-page p-3">
+            <dt className="text-xs font-extrabold text-nav-accent">{t('next.assignable')}</dt>
             <dd className="mt-1 text-slate-700">{t('next.assignableText', { count: next.assignable })}</dd>
           </div>
         )}

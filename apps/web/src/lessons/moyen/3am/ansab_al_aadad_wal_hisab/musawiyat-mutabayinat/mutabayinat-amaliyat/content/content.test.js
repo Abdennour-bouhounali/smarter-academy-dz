@@ -181,7 +181,7 @@ describe('le درس « المتباينات والعمليات » — clés reca
   it('E8 (ex-26) : 3 ≤ 2x + 1 < 9 ⟺ 1 ≤ x < 4 ; les distracteurs décrivent d\'autres ensembles', () => {
     const row = EXERCISES.find((e) => e.id === 'ex-26').question.rows[0];
     const inGiven = (x) => holds(evaluate(E8.given.lo, {}), E8.given.loRel, evaluate(E8.given.expr, { x })) && holds(evaluate(E8.given.expr, { x }), E8.given.hiRel, evaluate(E8.given.hi, {}));
-    row.options.forEach((o, k) => {
+    row.options.forEach((o) => {
       const s = split2(o);
       const rel1 = s.r1 === '≤' || s.r1 === '\\leq' ? '<=' : '<';
       const inOpt = (x) => holds(evaluate(s.lo, {}), rel1, x) && holds(x, s.r2.includes('≤') || s.r2 === '≤' ? '<=' : '<', evaluate(s.hi, {}));

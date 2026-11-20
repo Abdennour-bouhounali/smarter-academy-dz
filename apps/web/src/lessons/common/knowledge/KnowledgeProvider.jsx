@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useProgress } from '../hooks/useProgress';
 import { useWorkspaceLayout } from '../../../context/WorkspaceLayoutContext';
 import { useLearningViewer } from '../../../features/learning/learningViewer';
@@ -92,7 +92,7 @@ export function LessonKnowledgeProvider({ lessonId, knowledge: rawKnowledge, gra
   // COMPLÈTE d'emblée — la même règle que `freeNavigation` pour les verrous.
   // Aucun rôle testé ici ; rien n'est écrit.
   const { freeNavigation } = useLearningViewer();
-  // CARTE OUVERTE (propriétaire, 2026-11-08, PILOTE `qasim-adad-tabii`) : `knowledgeMapOpen: true` dans la config montre
+  // CARTE OUVERTE (propriétaire, 2026-11-08, d'abord sur la leçon pilote) : `knowledgeMapOpen: true` dans la config montre
   // TOUTES les connaissances de la leçon dès le début, sans attendre la fin des محاور. Seuls les ITEMS de la carte s'ouvrent :
   // `unlockedModules` reste la vraie progression (la surcouche de maîtrise le lit comme « modules terminés »), et la fiche
   // de fin de module ne montre toujours que ses propres connaissances (KnowledgeSnapshot).

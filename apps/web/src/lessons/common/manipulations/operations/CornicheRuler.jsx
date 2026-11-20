@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Lock, Anchor } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -298,7 +298,7 @@ function Lab({ lab, setLab, k, width, lead, cp, advanced }) {
 
 /* ══════════════ La scène : le front de mer et la planche ══════════════ */
 
-function Stage({ lab, setLab, k, width, advanced }) {
+function Stage({ lab, setLab, k, width }) {
   const uid = `cr${useId().replace(/[^a-zA-Z0-9]/g, '')}`;
   const svgRef = useRef(null);
   const W = width;
@@ -424,7 +424,6 @@ function Stage({ lab, setLab, k, width, advanced }) {
 
 function BeginnerRow({ lab, setLab, k }) {
   const [text, setText] = useState('');
-  const ask = L.currentAsk(lab);
   const task = L.taskOf(lab);
   const can = L.canRead(lab) && !L.taskDone(lab);
   useEffect(() => { setText(''); }, [lab.ti, lab.ai, lab.pin]);
@@ -536,7 +535,7 @@ export function ruleOptions(lab, k, advanced) {
   return opt([k(`discovery.${key}.right`), k(`discovery.${key}.wrongA`), k(`discovery.${key}.wrongB`)], 0, [null, k(`discovery.${key}.whyA`), k(`discovery.${key}.whyB`)], advanced ? 1 : 2);
 }
 
-export function Formal({ lab, k, advanced }) {
+export function Formal({ k, advanced }) {
   if (advanced) {
     return (
       <div className="space-y-2 text-sm font-bold text-emerald-950" data-cr-formal="step">

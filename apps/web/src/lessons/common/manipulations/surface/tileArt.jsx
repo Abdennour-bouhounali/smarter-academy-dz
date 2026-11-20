@@ -1,4 +1,3 @@
-import React from 'react';
 import * as S from '@smarter-academy/core/arithmetic/surfaces.js';
 
 /**

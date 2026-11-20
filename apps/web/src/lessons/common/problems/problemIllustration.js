@@ -1,8 +1,8 @@
 /** La donnée d'une illustration de مسألة (voir ProblemIllustration.jsx) — JS pur, lu par le validateur. */
 import { ICON_KINDS, PILL_TONES, PLAN_FILLS, PLAN_SHAPES, SCENE_BGS } from './situationKinds.js';
 
-export const FIGURE_KINDS = Object.freeze(['books', 'bouquets', 'field', 'orchard', 'glass', 'hall']);
-export const GENERIC_KINDS = Object.freeze(['plan', 'stacks', 'tags', 'tanks', 'route', 'ladder', 'timeline', 'scene']);
+const FIGURE_KINDS = Object.freeze(['books', 'bouquets', 'field', 'orchard', 'glass', 'hall']);
+const GENERIC_KINDS = Object.freeze(['plan', 'stacks', 'tags', 'tanks', 'route', 'ladder', 'timeline', 'scene']);
 export const ILLUSTRATION_KINDS = Object.freeze([...FIGURE_KINDS, ...GENERIC_KINDS]);
 
 const filled = (v) => v != null && v !== '';

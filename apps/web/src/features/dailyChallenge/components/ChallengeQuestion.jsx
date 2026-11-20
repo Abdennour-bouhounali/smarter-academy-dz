@@ -60,7 +60,7 @@ export default function ChallengeQuestion({
           className="rounded-[28px] bg-white p-4 shadow-xl shadow-slate-200/60 ring-1 ring-slate-200 sm:p-7"
         >
           {current.learningPoint?.title && (
-            <p className="mb-2 font-inter text-xs font-semibold text-indigo-600">{t('session.learningPoint')}: <MathLabel>{current.learningPoint.title}</MathLabel></p>
+            <p className="mb-2 font-inter text-xs font-semibold text-nav-accent">{t('session.learningPoint')}: <MathLabel>{current.learningPoint.title}</MathLabel></p>
           )}
           {(statement?.content || statement?.formulas || statement?.table || statement?.figure) && (
             <div className="mb-4 rounded-2xl bg-slate-50 p-3 sm:p-4">
@@ -90,7 +90,7 @@ export default function ChallengeQuestion({
                 type="submit"
                 disabled={result ? busy : !ready}
                 className={`mx-auto flex min-h-[56px] w-full max-w-md items-center justify-center rounded-2xl px-6 font-space text-lg font-black transition focus:outline-none focus-visible:ring-4 disabled:cursor-not-allowed disabled:opacity-50 ${
-                  result ? 'bg-indigo-600 text-white hover:bg-indigo-700 focus-visible:ring-indigo-300' : 'bg-gradient-to-r from-amber-300 to-orange-500 text-slate-950 focus-visible:ring-amber-200'
+                  result ? 'bg-nav-accent text-white hover:bg-[#3350c4] focus-visible:ring-indigo-300' : 'bg-gradient-to-r from-amber-300 to-orange-500 text-slate-950 focus-visible:ring-amber-200'
                 }`}
                 data-primary-action={result ? (isLast ? 'finish' : 'next') : 'check'}
               >

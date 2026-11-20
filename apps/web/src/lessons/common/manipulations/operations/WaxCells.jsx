@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Eye } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -527,7 +527,7 @@ function FarBox({ lab, setLab, k, btn }) {
   );
 }
 
-function CompareBox({ lab, setLab, k, btn }) {
+function CompareBox({ setLab, k, btn }) {
   return (
     <div data-wc-compare-box className="space-y-1.5 rounded-xl border-2 border-amber-200 bg-amber-50/60 p-2">
       <div className="grid grid-cols-2 gap-2 text-center text-sm font-black" dir="ltr">
@@ -609,7 +609,7 @@ export function ruleOptions(k) {
 export function Formal({ lab, k }) {
   const two = L.taskOf(lab).kind === 'two';
   const strip = L.taskOf(lab).strip;
-  const line = two ? '5n+1+8m+3\;\\Rightarrow\;n=6,\\ m=4:\\ 31+35=66' : strip ? '8n+3' : '5\\times n+1=5n+1 \\qquad 5\\times 40+1=201';
+  const line = two ? '5n+1+8m+3\\;\\Rightarrow\\;n=6,\\ m=4:\\ 31+35=66' : strip ? '8n+3' : '5\\times n+1=5n+1 \\qquad 5\\times 40+1=201';
   return (
     <div className="space-y-2 text-sm font-bold text-emerald-950" data-wc-formal>
       <p><MathText>{k('formal.intro')}</MathText></p>

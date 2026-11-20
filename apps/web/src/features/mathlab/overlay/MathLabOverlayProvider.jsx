@@ -22,8 +22,6 @@ function presentationRoot() {
 }
 import { PICKER } from './overlayState.js';
 
-export { PICKER };
-
 /**
  * Le calque est chargé À LA DEMANDE — jamais au démarrage.
  *
@@ -57,7 +55,7 @@ function OverlayLoading() {
       role="status"
       aria-busy="true"
     >
-      <span className="h-8 w-8 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" aria-hidden="true" />
+      <span className="h-8 w-8 animate-spin rounded-full border-4 border-nav-accent border-t-transparent" aria-hidden="true" />
     </div>
   );
 }

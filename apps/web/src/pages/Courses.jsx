@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useContext, useEffect, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -16,7 +16,6 @@ import { useDocumentMeta } from '../hooks/useDocumentMeta';
 
 export default function CoursesPage() {
   const { t } = useTranslation('common');
-  const { t: ts } = useTranslation('student');
   useDocumentMeta(t('catalogueMetaTitle'), t('catalogueMetaDescription'));
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -195,8 +194,8 @@ export default function CoursesPage() {
       {!user ? (
         <section className="bg-white border-b border-slate-200 py-10 px-4 text-center">
           <div className="max-w-4xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-4 shadow-2xs">
-              <Sparkles size={14} className="text-blue-600 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-xs font-mono-jetbrains font-semibold uppercase tracking-wider mb-4 shadow-2xs">
+              <Sparkles size={14} className="text-nav-accent animate-pulse" />
               {t('catalogueBadge')}
             </div>
             <h1 className="font-space font-bold text-3xl sm:text-4xl text-slate-900 mb-2">
@@ -271,9 +270,9 @@ export default function CoursesPage() {
                     transition={{ duration: 0.15 }}
                     key={grade.id}
                     onClick={() => handleGradeChange(grade.id)}
-                    className={`flex-shrink-0 px-6 py-2.5 rounded-xl font-space font-bold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${
+                    className={`flex-shrink-0 px-6 py-2.5 rounded-xl font-space font-bold text-sm transition-all focus:outline-none focus:ring-2 focus:ring-nav-accent focus:ring-offset-2 ${
                       isSelected
-                        ? `bg-blue-100 text-blue-800 border-2 border-blue-300 shadow-sm`
+                        ? `bg-blue-100 text-nav-accent border-2 border-blue-300 shadow-sm`
                         : `bg-white text-slate-600 border border-slate-200 hover:bg-slate-50`
                     }`}
                   >
@@ -288,9 +287,9 @@ export default function CoursesPage() {
         {/* BREADCRUMB & SEARCH ROW */}
         <section className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-4">
           <div className="flex items-center gap-2 font-space font-bold text-xl text-slate-900 flex-wrap">
-             <span className="text-slate-500 cursor-pointer hover:text-blue-600" onClick={() => handleChapterChange('all')}>{t('breadcrumbCourses')}</span>
+             <span className="text-slate-500 cursor-pointer hover:text-nav-accent" onClick={() => handleChapterChange('all')}>{t('breadcrumbCourses')}</span>
              <span className="text-slate-300 font-inter">/</span>
-             <span className="text-slate-500 cursor-pointer hover:text-blue-600" onClick={() => handleChapterChange('all')}>{gradeData.name}</span>
+             <span className="text-slate-500 cursor-pointer hover:text-nav-accent" onClick={() => handleChapterChange('all')}>{gradeData.name}</span>
              {effectiveChapterId !== 'all' && (
                <>
                  <span className="text-slate-300 font-inter">/</span>
@@ -340,7 +339,7 @@ export default function CoursesPage() {
                     onClick={() => handleChapterChange(chapter.id)}
                     className={`flex-shrink-0 inline-flex items-center px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
                       isSelected
-                        ? 'bg-blue-600 text-white shadow-md'
+                        ? 'bg-nav-accent text-white shadow-md'
                         : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
@@ -363,15 +362,15 @@ export default function CoursesPage() {
               className="group block bg-white rounded-2xl border-2 border-blue-200 p-5 shadow-sm hover:shadow-md hover:border-blue-400 transition-all max-w-2xl"
             >
               <div className="flex items-start gap-4">
-                <div className="text-4xl bg-blue-50 p-3 rounded-2xl group-hover:scale-105 transition-transform">
+                <div className="text-4xl bg-nav-accent-soft p-3 rounded-2xl group-hover:scale-105 transition-transform">
                   {continueCourse.course.icon}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <h4 className="font-space font-bold text-slate-900 text-lg group-hover:text-blue-600 transition-colors">
+                    <h4 className="font-space font-bold text-slate-900 text-lg group-hover:text-nav-accent transition-colors">
                       {continueCourse.course.title} — {continueCourse.grade.name}
                     </h4>
-                    <span className="text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform text-blue-600">
+                    <span className="text-sm font-bold flex items-center gap-1 group-hover:translate-x-1 group-hover:rtl:-translate-x-1 transition-transform text-nav-accent">
                       {t('continue')} <ArrowForward size={14} />
                     </span>
                   </div>

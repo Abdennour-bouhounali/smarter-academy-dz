@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../components/MathText';
 import { SourceTag } from '../textbook';
 
@@ -21,7 +20,7 @@ import { SourceTag } from '../textbook';
  * pour un item du manuel, `addition(...)` pour un item de la plateforme
  * (affiché « عبارة إضافية من المنصّة » par SourceTag, jamais pris pour le manuel).
  */
-export const YES_NO = ['صحيح', 'خطأ'];
+const YES_NO = ['صحيح', 'خطأ'];
 
 export function prepQuestion(item, points = 1) {
   return {

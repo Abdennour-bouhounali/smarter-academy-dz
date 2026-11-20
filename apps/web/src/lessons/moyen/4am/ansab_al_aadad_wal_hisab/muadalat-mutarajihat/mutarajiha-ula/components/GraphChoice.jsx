@@ -1,4 +1,3 @@
-import React from 'react';
 import { TapQuestion } from '../../../../../../common/kit';
 import MathText from '../../../../../../common/components/MathText';
 import RayFigure from './RayFigure';

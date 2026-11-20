@@ -61,9 +61,9 @@ export default function ClassificationQuestion({ question, onChange, disabled })
                 type="button"
                 onClick={() => setSelected(it.id)}
                 aria-pressed={selected === it.id}
-                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-start max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
+                className={`px-3 py-2.5 rounded-xl border-2 text-sm font-medium text-start max-w-[260px] transition-all min-h-[44px] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent ${
                   selected === it.id
-                    ? 'bg-blue-50 border-blue-500 ring-2 ring-blue-300 text-blue-900'
+                    ? 'bg-nav-accent-soft border-nav-accent ring-2 ring-blue-300 text-blue-900'
                     : 'bg-white border-slate-200 text-slate-700 hover:border-slate-400'
                 }`}
               >

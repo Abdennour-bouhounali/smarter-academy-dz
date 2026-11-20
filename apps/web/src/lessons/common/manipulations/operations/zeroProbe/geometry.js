@@ -9,10 +9,10 @@
 import { pillWidth } from '../../primitives/SvgPill';
 
 export const PILL = 13;
-export const TICK_FONT = 11;
+const TICK_FONT = 11;
 export const AXIS_PAD = 46;
 export const RING = 22;
-export const PAD = 18;
+const PAD = 18;
 const pillH = Math.round(PILL * 1.9);
 
 export const minus = (s) => String(s).replace(/-/g, '−');
@@ -29,7 +29,7 @@ export function layout(W, H) {
 }
 
 /** Le rectangle d'une pastille centrée (ou ancrée) en (x, y) — le centre vertical est `y`. */
-export function pillBox(x, y, text, anchor = 'middle') {
+function pillBox(x, y, text, anchor = 'middle') {
   const w = pillWidth(text, PILL);
   const x0 = anchor === 'start' ? x : anchor === 'end' ? x - w : x - w / 2;
   return { x0, y0: y - pillH / 2, x1: x0 + w, y1: y - pillH / 2 + pillH, w, h: pillH };
@@ -64,7 +64,7 @@ export function labelBoxes(geo, { marks, value, dText, d, side }) {
   return out;
 }
 
-export const intersects = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
+const intersects = (p, q) => p.x0 < q.x1 && q.x0 < p.x1 && p.y0 < q.y1 && q.y0 < p.y1;
 
 /** Les paires d'étiquettes qui se chevauchent (vide = conforme). */
 export function overlaps(boxes) {

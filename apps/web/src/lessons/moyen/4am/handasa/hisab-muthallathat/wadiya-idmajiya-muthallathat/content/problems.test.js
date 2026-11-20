@@ -5,11 +5,10 @@ import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 import { PROBLEMS, PROBLEM } from './problems';
 import { LESSON_CONFIG } from '../lesson.config';
 
-const { sinDeg, cosDeg, tanDeg, asinDeg, acosDeg, atanDeg } = TR;
+const { sinDeg, cosDeg, tanDeg, asinDeg, atanDeg } = TR;
 /** L'arrondi de la calculatrice (trigonometry.js › roundTo écrit « 2,65 ») relu comme nombre. */
 const roundTo = (x, d) => Number(TR.roundTo(x, d).replace(',', '.'));
 const expectedOf = (id, part) => PROBLEM[id].parts[part].steps.filter((s) => s.kind === 'numeric').map((s) => s.expected);
-const correctOf = (id, part, k) => { const s = PROBLEM[id].parts[part].steps.filter((st) => st.kind === 'choice')[k]; return s.options[s.correct]; };
 
 // ── Vérificateur des ÉGALITÉS écrites ($…$) ─────────────────────────────────────────────────────────────
 // Expressions numériques : décimaux « 2{,}4 », \dfrac{…}{…}, \sqrt{…}, \times, \div, ^2, \sin/\cos/\tan d'un angle en

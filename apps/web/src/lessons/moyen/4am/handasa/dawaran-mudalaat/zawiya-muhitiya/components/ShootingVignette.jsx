@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La vignette de la carte d'activité du نشاط 4 : la surface de réparation vue d'en haut, le but, le cercle peint et trois

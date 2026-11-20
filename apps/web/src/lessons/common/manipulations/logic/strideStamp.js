@@ -13,14 +13,14 @@
  */
 import * as G from '@smarter-academy/core/arithmetic/graduatedLine.js';
 
-export const KINDS = Object.freeze(['stamp', 'twin', 'place', 'origin', 'bound']);
+const KINDS = Object.freeze(['stamp', 'twin', 'place', 'origin', 'bound']);
 /** Les trois foulées (en unités d'écran) : courte, moyenne, longue. La route : 250 vers l'ouest, 450 vers l'est (mêmes constantes que l'art). */
 export const STRIDES = Object.freeze([40, 60, 90]);
-export const ROAD = Object.freeze({ west: 250, east: 450 });
+const ROAD = Object.freeze({ west: 250, east: 450 });
 /** Le tracé figé des tâches qui ne choisissent pas la foulée : la moyenne. */
-export const FIXED_STRIDE = 1;
-export const PLACE_RANGE = 40;     // ±4 unités : la droite stampée d'avance
-export const FREE_LIMIT = 50;      // « جرّب أعدادك » : |x| ≤ 5
+const FIXED_STRIDE = 1;
+const PLACE_RANGE = 40;     // ±4 unités : la droite stampée d'avance
+const FREE_LIMIT = 50;      // « جرّب أعدادك » : |x| ≤ 5
 
 const bad = (m) => { throw new Error(`stride-stamp : ${m}`); };
 
@@ -105,11 +105,8 @@ export const taskDone = (s, i = s.ti) => !!s.done[i];
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const isAdvanced = (s) => s.tasks.some((t) => t.advanced);
-export const readOf = (s) => (s.free || taskDone(s) ? null : taskOf(s).reads[s.ri]);
 export const strideOf = (s) => STRIDES[s.stride];
 export const reachOf = (s) => reach(s.stride);
-/** L'abscisse que la main lit AU bout du bâton / sous le bâtiment (dixièmes). */
-export const abscissa = (s) => (s.free ? s.free.t : taskOf(s).kind === 'origin' || taskOf(s).kind === 'bound' ? null : s.pos);
 /** L'unité de déplacement de la main : un tick pour stamp / twin / origin / bound, un dixième pour place. */
 export const grainOf = (s) => (s.free || taskOf(s).kind === 'place' ? 1 : G.TENTH);
 

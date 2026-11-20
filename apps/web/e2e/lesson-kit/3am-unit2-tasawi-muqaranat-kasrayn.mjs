@@ -87,10 +87,6 @@ const pickLevel = async (page, level) => {
 };
 const vis = (page, sel) => page.locator(`${sel}:visible`).first();
 const center = async (page, sel) => { await vis(page, sel).evaluate((el) => el.scrollIntoView({ block: 'center', behavior: 'instant' })); await page.waitForTimeout(150); };
-async function goto(page, url) {
-  try { await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 }); } catch (e) { if (!/Timeout/.test(String(e))) throw e; await page.waitForLoadState('load'); }
-  await page.waitForTimeout(1200);
-}
 
 
 const browser = await chromium.launch();

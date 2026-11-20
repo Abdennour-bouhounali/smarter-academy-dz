@@ -17,8 +17,8 @@ export const PROBABILITY_SCOPES = Object.freeze(['secondaire']);
 export const PROBABILITY_CAPABILITIES = Object.freeze({ secondaire: null });
 
 /** Tous les indicateurs de la grille, et tous les plis « كيف تُحسب ؟ ». */
-export const ALL_STATS = Object.freeze(['count', 'min', 'max', 'range', 'mean', 'median', 'mode', 'q1', 'q3', 'iqr', 'variance', 'sd']);
-export const ALL_EXPLANATIONS = Object.freeze(['mean', 'median', 'mode', 'quartiles', 'range', 'variance', 'sd']);
+const ALL_STATS = Object.freeze(['count', 'min', 'max', 'range', 'mean', 'median', 'mode', 'q1', 'q3', 'iqr', 'variance', 'sd']);
+const ALL_EXPLANATIONS = Object.freeze(['mean', 'median', 'mode', 'quartiles', 'range', 'variance', 'sd']);
 
 /** Ce que le laboratoire montre, capacités résolues (`null` = tout). */
 export function probabilityFeatures(capabilities) {

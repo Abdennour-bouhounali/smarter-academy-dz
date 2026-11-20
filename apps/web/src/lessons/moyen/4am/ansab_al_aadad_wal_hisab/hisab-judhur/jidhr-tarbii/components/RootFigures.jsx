@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les deux figures du manuel, DESSINÉES (jamais une image) : la géométrie est
@@ -53,7 +52,7 @@ export function TriangleABC({ ab = 1, ac = 2, caption }) {
  * chaque sommet suivant = le précédent + le vecteur UNITAIRE perpendiculaire au
  * rayon issu de B (sens horaire, comme dans le livre). Le rayon n°k mesure √(k+1).
  */
-export function spiralPoints(count) {
+function spiralPoints(count) {
   const pts = [[-1, 1]];
   for (let i = 1; i < count; i += 1) {
     const [x, y] = pts[i - 1];

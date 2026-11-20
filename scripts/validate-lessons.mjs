@@ -21,7 +21,7 @@
 //
 // Usage: node scripts/validate-lessons.mjs [--strict]
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { relative, join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { validateProblem } from '../apps/web/src/lessons/common/problems/guidedProblem.js';
@@ -162,7 +162,25 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
   // LazyKnowledgeProvider la reçoit). Les invariants du graphe lui-même —
   // validité, items portés, aides, disposition — sont vérifiés par
   // apps/web/src/lessons/common/knowledge/progressive/lessonGraphs.test.js.
-  if (knowledgeMap) {
+  // A v2 lesson (`retiredModules: true`, LESSON_V2.md §2) has ONE knowledge source, the file its pack names
+  // (`lesson.pack.js › knowledge: () => import('./…')`): that file must export the graph (the world's « خريطة المعارف »).
+  // It needs no root knowledge.jsx / knowledgeGraph.js — they were the deleted lesson's map.
+  const v2Lesson = existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'));
+  const packFile = join(lessonDir, 'lesson.pack.js');
+  const packKnowledge = v2Lesson && existsSync(packFile)
+    ? readFileSync(packFile, 'utf-8').match(/knowledge:\s*\(\)\s*=>\s*import\('\.\/([^']+)'\)/)?.[1] ?? null
+    : null;
+  if (knowledgeMap && v2Lesson) {
+    if (knowledgeMapMode !== 'progressive') {
+      errors.push(`${configPath}: knowledgeMap: true requires knowledgeMapMode: 'progressive' (got ${JSON.stringify(knowledgeMapMode)}) — docs/architecture/KNOWLEDGE_MAP.md A.13`);
+    }
+    const file = packKnowledge && [packKnowledge, `${packKnowledge}.js`, `${packKnowledge}.jsx`].map((f) => join(lessonDir, f)).find((f) => existsSync(f));
+    if (!file) {
+      errors.push(`${rel}: a v2 lesson with knowledgeMap: true needs a pack whose \`knowledge\` names an existing file — docs/architecture/LESSON_V2.md §1`);
+    } else if (!/export\s+const\s+KNOWLEDGE_GRAPH\b|export\s*\{\s*KNOWLEDGE_GRAPH\s*\}/.test(readFileSync(file, 'utf-8'))) {
+      errors.push(`${relative(repoRoot, file)}: the pack's knowledge must export KNOWLEDGE_GRAPH (the lesson's map) — docs/architecture/LESSON_V2.md §2`);
+    }
+  } else if (knowledgeMap) {
     if (knowledgeMapMode !== 'progressive') {
       errors.push(`${configPath}: knowledgeMap: true requires knowledgeMapMode: 'progressive' (got ${JSON.stringify(knowledgeMapMode)}) — docs/architecture/KNOWLEDGE_MAP.md A.13`);
     }
@@ -327,7 +345,10 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
 
     // Le contenu des « مسائل » : content/problems.js, un problème par module
     // « problem », dans l'ordre, chacun conforme au contrat GuidedProblem.
-    const problemModules = modules.filter((m) => m.track === 'problem');
+    // A v2 lesson (`retiredModules: true` in its routes.jsx, LESSON_V2.md §2) has no module page: its « مسائل » modules are
+    // DATA (progress is stored by their numbers), and their content/problems.js is deleted with the pages.
+    const retiredPages = existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'));
+    const problemModules = retiredPages ? [] : modules.filter((m) => m.track === 'problem');
     if (problemModules.length > 0) {
       const problemsFile = join(lessonDir, 'content', 'problems.js');
       if (!existsSync(problemsFile)) {
@@ -451,6 +472,32 @@ for (const lessonDir of findLessonDirs(lessonsRoot)) {
         }
       },
     });
+  }
+
+  // ── A v2 lesson: its assessment evidence is the world's ─────────────────────
+  // Its module pages (and the final test « إختبار أولي » with them) are deleted (`retiredModules: true`, LESSON_V2.md §2).
+  // What proves a الكفاءة is an exam-format answer of the game world, sent as a claim the SERVER re-computes (§1bis):
+  // `world/evidence.js` names, for each key, the الكفاءة it proves (`const POINTS = { <key>: 'P<n>' }`). A الكفاءة that no
+  // key proves stays uncovered below — the same error as a lesson whose final test forgets it.
+  if (existsSync(join(lessonDir, 'routes.jsx')) && /retiredModules:\s*true/.test(readFileSync(join(lessonDir, 'routes.jsx'), 'utf-8'))) {
+    // A UNIT'S LAST LESSON (world « mission-isle », docs/reports/INTEGRATION_LESSON_PLAN.md §5) forges no key: what proves
+    // its الكفاءة is its BANK in exam form (the sitting, mission 3 with it) — the server re-computes each answer from the
+    // sheet. Its coverage is read from the bank: the learning points the questions of `content/practice/` carry.
+    const packFile = join(lessonDir, 'lesson.pack.js');
+    if (existsSync(packFile) && /world:\s*\{\s*id:\s*'mission-isle'/.test(readFileSync(packFile, 'utf-8'))) {
+      const bank = join(repoRoot, 'content', 'practice', gradeId, code);
+      const codes = new Set();
+      if (existsSync(bank))
+        for (const f of readdirSync(bank, { recursive: true }))
+          if (String(f).endsWith('.json'))
+            for (const m of readFileSync(join(bank, String(f)), 'utf-8').matchAll(/"code":\s*"([^"]+)"/g)) codes.add(m[1]);
+      migratedCoverage.set(indexKey, codes);
+      continue;
+    }
+    const evidenceFile = join(lessonDir, 'world', 'evidence.js');
+    const points = existsSync(evidenceFile) ? readFileSync(evidenceFile, 'utf-8').match(/const POINTS = \{([^}]*)\}/)?.[1] ?? '' : '';
+    migratedCoverage.set(indexKey, new Set([...points.matchAll(/'(P\d+)'/g)].map((m) => `${gradeId}_${code}_${m[1]}`)));
+    continue;
   }
 
   // ── Question-level assessment metadata ────────────────────────────────────
@@ -617,6 +664,9 @@ if (existsSync(liveRoot)) {
         const optionsNode = propOf(path.node, 'options');
         const count = optionCount(optionsNode);
         if (count === null) return;
+        // a question with SEVERAL right answers declares them as a set — `answer: [values]` (a world's stone) — not as
+        // one index; whether that set is the true one is the lesson's own test (its journey.test.js), not a static check
+        if (propOf(path.node, 'answer')?.type === 'ArrayExpression') return;
         const isQuestion = propOf(path.node, 'assessment') !== undefined
           || propOf(path.node, 'prompt') !== undefined || propOf(path.node, 'explain') !== undefined;
         checkKey(`${rel}:${path.node.loc?.start.line}`, count, keyOf(propOf(path.node, 'correct')), isQuestion);

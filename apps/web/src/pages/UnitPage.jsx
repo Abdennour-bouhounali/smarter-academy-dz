@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { BookOpen, Compass, Layers, Wand2, ListChecks, Landmark, Lock } from 'lucide-react';
+import { BookOpen, Compass, Wand2, ListChecks, Landmark, Lock, ChevronDown, Flag } from 'lucide-react';
 import { getUnitById, getLessonById, formatTextbookPages } from '@smarter-academy/core';
 import { getLessonProgress } from '../lessons/common/utils/progress/getLessonProgress';
 import { getTotalModules, isLessonBuilt } from '../lessons/registry';
@@ -21,30 +21,40 @@ import UnitOpenerFigure from './unit/UnitOpenerFigure';
 import { useCatalogueHref } from '../components/student/catalogueLink';
 import UnitMissionView from './unit/UnitMissionView';
 import { unitMissionOf } from './unit/unitMissions';
+import { StatusDot, ProgressLine, minutesOf, tileKind } from '../components/student/lessonTileParts';
 
 /**
- * La page d'une UNITÉ du manuel (الوحدة) — le niveau entre le ميدان et le درس.
+ * THE PAGE OF A UNIT (الوحدة) — the level between the ميدان and the درس.
  *
- * Elle montre ce que le manuel place en tête d'unité (les objectifs
- * « سأتعلّم في هذا الباب », le défi « تحدّ », l'aparté historique), puis les
- * leçons DANS L'ORDRE DU MANUEL, chacune avec : sa progression, ses points
- * d'apprentissage et leur état de maîtrise (profil serveur), ses prérequis
- * PÉDAGOGIQUES (affichés, jamais bloquants), ses manipulations et méthodes ;
- * enfin la synthèse « أدمج تعلّماتي », à part, jamais comptée comme un درس.
+ * Short on purpose (owner, 2026-11-16: « small content »): the unit's name and how far it is, then ONE LINE per lesson
+ * in the order of the progression — the synthesis « أدمج تعلّماتي » last. What the unit opens with (its goals, its
+ * challenge, its historical aside) and what a lesson holds (its الكفاءات and their mastery, its prerequisites — shown,
+ * never blocking — its labs, its محاور for the teacher) are folded, one tap away: reduced, never deleted.
  *
- * Tout vient du catalogue (packages/core) et des lesson.config.js (registre) :
- * la page n'écrit aucun contenu pédagogique.
+ * Everything comes from the catalogue (packages/core) and the lesson.config.js files: the page writes no content.
+ * The textbook reference is shown to the TEACHER only (a student is never sent to the book).
  *
- * REGARD ÉLÈVE D'UNE UNITÉ CONVERTIE (propriétaire, 2026-11-09) : quand l'unité a son contenu de mission (unit/unitMissions.js —
- * ses leçons sont passées au prototype), l'élève voit `UnitMissionView` (un écran : « درسك الآن », le défi, le chemin, le reste replié
- * dans une fenêtre). L'enseignant garde CETTE page, intacte.
+ * A STUDENT of a converted unit (owner, 2026-11-09) sees `UnitMissionView` instead (unit/unitMissions.js); the teacher
+ * keeps THIS page.
  */
-const MASTERY_DOT = { unassessed: 'bg-slate-300', gap: 'bg-rose-500', reinforce: 'bg-amber-400', mastered: 'bg-emerald-500' };
+const MASTERY_DOT = {
+  unassessed: 'bg-nav-line',
+  gap: 'bg-nav-alert',
+  reinforce: 'bg-nav-now',
+  mastered: 'bg-nav-done',
+};
+const CHIP = 'rounded-full border border-nav-line bg-nav-page px-2.5 py-0.5 text-xs font-semibold text-nav-ink';
+const H = 'mb-1.5 flex items-center gap-1.5 text-sm font-bold text-nav-ink';
+const PRIMARY =
+  'inline-flex min-h-[44px] items-center gap-1.5 rounded-xl bg-nav-accent px-4 text-sm font-bold text-white hover:bg-[#3350c4]';
+const QUIET =
+  'inline-flex min-h-[44px] items-center gap-1.5 rounded-xl border-[1.5px] border-nav-line bg-white px-4 text-sm font-bold text-nav-ink hover:border-nav-accent';
 
 function masteryIndex(profile) {
-  // Le profil est imbriqué par classe puis par leçon (cf. findLessonMasteryRows) ; on l'aplatit par code de point.
+  // The profile is nested by class then by lesson (see findLessonMasteryRows); flattened here by point code.
   const rows = [];
-  for (const g of profile?.currentMastery ?? []) for (const l of g.lessons ?? []) for (const lp of l.learningPoints ?? []) rows.push(lp);
+  for (const g of profile?.currentMastery ?? [])
+    for (const l of g.lessons ?? []) for (const lp of l.learningPoints ?? []) rows.push(lp);
   const map = new Map();
   for (const row of rows) {
     const code = row.code ?? row.learningPointCode ?? row.learning_point_code;
@@ -53,23 +63,21 @@ function masteryIndex(profile) {
   return map;
 }
 
-function LessonBlock({ lesson, index, mastery, t }) {
+/**
+ * ONE LINE per lesson — its rank, its name, two facts, what a tap does now — and everything else folded behind
+ * « التفاصيل »: its الكفاءات with their mastery, its prerequisites (shown, never blocking), its labs and methods, and
+ * for the teacher its محاور. `next` marks the lesson the student should open now: its line is the filled one and its
+ * details are open.
+ */
+function LessonBlock({ lesson, index, mastery, next, t }) {
   const { isLessonClosed, isLessonHiddenByClass, lessonStatus } = useContentAvailability();
-  // L'enseignant voit, sur chaque leçon de l'unité, ses محاور et ses deux
-  // gestes (مذكرة الدرس · وضع القسم). Le catalogue reste au niveau de la
-  // وحدة ; c'est ici, une fois l'unité ouverte, qu'il choisit une leçon.
   const { isTeacher } = useLearningViewer();
-  // Masquée par l'enseignant : traitée comme indisponible pour l'élève de
-  // cette classe, sans toucher à la publication.
+  // Hidden by the teacher: unavailable for the student of that class, without touching the publication.
   const available = lesson.status === 'available' && !isLessonClosed(lesson.id) && !isLessonHiddenByClass(lesson.id);
-  // Pas encore ÉCRITE (`coming_soon` — les leçons 1AM–3AM à générer, 2026-10-14) :
-  // une carte « قيد الإعداد » qui montre ce que la leçon fera acquérir, sans
-  // progression ni geste (LEARNING_NET.md).
+  // Not WRITTEN yet (`coming_soon`): named with what it will teach, no progress and no way in (LEARNING_NET.md).
   const draft = lesson.status !== 'available';
   const total = getTotalModules(lesson.id);
   const { progressPercent } = available ? getLessonProgress(lesson.id, total) : { progressPercent: 0 };
-  // Construite ? — l'index léger, synchrone. Les manipulations et méthodes
-  // viennent de la config complète, chargée avec la page (registry.js).
   const built = isLessonBuilt(lesson.id);
   const config = useLessonConfig(lesson.id);
   const resources = config?.resources ?? [];
@@ -77,114 +85,174 @@ function LessonBlock({ lesson, index, mastery, t }) {
   const methods = resources.filter((r) => r.kind === 'method');
   const prereqLessons = (lesson.prerequisiteLessonCodes ?? []).map((code) => getLessonById(code)).filter(Boolean);
   const isSynthesis = lesson.kind === 'synthesis';
-  const mastered = lesson.learningPoints.filter((lp) => resolveMasteryState(mastery.get(lp.id)) === 'mastered').length;
+  const points = lesson.learningPoints;
+  const mastered = points.filter((lp) => resolveMasteryState(mastery.get(lp.id)) === 'mastered').length;
   const textbookPages = formatTextbookPages(lesson.textbookRef?.pages);
+  const minutes = minutesOf(lesson.duration);
+  const kind = !available ? 'soon' : tileKind('open', progressPercent);
+  const [open, setOpen] = useState(next && !isTeacher);
+  const facts = [
+    points.length > 0 && t('unit.pointsCount', { count: points.length }),
+    minutes != null && t('unit.minutes', { n: minutes }),
+    !isTeacher && mastered > 0 && `${mastered} / ${points.length} ✓`,
+  ].filter(Boolean);
 
   return (
-    <article className={`rounded-3xl border-2 bg-white p-5 sm:p-6 space-y-4 ${isSynthesis ? 'border-amber-300' : 'border-slate-200'} ${draft ? 'border-dashed' : ''}`} data-unit-lesson={lesson.id}>
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div className="flex items-start gap-3">
-          <span className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${isSynthesis ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-800'}`} aria-hidden="true">
-            {isSynthesis ? <Landmark className="h-5 w-5" /> : index}
-          </span>
-          <div>
-            <div className="text-[11px] font-mono uppercase tracking-wider text-slate-500">{isSynthesis ? t('unit.synthesisTag') : t('unit.lessonTag', { n: index })}</div>
-            <h3 className="flex flex-wrap items-center gap-2 text-lg font-bold text-slate-900"><MathLabel>{lesson.title}</MathLabel><PublicationBadge status={lessonStatus(lesson.id)} /></h3>
-            <p className="mt-1 text-sm text-slate-600"><MathLabel>{lesson.description}</MathLabel></p>
-          </div>
-        </div>
-        {draft ? (
-          <span className="rounded-full border border-dashed border-slate-300 bg-slate-50 px-2.5 py-1 text-xs font-bold text-slate-500" data-lesson-draft={lesson.id}>{t('unit.comingSoon')}</span>
-        ) : (
-        <div className="flex flex-col items-end gap-1 text-xs text-slate-500">
-          <span dir="ltr" className={`rounded-full px-2.5 py-1 font-mono font-bold ${progressPercent >= 100 ? 'bg-emerald-50 text-emerald-700' : progressPercent > 0 ? 'bg-blue-50 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>{progressPercent}%</span>
-          <span>{lesson.duration}</span>
-          {lesson.learningPoints.length > 0 && <span dir="ltr">{mastered}/{lesson.learningPoints.length} ✓</span>}
-        </div>
-        )}
-      </header>
-
-      {isTeacher && <LessonModuleChips lessonId={lesson.id} />}
-
-      <div className="grid gap-4 md:grid-cols-2">
-        <section>
-          <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><ListChecks className="h-4 w-4" aria-hidden="true" /> {t('unit.learningPoints')}</h4>
-          <ul className="space-y-1">
-            {lesson.learningPoints.map((lp) => {
-              const row = mastery.get(lp.id);
-              const state = resolveMasteryState(row);
-              // UN seul vocabulaire (`mastery.*`) ; le tooltip ajoute la raison
-              // (`statusReason`) et la fraîcheur d'un acquis qui vieillit.
-              const tooltip = masteryTooltip(state, row, t);
-              return (
-                <li key={lp.id} className="flex items-start gap-2 text-sm text-slate-700" title={tooltip}>
-                  <span className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`} aria-label={tooltip} data-mastery-state={state} />
-                  <span><MathLabel>{lp.title}</MathLabel></span>
-                </li>
-              );
-            })}
-          </ul>
-        </section>
-        <section className="space-y-3">
-          {(prereqLessons.length > 0 || (lesson.prerequisites ?? []).length > 0) && (
-            <div>
-              <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><Compass className="h-4 w-4" aria-hidden="true" /> {t('unit.prerequisites')}</h4>
-              <ul className="flex flex-wrap gap-1.5">
-                <PrerequisiteLessonChips lessonId={lesson.id} />
-                {(lesson.prerequisites ?? []).map((txt) => (
-                  <li key={txt} className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-0.5 text-xs text-slate-600"><MathLabel>{txt}</MathLabel></li>
-                ))}
-              </ul>
-              <p className="mt-1 text-[11px] text-slate-500">{t('unit.prerequisitesNote')}</p>
-            </div>
+    <article
+      className={`relative overflow-hidden rounded-2xl border bg-white ${draft ? 'border-dashed border-nav-line' : next ? 'border-nav-now' : 'border-nav-line'}`}
+      data-unit-lesson={lesson.id}
+    >
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-3 p-4">
+        <StatusDot kind={kind === 'start' && !next ? 'idle' : kind} size="h-10 w-10 text-base">
+          {kind === 'done' || kind === 'now' ? null : isSynthesis ? (
+            <Landmark className="h-4 w-4 text-nav-muted" />
+          ) : (
+            <span className="text-nav-ink">{index}</span>
           )}
-          {(manipulations.length > 0 || methods.length > 0) && (
-            <div>
-              <h4 className="mb-1 flex items-center gap-1.5 text-sm font-bold text-slate-800"><Wand2 className="h-4 w-4" aria-hidden="true" /> {t('unit.manipulationsAndMethods')}</h4>
-              <ul className="flex flex-wrap gap-1.5">
-                {manipulations.map((r) => <li key={r.code} className="rounded-full bg-violet-100 px-2.5 py-0.5 text-xs text-violet-800">🧪 <MathLabel>{r.title}</MathLabel></li>)}
-                {methods.map((r) => <li key={r.code} className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs text-emerald-800">📐 <MathLabel>{r.title}</MathLabel></li>)}
-              </ul>
-            </div>
-          )}
-        </section>
-      </div>
-
-      <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
-        <span className="text-xs text-slate-500">
-          {/* Brouillon : l'en-tête et le bouton disent déjà « قيد الإعداد » — ici, les pages du manuel seules. */}
-          {built ? t('unit.modulesCount', { count: total ?? 0 }) : !draft && t('unit.comingSoon')}
-          {/* `pages` est une carte section → page(s), pas un nombre : sans
-              mise en forme, « الكتاب ص {{pages}} » rendait « [object Object] ». */}
-          {textbookPages && <>{(built || !draft) && ' · '}{t('unit.textbookPages', { pages: textbookPages })}</>}
-        </span>
-        {available && isTeacher && built && (
-          <div className="flex flex-wrap items-center gap-2">
-            <TeacherLessonActions lesson={lesson} />
-            <Link to={lesson.path} className="inline-flex min-h-[44px] items-center gap-1 rounded-xl px-3 py-2 text-sm font-bold text-slate-600 hover:text-teal-700">
-              {t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-        )}
+        </StatusDot>
+        <div className="min-w-0 flex-1 basis-60">
+          <h3 className="flex flex-wrap items-center gap-2 font-space text-base font-bold leading-snug text-nav-ink">
+            {available ? (
+              <Link to={lesson.path} className="hover:underline">
+                <MathLabel>{lesson.title}</MathLabel>
+              </Link>
+            ) : (
+              <span className="text-nav-muted">
+                <MathLabel>{lesson.title}</MathLabel>
+              </span>
+            )}
+            <PublicationBadge status={lessonStatus(lesson.id)} />
+          </h3>
+          <p className="mt-0.5 font-inter text-xs font-semibold text-nav-muted">
+            {isSynthesis && `${t('unit.synthesisTag')} · `}
+            {facts.join(' · ')}
+          </p>
+        </div>
+        {available && isTeacher && built && <TeacherLessonActions lesson={lesson} />}
         {available && !(isTeacher && built) && (
-          <Link to={lesson.path} className="inline-flex items-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-sm font-bold text-white hover:bg-blue-700">
-            {progressPercent > 0 ? t('unit.continue') : t('unit.start')} <ArrowForward className="h-4 w-4" aria-hidden="true" />
+          <Link to={lesson.path} className={next ? PRIMARY : QUIET}>
+            {kind === 'done'
+              ? t('unit.done')
+              : progressPercent > 0
+                ? `${t('unit.continue')} · ${progressPercent}%`
+                : t('unit.start')}
+            <ArrowForward className="h-4 w-4" aria-hidden="true" />
           </Link>
         )}
-        {/* Non ouverte (non publiée, pas encore écrite, ou masquée par
-            l'enseignant) : le geste reste à SA place, désactivé, et dit
-            pourquoi — la rangée ne change pas de forme d'une leçon à l'autre. */}
+        {/* Not open (not published, not written yet, or hidden by the teacher): the gesture stays in ITS place, disabled,
+            and says why — the line keeps its shape from one lesson to the next. */}
+        <button
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls={`unit-lesson-details-${lesson.id}`}
+          aria-label={t('unit.details')}
+          title={t('unit.details')}
+          className="order-last inline-flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl text-nav-muted hover:bg-nav-page hover:text-nav-ink"
+          data-unit-lesson-toggle
+        >
+          <ChevronDown className={`h-5 w-5 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+        </button>
         {!available && (
           <span
             aria-disabled="true"
-            className="inline-flex cursor-not-allowed items-center gap-1 rounded-xl bg-slate-200 px-4 py-2 text-sm font-bold text-slate-500"
+            className="inline-flex min-h-[44px] cursor-not-allowed items-center gap-1.5 rounded-xl border border-dashed border-nav-line px-4 text-sm font-bold text-nav-muted"
             data-lesson-soon={lesson.id}
+            {...(draft ? { 'data-lesson-draft': lesson.id } : {})}
           >
             <Lock className="h-4 w-4" aria-hidden="true" />
-            {isLessonHiddenByClass(lesson.id) ? t('hiddenByTeacherBadge', { ns: 'access' }) : draft ? t('unit.comingSoon') : t('unit.soon')}
+            {isLessonHiddenByClass(lesson.id)
+              ? t('hiddenByTeacherBadge', { ns: 'access' })
+              : draft
+                ? t('unit.comingSoon')
+                : t('unit.soon')}
           </span>
         )}
-      </footer>
+      </div>
+
+      <div
+        className="border-t border-nav-line p-4"
+        hidden={!open}
+        id={`unit-lesson-details-${lesson.id}`}
+        data-unit-lesson-details
+      >
+        <div className="space-y-4">
+          {lesson.description && (
+            <p className="max-w-3xl font-inter text-sm text-nav-muted">
+              <MathLabel>{lesson.description}</MathLabel>
+            </p>
+          )}
+          {isTeacher && <LessonModuleChips lessonId={lesson.id} />}
+          <div className="grid gap-4 md:grid-cols-2">
+            <section>
+              <h4 className={H}>
+                <ListChecks className="h-4 w-4" aria-hidden="true" /> {t('unit.learningPoints')}
+              </h4>
+              <ul className="space-y-1">
+                {points.map((lp) => {
+                  const row = mastery.get(lp.id);
+                  const state = resolveMasteryState(row);
+                  // ONE vocabulary (`mastery.*`); the tooltip adds the reason and the freshness.
+                  const tooltip = masteryTooltip(state, row, t);
+                  return (
+                    <li key={lp.id} className="flex items-start gap-2 text-sm text-nav-ink" title={tooltip}>
+                      <span
+                        className={`mt-1.5 inline-block h-2.5 w-2.5 shrink-0 rounded-full ${MASTERY_DOT[state]}`}
+                        aria-label={tooltip}
+                        data-mastery-state={state}
+                      />
+                      <span>
+                        <MathLabel>{lp.title}</MathLabel>
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+            <section className="space-y-3">
+              {(prereqLessons.length > 0 || (lesson.prerequisites ?? []).length > 0) && (
+                <div>
+                  <h4 className={H}>
+                    <Compass className="h-4 w-4" aria-hidden="true" /> {t('unit.prerequisites')}
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    <PrerequisiteLessonChips lessonId={lesson.id} />
+                    {(lesson.prerequisites ?? []).map((txt) => (
+                      <li key={txt} className={CHIP}>
+                        <MathLabel>{txt}</MathLabel>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {(manipulations.length > 0 || methods.length > 0) && (
+                <div>
+                  <h4 className={H}>
+                    <Wand2 className="h-4 w-4" aria-hidden="true" /> {t('unit.manipulationsAndMethods')}
+                  </h4>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {manipulations.map((r) => (
+                      <li key={r.code} className={CHIP} data-unit-resource="manipulation">
+                        <MathLabel>{r.title}</MathLabel>
+                      </li>
+                    ))}
+                    {methods.map((r) => (
+                      <li key={r.code} className={CHIP} data-unit-resource="method">
+                        <MathLabel>{r.title}</MathLabel>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          </div>
+          {/* The textbook page is the TEACHER's reference only: a student is never sent to the book. */}
+          {isTeacher && textbookPages && (
+            <p className="font-inter text-xs text-nav-muted">{t('unit.textbookPages', { pages: textbookPages })}</p>
+          )}
+        </div>
+      </div>
+      {available && <ProgressLine percent={progressPercent} />}
     </article>
   );
 }
@@ -204,7 +272,8 @@ export default function UnitPage() {
   const mastery = useMemo(() => masteryIndex(profile), [profile]);
   const { isTeacher } = useLearningViewer();
 
-  if (!unit || unit.levelId !== levelId || unit.gradeId !== gradeId || unit.chapterId !== chapterId) return <Navigate to="/courses" replace />;
+  if (!unit || unit.levelId !== levelId || unit.gradeId !== gradeId || unit.chapterId !== chapterId)
+    return <Navigate to="/courses" replace />;
 
   // L'élève d'une unité convertie : un écran, la page détaillée reste celle de l'enseignant.
   const mission = unitMissionOf(unit.id);
@@ -213,8 +282,16 @@ export default function UnitPage() {
       <div className={`min-h-screen bg-slate-50 ${chrome.contentOffsetClass}`}>
         <main className="sa-page space-y-2 py-4">
           <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label={t('unit.breadcrumb')}>
-            <Link to={catalogueHref()} className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
-            <Link to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })} className="hover:text-blue-600">{unit.chapterTitle}</Link>
+            <Link to={catalogueHref()} className="hover:text-nav-accent">
+              {t('unit.home')}
+            </Link>
+            <span>/</span>
+            <Link
+              to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })}
+              className="hover:text-nav-accent"
+            >
+              {unit.chapterTitle}
+            </Link>
           </nav>
           <UnitMissionView unit={unit} mission={mission} />
         </main>
@@ -223,74 +300,150 @@ export default function UnitPage() {
   }
 
   const lessons = unit.lessons;
-  const done = lessons.filter((l) => l.status === 'available' && getLessonProgress(l.id, getTotalModules(l.id)).progressPercent >= 100).length;
+  const isDone = (l) =>
+    l.status === 'available' && getLessonProgress(l.id, getTotalModules(l.id)).progressPercent >= 100;
+  const done = lessons.filter(isDone).length;
+  // The lesson to open NOW: the first one available and not finished. A teacher has none (he is not a learner here).
+  const all = unit.synthesis ? [...lessons, unit.synthesis] : lessons;
+  const nextId = isTeacher ? null : (all.find((l) => l.status === 'available' && !isDone(l))?.id ?? null);
+  const FOLD = 'rounded-2xl border border-nav-line bg-white';
+  const FOLD_HEAD =
+    'flex min-h-[48px] cursor-pointer list-none items-center gap-2 px-4 font-inter text-sm font-bold text-nav-ink [&::-webkit-details-marker]:hidden';
 
   return (
-    <div className={`min-h-screen bg-slate-50 ${chrome.contentOffsetClass}`}>
-      <main className="sa-page space-y-8 py-8">
-        {/* Pas de `font-mono` : ce fil d'Ariane est en arabe (JetBrains Mono n'a aucun
-            glyphe arabe) et l'arrivée tardive de cette police changeait la hauteur
-            de la ligne — toute l'unité descendait de 28 px (CLS 0,25, 2026-10-17). */}
-        <nav className="flex flex-wrap items-center gap-2 text-xs text-slate-500" aria-label={t('unit.breadcrumb')}>
-          <Link to={catalogueHref()} className="hover:text-blue-600">{t('unit.home')}</Link><span>/</span>
-          <Link to={catalogueHref({ level: levelId, grade: gradeId })} className="hover:text-blue-600">{unit.gradeName}</Link><span>/</span>
-          <Link to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })} className="hover:text-blue-600">{unit.chapterTitle}</Link><span>/</span>
-          <span className="font-semibold text-slate-900"><MathLabel>{unit.title}</MathLabel></span>
+    <div className={`min-h-screen bg-nav-page ${chrome.contentOffsetClass}`}>
+      <main className="sa-page space-y-6 py-6">
+        <nav
+          className="flex flex-wrap items-center gap-2 font-inter text-xs font-semibold text-nav-muted"
+          aria-label={t('unit.breadcrumb')}
+        >
+          <Link to={catalogueHref({ level: levelId, grade: gradeId })} className="hover:text-nav-ink">
+            {unit.gradeName}
+          </Link>
+          <span>/</span>
+          <Link
+            to={catalogueHref({ level: levelId, grade: gradeId, chapter: chapterId })}
+            className="hover:text-nav-ink"
+          >
+            {unit.chapterTitle}
+          </Link>
         </nav>
 
-        <section className="space-y-5 rounded-3xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8" data-unit={unit.id}>
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-700">
-                <Layers className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.unitNumber', { n: unit.number })}
-              </div>
-              <h1 className="text-3xl font-extrabold leading-tight text-slate-900 sm:text-4xl"><MathLabel>{unit.title}</MathLabel></h1>
-              {unit.subtitle && <p className="max-w-2xl text-slate-600">{unit.subtitle}</p>}
-              {unit.textbook && <p className="flex items-center gap-1.5 text-xs text-slate-500"><BookOpen className="h-3.5 w-3.5" aria-hidden="true" /> {t('unit.textbookRef', { title: unit.textbook.title, unit: unit.textbook.unit, pages: formatTextbookPages(unit.textbook.pages) })}</p>}
+        <header className="space-y-4" data-unit={unit.id}>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="min-w-0">
+              <p className="font-inter text-sm font-bold text-nav-muted">{t('unit.unitNumber', { n: unit.number })}</p>
+              <h1 className="font-space text-2xl font-extrabold leading-tight text-nav-ink sm:text-3xl">
+                <MathLabel>{unit.title}</MathLabel>
+              </h1>
             </div>
-            <div className="w-full shrink-0 space-y-2 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-center md:w-52" data-tour="unit.progress">
-              <div className="text-xs font-mono font-bold uppercase text-slate-500">{t('unit.progress')}</div>
-              <div dir="ltr" className="text-3xl font-extrabold text-blue-600">{done}{'\u00A0/\u00A0'}{lessons.length}</div>
-              <div className="text-xs text-slate-500">{t('unit.lessonsDone')}</div>
+            <div className={`w-full sm:w-56 ${isTeacher ? 'hidden' : ''}`} data-tour="unit.progress">
+              <div className="flex items-baseline justify-between font-inter text-sm font-bold text-nav-ink">
+                <span>{t('unit.lessonsDone')}</span>
+                <span dir="ltr">
+                  {done}
+                  {' / '}
+                  {lessons.length}
+                </span>
+              </div>
+              <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-nav-line">
+                <div
+                  className="h-full rounded-full bg-nav-done"
+                  style={{ width: `${lessons.length ? (done / lessons.length) * 100 : 0}%` }}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border-2 border-orange-200 bg-orange-50/60 p-4" data-tour="unit.objectives">
-              <h2 className="mb-2 text-sm font-bold text-orange-900">📌 {t('unit.objectives')}</h2>
-              <ul className="space-y-1 text-sm text-slate-800">{unit.objectives.map((o) => <li key={o}>• <MathLabel>{o}</MathLabel></li>)}</ul>
-            </div>
+          {/* What the unit opens with — its goals, its challenge, its aside — is ONE tap away, never a wall above the lessons. */}
+          <div className="grid items-start gap-3 lg:grid-cols-3">
+            <details className={`group ${FOLD}`} data-tour="unit.objectives">
+              <summary className={FOLD_HEAD}>
+                <ListChecks className="h-4 w-4 text-nav-muted" aria-hidden="true" />
+                {t('unit.objectives')}
+                <ChevronDown
+                  className="ms-auto h-4 w-4 text-nav-muted transition-transform group-open:rotate-180"
+                  aria-hidden="true"
+                />
+              </summary>
+              <ul className="space-y-1 px-4 pb-4 text-sm text-nav-ink">
+                {unit.objectives.map((o) => (
+                  <li key={o}>
+                    • <MathLabel>{o}</MathLabel>
+                  </li>
+                ))}
+              </ul>
+            </details>
             {unit.challenge?.textAr && (
-              <div className="rounded-2xl border-2 border-rose-200 bg-rose-50/60 p-4" data-unit-challenge>
-                <h2 className="mb-2 text-sm font-bold text-rose-900">🏁 {unit.challenge.titleAr ?? t('unit.challenge')}</h2>
-                <p className="text-sm leading-relaxed text-slate-800"><MathLabel>{unit.challenge.textAr}</MathLabel></p>
-                <UnitOpenerFigure code={unit.id} slot="challenge" />
-                <p className="mt-2 text-[11px] text-slate-500">{t('unit.challengeNote')}</p>
-              </div>
+              <details className={`group ${FOLD}`} data-unit-challenge>
+                <summary className={FOLD_HEAD}>
+                  <Flag className="h-4 w-4 text-nav-muted" aria-hidden="true" />
+                  {unit.challenge.titleAr ?? t('unit.challenge')}
+                  <ChevronDown
+                    className="ms-auto h-4 w-4 text-nav-muted transition-transform group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="px-4 pb-4">
+                  <p className="text-sm leading-relaxed text-nav-ink">
+                    <MathLabel>{unit.challenge.textAr}</MathLabel>
+                  </p>
+                  <UnitOpenerFigure code={unit.id} slot="challenge" />
+                  <span className="mt-2 block text-xs text-nav-muted">{t('unit.challengeNote')}</span>
+                </div>
+              </details>
+            )}
+            {unit.aside?.textAr && (
+              <details className={`group ${FOLD}`}>
+                <summary className={FOLD_HEAD}>
+                  <BookOpen className="h-4 w-4 text-nav-muted" aria-hidden="true" />
+                  {unit.aside.titleAr} — {unit.aside.captionAr}
+                  <ChevronDown
+                    className="ms-auto h-4 w-4 text-nav-muted transition-transform group-open:rotate-180"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <div className="px-4 pb-4 text-sm leading-relaxed text-nav-ink">
+                  <MathLabel>{unit.aside.textAr}</MathLabel>
+                  <UnitOpenerFigure code={unit.id} slot="aside" />
+                </div>
+              </details>
             )}
           </div>
-          {unit.aside?.textAr && (
-            <details className="rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
-              <summary className="cursor-pointer font-bold text-slate-800">{unit.aside.titleAr} — {unit.aside.captionAr}</summary>
-              <p className="mt-2 leading-relaxed"><MathLabel>{unit.aside.textAr}</MathLabel></p>
-              <UnitOpenerFigure code={unit.id} slot="aside" />
-            </details>
+          {isTeacher && unit.textbook && (
+            <p className="flex items-center gap-1.5 font-inter text-xs text-nav-muted">
+              <BookOpen className="h-3.5 w-3.5" aria-hidden="true" />
+              {t('unit.textbookRef', {
+                title: unit.textbook.title,
+                unit: unit.textbook.unit,
+                pages: formatTextbookPages(unit.textbook.pages),
+              })}
+            </p>
+          )}
+        </header>
+
+        <section className="space-y-3">
+          <h2 className="font-space text-lg font-bold text-nav-ink">{t('unit.lessons', { count: lessons.length })}</h2>
+          {lessons.map((lesson, i) => (
+            <LessonBlock
+              key={lesson.id}
+              lesson={lesson}
+              index={i + 1}
+              mastery={mastery}
+              next={lesson.id === nextId}
+              t={t}
+            />
+          ))}
+          {unit.synthesis && (
+            <LessonBlock
+              lesson={unit.synthesis}
+              index={lessons.length + 1}
+              mastery={mastery}
+              next={unit.synthesis.id === nextId}
+              t={t}
+            />
           )}
         </section>
-
-        <section className="space-y-4">
-          <h2 className="text-xl font-bold text-slate-900">{t('unit.lessons', { count: lessons.length })}</h2>
-          <div className="space-y-4">
-            {lessons.map((lesson, i) => <LessonBlock key={lesson.id} lesson={lesson} index={i + 1} mastery={mastery} t={t} />)}
-          </div>
-        </section>
-
-        {unit.synthesis && (
-          <section className="space-y-4">
-            <h2 className="text-xl font-bold text-slate-900">{t('unit.synthesisTitle')}</h2>
-            <LessonBlock lesson={unit.synthesis} index={lessons.length + 1} mastery={mastery} t={t} />
-          </section>
-        )}
       </main>
     </div>
   );

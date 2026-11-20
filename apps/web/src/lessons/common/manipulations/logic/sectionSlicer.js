@@ -22,14 +22,14 @@ import * as trigonometry from '@smarter-academy/core/arithmetic/trigonometry.js'
 import { spaceFigureQuality } from '../../components/spaceFigure';
 
 const { frac, add, sub, mul, div, cmp, eq, toNumber, parseNumber, fracLatex } = linear;
-const { surd, sqrt, surdLatex, surdNumber, square, roundTo, surdEq } = trigonometry;
+const { surd, sqrt, surdLatex, surdNumber, roundTo, surdEq } = trigonometry;
 
 const F = (v) => (v && typeof v === 'object' && 'n' in v ? v : Number.isInteger(v) ? frac(v) : String(v).includes('/') ? div(parseNumber(String(v).split('/')[0]), parseNumber(String(v).split('/')[1])) : parseNumber(String(v)));
 const sq = (p) => mul(p, p);
 /** Une longueur exacte (fraction ou surd) en LaTeX avec la virgule décimale du manuel (« 2{,}5 », « \sqrt{5} », « \dfrac{\sqrt{119}}{4} »). */
 export const lengthTex = (x) => decimalComma(x && typeof x === 'object' && 'r' in x ? surdLatex(x) : fracTexDec(F(x)));
 /** Une fraction : décimale courte quand elle est finie (2,8 ; 1,25), sinon \dfrac. */
-export function fracTexDec(p) {
+function fracTexDec(p) {
   p = F(p);
   if (p.d === 1) return String(p.n);
   let d = p.d; let k = 0;
@@ -49,7 +49,7 @@ export const approx = (x, digits = 2) => {
 /** Une longueur est-elle exacte « en décimal » (fraction) ou une racine (surd irrationnel) ? */
 export const isIrrational = (x) => !!(x && typeof x === 'object' && 'r' in x && x.r !== 1);
 
-export const STAGES = Object.freeze(['sphere', 'cuboid-face', 'cuboid-edge', 'cylinder-base', 'cylinder-axis', 'pyramid']);
+const STAGES = Object.freeze(['sphere', 'cuboid-face', 'cuboid-edge', 'cylinder-base', 'cylinder-axis', 'pyramid']);
 export const SOLID_OF = Object.freeze({
   sphere: 'sphere', 'cuboid-face': 'cuboid', 'cuboid-edge': 'cuboid', 'cylinder-base': 'cylinder', 'cylinder-axis': 'cylinder', pyramid: 'pyramid',
 });
@@ -59,7 +59,7 @@ const FIRST_STAGE = { sphere: 'sphere', cuboid: 'cuboid-face', cylinder: 'cylind
  * La configuration d'un niveau (levels.js) → les étages, chacun avec sa variable : indices min / max, pas (fraction), départ,
  * marques du manuel (orientation, jamais des boutons-réponses), nom, orientation du rail.
  */
-export function configOf(numbers = {}) {
+function configOf(numbers = {}) {
   const solids = numbers.solids ?? ['sphere'];
   const R = F(numbers.R ?? 5);
   const step = F(numbers.step ?? 1);
@@ -116,7 +116,7 @@ export function configOf(numbers = {}) {
  * Le départ d'un étage n'est JAMAIS une réponse de la tâche (une marque du manuel, le grand cercle, la tangente) : s'il en est une,
  * on prend la position voisine la plus proche qui n'en est pas. Pas un essai : seule l'impression en écrit un.
  */
-export function safeStart(st, extra = []) {
+function safeStart(st, extra = []) {
   const targets = new Set([...(st.stops ?? []), ...extra]);
   if (!targets.has(st.start)) return st.start;
   for (let d = 1; d <= st.max - st.min; d += 1) {
@@ -340,7 +340,7 @@ export const nextFilament = (lab) => ({ ...lab, filament: lab.filament + 1 });
 
 // ── la découverte (sphère) : le CONTRASTE grand cercle / petit cercle / contact ou rien ─────────────────────────
 
-export function sphereContrast(lab) {
+function sphereContrast(lab) {
   const t = lab.trials.filter((x) => x.stage === 'sphere');
   return {
     great: t.some((x) => x.kind === 'great-circle'),
@@ -539,4 +539,4 @@ export const valueText = (lab, stage = lab.stage, i = lab.pos[stage]) => {
   if (stage === 'pyramid') return linear.fracText(v);
   return fracTexDec(v).replace('\\dfrac{', '').replace('}{', '/').replace('}', '');
 };
-export { surd, sqrt, square, eq, F as toFrac, n2 as toNumberAny };
+export { F as toFrac, n2 as toNumberAny };

@@ -28,9 +28,9 @@ import {
   averageRate, tangentInfo, findRoots, findCriticalPoints, findVariationIntervals,
   findDiscontinuities, findAsymptotes, twoSidedLimit, approachTable, riemannSum,
   signedAndGeometricArea, findIntersections, areaBetween, antiderivativeSampler,
-  observedDomain, definiteIntegral, APPROACH_STEPS,
+  observedDomain, APPROACH_STEPS,
 } from './analysisMath.js';
-import { getTransformation, substituteX } from './presets.js';
+import { getTransformation } from './presets.js';
 import { limitOf, isEngineReady } from '../../symbolic/index.js';
 
 /** Combien de points servent à remplir une aire — assez pour un bord lisse. */
@@ -377,4 +377,3 @@ function buildBetweenPath(f, g, a, b) {
   return [{ sign: 1, points: [...top, ...bottom.reverse()] }];
 }
 
-export { definiteIntegral, substituteX };

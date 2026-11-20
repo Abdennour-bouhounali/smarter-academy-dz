@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { KitContext, useKit } from './kitContext';
+import { KitContext } from './kitContext';
 
-// Ré-export : les modules qui importaient useKit depuis ici continuent de marcher.
-export { useKit };
 import ModuleLayout from '../components/ModuleLayout';
 import { useProgress } from '../hooks/useProgress';
 import { useModuleEffects } from '../hooks/useModuleEffects';

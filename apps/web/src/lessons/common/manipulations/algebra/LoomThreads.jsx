@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Hand, CheckCircle2, Sparkles, ChevronLeft, FlaskConical, Undo2, Minus, Plus, Link2, Layers } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -367,7 +367,7 @@ function Loom({ lab, setLab, k, uid, width, screenH, mood }) {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLab((s) => (L.isIdentity(s) ? s : L.tie(s))); }
   };
 
-  const bandRange = (ray, i) => {
+  const bandRange = (ray) => {
     const bx = xOf(Lin.toNumber(ray.bound));
     return ray.rel === '<' || ray.rel === '<=' ? { x: x0 - 6, w: bx - x0 + 6 } : { x: bx, w: x0 + bw + 6 - bx };
   };
@@ -686,7 +686,7 @@ const plain = (txt) => minus(Lin.fracText(Lin.parseNumber(txt)));
 const cmpTex = { '<': '<', '>': '>', '=': '=' };
 
 export const QUESTIONS = {
-  order: (lab, task, k, ctx) => {
+  order: (lab, task, k) => {
     const t = hitOf(lab);
     if (!t || t.band) return null;
     const o = { a: iso(plain(t.a)), b: iso(plain(t.b)), a2: iso(plain(t.a2)), b2: iso(plain(t.b2)), op: iso(opText(t.tool, Lin.parseNumber(t.c))) };

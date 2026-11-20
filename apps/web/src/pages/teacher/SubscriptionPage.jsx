@@ -105,9 +105,9 @@ export default function SubscriptionPage() {
       {data && state && (
         <div className="space-y-6" data-subscription-page>
           {/* ── L'offre effective ─────────────────────────────────── */}
-          <section className="glass-card p-5 sm:p-6" data-current-plan>
+          <section className="rounded-2xl border border-nav-line bg-white p-5 sm:p-6" data-current-plan>
             <div className="flex items-start gap-4">
-              <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${state.base === 'active' ? 'bg-teal-100 text-teal-700' : 'bg-slate-100 text-slate-500'}`}><BadgeCheck className="w-5 h-5" /></div>
+              <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${state.base === 'active' ? 'bg-nav-page text-nav-accent' : 'bg-slate-100 text-slate-500'}`}><BadgeCheck className="w-5 h-5" /></div>
               <div className="min-w-0 flex-1">
                 <p className="font-inter text-xs text-slate-500">{t('subscription.currentTitle')}</p>
                 <p className="font-space font-bold text-slate-900 text-lg">{ent.plan?.name ?? t('subscription.status.default')}</p>
@@ -136,7 +136,7 @@ export default function SubscriptionPage() {
           {/* ── Demande en attente / refus ─────────────────────────── */}
           {state.pending && (
             <section className="rounded-2xl border border-blue-200 bg-blue-50/70 p-5 flex items-start gap-3" role="status" data-pending-request>
-              <Clock className="w-5 h-5 text-blue-700 shrink-0 mt-0.5" />
+              <Clock className="w-5 h-5 text-nav-accent shrink-0 mt-0.5" />
               <div className="min-w-0 flex-1">
                 <p className="font-semibold text-blue-900">{t('subscription.pendingTitle')}</p>
                 <p className="text-sm text-blue-900/80 mt-0.5">
@@ -145,7 +145,7 @@ export default function SubscriptionPage() {
                     : t('subscription.pendingBody', { plan: state.pending.planName, date: formatDate(state.pending.requestedAt) })}
                 </p>
               </div>
-              <button type="button" onClick={() => withdraw(state.pending.id)} className="text-xs font-semibold text-blue-800 hover:underline">{t('subscription.cancelRequest')}</button>
+              <button type="button" onClick={() => withdraw(state.pending.id)} className="text-xs font-semibold text-nav-accent hover:underline">{t('subscription.cancelRequest')}</button>
             </section>
           )}
           {state.rejected && (
@@ -188,7 +188,7 @@ export default function SubscriptionPage() {
                   {data.plans.filter((p) => !p.seatBased).map((plan) => {
                     const price = informationalPrice(plan.price);
                     return (
-                      <article key={plan.id} className={`glass-card p-5 flex flex-col gap-3 ${plan.isCurrent ? 'ring-2 ring-teal-600' : ''}`} data-plan-card={plan.slug}>
+                      <article key={plan.id} className={`rounded-2xl border border-nav-line bg-white p-5 flex flex-col gap-3 ${plan.isCurrent ? 'ring-2 ring-nav-accent' : ''}`} data-plan-card={plan.slug}>
                         <div>
                           <h3 className="font-space font-bold text-slate-900 text-lg">{plan.name}</h3>
                           {plan.description && <p className="text-sm text-slate-500 mt-1">{plan.description}</p>}
@@ -200,10 +200,10 @@ export default function SubscriptionPage() {
                         <ul className="text-sm text-slate-600 space-y-1">
                           <li><span dir="ltr">{plan.entitlements['students_total.max'] ?? '∞'}</span> {t('subscription.limitLabels.students')}</li>
                           <li>{t('subscription.seats.classesUnlimited')}</li>
-                          {plan.entitlements['students.covered'] && <li className="text-teal-800 font-semibold">{t('subscription.featureLabels.students.covered')}</li>}
+                          {plan.entitlements['students.covered'] && <li className="text-nav-accent font-semibold">{t('subscription.featureLabels.students.covered')}</li>}
                         </ul>
                         <div className="mt-auto pt-2">
-                          {plan.isCurrent ? <span className="text-xs font-semibold text-teal-800">{t('subscription.isCurrent')}</span>
+                          {plan.isCurrent ? <span className="text-xs font-semibold text-nav-accent">{t('subscription.isCurrent')}</span>
                             : plan.allowsRequests && state.canRequest ? (
                               <button type="button" onClick={() => submitRequest(plan)} disabled={requesting !== null} className={btnPrimary} data-request-plan={plan.slug}>
                                 {requesting === plan.id ? t('subscription.requesting') : t('subscription.request')}
@@ -225,7 +225,7 @@ export default function SubscriptionPage() {
           </section>
 
           {/* ── Le code d'activation ───────────────────────────────── */}
-          <section className="glass-card p-5 sm:p-6" data-activation-code>
+          <section className="rounded-2xl border border-nav-line bg-white p-5 sm:p-6" data-activation-code>
             <h2 className="font-space font-bold text-slate-900 flex items-center gap-2"><KeyRound size={16} /> {t('subscription.codeTitle')}</h2>
             <p className="text-sm text-slate-600 mt-1 mb-3">{t('subscription.codeBody')}</p>
             <form onSubmit={redeem} noValidate className="flex flex-col sm:flex-row gap-2">
@@ -238,7 +238,7 @@ export default function SubscriptionPage() {
 
           {/* ── Historique ─────────────────────────────────────────── */}
           {data.subscriptions.length > 0 && (
-            <section className="glass-card p-5">
+            <section className="rounded-2xl border border-nav-line bg-white p-5">
               <h2 className="font-space font-bold text-slate-900 mb-2">{t('subscription.historyTitle')}</h2>
               <ul className="divide-y divide-slate-100 text-sm">
                 {data.subscriptions.map((s) => (
@@ -276,7 +276,7 @@ function SeatPlanCard({ plan, freeSeats, currentStudents, seats, onSeats, canReq
   const requestable = canRequest && quote && !quote.free && !belowUsage && !coveredByFree;
 
   return (
-    <article className={`glass-card p-5 sm:p-6 ${plan.isCurrent ? 'ring-2 ring-teal-600' : ''}`} data-seat-plan={plan.slug}>
+    <article className={`rounded-2xl border border-nav-line bg-white p-5 sm:p-6 ${plan.isCurrent ? 'ring-2 ring-nav-accent' : ''}`} data-seat-plan={plan.slug}>
       <div className="flex flex-col lg:flex-row lg:items-start gap-6">
         <div className="flex-1 min-w-0">
           <h3 className="font-space font-bold text-slate-900 text-lg">{plan.name}</h3>
@@ -306,7 +306,7 @@ function SeatPlanCard({ plan, freeSeats, currentStudents, seats, onSeats, canReq
             <summary className="cursor-pointer font-semibold text-slate-700">{t('subscription.seats.tiersTitle')}</summary>
             <ul className="mt-2 space-y-1">
               {tiers.map((tier) => (
-                <li key={tier.id ?? tierLabel(tier)} className={`flex items-center justify-between gap-3 ${quote?.tier === tier ? 'font-bold text-teal-800' : ''}`}>
+                <li key={tier.id ?? tierLabel(tier)} className={`flex items-center justify-between gap-3 ${quote?.tier === tier ? 'font-bold text-nav-accent' : ''}`}>
                   <span>{tier.maxStudents == null ? t('subscription.seats.tierRowOpen', { min: tier.minStudents }) : t('subscription.seats.tierRow', { min: tier.minStudents, max: tier.maxStudents })}</span>
                   <span dir="ltr">{tier.pricePerStudentCents ? t('subscription.seats.perStudent', { amount: formatDzd(tier.pricePerStudentCents) }) : t('subscription.seats.free')}</span>
                 </li>
@@ -331,7 +331,7 @@ function SeatPlanCard({ plan, freeSeats, currentStudents, seats, onSeats, canReq
             </p>
           )}
           <div className="mt-3">
-            {plan.isCurrent && !requestable ? <span className="text-xs font-semibold text-teal-800">{t('subscription.isCurrent')}</span> : null}
+            {plan.isCurrent && !requestable ? <span className="text-xs font-semibold text-nav-accent">{t('subscription.isCurrent')}</span> : null}
             {requestable && (
               <button type="button" onClick={() => onRequest(n)} disabled={requesting} className={`${btnPrimary} w-full`} data-request-plan={plan.slug}>
                 {requesting ? t('subscription.requesting') : t('subscription.seats.request')}

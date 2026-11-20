@@ -30,7 +30,7 @@ const GRADE_BADGE = {
 // Un dégradé par cycle : l'accent élève pour le moyen, sarcelle → bleu pour
 // le secondaire (les deux teintes du logo).
 const LEVEL_GRADIENT = {
-  moyen: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
+  moyen: '#3B5BDB',
   thanawi: 'linear-gradient(135deg, #0FA597, #3B82F6)',
 };
 
@@ -97,7 +97,7 @@ export default function ChooseGrade() {
           <GraduationCap size={26} />
         </div>
         {hasGrades && (
-          <p className="inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 mb-3">
+          <p className="inline-flex items-center rounded-full bg-nav-accent-soft px-3 py-1 text-xs font-semibold text-nav-accent mb-3">
             {ts('chooseGrade.step')}
           </p>
         )}
@@ -146,7 +146,7 @@ export default function ChooseGrade() {
                         onClick={() => handleSelect(g.id)}
                         disabled={selecting !== null}
                         aria-busy={busy}
-                        className="group w-full flex items-center gap-3 sm:gap-4 rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 text-start shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60"
+                        className="group w-full flex items-center gap-3 sm:gap-4 rounded-2xl border border-slate-200 bg-white p-3.5 sm:p-5 text-start shadow-sm transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-500/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-60"
                       >
                         <span
                           className="flex h-12 w-12 sm:h-14 sm:w-14 shrink-0 flex-col items-center justify-center rounded-xl sm:rounded-2xl text-white shadow-md"
@@ -184,7 +184,7 @@ export default function ChooseGrade() {
                           </span>
                         </span>
 
-                        <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-colors group-hover:bg-blue-600 group-hover:text-white">
+                        <span className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full bg-slate-50 text-slate-400 transition-colors group-hover:bg-nav-accent group-hover:text-white">
                           {busy ? (
                             <Loader2 size={18} className="animate-spin" aria-hidden="true" />
                           ) : (

@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { BadgeCheck, Check, Plus } from 'lucide-react';
 
@@ -13,11 +13,11 @@ import { BadgeCheck, Check, Plus } from 'lucide-react';
  */
 export const AUTH_TONES = {
   student: {
-    gradient: 'linear-gradient(135deg, #3B82F6, #8B5CF6)',
-    ring: 'focus:border-blue-500 focus:ring-blue-500/15',
-    link: 'text-blue-600 hover:text-blue-700',
+    gradient: '#3B5BDB',
+    ring: 'focus:border-nav-accent focus:ring-nav-accent/15',
+    link: 'text-nav-accent hover:text-nav-accent',
     wash: 'from-blue-50 via-white to-violet-50',
-    dot: 'bg-blue-100 text-blue-600',
+    dot: 'bg-blue-100 text-nav-accent',
     stroke: ['#3B82F6', '#8B5CF6'],
   },
   teacher: {
@@ -40,7 +40,7 @@ export function AuthSubmit({ tone = 'student', loading, children }) {
     <button
       type="submit"
       disabled={loading}
-      className="flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-blue-500/30 disabled:translate-y-0 disabled:opacity-70"
+      className="flex h-12 w-full items-center justify-center rounded-xl text-[15px] font-semibold text-white shadow-lg shadow-blue-500/20 transition hover:-translate-y-0.5 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-nav-accent/30 disabled:translate-y-0 disabled:opacity-70"
       style={{ background: AUTH_TONES[tone].gradient }}
     >
       {children}
@@ -164,7 +164,7 @@ export default function AuthShell({ tone = 'student', audience = tone, title, su
       <div className="pointer-events-none absolute top-[-10%] left-[-10%] h-[40%] w-[40%] rounded-full bg-blue-400/15 blur-3xl" />
       <div className="pointer-events-none absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-teal-400/15 blur-3xl" />
 
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
         className={`relative z-10 mx-auto grid w-full overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-2xl shadow-slate-200/60 ${plain ? 'max-w-4xl' : 'max-w-6xl lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)]'}`}
@@ -182,7 +182,7 @@ export default function AuthShell({ tone = 'student', audience = tone, title, su
           </div>
         </section>
         {!plain && <BrandPanel tone={tone} audience={audience} />}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

@@ -40,7 +40,7 @@ const powInt = (a, n) => { let r = ONE; for (let i = 0; i < n; i++) r = r.mul(a)
 const norm = (s) => s
   .replace(/\$/g, '').replace(/\\left|\\right/g, '').replace(/\\times|\\cdot/g, '*').replace(/\\div/g, '/')
   .replace(/\{,\}/g, '.').replace(/(\d),(\d)/g, '$1.$2').replace(/[−‒–]/g, '-')
-  .replace(/\\,|\;|\\ /g, '').replace(/\s+/g, '').replace(/\)\(/g, ')*(').replace(/(\d)\(/g, '$1*(');
+  .replace(/\\,|\\?;|\\ /g, '').replace(/\s+/g, '').replace(/\)\(/g, ')*(').replace(/(\d)\(/g, '$1*(');
 
 /** expr = terme ((+|−) terme)* ; terme = unaire ((*|/) unaire)* ; unaire = (+|−) unaire | puissance ; puissance = primaire (^ entier)* ; primaire = nombre | (expr) | [expr]. */
 function evaluate(src) {

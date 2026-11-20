@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les figures de la synthèse, DESSINÉES (jamais une image) :
@@ -19,7 +18,7 @@ const fmt = (v) => String(v).replace('.', ',');
  * @param {{ lines: { a: number, b: number, name: string }[], xMax: number, yMax: number, xStep: number,
  *   yStep: number, yLabelEvery?: number, xTitle: string, yTitle: string, label: string, cross?: {x:number,y:number} }} p
  */
-export function LinesFigure({ lines, xMax, yMax, xStep, yStep, yLabelEvery = 1, xTitle, yTitle, label, cross, figureId }) {
+function LinesFigure({ lines, xMax, yMax, xStep, yStep, yLabelEvery = 1, xTitle, yTitle, label, cross, figureId }) {
   const W = 340; const H = 250;
   const L = 48; const R = 14; const T = 22; const B = 34;
   const X = (v) => L + (v / xMax) * (W - L - R);

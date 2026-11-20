@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * « الشكل المقابل » du تحدّ (p. 103) : la minaret, le rayon de soleil qui passe par son sommet, le bâton de 1 m et

@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { LessonKnowledgeProvider } from './KnowledgeProvider';
 
 /**
@@ -32,7 +32,7 @@ import { LessonKnowledgeProvider } from './KnowledgeProvider';
  */
 const cache = new Map();
 
-export function makeLazyKnowledgeProvider(load) {
+function makeLazyKnowledgeProvider(load) {
   // Un composant `lazy` par leçon, mémorisé : en recréer un à chaque rendu
   // relancerait le chargement et remonterait tout l'arbre de la leçon.
   const cached = cache.get(load);

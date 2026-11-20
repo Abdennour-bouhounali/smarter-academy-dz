@@ -8,7 +8,6 @@ const readsAt = (m, res, rank, targetUnits /* R en unités de 10^-rank */) => {
   const twice = 2 * m; // compare 2m/f à (2R ± 1)
   return twice >= (2 * targetUnits - 1) * f && twice < (2 * targetUnits + 1) * f;
 };
-const run = (s, f) => f(s);
 const goto = (s, m) => S.pour(s, m - s.m);
 
 describe('scoop-scale — les clés de chaque tâche des deux niveaux', () => {

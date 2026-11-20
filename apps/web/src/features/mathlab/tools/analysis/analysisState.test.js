@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   createAnalysisData, normalizeAnalysisData, ANALYSIS_SCHEMA_VERSION, LABS,
-  setLab, setSource, setPoint, setBounds, setRiemann, setParameter, setConstant,
+  setLab, setSource, setPoint, setBounds, setRiemann, setParameter,
   setTransform, applyPreset, toggleLayer, addSecondFunction, removeSecondFunction,
   recordPractice, MAX_FUNCTIONS, MAX_RIEMANN_N, MIN_RIEMANN_N, MAX_SOURCE_LENGTH,
 } from './analysisState.js';

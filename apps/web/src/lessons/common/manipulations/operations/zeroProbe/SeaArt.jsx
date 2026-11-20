@@ -1,4 +1,3 @@
-import React from 'react';
 import KidFigure from '../../primitives/KidFigure';
 import { SvgPill } from '../../primitives/SvgPill';
 import { PILL, RING, AXIS_PAD, minus } from './geometry';

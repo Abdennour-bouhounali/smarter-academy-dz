@@ -49,7 +49,7 @@ export const EPSILON = 1e-9;
  * laboratoire lui mentir. C'est la même décision que `relativeTolerance` du
  * مختبر الأشعة.
  */
-export const GEOMETRIC_TOLERANCE = 1e-6;
+const GEOMETRIC_TOLERANCE = 1e-6;
 
 /** Les quatre familles de V1. */
 export const CONIC_KINDS = Object.freeze(['circle', 'parabola', 'ellipse', 'hyperbola']);
@@ -57,15 +57,8 @@ export const CONIC_KINDS = Object.freeze(['circle', 'parabola', 'ellipse', 'hype
 const finite = Number.isFinite;
 const { abs, sqrt, min, max, hypot, PI } = Math;
 
-export const ORIGIN = Object.freeze({ x: 0, y: 0 });
-
 export function isPoint(p) {
   return Boolean(p) && finite(p.x) && finite(p.y);
-}
-
-/** Un point sûr, ou null — la frontière entre le JSON relu et le calcul. */
-export function makePoint(x, y) {
-  return finite(x) && finite(y) ? { x, y } : null;
 }
 
 /**
@@ -150,21 +143,6 @@ export function degeneracyOf(conic) {
     default:
       return 'unknown';
   }
-}
-
-/** Le centre — la parabole n'en a pas : son point remarquable est le SOMMET. */
-export function centerOf(conic) {
-  if (!isValidConic(conic)) return null;
-  if (conic.kind === 'parabola') return null;
-
-  return { x: conic.h, y: conic.k };
-}
-
-/** Le sommet d'une parabole — `(h, k)` par construction de la forme canonique. */
-export function vertexOf(conic) {
-  if (!isValidConic(conic) || conic.kind !== 'parabola') return null;
-
-  return { x: conic.h, y: conic.k };
 }
 
 /** L'orientation, normalisée : les familles qui n'en ont pas rendent `horizontal`. */
@@ -698,28 +676,6 @@ export function parameterNear(conic, point) {
     default:
       return null;
   }
-}
-
-/**
- * Le domaine du paramètre : ce entre quoi et quoi `t` a du sens.
- *
- * Le cercle et l'ellipse sont FERMÉS (t ∈ [0, 2π)) ; la parabole et
- * l'hyperbole sont ouvertes, et on les borne à ce que la fenêtre montre —
- * sinon un curseur de trace n'aurait aucune extrémité.
- */
-export function parameterRange(conic, viewport = null) {
-  if (!isValidConic(conic)) return null;
-  if (conic.kind === 'circle' || conic.kind === 'ellipse') {
-    return { min: 0, max: 2 * PI, closed: true };
-  }
-  const span = viewport
-    ? max(viewport.xMax - viewport.xMin, viewport.yMax - viewport.yMin)
-    : 16;
-  if (conic.kind === 'parabola') {
-    return { min: -span, max: span, closed: false };
-  }
-
-  return { min: -Math.asinh(span / max(EPSILON, conic.b)), max: Math.asinh(span / max(EPSILON, conic.b)), closed: false };
 }
 
 // ── LE TRACÉ : la conique comme polylignes (§4, §53) ─────────────────────

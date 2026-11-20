@@ -24,7 +24,6 @@ function evalTex(tex) {
   }
   return acc;
 }
-const texOf = (r) => (r.d === 1n ? `${r.n}` : `\\frac{${r.n}}{${r.d}}`);
 const termsValue = (terms) => { let acc = null; let op = '+'; for (const t of terms) { if (t === '+' || t === '-') { op = t; continue; } const v = frac(t); acc = acc == null ? v : op === '+' ? add(acc, v) : sub(acc, v); } return acc; };
 const optValue = (o) => evalTex(o.replace(/م/g, ''));
 const reduced = (r) => gcd(r.n, r.d) === 1n;

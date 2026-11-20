@@ -48,11 +48,6 @@ export function snap(x, mode) {
 }
 /** Le facteur de conversion en décimal : « 100 000 » ou « 0,000001 ». */
 export const factorText = (k) => T.pow10Text(k);
-/** Le nom court d'une unité dans un mode (km, km², m³ …). */
-export function unitLabel(u, mode) {
-  const sym = { km: 'كم', hm: 'هكتومتر', dam: 'ديكامتر', m: 'م', dm: 'دسم', cm: 'سم', mm: 'ملم', um: 'µm', nm: 'نم' }[u];
-  return mode === 1 ? sym : `${sym}${mode === 2 ? '²' : '³'}`;
-}
 
 /* ── Presets (les mêmes valeurs que `levels.js`, comparées par un test) ────────────────────────────────────────────────────────── */
 export const PRESETS = Object.freeze({
@@ -140,7 +135,7 @@ export function choosePrediction(s, i) {
 }
 
 /** Le jugement exact du ruban tendu (« ثبّت الشريط »). */
-export function verdict(s) {
+function verdict(s) {
   const t = taskOf(s);
   if (!modeOk(s)) return { ok: false, reason: 'mode', k: currentK(s) };
   const to = unitAt(s.handle, s.mode);

@@ -7,7 +7,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
  * sa propre colonne ? ». Les trois régions de l'application en dérivent leur
  * géométrie, et AUCUNE ne la recalcule pour son compte :
  *
- *   barre latérale (StudentNavbar)  → w-64 ↔ w-20        (elle se comprime)
+ *   rail (WorkspaceNav)             → 80 px, fixed       (it no longer folds)
  *   contenu (MainLayout/StudentLayout) → padding-right   (il rétrécit vraiment)
  *   carte (KnowledgeMap)            → la gouttière ainsi libérée
  *
@@ -42,11 +42,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
  * les suites e2e `*-carte.mjs` et `km-layout.mjs` : elles ne bougent pas.
  */
 
-/** Largeur de la barre latérale élève déployée (`w-64`), en pixels. */
-export const SIDEBAR_WIDTH = 256;
-
-/** Largeur de la barre latérale comprimée (`w-20`) — icônes seules. */
-export const SIDEBAR_COLLAPSED_WIDTH = 80;
+/** The rail of the student's and the teacher's space (`WorkspaceNav`): 80 px, and it does not fold (2026-11-16). */
+export const RAIL_WIDTH = 80;
 
 /**
  * LA COLONNE « MA CARTE » A UNE LARGEUR FIXE — la meilleure pour l'écran, pas
@@ -69,25 +66,17 @@ export const SIDEBAR_COLLAPSED_WIDTH = 80;
 export const MA_CARTE_MIN_WIDTH = 360;
 export const MA_CARTE_MAX_WIDTH = 480;
 export const MA_CARTE_MAX_WIDE = 560;
-export const MA_CARTE_SHARE = 0.4;
+const MA_CARTE_SHARE = 0.4;
 
 /** Largeur en dessous de laquelle une leçon n'est plus confortable. */
 export const MIN_CONTENT_WIDTH = 560;
 
 /** La largeur de la colonne pour une fenêtre et une barre latérale données. */
-export function columnWidthFor(viewportWidth, sidebarWidth = SIDEBAR_COLLAPSED_WIDTH) {
+export function columnWidthFor(viewportWidth, sidebarWidth = RAIL_WIDTH) {
   const available = viewportWidth - sidebarWidth;
   const cap = viewportWidth >= 1600 ? MA_CARTE_MAX_WIDE : MA_CARTE_MAX_WIDTH;
   const ideal = Math.min(cap, Math.max(MA_CARTE_MIN_WIDTH, Math.round(available * MA_CARTE_SHARE)));
   return Math.max(0, Math.min(ideal, available - MIN_CONTENT_WIDTH));
-}
-
-/**
- * La barre latérale peut-elle se DÉPLOYER à côté de la colonne ? Oui tant que
- * la leçon garde MIN_CONTENT_WIDTH avec une carte à sa largeur minimale.
- */
-export function sidebarCanOpenBesideColumn(viewportWidth) {
-  return viewportWidth - SIDEBAR_WIDTH - MA_CARTE_MIN_WIDTH >= MIN_CONTENT_WIDTH;
 }
 
 /**
@@ -97,25 +86,9 @@ export function sidebarCanOpenBesideColumn(viewportWidth) {
  * le point de rupture `lg` de Tailwind, celui-là même où la barre latérale
  * élève apparaît — un seul seuil pour toute la coquille.
  */
-export const PRIOR_MIN_WIDTH = 1024;
+const PRIOR_MIN_WIDTH = 1024;
 
 const STORAGE_KEY = 'knowledgeMapPrior';
-
-/**
- * Repli MANUEL de la barre latérale, à la main de l'élève.
- *
- * Ce nom de clé n'est pas nouveau : `km-layout.mjs` le sème déjà pour son
- * scénario « auth desktop collapsed sidebar », en prévision d'un repli qui
- * n'existait pas encore. On l'honore plutôt que d'en inventer un second.
- */
-const SIDEBAR_KEY = 'sidebarCollapsed';
-
-/**
- * Barre déployée À CÔTÉ de la colonne : un choix distinct du repli manuel
- * hors carte (l'un n'écrase pas l'autre). Par défaut, la colonne comprime la
- * barre ; l'élève (ou l'enseignant) peut la rouvrir d'un clic.
- */
-const SIDEBAR_BESIDE_COLUMN_KEY = 'sidebarOpenBesideMap';
 
 const WorkspaceLayoutContext = createContext(null);
 
@@ -153,19 +126,6 @@ export function WorkspaceLayoutProvider({ children }) {
   // colonne — et la carte s'arrête avant le bord droit de l'écran.
   const [mapExpanded, setMapExpanded] = useState(false);
 
-  // Repli manuel, indépendant de la carte : l'élève veut plus de place pour
-  // sa leçon, carte ou pas.
-  const [sidebarManuallyCollapsed, setSidebarManuallyCollapsed] = useState(() => {
-    try { return localStorage.getItem(SIDEBAR_KEY) === 'true'; }
-    catch { return false; }
-  });
-
-  // Barre rouverte à côté de la colonne (voir SIDEBAR_BESIDE_COLUMN_KEY).
-  const [sidebarOpenBesideMap, setSidebarOpenBesideMapState] = useState(() => {
-    try { return localStorage.getItem(SIDEBAR_BESIDE_COLUMN_KEY) === 'true'; }
-    catch { return false; }
-  });
-
   const [viewportWidth, setViewportWidth] = useState(
     () => (typeof window === 'undefined' ? 1280 : window.innerWidth)
   );
@@ -182,16 +142,6 @@ export function WorkspaceLayoutProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, String(next)); } catch { /* noop */ }
   }, []);
 
-  const setSidebarOpenBesideMap = useCallback((next) => {
-    setSidebarOpenBesideMapState(next);
-    try { localStorage.setItem(SIDEBAR_BESIDE_COLUMN_KEY, String(next)); } catch { /* noop */ }
-  }, []);
-
-  const setSidebarCollapsed = useCallback((next) => {
-    setSidebarManuallyCollapsed(next);
-    try { localStorage.setItem(SIDEBAR_KEY, String(next)); } catch { /* noop */ }
-  }, []);
-
   const value = useMemo(() => {
     const fits = priorFitsViewport(viewportWidth);
     // Le mode colonne n'est EFFECTIF que si la carte est ouverte ET que l'écran
@@ -199,21 +149,8 @@ export function WorkspaceLayoutProvider({ children }) {
     // étroit : revenir au large la restaure sans que l'élève la redemande.
     const prior = mapOpen && priorPreferred && fits;
 
-    // LA BARRE LATÉRALE — deux raisons d'être comprimée, un seul état dérivé :
-    //   hors colonne : le repli MANUEL (un confort) ;
-    //   en colonne   : comprimée PAR DÉFAUT (la carte a besoin de la place),
-    //                  mais l'utilisateur peut la rouvrir d'un clic — la
-    //                  colonne se recalcule alors à côté d'elle. La bascule ne
-    //                  se verrouille que là où, rouverte, elle écraserait la
-    //                  leçon sous MIN_CONTENT_WIDTH.
-    const canOpenBeside = sidebarCanOpenBesideColumn(viewportWidth);
-    const sidebarCollapsed = prior
-      ? !(sidebarOpenBesideMap && canOpenBeside)
-      : sidebarManuallyCollapsed;
-    const sidebarWidth = sidebarCollapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_WIDTH;
-
-    // Largeur FIXE de la colonne, calculée pour cet écran et cette barre.
-    const maCarteWidth = columnWidthFor(viewportWidth, sidebarWidth);
+    // FIXED width of the column, computed for this screen beside the 80 px rail.
+    const maCarteWidth = columnWidthFor(viewportWidth);
 
     // Le plein écran suspend la colonne : pas de gouttière, donc `vpWidth`
     // redevient toute la largeur offerte à la leçon, et la carte va jusqu'au
@@ -237,19 +174,9 @@ export function WorkspaceLayoutProvider({ children }) {
       contentGutter: gutter,
       mapExpanded,
       setMapExpanded,
-      sidebarCollapsed,
-      // Verrouillée seulement si la rouvrir écraserait la leçon ; le bouton le
-      // DIT (désactivé + libellé) au lieu de proposer une action sans effet.
-      sidebarToggleLocked: prior && !canOpenBeside,
-      setSidebarCollapsed,
-      toggleSidebar: prior
-        ? () => setSidebarOpenBesideMap(sidebarCollapsed)
-        : () => setSidebarCollapsed(!sidebarManuallyCollapsed),
-      sidebarWidth,
       viewportWidth,
     };
-  }, [mapOpen, mapExpanded, priorPreferred, setPrior, sidebarOpenBesideMap, setSidebarOpenBesideMap,
-      sidebarManuallyCollapsed, setSidebarCollapsed, viewportWidth]);
+  }, [mapOpen, mapExpanded, priorPreferred, setPrior, viewportWidth]);
 
   return (
     <WorkspaceLayoutContext.Provider value={value}>
@@ -263,9 +190,7 @@ const FALLBACK = {
   mapOpen: false, setMapOpen: () => {}, setPrior: () => {}, togglePrior: () => {},
   maCarteWidth: MA_CARTE_MAX_WIDTH, contentGutter: 0,
   mapExpanded: false, setMapExpanded: () => {},
-  sidebarCollapsed: false, sidebarToggleLocked: false,
-  setSidebarCollapsed: () => {}, toggleSidebar: () => {},
-  sidebarWidth: SIDEBAR_WIDTH, viewportWidth: 1280,
+  viewportWidth: 1280,
 };
 
 /**

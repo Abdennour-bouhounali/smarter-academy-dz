@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE } from './content/textbook';
 
@@ -34,7 +33,6 @@ export const LESSON_KNOWLEDGE = {
           ],
         },
         // « أتوقّع القاعدة » : ce que l'élève conclut du terrain avant de lire la définition.
-        predictPrompt: 'في الملعب: 42 لاعبًا في 6 فرق لم يبقَ أيّ لاعب خارج الفرق، وفي 5 فرق بقي لاعبان. متى نقول إنّ عددًا $b$ «قاسم» لعدد $a$؟ اكتب القاعدة بكلماتك.',
         summary: 'b قاسم لـ a معناه أن باقي القسمة الإقليدية لـ a على b هو 0.',
         body: (
           <div className="space-y-2">
@@ -59,7 +57,6 @@ export const LESSON_KNOWLEDGE = {
             { q: '$120 = 6 \\times 20$. العدد $120$ هو:', options: ['قاسم للعدد $6$', 'قاسم للعدد $20$ فقط', 'مضاعف للعدد $6$'], correct: 2 },
           ],
         },
-        predictPrompt: 'في الملعب: $48 = 6 \\times 8$ ولم يبقَ أحد خارج الفرق. كيف تكتب «$b$ قاسم لـ $a$» بمساواة فيها جداء، دون أن تذكر الباقي؟',
         summary: 'b قاسم لـ a معناه يوجد عدد طبيعي q حيث a = b × q.',
         body: (
           <div className="space-y-2">
@@ -104,7 +101,6 @@ export const LESSON_KNOWLEDGE = {
             { q: 'أيّ عدد قاسم لكل عدد طبيعي؟', options: ['$2$', '$1$', '$0$'], correct: 1 },
           ],
         },
-        predictPrompt: 'هل العدد 1 قاسم لكل عدد طبيعي؟ وهل كل عدد قاسم لنفسه؟ جرّب بأعداد مختلفة (مثلًا 7 ، 20 ، 143) ثم اكتب ما تستنتجه.',
         summary: '1 قاسم لكل عدد طبيعي، وكل عدد غير معدوم قاسم لنفسه.',
         body: (
           <div className="space-y-2">

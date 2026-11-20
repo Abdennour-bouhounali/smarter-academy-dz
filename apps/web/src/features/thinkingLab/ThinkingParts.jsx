@@ -108,7 +108,7 @@ export function AnswerInput({ format, value, onChange, onEnter, disabled = false
       <fieldset className="space-y-2" disabled={disabled}>
         <legend className="sr-only">{t('workspace.choose')}</legend>
         {format.choices.map((c) => (
-          <label key={c.id} className={`flex cursor-pointer items-start gap-3 rounded-2xl px-4 py-3 ring-1 transition ${value === c.id ? 'bg-indigo-50 ring-2 ring-indigo-400' : 'bg-white ring-slate-200 hover:ring-slate-300'}`}>
+          <label key={c.id} className={`flex cursor-pointer items-start gap-3 rounded-2xl px-4 py-3 ring-1 transition ${value === c.id ? 'bg-nav-accent-soft ring-2 ring-indigo-400' : 'bg-white ring-slate-200 hover:ring-slate-300'}`}>
             <input type="radio" name="tl-choice" value={c.id} checked={value === c.id} onChange={() => onChange(c.id)} className="mt-1 accent-indigo-600" />
             <span className="font-inter text-sm leading-7 text-slate-800"><MathRun text={c.text} /></span>
           </label>

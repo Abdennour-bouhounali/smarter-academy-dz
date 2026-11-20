@@ -94,7 +94,7 @@ export default function Profil() {
         detail: access.expiresAt
           ? t('profile.planFullAccessUntil', { date: formatDate(access.expiresAt) })
           : t('profile.planFullAccess'),
-        iconClass: 'bg-indigo-100 text-indigo-600',
+        iconClass: 'bg-indigo-100 text-nav-accent',
       };
     }
 
@@ -120,7 +120,7 @@ export default function Profil() {
       {/* Identity card */}
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="glass-card p-6 sm:p-7 mb-5" data-tour="profile.identity">
         <div className="flex items-center gap-4 mb-6">
-          <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-space font-bold text-xl flex-shrink-0" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}>
+          <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-space font-bold text-xl flex-shrink-0" style={{ background: '#3B5BDB' }}>
             {initials}
           </div>
           <div className="min-w-0">
@@ -144,7 +144,7 @@ export default function Profil() {
             value={user?.grade || ''}
             onChange={handleGradeChange}
             disabled={saving}
-            className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white font-inter text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 disabled:opacity-60 transition-all"
+            className="w-full appearance-none px-4 py-3 rounded-xl border border-slate-200 bg-white font-inter text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-nav-accent/40 focus:border-blue-400 disabled:opacity-60 transition-all"
           >
             {!currentGrade && <option value="" disabled>{t('profile.selectGrade')}</option>}
             {allGrades.map((g) => (

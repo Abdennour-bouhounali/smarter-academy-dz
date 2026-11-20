@@ -1,4 +1,3 @@
-import React from 'react';
 import { PrerequisiteDiagnostic } from '../../../../../../common/kit';
 import { prepQuestion } from '../../_unit/prepDiagnostic';
 import { MODULE_CTX, getNavLinks } from '../moduleContext';

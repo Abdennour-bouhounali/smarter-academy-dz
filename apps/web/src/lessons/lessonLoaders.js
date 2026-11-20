@@ -32,6 +32,18 @@ export const ROUTES_LOADERS = import.meta.glob(
   { import: 'default' },
 );
 
+/** The PACK of a lesson (`lesson.pack.js`, LESSON_V2.md): a few lines of data whose content is behind its own imports. */
+export const PACK_LOADERS = import.meta.glob(
+  [
+    './*/1am/**/lesson.pack.js',
+    './*/2am/**/lesson.pack.js',
+    './*/3am/**/lesson.pack.js',
+    './*/4am/**/lesson.pack.js',
+    './*/terminale_dz/**/lesson.pack.js',
+  ],
+  { import: 'LESSON_PACK' },
+);
+
 /** Le chargeur d'une leçon dans une table de glob : son dossier porte son id (generate-lesson-index.mjs). */
 export function findLessonLoader(loaders, lessonId, fileName) {
   const suffix = `/${lessonId}/${fileName}`;

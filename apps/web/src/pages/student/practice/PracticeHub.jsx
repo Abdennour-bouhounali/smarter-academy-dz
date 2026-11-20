@@ -34,11 +34,12 @@ import { teacherOverview, teacherBankPath } from '../../../features/practice/tea
  * lecteur enseignant, rien n'est écrit sur le serveur.
  */
 export default function PracticeHub() {
-  const { t } = useTranslation('student');
+  const { isTeacher, workspaceBase } = useLearningViewer();
+  // `teacher` est à la demande : seul l'enseignant le déclare, donc seul lui le télécharge.
+  const { t } = useTranslation(isTeacher ? ['student', 'teacher'] : 'student');
   const { lessonCode } = useParams();
   const { token } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { isTeacher, workspaceBase } = useLearningViewer();
   const coursesPath = `${workspaceBase ?? '/espace'}/cours`;
 
   const [overview, setOverview] = useState(null);
@@ -239,20 +240,20 @@ export default function PracticeHub() {
     // chaque côté (`.sa-page--flush`), le même cadre que « التحدّي اليومي » (py-6 sm:py-8).
     <div className="sa-surface-plain sa-page sa-page--flush py-6 sm:py-8 space-y-4">
       <nav className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm font-semibold text-slate-600" aria-label={t('nav.breadcrumb', { ns: 'lesson' })}>
-        <Link to={coursesPath} className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-indigo-700">
+        <Link to={coursesPath} className="inline-flex min-h-[44px] items-center gap-1.5 whitespace-nowrap hover:text-nav-accent">
           <ArrowBack className="h-4 w-4" aria-hidden="true" /> {t('practice.breadcrumbMyCourses')}
         </Link>
         {lessonPath && (
           <>
             <span aria-hidden="true" className="text-slate-300">/</span>
-            <Link to={lessonPath} className="min-w-0 truncate hover:text-indigo-700"><MathLabel>{lesson.title}</MathLabel></Link>
+            <Link to={lessonPath} className="min-w-0 truncate hover:text-nav-accent"><MathLabel>{lesson.title}</MathLabel></Link>
           </>
         )}
       </nav>
 
       <header className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2" data-practice-hub-header>
         <div className="min-w-0 space-y-1">
-          <p className="inline-flex items-center gap-1.5 text-sm font-bold text-indigo-700">
+          <p className="inline-flex items-center gap-1.5 text-sm font-bold text-nav-accent">
             <Dumbbell className="h-4 w-4" aria-hidden="true" /> {t('practice.eyebrow')}
           </p>
           <h1 className="text-xl font-bold leading-snug text-slate-900 sm:text-2xl"><MathLabel>{lesson.title}</MathLabel></h1>
@@ -267,7 +268,7 @@ export default function PracticeHub() {
         {lessonPath && (
           <Link
             to={lessonPath}
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm font-bold text-slate-700 hover:bg-white hover:text-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg px-3 text-sm font-bold text-slate-700 hover:bg-white hover:text-nav-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400"
           >
             <BookOpen className="h-4 w-4" aria-hidden="true" />
             {t('practice.reviewLesson')}
@@ -280,14 +281,14 @@ export default function PracticeHub() {
       {/* Une séance ouverte : UNE rangée, l'action principale de la page
           quand elle existe. */}
       {openSession && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-s-4 border-indigo-600 bg-white px-4 py-3 ring-1 ring-slate-200" data-open-session>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border-s-4 border-nav-accent bg-white px-4 py-3 ring-1 ring-slate-200" data-open-session>
           <p className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-            <PlayCircle className="h-5 w-5 text-indigo-600" aria-hidden="true" />
+            <PlayCircle className="h-5 w-5 text-nav-accent" aria-hidden="true" />
             {t('practice.openSession', { level: openSession.level })}
           </p>
           <Link
             to={`/espace/pratique/${lessonCode}/session/${openSession.sessionId}`}
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-indigo-600 px-5 text-sm font-bold text-white hover:bg-indigo-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-nav-accent px-5 text-sm font-bold text-white hover:bg-[#3350c4] focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2"
           >
             {t('practice.resume')}
             <ArrowForward className="h-4 w-4" aria-hidden="true" />

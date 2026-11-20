@@ -6,7 +6,7 @@
  * Coordonnées d'une silhouette : nez vers +x, longueur ≈ 2 (de −1 à +1),
  * centrée sur l'origine. Le rendu la met à l'échelle et l'oriente.
  */
-export const SHIPS = [
+const SHIPS = [
   {
     id: 'sahm',
     colors: { body: '#e8f1ff', accent: '#3b82f6', cockpit: '#7dd3fc', flame: ['#fde68a', '#f97316'], trail: '#60a5fa' },

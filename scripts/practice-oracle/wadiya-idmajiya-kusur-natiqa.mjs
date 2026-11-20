@@ -434,7 +434,7 @@ export function audit(bank) {
           const v = TEX(islands(c.content)[0]);
           const so = sp.opts.filter((o) => same(E(o[0]), v));
           if (so.length !== 1) { problems.push(`${key} : l'option ${c.id} ne correspond pas à exactement une expression retapée`); continue; }
-          const [sx, id, extra] = so[0];
+          const [, id, extra] = so[0];
           if (same(v, kv) !== c.isCorrect) problems.push(`${key} : l'option ${c.id} est marquée ${c.isCorrect} mais vaut ${v} (clé ${kv})`);
           if (c.isCorrect) { if (c.misconceptionId) problems.push(`${key} : le choix juste porte une étiquette`); continue; }
           if (!id || c.misconceptionId !== id) problems.push(`${key} : l'option ${c.id} devrait porter ${id}`);

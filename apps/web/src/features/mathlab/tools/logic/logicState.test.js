@@ -13,14 +13,13 @@ import {
   createLogicData, normalizeLogicData, applySeed, clearLogicData,
   setArea, setStatement, setStatementGuess, revealStatement, setProbe,
   setConnector, setOperand, setImplication, setImplicationForm, setImplicationX, toggleSets,
-  setEquivalence, setCounterexampleChallenge, setCandidate, tryCandidate,
-  setCondition, setQuantifier, tryQuantifierValue, setNegationKind,
+  setEquivalence, setCounterexampleChallenge, setCandidate, tryCandidate, setQuantifier, tryQuantifierValue,
   setProof, setProofMode, placeStep, undoStep, resetProof, nextGap,
   setStairsSequence, setStairsRule, recordStairVerdict, setStairsCursor, setStairsMode, resetStairs,
   setFallacy, nameFallacy, tryFallacyValue,
   togglePractice, setPracticeLevel, recordSolved, recordSeen, recordHint,
 } from './logicState.js';
-import { STATEMENTS, IMPLICATIONS, PROOFS, COUNTEREXAMPLE_CHALLENGES, INDUCTION_SEQUENCES } from './presets.js';
+import { STATEMENTS, IMPLICATIONS, PROOFS, INDUCTION_SEQUENCES } from './presets.js';
 
 describe('le document d’ouverture (§54)', () => {
   const data = createLogicData();

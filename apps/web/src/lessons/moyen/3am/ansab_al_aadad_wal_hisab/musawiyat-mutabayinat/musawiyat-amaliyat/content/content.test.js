@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { EXERCISES, FINAL, EVAL, DEDUCE, SCALE, FROM } from './exercises';
+import { EXERCISES, FINAL, EVAL, DEDUCE, FROM } from './exercises';
 import { PREP_ITEMS, PREP_PLATFORM_ITEMS, METHOD, LAB } from './textbook';
 
 /**

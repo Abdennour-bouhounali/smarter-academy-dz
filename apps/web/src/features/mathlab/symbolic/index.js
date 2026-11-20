@@ -25,7 +25,5 @@ export {
   solveEquation,
   areEquivalent,
   antiderivativeOf,
-  SYMBOLIC_TIMEOUT_MS,
 } from './symbolicEngine.js';
 
-export { toSymbolicSource } from './symbolicSyntax.js';

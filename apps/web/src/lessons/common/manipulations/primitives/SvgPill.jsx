@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les LECTURES posées DANS une scène SVG : une pilule de valeur (« 136 cm » au-dessus d'une tête) et une cote de

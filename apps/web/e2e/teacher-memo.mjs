@@ -85,7 +85,7 @@ try {
   console.log('\n3. مذكرة الدرس');
   await block.locator(`[data-lesson-memo-link="${LESSON}"]`).click();
   await page.waitForURL(`**/enseignant/cours/${LESSON}/memoire`);
-  await page.waitForSelector('[data-memo-timeline]', { timeout: 15000 });
+  await page.waitForSelector('[data-memo-rail]', { timeout: 15000 }); await page.click('[data-memo-go="all"]'); await page.waitForSelector('[data-memo-rail]'); await page.click('[data-memo-go="all"]'); await page.waitForSelector('[data-memo-timeline]'); // one part at a time since 2026-11-18: these checks read the WHOLE memo
   check(await page.locator('[data-memo-phase]').count() === 4, 'une phase par محور');
   for (const id of ['overview', 'objectives', 'start', 'timeline', 'errors', 'trace', 'evaluation', 'next']) {
     check(await page.locator(`[data-memo-section="${id}"]`).count() === 1, `section ${id}`);
@@ -121,7 +121,7 @@ try {
 
   // Une leçon dont le contenu porte des $…$ : KaTeX, isolé en ltr.
   await page.goto(`${BASE}/enseignant/cours/ikhtizal-kasr/memoire`, { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-memo-timeline]');
+  await page.waitForSelector('[data-memo-rail]'); await page.click('[data-memo-go="all"]'); await page.waitForSelector('[data-memo-timeline]');
   check(await page.locator('.sa-math-inline .katex').count() > 0, 'les mathématiques passent par KaTeX (ltr isolé)');
   await page.screenshot({ path: `${OUT}/03b-memo-ikhtizal.png`, fullPage: true });
 
@@ -129,7 +129,7 @@ try {
   const mctx = await contextFor(browser, teacherToken, { width: 390, height: 844 });
   const mobile = await mctx.newPage();
   await mobile.goto(`${BASE}/enseignant/cours/${LESSON}/memoire`, { waitUntil: 'networkidle' });
-  await mobile.waitForSelector('[data-memo-timeline]');
+  await mobile.waitForSelector('[data-memo-rail]'); await mobile.click('[data-memo-go="all"]'); await mobile.waitForSelector('[data-memo-timeline]');
   const mOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   check(mOverflow <= 1, `mobile 390 : pas de défilement horizontal (${mOverflow}px)`);
   await mobile.screenshot({ path: `${OUT}/05-memo-mobile.png`, fullPage: false });

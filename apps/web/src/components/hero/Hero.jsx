@@ -1,6 +1,6 @@
-import React, { useState, lazy, Suspense } from 'react';
+import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ArrowDown, Calculator, PenTool, BrainCircuit, Sparkles, Lightbulb } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
@@ -12,9 +12,9 @@ import { ArrowForward } from '../common/DirectionalIcons';
 const MafsGraph = lazy(() => import('./MafsGraph'));
 
 const floatingIcons = [
-  { Icon: Calculator, color: 'text-blue-500', bg: 'bg-blue-50', position: 'top-[15%] left-[10%]', delay: 0 },
+  { Icon: Calculator, color: 'text-blue-500', bg: 'bg-nav-accent-soft', position: 'top-[15%] left-[10%]', delay: 0 },
   { Icon: Lightbulb, color: 'text-purple-500', bg: 'bg-purple-50', position: 'top-[20%] right-[12%]', delay: 0.2 },
-  { Icon: BrainCircuit, color: 'text-indigo-500', bg: 'bg-indigo-50', position: 'bottom-[30%] left-[15%]', delay: 0.4 },
+  { Icon: BrainCircuit, color: 'text-indigo-500', bg: 'bg-nav-accent-soft', position: 'bottom-[30%] left-[15%]', delay: 0.4 },
   { Icon: PenTool, color: 'text-emerald-500', bg: 'bg-emerald-50', position: 'bottom-[25%] right-[15%]', delay: 0.6 },
 ];
 
@@ -38,14 +38,14 @@ export default function Hero() {
 
       {/* Floating Math Icons */}
       {floatingIcons.map((item, index) => (
-        <motion.div
+        <m.div
           key={index}
           className={`absolute hidden md:flex w-16 h-16 rounded-2xl ${item.bg} border border-white/50 shadow-xl items-center justify-center ${item.position} backdrop-blur-sm z-0`}
           animate={{ y: [0, -15, 0], rotate: [0, 5, -5, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: item.delay }}
         >
           <item.Icon className={`w-8 h-8 ${item.color}`} />
-        </motion.div>
+        </m.div>
       ))}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
@@ -53,16 +53,16 @@ export default function Hero() {
 
           {/* ── Top Section: Text & CTAs ─────────────────────────── */}
           <div className="flex flex-col items-center">
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-sm font-medium mb-8 shadow-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-nav-accent-soft border border-blue-200 text-nav-accent text-sm font-medium mb-8 shadow-sm"
             >
               <Sparkles size={15} />
               {t('hero.eyebrow')}
-            </motion.div>
+            </m.div>
 
-            <motion.h1
+            <m.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
@@ -70,9 +70,9 @@ export default function Hero() {
             >
               {t('hero.titleLine1')}<br className="hidden sm:block" />{' '}
               <span className="gradient-text">{t('hero.titleLine2')}</span>
-            </motion.h1>
+            </m.h1>
 
-            <motion.p
+            <m.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -82,9 +82,9 @@ export default function Hero() {
               <span>{t('hero.pillarDiscover')}</span><span className="text-blue-300">→</span>
               <span>{t('hero.pillarUnderstand')}</span><span className="text-blue-300">→</span>
               <span className="text-slate-800">{t('hero.pillarMaster')}</span>
-            </motion.p>
+            </m.p>
 
-            <motion.div
+            <m.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
@@ -104,11 +104,11 @@ export default function Hero() {
               >
                 {t('hero.ctaSecondary')}
               </Link>
-            </motion.div>
+            </m.div>
           </div>
 
           {/* ── Touch Math Widget ─────────────────────────────────── */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
@@ -191,9 +191,9 @@ export default function Hero() {
               <div className="grid grid-cols-2 gap-3 mx-5 sm:mx-7 mb-5">
 
                 {/* Pente a */}
-                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
+                <div className="bg-nav-accent-soft border border-blue-100 rounded-2xl p-3 sm:p-4 flex flex-col items-center gap-2">
                   <div className="text-center leading-tight">
-                    <span className="block text-[11px] sm:text-xs font-bold text-blue-700 uppercase tracking-widest">{t('hero.slope')}</span>
+                    <span className="block text-[11px] sm:text-xs font-bold text-nav-accent uppercase tracking-widest">{t('hero.slope')}</span>
                     <span className="font-mono text-blue-400 text-[10px]">{t('hero.slopeCoefficient')}</span>
                   </div>
                   {/* `dir="ltr"` : « − valeur + » est une commande NUMÉRIQUE.
@@ -204,15 +204,15 @@ export default function Hero() {
                     <button
                       onClick={() => setA(Math.max(-5, a - 1))}
                       aria-label={t('hero.decreaseA')}
-                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
+                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-nav-accent font-mono text-nav-accent text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       −
                     </button>
-                    <span className="w-8 text-center font-mono font-black text-blue-700 text-2xl tabular-nums select-none">{a}</span>
+                    <span className="w-8 text-center font-mono font-black text-nav-accent text-2xl tabular-nums select-none">{a}</span>
                     <button
                       onClick={() => setA(Math.min(5, a + 1))}
                       aria-label={t('hero.increaseA')}
-                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-blue-500 font-mono text-blue-700 text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
+                      className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center rounded-xl bg-white border border-blue-200 hover:bg-blue-500 hover:text-white hover:border-nav-accent font-mono text-nav-accent text-xl font-bold transition-all duration-150 shadow-sm active:scale-95 select-none"
                     >
                       +
                     </button>
@@ -264,13 +264,13 @@ export default function Hero() {
               </div>
 
             </div>
-          </motion.div>
+          </m.div>
 
         </div>
       </div>
 
       {/* Scroll down hint */}
-      <motion.button
+      <m.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
@@ -278,13 +278,13 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
       >
         <span className="text-xs font-mono-jetbrains">{t('hero.discoverPlatform')}</span>
-        <motion.div
+        <m.div
           animate={{ y: [0, 5, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
         >
           <ArrowDown size={16} />
-        </motion.div>
-      </motion.button>
+        </m.div>
+      </m.button>
     </section>
   );
 }

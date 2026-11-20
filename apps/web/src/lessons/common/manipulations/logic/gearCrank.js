@@ -21,9 +21,8 @@
 import { rat, mul, eq, sub, ratText, parseRat } from '@smarter-academy/core/arithmetic/powers.js';
 import { gearTurns, teethFor, valueOf, toRaw } from '@smarter-academy/core/arithmetic/fractions3.js';
 
-export const WORLDS = Object.freeze(['ride', 'reverse']);
-export const FREE_TEETH = Object.freeze({ min: 12, max: 52 });
-export const FREE_TARGET = Object.freeze({ maxNum: 40, maxDen: 12 });
+const FREE_TEETH = Object.freeze({ min: 12, max: 52 });
+const FREE_TARGET = Object.freeze({ maxNum: 40, maxDen: 12 });
 export const PRED_DIGITS = 3;
 
 export const PRESETS = Object.freeze({
@@ -53,7 +52,7 @@ export function latin(text) {
 }
 
 /** « 9/2 », « 3 », « 4,5 » → rationnel strictement positif, ou null. */
-export function parseTarget(text) {
+function parseTarget(text) {
   try {
     const s = latin(text).replace(/\s+/g, '').replace('٫', ',');
     if (!/^\d+(?:[.,]\d{1,2})?(?:\/\d+)?$/.test(s)) return null;
@@ -63,7 +62,7 @@ export function parseTarget(text) {
 }
 
 /** La tâche complétée. Le drapeau doit tomber sur une dent : target × R entier (sinon exception). */
-export function buildTask(raw, i = 0) {
+function buildTask(raw, i = 0) {
   const F = Math.trunc(Number(raw.F));
   const R = Math.trunc(Number(raw.R));
   if (!(F > 0) || !(R > 0)) throw new Error('un plateau sans dents n\'entraîne rien');
@@ -100,7 +99,7 @@ export const discoveryReady = (s) => !s.free && s.world === 'ride' && !s.tasks.s
 /** La manivelle est bloquée tant qu'une prédiction demandée n'est pas écrite. */
 export const locked = (s) => !s.free && !!taskOf(s).predict && !s.pred;
 /** Figée au drapeau (le tampon) : jamais en libre. */
-export const frozen = (s) => taskDone(s);
+const frozen = (s) => taskDone(s);
 export const canTurn = (s) => !locked(s) && !frozen(s);
 /** Les compteurs sont-ils lisibles ? Toujours, sauf quand une prédiction est demandée : voilés jusqu'au lâcher. */
 export const veiled = (s) => !s.free && !!taskOf(s).predict && !s.settled && !taskDone(s);
@@ -157,7 +156,7 @@ export function release(s) {
 const digits = (raw) => latin(raw).replace(/[^0-9]/g, '').slice(0, PRED_DIGITS);
 export const setPredNum = (s, raw) => (locked(s) ? { ...s, predNum: digits(raw) } : s);
 export const setPredDen = (s, raw) => (locked(s) ? { ...s, predDen: digits(raw) } : s);
-export function predictionValue(s) {
+function predictionValue(s) {
   if (!s.predNum || !s.predDen) return null;
   const n = Number(s.predNum); const d = Number(s.predDen);
   return n > 0 && d > 0 ? rat(n, d) : null;

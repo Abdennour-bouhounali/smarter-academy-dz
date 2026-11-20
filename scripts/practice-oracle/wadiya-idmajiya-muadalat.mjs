@@ -131,7 +131,6 @@ const cheapest = (costs, v) => {
 const nats = (conds) => { const out = []; for (let n = 0; n <= 20000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) out.push(n); return out; };
 const firstNat = (...conds) => R(Math.min(...nats(conds)));
 const lastNat = (...conds) => { const s = nats(conds); if (s.includes(20000)) throw new Error('oracle lastNat : non borné'); return R(Math.max(...s)); };
-const countNat = (...conds) => R(nats(conds).length);
 /** Nombre d'entiers relatifs (balayage −2000 … 2000) vérifiant toutes les conditions. */
 const countInt = (...conds) => { let k = 0; for (let n = -2000; n <= 2000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) k += 1; return R(k); };
 const maxInt = (...conds) => { let best = null; for (let n = -2000; n <= 2000; n += 1) if (conds.every(([L, rel, Rr]) => satisfies(L, rel, Rr, n))) best = n; return R(best); };

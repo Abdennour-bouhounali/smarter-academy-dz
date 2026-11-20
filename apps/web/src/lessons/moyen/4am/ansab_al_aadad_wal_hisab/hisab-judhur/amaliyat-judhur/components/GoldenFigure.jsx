@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Le schéma de l'exercice 33 (أتعمّق, p. 29) : AED rectangle en A, AD = 1,

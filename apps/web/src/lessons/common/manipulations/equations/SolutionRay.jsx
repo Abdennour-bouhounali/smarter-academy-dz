@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { Minus, Plus, Check } from 'lucide-react';
@@ -15,7 +15,7 @@ import * as L from '../logic/solutionRay';
 import * as P from '../logic/solutionRayPlayer';
 import { useLabCoach } from '../primitives/LabCoach';
 import PredictTray from '../primitives/PredictTray';
-import { useInMissionPlayer, useMissionArea } from '../../mission/missionPlayerContext';
+import { useInMissionPlayer } from '../../mission/missionPlayerContext';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
 import { useLabCheckpointSettings } from '../primitives/labCheckpointSettings';
 import { LabStepper, useStepCelebration } from '../primitives/LabSteps';
@@ -269,7 +269,6 @@ export default function SolutionRay({
   const toValue = useCallback((clientX, _y, rect) => lab.kmin + (clientX - rect.left - EDGE) / mu, [lab.kmin, mu]);
   const range = { min: lab.kmin, max: lab.kmax };
   const xs = (kk) => L.numText(L.xOfK(lab, kk));
-  const xt = (kk) => L.numTex(L.xOfK(lab, kk));
 
   /* ── lecteur : la PRÉDICTION, avant le premier geste ; les commandes sont figées pendant elle et pendant une question ── */
   const untouched = lab.traces.length === 0 && live == null && !lab.bracket && draft.k == null;
@@ -939,8 +938,8 @@ function RayFormal({ lab, k, mode }) {
       )}
       {mode === 'flip' && (
         <>
-          <EquationDisplay tone="result" tex={'a < 0 : \\quad ax \\leq b \;\\Longrightarrow\; x \\geq \\dfrac{b}{a}'} note={<MathText>{k('fFormal')}</MathText>} />
-          <EquationDisplay tone="neutral" tex={chainTex.join(' \;\\Longrightarrow\; ')} note={<MathText>{k('yourCase')}</MathText>} />
+          <EquationDisplay tone="result" tex={'a < 0 : \\quad ax \\leq b \\;\\Longrightarrow\\; x \\geq \\dfrac{b}{a}'} note={<MathText>{k('fFormal')}</MathText>} />
+          <EquationDisplay tone="neutral" tex={chainTex.join(' \\;\\Longrightarrow\\; ')} note={<MathText>{k('yourCase')}</MathText>} />
         </>
       )}
     </div>

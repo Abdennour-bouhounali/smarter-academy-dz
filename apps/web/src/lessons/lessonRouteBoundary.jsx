@@ -65,7 +65,7 @@ const getVersion = () => version;
  * utilisable comme préchargement (survol d'une carte de leçon).
  * @returns {Promise<void>}
  */
-export function loadLessonRoutes(lessonId) {
+function loadLessonRoutes(lessonId) {
   if (loadedRoutes.has(lessonId)) return Promise.resolve();
   if (!pending.has(lessonId)) {
     // Le runtime part EN MÊME TEMPS que les routes (sinon : routes → runtime →
@@ -91,7 +91,7 @@ export function loadLessonRoutes(lessonId) {
  * L'id de la leçon qu'ouvre ce chemin (sommaire ou module), ou null.
  * @param {string} pathname
  */
-export function lessonIdForPath(pathname) {
+function lessonIdForPath(pathname) {
   for (const { id, basePath } of getBuiltLessons()) {
     if (pathname === basePath || pathname.startsWith(`${basePath}/`)) return id;
   }

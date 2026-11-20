@@ -250,7 +250,7 @@ describe('1AM–3AM — cartes « قيد الإعداد » (phase 2 du cycle moy
   it('ne déclare comme prérequis que des leçons qui existent et qui la PRÉCÈDENT', () => {
     // Position dans le cursus : année, puis ordre du manuel (`order` des lessons_<g>).
     const files = { '1am': lessons1am, '2am': lessons2am, '3am': lessons3am, '4am': decomposition4am };
-    const pos = new Map(Object.entries(files).flatMap(([g, f], gi) => f.lessons.map((l) => [l.code, gi * 1000 + l.order])));
+    const pos = new Map(Object.entries(files).flatMap(([, f], gi) => f.lessons.map((l) => [l.code, gi * 1000 + l.order])));
     for (const grade of early) {
       for (const l of grade.chapters.flatMap((c) => c.lessons)) {
         for (const pre of l.prerequisiteLessonCodes) {

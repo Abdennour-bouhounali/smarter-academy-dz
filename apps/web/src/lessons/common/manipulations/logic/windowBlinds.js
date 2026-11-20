@@ -31,14 +31,14 @@ export const PRESETS = Object.freeze({
 const gcd = (a, b) => { let x = Math.abs(a); let y = Math.abs(b); while (y) [x, y] = [y, x % y]; return x || 1; };
 const arabicToLatin = (v) => String(v ?? '').replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[⁦⁩\s]/g, '').replace(/[−–]/g, '-').replace('⁄', '/');
 /** « 6/12 », « ٦/١٢ », « 1 » → { num, den } ou null (jamais un signe, jamais un décimal). */
-export function parseWriting(txt) {
+function parseWriting(txt) {
   const m = /^(\d{1,4})(?:\/(\d{1,4}))?$/.exec(arabicToLatin(txt));
   if (!m) return null;
   const den = m[2] ? Number(m[2]) : 1;
   return den === 0 ? null : { num: Number(m[1]), den };
 }
-export const sameValue = (a, b) => a.num * b.den === b.num * a.den;
-export const reduce = (f) => { const g = gcd(f.num, f.den); return { num: f.num / g, den: f.den / g }; };
+const sameValue = (a, b) => a.num * b.den === b.num * a.den;
+const reduce = (f) => { const g = gcd(f.num, f.den); return { num: f.num / g, den: f.den / g }; };
 
 /* ── Tâches ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -67,17 +67,12 @@ export const isFree = (s) => !!s.free;
 export const taskDone = (s, i = s.ti) => (s.free ? !!s.free.done : !!s.done[i]);
 export const canNext = (s) => !s.free && taskDone(s) && s.ti < s.tasks.length - 1;
 export const discoveryReady = (s) => s.tasks.every((_, i) => !!s.done[i]);
-export const levelOf = (s) => (s.tasks[0].predict ? 'advanced' : 'beginner');
 /** Les deux tirages sont verrouillés tant que le produit n'est pas écrit (متقدم), puis une fois la tâche faite. */
 export const pullLocked = (s) => s.w.phase === 'predict' || s.w.phase === 'write' || s.w.phase === 'done';
 /** Les guides (b verticales et d horizontales) n'apparaissent QU'après la vérification des deux tirages. */
 export const linesShown = (s) => !!s.w.checked;
-export const writing = (s) => s.w.phase === 'predict' || s.w.phase === 'write';
+const writing = (s) => s.w.phase === 'predict' || s.w.phase === 'write';
 
-/** La grille réelle (maths du cœur) : cases en tout, cases doublement ombrées. */
-export function grid(s) { const t = taskOf(s); return t.grid; }
-/** Le coin sombre à l'instant : { w, h } en fenêtres (largeur ca/b, hauteur cc/d). */
-export const darkNow = (s) => { const t = taskOf(s); return { w: s.w.ca / t.b, h: s.w.cc / t.d, panes: s.w.ca * s.w.cc }; };
 
 /* ── Gestes ──────────────────────────────────────────────────────────────────────────────────── */
 
@@ -180,7 +175,7 @@ export function freeFlag(s, text) {
 export const toGuided = (s) => (s.free ? { ...s, free: null, w: initW(s.tasks[s.ti]), last: null, flag: null } : s);
 
 export const trialEvidence = (tr) => ({ ...tr });
-export const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
+const guidedTrials = (s, i = s.ti) => s.trials.filter((t) => !t.free && t.task === i);
 
 /** Le prochain geste utile — jamais la réponse. */
 export function coachOf(s) {

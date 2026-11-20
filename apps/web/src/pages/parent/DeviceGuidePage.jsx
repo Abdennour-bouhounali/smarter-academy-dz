@@ -22,7 +22,7 @@ export default function DeviceGuidePage() {
       <h1 className="mb-5 font-space text-xl font-bold text-slate-900 sm:mb-6 sm:text-2xl">{t('guide.title')}</h1>
       <DeviceGuide />
       {isVisitor && (
-        <div className="mt-8 flex items-start gap-4 rounded-2xl bg-indigo-600 p-5 text-white sm:p-6">
+        <div className="mt-8 flex items-start gap-4 rounded-2xl bg-nav-accent p-5 text-white sm:p-6">
           <Link2 size={28} className="flex-shrink-0" aria-hidden="true" />
           <div className="flex-1">
             <p className="font-space text-lg font-bold">{t('guide.parentCta')}</p>

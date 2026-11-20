@@ -21,11 +21,6 @@ export function startChallenge(token) {
   return call('/daily-challenge/start', send('POST', token), KEY);
 }
 
-/** L'état d'une tentative (reprise après rechargement). */
-export function fetchAttempt(token, attemptId) {
-  return call(`/daily-challenge/attempts/${encodeURIComponent(attemptId)}`, get(token), KEY);
-}
-
 /** Sert la question suivante ; renvoie la même tant qu'elle n'est pas répondue. */
 export function openNextQuestion(token, attemptId) {
   return call(`/daily-challenge/attempts/${encodeURIComponent(attemptId)}/next`, send('POST', token), KEY);

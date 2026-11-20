@@ -26,9 +26,8 @@
 import { rat, ratText } from '@smarter-academy/core/arithmetic/powers.js';
 import { matchNumerator, shadeVerdict } from '@smarter-academy/core/arithmetic/fractions3.js';
 
-export const WORLDS = Object.freeze(['mix', 'equal']);
 export const MAX_C = 40;
-export const FREE_RANGE = Object.freeze({ min: 1, max: 20 });
+const FREE_RANGE = Object.freeze({ min: 1, max: 20 });
 export const SHOT_MS = 450;
 export const SETTLE_MS = 650;
 
@@ -57,7 +56,7 @@ export function latin(text) {
 }
 
 /** La tâche complétée ; exception si une donnée est invalide (a, b, d ≥ 1). */
-export function buildTask(raw, i = 0) {
+function buildTask(raw, i = 0) {
   const kind = raw.kind ?? 'match';
   const a = int(raw.a); const b = int(raw.b);
   if (!(a >= 1) || !(b >= 1)) throw new Error('la référence a/b doit avoir a ≥ 1 et b ≥ 1');
@@ -227,7 +226,6 @@ export function claimImpossible(s) {
 
 export const setBelow = (s, raw) => (veiled(s) ? { ...s, belowText: latin(raw).replace(/[^0-9]/g, '').slice(0, 2) } : s);
 export const setAbove = (s, raw) => (veiled(s) ? { ...s, aboveText: latin(raw).replace(/[^0-9]/g, '').slice(0, 2) } : s);
-export const canClaim = (s) => !s.free && !taskDone(s) && taskOf(s).kind === 'match';
 
 /** « أثبّت » : engage le c courant sur une tâche voilée. Juste → tampon ; faux → le mesureur est révélé (et la tâche reste ouverte). */
 export function commit(s) {

@@ -82,7 +82,7 @@ export default function StudentProgressPage() {
               <h2 className="font-space font-bold text-slate-900">{t('snapshot.signals')}</h2>
               {data.signals?.length ? data.signals.map((signal) => (
                 <SignalCard key={signal.key} signal={signal} classGroupId={id} onOpenPoint={setExplainCode} onAct={setActing} />
-              )) : <p className="glass-card p-4 text-sm text-slate-400">{t('snapshot.noSignals')}</p>}
+              )) : <p className="rounded-2xl border border-nav-line bg-white p-4 text-sm text-slate-400">{t('snapshot.noSignals')}</p>}
             </div>
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-2">
@@ -93,7 +93,7 @@ export default function StudentProgressPage() {
               </div>
               {data.interventions?.length ? (
                 <ul className="space-y-3">{data.interventions.map((iv) => <InterventionCard key={iv.id} classGroup={{ id }} intervention={iv} onChanged={reload} onOpenPoint={setExplainCode} />)}</ul>
-              ) : <p className="glass-card p-4 text-sm text-slate-400">{t('snapshot.noInterventions')}</p>}
+              ) : <p className="rounded-2xl border border-nav-line bg-white p-4 text-sm text-slate-400">{t('snapshot.noInterventions')}</p>}
             </div>
           </section>
 
@@ -103,31 +103,31 @@ export default function StudentProgressPage() {
               élève qui sait. Le taux de réussite ne compte que les exercices. */}
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
             <StatTile icon={CircleCheckBig} value={data.learning.lessonsCompleted} label={t('students.lessonsCompleted')} accent="bg-emerald-50 text-emerald-600" hint={`${data.scope.lessonsInScope} ${t('students.lessonsInScope')}`} />
-            <StatTile icon={Award} value={Number(masteryCounts.mastered) || 0} label={t('students.masteredPoints')} accent="bg-teal-50 text-teal-700" hint={t('students.ofPoints', { count: masteryTotal })} />
-            <StatTile icon={Target} value={data.learning.modulesCompleted} label={t('students.modulesCompleted')} accent="bg-blue-50 text-blue-600" />
+            <StatTile icon={Award} value={Number(masteryCounts.mastered) || 0} label={t('students.masteredPoints')} accent="bg-nav-page text-nav-accent" hint={t('students.ofPoints', { count: masteryTotal })} />
+            <StatTile icon={Target} value={data.learning.modulesCompleted} label={t('students.modulesCompleted')} accent="bg-nav-accent-soft text-nav-accent" />
             <StatTile icon={Dumbbell} value={data.learning.questionsAnswered} label={t('students.questionsAnswered')} accent="bg-violet-50 text-violet-600" hint={`${data.learning.hintsUsed} ${t('students.hints')}`} />
             <StatTile icon={Percent} value={data.learning.successRate === null ? '—' : <span dir="ltr">{data.learning.successRate}%</span>} label={t('students.successRate')} accent="bg-amber-50 text-amber-600" hint={t('students.exercisesOnly')} />
           </div>
-          <div className="glass-card p-4"><PathProgress percent={data.learning.progressPercent ?? 0} /></div>
+          <div className="rounded-2xl border border-nav-line bg-white p-4"><PathProgress percent={data.learning.progressPercent ?? 0} /></div>
 
           {/* Les réglages que l'enseignant décide pour CET élève (2026-10-06). */}
           <StudentSettingsCard classroomId={id} studentId={studentId} />
 
           <section className="grid grid-cols-1 gap-5 lg:grid-cols-2 [&>*]:min-w-0">
-            <div className="glass-card p-5">
+            <div className="rounded-2xl border border-nav-line bg-white p-5">
               <h2 className="font-space font-bold text-slate-900 mb-3">{t('students.progressTitle')}</h2>
               {data.progress.length === 0 ? <p className="text-sm text-slate-400">{t('students.never')}</p> : (
                 <ul className="divide-y divide-slate-100">
                   {data.progress.map((p) => (
                     <li key={p.lessonCode} className="flex items-center justify-between gap-3 py-2 text-sm">
                       <span className="min-w-0 truncate text-slate-800">{p.lessonTitle ?? p.lessonCode}</span>
-                      <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${p.status === 'completed' ? 'bg-emerald-50 text-emerald-700' : 'bg-blue-50 text-blue-700'}`}>{t(`students.lessonStatus.${p.status}`)}</span>
+                      <span className={`shrink-0 rounded-full px-2 py-0.5 text-[11px] font-semibold ${p.status === 'completed' ? 'bg-emerald-50 text-emerald-700' : 'bg-nav-accent-soft text-nav-accent'}`}>{t(`students.lessonStatus.${p.status}`)}</span>
                     </li>
                   ))}
                 </ul>
               )}
             </div>
-            <div className="glass-card p-5">
+            <div className="rounded-2xl border border-nav-line bg-white p-5">
               <h2 className="font-space font-bold text-slate-900 mb-1">{t('students.masteryTitle')}</h2>
               {masteryTotal > 0 && (
                 <p className="mb-3 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-slate-500" data-mastery-counts>
@@ -143,7 +143,7 @@ export default function StudentProgressPage() {
                 <div className="space-y-4">
                   {masteryByLesson.map((group) => (
                     <div key={group.key} data-mastery-lesson={group.key}>
-                      <h3 className="mb-1 font-inter text-xs font-semibold text-teal-800">{group.title}</h3>
+                      <h3 className="mb-1 font-inter text-xs font-semibold text-nav-accent">{group.title}</h3>
                       <ul className="divide-y divide-slate-100">
                         {group.points.map((m) => (
                           <li key={m.code} className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2 text-sm" data-mastery-row={m.code}>
@@ -152,7 +152,7 @@ export default function StudentProgressPage() {
                             <ReasonChip reason={m.statusReason} />
                             <ConfidenceBar confidence={m.confidence} />
                             <FreshnessMark freshness={m.freshness} />
-                            <button type="button" onClick={() => setExplainCode(m.code)} className="text-[11px] font-semibold text-teal-700 hover:underline" data-mastery-why={m.code}>{t('students.why')}</button>
+                            <button type="button" onClick={() => setExplainCode(m.code)} className="text-[11px] font-semibold text-nav-accent hover:underline" data-mastery-why={m.code}>{t('students.why')}</button>
                             <span className="w-full text-[11px] text-slate-500">
                               {t('students.masteryFacts', { distinct: Number(m.distinctItemsSuccess) || 0, assessment: Number(m.assessmentSuccessCount) || 0, level: m.maxDifficultySuccess ?? '—' })}
                               {m.lastEvidenceAt && <> · {formatDate(m.lastEvidenceAt)}</>}
@@ -186,13 +186,13 @@ export default function StudentProgressPage() {
             studentName={name}
           />
 
-          <section className="glass-card p-5">
+          <section className="rounded-2xl border border-nav-line bg-white p-5">
             <h2 className="font-space font-bold text-slate-900 mb-3">{t('students.timelineTitle')}</h2>
             {data.timeline.length === 0 ? <p className="text-sm text-slate-400">{t('students.noActivity')}</p> : (
               <ol className="space-y-2">
                 {data.timeline.map((e, i) => (
                   <li key={i} className="flex items-start gap-3 rounded-xl border border-slate-100 bg-white p-3 text-sm">
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-teal-600" />
+                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-nav-accent" />
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-slate-800">{e.lesson ?? '—'}</p>
                       <p className="text-xs text-slate-500" dir="auto">{e.type === 'practice_session' && e.answered !== undefined ? <span dir="ltr">{e.correct}/{e.answered}</span> : e.type === 'final_test' ? <span dir="ltr">{e.score}/{e.total}</span> : e.modulesCompleted}</p>

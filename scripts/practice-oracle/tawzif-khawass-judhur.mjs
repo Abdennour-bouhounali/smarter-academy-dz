@@ -56,7 +56,7 @@ class S {
   }
   coef(k) { return (this.m.get(k) ?? q(0)).toString(); }
   rat() {
-    for (const [k, c] of this.terms()) if (k !== 1) throw new Error(`rat : reste un terme en √${k}`);
+    for (const [k] of this.terms()) if (k !== 1) throw new Error(`rat : reste un terme en √${k}`);
     return this.coef(1);
   }
 }

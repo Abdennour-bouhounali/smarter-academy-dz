@@ -17,14 +17,14 @@ function ChildCard({ child, t }) {
       data-child-card
     >
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-indigo-600 font-space text-sm font-bold text-white">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full bg-nav-accent font-space text-sm font-bold text-white">
           {(child.firstName || '؟').charAt(0)}
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-space font-bold text-slate-900">{name}</p>
           <p className="font-inter text-xs text-slate-500">{child.grade ? t(`grades.${child.grade}`) : ''}</p>
         </div>
-        <ChevronForward size={18} className="text-slate-400 group-hover:text-indigo-600" aria-hidden="true" />
+        <ChevronForward size={18} className="text-slate-400 group-hover:text-nav-accent" aria-hidden="true" />
       </div>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-slate-50 p-3">
@@ -109,7 +109,7 @@ export default function ParentHome() {
       <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-4 sm:p-6 lg:grid-cols-2">
         <div>
           <h2 className="flex items-center gap-2 font-space text-lg font-bold text-slate-900">
-            <Link2 size={20} className="text-indigo-600" aria-hidden="true" />
+            <Link2 size={20} className="text-nav-accent" aria-hidden="true" />
             {t('link.title')}
           </h2>
           <form onSubmit={submit} className="mt-4 space-y-3">
@@ -123,12 +123,12 @@ export default function ParentHome() {
               onChange={(e) => setCode(e.target.value.toUpperCase())}
               placeholder={t('link.placeholder')}
               maxLength={12}
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center font-mono text-xl tracking-widest text-slate-900 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
+              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-center font-mono text-xl tracking-widest text-slate-900 focus:border-nav-accent focus:outline-none focus:ring-2 focus:ring-indigo-200"
             />
             <button
               type="submit"
               disabled={busy || !code.trim()}
-              className="w-full rounded-xl bg-indigo-600 px-4 py-3 font-space font-bold text-white hover:bg-indigo-700 disabled:opacity-50"
+              className="w-full rounded-xl bg-nav-accent px-4 py-3 font-space font-bold text-white hover:bg-[#3350c4] disabled:opacity-50"
             >
               {t('link.submit')}
             </button>
@@ -149,13 +149,13 @@ export default function ParentHome() {
         </div>
       </section>
 
-      <Link to="/wali/himaya" className="flex items-center gap-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4 hover:bg-indigo-100 sm:gap-4 sm:p-5">
-        <ShieldCheck size={28} className="flex-shrink-0 text-indigo-600" aria-hidden="true" />
+      <Link to="/wali/himaya" className="flex items-center gap-3 rounded-2xl border border-indigo-200 bg-nav-accent-soft p-4 hover:bg-indigo-100 sm:gap-4 sm:p-5">
+        <ShieldCheck size={28} className="flex-shrink-0 text-nav-accent" aria-hidden="true" />
         <div className="flex-1">
           <p className="font-space font-bold text-indigo-950">{t('guide.title')}</p>
           <p className="font-inter text-sm text-indigo-900">{t('report.howLimit')}</p>
         </div>
-        <ChevronForward size={20} className="text-indigo-600" aria-hidden="true" />
+        <ChevronForward size={20} className="text-nav-accent" aria-hidden="true" />
       </Link>
     </div>
   );

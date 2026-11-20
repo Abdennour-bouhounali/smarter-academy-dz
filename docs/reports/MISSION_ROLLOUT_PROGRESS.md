@@ -5,6 +5,26 @@
 > `docs/lessons/LESSON_DEVELOPMENT_GUIDE.md` §4sexies, §4septies and its « Rollout recipe ». One commit per lesson,
 > `feat(lessons): <id> — mission prototype`. A lesson is DONE when `vitest run src/lessons`, `check:lessons`,
 > `lab-rollout-status --lesson <id>` and the Playwright walk of §6 (1366×768, 1024×768, 1920×1080; no `data-fit-overflow`) all pass.
+>
+> **2026-11-18: lessons 1–3 (`qasim-adad-tabii`, `qawasim-adad-tabii`, `khawass-qawasim`) are v2 and their mission
+> player and module pages are DELETED** (`LESSON_V2.md` §2, `OLD_VERSION_TRACE_2026-11-18.md`). Their rows and sections
+> below are history: the files they cite no longer exist. The pilot's reference for the mission player is gone with them —
+> read the player on a lesson still on it (e.g. `jidhr-tarbii`).
+> **2026-11-19: lesson 4 (`qasim-mushtarak-akbar`) too** — v2, its mission player, its scene `flower-shop` and its module
+> pages deleted (`OLD_VERSION_TRACE_2026-11-18.md` §11); its row and section below are history.
+> **2026-11-19: lesson 5 (`tayin-pgcd`) too** — v2, its mission player, its scene `school-bags` and its module pages
+> deleted (`OLD_VERSION_TRACE_2026-11-18.md` §12); its row and section below are history.
+> **2026-11-20: lesson 7 (`awwaliyan-fima-baynahuma`) too** — v2, its mission player, its scene `math-club` and its module
+> pages deleted (`OLD_VERSION_TRACE_2026-11-18.md` §14); its row and section below are history. The unit's lessons still on
+> the mission player: `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.
+>
+> **2026-11-20: lesson 8 (`ikhtizal-kasr`) too** — v2, its mission player, its scene `bakery` and its module pages deleted
+> (`OLD_VERSION_TRACE_2026-11-18.md` §15); its row and section below are history. The unit's ONLY lesson still on the
+> mission player is the synthesis `wadiya-idmajiya-aadad`.
+>
+> **2026-11-19: lesson 6 (`bahth-pgcd`) too** — v2, its mission player, its scene `sewing-workshop` and its module pages
+> deleted (`OLD_VERSION_TRACE_2026-11-18.md` §13); its row and section below are history. The unit's lessons still on the
+> mission player: `awwaliyan-fima-baynahuma`, `ikhtizal-kasr` and the synthesis `wadiya-idmajiya-aadad`.
 
 ## The table
 

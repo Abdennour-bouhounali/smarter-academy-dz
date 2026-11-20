@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -22,7 +22,7 @@ import PlotScene, { PatchCards } from './areaSplit/PlotScene';
 import ArrowsScene, { ProductCards } from './areaSplit/ArrowsScene';
 import LineRow, { ReduceBlock, showReduce } from './areaSplit/LineRow';
 import SidePanel from './areaSplit/SidePanel';
-import { frameOf, fitUnit as fitPlotUnit } from './areaSplit/plotLayout';
+import { fitUnit as fitPlotUnit } from './areaSplit/plotLayout';
 import { num } from './areaSplit/format';
 
 export { bannerOf, iso, num, tex, plain } from './areaSplit/format';
@@ -281,7 +281,6 @@ export default function AreaSplit({
       aside={lab.tasks.length > 1 ? <LabStepper count={lab.tasks.length} current={lab.custom ? -1 : lab.ti} done={stepDone} stepAttr="data-as-step" /> : undefined} />
   );
   const mood = lab.solvedNow ? 'proud' : lab.last?.event === 'refused' ? 'wonder' : 'happy';
-  const frame = plot ? frameOf(lab.h, lab.w, u, lab.scaffold) : null;
   const figure = plot && figure0(side, sceneW);
 
   const sceneEl = plot ? (

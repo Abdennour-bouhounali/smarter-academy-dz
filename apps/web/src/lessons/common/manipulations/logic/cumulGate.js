@@ -20,12 +20,10 @@ import * as S from '@smarter-academy/core/arithmetic/statistics.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
 export const SIDES = Object.freeze(['up', 'down']);
-/** La relation de chaque côté : « على الأكثر » = '<=' (الصاعد), « على الأقل » = '>=' (النازل). */
-export const REL = Object.freeze({ up: '<=', down: '>=' });
 const STRICT = Object.freeze({ up: '<', down: '>' });
 
 /** Lit la série : { values (fractions, ordre brut), table: { values, freqs }, given: bool (ordre du manuel) }. */
-export function parseSeries(src) {
+function parseSeries(src) {
   const parts = String(src ?? '').split('|').map((p) => p.trim()).filter(Boolean);
   if (!parts.length) throw new Error('cumul-gate: série vide');
   const withCounts = parts.every((p) => p.includes(':'));
@@ -69,7 +67,7 @@ function interleave(rows) {
 }
 
 /** Les modes : 'up|down' (compter des deux côtés) ou 'up|down|table' (+ le tableau du manuel). */
-export function parseMode(mode = 'up|down') {
+function parseMode(mode = 'up|down') {
   const m = String(mode).split('|').map((s) => s.trim()).filter(Boolean);
   if (!m.includes('up') || !m.includes('down') || m.some((x) => !['up', 'down', 'table'].includes(x))) {
     throw new Error(`cumul-gate: mode « ${mode} »`);
@@ -78,7 +76,7 @@ export function parseMode(mode = 'up|down') {
 }
 
 /** Les cases que le manuel imprime déjà : « up:154|up:157|down:165 ». */
-export function parseGiven(src) {
+function parseGiven(src) {
   if (!src) return [];
   return String(src).split('|').map((p) => p.trim()).filter(Boolean).map((p) => {
     const [side, v] = p.split(':');
@@ -121,7 +119,7 @@ export const rangeOf = (s) => ({ min: Math.min(...s.values) - 3, max: Math.max(.
 /** Le nombre de personnes du côté `side` du seuil t — TOUJOURS par statistics (« على الأكثر » ≤, « على الأقل » ≥). */
 export const count = (s, t, side) => (side === 'up' ? S.countAtMost(s.T, t) : S.countAtLeast(s.T, t));
 /** Le même compte SANS la valeur t (la confusion « au moins » / « plus que »). */
-export const strictCount = (s, t, side) => S.countWhere(s.T, STRICT[side], t);
+const strictCount = (s, t, side) => S.countWhere(s.T, STRICT[side], t);
 /** L'effectif de la valeur t (0 si t n'est pas une valeur de la série). */
 export const freqOf = (s, t) => { const i = s.values.indexOf(t); return i < 0 ? 0 : s.freqs[i]; };
 /** Une personne est-elle allumée (du côté choisi) ? t compte des deux côtés. */
@@ -136,7 +134,7 @@ export function sortQueue(s) {
 }
 
 /** Lire la saisie de l'élève : un entier naturel (chiffres arabes acceptés), sinon null. */
-export function readCount(raw) {
+function readCount(raw) {
   const txt = String(raw ?? '').trim().replace(/[٠-٩]/g, (d) => String('٠١٢٣٤٥٦٧٨٩'.indexOf(d))).replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
   return /^\d{1,4}$/.test(txt) ? Number(txt) : null;
 }
@@ -170,9 +168,9 @@ export function claim(s, t, side, raw) {
 }
 
 /** La valeur t a-t-elle été comptée des DEUX côtés (deux comptes acceptés) ? */
-export const bothAt = (s, t) => SIDES.every((side) => s.claims.some((c) => c.t === t && c.side === side));
+const bothAt = (s, t) => SIDES.every((side) => s.claims.some((c) => c.t === t && c.side === side));
 /** Les seuils comptés des deux côtés, dans l'ordre croissant. */
-export const bothSides = (s) => [...new Set(s.claims.map((c) => c.t))].filter((t) => bothAt(s, t)).sort((a, b) => a - b);
+const bothSides = (s) => [...new Set(s.claims.map((c) => c.t))].filter((t) => bothAt(s, t)).sort((a, b) => a - b);
 
 /**
  * LE CONTRASTE qui ouvre la découverte : une VALEUR de la série (effectif > 0) comptée des deux côtés —

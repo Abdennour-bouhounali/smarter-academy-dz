@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * Les pièces dessinées de `equation-balance` (la balance du vestiaire), PARTAGÉES par la page (`EquationBalance.jsx`) et le lecteur de mission

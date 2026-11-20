@@ -31,7 +31,6 @@ import * as V from '@smarter-academy/core/arithmetic/vectors.js';
 import * as T from '@smarter-academy/core/arithmetic/trigonometry.js';
 import * as Lin from '@smarter-academy/core/arithmetic/linear.js';
 
-export const MODES = Object.freeze(['rosette', 'prove']);
 export const STRETCH = Object.freeze({ min: 10, max: 15 });
 export const TURN = Object.freeze({ min: -360, max: 360 });
 /** Les cartes de preuve : ce que chacune PROUVE (la clé i18n `card_<id>` / `proves_<id>`). */
@@ -45,9 +44,9 @@ const fl = (p) => ({ x: Lin.toNumber(p.x), y: Lin.toNumber(p.y) });
 const norm360 = (t) => ((Math.round(t) % 360) + 360) % 360;
 const sgn = (t) => (t < 0 ? 'indirect' : 'direct');
 /** Un nombre lu par l'élève : 2 décimales au plus, la virgule du manuel. */
-export const dec = (x, d = 2) => String(Number(Number(x).toFixed(d))).replace('.', ',').replace('-', '−');
+const dec = (x, d = 2) => String(Number(Number(x).toFixed(d))).replace('.', ',').replace('-', '−');
 /** Une longueur exacte : « 3 », « √41 », « 3,6 » (une fraction s'écrit en décimal). */
-export function lengthText(s) {
+function lengthText(s) {
   if (s.r === 1) { const n = T.surdNumber(s); return Number.isInteger(n) ? String(n) : dec(n); }
   return T.surdText(s).replace('/', '÷');
 }
@@ -87,7 +86,7 @@ export function init(nums = {}) {
 // ── La feuille : étirement (le faux mors) puis rotation ────────────────────────
 
 /** Le point `name` recopié sur la feuille ÉTIRÉE (k = stretch/10 le long du bord de la feuille), AVANT rotation — exact. */
-export function stretchedExact(s, name, stretch = s.stretch) {
+function stretchedExact(s, name, stretch = s.stretch) {
   const p = s.pts[name];
   const k = Lin.frac(stretch, 10);
   return V.point(Lin.add(s.O.x, Lin.mul(k, Lin.sub(p.x, s.O.x))), p.y);
@@ -162,7 +161,7 @@ export const unstretch = (s) => stretchTo(s, STRETCH.min);
 
 export const rosetteSize = (s) => Math.round(360 / s.alpha);
 /** Les rotations (degrés, dans [0 ; 360[) des copies posées, la copie d'origine (0) comprise. */
-export const placed = (s) => [0, ...(s.stamps ?? []).map((st) => st.at)];
+const placed = (s) => [0, ...(s.stamps ?? []).map((st) => st.at)];
 export const rosetteDone = (s) => s.mode === 'rosette' && (s.stamps ?? []).length >= rosetteSize(s) - 1;
 
 /**
@@ -376,7 +375,7 @@ export function retryStep(s, id, nums = {}) {
  * Le rectangle de la feuille calque, dans SON repère (origine O, unités de la figure) : ce qu'elle porte et l'épingle,
  * avec une marge. Son coin haut-droit est la poignée de rotation, son coin bas-droit le faux mors.
  */
-export const SHEET_MARGIN = 0.45;
+const SHEET_MARGIN = 0.45;
 export function sheetRect(s) {
   const O = fl(s.O);
   const ps = s.carried.map((n) => { const p = fl(s.pts[n]); return { x: p.x - O.x, y: p.y - O.y }; });
@@ -431,9 +430,6 @@ export function sceneLayout(s, { size = 320, pad = 26 } = {}) {
   return Object.freeze({ size, k, X, Y, x0, x1, y0, y1, toWorld: (px, py) => ({ x: x0 + (px - pad) / k, y: y1 - (py - pad) / k }) });
 }
 /** La direction (degrés) du coin de la feuille quand θ = 0 : en bas à droite, loin du motif. */
-export const CORNER = -35;
-/** Le coin de la feuille (là où la main la saisit) : sur le cercle de rayon `radius` (unités) autour de O, à θ + CORNER. */
-export const cornerAt = (s, radius, theta = s.theta) => R.pointOnCircle(fl(s.O), radius, theta + CORNER);
 /**
  * L'angle de la feuille sous le pointeur, DÉROULÉ près de la valeur courante (passer −180 → 180 ne fait pas sauter la
  * feuille d'un tour) : `pointerTheta(O, P, ref, offset)`, offset = la direction du coin quand θ = 0.

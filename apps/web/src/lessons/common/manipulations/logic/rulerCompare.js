@@ -24,17 +24,15 @@
  */
 import * as D from '@smarter-academy/core/arithmetic/decimals.js';
 
-export const WORLDS = Object.freeze(['jump']);
-export const KINDS = Object.freeze(['compare', 'order']);
-export const MAX_G = 3;
-export const FREE_MAX_DECIMALS = 3;
-export const FREE_MAX_WHOLE = 99;
-export const SYMBOLS = Object.freeze(['<', '=', '>']);
+const MAX_G = 3;
+const FREE_MAX_DECIMALS = 3;
+const FREE_MAX_WHOLE = 99;
+const SYMBOLS = Object.freeze(['<', '=', '>']);
 /** Le nom parlé de chaque symbole (data-rc-verdict). */
 export const SYMBOL_KEY = Object.freeze({ '<': 'lt', '=': 'eq', '>': 'gt' });
 
 /** Les coureurs de la journée sportive : filles en hijab, garçons en sweat (KidFigure). L'ordre alterne fille / garçon. */
-export const JUMPERS = Object.freeze([
+const JUMPERS = Object.freeze([
   Object.freeze({ id: 'rim', name: 'ريم', girl: true, look: Object.freeze({ hairStyle: 'hijab', scarf: 'rose', outfit: 'pink', skin: 'light' }) }),
   Object.freeze({ id: 'sami', name: 'سامي', girl: false, look: Object.freeze({ hairStyle: 'short', hair: 'black', outfit: 'blue', skin: 'wheat' }) }),
   Object.freeze({ id: 'lina', name: 'لينا', girl: true, look: Object.freeze({ hairStyle: 'hijab', scarf: 'mint', outfit: 'teal', skin: 'brown' }) }),
@@ -55,7 +53,7 @@ export function parseJump(text) {
   return v && D.integerPart(v) <= FREE_MAX_WHOLE && v.k <= FREE_MAX_DECIMALS ? v : null;
 }
 /** Le texte tel que l'élève l'a écrit, avec la virgule (zéros de fin gardés). */
-export const writeJump = (v) => D.format(v);
+const writeJump = (v) => D.format(v);
 
 /* ── Tâches ─────────────────────────────────────────────────────────────────────────────── */
 
@@ -137,20 +135,14 @@ export function decidedNow(s) {
 }
 
 /** La première paire que la règle ne sépare pas (order, ou compare) : [i, j] ou null. */
-export function firstUndecided(s) {
+function firstUndecided(s) {
   const a = activeOf(s);
   for (let i = 0; i < a.vals.length; i += 1) for (let j = i + 1; j < a.vals.length; j += 1) if (!D.decidedAt(a.vals[i], a.vals[j], a.g)) return [i, j];
   return null;
 }
 
 /** Le symbole juste pour `a ? b` (compare, ou essai libre). */
-export const rightSymbol = (v0, v1) => { const c = D.cmp(v0, v1); return c < 0 ? '<' : c > 0 ? '>' : '='; };
-
-/** Le symbole qui découle des LECTURES entières à la graduation g (null si la règle ne sépare pas). */
-export function symbolAt(v0, v1, g) {
-  const c = D.verdictAt(v0, v1, g);
-  return c === null ? null : c < 0 ? '<' : c > 0 ? '>' : '=';
-}
+const rightSymbol = (v0, v1) => { const c = D.cmp(v0, v1); return c < 0 ? '<' : c > 0 ? '>' : '='; };
 
 /* ── Essais ─────────────────────────────────────────────────────────────────────────────── */
 
@@ -210,7 +202,6 @@ export function trayOf(s) {
   if (!a.slots) return [];
   return a.vals.map((_, i) => i).filter((i) => !a.slots.includes(i));
 }
-export const slotOfJump = (s, jump) => (activeOf(s).slots ?? []).indexOf(jump);
 
 /**
  * Poser le saut `jump` dans la case `slot`. S'il y avait déjà un saut dans la case, il prend la place laissée par `jump` (échange) ou
@@ -236,11 +227,9 @@ export function place(s, jump, slot) {
 }
 
 export const slotsFull = (s) => { const a = activeOf(s); return !!a.slots && a.slots.every((x) => x !== null); };
-/** Le rangement des cases, en textes (null = case vide). */
-export const orderTexts = (s) => { const a = activeOf(s); return (a.slots ?? []).map((i) => (i === null ? null : a.values[i])); };
 
 /** Une suite de valeurs est-elle rangée dans le sens `dir` (les égales dans n'importe quel ordre) ? Retourne l'indice i de la première inversion (i, i+1) ou −1. */
-export function firstInversion(vals, dir) {
+function firstInversion(vals, dir) {
   for (let i = 0; i + 1 < vals.length; i += 1) {
     const c = D.cmp(vals[i], vals[i + 1]);
     if (dir === 'asc' ? c > 0 : c < 0) return i;
@@ -281,14 +270,6 @@ export function rightOrder(task) {
 export function nextTask(s) {
   if (!canNext(s)) return s;
   return put(s, { ti: s.ti + 1, last: null });
-}
-/** « إعادة » : la tâche en cours (ou l'essai libre) repart de la règle au mètre. Les essais déjà faits restent. */
-export function restartTask(s) {
-  if (s.free) return put(s, { free: Object.freeze({ ...s.free, g: 0, ...(s.free.slots ? { slots: Object.freeze(Array(s.free.vals.length).fill(null)) } : {}) }), last: null });
-  if (taskDone(s)) return put(s, { last: null });
-  const boards = s.boards.slice();
-  boards[s.ti] = board0(s.tasks[s.ti]);
-  return put(s, { boards: Object.freeze(boards), last: null });
 }
 
 /** « أعِد التجربة » (questions du labo) : LA MÊME tâche repart de la règle au mètre, NON faite (la carte se rouvrira à la réussite). */
@@ -377,7 +358,7 @@ export function coachOf(s) {
 /* ── La découverte : les réfutations avec SES nombres ───────────────────────────────────── */
 
 /** Toutes les paires de nombres que l'élève a eues sous la main (compare : le couple ; order : toutes les paires de la rangée). */
-export function pairsOf(s) {
+function pairsOf(s) {
   const out = [];
   s.tasks.forEach((t) => {
     if (t.kind === 'compare') out.push([t.a, t.b, t.av, t.bv]);
@@ -410,11 +391,6 @@ export function witnesses(s) {
   };
 }
 
-/** Le dernier couple comparé et résolu (pour la phase formelle) : { a, b, verdict, ... } ou null. */
-export function lastCompare(s) {
-  for (let i = s.tasks.length - 1; i >= 0; i -= 1) if (s.tasks[i].kind === 'compare' && s.solved[i]) return { i, task: s.tasks[i], solved: s.solved[i] };
-  return null;
-}
 export function lastOrder(s) {
   for (let i = s.tasks.length - 1; i >= 0; i -= 1) if (s.tasks[i].kind === 'order' && s.solved[i]) return { i, task: s.tasks[i], solved: s.solved[i] };
   return null;

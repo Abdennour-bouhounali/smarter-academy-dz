@@ -96,7 +96,7 @@ export default function LearningPointProgress({ point, eyebrow = true, headingTa
       data-learning-point={point.code}
       data-mastery-stage={stage}
     >
-      {eyebrow && <p className="text-xs font-bold text-indigo-700">{t('practice.lp.eyebrow')}</p>}
+      {eyebrow && <p className="text-xs font-bold text-nav-accent">{t('practice.lp.eyebrow')}</p>}
       {/* Un nom long (« حل وضعية إدماجية بتعبئة قابلية القسمة… ») tient en deux
           lignes sous `xl` — la question doit rester près du haut de l'écran ;
           le nom entier reste dans `title` et s'affiche dans la colonne. */}

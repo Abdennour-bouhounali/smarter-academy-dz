@@ -479,5 +479,3 @@ export function kindsForMode(mode) {
     : CHALLENGE_KINDS;
 }
 
-/** Les angles du programme de 4AM — les seuls que le mode triangle tire. */
-export { CURRICULUM_ANGLES };

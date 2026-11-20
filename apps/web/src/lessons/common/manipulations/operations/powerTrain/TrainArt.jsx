@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * LE MONDE DESSINÉ du labo `power-train` (thème `railway`) — SVG en code, paramétré, jamais une image générée (root CLAUDE.md).
@@ -7,7 +6,7 @@ import React from 'react';
  * Toutes les longueurs viennent de `w` / `h` (taille d'une place sur le rail) : rien n'est en pixels fixes.
  */
 
-export const WAGON = {
+const WAGON = {
   times: { body: '#F59E0B', top: '#FCD34D', edge: '#B45309', roof: '#92400E', plate: '#FFFBEB', ink: '#7C2D12' },
   divide: { body: '#38BDF8', top: '#BAE6FD', edge: '#0369A1', roof: '#075985', plate: '#F0F9FF', ink: '#0C4A6E' },
 };

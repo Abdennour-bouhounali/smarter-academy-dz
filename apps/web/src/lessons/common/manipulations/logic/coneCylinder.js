@@ -23,7 +23,7 @@ const { frac, parseNumber, add, sub, mul, div, cmp, eq, isInteger, fracDecimal, 
 const F = (v) => (typeof v === 'object' && v !== null ? v : Number.isInteger(v) ? frac(v) : parseNumber(v));
 
 /** Le nombre n de graduations (24 au plus) : pas décimaux courts, et h = r sur la règle. */
-export function divisionsFor(H, R) {
+function divisionsFor(H, R) {
   for (let n = 24; n >= 6; n -= 1) {
     const ok = fracDecimal(div(H, n), 2) != null && fracDecimal(div(R, n), 2) != null && isInteger(div(mul(R, n), add(H, R)));
     if (ok) return n;
@@ -203,7 +203,7 @@ export function initPlayer({ H = 25, R = 15, n, lockH = null, lockR = null, star
 }
 
 /** Le cran de r que la manche impose maintenant (`lockR`) : le premier pas encore inscrit, sinon le dernier ; null sans verrou. */
-export function lockedR(lab) {
+function lockedR(lab) {
   if (!lab.lockR) return null;
   const done = (j) => lab.trials.some((t) => t.rIdx === j && t.inscribed);
   return lab.lockR.find((j) => !done(j)) ?? lab.lockR[lab.lockR.length - 1];

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { ScrollText } from 'lucide-react';
 import { ArrowForward } from '../common/DirectionalIcons';
@@ -18,7 +18,7 @@ export default function TrustRelevanceSection() {
   return (
     <section className="section-wrapper">
       <div className="max-w-5xl mx-auto">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -32,9 +32,9 @@ export default function TrustRelevanceSection() {
           <p className="font-inter text-slate-500 text-base">
             {t('trust.lessonsAvailable', { lessonCount })}
           </p>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -58,7 +58,7 @@ export default function TrustRelevanceSection() {
               </Link>
             );
           })}
-        </motion.div>
+        </m.div>
 
         <div className="text-center mt-8">
           <Link to="/register" className="inline-flex items-center gap-2 font-inter text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">

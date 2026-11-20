@@ -16,7 +16,6 @@ export default function MesCours() {
   // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
   usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
-  const { t: tc } = useTranslation('common');
   useDocumentMeta(t('courses.metaTitle'), t('courses.metaDescription'));
   const { user } = useContext(AuthContext);
   // Le ميدان vient de l'URL (`?chapter=`) : le fil d'Ariane d'une unité,
@@ -77,7 +76,7 @@ export default function MesCours() {
           </p>
           <h1 className="font-space font-bold text-2xl sm:text-3xl text-slate-900">{t('courses.title', { grade: grade.name })}</h1>
         </div>
-        <Link to="/espace/explorer" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+        <Link to="/espace/explorer" className="inline-flex items-center gap-2 text-sm font-semibold text-nav-accent hover:text-nav-accent transition-colors">
           <Compass size={15} />
           {t('courses.exploreOtherGrades')}
         </Link>
@@ -104,7 +103,7 @@ export default function MesCours() {
               key={chapter.id}
               onClick={() => setActiveChapter(chapter.id)}
               className={`flex-shrink-0 inline-flex items-center px-4 py-2 rounded-lg font-inter text-sm font-medium transition-all ${
-                isSelected ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                isSelected ? 'bg-nav-accent text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
               }`}
             >
               <span>{chapter.icon && <span className="me-1.5" aria-hidden="true">{chapter.icon}</span>}{chapter.title}</span>

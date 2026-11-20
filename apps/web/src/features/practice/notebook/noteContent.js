@@ -33,7 +33,7 @@ import { isolateMathRuns } from '../../../utils/bidi';
 /** Limite serveur (PracticeNotebookController) — le client la connaît pour refuser AVANT l'aller-retour. */
 export const MAX_CONTENT_LENGTH = 12000;
 
-export const RICH_CONTENT_RE = /^\s*<(p|h[1-6]|ul|ol|div|section|blockquote)[\s>]/i;
+const RICH_CONTENT_RE = /^\s*<(p|h[1-6]|ul|ol|div|section|blockquote)[\s>]/i;
 
 /** Une note enregistrée est-elle en HTML (nouveau carnet) ou en texte brut (ancien) ? */
 export function isRichContent(content) {
@@ -288,7 +288,7 @@ export function sanitizeHtml(html) {
 }
 
 /** Le texte seul, sans balise — pour « est-ce vide ? » et les comparaisons. */
-export function plainTextOf(html) {
+function plainTextOf(html) {
   if (typeof document === 'undefined') return String(html ?? '').replace(/<[^>]*>/g, '');
   const div = document.createElement('div');
   div.innerHTML = sanitizeHtml(html);

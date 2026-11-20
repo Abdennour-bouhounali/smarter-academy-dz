@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -238,7 +238,6 @@ export default function RouteCompare({
   const last = lab.last;
   const lastTrial = last?.kind === 'pin' ? last.trial : null;
   const verdictKind = drag ? 'live' : lastTrial ? (lastTrial.kind === 'ok' && last.routeDone != null ? (done ? 'compare' : 'routeDone') : `${lastTrial.piece}-${lastTrial.kind}`) : lab.bet == null ? 'bet' : last?.kind === 'select' || last?.kind === 'bet' ? `start-${piece?.kind ?? 'seg'}` : done ? 'compare' : `start-${piece?.kind ?? 'seg'}`;
-  const r1 = lab.routes[0].total; const r2 = lab.routes[1].total;
   const sh = L.shorter(lab);
   const verdict = (() => {
     const tr = lastTrial;
@@ -648,14 +647,13 @@ function Deco({ world, G, lab, reduce, builtD }) {
 /* ══════════════ Les questions pendant le labo (primitives/LabCheckpoint) ══════════════ */
 
 /** La suite du parcours i : la longueur d'un morceau, celle du parcours entier ; le dernier parcours construit ajoute la comparaison puis la règle. */
-export function chainOf(lab, i) {
+export function chainOf(lab) {
   const q = ['pieceLen', 'routeSum'];
   if (L.allDone(lab)) q.push('compare', 'rule');
   return q;
 }
 
 const iso = (s) => `$${s}$`;
-const plain = (n) => Number(n).toFixed(2);
 const fixUnit = (lab) => `\\,\\mathrm{${lab.unit}}`;
 
 /** Le morceau le plus instructif du parcours : le premier demi-cercle, sinon le premier morceau droit. */

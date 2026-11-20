@@ -116,7 +116,7 @@ export default function ReplayPlayer({ steps, figure, onDone }) {
             <ChevronRight size={18} aria-hidden="true" /> {t('replay.prev')}
           </button>
           <button type="button" onClick={player.next} disabled={blocked || player.done} data-replay-next
-            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl bg-indigo-600 px-5 font-space text-sm font-black text-white enabled:hover:bg-indigo-700 disabled:opacity-40">
+            className="inline-flex min-h-[44px] flex-1 items-center justify-center gap-1 rounded-xl bg-nav-accent px-5 font-space text-sm font-black text-white enabled:hover:bg-[#3350c4] disabled:opacity-40">
             {player.done ? t('replay.done') : t('replay.next')} {!player.done && <ChevronLeft size={18} aria-hidden="true" />}
           </button>
           {player.playing ? (

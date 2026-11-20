@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Footprints, BookmarkPlus, Check, ChevronLeft, LockKeyhole, Hand, Sparkles, RotateCw, NotebookPen, Ruler, Layers, CheckCircle2 } from 'lucide-react';
 import { resolveLevelId } from '@smarter-academy/core/curriculum/manipulationLevels.js';
@@ -7,7 +7,7 @@ import ManipulationShell from '../ManipulationShell';
 import ManipulationStage from '../ManipulationStage';
 import ManipulationDiscovery from '../ManipulationDiscovery';
 import { useManipulation } from '../useManipulation';
-import { LabCard, PromptCard, VerdictBanner } from '../primitives/LabKit';
+import { PromptCard, VerdictBanner } from '../primitives/LabKit';
 import LabFold from '../primitives/LabFold';
 import { useLabCoach } from '../primitives/LabCoach';
 import { useLabCheckpoint } from '../primitives/LabCheckpoint';
@@ -544,7 +544,7 @@ export function discoveryOptions(lab, k) {
   ];
 }
 
-function StampPair({ pair, k }) {
+function StampPair({ pair }) {
   if (!pair) return null;
   return (
     <span className="inline-flex items-center gap-2" data-ty-formal-pair>

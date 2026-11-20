@@ -19,7 +19,7 @@ const page = await ctx.newPage();
 const bad = [];
 let n = 0;
 for (const l of index.lessons.filter((x) => !ONLY.length || ONLY.includes(x.id))) {
-  for (const [num, slug] of l.modules) {
+  for (const [, slug] of l.modules) {
     const url = `${BASE}/courses/${l.level}/${l.grade}/${l.chapter}/${l.id}/${slug}`;
     let loaded = false;
     for (let t = 0; t < 3 && !loaded; t += 1) {

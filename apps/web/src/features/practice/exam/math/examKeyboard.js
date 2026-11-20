@@ -5,7 +5,7 @@
  * on pose celui-ci à l'ouverture d'un champ et on rend l'ancien à la fermeture,
  * comme les instruments du مختبر.
  */
-export const EXAM_KEYBOARD = Object.freeze({
+const EXAM_KEYBOARD = Object.freeze({
   label: '123',
   tooltip: '123',
   rows: [

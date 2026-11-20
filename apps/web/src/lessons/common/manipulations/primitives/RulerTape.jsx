@@ -1,4 +1,3 @@
-import React from 'react';
 import { tapeLayout, restFraction } from '../logic/rulerCompare';
 
 /**
@@ -20,7 +19,6 @@ export default function RulerTape({ width, height = 66, count, rest, restIsZero,
   const top = Math.round(height * 0.3);
   const th = Math.round(height * 0.46);
   const cells = Array.from({ length: T.shown }, (_, i) => i);
-  const lastLabel = T.firstLabel + T.shown - 1;
   const fs = th >= 28 ? 14 : 12;
   const hatch = `${uid}h`;
   return (

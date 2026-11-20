@@ -22,7 +22,7 @@
 /** Sous ce seuil, un flottant est un zéro : l'erreur de Math.cos(π/2) est ~1e−16. */
 export const EPSILON = 1e-10;
 
-export const TAU = Math.PI * 2;
+const TAU = Math.PI * 2;
 
 /** Ramène à 0 ce qui n'en diffère que par l'erreur machine, et à ±1 ce qui le frôle. */
 export function clean(value) {

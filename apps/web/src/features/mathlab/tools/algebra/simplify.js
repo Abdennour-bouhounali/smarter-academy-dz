@@ -37,16 +37,15 @@ import {
   makePoly, mergeMono, monoDegree, monoKey, compareMonos, termBody, joinPieces, termPiece, polyLatex,
   isConstantPoly, polyVariables, toCoefficients, fromCoefficients, divideCoefficients,
   gcdCoefficients, trimCoefficients, contentOf, coefficientsLatex, divisors, evaluateCoefficients,
-  polyDegree,
 } from './polynomial.js';
 
 /** Les lettres qu'un élève emploie dans une expression de quatrième. `e` reste la constante. */
 export const EXPRESSION_VARIABLES = Object.freeze(['a', 'b', 'c', 'k', 'm', 'n', 'p', 't', 'x', 'y', 'z']);
 
 /** Une couleur par FAMILLE de termes semblables (vert, orange, bleu, violet…). */
-export const FAMILY_COLORS = Object.freeze(['#008443', '#F36D21', '#2563eb', '#7c3aed', '#be123c', '#0f766e', '#b45309']);
+const FAMILY_COLORS = Object.freeze(['#008443', '#F36D21', '#2563eb', '#7c3aed', '#be123c', '#0f766e', '#b45309']);
 
-export const MAX_SOURCE_LENGTH = 200;
+const MAX_SOURCE_LENGTH = 200;
 const MAX_PASSES = 10;
 
 // ── Lecture ───────────────────────────────────────────────────────────────
@@ -621,5 +620,3 @@ function restrictionOf(denominator, variable) {
   return { latex: latex || null, complete: trimCoefficients(rest).length === 1, degree };
 }
 
-/** Le degré d'un polynôme (pour les tests et la mise en page). */
-export { polyDegree };

@@ -2,7 +2,7 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Trash2, Check, X } from 'lucide-react';
 import {
-  analyzeProportionality, fourthProportional, ratioShare, scaleRatio,
+  analyzeProportionality, ratioShare,
 } from './proportion.js';
 import { fracToText } from './fraction.js';
 import { formatNumber } from './numberValue.js';

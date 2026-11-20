@@ -22,9 +22,9 @@ import * as TR from '@smarter-academy/core/arithmetic/trigonometry.js';
 
 export const KINDS = Object.freeze(['surface', 'inside', 'outside']);
 /** Les noms de l'exemple de معارف 1 : M ∈ (δ), P ∈ (β) \ (δ), Q hors de (β). */
-export const TASK_NAMES = Object.freeze({ surface: 'M', inside: 'P', outside: 'Q' });
+const TASK_NAMES = Object.freeze({ surface: 'M', inside: 'P', outside: 'Q' });
 export const PLACE_TASKS = Object.freeze(['surface', 'inside', 'outside']);
-export const CIRCLE_TASKS = Object.freeze(['diameter', 'great-circle', 'small-circle']);
+const CIRCLE_TASKS = Object.freeze(['diameter', 'great-circle', 'small-circle']);
 const O = Object.freeze([0, 0, 0]);
 const PROBE_NAMES = 'ABCDEFGH';
 
@@ -33,12 +33,12 @@ const same = (a, b) => a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
 const freezeP = (p) => Object.freeze([...p]);
 
 /** Le départ de la sonde : un nœud qui n'est ni O ni une sonde ni une réponse attendue particulière. */
-export function defaultStart(R, bound) {
+function defaultStart(R, bound) {
   return [-Math.min(bound, R), -2, 1].map((v) => clampInt(v, bound));
 }
 
 /** Le départ n'est jamais une réponse de la première tâche (M sur la كرة, P dedans, Q dehors) : on prend le premier candidat d'une autre nature. */
-export function defaultStartFor(R, bound, task) {
+function defaultStartFor(R, bound, task) {
   const cands = [defaultStart(R, bound), [1, 1, 0], [bound, bound, bound], [R, 1, 0], [1, 0, 0]];
   const ok = cands.find((c) => { const p = c.map((v) => clampInt(v, bound)); return !p.every((v) => v === 0) && reading(R, p).where !== task; });
   return ok ?? cands[0];

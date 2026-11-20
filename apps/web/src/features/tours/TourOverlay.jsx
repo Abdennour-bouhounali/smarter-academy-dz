@@ -214,7 +214,7 @@ export default function TourOverlay({ tour, onFinish, onSkip, onAbandon }) {
       {spot ? (
         <div
           aria-hidden="true"
-          className={`pointer-events-none fixed z-[95] rounded-2xl ring-2 ring-blue-500 ${motion}`}
+          className={`pointer-events-none fixed z-[95] rounded-2xl ring-2 ring-nav-accent ${motion}`}
           style={{
             top: spot.top,
             left: spot.left,
@@ -240,7 +240,7 @@ export default function TourOverlay({ tour, onFinish, onSkip, onAbandon }) {
         data-tour-card
       >
         <div className="mb-1.5 flex items-center justify-between gap-2">
-          <p className="font-inter text-[11px] font-semibold text-blue-600">
+          <p className="font-inter text-[11px] font-semibold text-nav-accent">
             {t('ui.label')} · {t('ui.progress', { current: index + 1, total: steps.length })}
           </p>
           <button
@@ -287,7 +287,7 @@ export default function TourOverlay({ tour, onFinish, onSkip, onAbandon }) {
               type="button"
               onClick={() => go(1)}
               className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 font-inter text-xs font-semibold text-white shadow-sm"
-              style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)' }}
+              style={{ background: '#3B5BDB' }}
               data-tour-next={isLast ? 'finish' : 'next'}
             >
               {isLast ? t('ui.finish') : t('ui.next')}

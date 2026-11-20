@@ -5,7 +5,7 @@
  */
 
 /** Le moins typographique U+2212 et le tiret sont lus pareil. */
-export const normMinus = (s) => String(s).replace(/−/g, '-');
+const normMinus = (s) => String(s).replace(/−/g, '-');
 
 /** Vrai si une chaîne montre l'une des signatures (le moins est normalisé). */
 export const showsAny = (sigs, s) => sigs.some((re) => re.test(String(s)) || re.test(normMinus(s)));

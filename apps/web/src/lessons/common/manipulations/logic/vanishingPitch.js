@@ -27,7 +27,7 @@ const gcd = (a, b) => { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b,
 const lcm = (a, b) => (a / gcd(a, b)) * b;
 
 /** Lit le produit : facteurs, zéros exacts, graduation, carré ou non. */
-export function parseProduct(expr) {
+function parseProduct(expr) {
   const F = Lin.factors(expr);
   if (F.everyX) throw new Error(`vanishing-pitch: un facteur nul rend tout x solution (« ${expr} »)`);
   if (F.roots.length === 0) throw new Error(`vanishing-pitch: aucun facteur ne s'annule (« ${expr} »)`);
@@ -127,13 +127,13 @@ export function numText(p, decimal = false) {
   return t.replace('-', '−');
 }
 /** Le même en LaTeX, entre parenthèses s'il est négatif (pour un produit). */
-export function numTex(p, paren = false, decimal = false) {
+function numTex(p, paren = false, decimal = false) {
   const d = decimal ? Lin.fracDecimal(p, 3) : null;
   const t = d != null ? d.replace(',', '{,}') : Lin.fracLatex(p);
   return paren && p.n < 0 ? `(${t})` : t;
 }
 /** a·x + b en LaTeX, décimaux courts à virgule : « x - 5 », « 3x + 2{,}7 », « -2x + 1 ». */
-export function linTex(P, decimal = false) {
+function linTex(P, decimal = false) {
   const parts = [];
   if (!Lin.isZero(P.a)) {
     const coef = Lin.eq(P.a, 1) ? '' : Lin.eq(P.a, -1) ? '-' : numTex(P.a, false, decimal);

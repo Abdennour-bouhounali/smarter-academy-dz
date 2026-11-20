@@ -167,7 +167,6 @@ export default function TriangleStage({ triangle, valueMode, highlight, onTriang
     );
   }
 
-  const on = (ratio) => (highlight === ratio ? ' sa-ml-trig__side--on' : highlight ? ' sa-ml-trig__side--off' : '');
   // Un côté appartient à DEUX rapports : opposé est dans sin et dans tan.
   const oppositeClass = highlight === 'sin' || highlight === 'tan' ? ' sa-ml-trig__side--on' : highlight ? ' sa-ml-trig__side--off' : '';
   const adjacentClass = highlight === 'cos' || highlight === 'tan' ? ' sa-ml-trig__side--on' : highlight ? ' sa-ml-trig__side--off' : '';

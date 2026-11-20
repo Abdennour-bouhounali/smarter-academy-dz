@@ -17,7 +17,7 @@
  * document (logicState.js ne garde que des identifiants).
  */
 
-export const isInteger = (n) => Number.isInteger(n);
+const isInteger = (n) => Number.isInteger(n);
 export const isEven = (n) => Number.isInteger(n) && Math.abs(n % 2) === 0;
 export const isOdd = (n) => Number.isInteger(n) && Math.abs(n % 2) === 1;
 
@@ -92,9 +92,6 @@ export function domainStatus(value, domain) {
 
   return 'in';
 }
-
-/** La valeur appartient-elle à l'ensemble déclaré (et peut-on la juger) ? */
-export const belongsToDomain = (value, domain) => domainStatus(value, domain) === 'in';
 
 /**
  * Le domaine tel qu'on l'ÉCRIT à côté de l'énoncé : « n ∈ ℕ* », « x ∈ ℝ ».
@@ -371,7 +368,6 @@ export const DEFAULT_QUANTIFIER_ID = 'naturalPositive';
  * écritures équivalentes acceptées à la place d'une étape (§36).
  */
 
-const K = (proof, step) => `tools.logic.proof.proofs.${proof}.${step}`;
 
 export const PROOFS = Object.freeze([
   {
@@ -625,9 +621,6 @@ export const INDUCTION_CASES = Object.freeze([
   },
 ]);
 
-/** La clé i18n du texte d'une étape, d'une alternative ou d'un distracteur. */
-export const stepTextKey = (proofId, stepId) => `${K(proofId, stepId)}`;
-export const distractorWhyKey = (proofId, stepId) => `tools.logic.proof.proofs.${proofId}.why.${stepId}`;
 
 /* ── §33 — Fallacy Detector ────────────────────────────────────────────── */
 

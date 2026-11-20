@@ -93,7 +93,7 @@ export default function SchoolReports() {
         <fieldset className="grid gap-2 md:grid-cols-5">
           <legend className="sr-only">{t('reports.type')}</legend>
           {TYPES.map((k) => (
-            <label key={k} className={`cursor-pointer rounded-xl border p-3 font-inter text-sm ${type === k ? 'border-indigo-500 bg-indigo-50' : 'border-slate-200 hover:bg-slate-50'}`}>
+            <label key={k} className={`cursor-pointer rounded-xl border p-3 font-inter text-sm ${type === k ? 'border-nav-accent bg-nav-accent-soft' : 'border-slate-200 hover:bg-slate-50'}`}>
               <input type="radio" name="report-type" value={k} checked={type === k} onChange={() => setType(k)} className="sr-only" />
               <span className="block font-semibold text-slate-900">{t(`reports.types.${k}`)}</span>
               <span className="text-xs text-slate-500">{t(`reports.typeHints.${k}`)}</span>
@@ -129,7 +129,7 @@ export default function SchoolReports() {
         <ul className="space-y-2" data-report-list>
           {(reports ?? []).map((r) => (
             <li key={r.id} className={`${card} flex flex-wrap items-center gap-3 py-3`}>
-              <FileText size={18} className="text-indigo-600" aria-hidden="true" />
+              <FileText size={18} className="text-nav-accent" aria-hidden="true" />
               <div className="min-w-0 flex-1">
                 <p className="font-inter font-semibold text-slate-900">{t(`reports.types.${r.type}`)} — {r.title}</p>
                 <p className="font-inter text-xs text-slate-500">

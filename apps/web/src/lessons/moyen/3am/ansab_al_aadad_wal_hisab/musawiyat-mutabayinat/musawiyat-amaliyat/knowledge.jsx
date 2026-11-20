@@ -1,4 +1,3 @@
-import React from 'react';
 import MathText from '../../../../../common/components/MathText';
 import { KNOWLEDGE, METHOD, GUIDE } from './content/textbook';
 
@@ -11,7 +10,6 @@ export { KNOWLEDGE_GRAPH } from './knowledgeGraph';
  * (`priorKnowledge`), mesurés par « أستعدّ », jamais des items ici.
  */
 const { add, times, both, zero } = KNOWLEDGE;
-const L = (s) => <p className="text-center" dir="ltr"><MathText>{s}</MathText></p>;
 
 /** `memo` : la fiche de « 🔑 للتذكّر » — ce qui CHANGE en `R(…)` (rouge). */
 const R = (x) => `\\textcolor{#e11d48}{${x}}`;

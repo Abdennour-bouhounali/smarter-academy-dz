@@ -364,7 +364,7 @@ function Forge({ lab, setLab, k, m, theme, solved, blocking = false }) {
 
 /* ════════════════════════════ 1. LES SOMMETS : tourner, appliquer la rotation ════════════════════════════ */
 
-function ForgeStage({ lab, k, S, c, uid, theme, reduce, narrow, sceneRef, st, alpha, fromDeg, ended }) {
+function ForgeStage({ lab, k, S, c, uid, theme, reduce, narrow, sceneRef, st, alpha, fromDeg }) {
   const rr = S * 0.34;
   const locked = L.canSetAlpha(lab) !== true;
   const P = L.vertexDegrees(lab).map((d) => at(c, rr, d));
@@ -550,7 +550,7 @@ function RadiusStage({ lab, k, S, c, scale, st, h, live }) {
   );
 }
 
-function RadiusControls({ lab, setLab, k, narrow, st, h }) {
+function RadiusControls({ setLab, k, narrow, st, h }) {
   const [txt, setTxt] = useState('');
   const [bad, setBad] = useState(false);
   const nudge = (d) => st.set(h + d);

@@ -40,14 +40,14 @@ export default function SignalCard({ signal, classGroupId, onOpenPoint, onAct, c
   const unnamed = t('common.unnamedStudent');
 
   return (
-    <article className={`glass-card border-s-4 ${TONE[signal.type] ?? 'border-s-slate-300'} p-4`} data-signal={signal.key} data-signal-type={signal.type}>
+    <article className={`rounded-2xl border border-nav-line bg-white border-s-4 ${TONE[signal.type] ?? 'border-s-slate-300'} p-4`} data-signal={signal.key} data-signal-type={signal.type}>
       <div className="flex items-start gap-3">
         <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-50 text-slate-600" aria-hidden="true"><Icon size={16} /></span>
         <div className="min-w-0 flex-1 space-y-1.5">
           <h3 className="font-space text-sm font-bold text-slate-900">
             {t(`attention.types.${signal.type}.title`, { point: point?.title ?? '' })}
           </h3>
-          {point?.lessonTitle && <p className="text-[11px] text-teal-800">{point.lessonTitle}</p>}
+          {point?.lessonTitle && <p className="text-[11px] text-nav-accent">{point.lessonTitle}</p>}
           <p className="text-xs text-slate-600" data-signal-why>
             {t(`attention.types.${signal.type}.why`, { ...why, from: status(why.from), to: status(why.to) })}
             {signal.type === 'no_recent_activity' && why.neverStarted > 0 && ` ${t('attention.neverStartedCount', { count: why.neverStarted })}`}
@@ -61,7 +61,7 @@ export default function SignalCard({ signal, classGroupId, onOpenPoint, onAct, c
               <li key={s.id}>
                 <Link
                   to={`/enseignant/classes/${classGroupId}/eleves/${s.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-700 hover:border-teal-400"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-[11px] text-slate-700 hover:border-nav-accent"
                   title={s.recent ? t('attention.studentFacts', { failures: s.recent.failures ?? 0, answered: s.recent.answered ?? 0 }) : undefined}
                   data-signal-student={s.id}
                 >
@@ -90,12 +90,12 @@ export default function SignalCard({ signal, classGroupId, onOpenPoint, onAct, c
 
       <div className="mt-3 flex flex-wrap justify-end gap-2">
         {point && onOpenPoint && (
-          <button type="button" onClick={() => onOpenPoint(point.code)} className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold text-teal-800 hover:bg-teal-50" data-signal-open-point>
+          <button type="button" onClick={() => onOpenPoint(point.code)} className="inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-semibold text-nav-accent hover:bg-nav-page" data-signal-open-point>
             <Target size={13} /> {t('attention.openPoint')}
           </button>
         )}
         {onAct && (
-          <button type="button" onClick={() => onAct(signal)} className="inline-flex items-center gap-1 rounded-lg bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-800" data-signal-act>
+          <button type="button" onClick={() => onAct(signal)} className="inline-flex items-center gap-1 rounded-lg bg-nav-accent px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#3350c4]" data-signal-act>
             <HandHelping size={13} /> {t('attention.act')}
           </button>
         )}

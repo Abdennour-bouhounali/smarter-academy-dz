@@ -19,13 +19,13 @@ export function Toggle({ checked, onChange, label, hint, disabled, name }) {
         onClick={() => onChange(!checked)}
         disabled={disabled}
         data-setting={name}
-        className={`relative mt-0.5 flex h-7 w-12 shrink-0 items-center rounded-full px-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 disabled:opacity-50 ${checked ? 'justify-end bg-teal-600' : 'justify-start bg-slate-300'}`}
+        className={`relative mt-0.5 flex h-7 w-12 shrink-0 items-center rounded-full px-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-nav-accent focus-visible:ring-offset-2 disabled:opacity-50 ${checked ? 'justify-end bg-nav-accent' : 'justify-start bg-slate-300'}`}
       >
         <span className="inline-block h-5 w-5 rounded-full bg-white shadow" />
         <span className="sr-only">{checked ? 'ON' : 'OFF'}</span>
       </button>
       <div className="min-w-0">
-        <p className="font-inter text-sm font-semibold text-slate-900">{label} <span className={`ms-1 rounded px-1.5 py-0.5 font-mono-jetbrains text-[10px] font-bold ${checked ? 'bg-teal-50 text-teal-700' : 'bg-slate-100 text-slate-500'}`} aria-hidden="true">{checked ? 'ON' : 'OFF'}</span></p>
+        <p className="font-inter text-sm font-semibold text-slate-900">{label} <span className={`ms-1 rounded px-1.5 py-0.5 font-mono-jetbrains text-[10px] font-bold ${checked ? 'bg-nav-page text-nav-accent' : 'bg-slate-100 text-slate-500'}`} aria-hidden="true">{checked ? 'ON' : 'OFF'}</span></p>
         {hint && <p className="mt-0.5 font-inter text-xs text-slate-500">{hint}</p>}
       </div>
     </div>
@@ -75,8 +75,7 @@ export default function ClassChallengeSettings({ classGroupId, initial, options,
   const toggleLesson = (code) => set('lessonCodes')(s.lessonCodes.includes(code) ? s.lessonCodes.filter((c) => c !== code) : [...s.lessonCodes, code]);
 
   return (
-    <form onSubmit={save} className="glass-card p-5" data-challenge-settings>
-      <h3 className="font-space text-base font-bold text-slate-900">{t('teacher.settings.title')}</h3>
+    <form onSubmit={save} className="max-w-3xl" data-challenge-settings>
       {!options.globallyEnabled && <p className="mt-2 rounded-xl bg-amber-50 p-2 text-xs text-amber-900">{t('teacher.settings.globallyDisabled')}</p>}
 
       <div className="mt-2 divide-y divide-slate-100">
@@ -111,18 +110,23 @@ export default function ClassChallengeSettings({ classGroupId, initial, options,
         </fieldset>
         <fieldset className="sm:col-span-2">
           <legend className="mb-1 text-sm font-semibold text-slate-800">{t('teacher.settings.scope')}</legend>
-          <p className="mb-2 text-xs text-slate-500">{s.lessonCodes.length === 0 ? t('teacher.settings.scopeAll') : ''}</p>
-          <div className="flex flex-wrap gap-2">
+          {/* 74 lessons as chips made the form 4,000 px tall: the choice is a short box that scrolls, closed while « all lessons ». */}
+          <details className="rounded-xl border border-nav-line" open={s.lessonCodes.length > 0} data-challenge-scope>
+            <summary className="flex min-h-[44px] cursor-pointer items-center px-3 text-sm font-bold text-nav-accent">
+              {s.lessonCodes.length === 0 ? t('teacher.settings.scopeAll') : <span dir="ltr">{s.lessonCodes.length}{'\u00A0/\u00A0'}{options.lessons.length}</span>}
+            </summary>
+          <div className="flex max-h-56 flex-wrap gap-2 overflow-y-auto border-t border-nav-line p-3">
             {options.lessons.map((l) => {
               const on = s.lessonCodes.includes(l.code);
               return (
                 <button key={l.code} type="button" aria-pressed={on} onClick={() => toggleLesson(l.code)}
-                  className={`min-h-[36px] rounded-full border px-3 text-xs font-semibold ${on ? 'border-teal-600 bg-teal-50 text-teal-800' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-400'}`}>
+                  className={`min-h-[36px] rounded-full border px-3 text-xs font-semibold ${on ? 'border-nav-accent bg-nav-page text-nav-accent' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-400'}`}>
                   {on ? '✓ ' : ''}<MathLabel>{l.title}</MathLabel>
                 </button>
               );
             })}
           </div>
+          </details>
         </fieldset>
       </div>
 

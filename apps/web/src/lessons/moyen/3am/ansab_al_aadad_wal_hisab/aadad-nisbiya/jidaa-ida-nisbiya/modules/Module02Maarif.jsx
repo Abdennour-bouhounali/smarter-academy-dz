@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ContentModule, TapQuestion, NumericQuestion, KnowledgeBrick } from '../../../../../../common/kit';
 import { KnowledgeSnapshot } from '../../../../../../common/knowledge';
@@ -27,7 +27,7 @@ const ROLE_OPTIONS = ['علامة طرح', 'إشارة عدد سالب', 'معا
 export default function Module02Maarif() {
   const [trials, setTrials] = useState([]);
   const [q, setQ] = useState({});
-  const [roles, setRoles] = useState({});
+  const [, setRoles] = useState({});
   const answered = (k) => () => setQ((s) => ({ ...s, [k]: true }));
   const record = (e) => setTrials((list) => [...list, e]);
   const tried = (a) => trials.some((t) => t.kind === 'square' && t.a === a);

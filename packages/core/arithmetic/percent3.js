@@ -14,8 +14,7 @@
  */
 import * as Lin from './linear.js';
 
-export const PACKETS = 100;
-export const DIRS = Object.freeze(['up', 'down']);
+const DIRS = Object.freeze(['up', 'down']);
 
 const num = (v) => (typeof v === 'object' ? v : Lin.parseNumber(v));
 const hundred = Lin.frac(100);

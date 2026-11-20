@@ -1,4 +1,3 @@
-import React from 'react';
 
 /**
  * La vignette de la carte d'activité (décor, `aria-hidden`) : la caisse de la classe — une tirelire

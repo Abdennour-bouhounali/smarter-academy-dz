@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useReducedMotion } from 'framer-motion';
 import { useLessonViewport } from '../../knowledge/useLessonViewport';
@@ -636,7 +636,7 @@ function Trips({ geo, lab, drag, reduce, honk }) {
   const from = L.at(lab, o.from);
   const legLabels = (a, v, color) => {
     const corner = [a[0] + v[0], a[1]];
-    const [ax, ay] = P(a); const [cx, cy] = P(corner); const [bx, by] = P([corner[0], corner[1] + v[1]]);
+    const [ax, ay] = P(a); const [cx, cy] = P(corner); const [, by] = P([corner[0], corner[1] + v[1]]);
     return (
       <g style={tx} fontSize={Math.max(10, fs - 2)} fontWeight={900} fill={color} stroke="#FFFFFF" strokeWidth={3} paintOrder="stroke" data-cs-legs>
         {v[0] !== 0 && <text x={(ax + cx) / 2} y={ay - 5} textAnchor="middle">{signed(v[0])}</text>}
