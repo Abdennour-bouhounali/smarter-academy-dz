@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { deal, euclid, fill, gcd } from '../../../../../../common/gameworld/missions/lots';
-import { BEM_2021 as S } from './bem2021';
+import { BEM_2022 as S } from './bem2022';
 
-describe('mission 1 — BEM 2021, the identical lots: every number of the situation is computed', () => {
+describe('mission 1 — BEM 2022, the identical lots: every number of the situation is computed', () => {
   it('the paper’s stock: 1188 and 528 crates — 132 lots of 9 and 4, by two divisions', () => {
     expect(S.stock).toEqual({ a: 1188, b: 528 });
     expect(gcd(S.stock.a, S.stock.b)).toBe(132);

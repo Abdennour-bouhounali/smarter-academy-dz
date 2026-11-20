@@ -17,6 +17,38 @@ THEMES.oasis = {
   trunk: 0x8a6239,
   flower: [0xffffff, 0xffd27a],
 };
+/**
+ * A CRATE, drawn in code (no image): the produce shows between three wooden slats and two corner posts. One small canvas
+ * per kind of produce, used as the map of every crate of that kind — on the quay, on a lot's pallet, on the bands.
+ */
+function crateMaterial(color) {
+  const c = document.createElement('canvas');
+  c.width = 64;
+  c.height = 64;
+  const g = c.getContext('2d');
+  g.fillStyle = `#${new THREE.Color(color).getHexString()}`;
+  g.fillRect(0, 0, 64, 64);
+  // the produce: rounder, darker spots
+  g.fillStyle = 'rgba(0,0,0,0.16)';
+  for (let i = 0; i < 14; i += 1) {
+    g.beginPath();
+    g.arc(6 + ((i * 23) % 54), 8 + ((i * 37) % 50), 4, 0, 6.3);
+    g.fill();
+  }
+  // the wood
+  g.fillStyle = '#b5874a';
+  for (const y of [4, 27, 50]) g.fillRect(0, y, 64, 10);
+  g.fillRect(0, 0, 7, 64);
+  g.fillRect(57, 0, 7, 64);
+  g.strokeStyle = 'rgba(70,44,16,0.75)';
+  g.lineWidth = 2;
+  for (const y of [4, 27, 50]) g.strokeRect(0, y, 64, 10);
+  g.strokeRect(1, 1, 62, 62);
+  const map = new THREE.CanvasTexture(c);
+  map.colorSpace = THREE.SRGBColorSpace;
+  return new THREE.MeshStandardMaterial({ map, roughness: 0.85 });
+}
+
 const DEPOT_AT = { x: -340, z: 280 };
 const PAD = { w: 14.5, d: 8.2, z: 0.4 };
 const easeOut = (t) => 1 - (1 - t) ** 3;
@@ -227,7 +259,9 @@ export class Depot {
     this.clearSim();
     this.goodsMat.color.set(order.good.color);
     this.palletLabel.userData.setText(String(order.n));
-    this.pile.scale.y = 1;
+    this.palletLabel.visible = true;
+    this.pile.material = this.goodsMat;
+    this.pile.count = 60;
     if (this.second) this.second.group.visible = false;
   }
 
@@ -236,7 +270,7 @@ export class Depot {
       this.group.remove(it);
       it.traverse?.((o) => {
         if (o.geometry) o.geometry.dispose();
-        if (o.material && o.material !== this.goodsMat) o.material.dispose();
+        if (o.material && o.material !== this.goodsMat && !this.kept?.has(o.material)) o.material.dispose();
       });
     }
     this.items = [];
@@ -244,6 +278,9 @@ export class Depot {
     this.mat.visible = false;
     this.leftLabel.visible = false;
     this.counter.visible = false;
+    this.restTags?.forEach((s) => {
+      s.visible = false;
+    });
   }
 
   container(size, color, trucks, fill = 1) {
@@ -408,7 +445,7 @@ export class Depot {
         for (let i = 0; i < n; i += 1) {
           const cube = new THREE.Mesh(
             new THREE.BoxGeometry(c * 0.86, c * 0.7, c * 0.86),
-            std(i < lot.a ? col.a : col.b),
+            this.crates?.[i < lot.a ? 'a' : 'b'] ?? std(i < lot.a ? col.a : col.b),
           );
           cube.position.set(
             ((i % side) - (side - 1) / 2) * c,
@@ -422,7 +459,10 @@ export class Depot {
         // two bands: their lengths are the two counts (against the fullest lot of the scene)
         ['a', 'b'].forEach((k, i) => {
           const len = Math.max(0.06, (size * 0.9 * lot[k]) / most);
-          const band = new THREE.Mesh(new THREE.BoxGeometry(len, size * 0.34, size * 0.38), std(col[k]));
+          const band = new THREE.Mesh(
+            new THREE.BoxGeometry(len, size * 0.34, size * 0.38),
+            this.crates?.[k] ?? std(col[k]),
+          );
           band.position.set(-(size * 0.9 - len) / 2, 0.14 + size * 0.17, (i ? 1 : -1) * size * 0.22);
           band.castShadow = true;
           g.add(band);
@@ -470,7 +510,7 @@ export class Depot {
       this.counter.position.set(home.x, size * 0.6 + 1.4, home.z);
       onStep(k + 1);
     }
-    if (rest) this.stockLabel(rest.a, rest.b);
+    if (rest) this.stockLabel(rest.a, rest.b, null, true);
     await game.wait(game.instantSim ? 0.001 : 0.3);
     this.counter.visible = false;
     for (let k = 0; k < empty; k += 1) {
@@ -483,7 +523,11 @@ export class Depot {
       this.items.push(frame);
     }
     const stay = left.a + left.b;
-    if (stay > 0) {
+    if (stay > 0 && rest) {
+      // the crates the lots did not take are still on their piles, counted in red: nothing is carried to a mat
+      game.audio.play('fail');
+      game.shake = 0.12;
+    } else if (stay > 0) {
       this.mat.visible = true;
       const show = Math.min(stay, 36);
       const showA = stay <= 36 ? left.a : Math.round((36 * left.a) / stay);
@@ -584,16 +628,17 @@ export class Depot {
    */
   setStock({ a, b }, kinds) {
     this.clearSim();
-    this.goodsMat.color.set(kinds.a.color);
     if (!this.second) {
+      // crates that look like crates: the same two materials for the quay and for every lot (never disposed)
+      this.crates = { a: crateMaterial(kinds.a.color), b: crateMaterial(kinds.b.color) };
+      this.kept = new Set([this.crates.a, this.crates.b]);
       const g = new THREE.Group();
       g.position.set(this.pallet.position.x, 0, this.pallet.position.z + 4.1);
       const base = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.3, 3), std(0x8a6239));
       base.position.y = 0.15;
       base.castShadow = true;
       g.add(base);
-      this.secondMat = std(kinds.b.color);
-      const pile = new THREE.InstancedMesh(this.pile.geometry, this.secondMat, 60);
+      const pile = new THREE.InstancedMesh(this.pile.geometry, this.crates.b, 60);
       pile.castShadow = true;
       const m = new THREE.Matrix4();
       for (let k = 0; k < 60; k += 1) {
@@ -606,8 +651,16 @@ export class Depot {
       g.add(label);
       this.group.add(g);
       this.second = { group: g, pile, label };
+      // what the lots did not take STAYS on its pile, counted in red (owner, 2026-11-20: no separate mat)
+      this.restTags = [this.pallet, g].map((parent) => {
+        const s = textSprite('0', { h: 1.5, bg: 'rgba(190,40,40,0.95)', stroke: null, color: '#ffffff' });
+        s.position.set(1.1, 3.5, 0); // a little toward the floor: the mission's notebook stands on that side
+        s.visible = false;
+        parent.add(s);
+        return s;
+      });
     }
-    this.secondMat.color.set(kinds.b.color);
+    this.pile.material = this.crates.a;
     this.second.group.visible = true;
     this.full = { a: 1, b: 1 };
     this.stockLabel(a, b);
@@ -617,13 +670,25 @@ export class Depot {
    * What stands on the quay NOW: each pile's count (« ؟ » while the robot has not counted that stock — `null`), and
    * each pile as tall as what is left of it. `full` (the stocks whole) is given when a dealing starts.
    */
-  stockLabel(a, b, full = null) {
+  stockLabel(a, b, full = null, stays = false) {
     if (full) this.full = full;
-    this.palletLabel.userData.setText(`${a ?? '؟'}`);
-    this.second?.label.userData.setText(`${b ?? '؟'}`);
-    const tall = (n, whole) => (n == null ? 1 : Math.max(0.03, n / Math.max(1, whole)));
-    this.pile.scale.y = tall(a, this.full?.a);
-    if (this.second) this.second.pile.scale.y = tall(b, this.full?.b);
+    // a pile of 60 crates stands for the whole stock; 20 crates or fewer are shown one for one — he can count them
+    const crates = (n, whole) =>
+      n == null || n >= whole ? 60 : n <= 20 ? Math.max(0, n) : Math.max(21, Math.round((60 * n) / Math.max(1, whole)));
+    [
+      [this.pile, this.palletLabel, a, this.full?.a],
+      [this.second?.pile, this.second?.label, b, this.full?.b],
+    ].forEach(([pile, label, n, whole], i) => {
+      if (!pile) return;
+      pile.count = crates(n, whole);
+      const red = stays && n > 0;
+      label.visible = !red;
+      label.userData.setText(`${n ?? '؟'}`);
+      if (this.restTags) {
+        this.restTags[i].visible = red;
+        if (red) this.restTags[i].userData.setText(`بقي ${n}`);
+      }
+    });
   }
 
   /** The order is right: the containers go on the truck, the truck leaves, an empty one comes back. */

@@ -163,12 +163,12 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
     if (d.outcome === 'left') {
       setFails((f) => [...f.filter((x) => x.n !== n), { n, left: d.left }]);
       setLit((s) => ({ ...s, all: 'red' }));
-      setFact(`${counted(n, sit.lot.forms)}: بقي على البساط الأحمر ${leftOf(d.left, sit.kinds)}.`);
+      setFact(`${counted(n, sit.lot.forms)}: بقي على الرصيف ${leftOf(d.left, sit.kinds)}.`);
     } else {
       if (where === 'free') setWorked((w) => (w.includes(n) ? w : [...w, n].slice(-2)));
       setLit((s) => ({ ...s, all: 'on', same: 'on' }));
       setFact(
-        `${counted(n, sit.lot.forms)} متماثلة، ولا صندوق على البساط: في كلّ واحدة ${d.per.a} من ${sit.kinds.a.name} و ${d.per.b} من ${sit.kinds.b.name}.`,
+        `${counted(n, sit.lot.forms)} متماثلة، ولا صندوق باقٍ على الرصيف: في كلّ واحدة ${d.per.a} من ${sit.kinds.a.name} و ${d.per.b} من ${sit.kinds.b.name}.`,
       );
     }
     return d;
@@ -461,7 +461,7 @@ export default function MissionPlayer({ situation: sit, world: depot, onClose })
                       );
                     else if (f.outcome === 'left')
                       setFact(
-                        `${g} × ${per.a} = ${g * per.a} و ${g} × ${per.b} = ${g * per.b}: بقي على البساط ${f.left.a} و${f.left.b}.`,
+                        `${g} × ${per.a} = ${g * per.a} و ${g} × ${per.b} = ${g * per.b}: بقي على الرصيف ${f.left.a} و${f.left.b}.`,
                       );
                     else {
                       write([

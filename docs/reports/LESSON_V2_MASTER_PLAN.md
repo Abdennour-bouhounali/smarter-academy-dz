@@ -659,7 +659,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
 
   23. [~] **The integration lesson `wadiya-idmajiya-aadad` — step 1 of its plan: mission 1 as a playable PROTOTYPE
      (2026-11-20). STOP: the owner plays it** (`INTEGRATION_LESSON_PLAN.md` §6) — `http://localhost:5173/__qa/mission-1`.
-     BEM 2021, the identical lots, in five stations: the story without its numbers (he sends the robot to count), his
+     BEM 2022 (first written here as 2021 — a misreading of the annals' columns), the identical lots, in five stations: the story without its numbers (he sends the robot to count), his
      model of the situation rehearsed by the world on 12 and 8 crates (each missing or misread condition shows in what
      is built), the two goal sentences and their order, a bridge per step (the key of the unit, the divisions, then
      the world packs the 1188 and 528 crates in the lots he computed), the seal with the four habits and the paper as

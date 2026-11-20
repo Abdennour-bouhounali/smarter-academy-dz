@@ -22,7 +22,7 @@ describe('the scene « lots »: every act is a line of numbers', () => {
     expect(deal(264, REAL).left).toEqual({ a: 132, b: 0 });
   });
 
-  it('BEM 2021: the carrots laid twice against the potatoes leave 132 — and every number of lots that works splits them', () => {
+  it('BEM 2022: the carrots laid twice against the potatoes leave 132 — and every number of lots that works splits them', () => {
     expect(euclid(REAL.a, REAL.b)).toEqual([
       { a: 1188, b: 528, q: 2, r: 132 },
       { a: 528, b: 132, q: 4, r: 0 },

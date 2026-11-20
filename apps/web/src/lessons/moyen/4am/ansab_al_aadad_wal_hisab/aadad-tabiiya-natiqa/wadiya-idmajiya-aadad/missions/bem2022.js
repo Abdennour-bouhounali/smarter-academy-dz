@@ -1,5 +1,5 @@
 /**
- * MISSION 1 of « أدمج تعلّماتي » (unit 1) — the situation of BEM 2021, first part: the identical lots.
+ * MISSION 1 of « أدمج تعلّماتي » (unit 1) — the situation of BEM 2022, first part: the identical lots.
  * DATA only (`docs/reports/INTEGRATION_LESSON_PLAN.md` §8): the exam text as printed, cut into its PHRASES (each one
  * lights when the student's act has produced its line of numbers), the two stocks, the words of the scene, and the
  * names of the unit's keys offered for the last sentence of his copy. The player
@@ -8,10 +8,10 @@
 const A = 1188;
 const B = 528;
 
-export const BEM_2021 = {
-  id: 'bem-2021-lots',
+export const BEM_2022 = {
+  id: 'bem-2022-lots',
   title: 'المهمّة 1',
-  session: 'شهادة التعليم المتوسط — دورة 2021',
+  session: 'شهادة التعليم المتوسط — دورة 2022',
   scene: 'lots',
   stock: { a: A, b: B },
   kinds: {

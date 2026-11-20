@@ -9,14 +9,14 @@
 import DivisorIsles from '../../lessons/common/gameworld/divisorIsles/DivisorIsles';
 import { lesson } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/world';
 import { LESSON_CONFIG } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/lesson.config';
-import { BEM_2021 } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/missions/bem2021';
+import { BEM_2022 } from '../../lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/wadiya-idmajiya-aadad/missions/bem2022';
 
 const CONFIG = { ...LESSON_CONFIG, id: 'qa-mission-1' };
 
 export default function MissionPrototype() {
   // said BEFORE the world is built (during render) and never taken back: in dev React builds the world twice, and an
   // effect's cleanup here would run between the two. The world starts a mission only on a `/__qa/` address.
-  if (typeof window !== 'undefined') window.__qaMission = BEM_2021;
+  if (typeof window !== 'undefined') window.__qaMission = BEM_2022;
   return (
     <DivisorIsles lesson={lesson} config={CONFIG} basePath="/__qa/mission-1" exitTo="/" completedModules={[]} preview />
   );

@@ -9,7 +9,7 @@ farmer's two stocks stand on the quay; whatever the student decides, the depot p
 floor, each crate of a lot drawn while lots are few (a lot that differs is SEEN), what was not packed stays on the red
 mat in its two colours, and the right lots leave on the truck (`divisorIsles/Depot.js › runLots`, `Game.js ›
 startMission / missionRun`; the screen over the scene: `gameworld/missions/MissionPlayer.jsx`; what is true:
-`missions/lots.js`, tested; the situation as data: `…/wadiya-idmajiya-aadad/missions/bem2021.js`, tested).
+`missions/lots.js`, tested; the situation as data: `…/wadiya-idmajiya-aadad/missions/bem2022.js`, tested).
 What the prototype is NOT yet: it borrows the pilot lesson's CONTENT to build the world (the integration lesson has
 no pack), so the top bar shows that lesson's first island and a teacher's-preview banner;
 a condition is placed by a tap, not dragged; no hearts, no coins, no save; « change the numbers and replay » is
@@ -23,6 +23,12 @@ exams. The three exercises come from the BEM annals when they exist. **This less
 Fable** (owner, 2026-11-19), not delegated to opus agents.
 
 ## 1. What the 19 BEM papers ask (2007–2025)
+
+> **CORRECTED 2026-11-20 (the owner: « mission 1 is not from the BEM 2021, check again »).** The annals print two
+> columns a page, read right column first; a session's header stands where its first exercise starts, so the
+> situation that closes it is often at the top of the NEXT column. Read again on pages 5–6: **2019 is the swimming
+> pool, 2020 the trees, 2021 the painted room, 2022 the crates** — the four rows below were shifted by one year and are
+> now right. The rows from 2007 to 2018 and from 2023 on were NOT re-read: check a session on the page before quoting it.
 
 Source: `docs/official-BREVET-exams/` (the annals and their solutions), every paper read on 2026-11-19. The situation is always
 the last exercise, « الجزء الثاني », worth 8 of 20 points: a story with a document (a plan, a table, a list of offers) and two to
@@ -42,10 +48,10 @@ five linked questions.
 | 2016 | a square plot of 324 m² shared by two siblings: areas in `x`, one area double the other, graph | plot |
 | 2017 | a plot of 1000 m² whose width is two fifths of its length: dimensions, two areas in `x`, equal areas, graph | plot |
 | 2018 | two wages in a toy factory (fixed part plus a part per toy): expressions, lines, a system, when one is larger | offers |
-| 2019 | **trees around a 60 m × 42 m plot, equal and largest spacing, one at each corner; then a budget: the price a tree cannot exceed** | numbers |
-| 2020 | a swimming pool, per session or with a subscription: sessions for a sum, graph, the better tariff | offers |
-| 2021 | **1188 crates of potatoes and 528 of carrots in identical lots: the largest number of lots, the content of each**; then a warehouse corridor (Thales) | numbers, plot |
-| 2022 | painting a room 8 × 5 × 3 with a door and windows: area, buckets, labour, the price a bucket cannot exceed | plot |
+| 2019 | a swimming pool, per session or with a subscription: sessions for a sum, graph, the better tariff | offers |
+| 2020 | **trees around a 60 m × 42 m plot, equal and largest spacing, one at each corner; then a budget: the price a tree cannot exceed** | numbers |
+| 2021 | painting a room 8 × 5 × 3 with a door and windows: area, buckets, labour, the price a bucket cannot exceed | plot |
+| 2022 | **1188 crates of potatoes and 528 of carrots in identical lots: the largest number of lots, the content of each**; then a warehouse corridor (Thales) | numbers, plot |
 | 2023 | a kindergarten's floor: a system for two prices per m², areas, 20 % of costs, profit or loss of the contractor | plot |
 | 2024 | a bookshop, three offers to rent books: table, three functions, graph, when the second is the best | offers |
 | 2025 | a commemorative race on a figure, three categories running different paths (statement read in part) | plot |
@@ -80,8 +86,8 @@ until only the exam paper is left.
 
 For unit 1 (owner's choice: real BEM texts when they exist, labelled with their session; « DA » is shown as « دج »):
 
-- mission 1 — BEM 2021, first part (the identical lots);
-- mission 2 — BEM 2019 (the trees, then the budget);
+- mission 1 — BEM 2022, first part (the identical lots);
+- mission 2 — BEM 2020 (the trees, then the budget);
 - mission 3 — an exercise of the lesson's bank the student has not seen, served unchanged in exam form.
 
 ## 3. The stations of a mission
@@ -153,7 +159,7 @@ a new scene is added only when a family of §1 needs it.
 - Mission 3 keeps the full exam text: the reading load stays.
 - The annals hold no official marking scale: the marks of the « classmate's copy » episode are the platform's own until the
   owner provides official ones.
-- BEM 2019 ends with a percentage and a budget limit taught in other chapters. It can be solved by arithmetic; a teacher
+- BEM 2020 ends with a percentage and a budget limit taught in other chapters. It can be solved by arithmetic; a teacher
   should confirm it fits the week of the lesson.
 - Not verified: that every story exercise of the bank (22 of the 50 of `wadiya-idmajiya-aadad`) fits one of the three scenes.
 
@@ -163,7 +169,7 @@ a new scene is added only when a family of §1 needs it.
 > **Built 2026-11-20** (`http://localhost:5173/__qa/mission-1`, dev builds only): `missions/MissionPlayer.jsx` (the
 > paper, one question, one gesture, the notebook), `missions/lots.js` (the lines, tested), `divisorIsles/Depot.js ›
 > runLots / runPairing` (the depot deals lots; one stock is laid along the other), the situation as data
-> (`…/wadiya-idmajiya-aadad/missions/bem2021.js`, tested). Played end to end in a browser at 1366×768: 14 screens,
+> (`…/wadiya-idmajiya-aadad/missions/bem2022.js`, tested). Played end to end in a browser at 1366×768: 14 screens,
 > none overflows, no page error; five looked at. The seven steps on screen are the table's eight (steps 2–3 are one
 > screen: free tries; step 6 follows step 5 on the same screen). NOT built: hearts (coins are), the save, sound cues of
 > its own, missions 2 and 3, the lesson's home; the page still borrows the pilot's content to build the world. The first
@@ -182,7 +188,7 @@ produced its line. At the end the notebook IS his exam copy.
 **The screen never changes:** the exam paper (labelled with its session), the 3D depot, ONE instruction at the top
 (the question of the moment, in plain words: « كم تشكيلة؟ »), the notebook, a progress strip « 2 من 6 ».
 
-**Mission 1 — BEM 2021, the lots (the world helps a lot):**
+**Mission 1 — BEM 2022, the lots (the world helps a lot):**
 
 | # | He does | The depot does | The line written | The phrase that lights |
 |---|---|---|---|---|
@@ -205,7 +211,7 @@ sentences built from tiles; the choice of a key in a menu; the four named habits
 « الجسور », « الختم ».
 
 **Missions 2 and 3 — ONE thing fades: who writes the line.**
-- Mission 2 (BEM 2019, the trees): HE writes each line first, in its shape, then the plot plays it — a corner without
+- Mission 2 (BEM 2020, the trees): HE writes each line first, in its shape, then the plot plays it — a corner without
   a tree, a spacing that does not close. The trap of the text is his to meet (the perimeter, « في كل ركن »). The
   notebook carries the 34 trees into the budget line.
 - Mission 3 (an unseen exercise of the bank): the paper and a blank notebook — no shape is given any more. The world
