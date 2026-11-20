@@ -242,6 +242,10 @@ doors it has no use for lead home (`openMap`, `closeMap`, `roam`, `quitSitting`)
 is played by `gameworld/missions/` (`MissionRunner.jsx` from steps; `MissionPlayer.jsx` for the first mission); the
 scenes are the depot's (`runLots`, `runPairing`, `setPlot` / `runRing`). A new SCENE is added to the depot only when a
 family of situations needs it (the plan's §6 table). Text on this world's screens is never under 18 px.
+Its home has a third door when the lesson gives `lesson.endless` (`{ title, say, levels, gates, round(level, rand) }`):
+the unit's ENDLESS GAME — lesson 1's gate run design for design (rail of light, arches, board, camera, `di-dash`
+screen), with no end and faster — the phase is `run`; the lesson gives
+the rounds (an order, three options, one right, a fact per wrong option), the world runs them and keeps the best score.
 
 ## 2quater. « الامتحان الأبيض » — the exam sitting (PROTOTYPE, 2026-11-16)
 

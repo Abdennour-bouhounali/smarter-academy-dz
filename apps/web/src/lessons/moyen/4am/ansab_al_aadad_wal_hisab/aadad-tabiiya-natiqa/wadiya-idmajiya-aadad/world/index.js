@@ -5,6 +5,7 @@
  *   missions   the two situations played in the depot (data: `../missions/`), in order
  *   bank       mission 3: a sheet of the lesson's bank the world serves in exam form (the kit's sitting, its level 5:
  *              « الوضعيّة الإدماجيّة ») — its first try is evidence, re-judged by the server
+ *   endless    the unit's endless game (`./endless.js`): rounds from 1AM content up to the unit's last lesson
  *   recap      the unit's lessons, in order: the island shows the rules of each (their worlds' tablets) — a rule the
  *              student has not forged keeps its name hidden
  */
@@ -12,6 +13,7 @@ import { createJourney } from '../../../../../../common/gameworld/kit/journey';
 import { SUMMARY } from '../../../../../../common/gameworld/kit/ladder';
 import { BEM_2020 } from '../missions/bem2020';
 import { BEM_2022 } from '../missions/bem2022';
+import { endless } from './endless';
 import { LEVELS, sittings } from './sitting';
 import { TEXT } from './text';
 
@@ -40,6 +42,8 @@ export const lesson = {
     { id: 'awwaliyan-fima-baynahuma', title: 'عددان أوّليان فيما بينهما' },
     { id: 'ikhtizal-kasr', title: 'اختزال كسر' },
   ],
+  /** « سباق الأعداد »: the endless game of the unit, a door of the home — a game, never evidence. */
+  endless,
   sittings,
   journey: createJourney({ keys: [], ladder, levels: LEVELS, stages: 3, cards: 0 }),
   /** Missions 1 and 2 are never evidence (plan §5); the sitting sends its own (`sittings.sheetOf`). */

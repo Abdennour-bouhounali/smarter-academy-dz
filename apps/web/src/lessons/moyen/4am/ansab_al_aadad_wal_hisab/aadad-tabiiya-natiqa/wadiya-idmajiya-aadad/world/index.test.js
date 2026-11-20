@@ -22,6 +22,11 @@ describe('« أدمج تعلّماتي » unit 1 — the content of its island',
     expect(lesson.sittings.lesson).toBe('wadiya-idmajiya-aadad');
     expect(lesson.sittings.levels.map((l) => l.n)).toEqual([1, 2, 3, 4, 5]);
   });
+  it("carries the unit's endless game: a title, its levels and a round maker", () => {
+    expect(lesson.endless.title.length).toBeGreaterThan(3);
+    expect(lesson.endless.levels.length).toBeGreaterThanOrEqual(6);
+    expect(lesson.endless.round(1).options).toHaveLength(3);
+  });
   it('the recap names the eight lessons of the unit, once each', () => {
     expect(lesson.recap).toHaveLength(8);
     expect(new Set(lesson.recap.map((r) => r.id)).size).toBe(8);

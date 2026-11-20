@@ -88,7 +88,10 @@ for (const [name, address] of [
   // « بنك التمارين » is the teacher's own bank (read, show on the board, print), as for the other v2 lessons
   await page.click('[data-teacher-bank]');
   await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
-  await page.waitForTimeout(2500);
+  await page
+    .waitForFunction(() => document.body.innerText.includes('بنك تمارين الدرس'), null, { timeout: 30000 })
+    .catch(() => {});
+  await page.waitForTimeout(800);
   await page.screenshot({ path: `${walk.out}/teacher-bank.png` });
   const bank = await page.evaluate(() => ({
     own: document.querySelectorAll('[data-teacher-exercise-bank], [data-teb], .teb').length,

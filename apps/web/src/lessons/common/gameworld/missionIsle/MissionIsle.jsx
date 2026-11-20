@@ -4,9 +4,24 @@
  * Everything said here comes from the lesson (`lesson.text`, `lesson.missions`, `lesson.bank`, `lesson.recap`).
  */
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, BookOpen, Clock, FileText, PenLine, Star, Trophy, X } from 'lucide-react';
+import {
+  ArrowLeft,
+  ArrowRight,
+  BookOpen,
+  Clock,
+  FileText,
+  Flame,
+  Heart,
+  PenLine,
+  Play,
+  Star,
+  Trophy,
+  X,
+  Zap,
+} from 'lucide-react';
 import LessonWorld from '../kit/LessonWorld';
 import { useLesson } from '../kit/LessonContext';
+import { M } from '../kit/parts';
 import { examLevelOpen } from '../kit/journey';
 import { readSave } from '../kit/saveSync';
 import { loadPackPart } from '../../../lessonPack';
@@ -72,6 +87,148 @@ function Recap({ lessons: list, onClose }) {
           ))}
         </div>
       )}
+    </section>
+  );
+}
+
+const Option = ({ o }) => (o.tex ? <M>{o.tex}</M> : <span dir="ltr">{o.t}</span>);
+
+/**
+ * « سباق الأعداد » on screen: the sign (the order), the three gates' numbers (placed over the 3D gates by the game, every
+ * frame), his hearts, his score, the level; the two arrows for a mouse or a finger; the fact of a wrong gate; the end.
+ */
+function Run({ s, game }) {
+  const { endless } = useLesson();
+  const r = s.run;
+  if (r.stage === 'ready')
+    return (
+      <section className="mi-run mi-run--card" data-mi-run="ready">
+        <div className="mi-runcard">
+          <Zap size={56} aria-hidden="true" />
+          <h2>{endless.title}</h2>
+          <p>{endless.say}</p>
+          <p>يبدأ سهلًا جدًّا، ثمّ يصعد مستوى بعد كلّ {endless.gates} أبواب صحيحة. لك ثلاثة قلوب.</p>
+          {r.best > 0 && (
+            <p className="mi-runcard__best">
+              <Trophy size={24} aria-hidden="true" /> أفضل ما بلغتَ: {r.best} بابًا
+            </p>
+          )}
+          <button type="button" className="mi-btn" data-mi-run-start onClick={() => game.startRun()}>
+            <Play size={20} aria-hidden="true" /> أبدأ السباق
+          </button>
+          <button type="button" className="mi-door" data-mi-run-leave onClick={() => game.leaveRun()}>
+            الرجوع إلى الجزيرة
+          </button>
+        </div>
+      </section>
+    );
+  if (r.stage === 'over')
+    return (
+      <section className="mi-run mi-run--card" data-mi-run="over">
+        <div className="mi-runcard">
+          <Trophy size={64} aria-hidden="true" />
+          <h2>{r.record ? 'رقم جديد!' : 'انتهى السباق'}</h2>
+          <p className="mi-runcard__score" data-mi-run-score={r.score}>
+            {r.score} بابًا صحيحًا
+          </p>
+          <p>
+            بلغتَ المستوى {r.level}: {endless.levels[Math.min(r.level, endless.levels.length) - 1].name}. أفضل ما بلغتَ:{' '}
+            {r.best}.
+          </p>
+          <button type="button" className="mi-btn" data-mi-run-start onClick={() => game.startRun()}>
+            <Play size={20} aria-hidden="true" /> سباق جديد
+          </button>
+          <button type="button" className="mi-door" data-mi-run-leave onClick={() => game.leaveRun()}>
+            الرجوع إلى الجزيرة
+          </button>
+        </div>
+      </section>
+    );
+  // THE SCREEN OF LESSON 1'S RUN (`divisorIsles/DivisorIsles.jsx › DashHud`, the kit's `di-dash` styles): the hearts and the
+  // score in a pill, the order on its white card, the two round arrows at the bottom corners.
+  return (
+    <section
+      className="mi-run"
+      data-mi-run={r.stage}
+      data-mi-run-round={r.n}
+      data-mi-run-lane={r.lane}
+      data-mi-run-right={r.right ?? ''}
+    >
+      <div className="di-dash" data-di-dash="endless">
+        <div className="di-dash__meta">
+          <span className="di-dash__hearts" data-mi-run-hearts={r.hearts} aria-label={`${r.hearts} قلوب`}>
+            {[0, 1, 2].map((k) => (
+              <Heart key={k} size={22} className={k < r.hearts ? 'is-on' : ''} fill="currentColor" aria-hidden="true" />
+            ))}
+          </span>
+          <span className="di-dash__score" data-mi-run-score={r.score}>
+            <Star size={18} className="di-ic-star" aria-hidden="true" /> <b dir="ltr">{r.score}</b>
+          </span>
+          {r.streak >= 3 && (
+            <span className="di-dash__streak" key={r.streak}>
+              <Flame size={18} aria-hidden="true" /> <b dir="ltr">{r.streak}</b>
+            </span>
+          )}
+          <span data-mi-run-level={r.level}>
+            المستوى {r.level} · {r.levelName}
+          </span>
+          <button type="button" className="mi-quit" data-mi-run-leave onClick={() => game.leaveRun()}>
+            <X size={18} aria-hidden="true" /> خروج
+          </button>
+        </div>
+        {r.stage === 'go' && (
+          <div className="di-dash__say" key={r.n} data-mi-run-ask>
+            <small>مرّ من الباب الصحيح</small>
+            <strong>
+              {r.ask} {r.tex && <M>{r.tex}</M>}
+            </strong>
+          </div>
+        )}
+        {r.stage === 'hit' && (
+          <div className="di-dash__say mi-why" data-mi-run-why>
+            <small>
+              {r.ask} {r.tex && <M>{r.tex}</M>}
+            </small>
+            <strong>{r.why}</strong>
+          </div>
+        )}
+      </div>
+      {r.options.map((o, lane) => (
+        <b
+          key={`${r.n}-${lane}`}
+          ref={(el) => {
+            game.gateEls[lane] = el;
+          }}
+          className={`mi-gate ${r.stage === 'hit' && lane === r.right ? 'is-right' : ''} ${r.stage === 'hit' && lane === r.picked ? 'is-wrong' : ''}`}
+          data-mi-gate={lane}
+          style={{ visibility: 'hidden' }}
+        >
+          <Option o={o} />
+        </b>
+      ))}
+      {r.up && r.stage === 'go' && (
+        <p className="mi-up" key={r.level} data-mi-run-up>
+          مستوى جديد: {r.levelName}
+        </p>
+      )}
+      <div className="di-lanes" dir="ltr">
+        <button
+          type="button"
+          aria-label="يسار"
+          data-mi-run-left
+          onPointerDown={(e) => (e.preventDefault(), game.runLane(-1))}
+        >
+          <ArrowLeft size={30} />
+        </button>
+        <button
+          type="button"
+          aria-label="يمين"
+          data-mi-run-right
+          onPointerDown={(e) => (e.preventDefault(), game.runLane(1))}
+        >
+          <ArrowRight size={30} />
+        </button>
+      </div>
     </section>
   );
 }
@@ -171,6 +328,11 @@ function Home({ s, game }) {
         <button type="button" className="mi-door" data-mi-door="recap" onClick={() => setPanel('recap')}>
           <BookOpen size={24} aria-hidden="true" /> ملخّص الوحدة
         </button>
+        {lesson.endless && (
+          <button type="button" className="mi-door mi-door--game" data-mi-door="run" onClick={() => game.openRun()}>
+            <Zap size={24} aria-hidden="true" /> {lesson.endless.title}
+          </button>
+        )}
       </div>
     </section>
   );
@@ -180,7 +342,7 @@ const WORLD = {
   id: 'mission-isle',
   Game: MissionIsleGame,
   playing: () => false,
-  busy: (s) => Boolean(s.mission),
+  busy: (s) => Boolean(s.mission || s.run),
   quiet: () => true,
   paperOn: (s) => Boolean(s.mission),
   Over: ({ s, game }) => {
@@ -200,6 +362,7 @@ const WORLD = {
         />
       );
     }
+    if (s.run) return <Run s={s} game={game} />;
     return s.phase === 'home' && !s.overlay ? <Home s={s} game={game} /> : null;
   },
 };

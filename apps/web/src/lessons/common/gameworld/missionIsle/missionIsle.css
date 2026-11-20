@@ -245,3 +245,137 @@
   display: inline-flex;
   gap: 0.3rem;
 }
+
+/* « سباق الأعداد » — the endless game. Reading sizes; the gates' numbers are the biggest thing on the screen. */
+.mi-run {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  font-family: 'Cairo', 'Tajawal', system-ui, sans-serif;
+  font-size: 1.125rem;
+  color: #eef5ff;
+  pointer-events: none;
+}
+.mi-run button {
+  pointer-events: auto;
+}
+.mi-run--card {
+  display: grid;
+  place-items: center;
+  background: rgba(5, 14, 36, 0.55);
+  pointer-events: auto;
+}
+.mi-runcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  width: min(92%, 38rem);
+  padding: 1.6rem 2rem;
+  border-radius: 1.4rem;
+  border: 2px solid #fbbf24;
+  background: #0b1b3f;
+  text-align: center;
+}
+.mi-runcard > svg {
+  color: #fbbf24;
+}
+.di-root .mi-runcard h2 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+.di-root .mi-runcard p {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.7;
+  color: #dbe9ff;
+}
+.di-root .mi-runcard .mi-runcard__best,
+.di-root .mi-runcard .mi-runcard__score {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fde9b0;
+  font-weight: 800;
+}
+.di-root .mi-runcard .mi-runcard__score {
+  font-size: 2rem;
+}
+/* the kit's `di-dash` screen of lesson 1's run, at this world's reading sizes */
+.mi-run .di-dash__meta {
+  font-size: 1.2rem;
+  pointer-events: auto;
+}
+.mi-run .di-dash__say small {
+  font-size: 1.125rem;
+  opacity: 0.75;
+}
+.mi-run .di-dash__say strong {
+  font-size: 2.1rem;
+}
+.di-root .mi-run .di-dash__say.mi-why strong {
+  max-width: 44rem;
+  font-size: 1.5rem;
+  line-height: 1.7;
+  white-space: normal;
+  text-align: center;
+  color: #b91c1c;
+}
+.mi-quit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.1rem 0.8rem;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  background: transparent;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+/* the numbers over the arches, drawn as lesson 1 draws them: big, white, outlined — no card */
+.mi-gate {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-shadow:
+    0 0 6px rgba(8, 20, 48, 0.95),
+    2px 2px 0 rgba(8, 20, 48, 0.9),
+    -2px -2px 0 rgba(8, 20, 48, 0.9),
+    2px -2px 0 rgba(8, 20, 48, 0.9),
+    -2px 2px 0 rgba(8, 20, 48, 0.9);
+  will-change: transform;
+}
+.mi-gate.is-right {
+  color: #6ef3a5;
+}
+.mi-gate.is-wrong {
+  color: #ff8b9c;
+}
+.mi-up {
+  position: absolute;
+  left: 50%;
+  bottom: 1.4rem;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0.5rem 1.4rem;
+  border-radius: 1rem;
+  background: #0b1b3f;
+  border: 2px solid #34d399;
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.di-root .mi-run .mi-up {
+  color: #fde9b0;
+}
+.mi-door--game {
+  border-color: #fbbf24;
+  color: #fbbf24;
+}

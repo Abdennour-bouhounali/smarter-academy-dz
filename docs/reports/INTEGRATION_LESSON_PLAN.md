@@ -310,9 +310,28 @@ depot plays every line); what changes is WHERE he works.
 > `boardLessons.test.js`.
 > NOT built: the board script and memo, the class test (status prints ❌ 2 parts), the save of a mission left
 > half-way, hearts, the « classmate's copy » episode, the film of mission 3. The teacher's tabs « حصّة القسم » and
-> « المذكّرة » still run on the old derived memo. NEXT (owner, 2026-11-20): **an endless game reached from this
-> home** — the robot runs sideways, three lanes, up/down keys, an order on a sign (divisors, PGCD, equal fractions…),
-> starting VERY easy with 1AM content and getting harder; a game, never evidence. Not designed in detail, not built.
+> « المذكّرة » still run on the old derived memo.
+>
+> **« سباق الأعداد », THE ENDLESS GAME, IS BUILT (2026-11-20)** — a third door of the home. The owner's words, in
+> order: up/down keys; then, seeing it, « i did not like the up/down system, use the same structure of the game inside
+> the lesson 1, left right »; then « the game is too slow, use 100% the same design of the game of the lesson 1 ».
+> So it IS lesson 1's gate run, design for design (`divisorIsles/Game.js › buildRail`, `DashHud`): the rail of light
+> (two glowing rails, a floor of light, sleepers, two lane lines), three arches of light with their veil and their
+> number above, the robot on its board with its trail of sparks, the same camera close behind him (60° field, leaning
+> with his lane), the same lanes (−2,5 · 0 · 2,5), the same gap between gates (34), three hearts, the same screen (the
+> kit's `di-dash`: hearts and score in a pill, the order on its white card, two round arrows), the same sounds. What
+> differs: the rail has NO END (the robot stays, the sleepers and two sets of arches come to him); it is FASTER
+> (10,5 at the first gate against 7,2, rising with the level and the score up to 17); a wrong gate stops the run for
+> 2,4 s and the card shows the fact that refutes it (« 6 × 9 = 54، وليس 55 ») while the right arch turns green.
+> Five right gates open the next level. **It starts very easy with 1AM content** (parity, the tables, multiples —
+> three levels) then climbs through the unit's lessons to the irreducible fraction (eight levels). The content is the
+> lesson's (`world/endless.js`, pure, tested: 2400 rounds, exactly one right gate each, a fact for every wrong one);
+> the engine is the world's (`missionIsle/Game.js › buildTrack … placeGates`, `MissionIsle.jsx › Run`). The numbers
+> over the arches are text of the page placed each frame (a real fraction bar). His best is saved with his world.
+> A GAME: never evidence, sends nothing. Walk kept: `e2e/missionRun.mjs` (six right gates and a level passed, the
+> screen arrows, three wrong gates with their facts, the end card, the best kept) — passes at 1366×768; four screens
+> looked at. NOT built: a pause button, the hearts of « مدار » (it costs nothing), phones; the speed was not tried
+> by a student.
 
 **The principle: the paper first, the depot checks.** The BEM is written with a pen. In a mission the student's REAL
 sheet is where he works; the screen holds its typed twin, « ورقتي », laid out as an exam copy (« المعطيات »,
