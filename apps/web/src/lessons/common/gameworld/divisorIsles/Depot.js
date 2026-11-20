@@ -672,9 +672,14 @@ export class Depot {
    */
   stockLabel(a, b, full = null, stays = false) {
     if (full) this.full = full;
-    // a pile of 60 crates stands for the whole stock; 20 crates or fewer are shown one for one — he can count them
-    const crates = (n, whole) =>
-      n == null || n >= whole ? 60 : n <= 20 ? Math.max(0, n) : Math.max(21, Math.round((60 * n) / Math.max(1, whole)));
+    // ONE scale for the two piles (owner, 2026-11-20: 528 is almost half of 1188, « the quantity size must appear like
+    // that »): 60 crates stand for the LARGER stock, so the other pile is as small as it is; 20 crates or fewer are
+    // shown one for one — he can count them
+    const top = Math.max(1, this.full?.a ?? 1, this.full?.b ?? 1);
+    const crates = (n, whole) => {
+      const have = n ?? whole;
+      return have <= 20 ? Math.max(0, have) : Math.max(21, Math.round((60 * have) / top));
+    };
     [
       [this.pile, this.palletLabel, a, this.full?.a],
       [this.second?.pile, this.second?.label, b, this.full?.b],

@@ -2217,7 +2217,8 @@ export class DivisorIslesGame extends WorldRuntime {
     h.yaw = 1.9;
     this.camPos.copy(this.depot.camPos).add(new THREE.Vector3(0, 6, 8));
     this.camLook.copy(this.depot.camLook);
-    this.depot.setStock({ a: null, b: null }, sit.kinds); // the story opens without its numbers
+    this.depot.setStock({ a: null, b: null }, sit.kinds);
+    this.depot.stockLabel(null, null, sit.stock); // not counted yet (« ؟ »), but each pile already has its size
     this.skyNow = SKIES[1].slice();
     this.input.clear();
     this.set({
