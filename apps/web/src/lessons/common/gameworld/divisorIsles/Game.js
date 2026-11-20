@@ -2200,7 +2200,7 @@ export class DivisorIslesGame extends WorldRuntime {
     this.publishCase();
   }
 
-  // ───────────────── an integration mission, played in the depot (missions/MissionPlayer.jsx) ─────────────────
+  // ───────────────── an integration mission, played in the depot (missions/MissionRunner.jsx) ─────────────────
   /**
    * The student is the engineer of the cooperative: the depot BUILDS whatever he read of the situation. `sit` is the
    * situation's data; the screen (`state.mission`) asks, this carries out (`missionRun`), `missionShip` sends the lots.

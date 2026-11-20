@@ -15,7 +15,6 @@ import { divisionTip, ruleTip } from '../kit/tips';
 import RuleForge from '../kit/RuleForge';
 import { FORGE_PARTS } from './forgeParts';
 import Workshop from './Workshop';
-import MissionPlayer from '../missions/MissionPlayer';
 import MissionRunner from '../missions/MissionRunner';
 import { signTex } from './mark';
 
@@ -870,8 +869,8 @@ const WORLD = {
     ) : null,
   Over: ({ s, game }) =>
     s.mission ? (
-      // a mission written as steps is played by the data-driven runner; mission 1 (the lots) keeps its own player
-      createElement(s.mission.steps ? MissionRunner : MissionPlayer, {
+      // a mission is DATA, played by the missions' engine
+      createElement(MissionRunner, {
         key: s.mission.id,
         situation: s.mission,
         world: {

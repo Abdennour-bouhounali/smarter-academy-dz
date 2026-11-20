@@ -239,7 +239,8 @@ as `mission-isle`. What differs from « أرخبيل القواسم »: one isla
 only file it takes from the other world), no road, no key, no title screen, the robot does not walk — the phase is
 `home` (the lesson's missions, the exam door, the recap, drawn by `MissionIsle.jsx › Home`) or `mission`. The kit's
 doors it has no use for lead home (`openMap`, `closeMap`, `roam`, `quitSitting`). A mission is DATA of the lesson and
-is played by `gameworld/missions/` (`MissionRunner.jsx` from steps; `MissionPlayer.jsx` for the first mission); the
+is played by `gameworld/missions/MissionRunner.jsx`, ONE engine for every mission (step kinds `data`, `goal`, `tries`,
+`connect`, `plan`, `work`, `review`; `resume` for a mission left half-way); the
 scenes are the depot's (`runLots`, `runPairing`, `setPlot` / `runRing`). A new SCENE is added to the depot only when a
 family of situations needs it (the plan's §6 table). Text on this world's screens is never under 18 px.
 Its home has a third door when the lesson gives `lesson.endless` (`{ title, say, levels, gates, round(level, rand) }`):

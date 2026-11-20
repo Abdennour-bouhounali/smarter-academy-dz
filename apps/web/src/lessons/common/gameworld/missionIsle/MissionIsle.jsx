@@ -26,7 +26,6 @@ import { M } from '../kit/parts';
 import { examLevelOpen } from '../kit/journey';
 import { readSave } from '../kit/saveSync';
 import { loadPackPart } from '../../../lessonPack';
-import MissionPlayer from '../missions/MissionPlayer';
 import MissionRunner from '../missions/MissionRunner';
 import { MissionIsleGame } from './Game';
 import './missionIsle.css';
@@ -374,9 +373,8 @@ const WORLD = {
   paperOn: (s) => Boolean(s.mission),
   Over: ({ s, game }) => {
     if (s.mission) {
-      const Screen = s.mission.steps ? MissionRunner : MissionPlayer;
       return (
-        <Screen
+        <MissionRunner
           key={s.mission.id}
           situation={s.mission}
           world={{

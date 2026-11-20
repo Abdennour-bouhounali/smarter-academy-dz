@@ -292,8 +292,13 @@ depot plays every line); what changes is WHERE he works.
 > the plan's §3, is a step kind `review` of the engine: a classmate's copy of the same mission, ONE faulty line (he
 > added the four corner trees: 204 ÷ 6 + 4 = 38); a sound line he suspects is answered by why it holds, the faulty one
 > by its fact while the plot counts 34; then he corrects it on the copy. Mission 2 has 11 stages. Both are walked by
-> `e2e/mission.mjs` (`VIA_HOME=1`). STILL OWED: mission 1 rewritten as data (its free tries, its « أربط », the pairing
-> scene need step kinds the engine does not have yet).
+> `e2e/mission.mjs` (`VIA_HOME=1`). (3) **MISSION 1 IS DATA TOO** (2026-11-21): `missions/bem2022.js` is written as
+> steps and played by the same engine, with the flow the owner validated — the engine gained the step kinds `tries`
+> (free tries; a condition marked `late` is added to his data when the world has shown what happens without it),
+> `connect` (« أربط ») and `choices` on a work step (the name of what he found). The first player
+> `MissionPlayer.jsx` is deleted: ONE engine plays every mission (`MissionRunner.jsx`, `parts.jsx`, `words.js`,
+> `lots.js`). What was lost on the way: the red flash of a phrase of the paper after a try that left crates, the
+> line « محاولاتك » after three failures, and the « قارن قسمتك » helper — the guidance of each wrong try covers them.
 >
 > **ITS BOARD AND ITS CLASS TEST ARE BUILT (2026-11-20): `status:lesson-v2 -- --lesson wadiya-idmajiya-aadad` prints ✅.**
 > The hour on the board IS a mission: `board/script.js` holds two stations of a NEW kind, `mission`
