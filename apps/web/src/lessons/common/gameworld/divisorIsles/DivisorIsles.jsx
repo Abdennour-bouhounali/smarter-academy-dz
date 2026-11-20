@@ -15,6 +15,7 @@ import { divisionTip, ruleTip } from '../kit/tips';
 import RuleForge from '../kit/RuleForge';
 import { FORGE_PARTS } from './forgeParts';
 import Workshop from './Workshop';
+import MissionPlayer from '../missions/MissionPlayer';
 import { signTex } from './mark';
 
 import Fit, { stepRoom } from '../kit/Fit';
@@ -867,7 +868,15 @@ const WORLD = {
       <Recall lines={s.recall} />
     ) : null,
   Over: ({ s, game }) =>
-    s.depot ? <DepotHud d={s.depot} eq={s.equation} game={game} paused={s.phase !== 'depot'} /> : null,
+    s.mission ? (
+      <MissionPlayer
+        situation={s.mission}
+        world={{ run: (spec, opts) => game.missionRun(spec, opts) }}
+        onClose={() => game.leaveMission()}
+      />
+    ) : s.depot ? (
+      <DepotHud d={s.depot} eq={s.equation} game={game} paused={s.phase !== 'depot'} />
+    ) : null,
   overlay(o, s, game) {
     switch (o.type) {
       case 'predict':

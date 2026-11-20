@@ -1,14 +1,17 @@
 # The last lesson of each unit — « أدمج تعلّماتي » as three missions
 
 **Status: PLAN, accepted by the owner on 2026-11-19. Step 1 of §6 is BUILT (2026-11-20): mission 1 as a playable
-prototype — `http://localhost:5173/__qa/mission-1` (dev builds only; not in the catalogue, no lesson links to it).
-STOP: the owner plays it. Nothing else is built.** The prototype: `apps/web/src/lessons/common/gameworld/missions/`
-(`lots.js` — the scene « lots », pure and tested; `MissionPlayer.jsx` — the five stations, on one screen each) and the
-situation as data, `…/wadiya-idmajiya-aadad/missions/bem2021.js` (tested). What the prototype is NOT: it is a 2D screen
-(drawn in SVG), not a scene of the 3D archipelago; a condition is placed by a tap, not dragged; nothing is saved; no
-sound; « change the numbers and replay » is absent; missions 2 and 3, the recap, the training exams, the board, the
-pack and the walk are not built; the integration lesson itself still opens on its old page. It is built after the other lessons of the unit
-are v2 (for 4AM unit 1: after lessons 4–8 of `LESSON_V2_MASTER_PLAN.md` §9). First lesson: `wadiya-idmajiya-aadad`.
+prototype — `http://localhost:5173/__qa/mission-1` (dev builds only), then « ابدأ ». STOP: the owner plays it.**
+A first version, a flat 2D screen, was refused the same day (owner: « there is no game feeling here » — it must be like
+the situation-game of the pilot's training, « تعاونية الواحة »). **The mission is now played IN THAT 3D DEPOT**: the
+farmer's two stocks stand on the quay; whatever the student decides, the depot packs for real — pallets fly onto the
+floor, each crate of a lot drawn while lots are few (a lot that differs is SEEN), what was not packed stays on the red
+mat in its two colours, and the right lots leave on the truck (`divisorIsles/Depot.js › runLots`, `Game.js ›
+startMission / missionRun`; the screen over the scene: `gameworld/missions/MissionPlayer.jsx`; what is true:
+`missions/lots.js`, tested; the situation as data: `…/wadiya-idmajiya-aadad/missions/bem2021.js`, tested).
+What the prototype is NOT yet: it borrows the pilot lesson's world as its host (the integration lesson has no pack);
+a condition is placed by a tap, not dragged; no hearts, no coins, no save; « change the numbers and replay » is
+absent; missions 2 and 3, the recap, the training exams, the board, the pack and the walk are not built.
 
 The owner's brief (2026-11-19): the last lesson of every unit trains the last exercise of the BEM paper, the integration
 situation « الوضعية الإدماجية », which students hate. It becomes a game in the unit's own world: the student enters, starts,

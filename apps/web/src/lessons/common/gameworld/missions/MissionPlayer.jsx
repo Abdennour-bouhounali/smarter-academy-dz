@@ -1,18 +1,20 @@
 /**
- * AN INTEGRATION MISSION, played (`docs/reports/INTEGRATION_LESSON_PLAN.md` §3) — PROTOTYPE of mission 1 (2026-11-20).
+ * AN INTEGRATION MISSION, played IN THE 3D DEPOT of the world (`docs/reports/INTEGRATION_LESSON_PLAN.md` §3) — PROTOTYPE
+ * of mission 1 (2026-11-20; the first version, a flat screen, had « no game feeling » — owner).
  *
- * The student is the engineer: whatever he reads, the world builds — his misreadings too. Five stations, one screen each,
- * nothing scrolls:
+ * The student is the engineer of the cooperative: whatever he reads, the depot BUILDS — his misreadings too. This file
+ * is the screen over the 3D scene; `world.run(spec)` makes the depot pack what `lots.js` computed from HIS reading
+ * (pallets fly from the quay, a lot that differs is seen, what was not packed stays on the red mat), `ship: true` sends
+ * the lots away on the truck. Five stations:
  *   1. the story without its numbers — he sends the robot to count what he needs;
- *   2. he builds the situation — the sentences of the text placed on his model; the world rehearses HIS model;
+ *   2. he builds the situation — the sentences of the text placed on his model; the depot rehearses HIS model;
  *   3. the goal flags — each answer sentence built before any computation, and their order;
- *   4. a bridge for each step — the key of the unit, the computation, and the world carries the result out;
+ *   4. a bridge for each step — the key of the unit, the computation, and the depot carries the result out;
  *   5. the seal — the numbers enter their sentences; the four habits get their names; the exam text is revealed.
- * The situation is DATA (`situation`); this file names no lesson. The verdict is what the world does, never « wrong ».
- * Not built yet (prototype): the save, the sound, the replay with other numbers, missions 2 and 3.
+ * The situation is DATA (`situation`); this file names no lesson. The verdict is what the depot does, never « wrong ».
+ * Not built yet (prototype): the save, the replay with other numbers, missions 2 and 3.
  */
 import { useMemo, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { ArrowLeft, Check, Flag, Play, RotateCcw, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import { euclid, fill, MISREADINGS, NEEDED, pack, rehearse } from './lots';
@@ -30,146 +32,6 @@ const CRATES = ['صندوق واحد', 'صندوقان', 'صناديق', 'صند
 const HOUSES = ['دار واحدة', 'داران', 'دور', 'دارًا'];
 
 const STEPS = ['القصّة', 'الوضعية', 'الأعلام', 'الجسور', 'الختم'];
-
-/** One lot of the scene: its crates drawn one by one while they are few, two bars with their counts beyond. */
-function Lot({ lot, kinds, x, y, w, h }) {
-  const n = lot.a + lot.b;
-  const drawn = n <= 24;
-  const cols = Math.max(4, Math.ceil(Math.sqrt(n * 1.6)));
-  const cell = Math.min((w - 10) / cols, (h - 30) / Math.max(1, Math.ceil(n / cols)));
-  const crates = [...Array(lot.a).fill('a'), ...Array(lot.b).fill('b')];
-  return (
-    <g>
-      <rect x={x} y={y} width={w} height={h} rx="8" className="ms-lot" />
-      {drawn ? (
-        crates.map((k, i) => (
-          <rect
-            key={i}
-            x={x + 5 + (i % cols) * cell}
-            y={y + 5 + Math.floor(i / cols) * cell}
-            width={cell - 2}
-            height={cell - 2}
-            rx="2"
-            fill={kinds[k].color}
-          />
-        ))
-      ) : (
-        <>
-          <rect
-            x={x + 6}
-            y={y + 8}
-            width={(w - 12) * (lot.a / Math.max(1, n))}
-            height={(h - 38) / 2}
-            rx="3"
-            fill={kinds.a.color}
-          />
-          <rect
-            x={x + 6}
-            y={y + 12 + (h - 38) / 2}
-            width={(w - 12) * (lot.b / Math.max(1, n))}
-            height={(h - 38) / 2}
-            rx="3"
-            fill={kinds.b.color}
-          />
-        </>
-      )}
-      <text x={x + w / 2} y={y + h - 8} className="ms-lot__count" textAnchor="middle" direction="ltr">
-        {`${lot.a} + ${lot.b}`}
-      </text>
-    </g>
-  );
-}
-
-/**
- * The scene « lots »: the lots the world made, and the quay with what was left. Up to 12 lots are drawn whole; beyond
- * (the 132 lots of the real stock) every lot is a small tile and ONE lot is drawn large beside them.
- */
-function LotsScene({ lots, left, kinds, caption, empty = 0, zoomed = true }) {
-  const W = 760;
-  const H = 380;
-  const many = lots.length + empty > 12;
-  const quay = left.a + left.b > 0;
-  const area = { x: 12, y: 12, w: W - 24 - (quay ? 170 : 0), h: H - 24 };
-  const body = [];
-  if (!many) {
-    const n = Math.max(1, lots.length);
-    const cols = n <= 4 ? n : Math.ceil(n / 2);
-    const rows = Math.ceil(n / cols);
-    const w = Math.min(170, area.w / cols - 10);
-    const h = Math.min(170, area.h / rows - 10);
-    lots.forEach((lot, i) =>
-      body.push(
-        <Lot
-          key={i}
-          lot={lot}
-          kinds={kinds}
-          x={area.x + (i % cols) * (w + 10)}
-          y={area.y + Math.floor(i / cols) * (h + 10)}
-          w={w}
-          h={h}
-        />,
-      ),
-    );
-  } else {
-    const n = lots.length + empty;
-    // `zoomed: false` — the lots are counted, their content is not shown (it is the next question)
-    const zoom = zoomed ? lots[0] : null;
-    const grid = { x: area.x, y: area.y, w: area.w - (zoom ? 190 : 0), h: area.h };
-    const cols = Math.ceil(Math.sqrt((n * grid.w) / grid.h));
-    const rows = Math.ceil(n / cols);
-    const cw = grid.w / cols;
-    const ch = Math.min(cw, grid.h / rows);
-    for (let i = 0; i < n; i += 1)
-      body.push(
-        <rect
-          key={`t${i}`}
-          x={grid.x + (i % cols) * cw + 1.5}
-          y={grid.y + Math.floor(i / cols) * ch + 1.5}
-          width={cw - 3}
-          height={ch - 3}
-          rx="3"
-          className={i < lots.length ? 'ms-tile' : 'ms-tile ms-tile--empty'}
-        />,
-      );
-    if (zoom)
-      body.push(<Lot key="zoom" lot={zoom} kinds={kinds} x={grid.x + grid.w + 14} y={area.y + 60} w={170} h={190} />);
-  }
-  return (
-    <svg className="ms-scene" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={caption} data-ms-scene={lots.length}>
-      {body}
-      {quay && (
-        <g data-ms-quay={`${left.a}+${left.b}`}>
-          <rect x={W - 170} y={12} width={158} height={H - 24} rx="10" className="ms-quay" />
-          <text x={W - 91} y={42} className="ms-quay__title" textAnchor="middle">
-            على الرصيف
-          </text>
-          <rect
-            x={W - 150}
-            y={60}
-            width={118}
-            height={Math.max(8, Math.min(100, left.a))}
-            rx="4"
-            fill={kinds.a.color}
-          />
-          <text x={W - 91} y={190} className="ms-quay__n" textAnchor="middle">
-            {left.a}
-          </text>
-          <rect
-            x={W - 150}
-            y={215}
-            width={118}
-            height={Math.max(8, Math.min(90, left.b))}
-            rx="4"
-            fill={kinds.b.color}
-          />
-          <text x={W - 91} y={335} className="ms-quay__n" textAnchor="middle">
-            {left.b}
-          </text>
-        </g>
-      )}
-    </svg>
-  );
-}
 
 function Legend({ kinds }) {
   return (
@@ -190,7 +52,7 @@ function Story({ sit, asked, onAsk }) {
   return (
     <>
       <div className="ms-main">
-        <p className="ms-story" data-ms-story>
+        <p className="ms-story ms-card" data-ms-story>
           {sit.story.map((part, i) =>
             typeof part === 'string' ? (
               <span key={i}>{part}</span>
@@ -247,20 +109,19 @@ const REHEARSED = {
 };
 
 /** Station 2 — he builds the situation: the sentences of the text on his model; the world rehearses HIS model. */
-function Model({ sit, placed, onToggle, run, onRun }) {
+function Model({ sit, placed, onToggle, run, onRun, busy }) {
   return (
     <>
-      <div className="ms-main">
+      <div className="ms-main ms-main--scene">
         {run ? (
           <>
-            <LotsScene lots={run.lots} left={run.left} kinds={sit.kinds} caption="تجربة الروبوت" />
             <Legend kinds={sit.kinds} />
             <p className="ms-fact" data-ms-rehearsed={run.outcome}>
               {REHEARSED[run.outcome](run, sit)}
             </p>
           </>
         ) : (
-          <p className="ms-story">
+          <p className="ms-story ms-card">
             قبل الأعداد الكبيرة، تجربة صغيرة: {sit.small.a} صندوق بطاطا و{sit.small.b} صناديق جزر. الروبوت سيجمّعها كما
             تقول له وضعيتك — بالشروط التي تضعها، وبها فقط.
           </p>
@@ -283,7 +144,7 @@ function Model({ sit, placed, onToggle, run, onRun }) {
             </button>
           ))}
         </div>
-        <button type="button" className="ms-btn" data-ms-run onClick={onRun} disabled={!placed.length}>
+        <button type="button" className="ms-btn" data-ms-run onClick={onRun} disabled={!placed.length || busy}>
           <Play size={18} aria-hidden="true" />
           جرّب وضعيتي
         </button>
@@ -396,35 +257,46 @@ const FILLED = {
 };
 
 /** Station 4 — a bridge for each step: the key of the unit, the computation, and the world carries the result out. */
-function Bridges({ sit, st, set }) {
+function Bridges({ sit, st, set, world, busy }) {
   const { a, b } = sit.stock;
   const rows = useMemo(() => euclid(a, b), [a, b]);
   const tool = sit.tools.find((t) => t.id === st.tool);
   const n = num(st.n);
   const per = { a: num(st.pa), b: num(st.pb) };
   const second = st.packed?.outcome === 'most';
-  let scene = null;
-  if (second && st.filled)
-    scene =
-      st.filled.outcome === 'short'
-        ? { lots: Array(st.filled.full).fill(st.per), left: { a: 0, b: 0 }, empty: st.filled.empty }
-        : { lots: Array(st.packed.n).fill(st.per), left: st.filled.left };
-  else if (st.packed) scene = { lots: Array(st.packed.n).fill(st.packed.per), left: st.packed.left, zoomed: false };
+  const shown = second && st.filled ? st.filled : st.packed;
+  const packIt = async () => {
+    const packed = pack(n, sit.stock);
+    await world.run(
+      { lots: Array(packed.n).fill(packed.per), left: packed.left },
+      { cheer: packed.outcome === 'most' },
+    );
+    set({ packed });
+  };
+  const fillIt = async () => {
+    const filled = fill(st.packed.n, per, sit.stock);
+    await world.run(
+      filled.outcome === 'short'
+        ? { lots: Array(filled.full).fill(per), left: { a: 0, b: 0 }, empty: filled.empty }
+        : { lots: Array(st.packed.n).fill(per), left: filled.left },
+      { ship: filled.outcome === 'exact', cheer: filled.outcome === 'exact' },
+    );
+    set({ per, filled });
+  };
   return (
     <>
-      <div className="ms-main">
-        {scene ? (
+      <div className="ms-main ms-main--scene">
+        {shown ? (
           <>
-            <LotsScene {...scene} kinds={sit.kinds} caption="ما بناه العالم" />
             <Legend kinds={sit.kinds} />
-            <p className="ms-fact" data-ms-built={second && st.filled ? st.filled.outcome : st.packed.outcome}>
+            <p className="ms-fact" data-ms-built={shown.outcome}>
               {second && st.filled
                 ? FILLED[st.filled.outcome](st.filled, sit)
                 : PACKED[st.packed.outcome](st.packed, sit)}
             </p>
           </>
         ) : (
-          <p className="ms-story">
+          <p className="ms-story ms-card">
             الجسر الأوّل: عدد التشكيلات. اختر المفتاح الذي يفتحه، احسب، ثمّ اكتب العدد: العالم سيكوّن التشكيلات كما
             حسبتَ، بـ{NB}
             {a} صندوق بطاطا و{b} صندوق جزر.
@@ -478,13 +350,7 @@ function Bridges({ sit, st, set }) {
                 <span>عدد التشكيلات:</span>
                 <Box value={st.n} onChange={(v) => set({ n: v })} label="عدد التشكيلات" name="n" />
                 <span>{sit.lot.one}</span>
-                <button
-                  type="button"
-                  className="ms-btn"
-                  data-ms-pack
-                  disabled={!n}
-                  onClick={() => set({ packed: pack(n, sit.stock) })}
-                >
+                <button type="button" className="ms-btn" data-ms-pack disabled={!n || busy} onClick={packIt}>
                   <Play size={18} aria-hidden="true" />
                   كوّنها
                 </button>
@@ -519,8 +385,8 @@ function Bridges({ sit, st, set }) {
                 type="button"
                 className="ms-btn"
                 data-ms-fill
-                disabled={!per.a || !per.b}
-                onClick={() => set({ per, filled: fill(st.packed.n, per, sit.stock) })}
+                disabled={!per.a || !per.b || busy}
+                onClick={fillIt}
               >
                 <Play size={18} aria-hidden="true" />
                 املأ التشكيلات
@@ -614,7 +480,7 @@ const SAY = [
   'ختمتَ المهمّة الأولى!',
 ];
 
-export default function MissionPlayer({ situation: sit, onClose }) {
+export default function MissionPlayer({ situation: sit, world: depot, onClose }) {
   const [step, setStep] = useState(0);
   const [asked, setAsked] = useState([]);
   const [placed, setPlaced] = useState([]);
@@ -624,6 +490,15 @@ export default function MissionPlayer({ situation: sit, onClose }) {
   const [st, setSt] = useState({});
   const [page, setPage] = useState(0);
   const set = (patch) => setSt((s) => ({ ...s, ...patch }));
+  const [busy, setBusy] = useState(false);
+  // the depot packs, the screen waits: nothing can be pressed while pallets fly
+  const world = {
+    run: async (spec, opts) => {
+      setBusy(true);
+      await depot.run(spec, opts);
+      setBusy(false);
+    },
+  };
 
   const [f1, f2] = sit.flags;
   const ready = [
@@ -642,9 +517,8 @@ export default function MissionPlayer({ situation: sit, onClose }) {
   ][step];
   const unused = sit.asks.filter((a) => !a.needed && asked.includes(a.id));
 
-  // on the page's body: the mission covers whatever layout mounts it (a footer of the shell stood over it otherwise)
-  return createPortal(
-    <div className="ms-root" dir="rtl" data-ms-step={step} data-ms-ready={ready}>
+  return (
+    <div className="ms-root" dir="rtl" data-ms-step={step} data-ms-ready={ready} data-ms-busy={busy}>
       <header className="ms-head">
         <h2>{sit.title}</h2>
         <ol className="ms-steps">
@@ -668,11 +542,17 @@ export default function MissionPlayer({ situation: sit, onClose }) {
             sit={sit}
             placed={placed}
             run={run}
+            busy={busy}
             onToggle={(id) => {
               setPlaced((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
               setRun(null);
             }}
-            onRun={() => setRun(rehearse(placed, sit.small))}
+            onRun={async () => {
+              const r = rehearse(placed, sit.small);
+              setRun(null);
+              await world.run({ lots: r.lots, left: r.left }, { cheer: r.outcome === 'fair' });
+              setRun(r);
+            }}
           />
         )}
         {step === 2 && (
@@ -684,7 +564,7 @@ export default function MissionPlayer({ situation: sit, onClose }) {
             onFirst={setFirst}
           />
         )}
-        {step === 3 && <Bridges sit={sit} st={st} set={set} />}
+        {step === 3 && <Bridges sit={sit} st={st} set={set} world={world} busy={busy} />}
         {step === 4 && <Seal sit={sit} st={st} page={page} onPage={setPage} />}
       </div>
       <footer className="ms-foot">
@@ -695,7 +575,13 @@ export default function MissionPlayer({ situation: sit, onClose }) {
             : SAY[step]}
         </p>
         {step === 3 && st.packed && st.packed.outcome !== 'most' && (
-          <button type="button" className="ms-btn ms-btn--ghost" data-ms-again onClick={() => set({ packed: null })}>
+          <button
+            type="button"
+            className="ms-btn ms-btn--ghost"
+            data-ms-again
+            disabled={busy}
+            onClick={() => set({ packed: null })}
+          >
             <RotateCcw size={18} aria-hidden="true" />
             أعيد الحساب
           </button>
@@ -705,7 +591,7 @@ export default function MissionPlayer({ situation: sit, onClose }) {
             type="button"
             className="ms-btn ms-btn--go"
             data-ms-next
-            disabled={!ready}
+            disabled={!ready || busy}
             onClick={() => setStep(step + 1)}
           >
             {['إلى الوضعية', 'إلى الأعلام', 'إلى الجسور', 'إلى الختم'][step]}
@@ -713,7 +599,6 @@ export default function MissionPlayer({ situation: sit, onClose }) {
           </button>
         )}
       </footer>
-    </div>,
-    document.body,
+    </div>
   );
 }

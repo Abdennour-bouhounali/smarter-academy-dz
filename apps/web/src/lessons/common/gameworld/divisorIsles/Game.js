@@ -45,6 +45,7 @@ import { ShareScene, TileScene } from './Worlds';
 import { markVerdict, signChain } from './mark';
 
 const WORLDS = { depot: Depot, share: ShareScene, tiling: TileScene };
+const MISSION_PAN = new THREE.Vector3(-4.8, 1.2, 1.6);
 
 const BRIDGE_HALF = 1.15;
 
@@ -120,6 +121,7 @@ export class DivisorIslesGame extends WorldRuntime {
       recall: [],
       purse: null,
       sign: null,
+      mission: null,
     };
   }
   worldSave() {
@@ -206,7 +208,12 @@ export class DivisorIslesGame extends WorldRuntime {
     } else {
       const cine = super.cameraShot(ph);
       if (cine) return cine;
-      if (this.caseRun) {
+      if (this.state.mission) {
+        // the mission's panel stands on the left of the screen: the depot is framed in what is left of it
+        want.copy(this.depot.camPos).add(MISSION_PAN);
+        look.copy(this.depot.camLook).add(MISSION_PAN);
+        k = 2.4;
+      } else if (this.caseRun) {
         want.copy(this.depot.camPos);
         look.copy(this.depot.camLook);
         k = 2.4;
@@ -234,6 +241,12 @@ export class DivisorIslesGame extends WorldRuntime {
     return page === 'forge' || super.pausesWorld(page);
   }
   onStart() {
+    // PROTOTYPE (dev builds only): the QA page `/__qa/mission-1` hands a mission over and opens a v2 lesson to host it
+    if (import.meta.env.DEV && typeof window !== 'undefined' && window.__qaMission) {
+      const sit = window.__qaMission;
+      window.__qaMission = null;
+      setTimeout(() => !this.dead && this.startMission(sit), 400);
+    }
     if (this.state.stage === 0 && !this.segs[0].complete) this.say(this.T.say.hello, 10);
     // a forge left unfinished (the page was closed in front of a mirror) opens again: a key cannot be skipped
     const pending = this.pendingForge();
@@ -2175,6 +2188,58 @@ export class DivisorIslesGame extends WorldRuntime {
       c.busy = false;
     }
     this.publishCase();
+  }
+
+  // ───────────────── an integration mission, played in the depot (missions/MissionPlayer.jsx) ─────────────────
+  /**
+   * The student is the engineer of the cooperative: the depot BUILDS whatever he read of the situation. `sit` is the
+   * situation's data; the screen (`state.mission`) asks, this carries out (`missionRun`), `missionShip` sends the lots.
+   */
+  startMission(sit) {
+    if (!this.worlds) this.worlds = {};
+    this.depot = this.worlds.depot ?? (this.worlds.depot = new WORLDS.depot(this));
+    const h = this.hero;
+    this.ret = { pos: h.pos.clone(), yaw: h.yaw, island: h.island, held: this.state.held };
+    if (this.state.held != null) this.take(null);
+    h.pos.copy(this.depot.robotSpot);
+    h.vel.set(0, 0, 0);
+    h.grounded = true;
+    h.yaw = 1.9;
+    this.camPos.copy(this.depot.camPos).add(new THREE.Vector3(0, 6, 8));
+    this.camLook.copy(this.depot.camLook);
+    this.depot.setStock(sit.stock, sit.kinds);
+    this.skyNow = SKIES[1].slice();
+    this.input.clear();
+    this.set({
+      phase: 'depot',
+      overlay: null,
+      prompt: null,
+      equation: null,
+      verdict: null,
+      say: null,
+      recall: [],
+      mission: sit,
+      objective: '',
+    });
+  }
+
+  /** The depot packs `spec` (what `missions/lots.js` computed from HIS reading), then `ship` sends the lots away. */
+  async missionRun(spec, opts = {}) {
+    const { ship = false } = opts;
+    const sit = this.state.mission;
+    if (!sit) return;
+    await this.depot.runLots(spec, sit.kinds, { cheer: Boolean(opts.cheer) });
+    if (ship && !this.dead && this.state.mission === sit) {
+      this.robot.cheer();
+      await this.wait(0.9);
+      await this.depot.ship();
+    }
+  }
+
+  leaveMission() {
+    this.set({ mission: null });
+    this.leaveDepot();
+    this.refreshObjective();
   }
 
   leaveDepot() {

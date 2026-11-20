@@ -363,6 +363,149 @@ export class Depot {
     return { q, r };
   }
 
+  /**
+   * AN INTEGRATION MISSION's scene « lots » (`missions/lots.js` decides, this draws): two stocks packed in LOTS, one
+   * pallet per lot. `spec = { lots: [{ a, b }], left: { a, b }, empty }`; `kinds = { a: { color }, b: { color } }`.
+   * Up to 12 lots, each crate of a lot is drawn (he can count them and SEE two lots that differ); beyond, a lot is a
+   * small pallet with two bands whose lengths are its two counts. What was not packed stays on the red mat, in its
+   * two colours; a lot that could not be filled is an empty frame. `onStep(k)` follows the count of lots laid.
+   */
+  async runLots({ lots, left = { a: 0, b: 0 }, empty = 0 }, kinds, { cheer = false, onStep = () => {} } = {}) {
+    const game = this.game;
+    this.clearSim();
+    const total = lots.length + empty;
+    const cols = Math.max(1, Math.min(14, Math.ceil(Math.sqrt(Math.max(1, total) * 1.9))));
+    const rows = Math.max(1, Math.ceil(total / cols));
+    const cell = Math.min(3.4, PAD.w / cols, PAD.d / rows);
+    const size = cell * 0.86;
+    const slot = (k) =>
+      new THREE.Vector3(
+        ((k % cols) - (cols - 1) / 2) * cell,
+        0.1,
+        PAD.z + (Math.floor(k / cols) - (rows - 1) / 2) * cell,
+      );
+    const col = { a: new THREE.Color(kinds.a.color), b: new THREE.Color(kinds.b.color) };
+    const most = Math.max(1, ...lots.map((l) => l.a + l.b));
+    const pallet = (lot) => {
+      const g = new THREE.Group();
+      const base = new THREE.Mesh(new THREE.BoxGeometry(size, 0.14, size), std(0x8a6239));
+      base.position.y = 0.07;
+      base.castShadow = true;
+      base.receiveShadow = true;
+      g.add(base);
+      const n = lot.a + lot.b;
+      if (total <= 12 && most <= 30) {
+        // every crate drawn: `side` crates a row, the first kind first
+        const side = Math.max(2, Math.ceil(Math.sqrt(most)));
+        const c = (size * 0.9) / side;
+        for (let i = 0; i < n; i += 1) {
+          const cube = new THREE.Mesh(
+            new THREE.BoxGeometry(c * 0.86, c * 0.7, c * 0.86),
+            std(i < lot.a ? col.a : col.b),
+          );
+          cube.position.set(
+            ((i % side) - (side - 1) / 2) * c,
+            0.14 + c * 0.35,
+            (Math.floor(i / side) - (side - 1) / 2) * c,
+          );
+          cube.castShadow = true;
+          g.add(cube);
+        }
+      } else {
+        // two bands: their lengths are the two counts (against the fullest lot of the scene)
+        ['a', 'b'].forEach((k, i) => {
+          const len = Math.max(0.06, (size * 0.9 * lot[k]) / most);
+          const band = new THREE.Mesh(new THREE.BoxGeometry(len, size * 0.34, size * 0.38), std(col[k]));
+          band.position.set(-(size * 0.9 - len) / 2, 0.14 + size * 0.17, (i ? 1 : -1) * size * 0.22);
+          band.castShadow = true;
+          g.add(band);
+        });
+      }
+      return g;
+    };
+    const from = new THREE.Vector3(this.pallet.position.x, 2.2, this.pallet.position.z);
+    this.counter.visible = lots.length > 0;
+    const per = game.instantSim ? 0.001 : Math.min(0.32, Math.max(0.03, 3.2 / Math.max(1, lots.length)));
+    for (let k = 0; k < lots.length; k += 1) {
+      if (game.dead) return;
+      const c = pallet(lots[k]);
+      c.position.copy(from);
+      c.scale.setScalar(0.2);
+      this.group.add(c);
+      this.items.push(c);
+      const home = slot(k);
+      await game.tween(
+        per,
+        (t) => {
+          c.position.lerpVectors(from, home, t);
+          c.position.y += Math.sin(t * Math.PI) * 2;
+          c.scale.setScalar(0.2 + 0.8 * t);
+        },
+        easeOut,
+      );
+      game.audio.play('plank', k);
+      this.counter.userData.setText(String(k + 1));
+      this.counter.position.set(home.x, size * 0.6 + 1.4, home.z);
+      onStep(k + 1);
+    }
+    await game.wait(game.instantSim ? 0.001 : 0.3);
+    this.counter.visible = false;
+    for (let k = 0; k < empty; k += 1) {
+      const frame = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(size, 0.3, size)),
+        new THREE.LineBasicMaterial({ color: 0xff7a1a }),
+      );
+      frame.position.copy(slot(lots.length + k)).setY(0.2);
+      this.group.add(frame);
+      this.items.push(frame);
+    }
+    const stay = left.a + left.b;
+    if (stay > 0) {
+      this.mat.visible = true;
+      const show = Math.min(stay, 36);
+      const showA = stay <= 36 ? left.a : Math.round((36 * left.a) / stay);
+      const side = Math.max(2, Math.ceil(Math.sqrt(show * 1.7)));
+      for (let i = 0; i < show; i += 1) {
+        const cube = new THREE.Mesh(new THREE.BoxGeometry(0.34, 0.3, 0.34), std(i < showA ? col.a : col.b));
+        cube.castShadow = true;
+        cube.position.set(
+          this.mat.position.x - 1.9 + (i % side) * (3.8 / (side - 1)),
+          0.3,
+          this.mat.position.z - 0.9 + Math.floor(i / side) * 0.45,
+        );
+        this.group.add(cube);
+        this.left.push(cube);
+      }
+      this.leftLabel.userData.setText(`بقي ${left.a} و ${left.b}`);
+      this.leftLabel.position.set(this.mat.position.x, 2.1, this.mat.position.z);
+      this.leftLabel.visible = true;
+      game.audio.play('fail');
+      game.shake = 0.12;
+    } else if (empty > 0) {
+      game.audio.play('fail');
+      game.shake = 0.12;
+    } else if (cheer) {
+      // only when the caller says the lots are what was asked: identical lots that are too few get no applause
+      game.audio.play('success');
+      for (let i = 0; i <= 6; i += 1)
+        game.particles.burst(
+          new THREE.Vector3(DEPOT_AT.x - PAD.w / 2 + (PAD.w * i) / 6, 0.8, DEPOT_AT.z + PAD.z),
+          0x8dffb0,
+          8,
+          3,
+          3,
+          1,
+        );
+    }
+  }
+
+  /** The two stocks of a mission on the quay: the pile takes the first kind's colour, its label counts both. */
+  setStock({ a, b }, kinds) {
+    this.clearSim();
+    this.goodsMat.color.set(kinds.a.color);
+    this.palletLabel.userData.setText(`\u202a${a} + ${b}\u202c`);
+  }
+
   /** The order is right: the containers go on the truck, the truck leaves, an empty one comes back. */
   async ship() {
     const game = this.game;
