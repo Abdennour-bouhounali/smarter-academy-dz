@@ -493,7 +493,6 @@ export class Depot {
         c.position.copy(home);
         continue;
       }
-      if (rest) this.stockLabel(rest.a, rest.b);
       c.position.copy(from);
       c.scale.setScalar(0.2);
       await game.tween(
@@ -506,6 +505,8 @@ export class Depot {
         easeOut,
       );
       game.audio.play('plank', k);
+      // the quay's counts change when the lot LANDS, with the count of lots
+      if (rest) this.stockLabel(rest.a, rest.b);
       this.counter.userData.setText(String(k + 1));
       this.counter.position.set(home.x, size * 0.6 + 1.4, home.z);
       onStep(k + 1);
@@ -673,12 +674,13 @@ export class Depot {
   stockLabel(a, b, full = null, stays = false) {
     if (full) this.full = full;
     // ONE scale for the two piles (owner, 2026-11-20: 528 is almost half of 1188, « the quantity size must appear like
-    // that »): 60 crates stand for the LARGER stock, so the other pile is as small as it is; 20 crates or fewer are
-    // shown one for one — he can count them
+    // that »): 60 crates stand for the LARGER stock, so the other pile is as small as it is. The pile goes down with
+    // its count ALL THE WAY — never a floor it waits on, then a jump (owner, the same day) — and the last 12 crates
+    // are shown one for one: what is left can be counted.
     const top = Math.max(1, this.full?.a ?? 1, this.full?.b ?? 1);
     const crates = (n, whole) => {
-      const have = n ?? whole;
-      return have <= 20 ? Math.max(0, have) : Math.max(21, Math.round((60 * have) / top));
+      const have = Math.max(0, n ?? whole);
+      return Math.min(60, Math.max(Math.ceil((60 * have) / top), Math.min(have, 12)));
     };
     [
       [this.pile, this.palletLabel, a, this.full?.a],
