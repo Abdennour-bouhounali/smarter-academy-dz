@@ -1,8 +1,8 @@
 # The last lesson of each unit — « أدمج تعلّماتي » as three missions
 
 **Status: PLAN, accepted by the owner on 2026-11-19. Step 1 of §6 is BUILT (2026-11-20): mission 1 as a playable
-prototype — `http://localhost:5173/__qa/mission-1` (dev builds only; it opens the host lesson and the mission starts by
-itself). STOP: the owner plays it.**
+prototype — `http://localhost:5173/__qa/mission-1` (dev builds only; the page mounts the world itself, on a save of its
+own and as a preview — no lesson page, no account, no redirect — and the mission starts by itself). STOP: the owner plays it.**
 A first version, a flat 2D screen, was refused the same day (owner: « there is no game feeling here » — it must be like
 the situation-game of the pilot's training, « تعاونية الواحة »). **The mission is now played IN THAT 3D DEPOT**: the
 farmer's two stocks stand on the quay; whatever the student decides, the depot packs for real — pallets fly onto the
@@ -10,7 +10,8 @@ floor, each crate of a lot drawn while lots are few (a lot that differs is SEEN)
 mat in its two colours, and the right lots leave on the truck (`divisorIsles/Depot.js › runLots`, `Game.js ›
 startMission / missionRun`; the screen over the scene: `gameworld/missions/MissionPlayer.jsx`; what is true:
 `missions/lots.js`, tested; the situation as data: `…/wadiya-idmajiya-aadad/missions/bem2021.js`, tested).
-What the prototype is NOT yet: it borrows the pilot lesson's world as its host (the integration lesson has no pack);
+What the prototype is NOT yet: it borrows the pilot lesson's CONTENT to build the world (the integration lesson has
+no pack), so the top bar shows that lesson's first island and a teacher's-preview banner;
 a condition is placed by a tap, not dragged; no hearts, no coins, no save; « change the numbers and replay » is
 absent; missions 2 and 3, the recap, the training exams, the board, the pack and the walk are not built.
 
