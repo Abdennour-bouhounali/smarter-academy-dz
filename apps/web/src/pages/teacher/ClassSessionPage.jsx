@@ -37,6 +37,7 @@ import { teacherBankPath } from '../../features/practice/teacherBank';
 import LessonBoard, { EMPTY_MEMO } from '../../features/classSession/LessonBoard';
 import { reviewCards } from '../../features/classSession/lessonScripts';
 import { usePackPart } from '../../lessons/lessonPack';
+import { boardFit, ClassSessionSkeleton, ClassWorkSkeleton } from '../../features/classSession/TeacherSkeletons';
 import '../../features/classSession/classSession.css';
 
 const L = {
@@ -109,12 +110,13 @@ const itemLabel = (item) => (item ? (homeLessonOf(item)?.titleAr ?? getItem(item
  * seating map and the test, then runs the test on the board; the result is saved without touching anyone's progress.
  * Full screen, outside the teacher shell; designed 1280 × 720 and zoomed to the window; nothing scrolls on the board.
  */
-/** The page waits for the lesson's board script (its pack, a few milliseconds): the hour is planned around it. */
+/** The page waits for the lesson's board script (its pack, a few milliseconds): the hour is planned around it — meanwhile
+ * the skeleton of its set-up screen, never an empty page (BUNDLE_BOUNDARIES.md rule 12). */
 export default function ClassSessionPage() {
   const { lessonId } = useParams();
   const script = usePackPart(lessonId, 'script');
   const world = usePackPart(lessonId, 'world'); // the lesson's own rule tablets: one wording for his world and for the board
-  if (script === undefined || world === undefined) return null;
+  if (script === undefined || world === undefined) return <ClassSessionSkeleton />;
   return <ClassSession key={lessonId} lessonId={lessonId} script={script} rules={world?.rules ?? {}} />;
 }
 
@@ -142,8 +144,9 @@ function ClassSession({ lessonId, script, rules }) {
   const [status, setStatus] = useState(null);
   const [waiting, setWaiting] = useState(0);
   const [error, setError] = useState(null);
-  const [z, setZ] = useState(1);
-  const [narrow, setNarrow] = useState(false);
+  // the first paint is already at the window's fit, like the skeleton before it: nothing jumps when the page arrives
+  const [z, setZ] = useState(() => boardFit(window.innerWidth, window.innerHeight).zoom);
+  const [narrow, setNarrow] = useState(() => boardFit(window.innerWidth, window.innerHeight).narrow);
   const saveTimer = useRef(null);
   const lessonItems = useMemo(() => getLesson(lessonId)?.programmeItems ?? [], [lessonId]);
   // choosing the class keeps the rest of the address: `?moment=` (a door of the teacher's card) must survive it
@@ -184,11 +187,9 @@ function ClassSession({ lessonId, script, rules }) {
   // two designs, so the board stays readable: 1280 × 720 for a wide screen, 1000 × 740 for a 4:3 one (a tablet, an old projector)
   useEffect(() => {
     const fit = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      const tight = w / h < 1.55;
+      const { narrow: tight, zoom } = boardFit(window.innerWidth, window.innerHeight);
       setNarrow(tight);
-      setZ(Math.max(0.6, Math.min(1.9, tight ? Math.min(w / 1000, h / 740) : Math.min(w / 1280, h / 720))));
+      setZ(zoom);
     };
     fit();
     window.addEventListener('resize', fit);
@@ -518,7 +519,8 @@ function ClassSession({ lessonId, script, rules }) {
                   )}
                 </section>
               )}
-              {classId && !students && !error && <p className="cs-hint">{L.loading}</p>}
+              {/* the class's roster, seats, test and last sessions are on their way: the set-up screen's shape, not a line */}
+              {classId && !students && !error && <ClassWorkSkeleton />}
               {classId && students && tracking && (
                 <section className="cs-pane cs-pane--track" data-cs-track-screen>
                   <ClassTracking token={token} classId={classId} lessonId={lessonId} />

@@ -30,7 +30,6 @@
   height: 100%;
   display: block;
 }
-.di-loading,
 .di-fallback {
   position: absolute;
   inset: 0;

@@ -136,7 +136,6 @@ export const KT = {
   start: 'ابدأ المغامرة',
   resume: 'واصل المغامرة',
   restart: 'من البداية',
-  loading: 'نبني العالم…',
   // what a screen shows IN PLACE OF the name of a key he does not hold yet (« no rule is told »: the name comes after him)
   hidden: '؟ ؟ ؟',
   noWebgl: 'هذا الجهاز لا يعرض العالم ثلاثيّ الأبعاد. افتح الدرس بمتصفّح آخر أو على جهاز آخر.',

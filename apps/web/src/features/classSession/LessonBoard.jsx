@@ -45,6 +45,7 @@ import { Court, CourtMini } from '../../lessons/common/gameworld/rootCourts/cour
 import BoardBridge, { BridgeBar, buildMs } from './BoardBridge';
 import { ClassWindow, Speaker, BoardTools, BoardLayers, useBoardTools, BL } from './board';
 import { callName, teamsOf, teamOfStudent } from './session';
+import WorldLoading from '../../lessons/common/gameworld/WorldLoading';
 import {
   groupsOf,
   classLog,
@@ -198,7 +199,7 @@ function MissionStation({ step }) {
         </button>
       </div>
       {open && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<WorldLoading lessonId={step.lesson} title={step.title} />}>
           <LessonGameWorld
             worldId={step.world}
             config={{ id: step.lesson, title: step.title, modules: [] }}

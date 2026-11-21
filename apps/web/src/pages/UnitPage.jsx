@@ -11,7 +11,7 @@ import { useLessonChromeLayout } from '../lessons/common/hooks/useLessonChrome';
 import { resolveMasteryState, masteryTooltip } from '../lessons/common/components/LearningPointMastery';
 import { useContentAvailability } from '../context/ContentAvailabilityContext';
 import { ArrowForward } from '../components/common/DirectionalIcons';
-import { usePrefetchLessonRuntime } from '../lessons/common/lessonRuntimeLoader';
+import { usePrefetchLessonRuntime, usePrefetchWorlds } from '../lessons/common/lessonRuntimeLoader';
 import { useLearningViewer } from '../features/learning/learningViewer';
 import { LessonModuleChips, TeacherLessonActions } from '../components/teacher/TeacherLessonActions';
 import MathLabel from '../lessons/common/components/MathLabel';
@@ -260,11 +260,15 @@ function LessonBlock({ lesson, index, mastery, next, t }) {
 export default function UnitPage() {
   // Cette page mène à des leçons : leur runtime partagé arrive pendant
   // l'inactivité, le clic ne l'attend pas (lessonRuntimeLoader.js).
-  usePrefetchLessonRuntime();
   const { t } = useTranslation('student');
   const catalogueHref = useCatalogueHref();
   const { levelId, gradeId, chapterId, unitId } = useParams();
   const unit = getUnitById(unitId);
+  // …les textes des labs seulement si une leçon de l'unité a encore des pages de module, et, pour l'ÉLÈVE, le code du
+  // monde de jeu de ses leçons v2 (three.js + le monde) une fois la page affichée (BUNDLE_BOUNDARIES.md « World preload »).
+  const unitLessonIds = [...(unit?.lessons ?? []), ...(unit?.synthesis ? [unit.synthesis] : [])].map((l) => l.id);
+  usePrefetchLessonRuntime(unitLessonIds);
+  usePrefetchWorlds(unitLessonIds, !useLearningViewer().freeNavigation);
   // Le profil de CETTE unité seulement (`?unit=`, Mastery V2).
   const { profile } = useLearningProfile({ unit: unitId });
   // Même contrat de décalage haut que le sommaire et les modules de leçon.

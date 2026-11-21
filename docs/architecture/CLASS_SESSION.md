@@ -21,6 +21,13 @@ and counts, one decision per screen, readable from the last row, nothing to lear
 
 ## 2. On the lesson page: the teacher's card
 
+**While it loads, a skeleton — never an empty gap** (2026-11-21, `BUNDLE_BOUNDARIES.md` rule 13):
+`features/classSession/TeacherSkeletons.jsx` gives the card's shape (`TeacherPanelSkeleton`, the fallback of its lazy
+boundary in `LessonIndex`), the class-session page's (`ClassSessionSkeleton`, while the pack's parts arrive) and its
+set-up screen's (`ClassWorkSkeleton`, while the class's four requests are pending), and the layer of « مختبر الدرس »
+opening (`LabOpeningSkeleton`). A new lazy boundary on the teacher's side uses one of them, never `fallback={null}`.
+The mission of the board opens behind the world's own loading screen (`GAME_WORLD.md` §1bis).
+
 `TeacherLessonPanel.jsx`, shown to a teacher on a lesson whose pack has a `board` or a `world` (`lesson.pack.js`, `LESSON_V2.md` §1). It is the
 teacher's ONE place on the page, in the order of his work (owner, 2026-11-18: « organize the thing and the tools of the
 teacher », then « the UI/UX needs absolutely to be enhanced », « update the colors too »):

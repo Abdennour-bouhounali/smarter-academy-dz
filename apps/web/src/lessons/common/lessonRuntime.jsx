@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import LessonClassroomShell from './classroom/LessonClassroomShell';
 import LessonAccessGate from './components/LessonAccessGate';
+import LessonWaiting from '../LessonWaiting';
 import { LazyLessonKnowledgeProvider } from './knowledge/LazyKnowledgeProvider';
 import ReturnToLessonButton from './mission/ReturnToLessonButton';
 import LessonNotebookAnchor from './notebook/LessonNotebookAnchor';
@@ -48,7 +49,7 @@ export function LessonPageFrame({ config, Component, module = null, loadKnowledg
   );
   return (
     <LessonAccessGate lessonId={config.id} title={config.title}>
-      <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
+      <Suspense fallback={<LessonWaiting lessonId={config.id} title={config.title} />}>
         {/* No `loadKnowledge` (a v2 lesson, LESSON_V2.md §2): no 🧠 map on the page — the world has its own « خريطة المعارف »,
             built from the knowledge its pack declares. */}
         {loadKnowledge ? (

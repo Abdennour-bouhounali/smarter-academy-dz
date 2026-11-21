@@ -353,7 +353,7 @@ written (`5 + 2√6` against `5`). The code compares exact values (`packages/cor
 round, the prompt bubble, save, evidence, the hub, the sitting, the paper mode), `LessonWorld` (the shell), `Instruction`
 and `Recall`, `RuleForge` and `forge.js`, `Tablet`, `Trainer`, `KnowledgePage`, `PracticeHub`, `ExamSitting` and
 `bankSitting`, `Paper`, `Spaces`, `Title`, `End`, `Result`, `Fit`, `saveSync`, `claims`, `journey`, `ladder`; the launch
-kit, « مختبري », the class board; `status:lesson-v2`, `lesson:brief`; registration in `LessonGameWorld.jsx › WORLDS`
+kit, « مختبري », the class board; `status:lesson-v2`, `lesson:brief`; registration in `worlds.js › WORLDS`
 (one line). The kit names no lesson and no world; the new world names no lesson.
 
 **New — the world** `gameworld/rootCourts/` (id `root-courts`):

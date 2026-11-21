@@ -45,6 +45,7 @@ import { LessonProvider } from './LessonContext';
 import { Toast, Say, Stick, ExitTo, SoundToggle } from './parts';
 import { Tablet, RulesSheet } from './Tablet';
 import Title from './Title';
+import WorldLoading from '../WorldLoading';
 import PracticeHub from './PracticeHub';
 import Result from './Result';
 import End from './End';
@@ -83,6 +84,16 @@ export default function LessonWorld({
   const [game, setGame] = useState(null);
   const [run, setRun] = useState(0);
   const [failed, setFailed] = useState(() => !hasWebGL());
+  // the loading screen covers the canvas while the scene is built, then fades over the title (WorldLoading.jsx)
+  const [veil, setVeil] = useState(true);
+  useEffect(() => {
+    if (!game) {
+      setVeil(true);
+      return undefined;
+    }
+    const id = setTimeout(() => setVeil(false), 450);
+    return () => clearTimeout(id);
+  }, [game]);
   const onModuleRef = useRef(onModule);
   onModuleRef.current = onModule;
   // الكفاءات: the answers that count are sent to the server, which re-computes their verdict (GameEvidenceController)
@@ -203,7 +214,7 @@ export default function LessonWorld({
         </div>
       )}
       <canvas ref={canvas} className="di-canvas" />
-      {!game && <div className="di-loading">{KT.loading}</div>}
+      {veil && <WorldLoading lessonId={config.id} title={config.title} stage={4} leaving={Boolean(game)} over />}
       {game && (
         <LessonProvider lesson={lesson}>
           <ExitTo.Provider value={{ to: exitTo, label: KT.hud.exit }}>

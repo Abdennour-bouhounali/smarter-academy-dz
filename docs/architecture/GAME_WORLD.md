@@ -19,12 +19,48 @@ full window with a small hovering robot, « زيرو ». The teacher and Classro
   has no `studentView` / `mission` any more (deleted with the old version, 2026-11-18).
 - Mount: `LessonIndex.jsx` renders the world for a STUDENT (not a teacher, not Classroom Mode) of any lesson whose pack
   names a world, and for the teacher's preview (`?apercu=eleve`).
-  `gameworld/LessonGameWorld.jsx` loads the WORLD (its `WORLDS` map: one entry per world, never per lesson) and the
-  lesson's content (its pack) together, lazily — three.js never enters the entry bundle. A world names no lesson.
+  `gameworld/LessonGameWorld.jsx` loads the WORLD (`gameworld/worlds.js › WORLDS`: one entry per world, never per
+  lesson) and the lesson's content (its pack) together, lazily — three.js never enters the entry bundle. A world names
+  no lesson. Both are usually on their way before it mounts (`lessons/worldPreload.js`, §1bis).
 - **The old version is deleted (owner, 2026-11-18).** A v2 lesson has no mission player, no module page and no
   `?view=classic`: its module addresses (`/astaidd`, `/itqan`, …) redirect to the home, which is the world
   (`buildLessonRoutes › retiredModules`, `LESSON_V2.md` §2). A device without WebGL gets a message and the way out
   (`exitTo`). Trace: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`.
+
+## 1bis. From the click to the title: ONE loading screen (2026-11-21)
+
+Owner, 2026-11-21: « the user never feels: is there a problem with my laptop or my internet — always display the best
+animation that gives peace ». Before: a light spinner, two or three blank light pages, nothing, then a dark screen whose
+bar jumped to 70 % and stood still, then a plain line of text. Now `gameworld/WorldLoading.jsx` is the ONLY thing a
+student sees between his click and the world's title, whatever is loading behind it:
+
+| Who mounts it | While |
+|---|---|
+| `lessons/LessonWaiting.jsx` (the route boundary, the classroom shell, the page frame) — only when `useOpensWorld(lessonId)`: the pack names a world AND the viewer is a student, or a teacher's `?apercu=eleve` | the lesson's routes, runtime and home arrive |
+| `LessonIndex.jsx`, `classSession/LessonBoard.jsx` | the world's loader arrives |
+| `LessonGameWorld.jsx` | the world's code, the lesson's content and the server's save arrive |
+| `kit/LessonWorld.jsx` (`over`, then `leaving`: it fades over the title in 0.45 s and lets clicks through) | the 3D scene is built |
+
+What makes five mounts ONE screen, and what a change to it must keep:
+
+- **One clock per lesson, outside React** (`readWorldClock`): a new instance goes on where the last one was. The bar
+  never goes back; the drawing's animations start at the phase they had (`--gw-t`, a negative `animation-delay`).
+- **It covers the whole window** (a portal on the body, `z-index` of the world's root): the side bar never shows.
+- **The bar never stands still and never lies.** `stage` = what really landed, weighted by its size (0 the lesson
+  opens · 1 the world is asked for · 2 its light parts are here · 3 its code is here · 4 the scene is built); between
+  two stages it creeps toward the next one, slower and slower, and never reaches it by itself.
+- **Everything that moves is `transform` / `opacity`**, so it keeps moving while the page is busy building the scene.
+- **A wait that lasts is named, calmly**: after 8 s « الاتصال بطيء قليلًا. كلّ شيء يسير جيّدًا، لا تغلق الصفحة. »; offline, at
+  once, « انقطع الاتصال بالأنترنت. سنواصل وحدنا حالما يعود. »; after 30 s, or when the load has failed, « حاول من جديد ».
+- **A failed load is tried again by itself, once**: the page is reloaded (at once, or when the connection is back) —
+  a second `import()` of a chunk that failed is NOT fetched again by the browser (measured). One reload per lesson per
+  two minutes (`sessionStorage`), then the sentence and the button: never a loop.
+- The lesson's name is shown without raw LaTeX (`mathToPlain`); its line and the note's line keep their height.
+- World-neutral: a gem, three lights turning, a few stars — it names no world and no lesson. Reading sizes ≥ 18 px.
+
+Checks: `gameworld/worldLoading.test.jsx` (the clock, the three states), `e2e/gameworld-sync.mjs` (the screen on a
+slow server). NOT measured: how long the scene's build blocks a weak school laptop, and real timings on a school
+network.
 
 ## 2. The mathematical idea of the world
 
@@ -234,7 +270,7 @@ three mistakes end the day. Money is written « دج », without a thousands spa
 ## 2ter-2. A second world: « جزيرة المهمّات » (`gameworld/missionIsle/`, 2026-11-20)
 
 The world of a unit's LAST lesson (`docs/reports/INTEGRATION_LESSON_PLAN.md`). It extends the same runtime
-(`kit/WorldRuntime.js`) and the same shell (`kit/LessonWorld.jsx`), and is registered in `LessonGameWorld.jsx › WORLDS`
+(`kit/WorldRuntime.js`) and the same shell (`kit/LessonWorld.jsx`), and is registered in `worlds.js › WORLDS`
 as `mission-isle`. What differs from « أرخبيل القواسم »: one island (the oasis depot, `divisorIsles/Depot.js`, the
 only file it takes from the other world), no road, no key, no title screen, the robot does not walk — the phase is
 `home` (the lesson's missions, the exam door, the recap, drawn by `MissionIsle.jsx › Home`) or `mission`. The kit's
@@ -252,7 +288,7 @@ the rounds (an order, three options, one right, a fact per wrong option), the wo
 
 The world of 4AM unit 2 « الحساب على الجذور » (design, council and plan: `docs/reports/ROOTS_WORLD_PLAN.md`). It extends
 the same runtime (`kit/WorldRuntime.js`) and the same shell (`kit/LessonWorld.jsx`) and is registered in
-`LessonGameWorld.jsx › WORLDS` as `root-courts`. The owner validated the story of lesson 1 `jidhr-tarbii`
+`worlds.js › WORLDS` as `root-courts`. The owner validated the story of lesson 1 `jidhr-tarbii`
 on 2026-11-21; the lesson was then completed the same day: its written world (practice ladder, « تدرّب », the exam
 sitting, the knowledge map), its board, class test, launch family and lab instrument, and the two things below.
 
@@ -1919,7 +1955,9 @@ state line under the tables):
 | `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
 | `styles/` | eleven style sheets, one per screen (`world`, `practice`, `knowledge`, `cases`, `trainer`, `paper`, `steps`, `knowledgeJourney`, `fit`, `spaces`, `phone`), imported by `styles/index.js` **in the order of the cascade** — `fit.css` and `phone.css` override the others, so a new sheet takes its place in that list and is never imported from a screen. Classes `di-…` | — |
 | `saveSync.js` (+ test) | the browser's copy of the save (`readSave`, `writeSave`) and its copy on the server: `pullSave` before the world mounts, `schedulePush` after a save (`LESSON_V2.md` §1ter) | — |
-| `../LessonGameWorld.jsx`, `../lessonGameWorld.css` | the LOADER of a lesson's world: the world chunk, the lesson's content and the server's save arrive together behind a loading screen; its `WORLDS` map lists the worlds (one entry per world) | the pack's `world` |
+| `../LessonGameWorld.jsx` | the LOADER of a lesson's world: the world chunk, the lesson's content and the server's save arrive together behind the loading screen; one automatic reload when the load fails | the pack's `world` |
+| `../worlds.js` | `WORLDS`: the worlds that exist, one `() => import()` per world (read by the entry bundle: only chunk names) | — |
+| `../WorldLoading.jsx`, `../worldLoading.css` | the ONE loading screen from the click to the title (§1bis) | `lessonId`, `title`, `stage` |
 | `WorldRuntime.js` | **the world runtime**: the three.js scene, the loop, the robot and its movement, the camera, the sky, the things to use, the gems, the state React reads, the hub, the knowledge page's state, the exam ladder, the paper mode, the evidence tally, the save | the pack as `lesson`; a WORLD extends it (below) |
 
 **The pilot's content** (`…/qasim-adad-tabii/world/`, each with its test)

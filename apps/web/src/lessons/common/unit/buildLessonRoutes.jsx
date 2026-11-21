@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Navigate, Route } from 'react-router-dom';
 import { loadLessonRuntimeCore, withLessonStrings } from '../lessonRuntimeLoader';
 import { rememberLessonConfig } from '../../registry';
+import LessonWaiting from '../../LessonWaiting';
 
 // Le runtime de leçon (coquille du mode classe, porte de palier, carte des
 // connaissances, ancre du cahier) est UN lot paresseux partagé par toutes les
@@ -11,7 +12,6 @@ import { rememberLessonConfig } from '../../registry';
 // lourd ici. Voir common/lessonRuntime.jsx et docs/architecture/BUNDLE_BOUNDARIES.md.
 const LessonClassroomShell = lazy(() => loadLessonRuntimeCore().then((m) => ({ default: m.LessonClassroomShell })));
 const LessonPageFrame = lazy(() => loadLessonRuntimeCore().then((m) => ({ default: m.LessonPageFrame })));
-const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
 
 /**
  * Un `lazy()` qui se PRÉCHARGE : `LessonPageFrame` appelle `Component.preload()`
@@ -58,6 +58,8 @@ export function createLessonRoutesBuilder({ printSubject }) {
     // la leçon (registry.getLoadedLessonConfig : carte des connaissances…).
     rememberLessonConfig(config);
     const LessonHome = lazyWithPreload(loadIndex);
+    // What waits: the world's loading screen for a student of a v2 lesson, the neutral page otherwise (LessonWaiting.jsx).
+    const LESSON_FALLBACK = <LessonWaiting lessonId={config.id} title={config.title} />;
     const components = Object.entries(moduleFiles).reduce((acc, [path, loader]) => {
       const match = path.match(/Module(\d+)/);
       // Un module (et ses labs) lit `lesson:manipulation.*` : il attend ces textes.
