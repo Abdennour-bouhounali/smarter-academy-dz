@@ -104,5 +104,30 @@ describe('حصّة القسم — a court of « قصر الساحات » on the 
     expect(html).toContain(`تعلق: تزيد ${tiles('11')}`); // the counter's no-break space
     const ride = renderToString(<MemoFigure opening={{ ...o, a: '14,44', b: '3,8', alt: undefined }} />);
     expect(ride).toContain('data-memo-court="ride"');
+    // no fraction: the figure keeps its one-line captions (lesson 1's figures unchanged)
+    expect(html).not.toContain('data-memo-frac');
+  });
+
+  it('a court or a rod that is a FRACTION: drawn with a real bar in the memo figure and on the board’s cards', () => {
+    // the memo figure: the area 529/49, the rod 3 (a band of 88/49 tile) and the rod 23/7 (it rides)
+    const o = { id: 'f', kind: 'court', a: '529/49', b: '3', alt: '23/7', title: 'كسر' };
+    expect(openingFacts(o).first).toMatchObject({ kind: 'band', diff: '88/49' });
+    expect(openingFacts(o).second).toMatchObject({ b: '23/7', kind: 'ride' });
+    const html = renderToString(<MemoFigure opening={o} />).replaceAll('<!-- -->', '');
+    for (const f of ['529/49', '88/49', '23/7']) expect(html).toContain(`data-memo-frac="${f}"`);
+    expect(html).not.toMatch(/>\s*\d+\/\d+/); // never a slash between two numbers in a drawn text
+    expect((html.match(/<line /g) ?? []).length).toBeGreaterThanOrEqual(3); // three bars
+    // the board: a fraction card keeps its fraction — LaTeX with its bar, never a decimal nor a reduced form
+    const step = { ...rods, area: '722/98', rods: ['2', '18/7', '19/7', '3'], answer: ['19/7'] };
+    const cards = courtCards(step);
+    expect(cards.map((c) => [c.key, c.out.kind])).toEqual([
+      ['2', 'band'],
+      ['18/7', 'band'],
+      ['19/7', 'ride'],
+      ['3', 'jam'],
+    ]);
+    expect(cards[2].tex).toBe('\\dfrac{19}{7}');
+    expect(board(step)).toContain('data-cs-court-card="19/7"');
+    expect(board(step)).toContain('data-court="722/98"'); // the court's gate shows the area as given
   });
 });

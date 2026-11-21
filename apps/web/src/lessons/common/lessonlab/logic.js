@@ -238,6 +238,35 @@ export const courtSettled = (a, tried = []) => {
 };
 
 /**
+ * « منصّة الكسر » — a court of `a` whole tiles, each tile cut into q × q small pieces (pieces of side 1/q), and the square
+ * platform built on a rod of p/q laid from the court's corner: it holds p × p pieces, the court a × q × q. Integers
+ * only, never a root: `plat`, `court`, `diff` (plat − court), `far` (its size), `verdict` 'fits' (equal), 'band' (the
+ * platform is smaller: `far` pieces of the court stay uncovered) or 'jam' (it is larger by `far` pieces). `pMax`: the
+ * longest rod the ruler offers — one tile beyond the court's side.
+ */
+export function pieceOf(a, q, p) {
+  const court = a * q * q;
+  const plat = p * p;
+  const diff = plat - court;
+  return {
+    a,
+    q,
+    p,
+    court,
+    plat,
+    diff,
+    far: Math.abs(diff),
+    verdict: diff === 0 ? 'fits' : diff < 0 ? 'band' : 'jam',
+    pMax: isqrt(court) + q + 1,
+  };
+}
+/**
+ * Is the rod x (`{ q, far }`) nearer its court than `best`? The difference in TILES is far ÷ (q × q): compared by
+ * multiplying across, never by a division — the record the hand keeps.
+ */
+export const closerPiece = (x, best) => !best || x.far * best.q * best.q < best.far * x.q * x.q;
+
+/**
  * « شريط الكسر » — a strip of b cells with its first a cells lit (the fraction a/b), and a piece of length k laid along it
  * from 0. What the drawing reads, never a conclusion: the two divisions (the lit part by k, the whole strip by k), where
  * the light ends — on a joint between two pieces or INSIDE a piece (`cut`: the start and end of that piece) —, what is
@@ -376,6 +405,11 @@ export const QUESTS = {
     { id: 'bracket', text: 'احصر ضلع ساحة أكبر من 150 بلاطة بين ضلعَي مربّعين جرّبتهما.' },
     { id: 'most', text: 'اجعل ما يبقى خارج أكبر مربّع كامل 20 بلاطة على الأقلّ.' },
   ],
+  piece: [
+    { id: 'exact', text: 'اجعل منصّة مقامُ مقياسها أكبر من 1 تغطّي ساحة أكبر من 10 بلاطات بالضبط.' },
+    { id: 'one', text: 'اجعل الفرق بين المنصّة والساحة قطعة واحدة فقط، والمقام أكبر من 4.' },
+    { id: 'close', text: 'قرّب منصّة من ساحتها حتى يصير الفرق أصغر من جزء من مئة من البلاطة، دون أن يساويها.' },
+  ],
   rules: [
     { id: 'three', text: 'أضِئ ثلاثة مصابيح معًا.' },
     { id: 'nine', text: 'أضِئ مصباح 9 بعدد من ثلاثة أرقام.' },
@@ -490,6 +524,15 @@ export function observe(tool, st, seen) {
       if (!C.perfect && a > 150 && courtSettled(a, tried)) put('bracket');
       if (C.left >= 20 && tried.includes(C.k)) put('most');
     }
+  } else if (tool === 'piece') {
+    // reported only after the hand moved the rod (`moved`), with the numerator `p` it holds; b is the denominator
+    if (st.moved && Number.isInteger(st.p) && st.p > 0) {
+      const P = pieceOf(a, b, st.p);
+      if (P.verdict === 'fits' && b > 1 && a > 10) put('exact');
+      if (P.far === 1 && b > 4) put('one');
+      // the difference in tiles, far ÷ (b × b), under one hundredth — and not zero
+      if (P.far > 0 && P.far * 100 < b * b) put('close');
+    }
   } else if (tool === 'rules') {
     const lit = digitRules(a).filter((x) => x.ok).length;
     if (a > 0 && lit >= 3) put('three');
@@ -531,6 +574,11 @@ export function luckyPair(tool, rand = Math.random) {
       return { a: k * k, b: 1 };
     }
     return { a: int(12, ah), b: 1 };
+  }
+  if (tool.id === 'piece') {
+    // a court of more than one tile — a perfect square once in four draws — and a denominator from 2
+    const k = int(2, 7);
+    return { a: rand() < 0.25 ? k * k : int(2, ah), b: int(2, bh) };
   }
   if (tool.id === 'lists') {
     // two numbers that share a divisor bigger than 1: the two lists meet in more than 1

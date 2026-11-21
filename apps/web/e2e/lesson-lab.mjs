@@ -3,7 +3,7 @@
 // student from one instrument to the next, « جرّب » ticked only by what he makes. Then lesson 5 (in its game world): its
 // « مِنضدة القائمتين » played until both lists close. Then lesson 6, the PGCD algorithms (in its game world): its own
 // instrument and the cabinet of three grades. Nothing may scroll, at any moment.
-// Run (dev server up): [E2E_SIZE=1366x768] [E2E_LAB_ONLY=2quater] node apps/web/e2e/lesson-lab.mjs [outDir]
+// Run (dev server up): [E2E_SIZE=1366x768] [E2E_LAB_ONLY=2quater|2quinquies] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
 import { tinyText } from './lib/walk.mjs';
@@ -136,7 +136,8 @@ const planksDiff = (got, want, a, b, d) => {
 
 // ONE step alone: E2E_LAB_ONLY=2quater runs that step only (the others are skipped); unset, the whole walk runs
 const ONLY = process.env.E2E_LAB_ONLY ?? null;
-if (ONLY && ONLY !== '2quater') throw new Error(`E2E_LAB_ONLY: no step « ${ONLY} » can run alone (2quater)`);
+const ALONE = ['2quater', '2quinquies'];
+if (ONLY && !ALONE.includes(ONLY)) throw new Error(`E2E_LAB_ONLY: no step « ${ONLY} » can run alone (${ALONE.join(', ')})`);
 if (!ONLY) {
 // ══ 1. the first lesson of 4AM: the lab opens from the title screen of its game world ══
 await page.goto(`${BASE}/qasim-adad-tabii`, { waitUntil: 'networkidle' }); heard = 0;
@@ -514,6 +515,58 @@ await page.waitForSelector('[data-ll-court]');
 }
 await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of jidhr-tarbii');
+
+}
+
+if (!ONLY || ONLY === '2quinquies') {
+// ══ 2quinquies. « الأعداد الناطقة والأعداد غير الناطقة » (unit 2, lesson 2, « قصر الساحات »): its one instrument « منصّة الكسر » ══
+// written 2026-11-21, NOT run yet. Every count is checked against the walk's OWN integer arithmetic (never the tool's).
+await page.goto(`${BASE}/natiqa-ghayr-natiqa`, { waitUntil: 'networkidle' }); heard = 0;
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="natiqa-ghayr-natiqa"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'piece', `natiqa-ghayr-natiqa opens the lab from its world: its one instrument is منصّة الكسر (${mine})`); }
+if (await page.locator('[data-ll-piece]').count() === 0) await page.click('[data-ll-tool="piece"]');
+await page.waitForSelector('[data-ll-piece]');
+{
+  /** What a rod of p/q over a court of a tiles must count — computed here: p × p pieces against a × q × q. */
+  const want = (a, q, p) => { const court = a * q * q; const plat = p * p; return { q: String(q), p: String(p), court: String(court), plat: String(plat), verdict: plat === court ? 'fits' : plat < court ? 'band' : 'jam', far: String(Math.abs(plat - court)) }; };
+  const drawn = () => page.evaluate(() => { const d = document.querySelector('[data-ll-piece]').dataset; return { q: d.q, p: d.p, court: d.court, plat: d.plat, verdict: d.verdict, far: d.far }; });
+  const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+  const rodP = async () => Number(await page.getAttribute('[data-ll-piece]', 'data-p'));
+  const best = () => page.getAttribute('[data-ll-piece-best]', 'data-ll-piece-best').catch(() => null);
+  await setNum('a', 2); await setNum('b', 5);
+  const p0 = await rodP();
+  expect(same(await drawn(), want(2, 5, p0)) && await page.locator('[data-ll-piece-best]').count() === 0 && await quest('one') === '0', `منصّة الكسر, a court of 2 cut in 5 × 5 and a rod of ${p0}/5: counted as computed, no nearest rod before the hand moves`);
+  console.log('    text on screen (px): facts', await px('.ll-court__facts p'), '· reading', await px('.ll-reading__text'));
+  await shot('piece-2-5-opening');
+  // the hand: « + » / « − » to 7/5 — 49 pieces against 50, a band of ONE piece, the nearest rod kept
+  for (let p = p0; p !== 7; p += p < 7 ? 1 : -1) await page.click(p < 7 ? '[data-ll-piece-plus]' : '[data-ll-piece-minus]');
+  await page.waitForTimeout(250);
+  expect(same(await drawn(), want(2, 5, 7)) && (await page.getAttribute('[data-ll-piece-verdict]', 'data-ll-piece-verdict')) === 'band' && await best() === '7:5:1', 'the rod 7/5: 49 pieces against 50 — a band of one piece, kept as the nearest rod');
+  expect(await quest('one') === '1', '« one piece apart, denominator above 4 » is ticked by what was made');
+  await shot('piece-2-5-seven');
+  // a finer denominator keeps the rod's length: 7/5 → 17/12, 289 against 288 — one piece over, and nearer in tiles
+  await setNum('b', 12); await page.waitForTimeout(250);
+  expect(same(await drawn(), want(2, 12, Math.round((7 * 12) / 5))) && await best() === '17:12:1' && await quest('close') === '1', 'denominator 12: the rod becomes 17/12 — 289 against 288, one piece over, the nearest rod (1/144 of a tile), « under a hundredth » ticked');
+  await shot('piece-2-12');
+  // a perfect square, by a real drag of the handle: 16 tiles in 3 × 3 pieces, the rod 12/3 covers it exactly
+  await setNum('a', 16); await setNum('b', 3);
+  {
+    const pMax = Math.floor(Math.sqrt(16 * 9)) + 3 + 1; // one tile beyond the court's side (integers: 144 is 12 × 12)
+    const svg = await page.locator('[data-ll-piece]').boundingBox(); const kk = Math.min(svg.width / 560, svg.height / 370);
+    const ox = svg.x + (svg.width - 560 * kk) / 2; const oy = svg.y + (svg.height - 370 * kk) / 2;
+    const at = (v) => ({ x: ox + (50 + ((v - 1) * 470) / (pMax - 1)) * kk, y: oy + 34 * kk }); // the ruler: 1 at 50, pMax at 520, y = 34
+    const from = at(await rodP()); const to = at(12);
+    await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move(to.x, to.y, { steps: 12 }); await page.mouse.up(); await page.waitForTimeout(300);
+  }
+  expect(same(await drawn(), want(16, 3, 12)) && await best() === '12:3:0' && await page.locator('[data-ll-piece-grid="3"]').count() === 1, 'dragging the rod to 12/3 on 16: 144 pieces each — it covers the court exactly, its pieces drawn');
+  expect(await quest('exact') === '1', '« a court above 10 covered exactly, denominator above 1 » is ticked by what was made');
+  const heardPiece = await since();
+  expect(heardPiece.includes('tick') && heardPiece.includes('fit') && heardPiece.includes('rest'), `the rod ticks, a band rests, the exact cover chimes (${heardPiece.join(' ')})`);
+  await shot('piece-16-3-fits');
+}
+await page.click('[data-ll-close]'); await page.waitForTimeout(500);
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of natiqa-ghayr-natiqa');
 
 }
 

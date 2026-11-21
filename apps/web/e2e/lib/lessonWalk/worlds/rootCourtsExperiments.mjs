@@ -1,15 +1,15 @@
-// The two EXPERIMENT KINDS of « قصر الساحات » (`rootCourts/InquiryCalc.jsx`, `rootCourts/InquiryRoundtrip.jsx`),
-// registered in ../experiments.mjs › EXPERIMENTS under `calc` and `roundtrip`. Each plays its screen through its
+// The EXPERIMENT KINDS of « قصر الساحات » (`rootCourts/InquiryCalc.jsx`, `rootCourts/InquiryRoundtrip.jsx`,
+// `rootCourts/InquiryChase.jsx`), registered in ../experiments.mjs › EXPERIMENTS under `calc`, `roundtrip` and `chase`. Each plays its screen through its
 // `data-iq-*` hooks; every answer is computed HERE from what the screen shows (the court's area, the rod's number, what
 // goes into a station — `window.__inquiry` gives the question, never what comes out: defects.md C1), and each ends
 // before its last « next » (`playExperiment` clicks it).
 import { inquiryFits, tellsNothing } from '../checks.mjs';
-import { platform, q, rootOf, sq, write, eq } from './exact.mjs';
+import { platform, q, rootOf, sq, write, eq, mul, cmp, absq, sub } from './exact.mjs';
 
 /** The frame of this world's investigations, for checks.mjs › inquiryFits. */
 export const RC_FRAME = {
   frame: '.rq-iq',
-  parts: 'button, input, .rq-iq__lead, .rq-iq__goal, .rq-ask, .rq-fact, .rq-table, .rq-strips, svg',
+  parts: 'button, input, .rq-iq__lead, .rq-iq__goal, .rq-ask, .rq-fact, .rq-table, .rq-strips, .rq-ch__card, svg',
   scene: 'svg',
   // stacked lines of one label (« 30 » over « بلاطة » on the gate, « √30 = » over the calculator's ten digits): their
   // boxes are the font's whole em and meet by up to ~40 % of a line while the glyphs stand apart (crop enlarged ×4 on
@@ -206,4 +206,104 @@ export async function roundtripExperiment(ctx) {
   }
   await tellsNothing(w, page, `${ctx.name}, the end`, ctx.forbid(), '.rq-iq');
   await fits(ctx, `${ctx.name}-strips`);
+}
+
+/** A fraction is never written « p/q » as text on the screen of `chase` (it is drawn over a real bar). */
+const SLASH = /\d\s*\/\s*\d/;
+
+/**
+ * `chase` — the court of `spec.a` and a list of fractions p/q, better and better. For each one he PREDICTS what its
+ * platform will do (band / jam / ride) before it comes down; the walk computes the fact HERE from what the screen shows
+ * (the area, p and q of the rod drawn over its bar): p × p small tiles against a × q × q. On the LAST fraction he says
+ * « it rides » — the belief this key fights (« a fine enough fraction will close the gap ») — and meets the fact. Then
+ * the closing question: in how many did it ride? — tapped from the walk's own count. Ends before « انتهيت ».
+ */
+export async function chaseExperiment(ctx) {
+  const { w, page } = ctx;
+  const area = await page.getAttribute('.rq-iq', 'data-iq-area');
+  w.expect(area != null, `${ctx.name}: the court of the experiment is on screen (${area} tiles)`);
+  await tellsNothing(w, page, `${ctx.name}, the opening`, ctx.forbid(), '.rq-iq');
+  await fits(ctx, `${ctx.name}-open`);
+  const n = await page.locator('.rq-iq .rq-ch__dot').count();
+  const kinds = [];
+  for (let k = 0; k < 8; k += 1) {
+    const st = await stage(page);
+    if (st === 'count') break;
+    w.expect(st === 'say', `${ctx.name}, fraction ${k + 1}: he is asked BEFORE the platform comes down (stage ${st})`);
+    const p = await page.getAttribute('.rq-iq', 'data-iq-p');
+    const d = await page.getAttribute('.rq-iq', 'data-iq-q');
+    // the rod is drawn over its bar: p above, q below — and nothing of the facts is shown before his prediction
+    const shown = await page.evaluate(() => {
+      const f = document.querySelector('.rq-iq .rq-fr--big');
+      return {
+        n: f?.children[0]?.textContent.trim(),
+        d: f?.children[1]?.textContent.trim(),
+        bar: f ? getComputedStyle(f.children[0]).borderBottomWidth : '0px',
+        before: document.querySelector('.rq-iq [data-iq-platform]')?.dataset.iqPlatform ?? null,
+      };
+    });
+    w.check(
+      shown.n === p && shown.d === d && parseFloat(shown.bar) >= 1 && shown.before === '',
+      `${ctx.name}, ${p}/${d}: the rod is drawn over a real bar (${shown.n} over ${shown.d}, bar ${shown.bar}) and no number of the fact is shown before he predicts`,
+    );
+    const platformN = write(mul(p, p));
+    const courtN = write(mul(mul(area, d), d));
+    const c = cmp(platformN, courtN);
+    const kind = c === 0 ? 'ride' : c < 0 ? 'band' : 'jam';
+    const gap = write(absq(sub(courtN, platformN)));
+    const last = k + 1 >= n;
+    const said = last ? 'ride' : kind;
+    if (k === 0) await fits(ctx, `${ctx.name}-ask`);
+    await page.click(`.rq-iq [data-iq-say="${said}"]`);
+    await waitStage(page, ['seen']);
+    const got = await page.evaluate((i) => {
+      const r = document.querySelector(`.rq-iq [data-iq-row="${i}"]`);
+      const box = document.querySelector('.rq-iq');
+      return {
+        platform: document.querySelector('.rq-iq [data-iq-platform]')?.dataset.iqPlatform,
+        court: document.querySelector('.rq-iq [data-iq-courtline]')?.dataset.iqCourtline,
+        relation: document.querySelector('.rq-iq [data-iq-relation]')?.dataset.iqRelation,
+        row: r ? { kind: r.dataset.iqRowKind, text: r.textContent.replace(/\s/g, '') } : null,
+        lens: document.querySelector('.rq-iq [data-iq-lens]')?.dataset.iqLens ?? null,
+        text: box.textContent,
+      };
+    }, k);
+    const f = await fact(page);
+    w.check(
+      got.platform === platformN &&
+        got.court === courtN &&
+        got.relation === kind &&
+        got.row?.kind === kind &&
+        got.row.text.includes(platformN) &&
+        got.row.text.includes(courtN) &&
+        (kind === 'ride' || got.row.text.endsWith(gap)),
+      `${ctx.name}, ${p}/${d} on ${area}: ${p} × ${p} = ${platformN} against ${area} × ${d} × ${d} = ${courtN} small tiles — ${kind}${kind === 'ride' ? '' : `, ${gap} apart`} — the card and the row say what the walk computed (« ${got.row?.text.slice(0, 40)} »${got.lens ? `, lens ×10^${got.lens}` : ''})`,
+    );
+    w.check(
+      (said === kind ? !f.startsWith(MISS) : f.startsWith(MISS)) && !WRONG.test(f),
+      `${ctx.name}, ${p}/${d}: his prediction (${said}) is answered by the fact, never « wrong » (« ${f.slice(0, 90)} »)`,
+    );
+    w.check(!SLASH.test(got.text), `${ctx.name}, ${p}/${d}: no fraction is written « p/q » as text on the screen`);
+    kinds.push(kind);
+    await tellsNothing(w, page, `${ctx.name}, after ${p}/${d}`, ctx.forbid(), '.rq-iq');
+    await fits(ctx, `${ctx.name}-${p}-${d}`);
+    await page.click('.rq-iq [data-iq-next]');
+    await page.waitForTimeout(200);
+  }
+  // the closing question: a fact to observe — the walk counts the rides it computed itself
+  w.expect((await stage(page)) === 'count', `${ctx.name}: after the last fraction, ONE closing question`);
+  w.check(kinds.length === n, `${ctx.name}: every fraction of the list was tried (${kinds.length} of ${n})`);
+  const rides = kinds.filter((x) => x === 'ride').length;
+  const tap = rides === 0 ? '0' : rides === kinds.length ? 'all' : rides === 1 ? '1' : null;
+  w.expect(tap != null, `${ctx.name}: the rides (${rides} of ${kinds.length}) are one of none / one / all`);
+  await fits(ctx, `${ctx.name}-count`);
+  await page.click(`.rq-iq [data-iq-count="${tap}"]`);
+  await waitStage(page, ['counted']);
+  const f = await fact(page);
+  w.check(
+    f.length > 3 && !f.startsWith(MISS) && !WRONG.test(f),
+    `${ctx.name}: he taps « ${tap} » — the world answers with its count (« ${f.slice(0, 90)} »)`,
+  );
+  await tellsNothing(w, page, `${ctx.name}, the end`, ctx.forbid(), '.rq-iq');
+  await fits(ctx, `${ctx.name}-counted`);
 }

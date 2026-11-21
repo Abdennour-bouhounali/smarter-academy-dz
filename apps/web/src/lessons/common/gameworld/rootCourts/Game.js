@@ -27,7 +27,7 @@ import * as THREE from 'three';
 import { WorldRuntime, easeOut } from '../kit/WorldRuntime';
 import { seeded } from '../engine/builders';
 import { GateRun } from '../kit/GateRun';
-import { outcome, wall, isWall, lengthOf, rodText, rodTex, tex, approx, equal, dialRod } from './logic';
+import { outcome, wall, isWall, lengthOf, rodText, rodTex, tex, approx, dialRod } from './logic';
 import {
   makeTerrace,
   makeCourt,
@@ -43,6 +43,7 @@ import { WORLD_TEXT, withStory, tiles } from './strings';
 const SKY = [0x3f93ff, 0xffe9c9, 0xfff1d8, 2.7, 1.05, 0];
 const HOVER = 1.55; // the height of the platform while he sets the rod
 const GAP = 5; // between two courts of one terrace
+const CELLS_SIDE = 20; // the widest platform whose tiles are counted one by one
 const TERRACE_GAP = 46; // from one terrace to the next, along the line
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 /** A gate of a practice wave on the rail: a fraction « p/q » is drawn with a real bar, anything else as it is written. */
@@ -151,6 +152,7 @@ export class RootCourtsGame extends WorldRuntime {
       equation: null,
       verdict: null,
       objective: '',
+      count: null,
       run: null,
       recall: [],
       stars: { ...(sv?.stars ?? {}) },
@@ -293,6 +295,43 @@ export class RootCourtsGame extends WorldRuntime {
       new THREE.MeshStandardMaterial({ color: 0x06b6d4, emissive: 0x06b6d4, emissiveIntensity: 1.6 }),
     );
     this.rodBar.visible = false;
+    // THE SAME LENGTH ON THE OTHER SIDE: a platform is a square — the rod's length is written along the side wall too
+    this.sideBar = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.13, 0.13, 1, 10).rotateX(Math.PI / 2).translate(0, 0, -0.5),
+      this.rodBar.material,
+    );
+    this.sideBar.visible = false;
+    this.sideLabel = makeLabel('', { h: 0.85, bg: '#1d4ed8', on: false });
+    // the tiles of a platform, lit one by one while they are counted, and the number the count reaches
+    this.cells = new THREE.InstancedMesh(
+      new THREE.BoxGeometry(1, 0.06, 1),
+      new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xf59e0b, emissiveIntensity: 0.9 }),
+      CELLS_SIDE * CELLS_SIDE,
+    );
+    this.cells.count = 0;
+    this.cells.visible = false;
+    this.countLabel = makeLabel('', { h: 1.5, bg: '#0f2147', on: false });
+    // the key of a court he has just ridden
+    this.keyMesh = new THREE.Group();
+    const gold = new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 1.4 });
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(0.32, 0.1, 10, 24), gold);
+    ring.position.y = 0.45;
+    const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.75, 0.14), gold);
+    shaft.position.y = -0.2;
+    const tooth = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.12, 0.14), gold);
+    tooth.position.set(0.15, -0.45, 0);
+    this.keyMesh.add(ring, shaft, tooth);
+    this.keyMesh.visible = false;
+    this.keyCourt = null;
+    this.keyIt = this.addInteract(
+      0,
+      0,
+      () => (this.keyCourt && !this.hold ? this.T.prompt.key : null),
+      () => this.takeKey(),
+      2.6,
+      3.6,
+    );
+    this.scene.add(this.sideBar, this.sideLabel, this.cells, this.countLabel, this.keyMesh);
     this.onDropKey = (e) => {
       if (e.code === 'KeyX' && !e.repeat && !/^(INPUT|TEXTAREA)$/.test(e.target?.tagName ?? '')) this.putDown();
     };
@@ -520,7 +559,8 @@ export class RootCourtsGame extends WorldRuntime {
     if (this.state.phase === 'lift') return;
     const T = this.T.objective;
     const here = this.ter[this.state.at];
-    let o = this.story.objective?.(this) ?? null;
+    // the key of a court he has just ridden comes before anything the story asks next
+    let o = this.keyCourt && !this.hold ? T.key : (this.story.objective?.(this) ?? null);
     if (!o) {
       const open = here.courts.find((c) => !this.courtDone(c) && this.courtOpen(c));
       const waiting = this.courts.find((c) => c.ridden && c.target != null && this.sideOf(c) === here.i);
@@ -557,6 +597,76 @@ export class RootCourtsGame extends WorldRuntime {
   rodNow() {
     const h = this.hold;
     return h.held ?? dialRod(Math.round(h.marks), h.step);
+  }
+  /**
+   * THE COUNT: the lens rises over the court and looks straight down; the tiles of the platform light one by one, from
+   * the corner post, row after row, while a counter runs at the top of the screen; the last number stays written on the
+   * platform. The first tiles go slowly — he counts with it — then faster (a court of 196 takes about five seconds).
+   */
+  async countCells(c, n, mid, y) {
+    const total = n * n;
+    const span = Math.max(c.size, n * c.unit);
+    this.cine = {
+      pos: new THREE.Vector3(mid.x, span * 1.25 + 9, mid.z + span * 0.32 + 0.5),
+      look: new THREE.Vector3(mid.x, 0, mid.z),
+    };
+    const m = new THREE.Matrix4();
+    this.cells.count = 0;
+    this.cells.visible = true;
+    await this.wait(0.9);
+    for (let k = 0; k < total && !this.dead; k += 1) {
+      m.makeScale(c.unit * 0.9, 1, c.unit * 0.9);
+      m.setPosition(c.post.x + ((k % n) + 0.5) * c.unit, y + 0.12, c.post.z - (Math.floor(k / n) + 0.5) * c.unit);
+      this.cells.setMatrixAt(k, m);
+      this.cells.count = k + 1;
+      this.cells.instanceMatrix.needsUpdate = true;
+      this.set({ count: k + 1 });
+      if (total <= 40 || k % 4 === 0) this.audio.play('lane');
+      await this.wait(Math.max(2.4 / total, 0.26 * 0.9 ** k));
+    }
+    this.countLabel.userData.set(String(total));
+    this.countLabel.position.set(c.post.x + (n * c.unit) / 2, y + 1.3, c.post.z - (n * c.unit) / 2);
+    this.countLabel.visible = true;
+    await this.wait(0.8);
+  }
+  /** The key of a court he has just ridden floats in front of him: E takes it. */
+  showKey(c) {
+    const h = this.hero;
+    this.keyCourt = c;
+    this.keyMesh.position.set(h.pos.x, 2.5, h.pos.z - 1.4);
+    this.keyMesh.scale.setScalar(1.7);
+    this.keyMesh.visible = true;
+    this.keyIt.x = h.pos.x;
+    this.keyIt.z = h.pos.z - 0.6;
+    this.audio.play('key');
+    this.say(this.T.say.key, 5);
+  }
+  async takeKey() {
+    const c = this.keyCourt;
+    if (!c || this.busy()) return;
+    this.keyCourt = null;
+    this.set({ phase: 'forge', prompt: null });
+    const from = this.keyMesh.position.clone();
+    await this.tween(0.55, (t) => {
+      this.keyMesh.position.lerpVectors(from, this.hero.pos.clone().setY(1.4), t);
+      this.keyMesh.scale.setScalar(1.7 * (1 - t * 0.7));
+    });
+    this.keyMesh.visible = false;
+    this.keyMesh.scale.setScalar(1);
+    this.particles.burst(this.hero.pos.clone().setY(1.5), 0xfde68a, 40, 5, 2, 0.9);
+    this.audio.play('crystal');
+    this.cells.visible = false;
+    this.countLabel.visible = false;
+    this.set({ count: null, phase: 'play' });
+    this.guessed(c, true);
+    // the platform carries him on when this court is the terrace's way out and nothing else waits here
+    const rest = this.ter[c.terrace].courts.some((x) => x !== c && !this.courtDone(x) && this.courtOpen(x));
+    if (c.target == null || rest) {
+      this.refreshObjective();
+      return;
+    }
+    this.say(this.T.say.ride, 3);
+    await this.fly(c, 'away');
   }
   /** He takes the rod of a court. A court that asks « will it ride? » (`ask: 'rides'`) asks it once, BEFORE any try. */
   take(c) {
@@ -622,7 +732,9 @@ export class RootCourtsGame extends WorldRuntime {
       this.flags.grabbed = true;
       this.say(this.T.say.grab, 7);
     }
-    this.set({ equation: null, verdict: null, last: null });
+    this.cells.visible = false;
+    this.countLabel.visible = false;
+    this.set({ equation: null, verdict: null, last: null, count: null });
     this.syncRod();
     this.refreshObjective();
   }
@@ -707,39 +819,27 @@ export class RootCourtsGame extends WorldRuntime {
     return this.canClamp(h.court) && Math.abs(Math.round(h.marks) * step - h.court.side) < Math.max(0.32, step * 0.56);
   }
   /** He lowers the platform. A rod of whole tiles asks first how many tiles it covers: the prediction comes before the fact. */
+  /** He lowers the platform he has set: the world answers at once — it asks him nothing it is about to show. */
   lower() {
-    const h = this.hold;
-    const r = this.rodNow();
-    if (h.step === '1' && h.court.predict !== false) {
-      this.audio.play('ui');
-      this.set({ phase: 'dialog', prompt: null, overlay: { type: 'predict', a: h.court.a, s: rodText(r) } });
-    } else this.run(h.court, r, null);
-  }
-  answerPredict(value) {
-    const h = this.hold;
-    if (!h || this.state.overlay?.type !== 'predict') return;
-    this.run(h.court, this.rodNow(), String(value).trim());
+    this.run(this.hold.court, this.rodNow());
   }
 
   /** THE WORLD ANSWERS: the platform comes down, and it rides, leaves a band, or jams. */
-  async run(c, r, predicted) {
+  async run(c, r) {
     const out = outcome(r, c.a);
     const len = lengthOf(r) * c.unit;
     c.tries += 1;
     this.tries[c.id] = c.tries;
     this.log = [...this.log, { a: c.a, s: r, kind: out.kind }].slice(-24);
     this.input.clear();
-    let right = null;
-    if (predicted != null) {
-      try {
-        right = equal(predicted, out.covers);
-      } catch {
-        right = false;
-      }
-    }
+    // A WHOLE rod: the area is COUNTED in front of him, tile by tile, seen from above — the product is written only
+    // once the count has reached it (owner, 2026-11-21: never ask him a number the gate already shows; show how the
+    // area comes from the side)
+    const whole = !isWall(r) && /^\d+$/.test(r.q) && Number(r.q) >= 1 && Number(r.q) <= CELLS_SIDE ? Number(r.q) : 0;
     // a rod taken from the wall has no product to show: « its length × itself = the area » is not the world's to say
     const eq = { s: rodTex(r), covers: tex(out.covers), a: c.a, kind: null, wall: isWall(r) };
-    this.set({ phase: 'forge', overlay: null, prompt: null, verdict: null, equation: eq });
+    this.set({ phase: 'forge', overlay: null, prompt: null, verdict: null, equation: whole ? null : eq, count: null });
+    this.countLabel.visible = false;
     this.rodLabel.visible = false;
     this.areaLabel.visible = false;
     const mid = { x: c.post.x + c.size / 2, z: c.post.z - c.size / 2 };
@@ -756,6 +856,10 @@ export class RootCourtsGame extends WorldRuntime {
       p.position.y = HOVER + (rest - HOVER) * t;
     });
     if (this.dead) return;
+    if (whole) {
+      await this.countCells(c, whole, mid, rest);
+      if (this.dead) return;
+    }
     p.userData.tone(out.kind);
     if (out.kind === 'ride') {
       this.audio.play('success');
@@ -778,13 +882,10 @@ export class RootCourtsGame extends WorldRuntime {
     this.set({
       equation: { ...eq, kind: out.kind },
       verdict: {
-        right,
-        predicted,
         covers: out.covers,
         kind: out.kind,
         diff: out.diff,
         wall: isWall(r),
-        first: right === true && c.tries === 1,
       },
     });
     this.robot.setChest(out.kind === 'ride' ? '✓' : '•', out.kind === 'ride' ? true : undefined);
@@ -802,22 +903,17 @@ export class RootCourtsGame extends WorldRuntime {
       this.hold = null;
       this.rodBar.visible = false;
       this.set({ stars: { ...this.state.stars, [c.id]: stars }, rod: null, held: null, equation: null, verdict: null });
-      this.guessed(c, true);
-      // it flies at once when this court is the terrace's way out and nothing else waits here; otherwise the platform
-      // stays on its court (and, for the way out, waits there until the terrace is finished)
-      const rest = this.ter[c.terrace].courts.some((x) => x !== c && !this.courtDone(x) && this.courtOpen(x));
-      if (c.target == null || rest) {
-        this.park(c, 'home');
-        this.set({ phase: 'play' });
-        this.refreshObjective();
-        return;
-      }
-      this.say(this.T.say.ride, 3);
-      await this.fly(c, 'away');
+      // THE KEY OF THE COURT appears over its platform: he takes it, and the platform carries him on
+      this.park(c, 'home');
+      this.showKey(c);
+      this.set({ phase: 'play' });
+      this.refreshObjective();
       return;
     }
     if (this.nears(c, r, out.kind)) return;
     // a band, a jam: the platform comes back over the court, the rod stays in his hand
+    this.cells.visible = false;
+    this.countLabel.visible = false;
     p.rotation.set(0, 0, 0);
     p.userData.tone('hover');
     await this.tween(0.5, (t) => {
@@ -830,6 +926,7 @@ export class RootCourtsGame extends WorldRuntime {
       phase: 'play',
       equation: null,
       verdict: null,
+      count: null,
       last: { s: eq.s, covers: eq.covers, kind: out.kind, diff: out.diff },
     });
     // the story may take the rod back (this court has nothing more to give for now): he is free to walk elsewhere,
@@ -1034,6 +1131,8 @@ export class RootCourtsGame extends WorldRuntime {
   }
   /** The platform flies, the robot on it: up, across in an arc, down. */
   async fly(c, side) {
+    this.cells.visible = false;
+    this.countLabel.visible = false;
     const p = c.platform;
     const len = lengthOf(c.ridden) * c.unit;
     const from = p.position.clone();
@@ -1210,12 +1309,24 @@ export class RootCourtsGame extends WorldRuntime {
       this.rodLabel.userData.set(rodText(r));
       this.rodLabel.position.set(c.post.x + len / 2, 2.05, c.rail - 0.5);
       this.rodLabel.visible = len > 0.05;
+      this.sideBar.visible = len > 0.05;
+      this.sideBar.position.set(c.post.x - 0.45, 0.95, c.post.z);
+      this.sideBar.scale.set(1, 1, Math.max(0.02, len));
+      this.sideLabel.userData.set(rodText(r));
+      this.sideLabel.position.set(c.post.x - 1.35, 2.05, c.post.z - len / 2);
+      this.sideLabel.visible = len > 0.05;
       c.parts.far.visible = this.canClamp(c);
       this.follow.x = hero.pos.x;
       this.follow.z = hero.pos.z;
       this.syncRod();
     }
+    if (this.keyMesh.visible) {
+      this.keyMesh.rotation.y += dt * 2.2;
+      this.keyMesh.position.y = 2.5 + Math.sin(this.time * 3) * 0.14;
+    }
     if (!this.hold || !this.rodBar.visible) {
+      this.sideBar.visible = false;
+      this.sideLabel.visible = false;
       this.rodTip.visible = false;
       this.rodLight.intensity = 0;
     }

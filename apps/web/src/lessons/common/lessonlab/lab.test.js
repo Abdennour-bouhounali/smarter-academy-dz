@@ -23,6 +23,8 @@ import {
   stripOf,
   courtOf,
   courtSettled,
+  pieceOf,
+  closerPiece,
   decText,
   hundredths,
   QUESTS,
@@ -94,7 +96,7 @@ describe('مختبري — the instruments a lesson may show', () => {
       'tayin-pgcd',
     ]);
     // the instruments of lessons 7 and 8 come after it
-    expect(lab.all.length).toBe(TOOLS.filter((t) => !['duo', 'strip', 'court'].includes(t.id)).length);
+    expect(lab.all.length).toBe(TOOLS.filter((t) => !['duo', 'strip', 'court', 'piece'].includes(t.id)).length);
   });
 
   it('« تعيين القاسم المشترك الأكبر »: its own instrument (the two lists BUILT), lesson 4’s beside it in the cabinet', () => {
@@ -477,6 +479,58 @@ describe('مختبري — the mathematics the instruments draw', () => {
     for (const q of QUESTS.court) expect(q.text).not.toMatch(/قضيب|خطأ|خاطئ|غلط/);
   });
 
+  it('« منصّة الكسر »: the pieces of the platform and of the court counted in integers, and the nearest rod kept', () => {
+    for (let a = 1; a <= 50; a += 1)
+      for (let q = 1; q <= 12; q += 1) {
+        const { pMax } = pieceOf(a, q, 1);
+        // one tile beyond the side of the court: the rod (pMax − q − 1)/q is not longer than the side, pMax/q is
+        expect((pMax - q - 1) ** 2).toBeLessThanOrEqual(a * q * q);
+        expect(pMax ** 2).toBeGreaterThan(a * q * q);
+        let fits = 0;
+        for (let p = 1; p <= pMax; p += 1) {
+          const P = pieceOf(a, q, p);
+          expect([P.court, P.plat, P.diff, P.far]).toEqual([
+            a * q * q,
+            p * p,
+            p * p - a * q * q,
+            Math.abs(p * p - a * q * q),
+          ]);
+          expect(P.verdict).toBe(p * p === a * q * q ? 'fits' : p * p < a * q * q ? 'band' : 'jam');
+          if (P.verdict === 'fits') fits += 1;
+        }
+        // a rod of p/q covers the court exactly for a perfect square only — and then once, at p = k × q
+        const k = Math.round(Math.sqrt(a));
+        expect(fits).toBe(k * k === a ? 1 : 0);
+      }
+    // 7/5 on 2: 49 against 50; 17/12: 289 against 288 — one piece apart, never zero
+    expect(pieceOf(2, 5, 7)).toMatchObject({ court: 50, plat: 49, far: 1, verdict: 'band' });
+    expect(pieceOf(2, 12, 17)).toMatchObject({ court: 288, plat: 289, far: 1, verdict: 'jam' });
+    // the nearest rod, by its difference in TILES (far ÷ q²): 1/144 is nearer than 1/25, 1/25 nearer than 2/49
+    expect(closerPiece({ q: 12, far: 1 }, { q: 5, far: 1 })).toBe(true);
+    expect(closerPiece({ q: 5, far: 1 }, { q: 12, far: 1 })).toBe(false);
+    expect(closerPiece({ q: 5, far: 1 }, { q: 7, far: 2 })).toBe(true);
+    expect(closerPiece({ q: 5, far: 1 }, null)).toBe(true);
+    expect(closerPiece({ q: 3, far: 1 }, { q: 3, far: 1 })).toBe(false); // the same distance keeps the first
+  });
+
+  it('« الأعداد الناطقة والأعداد غير الناطقة »: its own instrument, never before the lesson, naming no key of it', () => {
+    const lab = toolsFor('natiqa-ghayr-natiqa');
+    expect(lab.mine.map((t) => t.id)).toEqual(['piece']);
+    expect(lab.all.map((t) => t.id)).toContain('court'); // lesson 1's instrument, in the cabinet
+    expect(toolsFor('jidhr-tarbii').all.map((t) => t.id)).not.toContain('piece');
+    const before = toolsFor('natiqa-ghayr-natiqa', { earlierOnly: true });
+    expect(before.all.map((t) => t.id)).not.toContain('piece'); // the launch kit's lab: the cabinet only
+    const tile = TOOLS.find((t) => t.id === 'piece');
+    expect(tile.needs).toBe('ab');
+    expect(tile.range).toEqual({ a: [1, 50], b: [1, 12] });
+    // the words of the lesson's three keys never stand on the tile, its quests or the instrument's own strings — nor a
+    // root, nor the refused name of the rod, nor a verdict of error
+    const src = readFileSync(new URL('./tools/FractionPlatform.jsx', import.meta.url), 'utf8');
+    const said = [tile.name, tile.hint, ...QUESTS.piece.map((q) => q.text), src].join(' ');
+    expect(said).not.toMatch(/ناطق|مدو|مقرّب|مقرب|جذر|√|\\sqrt|قضيب|خطأ|خاطئ|غلط/); // Math.sqrt draws, never writes
+    expect(src).not.toMatch(/<img|\.png|\.jpg/);
+  });
+
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -541,6 +595,17 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('court', { a: 160, b: 1, s: 12, moved: true, tried: [12] }, new Set())).toEqual([]); // 13 not tried
     expect(observe('court', { a: 120, b: 1, s: 10, moved: true, tried: [10] }, new Set())).toEqual(['most']); // 120 − 100
     expect(observe('court', { a: 119, b: 1, s: 10, moved: true, tried: [10, 11] }, new Set())).toEqual([]); // 19 left
+    // « منصّة الكسر »: nothing before the hand moved the rod; a court above 10 covered exactly by a rod of denominator
+    // above 1; one piece apart with a denominator above 4; a difference under a hundredth of a tile, not zero
+    expect(observe('piece', { a: 16, b: 2, p: 8 }, new Set())).toEqual([]);
+    expect(observe('piece', { a: 16, b: 2, p: 8, moved: true }, new Set())).toEqual(['exact']);
+    expect(observe('piece', { a: 9, b: 2, p: 6, moved: true }, new Set())).toEqual([]); // 9 is not above 10
+    expect(observe('piece', { a: 16, b: 1, p: 4, moved: true }, new Set())).toEqual([]); // a whole rod
+    expect(observe('piece', { a: 2, b: 5, p: 7, moved: true }, new Set())).toEqual(['one']); // 49 against 50
+    expect(observe('piece', { a: 2, b: 2, p: 3, moved: true }, new Set())).toEqual([]); // 9 against 8: q not above 4
+    expect(observe('piece', { a: 2, b: 12, p: 17, moved: true }, new Set())).toEqual(['one', 'close']); // 1/144
+    expect(observe('piece', { a: 3, b: 11, p: 19, moved: true }, new Set())).toEqual([]); // 361 − 363: 2/121
+    expect(observe('piece', { a: 3, b: 12, p: 21, moved: true }, new Set())).toEqual([]); // 441 − 432: 9/144
     expect(observe('court', { a: 399, b: 1, s: 20, moved: true, tried: [19, 20] }, new Set())).toEqual([
       'bracket',
       'most',
@@ -595,6 +660,7 @@ describe('مختبري — the sounds', () => {
       'Duo',
       'Strip',
       'NumberCourt',
+      'FractionPlatform',
     ].map((n) => `./tools/${n}.jsx`),
   ];
   /** Every sound name written in the lab's code: play('x'…), useChime(play, 'x'…), and the two names of a « a ? 'x' : 'y' ». */

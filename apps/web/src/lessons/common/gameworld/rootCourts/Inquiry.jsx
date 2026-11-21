@@ -7,13 +7,15 @@
  *   spec = { kind: 'calc', a, rods: [{ q } | { calc } | { root }], wall?, text }            (`InquiryCalc.jsx`, `calc.js`)
  *        | { kind: 'roundtrip', rounds: [{ from: { rod } | { court } | { walk }, path: ['build' | 'take', …] }], text }
  *                                                                                 (`InquiryRoundtrip.jsx`, `roundtrip.js`)
+ *        | { kind: 'chase', a, fracs: ['p/q', …], text }                           (`InquiryChase.jsx`, `chase.js`)
  * `text` is the LESSON's wording: this world names no lesson and writes none of its numbers.
  */
 import { Calc } from './InquiryCalc';
 import { Roundtrip } from './InquiryRoundtrip';
+import { Chase } from './InquiryChase';
 import './inquiry.css';
 
-const KINDS = { calc: Calc, roundtrip: Roundtrip };
+const KINDS = { calc: Calc, roundtrip: Roundtrip, chase: Chase };
 
 export default function Inquiry({ spec, game, onDone }) {
   const Kind = KINDS[spec.kind];

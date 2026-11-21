@@ -326,6 +326,16 @@ the court it speaks about instead of the terrace's front right. In `jidhr-tarbii
 marks, the longest rod of two decimals that still leaves a band (5,47) is the stage's goal: the robot says so, the rod
 returns to its post (`story.release`), the court's lamp goes out and the calculator lights up (`flags.near`).
 
+**The count, the two sides, the key** (owner, 2026-11-21: « the gate shows the result then asks the student for it — a
+stupid activity »): the world never asks a number it is about to show — the typed prediction of a platform's tiles is
+GONE. When he lowers a platform set on a WHOLE mark (up to 20), the lens rises over the court and looks straight down,
+the tiles of the platform light one by one from the corner post while a counter runs at the top of the screen
+(`state.count`, `[data-rc-count]`; slow at first, then faster — `Game.countCells`), the last number stays written on the
+platform, and only then is the product written. While he pulls the rod its length is written on BOTH sides of the
+square (the bar and its label along the side wall too). A platform that rides gives THE KEY OF THE COURT: a golden key
+turns in front of him, « خذ مفتاح الساحة » (E, `Game.takeKey`), and only then does the platform carry him on. After a
+reload the key is not shown again: the platform waits and E boards it.
+
 **A terrace of several courts** (added for lesson 2, 2026-11-21 — a court's data: `{ id, a, to?, steps?, ask?, seal? }`):
 - a court WITHOUT `to` flies nowhere: its platform rides and stays; the ONE court of a terrace that has `to` is its way
   out, and its platform waits on its court until every other open court of the terrace is done (then E boards it);
@@ -377,12 +387,75 @@ the platform did; the prediction card), `courtParts.jsx` + `court.css` (THE 2D d
 mirror and the experiments: to scale, cut tiles, blocks above 150 tiles, a sub-divided tile under one tile, a
 MAGNIFIER when the band is too thin to see — the exact difference is always written), `ruleForge.js` (what a case is:
 `caseOf`, `caseId`, `evidenceOf`, `courtPool`, `COURT_TEXT`), `forgeParts.jsx` (`Mirror`, `Line`, `beats`),
-`Inquiry.jsx` and its two kinds:
+`Inquiry.jsx` and its three kinds:
 
 | Kind | The rule it finds | What the student does |
 |---|---|---|
 | `calc` | the exact length of a side against what a calculator shows (a comparison of candidates, none of which is the length) | rods lie ready on a rack — a whole number, a decimal, the calculator's ten digits (a drawn calculator); for each he says BEFORE whether it rides; the platform comes down on the court and the band or the overhang is written exactly; when it is too thin to see HE presses « كبّر » (×10 a press) until he sees it; the rows stay in a table. Last, he clamps the rod on the wall: it rides, and its cell is « ؟ » — a length with no number |
 | `roundtrip` | two operations that undo each other | two stations, « ابنِ ساحة » (a rod in, a court out) and « خذ الضلع » (a court in, a rod out); for each journey of the spec (a wall, a number, a walk to the LEFT of the post, a chain of three) he TYPES what will come out before the station runs — a plaque, or a rod (a number, or « ضلع الساحة التي مساحتها [ ] »); the station runs and shows the fact; the journeys stay as strips |
+| `chase` | a pursuit that never closes: the side of a court whose area is not the square of a fraction is written by NO fraction (added 2026-11-21 for lesson 2; no lesson uses it yet) | a court of `a` tiles and a list of fractions p/q, better and better (the spec gives them). For each, the rod p/q over its real bar beside the court; he PREDICTS « يبقى شريط » / « تعلق » / « تركب »; the platform comes down (drawn to scale, a magnifier on the far corner when the gap is too thin: its power of ten written) and the card writes the fact on ONE common denominator — p × p small tiles of side 1/q against a × q × q (7/5 on 2: 49 against 50) and the sign between them; every fraction stays in a table. Last, ONE question to observe: in how many did it ride? (0 / 1 / all) |
+
+**Spec shape of `chase`** (`rootCourts/chase.js` + `InquiryChase.jsx`, styles in `inquiry.css` « chase »; the conventions
+of the spec blocks of §2sexies: `T` = `spec.text`, the lesson's words; a `T.x(…)` returns a string that MAY hold `$…$`
+(MathText) unless marked « plain »; the kind itself writes no word — `inquiryChase.render.test.jsx` renders every stage
+with Latin tags and fails on one Arabic letter, and reads the two source files):
+
+```js
+// chase — logic: chase.js › chaseFact(a, 'p/q') → { p, q, a, kind: 'band'|'jam'|'ride', platform: p×p, court: a×q×q,
+//         gap: |court − platform| (small tiles of side 1/q), covers, diff (the same in whole tiles) } — BigInt, as text
+{ kind: 'chase',
+  a: '2',                                    // a whole number, 1 … 400 (a square is allowed: then a fraction may ride)
+  fracs: ['3/2', '7/5', '17/12', '41/29', '99/70'],   // 1 … 6 fractions « p/q », p ≥ 1, q ≥ 2, kept as given (6/4
+                                             //   counts small tiles of 1/4); refused: a number of more than 8 digits
+                                             //   (p, q, p×p, a×q×q, the gap), or a card formula wider than 10.8 em
+                                             //   (chase.js › lineEm: digits of « a × q × q = C » ≤ 14)
+  text: {
+    // every function below receives ARGS = { a, i, n, p, q, rodTex: '\\dfrac{p}{q}', perTile: q×q } — the fraction on
+    // screen (at the closing question: the last one)
+    lead: (ARGS) => …, goal: (ARGS) => …,    // the question; the goal (in the 🎯 frame) — both MathText
+    ask: (ARGS) => …,                        // before each platform comes down — never the fact
+    sayBand, sayJam, sayRide,                // plain — the three predictions (« يبقى شريط » / « تعلق » / « تركب »)
+    rodName, platformName, courtName,        // plain — the card's labels (≤ 8 characters)
+    smallTile: (ARGS) => …,                  // beside the drawn small tile: « بلاطة صغيرة ضلعها $\\dfrac{1}{5}$ … »
+    unit: (n) => …,                          // plain — the noun after a whole number of small tiles, agreed (≤ 12 chars)
+    unknown,                                 // plain — in place of the numbers before his prediction (« ؟ »)
+    fact: ({ ...ARGS, ...row }) => …,        // after the platform: row = the result row below (kind, platform, court,
+                                             //   gap, predicted, right…) — a miss is answered by the fact, never « خطأ »
+    colRod, colPlatform, colCourt, colFact,  // plain — the table's headers (two lines at most in 6.2 / 10.4 rem)
+    band, jam, rides,                        // plain — the chip's word (≤ 5 characters), followed by the gap
+    next,                                    // plain — after each fraction (the last one leads to the question)
+    countAsk: (ARGS) => …,                   // the closing question: in how many did the platform ride?
+    countNone, countOne, countAll,           // plain — its three taps
+    countFact: ({ ...ARGS, said, tapped, rides, n, right }) => …,   // after his tap: what the world counted
+    done,                                    // plain — the last button
+  } }
+// result: { rows: [{ i, frac: 'p/q', a, s: { q: 'p/q' reduced }, kind, p, q, platform, court, gap, covers, diff,
+//                    predicted: 'band'|'jam'|'ride', right }],
+//           count: { said: 0|1|n, tapped: '0'|'1'|'all', rides, n, right } }
+//           (a row is a case of this world: `ruleForge.js › caseOf(row.a, row.s)` reads it; `s` keeps the fraction)
+// stages: say → build → seen → (next fraction: say …) → count → counted → done
+// hooks:  data-iq="chase", data-iq-stage, data-iq-area, data-iq-i, data-iq-p, data-iq-q, data-iq-progress="tried:n",
+//         data-iq-say="band|jam|ride", data-iq-next, data-iq-count="0|1|all", data-iq-fact, data-iq-ask, data-iq-goal,
+//         data-iq-court=<a> (+ -rod, -stage say|build|done, -kind), data-iq-band / data-iq-over=<gap>,
+//         data-iq-lens=<k> (the magnifier ×10^k), data-iq-frac="p/q" (every fraction drawn over its bar),
+//         data-iq-smalltile=<q>, data-iq-platform / data-iq-courtline=<whole number> ('' before the fact),
+//         data-iq-relation="band|jam|ride", data-iq-table=<rows>, data-iq-row=<i> data-iq-row-kind,
+//         data-iq-cell-platform, data-iq-cell-court, data-iq-cell="band|jam|ride"
+//         window.__inquiry = { kind: 'chase', a, i, n, stage, frac, rows }
+```
+
+Its screen at 1366 × 768 (`chase.js › CHASE_LAYOUT`, a budget checked by the render test — never yet measured in a
+browser): the court 14 rem high with the card of numbers beside it, then the question, the buttons and the fact; the table
+(27.2 rem) on the left, six rows at most. Where he is in the list is a row of dots (never « 2 / 5 », which would read as a
+fraction there). Sounds: `pick` (his prediction), `sweep` (the platform comes down), `gate` / `plank` / `hit` (it rides /
+leaves a band / jams), then `key` or `fail` (his prediction against the fact, heard); the count: `pick`, then `key` /
+`fail`; `ui` on « next ». Tests: `chase.test.js` (the two whole numbers and the fact for √2's five convergents; every a
+from 2 to 20 that is not a square, five fractions each, against `logic.js › outcome`; no fraction p/q with q ≤ 400 rides
+such a court, while on a square court the right one does; the magnifier; the refused specs; the reducer played through
+with predictions that do not match, every road), `inquiryChase.render.test.jsx` (every stage, the fact never before the
+prediction, no « p/q » as text, no word of the rule, the layout budget, ≥ 18 px). The walk's player:
+`e2e/lib/lessonWalk/worlds/rootCourtsExperiments.mjs › chaseExperiment` (to register in `experiments.mjs › EXPERIMENTS`
+as `chase`).
 
 **Two things this world asked of the kit** (both generic): `lesson.notYet` — a lesson being built names the doors it
 has not got yet (`map`, `know`, `progress`, `lab`, `launch`, `sitting`, `test`): `kit/Title.jsx` and `kit/End.jsx` do

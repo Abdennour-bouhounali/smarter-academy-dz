@@ -85,21 +85,6 @@
   font-weight: 800;
   color: #fff;
 }
-.di-root .rc-predict {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.7rem;
-  margin: 0.4rem 0 1rem;
-}
-.di-root .rc-predict__box input {
-  font-size: 2rem;
-}
-.di-root .rc-predict__unit {
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #0f2147;
-}
 /* the shell's middle column lets clicks through to the world: the dial's marks are buttons, they take them back */
 .di-root .rc-rod__steps {
   pointer-events: auto;
@@ -201,4 +186,22 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   white-space: nowrap;
+}
+/* the count of a platform's tiles, running at the top of the screen while they light one by one */
+.di-root .rc-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 6.5rem;
+  margin-top: 0.5rem;
+  padding: 0.3rem 1.4rem;
+  border-radius: 1.2rem;
+  background: #0f2147;
+  border: 3px solid #fbbf24;
+  box-shadow: 0 8px 22px rgba(8, 20, 48, 0.35);
+}
+.di-root .rc-count b {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #fde68a;
 }

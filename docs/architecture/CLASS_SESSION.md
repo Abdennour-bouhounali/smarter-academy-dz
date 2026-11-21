@@ -257,6 +257,17 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   consecutive whole numbers with p² < a < q², a having no whole root), `exactSide` (choice: « $\sqrt{a}$ » or a decimal
   whose square IS a — the calculator's digits and the half are the traps), `rootApprox` (choice: the value of √a to a
   `step` « بالنقصان » (d² ≤ a < (d + step)²) or « بالزيادة » ((d − step)² < a ≤ d²), d a whole number of steps).
+  **Unit 2, lesson 2 « الأعداد الناطقة والأعداد غير الناطقة » (2026-11-21)**: `4am/natiqa-ghayr-natiqa.json` — the start
+  test asks the powers of a rational number (a fraction squared among them, 3am.m3.r06) and what lesson 1 taught (a whole
+  root, a value by default), then two teasers asked in a court's words, never with a key's name; the end test covers the
+  three keys and P1–P4 (P4, the rounded value, is tested by no question of the bank). A FRACTION is now an answer like any
+  number: an option « $\dfrac{5}{7}$ » (or « $-\dfrac{16}{49}$ ») is read exactly, and a fraction given in a question
+  keeps its terms (`texGiven`: « \sqrt{\dfrac{50}{98}} » is never rewritten 25/49) — `root`, `power` and `exactSide`
+  take fractions. New `check` types: `isRational` (true / false: « $\sqrt{a}$ عدد ناطق » or « … عدد غير ناطق », judged by
+  whether a is the square of a rational — whole, decimal, fraction reduced or not), `rationalPick` (choice: the one root
+  that is — `want: 'rational'` — or is not rational), `rounded` (choice: the ROUNDED value of √a to a `step`, a whole
+  number of steps d with (d − step/2)² < a < (d + step/2)², the word « المدوَّر » in the question; the values by default
+  and by excess are the traps).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -324,6 +335,19 @@ hour is `court` → `court` → `name`, three times, then two `trace` pages — 
 a bridge). Its `board.test.js` evaluates every formula of the script and the memo EXACTLY (products, `\sqrt{…}`, `^2`,
 chains of `=` and `<`), and checks that nothing before the naming of the first key says « جذر » or shows √ (no wall card
 either: a wall is drawn with its sign).
+`natiqa-ghayr-natiqa` (10 stations, 2026-11-21) is the second hour on the courts, with NO new kind: `court` → `court` →
+`name` (🧩: a court whose gate shows 529/49, then 722/98 not reduced), `court` → `name` (♾️: the court of 14 chased by
+11/3, 3,75, 101/27, 116/31 and the calculator — none rides), `court` → `court` → `name` (🎯: on 69 the middle mark
+of a tenth jams, the middle mark of a hundredth leaves a band), two `trace` pages. **A rod card may be a FRACTION**
+(« 23/7 »: `courtCards` keeps it a fraction whenever its denominator is not made of 2 and 5 only — 31/8 would be written
+3,875 —, its card drawn `\dfrac` with a real bar); a card's own `label` names a middle mark (« العلامة الوسطى »). Its
+`board.test.js` evaluates `\dfrac{…}{…}` and `>` too, checks that no key's word (« ناطق », « غير ناطق », « مدو ») is
+said or labelled before its naming, that no fraction is written with a slash where the class reads, and that a line of
+the script holds at most one of the hour's numbers. **Known, not mine to fix (`rootCourts/courtParts.jsx`)**: inside
+the court's own drawing the rod's label under the platform and the difference written beside it are plain text, so a
+fraction rod reads « 23/7 » there (the card beside it has the bar). **The memo figure `court`** (`MemoFigures.jsx ›
+NumCap`) draws a fraction area, rod or difference with a real bar — its captions laid lower and its courts smaller only
+when a fraction is drawn (lesson 1's figures are unchanged, tested in `courtStation.render.test.jsx`).
 Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most

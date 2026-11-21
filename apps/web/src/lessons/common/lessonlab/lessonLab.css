@@ -444,6 +444,11 @@
 .ll-chip--dim {
   background: rgba(255, 255, 255, 0.12);
 }
+/* what a platform holds MORE than its court (« منصّة الكسر »): the world's violet of a jam, never the red of an error */
+.ll-chip--jam {
+  background: #c4b5fd;
+  color: #2e1065 !important;
+}
 .ll-actions {
   display: flex;
   gap: 0.45rem;

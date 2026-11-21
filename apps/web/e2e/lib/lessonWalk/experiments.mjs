@@ -3,7 +3,7 @@
 // answers computed HERE from the spec's numbers, checks what lessons 5–6 checked on it, and ends by its « next » button.
 // A kind the library does not know stops the walk with the sentence to write its handler (README « An experiment kind »).
 import { inquiryFits, ownTools, tellsNothing } from './checks.mjs';
-import { calcExperiment, roundtripExperiment } from './worlds/rootCourtsExperiments.mjs';
+import { calcExperiment, chaseExperiment, roundtripExperiment } from './worlds/rootCourtsExperiments.mjs';
 
 // ───────────────────────────── the walk's own arithmetic (never the lesson's answers) ─────────────────────────────
 export const gcd = (a, b) => (b ? gcd(b, a % b) : a);
@@ -355,6 +355,7 @@ export const EXPERIMENTS = {
   // « قصر الساحات » (worlds/rootCourtsExperiments.mjs)
   calc: calcExperiment,
   roundtrip: roundtripExperiment,
+  chase: chaseExperiment,
 };
 
 /** Plays the experiment `spec` on the screen now open; ends on its « next » (a bench: back to its workshop). */

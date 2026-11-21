@@ -6,9 +6,10 @@
 import GateRunHud from '../kit/GateRunHud';
 import { useMemo, useState } from 'react';
 import LessonWorld from '../kit/LessonWorld';
+import { boxesOf } from '../kit/authoring/forgeBlocks';
 import RuleForge, { UseLines } from '../kit/RuleForge';
 import MathText from '../../components/MathText';
-import { Card, M, Num } from '../kit/parts';
+import { Card, M } from '../kit/parts';
 import { Instruction, Recall } from '../kit/Instruction';
 import { RootCourtsGame } from './Game';
 import { Mirror, Line, beats } from './forgeParts';
@@ -88,16 +89,7 @@ function Lowered({ eq, verdict, game }) {
         </div>
       </div>
       {verdict && (
-        <div className="di-verdict rc-verdict" data-di-verdict={verdict.kind} data-rc-predicted={String(verdict.right)}>
-          {verdict.right === true && (
-            <p className="di-verdict__pred is-right">
-              <b>✓</b> {T.right(verdict.covers)}
-              {verdict.first && <span className="di-verdict__star">★ {T.star}</span>}
-            </p>
-          )}
-          {verdict.right === false && (
-            <p className="di-verdict__pred is-wrong">{T.wrong(verdict.predicted, verdict.covers)}</p>
-          )}
+        <div className="di-verdict rc-verdict" data-di-verdict={verdict.kind}>
           <p className={`di-verdict__bridge rc-verdict--${verdict.kind} ${verdict.kind === 'ride' ? 'is-holds' : ''}`}>
             {verdict.yard
               ? verdict.kind === 'ride'
@@ -132,48 +124,18 @@ function LastFact({ last, game }) {
 function Hud({ s, game }) {
   return (
     <>
-      {s.objective && <Instruction key={s.objective} text={s.objective} compact={Boolean(s.equation || s.rod)} />}
-      {s.rod && !s.equation && <RodChip rod={s.rod} game={game} />}
+      {s.objective && s.count == null && (
+        <Instruction key={s.objective} text={s.objective} compact={Boolean(s.equation || s.rod)} />
+      )}
+      {s.rod && !s.equation && s.count == null && <RodChip rod={s.rod} game={game} />}
       {s.rod && !s.equation && s.last && <LastFact last={s.last} game={game} />}
+      {s.count != null && !s.equation && (
+        <div className="rc-count" data-rc-count={s.count} aria-live="off">
+          <b dir="ltr">{s.count}</b>
+        </div>
+      )}
       {s.equation && <Lowered eq={s.equation} verdict={s.verdict} game={game} />}
     </>
-  );
-}
-
-/** Before a platform of whole tiles comes down: how many tiles will it cover? He types it. */
-function Predict({ o, game }) {
-  const T = game.T.predict;
-  const [value, setValue] = useState('');
-  const go = () => value.trim() !== '' && game.answerPredict(value);
-  return (
-    <Card>
-      <p className="di-card__eyebrow">{T.title(o.s)}</p>
-      <h2>{T.ask}</h2>
-      <form
-        className="rc-predict"
-        onSubmit={(e) => {
-          e.preventDefault();
-          go();
-        }}
-      >
-        <span className="rc-predict__box" dir="ltr">
-          <Num value={value} onChange={setValue} w={4} autoFocus data-rc-predict />
-        </span>
-        <span className="rc-predict__unit">{T.unit}</span>
-      </form>
-      <button
-        type="button"
-        className="di-btn di-btn--primary"
-        onClick={go}
-        disabled={value.trim() === ''}
-        data-rc-predict-go
-      >
-        {T.go}
-      </button>
-      <button type="button" className="di-link" onClick={() => game.closeOverlay()}>
-        {T.cancel}
-      </button>
-    </Card>
   );
 }
 
@@ -186,7 +148,8 @@ function Mission({ game }) {
   const lines = useMemo(() => m.lines(), [m]);
   const [vals, setVals] = useState({});
   const [fact, setFact] = useState(null);
-  const names = lines.flatMap((l) => l.tokens.filter((t) => typeof t === 'object').map((t) => t.slot));
+  // every box of the card, a fraction's two boxes included (`forgeBlocks › boxesOf`)
+  const names = lines.flatMap((l) => boxesOf(l.tokens).map((t) => t.slot));
   const filled = names.every((n) => (vals[n] ?? '') !== '');
   const check = () => {
     const out = m.check(vals);
@@ -249,7 +212,6 @@ const WORLD = {
   Over: ({ s, game }) =>
     s.run ? <GateRunHud run={s.run} game={game} content={game.runContent ?? game.lesson.run} /> : null,
   overlay(o, s, game) {
-    if (o.type === 'predict') return <Predict key={o.s} o={o} game={game} />;
     if (o.type === 'mission') return <Mission game={game} />;
     if (o.type === 'guess')
       return (
