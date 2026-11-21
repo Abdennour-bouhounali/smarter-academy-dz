@@ -42,17 +42,18 @@ export function useChime(play, name, when, deps, { delay = 0, p } = {}) {
   }, [sig]); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
-/** Drag on an svg handle: `onMove(point, start)` while the pointer is down (captured), `onStart` / `onEnd` around it. */
-export function useDrag(svgRef, { onStart, onMove, onEnd }) {
+/** Drag on an svg handle: `onMove(point, start)` while the pointer is down (captured), `onStart` / `onEnd` around it;
+ * `point` maps the pointer into the drawing (default `svgPoint`, the 940 × 370 viewBox: a drawing of another size passes its own). */
+export function useDrag(svgRef, { onStart, onMove, onEnd, point = svgPoint }) {
   const live = useRef(null);
   return {
     onPointerDown: (e) => {
       e.preventDefault();
       e.currentTarget.setPointerCapture?.(e.pointerId);
-      live.current = { start: svgPoint(svgRef.current, e), data: onStart?.(svgPoint(svgRef.current, e)) };
+      live.current = { start: point(svgRef.current, e), data: onStart?.(point(svgRef.current, e)) };
     },
     onPointerMove: (e) => {
-      if (live.current) onMove(svgPoint(svgRef.current, e), live.current);
+      if (live.current) onMove(point(svgRef.current, e), live.current);
     },
     onPointerUp: (e) => {
       if (!live.current) return;

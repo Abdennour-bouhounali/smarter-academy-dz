@@ -17,6 +17,7 @@ import { worldShot, wordsRe } from './checks.mjs';
 import { playExperiment } from './experiments.mjs';
 import { playForge } from './forge.mjs';
 import { worldOf } from './world.mjs';
+import { worldOfLesson } from './worlds/index.mjs';
 
 const fills = (n, d) => n % d === 0;
 const range = (a, b) => Array.from({ length: Math.max(0, b - a + 1) }, (_, i) => a + i);
@@ -38,6 +39,9 @@ export function signChainOf(seg, planks) {
 }
 
 export async function storyWalk(L, D, opts) {
+  // a lesson of another world than the islands is played by its world's own story (worlds/<world>.mjs)
+  const other = worldOfLesson(L);
+  if (other) return other.story(L, D, opts);
   const w = createWalk(`lesson-${L.id}-story`, opts);
   const { expect, check } = w;
   const OUT = { exit: ['[data-di-exit]', '.di-top a.di-icon'], numbers: true };

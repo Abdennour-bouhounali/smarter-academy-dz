@@ -41,6 +41,7 @@ import {
   isTheRule,
   ruleSays,
 } from '../../lessons/common/gameworld/divisorIsles/ruleForge';
+import { Court, CourtMini } from '../../lessons/common/gameworld/rootCourts/courtParts';
 import BoardBridge, { BridgeBar, buildMs } from './BoardBridge';
 import { ClassWindow, Speaker, BoardTools, BoardLayers, useBoardTools, BL } from './board';
 import { callName, teamsOf, teamOfStudent } from './session';
@@ -59,6 +60,11 @@ import {
   FORMS,
   askRight,
   askWords,
+  courtCards,
+  courtRodTex,
+  courtShown,
+  courtWords,
+  denseTablet,
 } from './lessonScripts';
 
 const LL = {
@@ -705,7 +711,7 @@ function Name({ step, memo, onPick, onMe, rules }) {
           <small>{LL.theirs}</small>
         </p>
       )}
-      <div className="cs-name__card" data-dense={(t.list?.length ?? 0) >= 5 ? '' : undefined}>
+      <div className="cs-name__card" data-dense={denseTablet(t) ? '' : undefined}>
         <div className="cs-name__lines">
           {t.lines.map((l, k) => (
             <p key={l}>{line(l, `l${k}`)}</p>
@@ -861,6 +867,118 @@ function Ask({ step }) {
             </button>
           </p>
         )}
+      </div>
+    </div>
+  );
+}
+
+/** How long the world takes to lower a platform into its court (`court.css`: 0.9 s, the tiles lit one after the other). */
+const COURT_MS = 1150;
+
+/**
+ * A COURT of « قصر الساحات » on the board: ONE court drawn by the world's own `Court` (rootCourts/courtParts.jsx), and its
+ * cards — rods over a court whose area is given, or courts under a rod that is given. A tap on a card holds its platform
+ * over the court, dashed (the class predicts aloud); « أنزل المنصّة » lowers it and the WORLD answers: it rides, it leaves
+ * a band (amber), it jams (violet), the exact difference written beside the court — a fact, never « wrong ». Each card
+ * lowered keeps its verdict; the proof (`after`) comes once the cards that ride were lowered (every card, when none does).
+ */
+function CourtStation({ step }) {
+  const words = courtWords(step);
+  const cards = useMemo(() => courtCards(step), [step]);
+  const [sel, setSel] = useState(null);
+  const [stage, setStage] = useState('ask');
+  const [tried, setTried] = useState([]);
+  const later = useLater();
+  const card = cards.find((c) => c.key === sel) ?? null;
+  const busy = stage === 'build';
+  const shown = courtShown(step, tried);
+  const pick = (c) => {
+    if (busy) return;
+    setSel(c.key);
+    setStage('ask');
+  };
+  const lower = () => {
+    if (!card || stage !== 'ask') return;
+    setStage('build');
+    later(
+      () => {
+        setStage('done');
+        setTried((t) => (t.includes(card.key) ? t : [...t, card.key]));
+        sfx(card.out.kind === 'ride' ? 'correct' : 'notyet');
+      },
+      fast() ? 40 : COURT_MS,
+    );
+  };
+  return (
+    <div className="cs-courtstep" data-cs-court={step.id} data-cs-court-shown={shown}>
+      <p className="cs-say">
+        <MathText>{step.text}</MathText>
+      </p>
+      <div className="cs-courtstep__main">
+        <div className="cs-courtbox" data-cs-court-on={card?.key ?? ''} data-cs-court-stage={card ? stage : 'none'}>
+          {card ? (
+            <Court key={card.key} area={card.area} rod={card.rod} stage={stage} fast={fast()} />
+          ) : step.areas ? (
+            <p className="cs-courtbox__rod" data-cs-court-rod>
+              <small>{words.rod}</small>
+              <b dir="ltr">
+                <MathText>{`$${courtRodTex(step)}$`}</MathText>
+              </b>
+            </p>
+          ) : (
+            <Court area={String(step.area)} fast={fast()} />
+          )}
+        </div>
+        <div className="cs-rods" data-many={cards.length > 4 ? '' : undefined}>
+          {cards.map((c) => {
+            const seen = tried.includes(c.key);
+            return (
+              <button
+                key={c.key}
+                type="button"
+                className={`cs-rodcard ${sel === c.key ? 'is-on' : ''} ${seen ? `is-${c.out.kind}` : ''}`}
+                onClick={() => pick(c)}
+                disabled={busy}
+                aria-pressed={sel === c.key}
+                data-cs-court-card={c.key}
+                data-cs-court-kind={seen ? c.out.kind : undefined}
+              >
+                <span className="cs-rodcard__name">
+                  <small>{c.label}</small>
+                  <b dir="ltr" data-long={c.tex.length > 7 ? '' : undefined}>
+                    <MathText>{`$${c.tex}$`}</MathText>
+                  </b>
+                </span>
+                {seen && (
+                  <span className="cs-rodcard__out">
+                    <CourtMini area={c.area} rod={c.rod} />
+                    <em>{words[c.out.kind]}</em>
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+      <div className="cs-actrow">
+        {shown ? (
+          <p className="cs-after is-right" data-cs-court-after>
+            <span>
+              <MathText>{step.after}</MathText>
+            </span>
+          </p>
+        ) : (
+          <p className="cs-quest">{step.question}</p>
+        )}
+        <button
+          type="button"
+          className="cs-btn cs-btn--main cs-btn--big"
+          onClick={lower}
+          disabled={!card || stage !== 'ask'}
+          data-cs-court-lower
+        >
+          {words.lower}
+        </button>
       </div>
     </div>
   );
@@ -1091,6 +1209,7 @@ export default function LessonBoard({ script, rules, students, seating, memo, se
         )}
         {step.kind === 'ask' && <Ask step={step} />}
         {step.kind === 'statements' && <Statements step={step} />}
+        {step.kind === 'court' && <CourtStation step={step} />}
         {step.kind === 'trace' && <Trace step={step} rules={rules} />}
       </main>
 

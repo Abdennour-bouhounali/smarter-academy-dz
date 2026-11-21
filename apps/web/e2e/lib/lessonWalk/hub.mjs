@@ -7,6 +7,7 @@
 import { createWalk, PHONE } from '../walk.mjs';
 import { readLadder, rungShows, ladderFromDisk, bankOnDisk } from '../bankSheet.mjs';
 import { mapApart } from './checks.mjs';
+import { worldOfLesson } from './worlds/index.mjs';
 
 export async function hubWalk(L, D, opts) {
   const w = createWalk(`lesson-${L.id}-hub`, opts);
@@ -22,6 +23,7 @@ export async function hubWalk(L, D, opts) {
   const DISK_LADDER = ladderFromDisk(bankOnDisk(L.grade, L.id));
   const TOP = { exit: ['.di-top a.di-icon', '[data-di-exit]'], sound: true };
   const uid = (D.uid ?? 9900) + 50;
+  const other = worldOfLesson(L);
   const st = (page) =>
     page.evaluate(() => {
       const s = window.__world.getState();
@@ -104,7 +106,7 @@ export async function hubWalk(L, D, opts) {
     const practice = Object.fromEntries(KEYS.map((k) => [`${k}:1`, { stars: 2, best: 800 }]));
     const save = {
       v: 1,
-      stage: L.lesson.story.segments.length - 1,
+      stage: (L.lesson.story.segments ?? L.lesson.story.terraces).length - 1,
       stars: {},
       gems: [],
       keys: KEYS,
@@ -270,6 +272,12 @@ export async function hubWalk(L, D, opts) {
       (await st(page)).overlay === 'map' && (await page.locator('[data-di-know]').count()) === 0,
       '…and its « فضاء التدريب » comes back to the hub',
     );
+
+    // ── 4. (another world) a practice level on ITS rail (worlds/<world>.mjs › practice) ──
+    if (other) {
+      await other.practice({ w, page, L, D, TEXT, titles });
+      return;
+    }
 
     // ── 4. a run of the gate dash: « واصل التدريب » ──
     const nextName = (await page.textContent('[data-di-next]')).trim();

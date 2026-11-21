@@ -8,10 +8,12 @@ import { describe, it, expect } from 'vitest';
  *     solution de la مسألة de LEUR leçon (sa signature : ses racines, ses nombres-réponses) ;
  *   - les textes du manuel que l'élève lit (knowledge.jsx, knowledgeGraph.js, content/textbook.js, content/exercises.js) ne disent ni
  *     « الكتاب », ni « تمرين N : », ni « خطأً مطبعيًا » (indépendance du manuel) — hors commentaires et métadonnées `src(...)`.
+ * A v2 lesson (LESSON_V2.md §2) has no root knowledge.jsx / knowledgeGraph.js: its only knowledge (sheets and map) is its
+ * world's `world/knowledge.js`, scanned here by the same rules.
  */
 const configs = import.meta.glob('../*/lesson.config.js', { eager: true });
-const graphs = import.meta.glob('../*/knowledgeGraph.js', { eager: true });
-const raw = import.meta.glob(['../*/knowledge.jsx', '../*/knowledgeGraph.js', '../*/content/textbook.js', '../*/content/exercises.js'], { eager: true, query: '?raw', import: 'default' });
+const graphs = import.meta.glob(['../*/knowledgeGraph.js', '../*/world/knowledge.js'], { eager: true });
+const raw = import.meta.glob(['../*/knowledge.jsx', '../*/knowledgeGraph.js', '../*/world/knowledge.js', '../*/content/textbook.js', '../*/content/exercises.js'], { eager: true, query: '?raw', import: 'default' });
 const CONTROL = /[\t\n\r\f\v\b]/;
 
 /** Le texte d'un fichier sans ses commentaires ni ses métadonnées de source. */
@@ -53,7 +55,8 @@ describe('unit 2 — mission strings and knowledge maps', () => {
   });
   it('no knowledge-map line sends the student to the textbook', () => {
     Object.entries(graphs).forEach(([path, m]) => {
-      expect(JSON.stringify(m.KNOWLEDGE_GRAPH ?? {}).includes('الكتاب'), path).toBe(false);
+      // « الكتاب » the book — never « الكتابة » (the writing of a number), which a world's map says
+      expect(/الكتاب(?!ة)/.test(JSON.stringify(m.KNOWLEDGE_GRAPH ?? {})), path).toBe(false);
     });
   });
   it('the knowledge cards and the knowledge map never show their own lesson\'s climax solution', () => {

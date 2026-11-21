@@ -35,9 +35,23 @@ import { FAMILIES, makeQuestion } from '../../src/lessons/common/launchkit/famil
 import { homeLessonOf } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
 import { chromium } from 'playwright';
 import { GL_ARGS } from './gpu.mjs';
+import { eq as exactEq, mul as exactMul, q as exactQ } from './lessonWalk/worlds/exact.mjs';
 import { tinyText } from './walk.mjs';
 import { mkdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
+
+/** Is a card « xᵉ = v » of powers TRUE (3am.m3.r06)? Read from its TeX, computed exactly; null: not a power card. */
+function powerCard(tex) {
+  const t = tex
+    .replace(/\\left|\\right/g, '')
+    .replace(/\{,\}/g, ',')
+    .replace(/\\frac\{(\d+)\}\{(\d+)\}/g, '$1/$2');
+  const m = /^\(?(-?[\d,/]+)\)?\^\{(\d+)\} = (-?[\d,/]+)$/.exec(t);
+  if (!m) return null;
+  let p = exactQ('1');
+  for (let i = 0; i < Number(m[2]); i += 1) p = exactMul(p, m[1]);
+  return exactEq(p, m[3]);
+}
 
 export const A = '4am.m1.r01';
 export const B = '2am.m1.r04';
@@ -370,6 +384,8 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
         slots: [...document.querySelectorAll('.lk-question [data-lk-slot]')].map((s) => s.dataset.lkSlot),
         // a fraction drawn with a real bar (1am.m5.r02): « n/d », a box written « ▢ »
         fracs: [...document.querySelectorAll('.lk-question .lk-equation > .lk-frac')].map((f) => f.dataset.lkFrac),
+        // a power drawn with a real superscript (3am.m3.r06): « 8^2 », « (−8)^2 », « 2/3^2 »
+        pows: [...document.querySelectorAll('.lk-question .lk-equation > .lk-pow')].map((f) => f.dataset.lkPow),
         plain,
         tex: pr ? [...pr.querySelectorAll('annotation')].map((a) => a.textContent) : [],
       };
@@ -417,6 +433,9 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
       // « PGCD(x ; y) = v » (4am.m1.r03, level 2): is v the greatest common divisor, computed here?
       m = /^\\mathrm\{PGCD\}\((\d+) ; (\d+)\) = (\d+)$/.exec(tex);
       if (m) return gcdOf(Number(m[1]), Number(m[2])) === Number(m[3]) ? 'yes' : 'no';
+      // « xᵉ = v » (3am.m3.r06): a power of a whole, negative, decimal number or a fraction — computed here, exactly
+      const pw = powerCard(tex);
+      if (pw != null) return pw ? 'yes' : 'no';
       expect(false, `the walk can read the card « ${tex} »`);
     }
     if (card.say) {
@@ -490,6 +509,29 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
         expect(Number.isInteger(v), `${sc.fracs.join(' = ')}: a whole term keeps the value (${v})`);
         const slip = given - (other - m);
         vals = { v: right ? v : slip > 0 && slip !== v ? slip : given };
+      } else if (sc.pows?.length) {
+        // « xᵉ = ▢ » or « (p/q)² = ▢/▢ » (3am.m3.r06): the power, computed here; wrong: the base times the exponent
+        // (the slip « power-times »)
+        const [base, e] = sc.pows[0].split('^');
+        const E = Number(e);
+        const b = base.replace(/[()]/g, '').replace('−', '-');
+        if (b.includes('/')) {
+          const [p, d] = b.split('/').map(Number);
+          expect(
+            q.calc?.op === 'pow' && q.calc.n === p && q.calc.d === d && same(sc.slots, ['n', 'd']),
+            `the power on screen is the question asked (${sc.pows[0]}), two boxes over a bar`,
+          );
+          vals = right ? { n: p ** E, d: d ** E } : { n: p * E, d: d * E }; // p·2/q·2 = p/q, never (p/q)²
+        } else {
+          const x = Number(b);
+          expect(
+            q.calc?.op === 'pow' && q.calc.x === x && q.calc.e === E && same(sc.slots, ['v']),
+            `the power on screen is the question asked (${sc.pows[0]}), ONE box`,
+          );
+          // (2² = 2 × 2: the slip would be right — then the square plus one)
+          const slip = Math.abs(x * E) === x ** E ? x ** E + 1 : Math.abs(x * E);
+          vals = { v: right ? x ** E : slip };
+        }
       } else if (/^PGCD/.test(sc.eq[0] ?? '')) {
         // « PGCD(x ; y) = ▢ » (4am.m1.r03): the greatest common divisor, computed here; wrong: the smaller number (it
         // never divides the greater in this family — the slip « smaller-not-divisor »)

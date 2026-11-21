@@ -3,7 +3,7 @@
 // student from one instrument to the next, « جرّب » ticked only by what he makes. Then lesson 5 (in its game world): its
 // « مِنضدة القائمتين » played until both lists close. Then lesson 6, the PGCD algorithms (in its game world): its own
 // instrument and the cabinet of three grades. Nothing may scroll, at any moment.
-// Run (dev server up): [E2E_SIZE=1366x768] node apps/web/e2e/lesson-lab.mjs [outDir]
+// Run (dev server up): [E2E_SIZE=1366x768] [E2E_LAB_ONLY=2quater] node apps/web/e2e/lesson-lab.mjs [outDir]
 import { chromium } from 'playwright';
 import { GL_ARGS } from './lib/gpu.mjs';
 import { tinyText } from './lib/walk.mjs';
@@ -134,6 +134,10 @@ const planksDiff = (got, want, a, b, d) => {
   return diff;
 };
 
+// ONE step alone: E2E_LAB_ONLY=2quater runs that step only (the others are skipped); unset, the whole walk runs
+const ONLY = process.env.E2E_LAB_ONLY ?? null;
+if (ONLY && ONLY !== '2quater') throw new Error(`E2E_LAB_ONLY: no step « ${ONLY} » can run alone (2quater)`);
+if (!ONLY) {
 // ══ 1. the first lesson of 4AM: the lab opens from the title screen of its game world ══
 await page.goto(`${BASE}/qasim-adad-tabii`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="qasim-adad-tabii"]'); await page.waitForSelector('[data-ll-rows]');
@@ -460,9 +464,64 @@ await page.waitForSelector('[data-ll-strip]');
 await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 8');
 
+}
+
+if (!ONLY || ONLY === '2quater') {
+// ══ 2quater. « الجذر التربيعي لعدد موجب » (unit 2, in its game world « قصر الساحات »): its one instrument « ساحة العدد » ══
+// written 2026-11-21, NOT run yet. Every reading is checked against the walk's OWN integer arithmetic (never the tool's).
+await page.goto(`${BASE}/jidhr-tarbii`, { waitUntil: 'networkidle' }); heard = 0;
+await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="jidhr-tarbii"]');
+await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
+{ const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'court', `jidhr-tarbii opens the lab from its world: its one instrument is ساحة العدد (${mine})`); }
+if (await page.locator('[data-ll-court]').count() === 0) await page.click('[data-ll-tool="court"]');
+await page.waitForSelector('[data-ll-court]');
+{
+  const isq = (n) => { let x = 0; while ((x + 1) * (x + 1) <= n) x += 1; return x; };
+  const h2 = (h) => `${Math.floor(h / 100)},${String(h % 100).padStart(2, '0')}`;
+  /** What the court must draw for a and s — computed here. */
+  const want = (a, s) => ({ s: String(s), verdict: s * s === a ? 'fits' : s * s < a ? 'out' : 'holes', inside: String(Math.min(a, s * s)), out: String(Math.max(0, a - s * s)), holes: String(Math.max(0, s * s - a)) });
+  const drawn = () => page.evaluate(() => { const d = document.querySelector('[data-ll-court]').dataset; return { s: d.s, verdict: d.verdict, inside: d.inside, out: d.out, holes: d.holes }; });
+  const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
+  const side = async () => Number(await page.getAttribute('[data-ll-court]', 'data-s'));
+  await setNum('a', 30);
+  const s0 = await side();
+  expect(same(await drawn(), want(30, s0)) && (await page.getAttribute('[data-ll-court-facts]', 'data-ll-court-facts')) === 'open' && await quest('bracket') === '0', `ساحة العدد, 30 tiles in a square of ${s0}: drawn as computed, nothing written about the court before the hand settles it`);
+  console.log('    text on screen (px): facts', await px('.ll-court__facts p'), '· reading', await px('.ll-reading__text'));
+  await shot('court-30-opening');
+  // the hand: « + » up to 6 (a square too big: its empty places), then « − » to 5 (the greatest whole square)
+  for (let s = s0; s < 6; s += 1) await page.click('[data-ll-court-plus]');
+  await page.waitForTimeout(200);
+  expect(same(await drawn(), want(30, 6)) && await page.locator('[data-ll-court-hole]').count() === 6, 'a square of 6: 30 tiles inside, 6 places left empty, drawn dashed');
+  await page.click('[data-ll-court-minus]'); await page.waitForTimeout(250);
+  const k = isq(30); const lo = isq(30 * 10000);
+  expect(same(await drawn(), want(30, 5)) && await page.locator('[data-ll-court-out]').count() === 30 - k * k, 'back to 5: 25 tiles inside, the 5 that do not fit along its border');
+  expect((await page.getAttribute('[data-ll-court-facts]', 'data-ll-court-facts')) === 'settled' && (await page.getAttribute('[data-ll-court-whole]', 'data-ll-court-whole')) === `${k}:${30 - k * k}` && (await page.getAttribute('[data-ll-court-bracket]', 'data-ll-court-bracket')) === `${k}:${k + 1}` && (await page.getAttribute('[data-ll-court-near]', 'data-ll-court-near')) === `${h2(lo)}:${h2(lo + 1)}`, `5 and 6 tried: the court is written — 5 × 5 = 25, 5 left, 5 < √30 < 6, ${h2(lo)} < √30 < ${h2(lo + 1)} (computed here)`);
+  await shot('court-30-settled');
+  // a perfect square, by a real drag of the handle: 144 tiles and a side of 12 fill the court
+  await setNum('a', 144);
+  {
+    const svg = await page.locator('[data-ll-court]').boundingBox(); const kk = Math.min(svg.width / 560, svg.height / 370);
+    const ox = svg.x + (svg.width - 560 * kk) / 2; const oy = svg.y + (svg.height - 370 * kk) / 2;
+    const at = (v) => ({ x: ox + (50 + (v - 1) * (470 / 20)) * kk, y: oy + 40 * kk }); // the ruler: 1 at 50, 21 at 520, y = 40
+    const from = at(await side()); const to = at(12);
+    await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move(to.x, to.y, { steps: 12 }); await page.mouse.up(); await page.waitForTimeout(300);
+  }
+  expect(same(await drawn(), want(144, 12)) && (await page.getAttribute('[data-ll-court-root]', 'data-ll-court-root')) === String(isq(144)) && await page.locator('[data-ll-court-bracket]').count() === 0, 'dragging the side to 12 on 144: the square is full, √144 = 12, no bracket');
+  expect(await quest('exact') === '1', '« a court above 100 filled by a whole square » is ticked by what was made');
+  const heardCourt = await since();
+  expect(heardCourt.includes('tick') && heardCourt.includes('fit'), `the side ticks, the full square chimes (${heardCourt.join(' ')})`);
+  await shot('court-144-fits');
+}
+await page.click('[data-ll-close]'); await page.waitForTimeout(500);
+expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of jidhr-tarbii');
+
+}
+
+if (!ONLY) {
 // ══ 3. a lesson with nothing before it has no lab door ══
 await page.goto(`${process.env.E2E_BASE || 'http://localhost:5173'}/courses/moyen/1am/ansab_al_aadad_wal_hisab/kitabat-adad-tabii?lab=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForTimeout(800);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-lesson-lab-open], [data-mission-lab]').count() === 0, 'the very first lesson of 1AM: no instrument is reached yet — no door, no lab');
+}
 expect(errors.length === 0, 'no page error');
 await browser.close();

@@ -18,6 +18,7 @@ import './lessonGameWorld.css';
 const WORLDS = {
   'divisor-isles': () => import('./divisorIsles/DivisorIsles'),
   'mission-isle': () => import('./missionIsle/MissionIsle'),
+  'root-courts': () => import('./rootCourts/RootCourts'),
 };
 const PARTS = 3;
 const L = {

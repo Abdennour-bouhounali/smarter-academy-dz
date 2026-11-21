@@ -66,6 +66,11 @@ export const MISTAKES = {
   'smaller-not-divisor': 'انتبه: العدد الأصغر ليس قاسمًا مشتركًا إذا ترك باقيًا في قسمة الأكبر عليه.',
   'subtract-not-divide': 'انتبه: نقسم البسط والمقام على العدد نفسه — لا نطرح منهما العدد نفسه.',
   'one-term-only': 'انتبه: نقسم البسط والمقام معًا على العدد نفسه، لا أحدهما فقط.',
+  'power-times': 'انتبه: الأُسّ يقول كم مرّة نضرب العدد في نفسه — لا نضرب العدد في الأُسّ.',
+  'square-sign': 'انتبه: جداء عددين سالبين موجب، فمربّع عدد سالب موجب.',
+  'odd-sign': 'انتبه: جداء ثلاثة أعداد سالبة سالب — الأُسّ الفردي يُبقي الإشارة.',
+  'decimal-places': 'انتبه: في جداء عددين عشريين، عدد الأرقام بعد الفاصلة هو مجموع أرقامهما بعد الفاصلة.',
+  'fraction-one-term': 'انتبه: في مربّع كسر نضرب البسط في نفسه والمقام في نفسه — كليهما.',
 };
 
 // ───────────────────────── 1am.m1.r01 — الجمع والطرح والضرب ─────────────────────────
@@ -80,6 +85,8 @@ const CALC = {
   pgcd: (c) => gcdOf(c.x, c.y), // « 4am.m1.r03 »: PGCD(x ; y) = ▢
   // « 1am.m5.r02 »: n/d = m/▢ (side 'bottom') or n/d = ▢/m (side 'top') — the term that keeps the value
   frac: (c) => (c.side === 'bottom' ? (c.d * c.m) / c.n : (c.n * c.m) / c.d),
+  // « 3am.m3.r06 »: xᵉ = ▢ for a whole base (a fraction base is judged by `gradePower`, term by term)
+  pow: (c) => c.x ** c.e,
 };
 const calcValue = (c) => CALC[c.op](c);
 /** The difference written digit by digit, the small digit taken from the big one (the borrow forgotten). */
@@ -268,6 +275,7 @@ function gradeCalc(q, answer) {
     return { correct: false, mistake: x === q.calc.x + q.calc.y ? 'add-for-sub' : null };
   }
   const c = q.calc;
+  if (c.op === 'pow') return gradePower(c, answer);
   const v = num(answer?.v);
   if (v === calcValue(c)) return { correct: true, mistake: null };
   if (!Number.isFinite(v)) return { correct: false, mistake: null };
@@ -1189,6 +1197,240 @@ function fracExample(rand, level, { mistake = null } = {}) {
   };
 }
 
+// ───────────────────────── 3am.m3.r06 — حساب قوة عدد نسبي ─────────────────────────
+// What the square roots of 4AM stand on: the SQUARE of a number — whole, negative, decimal, a fraction — with a few cubes
+// and powers of ten at level 2. Nothing here writes the sign of a root or names one: the kit is played BEFORE that lesson.
+// Every value is EXACT (a number is a fraction n/d of integers, d > 0): a decimal is tenths, never a float.
+/**
+ * The whole bases whose square the kit writes. The squares the lesson's world builds (9, 16, 25, 36, 49, 81, 100, 196:
+ * bases 3, 4, 5, 6, 7, 9, 10, 14) are left out, so a number met first in the lesson is not one the kit has just shown —
+ * `launchkit.test.js` checks the list against the lesson's story. A decimal or a fraction is free.
+ */
+const SQ_BASES = { first: [8], 1: [8, 11, 12], sort: [8, 11, 12, 13] };
+const ratEq = (a, b) => a.n * b.d === b.n * a.d;
+const ratPow = (r, e) => ({ n: r.n ** e, d: r.d ** e });
+/** n / 10^k written with a decimal comma (LaTeX `{,}`), exactly: 9 / 100 → « 0{,}09 ». */
+const decTex = (n, k) => {
+  const s = String(Math.abs(n)).padStart(k + 1, '0');
+  return `${n < 0 ? '-' : ''}${s.slice(0, -k)}{,}${s.slice(-k)}`;
+};
+const POW_FRAC = (p, q) => `\\left(\\frac{${p}}{${q}}\\right)`;
+/** The base of a power, as the student reads it: « 8 », « (−8) » (a negative base is always in brackets). */
+const baseText = (x) => (x < 0 ? `(−${-x})` : String(x));
+
+/** « 8² = ▢ », « (−11)² = ▢ » (level 1); « 3³ = ▢ » or « (2/3)² = ▢/▢ » (level 2). A typed value is never negative. */
+function powerWrite(rand, level, first) {
+  if (level === 1) {
+    const b = pick(rand, first ? SQ_BASES.first : SQ_BASES[1]);
+    const x = first || rand() < 0.5 ? b : -b;
+    const c = { op: 'pow', x, e: 2 };
+    return {
+      gesture: 'write',
+      calc: c,
+      prompt: 'احسب قيمة هذه القوّة.',
+      tokens: [{ pow: [baseText(x), '2'] }, '=', S('v', 'الناتج', String(calcValue(c)).length)],
+    };
+  }
+  if (rand() < 0.5) {
+    const c = { op: 'pow', x: int(rand, 2, 5), e: 3 };
+    return {
+      gesture: 'write',
+      calc: c,
+      prompt: 'احسب قيمة هذه القوّة.',
+      tokens: [{ pow: [String(c.x), '3'] }, '=', S('v', 'الناتج', String(calcValue(c)).length)],
+    };
+  }
+  let p;
+  let q;
+  do {
+    q = int(rand, 3, 9);
+    p = int(rand, 1, q - 1);
+  } while (gcdOf(p, q) !== 1);
+  const c = { op: 'pow', n: p, d: q, e: 2 };
+  return {
+    gesture: 'write',
+    calc: c,
+    prompt: 'احسب مربّع الكسر، واكتب الناتج كسرًا.',
+    tokens: [
+      { pow: [{ frac: [String(p), String(q)] }, '2'] },
+      '=',
+      { frac: [S('n', 'البسط', String(p * p).length), S('d', 'المقام', String(q * q).length)] },
+    ],
+  };
+}
+
+/**
+ * One card of a sort of powers: `kind` says what it shows — true (`sq`, `neg`, `dec`, `frac`, `cube`, `ten`) or a slip
+ * (`times` the base times the exponent, `sign` a square of a negative written negative, `decSlip` one decimal place only,
+ * `fracTop` the numerator alone squared, `cubeSign` a negative cube written positive, `tenTimes` 10 × the exponent).
+ * It carries its base (`base`, a fraction n/d), its exponent and the value shown (`shown`), and is judged from them.
+ */
+function powerCard(rand, kind, id) {
+  const B = (x) => ({ n: x, d: 1 });
+  let base;
+  let e = 2;
+  let shown;
+  let tex;
+  let trap = null;
+  if (kind === 'sq' || kind === 'times') {
+    const x = pick(rand, kind === 'times' ? SQ_BASES.sort : [2, ...SQ_BASES.sort]);
+    base = B(x);
+    shown = kind === 'sq' ? B(x * x) : B(2 * x);
+    tex = `${x}^{2} = ${shown.n}`;
+    if (kind === 'times') trap = 'power-times';
+  } else if (kind === 'neg' || kind === 'sign') {
+    const x = pick(rand, [2, ...SQ_BASES.sort]);
+    base = B(-x);
+    shown = B(kind === 'neg' ? x * x : -x * x);
+    tex = `(-${x})^{2} = ${shown.n}`;
+    if (kind === 'sign') trap = 'square-sign';
+  } else if (kind === 'dec' || kind === 'decSlip') {
+    const t = kind === 'dec' ? pick(rand, [2, 3, 4, 5, 6, 7, 8, 9, 11, 12, 13]) : int(rand, 2, 9);
+    base = { n: t, d: 10 };
+    shown = kind === 'dec' ? { n: t * t, d: 100 } : { n: t * t, d: 10 };
+    tex = `(${decTex(t, 1)})^{2} = ${kind === 'dec' ? decTex(t * t, 2) : decTex(t * t, 1)}`;
+    if (kind === 'decSlip') trap = 'decimal-places';
+  } else if (kind === 'frac' || kind === 'fracTop') {
+    let p;
+    let q;
+    do {
+      q = int(rand, 3, 9);
+      p = int(rand, 2, q - 1);
+    } while (gcdOf(p, q) !== 1);
+    base = { n: p, d: q };
+    shown = kind === 'frac' ? { n: p * p, d: q * q } : { n: p * p, d: q };
+    tex = `${POW_FRAC(p, q)}^{2} = \\frac{${shown.n}}{${shown.d}}`;
+    if (kind === 'fracTop') trap = 'fraction-one-term';
+  } else if (kind === 'cube' || kind === 'cubeSign') {
+    const x = int(rand, 2, 4);
+    base = B(-x);
+    e = 3;
+    shown = B(kind === 'cube' ? -(x ** 3) : x ** 3);
+    tex = `(-${x})^{3} = ${shown.n}`;
+    if (kind === 'cubeSign') trap = 'odd-sign';
+  } else {
+    e = int(rand, 3, 5);
+    base = B(10);
+    shown = B(kind === 'ten' ? 10 ** e : 10 * e);
+    tex = `10^{${e}} = ${shown.n}`;
+    if (kind === 'tenTimes') trap = 'power-times';
+  }
+  return { id, text: `$${tex}$`, base, e, shown, bin: ratEq(ratPow(base, e), shown) ? 'yes' : 'no', trap };
+}
+
+/** Three equalities of powers: squares of whole and negative numbers (level 1); decimals, fractions, cubes, powers of ten (2). */
+function powerSort(rand, level) {
+  const shapes =
+    level === 1
+      ? [
+          ['sq', 'neg', 'times'],
+          ['neg', 'sign', 'sq'],
+          ['sq', 'sign', 'times'],
+          ['neg', 'times', 'sign'],
+          ['sign', 'sq', 'neg'],
+        ]
+      : [
+          ['decSlip', 'frac', 'cube'],
+          ['dec', 'fracTop', 'ten'],
+          ['cubeSign', 'dec', 'frac'],
+          ['tenTimes', 'cube', 'dec'],
+          ['frac', 'cubeSign', 'decSlip'],
+          ['fracTop', 'ten', 'cube'],
+        ];
+  const kinds = shuffle(rand, pick(rand, shapes));
+  const cards = [];
+  for (const kind of kinds) {
+    let c = powerCard(rand, kind, `c${cards.length + 1}`);
+    // three different bases: never the same number twice on the table
+    for (let i = 0; i < 40 && cards.some((o) => o.text === c.text || Math.abs(o.base.n) === Math.abs(c.base.n)); i += 1)
+      c = powerCard(rand, kind, c.id);
+    cards.push(c);
+  }
+  return {
+    gesture: 'sort',
+    prompt: 'هل كلّ مساواة صحيحة؟ أرسلها إلى صندوقها.',
+    bins: [
+      { id: 'yes', label: 'صحيحة' },
+      { id: 'no', label: 'خاطئة' },
+    ],
+    cards,
+  };
+}
+
+/** Right or not for « xᵉ = ▢ » or « (p/q)² = ▢/▢ »: re-computed exactly; an equal fraction is accepted; the slip named. */
+function gradePower(c, answer) {
+  if (c.n != null) {
+    const [N, D] = [num(answer?.n), num(answer?.d)];
+    const want = ratPow({ n: c.n, d: c.d }, c.e);
+    if (Number.isFinite(N) && D > 0 && ratEq({ n: N, d: D }, want)) return { correct: true, mistake: null };
+    if (N === want.n && D === c.d) return { correct: false, mistake: 'fraction-one-term' };
+    if (N === c.n * c.e && D === c.d * c.e) return { correct: false, mistake: 'power-times' };
+    return { correct: false, mistake: null };
+  }
+  const v = num(answer?.v);
+  if (v === calcValue(c)) return { correct: true, mistake: null };
+  return { correct: false, mistake: v === Math.abs(c.x) * c.e ? 'power-times' : null };
+}
+
+/** The worked example: the power as a product of equal factors, step by step; its first step answers the mistake shown. */
+function powerExample(rand, level, { mistake = null } = {}) {
+  if (mistake === 'odd-sign') {
+    const x = int(rand, 2, 4);
+    return {
+      title: `مكعّب العدد ${-x}`,
+      steps: [
+        `الأُسّ 3 يعني ثلاثة عوامل: $(-${x})^{3} = (-${x}) \\times (-${x}) \\times (-${x})$.`,
+        `العاملان الأوّلان: $(-${x}) \\times (-${x}) = ${x * x}$ — جداء عددين سالبين موجب.`,
+        `ثمّ العامل الثالث: $${x * x} \\times (-${x}) = -${x ** 3}$.`,
+        `أكتب: $(-${x})^{3} = -${x ** 3}$.`,
+      ],
+    };
+  }
+  if (mistake === 'decimal-places') {
+    const t = int(rand, 2, 9);
+    return {
+      title: `مربّع العدد العشري ${decTex(t, 1).replace('{,}', ',')}`,
+      steps: [
+        `$(${decTex(t, 1)})^{2} = ${decTex(t, 1)} \\times ${decTex(t, 1)}$.`,
+        `أضرب دون الفاصلة: $${t} \\times ${t} = ${t * t}$.`,
+        'في كلّ عامل رقم واحد بعد الفاصلة، ففي الجداء رقمان بعدها.',
+        `أكتب: $(${decTex(t, 1)})^{2} = ${decTex(t * t, 2)}$.`,
+      ],
+    };
+  }
+  if (mistake === 'fraction-one-term' || (level === 2 && mistake !== 'power-times' && mistake !== 'square-sign')) {
+    let p;
+    let q;
+    do {
+      q = int(rand, 3, 9);
+      p = int(rand, 2, q - 1);
+    } while (gcdOf(p, q) !== 1);
+    return {
+      title: `مربّع الكسر ${p} على ${q}`,
+      steps: [
+        `$${POW_FRAC(p, q)}^{2} = \\frac{${p}}{${q}} \\times \\frac{${p}}{${q}}$.`,
+        `نضرب البسط في البسط والمقام في المقام: $\\frac{${p} \\times ${p}}{${q} \\times ${q}}$.`,
+        `أكتب: $${POW_FRAC(p, q)}^{2} = \\frac{${p * p}}{${q * q}}$ — البسط والمقام كلاهما مربّع.`,
+      ],
+    };
+  }
+  const x = pick(rand, SQ_BASES[1]);
+  const first =
+    mistake === 'power-times'
+      ? `$${x}^{2}$ ليس $${x} \\times 2$: الأُسّ 2 يعني عاملين متساويين، $${x}^{2} = ${x} \\times ${x}$.`
+      : mistake === 'square-sign'
+        ? `$(-${x})^{2} = (-${x}) \\times (-${x})$: جداء عددين سالبين موجب.`
+        : `المربّع جداء العدد في نفسه: $${x}^{2} = ${x} \\times ${x}$.`;
+  return {
+    title: `مربّع العدد ${x}`,
+    steps: [
+      first,
+      `$${x} \\times ${x} = ${x * x}$، إذن $${x}^{2} = ${x * x}$.`,
+      `ولعدد سالب: $(-${x})^{2} = (-${x}) \\times (-${x}) = ${x * x}$.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
   '1am.m1.r01': {
     item: '1am.m1.r01',
@@ -1498,6 +1740,48 @@ export const FAMILIES = {
       'مثال: $138$ → $1 + 3 + 8 = 12$، و 12 من مضاعفات 3: إذن 138 يقبل القسمة على 3.',
     ],
   },
+  '3am.m3.r06': {
+    item: '3am.m3.r06',
+    // the name of the gesture; its home lesson (« قوة عدد نسبي », 3AM) is read from the net
+    name: 'حساب قوّة عدد نسبي',
+    icon: '🔢',
+    // NO instrument: no lesson of 3AM has one in « مختبري » yet (the capsule skips its lab step)
+    labTool: null,
+    mistakes: ['power-times', 'square-sign', 'odd-sign', 'decimal-places', 'fraction-one-term'],
+    forms: { 1: ['write', 'squares'], 2: ['sort', 'write'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'write' ? powerWrite(rand, level, first) : powerSort(rand, form === 'squares' ? 1 : 2),
+    example: powerExample,
+    rules: [
+      {
+        id: 'square',
+        title: 'مربّع عدد',
+        text: 'مربّع العدد $a$ هو جداؤه في نفسه: $a^{2} = a \\times a$؛ والأُسّ يقول كم عاملًا متساويًا نضرب.',
+        example: '$8^{2} = 8 \\times 8 = 64$، و $(-8)^{2} = (-8) \\times (-8) = 64$.',
+        check: { x: 8, e: 2, v: 64 },
+      },
+      {
+        id: 'sign',
+        title: 'إشارة قوّة عدد سالب',
+        text: 'قوّة عدد سالب موجبة إذا كان الأُسّ زوجيًّا، وسالبة إذا كان الأُسّ فرديًّا.',
+        example: '$(-2)^{4} = 16$ و $(-2)^{3} = -8$.',
+        check: { x: -2, e: 3, v: -8 },
+      },
+      {
+        id: 'fraction-decimal',
+        title: 'مربّع كسر ومربّع عدد عشري',
+        text: 'في مربّع كسر نرفع البسط والمقام كليهما: $\\left(\\frac{p}{q}\\right)^{2} = \\frac{p^{2}}{q^{2}}$؛ وفي مربّع عدد عشري يتضاعف عدد الأرقام بعد الفاصلة.',
+        example: '$\\left(\\frac{2}{3}\\right)^{2} = \\frac{4}{9}$ و $(0{,}3)^{2} = 0{,}09$.',
+        check: { x: 0.3, e: 2, v: 0.09 },
+      },
+    ],
+    memo: [
+      'مربّع العدد: $a^{2} = a \\times a$ — مثال: $12^{2} = 144$.',
+      'جداء عددين سالبين موجب: $(-11)^{2} = 121$؛ وجداء ثلاثة أعداد سالبة سالب: $(-2)^{3} = -8$.',
+      'مربّع كسر: $\\left(\\frac{3}{5}\\right)^{2} = \\frac{9}{25}$؛ ومربّع عدد عشري: $(0{,}4)^{2} = 0{,}16$.',
+      'قوى العدد 10: $10^{3} = 1000$ و $10^{5} = 100000$.',
+    ],
+  },
 };
 
 export const familyFor = (item) => FAMILIES[item] ?? null;
@@ -1544,11 +1828,14 @@ export function nextForm(step, answers, used = []) {
 const num = (x) => (x === '' || x == null ? NaN : Number(x));
 
 /**
- * The boxes of a « write » question, in reading order: a token is a string (drawn as it is), a box (`S`), or a fraction
- * `{ frac: [top, bottom] }` whose terms are each a string or a box.
+ * The boxes of a « write » question, in reading order: a token is a string (drawn as it is), a box (`S`), a fraction
+ * `{ frac: [top, bottom] }` whose terms are each a string or a box, or a power `{ pow: [base, exponent] }` (drawn with a
+ * real superscript; its base is a string or a fraction of two strings, and it holds no box).
  */
 export const slotsOf = (tokens) =>
-  tokens.flatMap((t) => (typeof t !== 'object' ? [] : t.frac ? t.frac.filter((x) => typeof x === 'object') : [t]));
+  tokens.flatMap((t) =>
+    typeof t !== 'object' || t.pow ? [] : t.frac ? t.frac.filter((x) => typeof x === 'object') : [t],
+  );
 
 /** Is the answer complete enough to be handed in? (every box written, every card sent, the flag moved) */
 export function complete(q, answer) {

@@ -108,7 +108,7 @@ export const tinyText = (page) =>
 const LAUNCH = GL_ARGS; // the GPU when the machine has one, software otherwise (lib/gpu.mjs)
 
 /** `pilot: true` — a walk OF the pilot lesson: its own words and numbers (`FOREIGN`, `FOREIGN_NUMBERS`) are not foreign there. */
-export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor = true, pilot = false } = {}) {
+export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor = true, pilot = false, textRules = [] } = {}) {
   const baseWords = pilot ? [] : FOREIGN;
   const baseNumbers = pilot ? [] : FOREIGN_NUMBERS;
   const out = process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : `${tmpdir()}/${name}`;
@@ -318,13 +318,15 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
           // as one line of its own. Anything else is ONE group: the whole formula on one line.
           const rowOf = (a) => { for (let x = a; x && x !== k; x = x.parentElement) if (x.parentElement?.classList.contains('vlist') && x.parentElement.closest('.mtable') && k.contains(x.parentElement.closest('.mtable'))) return x; return k; };
           const groups = new Map();
-          for (const a of leaves) { const r = a.getBoundingClientRect(); if (r.width <= 0) continue; const g = rowOf(a); if (!groups.has(g)) groups.set(g, []); groups.get(g).push({ r, arabic: /[\u0600-\u06FF]/.test(a.textContent) }); }
+          for (const a of leaves) { const r = a.getBoundingClientRect(); if (r.width <= 0) continue; const g = rowOf(a); if (!groups.has(g)) groups.set(g, []); groups.get(g).push({ r, arabic: /[\u0600-\u06FF]/.test(a.textContent), sup: Boolean(a.closest('.msupsub')) }); }
           const label = (k.parentElement.querySelector('annotation')?.textContent ?? k.textContent).slice(0, 40);
           for (const group of groups.values()) {
             const atoms = group.map((x) => x.r);
             if (atoms.length < 3) continue;
             // a formula never breaks across two lines: no atom starts below the bottom of the one before it
-            if (atoms.some((r, i) => i > 0 && r.top >= atoms[i - 1].bottom - 1)) mirrored.push(`broken across two lines: ${label}`);
+            // (an exponent raised over a tall bracket ends above the atom after it by design — « \sqrt{\left(\dfrac{4}{7}\right)^2} = »,
+            // measured 2026-11-21: the « 2 » ends 3 px above the « = »: what follows an exponent is not a new line)
+            if (atoms.some((r, i) => i > 0 && r.top >= atoms[i - 1].bottom - 1 && !group[i - 1].sup)) mirrored.push(`broken across two lines: ${label}`);
             // its atoms in order stand left to right — an Arabic \text{…} inside it reads right to left by design: the order
             // is checked on the mathematical atoms only (the lesson's own walk checks its Arabic rows read right to left)
             const math = group.filter((x) => !x.arabic).map((x) => x.r);
@@ -342,7 +344,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
         // « DA » glued to a number (« 900DA ») is money too: no Latin letter on either side (a segment DA in a formula is drawn
         // letter by letter, one text node each)
         const money = /(?<![A-Za-z])DA(?![A-Za-z])|€|\bUSD\b|د\.ج/.test(text);
-        return { raw: [...new Set(raw)], tiny: [...new Set(tiny)], words, learningPoint, money, mirrored: [...new Set(mirrored)], cut: [...new Set(cut)] };
+        return { raw: [...new Set(raw)], tiny: [...new Set(tiny)], words, learningPoint, money, mirrored: [...new Set(mirrored)], cut: [...new Set(cut)], text };
       },
       [[...baseWords, ...foreign], [...baseNumbers, ...foreignNumbers], numbers, FLOOR_PX],
     );
@@ -383,6 +385,12 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
     const words = t.words.filter((x) => !allowed.has(x));
     check(words.length === 0, `${where}: nothing of another lesson on screen${words.length ? ' — ' + words.join(', ') : ''}${allowed.size && t.words.length > words.length ? ` (the bank's own text here: ${t.words.filter((x) => allowed.has(x)).join(', ')})` : ''}`);
     check(!t.learningPoint && !t.money, `${where}: « الكفاءة », never « نقطة التعلّم »; money in « دج » only`);
+    // the words a WORLD forbids on every one of its screens (`textRules`: [{ re, what }], given by a world's walk — e.g. the
+    // nouns of another world; none for the islands' walks)
+    for (const rule of textRules) {
+      const m = t.text.match(rule.re);
+      check(!m, `${where}: ${rule.what}${m ? ` — « ${m[0].trim()} »` : ''}`);
+    }
     const tiny = t.tiny;
     if (PHONE || fontFloor !== false) check(tiny.length === 0, `${where}: ${PHONE ? 'on the phone ' : ''}no visible text under 12 px${tiny.length ? ' — ' + tiny.slice(0, 8).join(' | ') + (tiny.length > 8 ? ` (+${tiny.length - 8})` : '') : ''}`);
     if (exit) {

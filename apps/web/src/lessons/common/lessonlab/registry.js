@@ -172,6 +172,21 @@ export const TOOLS = [
     range: { a: [1, 999], b: [1, 999] },
     load: () => import('./tools/Strip'),
   },
+  {
+    // an area of the student's own laid as a square whose side his hand chooses: the tiles that do not fit, the empty
+    // places; once he tried the greatest whole square and the next, the court is written — √a, or between two whole
+    // numbers and to 0,01. It names the sign √ (the lab opens after the lesson): it is NOT safe before the lesson's keys
+    id: 'court',
+    lesson: 'jidhr-tarbii',
+    lessonTitle: 'الجذر التربيعي لعدد موجب',
+    icon: '🔲',
+    name: 'ساحة العدد',
+    hint: 'رتّب بلاطات ساحتك في مربّع بضلع تختاره: أيّ مربّع كامل يتّسع لها، وأين يقع ضلعها؟',
+    needs: 'a',
+    labels: { a: 'المساحة' },
+    range: { a: [1, 400], b: [1, 400] },
+    load: () => import('./tools/NumberCourt'),
+  },
 ];
 
 export const toolById = (id) => TOOLS.find((t) => t.id === id) ?? null;

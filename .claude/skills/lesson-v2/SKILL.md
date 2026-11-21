@@ -40,6 +40,27 @@ NOT given up (he did not accept rows 4–6): a lesson may still need a new mecha
 keeps its depth (the road checked against the bank, each wrong rule refuted by a computed case, a final mission that
 needs the lesson), and a weakness of pedagogy seen on the way is worked on, not left.
 
+## 0ter. The textbook says WHAT, never HOW (owner, 2026-11-21)
+
+His words: « when you plan for the lesson generation: never stick to the textbook: the textbook is used to know what the
+student must learn in math, but we build for them what we see as appropriate ».
+
+- **What binds a plan**: what the student must KNOW AND BE ABLE TO DO at the end — the الكفاءات of `lesson:brief` and
+  what the bank's exercises ask. Nothing else.
+- **What is ours to decide**: how many keys, in which order, with which experiments, contexts and numbers — and where the
+  cut between two lessons of a unit falls. A plan that gives one key to each listed learning point, in the list's order,
+  is the mistake this rule names: it copies the book's cutting instead of following the student's path.
+- **Before designing a lesson, read what the lessons before it in the unit ALREADY made him do.** What he has done is a
+  tool he owns: it comes back in the practice and in the final mission, it is not forged a second time (first met on
+  2026-11-21: lesson 1 of « قصر الساحات » had already made him bracket a root and meet the calculator's display — two
+  points the list assigns to lesson 2).
+- **Then ask what is NEW for him** in this lesson, and build the keys around that.
+- A learning point the bank does not test (`lesson:brief` says « no exercise tests it ») is still taught if the student
+  needs it; the report says the sitting cannot prove it.
+- The textbook itself, its extraction (`docs/sources/**`) and the lesson's old version are never read (§2 step 0). An
+  element of the book that no lesson cites any more is marked `notIntegrated`: it is bookkeeping about the book, never a
+  reason to add something to a lesson.
+
 ## 1. Who does what
 
 - **The main session designs, briefs, reviews, runs the walks and reports. Agents on `opus` write the code** (the 3D and a
@@ -54,7 +75,7 @@ needs the lesson), and a weakness of pedagogy seen on the way is worked on, not 
 | # | Step | Who | Output |
 |---|---|---|---|
 | 0 | `npm run lesson:brief -- <id>`, `npm run status:lesson-v2 -- --lesson <id>`; **never read the lesson's old version**; the exercise bank `content/practice/<grade>/<id>/` is used as it is | main | what the lesson must teach, الكفاءات and their weights in the bank |
-| 1 | **Design** (`review.md` §A is the checklist): one key per rule; for each key its NATURE and the experiment of that nature — a (kind, mode) no other key of the lesson uses; the numbers; what the student holds when each forge opens; the final mission, which must NEED the lesson. Written in the unit's design page (`docs/reports/BATCH_2_DESIGN.md` is the model). A new kind or a new world mechanic is the owner's « go » | main | the design section |
+| 1 | **Design** (`review.md` §A is the checklist; §0ter first: what is NEW for him, never the book's list item by item): one key per rule; for each key its NATURE and the experiment of that nature — a (kind, mode) no other key of the lesson uses; the numbers; what the student holds when each forge opens; the final mission, which must NEED the lesson. Written in the unit's design page (`docs/reports/BATCH_2_DESIGN.md` is the model). A new kind or a new world mechanic is the owner's « go » | main | the design section |
 | 2 | Kit work, only if a kind or a mode is missing — brief `briefs.md` §K | agent(s) | new files in the world's folder, registered LAST |
 | 3 | **Wave 1, in parallel**: the written world (§W) ∥ the board, the class test, the launch-kit family (§B) | 2 agents | `world/` without forges, `board/`, `content/class-tests/…`, the family |
 | 4 | **Wave 2, in parallel**: the forges and their experiments (§F) ∥ the pack, the satellites, the old version deleted (§P) | 2 agents | `world/forges.js`, `inquiries.js`, `lesson.pack.js`, the generated index |
@@ -95,6 +116,10 @@ The two scripts used on 2026-11-19 lived in the session's scratchpad; when this 
 `apps/web/scripts/` and name them here.
 
 ## 5. The closing step — what makes the next lesson better
+
+**How a world is PLAYED** — every remark the owner made while playing, as rules, with the six-step play-through to do
+before saying « playable »: **`play.md`**. A designer reads it before drawing a world; a new remark of the owner on how
+something feels is added there in the same task (owner, 2026-11-21).
 
 Before the lesson's commit, for EVERY defect met in the lesson (by a walk, by the eyes, by an agent, by the owner):
 

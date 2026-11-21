@@ -248,6 +248,140 @@ the unit's ENDLESS GAME — lesson 1's gate run design for design (rail of light
 screen), with no end and faster — the phase is `run`; the lesson gives
 the rounds (an order, three options, one right, a fact per wrong option), the world runs them and keeps the best score.
 
+## 2ter-3. A third world: « قصر الساحات » (`gameworld/rootCourts/`, 2026-11-21 — BEING BUILT, not validated)
+
+The world of 4AM unit 2 « الحساب على الجذور » (design, council and plan: `docs/reports/ROOTS_WORLD_PLAN.md`). It extends
+the same runtime (`kit/WorldRuntime.js`) and the same shell (`kit/LessonWorld.jsx`) and is registered in
+`LessonGameWorld.jsx › WORLDS` as `root-courts`. The owner validated the story of lesson 1 `jidhr-tarbii`
+on 2026-11-21; the lesson was then completed the same day: its written world (practice ladder, « تدرّب », the exam
+sitting, the knowledge map), its board, class test, launch family and lab instrument, and the two things below.
+
+**A level of the practice ladder is played on the kit's rail** (`Game.startPractice` → `kit/GateRun.js`): the lesson's
+ladder (`kit/ladder.js`) makes the waves; a wave carries what the rail shows — `say` (the order), `tex?`, `gates` (three
+numbers or short strings; « p/q » is drawn with a real bar), `good`, `why: { right, wrong: { [gate]: fact } }`. Three
+hearts; the stars of a level are the hearts left; the result is the kit's `result` overlay (`endPractice`),
+« ذكّرني بالقاعدة » the kit's `rule` overlay (`showRule` / `closeRule`).
+
+**The lesson's final mission** (`story.mission = { prompt, title, lead, lines(), check(values) → 'ok' | a FACT }`) waits in
+the pavilion of the last terrace, under the column of light: one written problem on a wide card (`RootCourts › Mission`,
+the kit's `UseLines`, its lines one under the other, each box named by the words beside it). « تحقّق » answers with a
+fact of the world about the first line that does not hold yet; solved, it is kept (`flags.mission`) and the story ends.
+In `jidhr-tarbii`: a court of 1849 tiles (its side, 43) and a garden of 1900 (between 43 and 44; the square of its side).
+
+**The mechanic** (`rootCourts/logic.js` is its law, pure and exact — fractions of BigInt; a number is TEXT everywhere
+else: « 30 », « 5,47 », « 49/64 »):
+
+- a TERRACE of the ksar holds square COURTS; a court's area is written on its gate, in tiles;
+- at a court's corner post the student takes the ROD (`E`) and walks along the wall with ← →: **his walk is the
+  length** — mark by mark of the rod's dial (« 1 », then « 0,1 », « 0,01 » when the story opens them; the longer he
+  holds a key, the faster the marks go by). The world builds a square PLATFORM on the rod, hovering over the court;
+- `E` lowers it. A rod of whole tiles first asks how many tiles the platform will cover (typed; a right first
+  prediction is a star). Then the world answers: the platform **RIDES** (it covers the court exactly) and flies him to
+  the terrace the court leads to; or it leaves a **BAND** (amber, its area written); or it **JAMS** on the rim (violet,
+  what sticks out written). A band and a jam are FACTS, never « wrong »: no red, no buzzer;
+- when the story allows it (`story.canClamp`), the rod is **CLAMPED on the wall**, corner to corner: `wall(a)`, a
+  length that may have no number — the platform built on it rides.
+
+**A rod** is `{ q: '5,47' }` or `{ root: '30' }` (a wall); `outcome(rod, area)` → `{ kind: 'ride' | 'band' | 'jam',
+covers, diff }`. The ten digits a calculator shows for the side of the court of 30 leave a band of
+0,000000000565919375 tile: nothing is ever compared by a float.
+
+**The ground of the runtime is flat** (the robot stands at y = 0): the terraces float at one height, like the islands,
+and a platform that rides FLIES. A ridden platform stays as a shuttle between its court and its pad on the terrace it
+reached (`E` on it): this is how he walks back (§2ter-1).
+
+**The story is the lesson's** (`lesson.story`, played by `rootCourts/Game.js`; its header lists every field):
+`terraces: [{ id, name, at: [x, z], courts: [{ id, a, to, steps?, unit?, predict? }], feature?, decor? }]`, `end`,
+`complete`, `text`, and the hooks `objective(game)` (the WHOLE instruction), `recall(game, terraceId)`,
+`onArrive(game, terraceId, first)`, `onVerdict(game, court, row)`, `afterKey[key]`, `pendingForge`, `featureOpen`,
+`courtOpen`, `canClamp`, `stepsOf`, `release` (after a band or a jam, the story may take the rod back to its post — the first court does it once a band AND a jam are seen, so that the student is never left holding a rod on a court that has nothing more to give). The student himself puts the rod down WHENEVER he wants, at any length and without lowering anything: the key X or the button « ضع المقياس » beside the rod's length (`Game.putDown`) — owner, 2026-11-21. A `feature` is a thing of the terrace that opens the forge of a key: the `mirror`,
+a `calculator` (its ten digits on its screen), the two `stations`. `complete: false` — the story is not the whole
+lesson yet: its end does NOT mark the lesson's modules done.
+
+**The terraces stand in ONE line, on the axis that goes into the screen** (owner, 2026-11-21: « like the first world »):
+`at: [0, -46 × k]` in the order he meets them; a long flight (back to the first terrace, or over three of them) rises
+higher so that it passes over the terraces between.
+
+**A view that follows him in every direction — the kit's `freeLook()`** (owner, 2026-11-21): a world that returns
+`true` gets clock controls instead of « forward / turn round »: the arrows are the hours of a clock laid on the ground,
+twelve being the world's `heading()` (up 12, right 3, down 6, left 9, two keys together the hour between). The robot
+walks that way and the lens swings to look along it; the clock does not turn with the lens, so a key held keeps one
+direction. `steers()` says when the keys walk him (false while the world reads them for a gesture of its own — here,
+while he holds the rod); `lookTo(angle)` turns him at once (on arriving, after a fall). ON in « قصر الساحات » only: the
+worlds of the islands keep « forward / turn round » until the owner asks, because every walk of their lessons steers
+with it and would have to be re-run.
+
+**The building yard — the root's own gesture** (`terrace.yard = { crates: ['9', '25'] }`, owner 2026-11-21 after a
+brainstorm): on a court he picks a LENGTH and the world answers an area (that is squaring); the yard goes the other way.
+A crate holds loose tiles; he takes the rod at the yard's post and walks, and the tiles are laid as a square, row by row,
+while the crate's label counts what is left. « ثبّت المربّع »: the crate is empty and no cell is open (the kerb rises,
+the plaque is written) — or tiles remain — or cells stay open, shown as violet holes. A yard is driven by the rod as a
+court is (`hold.court` is the yard) but it is not a court: nothing rides it, it joins no evidence, no star and no
+travel (`game.yards`, `flags['yard:<terrace>']` = crates built). The story decides what waits for it (`story.yardOpen`,
+`story.onYard`): in `jidhr-tarbii` the court of 30 opens after the crates of 9 and 25.
+
+**A feature that calls him stands under a column of light** (owner, 2026-11-21): while a terrace's feature is open and
+not done, a column of light from above and a ring on the ground mark it; `feature.beside: '<court id>'` places it beside
+the court it speaks about instead of the terrace's front right. In `jidhr-tarbii`, back on the court of 30 with the fine
+marks, the longest rod of two decimals that still leaves a band (5,47) is the stage's goal: the robot says so, the rod
+returns to its post (`story.release`), the court's lamp goes out and the calculator lights up (`flags.near`).
+
+**The game holds the order** (owner, 2026-11-21): a platform that waits flies him to another terrace only when the
+terrace he stands on is FINISHED — the story asks nothing more there and none of its courts waits to be ridden
+(`Game.mayTravel`). On the last terrace everything is finished: he roams freely.
+
+**A course of gates on a terrace** (`feature: { kind: 'run' }`, owner 2026-11-21): a gate of light that opens the lesson's
+`run` on the kit's rail (below). The story decides what waits for it (`game.flags.run`, set when the course is passed
+whole): in `jidhr-tarbii` the court of 100 opens after « سباق المربّعات » (fourteen gates: 1 × 1 … 10 × 10, then
+2 × 2 × 2 … 5 × 5 × 5; `world/run.js`).
+
+#### The kit's « قواعدي » — a rule stays within reach, in EVERY world (owner, 2026-11-21)
+
+The top bar of every world shows the button « قواعدي » (`[data-di-rules]`) as soon as the student owns one rule. It opens
+`RulesSheet` (`kit/Tablet.jsx`): every rule he owns, one tab each, his own forged sentence above its name
+(`game.openRules()` / `closeRules()`, overlay `{ type: 'rules' }`; it opens while he plays or from the title screen).
+When he closes a tablet he has JUST received, the card shrinks and flies to that button, which then beats
+(`Tablet › flyToRules`): he sees where his rule went. No motion for `prefers-reduced-motion`.
+The older keys pill of the top bar still opens the practice hub.
+
+#### The kit's gate run — `kit/GateRun.js` + `kit/GateRunHud.jsx`
+
+The rail of light (the robot on its board seen from behind, three arches, ← → for the lane, Space pauses, three hearts)
+is a kit part since 2026-11-21: it names no world and no lesson. A world owns one `GateRun`, passes it its runtime hooks
+(`stepWorld`, `lanesLive`, `robotPose`, `cameraShot`, `dispose` — listed at the top of the file) and draws
+`<GateRunHud run={s.run} game={game} content={…} />` over everything while `state.run` is set. The lesson gives the
+content: `{ levels, gates, round(level, random, n) → { ask, tex?, options × 3, right, why × 3 }, total?, text }`.
+Without `total` the run ends with the last heart; with `total` it is a COURSE that ends after that many gates
+(`won`). A gate that was not the right one shows a FACT (`why`), never « wrong ».
+**Not yet migrated:** « سباق الأعداد » in `missionIsle/Game.js` still carries its own copy of this engine (the kit's was
+extracted from it, line for line); it moves to the kit when the owner says so. `divisorIsles/Game.js` has the first run.
+
+**The files** (`rootCourts/`): `logic.js` (the law), `Game.js` (the mechanic), `scenery.js` (what is drawn in 3D: a
+terrace with its parapet, towers and palms, a tiled court with its ruler and gate, the platform, the pad, the mirror,
+the calculator, the stations, the pavilion), `strings.js` (the world's sentences; `tiles` agrees « بلاطة » with its
+number), `RootCourts.jsx` + `rootCourts.css` (the HUD: the instruction, the rod in his hand with the dial's marks, what
+the platform did; the prediction card), `courtParts.jsx` + `court.css` (THE 2D drawing of a court, `Court`, used by the
+mirror and the experiments: to scale, cut tiles, blocks above 150 tiles, a sub-divided tile under one tile, a
+MAGNIFIER when the band is too thin to see — the exact difference is always written), `ruleForge.js` (what a case is:
+`caseOf`, `caseId`, `evidenceOf`, `courtPool`, `COURT_TEXT`), `forgeParts.jsx` (`Mirror`, `Line`, `beats`),
+`Inquiry.jsx` and its two kinds:
+
+| Kind | The rule it finds | What the student does |
+|---|---|---|
+| `calc` | the exact length of a side against what a calculator shows (a comparison of candidates, none of which is the length) | rods lie ready on a rack — a whole number, a decimal, the calculator's ten digits (a drawn calculator); for each he says BEFORE whether it rides; the platform comes down on the court and the band or the overhang is written exactly; when it is too thin to see HE presses « كبّر » (×10 a press) until he sees it; the rows stay in a table. Last, he clamps the rod on the wall: it rides, and its cell is « ؟ » — a length with no number |
+| `roundtrip` | two operations that undo each other | two stations, « ابنِ ساحة » (a rod in, a court out) and « خذ الضلع » (a court in, a rod out); for each journey of the spec (a wall, a number, a walk to the LEFT of the post, a chain of three) he TYPES what will come out before the station runs — a plaque, or a rod (a number, or « ضلع الساحة التي مساحتها [ ] »); the station runs and shows the fact; the journeys stay as strips |
+
+**Two things this world asked of the kit** (both generic): `lesson.notYet` — a lesson being built names the doors it
+has not got yet (`map`, `know`, `progress`, `lab`, `launch`, `sitting`, `test`): `kit/Title.jsx` and `kit/End.jsx` do
+not show them (a door never opens on nothing) and the world's `openHub` ignores them; and `data-di-clear` — anything a
+world's HUD shows in the middle and marks so is never covered by the « E » bubble (`WorldRuntime › placePrompt`).
+`kit/Instruction.jsx › Recall` takes the world's own `title` (« من الساحة السابقة »).
+
+**Known, not done**: no unit test plays `Game.js` (the 3D mechanic is played by a browser only: the walk
+`e2e/lessons/jidhr-tarbii.walk.mjs`, through `e2e/lib/lessonWalk/worlds/rootCourts.mjs`; the free view's clock controls
+are not walked — the walk places the robot); the typed radical sign the last steps need does not exist in the kit (the forges spell
+« ضلع الساحة [ ] »); no test renders `RootCourts.jsx` (a wrong import path in it reached the browser on 2026-11-21 — see `defects.md`).
+
 ## 2quater. « الامتحان الأبيض » — the exam sitting (PROTOTYPE, 2026-11-16)
 
 **Status: a prototype of the SITTING, to judge the feel, not validated. Since 2026-11-18 its sheets are the lesson's EXERCISE

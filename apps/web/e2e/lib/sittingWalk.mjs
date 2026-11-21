@@ -810,7 +810,10 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow, stage 
         answers.length === typed.length &&
           typed.every(
             (q, k) =>
-              JSON.stringify(answers[k]?.answer) === JSON.stringify(plan[q.id]) && answers[k]?.outcome !== 'correct',
+              // a decimal is sent in the sheet's writing (« 2,2 » for the « 2.2 » typed — the first bank with decimal
+              // answers, jidhr-tarbii, 2026-11-21): compared as the same number, comma or point
+              JSON.stringify(answers[k]?.answer)?.replace(/\./g, ',') ===
+                JSON.stringify(plan[q.id])?.replace(/\./g, ',') && answers[k]?.outcome !== 'correct',
           ),
         `wrong copy: each of the ${typed.length} answers is sent as he wrote it, never as right`,
       );

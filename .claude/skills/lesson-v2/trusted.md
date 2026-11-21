@@ -55,3 +55,8 @@ lesson only); a gap of 0 cells (one lesson only); the lab's instruments.
 | A board with KaTeX fractions in its text | 11 stations; a nested `\frac{304 \div 16}{368 \div 16}` | the lesson's `board.test.js` |
 | The instrument « شريط الكسر » (`lessonlab/tools/Strip.jsx`) | 36 cells; NOT proven for a numerator greater than the denominator (it writes 36/24 over a strip of 24 lit of 36) | `lessonlab/strip.render.test.jsx` |
 | The launch kit with TWO core tools, one of them with fraction cards | `4am.m1.r03` + `1am.m5.r02` | `launchkit/launchkit.test.js` |
+| The story of the world « قصر الساحات » (`gameworld/rootCourts/*`): a yard of crates, courts with a typed prediction, a course of gates, the experiment kinds `calc` and `roundtrip`, the final mission | yard 9 / 25; courts up to 196 tiles; 14 gates; a mission of four lines | the lesson's `world/*.test.js`; walked by `e2e/lessons/jidhr-tarbii.walk.mjs` (story 1967 ok) on 2026-11-21, not committed yet |
+| The board's `court` station (`LessonBoard.jsx › CourtStation`) | up to 5 cards; a ten-digit card; a √ card; a naming tablet drawn dense above 320 characters | `features/classSession/lessonScripts.test.js`, `courtStation.render.test.jsx` |
+| The instrument « ساحة العدد » (`lessonlab/tools/NumberCourt.jsx`) | areas 1–400; walked on 30 and 144 with a real drag | `lessonlab/court.render.test.jsx` |
+| A practice level on the kit's rail (`kit/GateRun*`) in « قصر الساحات » | 6 gates, three hearts, a gate drawn as a fraction, the result card | the lesson's `world/practice.test.js` |
+| The launch family `3am.m3.r06` (a power with a real superscript) | level 1 write and sort, level 2 sort; NOT seen in a browser: the level-2 write « (2/3)² = ▢/▢ » | `launchkit/launchkit.test.js`, `fraction.render.test.jsx` |

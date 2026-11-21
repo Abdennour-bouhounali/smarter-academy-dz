@@ -19,6 +19,8 @@
  *   onStart()              the story begins, or resumes
  *   stepPhase(phase, dt)   drive the robot in a phase of its own (a run on a rail): true when it did
  *   lanesLive(phase)       does this phase read « left » / « right » as gestures?
+ *   freeLook(), steers()   a view that follows him in EVERY direction: his keys are the hours of a clock (12 = `heading()`);
+ *                          `steers()` false while the world reads ← → itself; `lookTo(angle)` turns him at once
  *   stepWorld(dt, phase)   its animations of each step
  *   robotPose(phase)       { lift, speed, sad }: how the robot holds itself now
  *   heading()              the angle the camera should look along — it reads `this.facing` (1 forward, -1 when the
@@ -136,6 +138,18 @@ export class WorldRuntime {
   lanesLive() {
     return false;
   }
+  /** Does the view follow him in EVERY direction (his keys are the hours of a clock; the lens looks where he walks)? */
+  freeLook() {
+    return false;
+  }
+  /** In a free view: do his keys walk him now? (a world that reads them for a gesture of its own says no) */
+  steers() {
+    return true;
+  }
+  /** In a free view: turn him (and the lens) to this angle — on arriving somewhere, after a fall. */
+  lookTo(angle) {
+    this.view = angle;
+  }
   stepWorld() {}
   robotPose() {
     return { lift: 0, speed: null, sad: false };
@@ -231,6 +245,7 @@ export class WorldRuntime {
     this.backHeld = false;
     this.turning = false;
     this.moveDir = new THREE.Vector2(0, -1);
+    this.view = null; // the angle he looks along, when the world's view is free (`freeLook`)
     this.camera.position.copy(this.camPos);
 
     this.sky = makeSky();
@@ -365,6 +380,17 @@ export class WorldRuntime {
     this.set({ exam, overlay: { type: 'promotion', result } });
   }
 
+  /** « قواعدي »: the rules he owns, readable from anywhere he plays (the button of the top bar). */
+  openRules(key = null) {
+    if (!this.state.keys.length) return;
+    this.openHub({ type: 'rules', key });
+  }
+  closeRules() {
+    const from = this.mapFrom ?? 'play';
+    this.mapFrom = null;
+    this.set({ overlay: null, phase: from === 'title' ? 'title' : 'play' });
+    this.input.clear();
+  }
   openHub(overlay) {
     if (this.busy()) return;
     const ph = this.state.phase;
@@ -481,27 +507,44 @@ export class WorldRuntime {
   updateHero(dt) {
     const h = this.hero;
     const ax = this.input.axis();
-    // each PRESS of « back » (a key, or the stick pulled down) turns him round; it is read once, on its way down
-    const back = ax.y < -0.5;
-    if (back && !this.backHeld && this.state.phase === 'play') {
-      this.facing = -this.facing;
-      this.turning = true; // the ROBOT turns round too, on the spot, with the view (owner, 2026-11-19)
+    let mx;
+    let mz;
+    const free = this.freeLook();
+    if (free) {
+      // THE VIEW FOLLOWS HIM IN EVERY DIRECTION (owner, 2026-11-21): his keys are the hours of a CLOCK laid on the
+      // ground, twelve being the world's `heading()` — « forward » is 12, « right » 3, « back » 6, « left » 9, and two
+      // keys together the hour between them (forward + right: half past one). He walks that way and the lens swings
+      // to look along it. The clock does not turn with the lens: a key held keeps ONE direction.
+      if (this.view == null) this.view = this.heading();
+      const mag = Math.hypot(ax.x, ax.y);
+      const live = mag > 0.3 && this.steers();
+      if (live) this.view = this.heading() - Math.atan2(ax.x, ax.y);
+      const along = live ? Math.min(1, mag) : 0;
+      mx = Math.sin(this.view) * along;
+      mz = Math.cos(this.view) * along;
+    } else {
+      // each PRESS of « back » (a key, or the stick pulled down) turns him round; it is read once, on its way down
+      const back = ax.y < -0.5;
+      if (back && !this.backHeld && this.state.phase === 'play') {
+        this.facing = -this.facing;
+        this.turning = true; // the ROBOT turns round too, on the spot, with the view (owner, 2026-11-19)
+      }
+      this.backHeld = back;
+      const to = this.heading();
+      const tx = Math.sin(to);
+      const tz = Math.cos(to);
+      // the frame of his keys: the ROAD he faces (the direction the lens is turning to) — and the lens's own direction only
+      // once it is within ~15° of it, a blend from ~30° (2026-11-19: with a wider blend he walked off a bridge while the
+      // lens swung round)
+      const c = this.camDir;
+      const s = Math.max(0, Math.min(1, (c.x * tx + c.y * tz - 0.86) / 0.11));
+      const f = this.moveDir.set(tx + (c.x - tx) * s, tz + (c.y - tz) * s).normalize();
+      const along = Math.max(0, ax.y); // « forward » walks him the way he faces; « back » only turns him
+      const rx = -f.y;
+      const rz = f.x;
+      mx = f.x * along + rx * ax.x;
+      mz = f.y * along + rz * ax.x;
     }
-    this.backHeld = back;
-    const to = this.heading();
-    const tx = Math.sin(to);
-    const tz = Math.cos(to);
-    // the frame of his keys: the ROAD he faces (the direction the lens is turning to) — and the lens's own direction only
-    // once it is within ~15° of it, a blend from ~30° (2026-11-19: with a wider blend he walked off a bridge while the
-    // lens swung round)
-    const c = this.camDir;
-    const s = Math.max(0, Math.min(1, (c.x * tx + c.y * tz - 0.86) / 0.11));
-    const f = this.moveDir.set(tx + (c.x - tx) * s, tz + (c.y - tz) * s).normalize();
-    const along = Math.max(0, ax.y); // « forward » walks him the way he faces; « back » only turns him
-    const rx = -f.y;
-    const rz = f.x;
-    const mx = f.x * along + rx * ax.x;
-    const mz = f.y * along + rz * ax.x;
     const k = damp(h.grounded ? 12 : 4, dt);
     h.vel.x += (mx * SPEED - h.vel.x) * k;
     h.vel.z += (mz * SPEED - h.vel.z) * k;
@@ -537,7 +580,12 @@ export class WorldRuntime {
     }
     if (h.pos.y < -20) this.respawn();
     const sp = Math.hypot(h.vel.x, h.vel.z);
-    if (sp > 0.4) {
+    if (free) {
+      // he faces the hour he walks to
+      let dy = this.view - h.yaw;
+      dy = Math.atan2(Math.sin(dy), Math.cos(dy));
+      h.yaw += dy * damp(12, dt);
+    } else if (sp > 0.4) {
       const target = Math.atan2(h.vel.x, h.vel.z);
       let dy = target - h.yaw;
       dy = Math.atan2(Math.sin(dy), Math.cos(dy));
@@ -610,10 +658,12 @@ export class WorldRuntime {
     const h = this.hero;
     const ph = this.state.phase;
     const cur = Math.atan2(this.camDir.x, this.camDir.y);
-    let dy = this.heading() - cur;
+    const free = this.freeLook();
+    let dy = (free ? (this.view ?? this.heading()) : this.heading()) - cur;
     dy = Math.atan2(Math.sin(dy), Math.cos(dy));
-    // a turn round (he walks back, or forward again) is quicker than the slow swing from one island's road to the next
-    const ny = cur + dy * damp(Math.abs(dy) > 1.3 ? 4.2 : 1.6, dt);
+    // a turn round (he walks back, or forward again) is quicker than the slow swing from one island's road to the next;
+    // a view that follows him in every direction stays close behind his turn
+    const ny = cur + dy * damp(free ? 3.2 : Math.abs(dy) > 1.3 ? 4.2 : 1.6, dt);
     this.camDir.set(Math.sin(ny), Math.cos(ny));
     const want = new THREE.Vector3();
     const look = new THREE.Vector3();
@@ -724,10 +774,11 @@ export class WorldRuntime {
     // behind it — a tall instruction at 1024×768 — the bubble drops just under it
     // — and never what the world has just answered either: the purse, the sign of a bridge, the equation and its verdict
     // (2026-11-20: after a refusal, at the light platform, the bubble sat on « 85 = 3 × 28 + 1 »)
+    // — a world marks anything else it shows in the middle `data-di-clear` (the rod in his hand, in « قصر الساحات »)
     const base = this.canvas.getBoundingClientRect();
     const half = el.offsetWidth / 2;
     for (const box of el.ownerDocument.querySelectorAll(
-      '[data-di-instruction], .di-purse, .di-sign, .di-eq, .di-verdict',
+      '[data-di-instruction], [data-di-clear], .di-purse, .di-sign, .di-eq, .di-verdict',
     )) {
       const r = box.getBoundingClientRect();
       if (!r.width) continue;

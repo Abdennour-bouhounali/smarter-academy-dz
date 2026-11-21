@@ -10,6 +10,17 @@ lessons, the textbook, `docs/sources/**`. Of the banks, only the briefs' digests
 
 **The STOP is §9: nothing is coded before the owner's yes on the decisions of §11.**
 
+> **2026-11-21 — the owner chose mechanic A (« greate build the world A on lesson 1 just the lesson inside not the
+> exercices … when i validated you continue the work »). BUILT, to be validated: the world `gameworld/rootCourts/` and
+> the STORY of lesson 1 with its three forges** — what exists, how it differs from this plan and what is left:
+> `docs/architecture/GAME_WORLD.md` §2ter-3. Differences from the plan below: the terraces float at ONE height and a
+> platform that rides FLIES to the next terrace (the shared runtime's ground is flat: no cliff, no lift shaft); the
+> first forge's tiles say « ثلث المساحة » where the plan said « half the area » (two pairs of rules were identical on
+> every court); the fraction court of the attacks is 9/16, not 49/64 (a headline of the bank); the gate run and the
+> final mission are NOT built. Decisions D2–D7 were taken as recommended, D3 (the unit's order) is still the owner's.
+
+Same day, after the owner played the first court: (1) he was stuck after rods 5 and 6 — the rod now returns to its post by itself (`story.release`) and the instruction sends him to the court of 16, the only one lit; (2) the tool is called « المقياس » on screen (this plan's older paragraphs still say « القضيب »); (3) the rod is lit, at rest on its post and in his hand. (4) he puts the tool down whenever he wants (key X or its button), and one platform on the court of 30 is enough to leave it; (5) the six terraces stand in one line going into the screen; (6) a course of fourteen gates « سباق المربّعات » (the kit's new `GateRun`) stands on the third terrace, before the court of 100. (7) forge 2's last step names each of its boxes; (8) the clamp on the court of 30 works on whole marks; (9) a platform flies him away only when the terrace is finished; (10) the view follows him in every direction (the kit's `freeLook`, clock controls); (11) the first terrace opens on a building yard — crates of 9 and 25 tiles laid as squares — before the court of 30; (12) every world has « قواعدي » in its top bar, and a tablet he closes flies to it.
+
 ---
 
 ## 1. The six lessons — what binds, and what the banks ask
@@ -42,6 +53,14 @@ Prerequisites (the launch kit): core `3am.m3.r06` (powers; `quwat-adad-nisbi`, a
 ---
 
 ## 2. Three mechanics
+
+**One page per mechanic** (asked by the owner; standalone — open each in a browser):
+`docs/reports/mockups/roots-world-A-courts.html`, `roots-world-B-lantern.html`, `roots-world-C-ropes.html`. Each has a
+3D view at the top (2026-11-21: the game engine's own robot, sky, clouds and materials; the mouse turns it) and, under
+it, the controls, a 2D diagram and small drawings of the other lessons. The 3D view follows the controls. They are
+sketches to compare the ideas, not the game: the robot does not walk, there is no forge. The 3D sources are
+`docs/reports/mockups/roots-world-3d/` (`a.js`, `b.js`, `c.js`, `common.js`); `node
+docs/reports/mockups/roots-world-3d/build.mjs` bundles them, with three.js, into the three pages (about 750 KB each).
 
 ### A — « قصر الساحات » : the square court and its side (area ↔ length)
 

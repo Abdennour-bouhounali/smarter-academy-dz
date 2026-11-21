@@ -11,11 +11,11 @@ const WITH_PACK = getBuiltLessons()
 
 describe('the pack of a lesson — the ONE place where it says what it gives the platform', () => {
   it('a lesson without a pack has no flag and no part: nothing is loaded for it', async () => {
-    expect(lessonPackFlags('jidhr-tarbii')).toEqual({});
+    expect(lessonPackFlags('natiqa-ghayr-natiqa')).toEqual({});
     expect(lessonPackFlags('no-such-lesson')).toEqual({});
-    expect(await loadLessonPack('jidhr-tarbii')).toBe(null);
-    expect(hasPackPart('jidhr-tarbii', 'script')).toBe(false);
-    expect(await loadPackPart('jidhr-tarbii', 'world')).toBe(null);
+    expect(await loadLessonPack('natiqa-ghayr-natiqa')).toBe(null);
+    expect(hasPackPart('natiqa-ghayr-natiqa', 'script')).toBe(false);
+    expect(await loadPackPart('natiqa-ghayr-natiqa', 'world')).toBe(null);
   });
 
   it('the generated flags say exactly what each pack holds, and every part named really loads', async () => {
@@ -30,10 +30,14 @@ describe('the pack of a lesson — the ONE place where it says what it gives the
         expect(flags.world, id).toBe(pack.world.id);
         const lesson = await loadPackPart(id, 'world');
         // a unit's last lesson is not a lesson of keys: its island asks missions and a bank, no ladder and no trainer
+        // a lesson BEING BUILT says which doors of the kit it has not got yet (`notYet`): until that list is empty it owes
+        // only its story and its forges — every part it does not name there is owed in full
         const parts =
           flags.world === 'mission-isle'
             ? ['keys', 'missions', 'bank', 'recap', 'sittings', 'journey', 'evidence', 'text']
-            : ['keys', 'ladder', 'trainer', 'sittings', 'journey', 'evidence', 'knowledge', 'text'];
+            : lesson.notYet?.length
+              ? ['keys', 'rules', 'story', 'forges']
+              : ['keys', 'ladder', 'trainer', 'sittings', 'journey', 'evidence', 'knowledge', 'text'];
         for (const key of parts) expect(lesson[key], `${id} world.${key}`).toBeTruthy();
       }
       if (flags.knowledge)

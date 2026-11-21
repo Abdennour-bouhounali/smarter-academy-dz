@@ -52,8 +52,9 @@ describe('synthèse finale — الحوصلة', () => {
   // unité 1 : 6 depuis le 2026-11-18 — les leçons 1–3 sont v2, leurs pages de module (et leur « إختبار أولي ») sont supprimées ;
   // 5 depuis le 2026-11-19 — la leçon 4 (qasim-mushtarak-akbar) aussi ; 4 le même jour — la leçon 5 (tayin-pgcd) ; 3 le même jour — la leçon 6 (bahth-pgcd) ; 2 le 2026-11-20 — la leçon 7 (awwaliyan-fima-baynahuma) ; 1 le même jour — la leçon 8 (ikhtizal-kasr) : reste la synthèse
   // unit 1: 0 since 2026-11-20 — its last lesson (« أدمج تعلّماتي », the mission island) is v2 too: no evaluation page left
-  it('les unités ont bien 0 + 6 + 4 + 5 + 4 + 6 + 6 + 5 + 4 + 5 + 5 + 5 + 5 + 5 modules d’évaluation', () => {
-    expect(modules.length).toBe(65);
+  // unit 2: 5 since 2026-11-21 — its lesson 1 (jidhr-tarbii) is v2, its « إختبار أولي » deleted
+  it('les unités ont bien 0 + 5 + 4 + 5 + 4 + 6 + 6 + 5 + 4 + 5 + 5 + 5 + 5 + 5 modules d’évaluation', () => {
+    expect(modules.length).toBe(64);
   });
 
   it.each(modules)('%s : la synthèse lit la carte, elle n’est pas vide', (_lesson, rel) => {

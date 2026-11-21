@@ -52,7 +52,8 @@ export async function playForge(ctx, key) {
 
   // ── its experiment, when it has one; else it opens on its tiles ──
   if (forge.inquiry) {
-    await page.waitForSelector('.rf-root .iq', { timeout: 15000 });
+    // the islands' investigation frame `.iq`; « قصر الساحات »'s `.rq-iq` (worlds/rootCourtsExperiments.mjs)
+    await page.waitForSelector('.rf-root .iq, .rf-root .rq-iq', { timeout: 15000 });
     await playExperiment(
       { w, page, name: `${name}-${forge.inquiry.mode ?? forge.inquiry.kind}`, where: 'forge', forbid: ctx.forbid },
       forge.inquiry,
@@ -256,6 +257,9 @@ export async function playForge(ctx, key) {
   const title = L.lesson.rules[key].title;
   check(((await page.textContent('.di-card')) ?? '').includes(title), `the tablet: « ${title} »`);
   await page.click('[data-di-tablet]');
+  // a tablet just received FLIES to « قواعدي » before it closes (kit/Tablet.jsx › flyToRules, about 0.75 s of REAL time —
+  // the world's clock does not hurry a CSS transition): wait until it is gone, then let the world settle
+  await page.waitForSelector('[data-di-tablet]', { state: 'detached', timeout: 4000 }).catch(() => {});
   await W.ff(0.4);
   expect((await W.st()).keys.includes(key), `the key « ${key} » earned`);
   await ctx.hook(`forge:${key}:after`);

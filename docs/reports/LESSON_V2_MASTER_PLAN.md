@@ -657,6 +657,17 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
      1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
 
+  24. [x] **4AM UNIT 2 « الحساب على الجذور » — its world « قصر الساحات » and its first lesson `jidhr-tarbii` are v2
+     (2026-11-21)**: a NEW world (`gameworld/rootCourts/`, contract `GAME_WORLD.md` §2ter-3, plan and council
+     `docs/reports/ROOTS_WORLD_PLAN.md`), the owner's play remarks written as rules in the skill (`play.md`), three
+     kit additions every world gets (the gate run `kit/GateRun.js`, the free view `freeLook()`, « قواعدي » with the
+     tablet that flies to it). `status:lesson-v2 -- --lesson jidhr-tarbii` prints ✅; walks at 1366×768: story 1967 ok,
+     hub 231, trainer 541, board 245, launch 226, sitting 2101 (50 sheets), lab step 10 — 0 FAIL.
+     OPEN: `check:lessons` is red on TWO lines of the textbook-coverage check (« prep », « qcm »: shared with lessons 3–5,
+     which still cite them; they close when those lessons are rebuilt); the lab is reachable before the keys (as in
+     every lesson); the endless game of unit 1 still carries its own copy of the gate run; the island lessons' walks
+     were re-run on ONE reference only (`bahth-pgcd` story) after the kit changes.
+     NEXT: lessons 2–6 of the unit, in order (`natiqa-ghayr-natiqa` first), designed by `SKILL.md` §0ter.
   23bis. [x] **The integration lesson `wadiya-idmajiya-aadad` is v2 (2026-11-20)** — three missions on « جزيرة
      المهمّات », the exam door, the unit's recap, the endless game « سباق الأعداد »; old version deleted; its board (a
      mission on the board), its memo and its class test built the same day: `status:lesson-v2` prints ✅. State and

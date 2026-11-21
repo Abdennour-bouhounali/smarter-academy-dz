@@ -6,6 +6,8 @@
  * what is LEFT, green what fits exactly.
  */
 import { openingFacts } from './lessonMemos';
+import { approx } from '../../lessons/common/gameworld/rootCourts/logic';
+import { tiles } from '../../lessons/common/gameworld/rootCourts/strings';
 
 const INK = '#0f172a';
 const LINE = '#94a3b8';
@@ -202,7 +204,75 @@ function Tiles({ o }) {
   );
 }
 
-const KINDS = { bridge: Bridge, teams: Teams, shelves: Shelves, tiles: Tiles };
+/**
+ * A square court of « قصر الساحات » (area `a`) and two rods tried on it (`b`, `alt`): in each panel the court's walls, and
+ * the square platform built on the rod from the corner post — the BAND it leaves in amber, what STICKS OUT in violet, or
+ * green when it rides. Every size comes from the exact numbers (`openingFacts`); a sliver too thin to see is drawn 2 px.
+ */
+const BLUE = '#3b5bdb';
+const KIND_TONE = { ride: '#047857', band: '#b45309', jam: '#6d28d9' };
+function CourtPanel({ cx, area, fit }) {
+  const S = 104; // the longest side drawn in a panel
+  const L = Math.sqrt(approx(area));
+  const l = Math.sqrt(approx(fit.covers));
+  const u = S / Math.max(L, l);
+  const post = { x: cx + S / 2, y: 182 };
+  const side = L * u;
+  // a band or an overhang thinner than 2 px is still drawn 2 px: the figure says « a band », the caption says how much
+  const p = fit.kind === 'band' ? Math.min(l * u, side - 2) : fit.kind === 'jam' ? Math.max(l * u, side + 2) : side;
+  const said =
+    fit.kind === 'ride'
+      ? 'تركب المصعد'
+      : fit.kind === 'band'
+        ? `شريط مساحته ${tiles(fit.diff)}`
+        : `تعلق: تزيد ${tiles(fit.diff)}`;
+  return (
+    <g data-memo-court={fit.kind}>
+      {fit.kind === 'jam' && (
+        <rect x={post.x - p} y={post.y - p} width={p} height={p} fill="#ddd6fe" stroke="#7c3aed" />
+      )}
+      <rect
+        x={post.x - side}
+        y={post.y - side}
+        width={side}
+        height={side}
+        fill={fit.kind === 'band' ? LEFT : '#e0e7ff'}
+        stroke={BLUE}
+        strokeWidth="2.5"
+      />
+      <rect
+        x={post.x - Math.min(p, side)}
+        y={post.y - Math.min(p, side)}
+        width={Math.min(p, side)}
+        height={Math.min(p, side)}
+        fill={fit.kind === 'ride' ? OK : '#c7d2fe'}
+        stroke={fit.kind === 'ride' ? '#047857' : BLUE}
+        strokeWidth="1.5"
+      />
+      <rect x={post.x - 4} y={post.y - 4} width="8" height="8" rx="2" fill="#fff" stroke={BLUE} strokeWidth="2" />
+      <Cap x={cx} y="48" size={15}>
+        المقياس {fit.b}
+      </Cap>
+      <Cap x={cx} y="68" size={14} tone={KIND_TONE[fit.kind]}>
+        {said}
+      </Cap>
+    </g>
+  );
+}
+function CourtFig({ o }) {
+  const { a, first, second } = openingFacts(o);
+  return (
+    <Svg id="court" label={o.title}>
+      <Cap x={W / 2} y="22">
+        ساحة مربّعة مساحتها {tiles(a)}
+      </Cap>
+      <CourtPanel cx={second ? 315 : W / 2} area={a} fit={first} />
+      {second && <CourtPanel cx={105} area={a} fit={second} />}
+    </Svg>
+  );
+}
+
+const KINDS = { bridge: Bridge, teams: Teams, shelves: Shelves, tiles: Tiles, court: CourtFig };
 export default function MemoFigure({ opening }) {
   const Figure = KINDS[opening.kind];
   return Figure ? <Figure o={opening} /> : null;

@@ -531,6 +531,31 @@
 .lk-equation:has(.lk-frac) {
   align-items: center;
 }
+/* a power of a « write » question (`{ pow: [base, exponent] }`): the exponent is a real superscript, never « ^ »; a
+   fraction base stands in brackets as tall as its two terms */
+.lk-pow {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.lk-pow > sup {
+  align-self: flex-start;
+  font-size: 0.6em;
+  font-weight: 900;
+  line-height: 1;
+  margin-inline-start: 0.12em;
+  margin-top: 0.35em;
+}
+.lk-pow__paren {
+  font-size: 1.9em;
+  font-weight: 400;
+  line-height: 1;
+  transform: scaleX(0.7);
+}
+.lk-pow .lk-frac {
+  font-size: 2.2rem;
+  line-height: 2.6rem;
+}
 .lk-keys {
   display: grid;
   grid-template-columns: repeat(11, 3.6rem);

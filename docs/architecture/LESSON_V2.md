@@ -70,6 +70,15 @@ Rules:
 **To give a lesson a pack**: write `lesson.pack.js` beside `lesson.config.js` with the keys it really has, run
 `npm run generate:lesson-index`, run the tests. Nothing else is edited.
 
+### A lesson being built: `notYet` (2026-11-21)
+
+A lesson whose world is shown to the owner before the rest is written declares, in its `world/index.js`,
+`notYet: ['map', 'know', 'progress', 'lab', 'launch', 'sitting', 'test']` — the doors of the kit it has not got yet. The
+title and end screens do not show those doors and the world does not open them; `lessons/lessonPack.test.js` then asks
+of its world only `keys`, `rules`, `story` and `forges`. Each name leaves the list when its part is written; the lesson
+is not « done » (§3) while the list is not empty. First used by `jidhr-tarbii` (world « قصر الساحات »,
+`GAME_WORLD.md` §2ter-3).
+
 ### What is NOT in the pack (and why)
 
 | Still elsewhere | Why |
@@ -214,7 +223,7 @@ for a lesson whose pack has a world (`LessonModuleChips`), and « واصل » / 
 **The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
 gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
 `khawass-qawasim`, then (same day) the 1AM `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` and the 2AM
-`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) and `ikhtizal-kasr` (lesson 8, with its mission scene `bakery`; the unit's last ordinary lesson on the mission player — only the synthesis `wadiya-idmajiya-aadad` stays on it) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
+`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) and `ikhtizal-kasr` (lesson 8, with its mission scene `bakery`; the unit's last ordinary lesson on the mission player — only the synthesis `wadiya-idmajiya-aadad` stays on it), then (2026-11-21) the first lesson of unit 2 `jidhr-tarbii` (world `root-courts`, with its mission scene `garden-bed`) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
 still has a module page (1AM `darb-qisma-ashriya`); the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
 commit as the conversion:
 

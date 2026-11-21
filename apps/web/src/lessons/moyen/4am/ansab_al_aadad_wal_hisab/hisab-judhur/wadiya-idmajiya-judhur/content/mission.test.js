@@ -15,8 +15,11 @@ import module7Src from '../modules/Module07AlWadiya.jsx?raw';
 import module8Src from '../modules/Module08Ahill.jsx?raw';
 import textbookSrc from './textbook.js?raw';
 
-const knowledgeOf = import.meta.glob('../../*/knowledge.jsx', { eager: true });
+// a v2 lesson's knowledge is its world's (LESSON_V2.md §2): its root knowledge.jsx is gone
+const knowledgeOf = import.meta.glob(['../../*/knowledge.jsx', '../../*/world/knowledge.js'], { eager: true });
 const labContent = import.meta.glob(['../../*/content/{folds,tilings,squares,rulers}.js'], { eager: true });
+// a v2 lesson's rounds are its world's: the courts (areas) of « قصر الساحات » (world/story.js › COURTS, YARD)
+const worldStories = import.meta.glob('../../*/world/story.js', { eager: true });
 const peerSheets = import.meta.glob('../../../../../../**/content/peerSheet.js', { eager: true });
 
 /**
@@ -160,11 +163,13 @@ const walk = (x, depth = 0) => {
   Object.entries(x).forEach(([k, v]) => { if (!SETTINGS.has(k)) walk(v, depth + 1); });
 };
 Object.values(labContent).forEach((m) => walk(m));
+Object.values(worldStories).forEach((m) => [...Object.values(m.COURTS ?? {}), ...(m.YARD ?? [])].forEach((v) => lessonNumbers.add(Number(v))));
 
 describe('module 7 — the collision rule against the unit\'s lessons', () => {
   it('the lessons\' round numbers are read', () => {
-    expect(Object.keys(labContent).length).toBeGreaterThanOrEqual(5);
-    [27, 32, 75, 98, 2.25].forEach((n) => expect(lessonNumbers.has(n), n).toBe(true));
+    expect(Object.keys(labContent).length + Object.keys(worldStories).length).toBeGreaterThanOrEqual(5);
+    // 196: the last court of lesson 1's world — proves the world's numbers are read
+    [27, 32, 75, 98, 2.25, 196].forEach((n) => expect(lessonNumbers.has(n), n).toBe(true));
   });
   it('no card, area, practice or free choice of module 7 is a number of a lesson\'s rounds', () => {
     [BED.a, ...FOLD_EASY, TILE_EASY, ...FREE_TILES].forEach((n) => expect(lessonNumbers.has(n), String(n)).toBe(false));

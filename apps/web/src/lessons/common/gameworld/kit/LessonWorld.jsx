@@ -25,7 +25,7 @@
 import { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { X, Maximize2, Minimize2, ArrowUp, Star, Gem } from 'lucide-react';
+import { X, Maximize2, Minimize2, ArrowUp, Star, Gem, BookOpen } from 'lucide-react';
 import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
@@ -43,7 +43,7 @@ import { Promotion, ProgressPage } from './Spaces';
 import { PaperChip } from './Paper';
 import { LessonProvider } from './LessonContext';
 import { Toast, Say, Stick, ExitTo, SoundToggle } from './parts';
-import { Tablet } from './Tablet';
+import { Tablet, RulesSheet } from './Tablet';
 import Title from './Title';
 import PracticeHub from './PracticeHub';
 import Result from './Result';
@@ -302,6 +302,18 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
               </button>
             </>
           )}
+          {/* « قواعدي »: every rule he owns, from anywhere — a tablet he closes flies here (`Tablet › flyToRules`) */}
+          {(s.keys.length > 0 || o?.type === 'tablet') && (
+            <button
+              type="button"
+              className="di-pill di-rules"
+              onClick={() => game.openRules()}
+              title={KT.tablets.all}
+              data-di-rules
+            >
+              <BookOpen size={16} aria-hidden="true" /> {KT.tablets.all}
+            </button>
+          )}
           <SoundToggle game={game} />
           <button type="button" className="di-icon" onClick={toggleFull} aria-label={KT.hud.full} title={KT.hud.full}>
             {full ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
@@ -399,6 +411,7 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
       )}
       {o && world.overlay?.(o, s, game)}
       {o?.type === 'tablet' && <Tablet id={o.key} mine={s.rules?.[o.key]} onClose={() => game.closeTablet()} fresh />}
+      {o?.type === 'rules' && <RulesSheet keys={s.keys} sel={o.key} mine={s.rules} onClose={() => game.closeRules()} />}
       {s.paper && o?.type !== 'know' && o?.type !== 'sitting' && <PaperChip className="di-pchip--float" />}
       {world.Over && <world.Over s={s} game={game} />}
       {o?.type === 'map' && (
