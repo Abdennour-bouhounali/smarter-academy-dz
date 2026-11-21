@@ -477,3 +477,32 @@ drawn at a readable size, a dial with a middle mark. **Kit work** (agent): the e
 
 **Said at the design stop:** the fourth learning point of the brief (bracketing, rounding) is tested by NO exercise of
 this lesson's bank — key 🎯 is taught because lessons 4–6 and the BEM need it, and the sitting cannot prove it.
+
+---
+
+## 13. Lesson 3 `muadalat-x-murabba` — design (2026-11-21, by the skill's §0ter)
+
+The unit's order is the catalogue's (x² = a third). The owner once listed it fifth (decision D3, never answered): the
+design below needs nothing of lessons 4–5, so the order can still change.
+
+**What he already owns** (never forged again): √a is the side of a court of area a; (√a)² = a and √(a²) = a — and in
+lesson 1's forge 🔁 he met ONE walk to the left that came back as a positive side; whether a side can be written
+(lesson 2).
+
+**What is NEW for him here** — three things, three keys:
+
+| Key | What he can do after it | Its own experiment (nature) | Where |
+|---|---|---|---|
+| ↔️ `mutaakisan` « عددان متعاكسان، مربّع واحد » | Know that a number and its opposite have the same square, and that a square is never negative | **A symmetry he makes with his feet, in the world**: the corner post now stands BETWEEN two twin courts and the ruler runs both ways (… −2, −1, 0, 1, 2 …). Pulled to the right, the rod reads 5 and its platform covers the right court; pulled to the left it reads −5 and covers the LEFT one: the count from above reaches the same number. Evidence from the world's log | terrace 1–2: « الساحتان التوأمان » |
+| 🔢 `adad-al-hulul` « حلول x² = a » | Say how many numbers have a given square — two when a > 0 (√a and −√a), one when a = 0, none when a < 0 — and write them, also when a is not a perfect square | **A hunt for ALL of them, in the world**: the twin lift takes off only when EVERY rod that rides has been lowered (both courts covered). Then a builder's slab orders « منصّة مساحتها −9 »: whatever rod he pulls, either way, the counted area is positive — the world closes the slab as « لا مقياس يبنيها »; and a slab « 0 »: one rod only. The tablet names « معادلة » and « حلّ » | terrace 3, then the hall |
+| 🧮 `azl-al-murabba` « اعزل المربّع » | Bring an equation to the shape x² = a before solving: 3x² = 75, x² − 6 = 0, x² + 4 = 0, and a rectangle whose width is a fraction of its length | **A procedure he undoes step by step** (new experiment kind `peel`): a plaque is written for SEVERAL equal courts, or for a court with tiles added or missing; he peels one operation at a time (share between the courts, give back the tiles) until ONE court and its area stand alone — then the two rods | the dial-maker's bench, 2D |
+
+The number of solutions by the SIGN of a is the practice ladder and the final mission; the rectangle problems of the
+bank's level 5 (a width that is two thirds of the length) are the final mission's model, on the platform's own numbers.
+
+**World work** (main session): twin courts round one post, a ruler with negative marks, a platform built to the left,
+the lift that waits for every rod that rides, a builder's slab that orders an area. **Kit work** (agent): the kind `peel`.
+
+**Said at the design stop:** the brief says NO exercise of this lesson's bank tests its third and fourth learning points
+(writing x² = (√a)², equations that reduce to x² = a) although the bank's sheets do ask both in other words; the sitting
+proves them only as far as the bank's own tagging lets it.
