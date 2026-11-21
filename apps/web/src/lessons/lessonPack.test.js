@@ -11,11 +11,11 @@ const WITH_PACK = getBuiltLessons()
 
 describe('the pack of a lesson — the ONE place where it says what it gives the platform', () => {
   it('a lesson without a pack has no flag and no part: nothing is loaded for it', async () => {
-    expect(lessonPackFlags('natiqa-ghayr-natiqa')).toEqual({});
+    expect(lessonPackFlags('muadalat-x-murabba')).toEqual({});
     expect(lessonPackFlags('no-such-lesson')).toEqual({});
-    expect(await loadLessonPack('natiqa-ghayr-natiqa')).toBe(null);
-    expect(hasPackPart('natiqa-ghayr-natiqa', 'script')).toBe(false);
-    expect(await loadPackPart('natiqa-ghayr-natiqa', 'world')).toBe(null);
+    expect(await loadLessonPack('muadalat-x-murabba')).toBe(null);
+    expect(hasPackPart('muadalat-x-murabba', 'script')).toBe(false);
+    expect(await loadPackPart('muadalat-x-murabba', 'world')).toBe(null);
   });
 
   it('the generated flags say exactly what each pack holds, and every part named really loads', async () => {

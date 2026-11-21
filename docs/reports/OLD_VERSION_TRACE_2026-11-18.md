@@ -998,3 +998,102 @@ COURT_FORGE_PARTS`, `logic.js › rides`, `marksIn`, `ruleForge.js › freshOf`,
 `scenery.js › makePalm`). `eslint` on the touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `world/`,
 `board/`, `boardLessons.test.js` ✅. `check-textbook-coverage.mjs` ❌ (16.1 j). NOT run: the whole suite, a build,
 `check:lessons`, `validate:lessons`, any walk, the API tests.
+
+## 17. Unit 2, lesson 2 — `natiqa-ghayr-natiqa` (2026-11-21, NOT committed)
+
+Lesson: 4AM `natiqa-ghayr-natiqa` « الأعداد الناطقة والأعداد غير الناطقة » (`…/hisab-judhur/natiqa-ghayr-natiqa/`), the
+second lesson of the world `root-courts` « قصر الساحات ». Same job and shape as §16. Its new version — `world/`, `board/`,
+the class test `content/class-tests/4am/natiqa-ghayr-natiqa.json`, the lab instrument `piece` — was not touched (its
+`world/index.js` holds no `notYet` list; `world/forges.js` and `inquiries.js` were being written by another agent at the
+same time). Its pack `lesson.pack.js` was CREATED in this change: `world` (`root-courts`), `phone: false`, `knowledge` =
+`world/knowledge.js › LESSON_KNOWLEDGE`, `board` script and memo, and `coach` P1 `murabba-natiq` · P2 `murabba-natiq` · P3
+`la-kasr-yarkab` · P4 `al-mudawwar`. P2–P4 are `world/evidence.js › POINTS` (one الكفاءة a key); P1 (classifying a root)
+is proved by no key's evidence (the bank's sitting proves it) and its rule is the 🧩 sheet's — the coach maps a POINT to a
+sheet (`examCoach.js › loadRule` reads `coach[point]`), so two points on one sheet is allowed. The lesson was on the
+MISSION PLAYER (scene `carpet-loom`).
+
+### 17.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1, rows h, l of §11.1, rows a, b, d of §15.1 and rows a, b, i, k, l, m, n of §16.1
+hold unchanged. What is specific:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `lesson.config.js › studentView`, `mission` (scene `carpet-loom`), `lessonProblem`, `knowledgeMapOpen`, `textbookRef`, the French header | the mission player, `LessonProblemCard`, the old 🧠 provider | **deleted**, header rewritten (as §16.1 b, the keys named without the literal `studentView: 'mission'`); module titles and `desc` neutral (0 « أستعدّ », 1 « ساحات مساحتها عشريّة », 2 « ساحة لا تقع على علامة », 3 « أتمرّن », 4–6 « مسألة 1 / 2 / 3 », 7 « التقويم »); `teachingScope` without the textbook's numbering; ids, numbers, slugs, stages unchanged. **P4 was taught by no module** (`world/evidence.test.js › describeEvidence`, « a module of the lesson teaches it », failed): P4 added to modules 2 and 3 |
+| b | `common/mission/MissionScene.jsx › 'carpet-loom'` → `CarpetLoomScene.jsx` | this config only | **deleted** (import, entry; the comment lists it with `garden-bed`) |
+| c | `content/exercises.js`, `peerSheet.js`, `prep.js`, `problems.js`, `rulers.js` (+ their tests and `mission.test.js`), `textbook.js`, root `knowledge.jsx`, `knowledgeGraph.js`, `moduleContext.js`, `modules/` | the module pages and the old 🧠 map only (`world/` and `board/` import none of them) | **deleted** |
+| d | the lab `square-root-side` (`resources`, two « graduation » workspaces, `sourceElementIds: ['act-2']`) | `resources` | **kept** as data (the coverage check reads `act-2` there). **Now mounted by no lesson** (lesson 1's pages went in §16): reached through `manipulationRegistry.js`, so `check:unreached` keeps it — follow-up 44. `logic/squareRootSide.js › RESIST_AFTER` was exported for the deleted `content/rulers.test.js` only: `export` removed (`check:unused`). Lesson 1's config comment (« natiqa-ghayr-natiqa still mounts it ») corrected |
+| e | **`wadiya-idmajiya-judhur`**: (1) `mission.tools[1].id: 'qima-muqarraba'` — an id of this lesson's deleted `knowledge.jsx` (`content/mission.test.js › knowledgeOf`); (2) `mission.test.js › labContent` read this lesson's `content/rulers.js`; its world reader took `Number('2,56')` (NaN) for this lesson's courts | ids, numbers | (1) **re-pointed** to the world key `al-mudawwar` (🎯; the `requires: ['qima-muqarraba']` of its problems and `priorKnowledge` are concept strings, unchanged, as §16.1 h); (2) the courts are read with the decimal comma as a point, the sentinel `10.24` (a court of this lesson) proves it, files counted content + worlds ≥ 4 (folds, tilings, two worlds) |
+| f | `_unit/prepDiagnostic.test.js` (the v2 lessons of the unit), `_unit/missionStrings.test.js` (raw scans ≥ 18) | pages, files | adapted (17.3) |
+| g | `knowledge/finalSynthesis.test.js` (unit 2: 5 evaluation pages), `lessonPack.test.js`, `boardLessons.test.js`, `examCoach.test.js` (this lesson was their « no pack / no board » example) | ids, counts | adapted (17.3); the example is now `muadalat-x-murabba` |
+| h | **`check-textbook-coverage.mjs`**: two elements destined to this lesson were cited by its deleted files only — `ict-sqrt2` (module 2) and `ex-31` (module 3; its item 2 is destined to `tawzif-khawass-judhur`, which cites it) | coverage | `ict-sqrt2`: **`notIntegrated`** with the D11 reason (edited by id). `ex-31`: **NOT changed** — shared with a lesson not rebuilt (`notIntegrated` would make lesson 5's citation an error): stays red (ledger D40), with `prep` and `qcm` of §16 |
+| i | `exportContentRegistry.mjs` (deploy) | page files | **the 5 items of the deleted « إختبار أولي » (`final_test:natiqa-ghayr-natiqa:…E1…E5`) disappear** — follow-up 45 |
+| j | `docs/reports/knowledge-contracts/4am_natiqa-ghayr-natiqa.json` | the audit's stale report | **deleted** |
+| k | `unitMissions.js` (icon 🧶, short name, milestone), `moduleLayoutMigrations.js` (`{4: 7}`), the API's remap migration, `lessonlab/registry.js` (`piece`) and `lab.test.js`, `defaultTests.test.js`, `practice-oracle/natiqa-ghayr-natiqa.mjs`, `content/practice`, compass, calendar, catalogue | ids, slugs, the bank | unchanged |
+| l | e2e walks | pages | 17.4 |
+
+### 17.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط, معارف, أوظّف, three مسائل, « إختبار أولي ») | 8 | 648 |
+| `moduleContext.js` | 1 | 4 |
+| root `knowledge.jsx`, `knowledgeGraph.js` | 2 | 239 |
+| `content/` — `exercises`, `peerSheet`, `prep`, `problems`, `rulers` (+ their 4 tests), `mission.test.js`, `textbook` | 11 | 1,220 |
+| **lesson folder, total** | **22** | **2,111** |
+| mission scene `CarpetLoomScene.jsx` | 1 | 67 |
+| stale audit report `docs/reports/knowledge-contracts/4am_natiqa-ghayr-natiqa.json` | 1 | 355 |
+| **total** | **24** | **2,533** |
+
+Also edited: `lesson.config.js`, `routes.jsx` (`retiredModules: true`, no `loadKnowledge`), `lesson.pack.js` (new),
+`MissionScene.jsx`, `logic/squareRootSide.js` (one `export`), `jidhr-tarbii/lesson.config.js` (a comment),
+`wadiya-idmajiya-judhur/lesson.config.js` (17.1 e), `package.json` (`format:v2`, `check:format`: the lesson's `world`,
+`board`, `lesson.pack.js`), `lessonIndex.generated.json` (the lesson's `pack` flags: world, knowledge, coach, board),
+`docs/sources/4am/unit2/extraction.json` (`ict-sqrt2`), `LESSON_V2.md` (retirement ledger).
+
+### 17.3 Tests changed
+
+- `lessonPack.test.js`: the « no pack » example is `muadalat-x-murabba`.
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS` (door « حصّة القسم », `boardLessonOfPath`,
+  « present » refused); « no board yet » is `muadalat-x-murabba`.
+- `features/practice/exam/examCoach.test.js`: « no pack » is `muadalat-x-murabba`; three new checks — P1 and P2 find the 🧩
+  sheet, P4 the 🎯 one.
+- `knowledge/finalSynthesis.test.js`: 64 → 63 evaluation modules (unit 2: 5 → 4).
+- `_unit/prepDiagnostic.test.js`: the v2 lessons of the unit are `jidhr-tarbii`, `natiqa-ghayr-natiqa`.
+- `_unit/missionStrings.test.js`: the raw scans read 17 files (lessons 3–5: four each, the synthesis three, two
+  `world/knowledge.js`): ≥ 18 → ≥ 17.
+- `wadiya-idmajiya-judhur/content/mission.test.js`: 17.1 e.
+
+### 17.4 Walks (NONE was run)
+
+None changed. **Opening this lesson's deleted pages or old home**: `learning-progress-hisab-judhur.mjs` (`CODES` starts
+with this lesson: `/astaidd`, `/itqan` now redirect to the world — FAILS for it), `lesson-kit/4am-hisab-judhur.mjs`
+(`LESSONS` list, and case 3b on `modulePath('natiqa-ghayr-natiqa', 'trigger')` — the `square-root-side` lab on `/nashat`),
+`lesson-kit/moyen-retrofit-phase1.mjs` (modules `nashat`, `maarif`, the lab and the bricks `murabba-natiq`, `ghayr-natiq`).
+Move on by themselves: `no-back-and-forth.mjs`, `mission-opening-align.mjs` (pick the configs holding
+`studentView: 'mission'`). Plays the new version: `lesson-lab.mjs` (opens `piece` from the world).
+
+### 17.5 Follow-ups NOT done
+
+44. The `square-root-side` lab (`SquareRootSide.jsx`, `logic/squareRootSide.js`, `levels.js`, core `manipulationTypes.js`,
+    its strings, tests and the walk cases of 17.4) is mounted by no page now; only the two configs' `resources` name it —
+    the same owner's call as follow-ups 2 and 23.
+45. **5 final-test items retired at the next deploy** (the deleted « إختبار أولي »), as follow-up 40.
+46. `check:textbook` stays red on 3 elements: `prep`, `qcm` (follow-up 39) and now `ex-31` (item 1 here, item 2 in
+    `tawzif-khawass-judhur`) — until the last lesson citing it is rebuilt, or the script learns a per-item `notIntegrated`.
+47. Stale mention left in documents (not this change's files): `LESSON_DEVELOPMENT_GUIDE.md` (`'carpet-loom'` in the scene
+    list, not marked DELETED), `MISSION_ROLLOUT_PROGRESS.md` (unit 2, lesson 2).
+48. The three walks of 17.4: re-target to `muadalat-x-murabba` or drop the two v2 lessons from their lists (with 43).
+
+### 17.6 Checks run (one at a time)
+
+`cd apps/web && npx vitest run src/lessons/lessonPack.test.js src/features/classSession src/features/practice src/lessons/common/knowledge src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur --maxWorkers=2`
+— after the deletion, 1 failure (`missionStrings` « found the lessons »: 17 < 18), fixed (17.3); re-run ✅ 88 files, 4,344
+tests. `src/lessons/registry.test.js src/lessons/common/{mission,lessonlab,kit/peerSheet.test.js,problems,manipulations/roots}
+src/pages/unit` ✅ 27 files, 924 tests; `manipulations/logic/squareLabs.test.js` ✅ 20. `status:lesson-v2 --lesson
+natiqa-ghayr-natiqa`: everything ✅ but « a test per part » (`world/forges.test.js`, another agent's) and « a walk plays its
+world » (the orchestrator). `check:unreached` ✅ (4,923 files). `check:unused`: `RESIST_AFTER` (fixed) and
+`world/math.js › tiles` (re-exported, imported by a test only — the world's, not the old version's; left). `eslint` on the
+touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `world/`, `board/`, `boardLessons.test.js` ✅.
+`check-textbook-coverage.mjs`: 2 problems before (`prep`, `qcm`), 4 after the deletion, 3 after `ict-sqrt2` (17.1 h).
+NOT run: the whole suite, a build, `check:lessons`, `validate:lessons`, any walk, the API tests.

@@ -179,6 +179,10 @@
   stroke: #fff;
   stroke-width: 2.5;
 }
+/* a rod written as a fraction: its bar in the rod's ink, like its digits */
+.crt-frac.crt-t--rod .crt-bar {
+  stroke: var(--crt-rod);
+}
 .crt-radical path {
   fill: none;
   stroke: var(--crt-rod);

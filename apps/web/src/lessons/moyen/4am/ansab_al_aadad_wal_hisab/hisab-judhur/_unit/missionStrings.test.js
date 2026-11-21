@@ -40,8 +40,9 @@ describe('unit 2 — mission strings and knowledge maps', () => {
   it('found the lessons', () => {
     expect(Object.keys(configs).length).toBeGreaterThanOrEqual(5);
     expect(Object.keys(graphs).length).toBeGreaterThanOrEqual(5);
-    // the raw scans really read the five lessons' knowledge, map, textbook and exercise files
-    expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBeGreaterThanOrEqual(18);
+    // the raw scans really read the lessons' knowledge, map, textbook and exercise files — lessons 3–5 on pages (four files
+    // each), the synthesis (three) and the two v2 lessons' world/knowledge.js: 3 × 4 + 3 + 2 = 17 (2026-11-21)
+    expect(Object.keys(raw).filter((path) => CLIMAX[lessonOf(path)]).length).toBeGreaterThanOrEqual(17);
     expect(Object.values(raw).every((src) => typeof src === 'string' && src.length > 100)).toBe(true);
   });
   it('no checkpoint string holds a control character (a lost backslash)', () => {

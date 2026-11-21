@@ -31,7 +31,7 @@ function RodChip({ rod, game }) {
       </span>
       <span className="rc-rod__cell">
         <small>{yard ? T.hud.crate : T.hud.court}</small>
-        <b>{tiles(rod.a)}</b>
+        <b>{rod.a == null ? '؟' : tiles(rod.a)}</b>
       </span>
       {rod.covers != null && (
         <span className="rc-rod__cell rc-rod__cell--math" data-rc-covers={rod.covers}>
@@ -84,7 +84,7 @@ function Lowered({ eq, verdict, game }) {
         )}
         <div className="di-eq__legend">
           <span>
-            {eq.yard ? game.T.hud.crate : game.T.hud.court}: {tiles(eq.a)}
+            {eq.yard ? game.T.hud.crate : game.T.hud.court}: {eq.a == null ? '؟' : tiles(eq.a)}
           </span>
         </div>
       </div>
@@ -99,9 +99,13 @@ function Lowered({ eq, verdict, game }) {
                   : T.yardJam(verdict.diff)
               : verdict.kind === 'ride'
                 ? T.ride
-                : verdict.kind === 'band'
-                  ? T.band(verdict.diff)
-                  : T.jam(verdict.diff)}
+                : verdict.diff == null
+                  ? verdict.kind === 'band'
+                    ? T.bandHidden
+                    : T.jamHidden
+                  : verdict.kind === 'band'
+                    ? T.band(verdict.diff)
+                    : T.jam(verdict.diff)}
           </p>
           {verdict.wall && <p className="rc-verdict__wall">{T.wall}</p>}
         </div>
@@ -116,7 +120,15 @@ function LastFact({ last, game }) {
   return (
     <div className={`rc-last rc-last--${last.kind}`} data-rc-last={last.kind} data-di-clear>
       <M>{`${last.s} \\times ${last.s} = ${last.covers}`}</M>
-      <span>{last.kind === 'band' ? T.band(last.diff) : T.jam(last.diff)}</span>
+      <span>
+        {last.diff == null
+          ? last.kind === 'band'
+            ? T.bandHidden
+            : T.jamHidden
+          : last.kind === 'band'
+            ? T.band(last.diff)
+            : T.jam(last.diff)}
+      </span>
     </div>
   );
 }

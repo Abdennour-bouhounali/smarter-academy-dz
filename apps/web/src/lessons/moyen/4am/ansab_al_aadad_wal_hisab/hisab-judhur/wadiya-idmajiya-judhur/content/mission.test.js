@@ -163,13 +163,15 @@ const walk = (x, depth = 0) => {
   Object.entries(x).forEach(([k, v]) => { if (!SETTINGS.has(k)) walk(v, depth + 1); });
 };
 Object.values(labContent).forEach((m) => walk(m));
-Object.values(worldStories).forEach((m) => [...Object.values(m.COURTS ?? {}), ...(m.YARD ?? [])].forEach((v) => lessonNumbers.add(Number(v))));
+// a court is written as the student reads it (« 2,56 »): the decimal comma is read as a point
+Object.values(worldStories).forEach((m) => [...Object.values(m.COURTS ?? {}), ...(m.YARD ?? [])].forEach((v) => lessonNumbers.add(Number(String(v).replace(',', '.')))));
 
 describe('module 7 — the collision rule against the unit\'s lessons', () => {
   it('the lessons\' round numbers are read', () => {
-    expect(Object.keys(labContent).length + Object.keys(worldStories).length).toBeGreaterThanOrEqual(5);
-    // 196: the last court of lesson 1's world — proves the world's numbers are read
-    [27, 32, 75, 98, 2.25, 196].forEach((n) => expect(lessonNumbers.has(n), n).toBe(true));
+    // lessons 3 and 4 (folds, tilings) and the worlds of lessons 1 and 2 (since 2026-11-21: lesson 2's rulers left with its pages)
+    expect(Object.keys(labContent).length + Object.keys(worldStories).length).toBeGreaterThanOrEqual(4);
+    // 196: the last court of lesson 1's world; 10.24 (« 10,24 »), a court of lesson 2's — proves the worlds' numbers are read
+    [27, 32, 75, 98, 2.25, 196, 10.24].forEach((n) => expect(lessonNumbers.has(n), n).toBe(true));
   });
   it('no card, area, practice or free choice of module 7 is a number of a lesson\'s rounds', () => {
     [BED.a, ...FOLD_EASY, TILE_EASY, ...FREE_TILES].forEach((n) => expect(lessonNumbers.has(n), String(n)).toBe(false));

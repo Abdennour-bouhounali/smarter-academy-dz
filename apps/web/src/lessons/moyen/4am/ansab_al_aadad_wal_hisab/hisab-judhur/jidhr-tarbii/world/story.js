@@ -68,7 +68,7 @@ export const STORY = {
       name: 'السطح الأوّل',
       courts: [
         { id: 'c30', a: COURTS.first, to: 'warshatan' },
-        { id: 'c16', a: COURTS.small, to: 'nakhil' },
+        { id: 'c16', a: COURTS.small, to: 'nakhil', hide: true }, // nobody wrote its area: the count will
       ],
       // the opening: two crates of tiles he lays as squares — from the number of tiles to the side (the root's own gesture)
       yard: { crates: YARD },
@@ -81,11 +81,11 @@ export const STORY = {
         screen: CALCULATOR,
       },
     },
-    { id: 'nakhil', name: 'سطح النخيل', courts: [{ id: 'c36', a: COURTS.palm, to: 'rih' }] },
+    { id: 'nakhil', name: 'سطح النخيل', courts: [{ id: 'c36', a: COURTS.palm, to: 'rih', hide: true }] },
     {
       id: 'rih',
       name: 'سطح الريح',
-      courts: [{ id: 'c100', a: COURTS.wind, to: 'maraya' }],
+      courts: [{ id: 'c100', a: COURTS.wind, to: 'maraya', hide: true }],
       feature: { id: 'run', kind: 'run', prompt: 'ادخل سباق المربّعات' },
     },
     {
@@ -210,10 +210,10 @@ export const STORY = {
       }
       if (!has(game, KEY1)) {
         if (!game.flags.stuck && (game.flags['c30:band'] || game.flags['c30:jam']))
-          return `جرّب مقياسًا آخر على الساحة ${first}، أو اذهب إلى الساحة الصغيرة بجانبها: مساحتها ${tiles(COURTS.small)}.`;
+          return `جرّب مقياسًا آخر على الساحة ${first}، أو اذهب إلى الساحة الصغيرة بجانبها: لا أحد كتب مساحتها بعد.`;
         if (!game.flags.stuck)
           return `الساحة الكبيرة مساحتها ${tiles(first)}. أمسك المقياس عند ركنها، امشِ حتّى تغطّي المنصّة الساحة كلّها، ثمّ أنزلها.`;
-        return `لا مقياس من مقاييسك ركب الساحة ${first}. اذهب إلى الساحة الصغيرة بجانبها (مصباحها مضيء): مساحتها ${tiles(COURTS.small)}.`;
+        return `لا مقياس من مقاييسك ركب الساحة ${first}. اذهب إلى الساحة الصغيرة بجانبها (مصباحها مضيء): لا أحد كتب مساحتها بعد.`;
       }
       if (!has(game, KEY2))
         return game.flags.near

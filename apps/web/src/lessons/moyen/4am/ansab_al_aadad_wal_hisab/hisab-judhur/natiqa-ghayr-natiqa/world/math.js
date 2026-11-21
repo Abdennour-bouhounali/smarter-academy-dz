@@ -10,7 +10,9 @@ import { compare, read, rootOf, square, write } from '../../../../../../common/g
 export { ltr } from '../../../../../../common/gameworld/kit/authoring/numbers';
 export { compare, equal, read, rootOf, square, tex, write } from '../../../../../../common/gameworld/rootCourts/logic';
 export { tiles } from '../../../../../../common/gameworld/rootCourts/strings';
-export { K1, K2, K3 } from './forges';
+// the key ids from the story (forges.js holds the same literals): the forges read the story, so nothing they import
+// imports them back
+export { K1, K2, K3 } from './story';
 
 /** A number read, or null when it is not one (an empty box, a word). */
 export function valueOf(x) {

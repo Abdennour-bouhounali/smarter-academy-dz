@@ -311,6 +311,16 @@ export class RootCourtsGame extends WorldRuntime {
     this.cells.count = 0;
     this.cells.visible = false;
     this.countLabel = makeLabel('', { h: 1.5, bg: '#0f2147', on: false });
+    // the NUMBER of each counted tile, written inside it (one canvas laid over the platform, drawn tile after tile)
+    this.numCanvas = document.createElement('canvas');
+    this.numTex = new THREE.CanvasTexture(this.numCanvas);
+    this.numTex.colorSpace = THREE.SRGBColorSpace;
+    this.cellNums = new THREE.Mesh(
+      new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
+      new THREE.MeshBasicMaterial({ map: this.numTex, transparent: true, depthWrite: false }),
+    );
+    this.cellNums.visible = false;
+    this.cellNums.renderOrder = 20;
     // the key of a court he has just ridden
     this.keyMesh = new THREE.Group();
     const gold = new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 1.4 });
@@ -331,7 +341,7 @@ export class RootCourtsGame extends WorldRuntime {
       2.6,
       3.6,
     );
-    this.scene.add(this.sideBar, this.sideLabel, this.cells, this.countLabel, this.keyMesh);
+    this.scene.add(this.sideBar, this.sideLabel, this.cells, this.cellNums, this.countLabel, this.keyMesh);
     this.onDropKey = (e) => {
       if (e.code === 'KeyX' && !e.repeat && !/^(INPUT|TEXTAREA)$/.test(e.target?.tagName ?? '')) this.putDown();
     };
@@ -349,7 +359,9 @@ export class RootCourtsGame extends WorldRuntime {
     this.scene.add(this.rodLabel, this.areaLabel);
   }
   buildCourt(c) {
-    const parts = makeCourt(c.side, c.unit, tiles(c.a));
+    // a court whose area nobody wrote yet (`hide: true`): its gate shows « ؟ » until a platform that rides has been counted
+    c.shown = !c.hide || Boolean(this.ridden[c.id]);
+    const parts = makeCourt(c.side, c.unit, c.shown ? tiles(c.a) : '؟');
     parts.group.position.set(c.post.x, 0, c.post.z);
     this.scene.add(parts.group);
     c.parts = parts;
@@ -476,6 +488,7 @@ export class RootCourtsGame extends WorldRuntime {
     await this.wait(out.kind === 'ride' ? 2.6 : 2.4);
     if (this.dead) return;
     this.cells.visible = false;
+    this.cellNums.visible = false;
     this.countLabel.visible = false;
     if (out.kind !== 'ride') {
       y.platform.userData.tone(null);
@@ -538,6 +551,7 @@ export class RootCourtsGame extends WorldRuntime {
     for (const c of this.courts) {
       c.tries = this.tries[c.id] ?? 0;
       c.ridden = this.ridden[c.id] ?? null;
+      if (c.ridden) this.reveal(c);
       c.sealed = Boolean(this.sealed[c.id]);
       c.sealLabel.visible = c.sealed;
       if (!c.ridden) continue;
@@ -577,9 +591,11 @@ export class RootCourtsGame extends WorldRuntime {
     if (!o) {
       const open = here.courts.find((c) => !this.courtDone(c) && this.courtOpen(c));
       const waiting = this.courts.find((c) => c.ridden && c.target != null && this.sideOf(c) === here.i);
-      if (this.hold) o = this.hold.court.yard ? T.yard(this.hold.court.a) : T.walk(this.hold.court.a);
-      else if (here.i === this.endAt) o = T.end;
-      else if (open) o = T.grab(open.a);
+      if (this.hold) {
+        const hc = this.hold.court;
+        o = hc.yard ? T.yard(hc.a) : hc.shown === false ? T.walkHidden : T.walk(hc.a);
+      } else if (here.i === this.endAt) o = T.end;
+      else if (open) o = open.shown === false ? T.grabHidden : T.grab(open.a);
       else if (waiting) o = T.ride(this.ter[waiting.shuttle === 'home' ? waiting.target : waiting.terrace].name);
       else o = T.end;
     }
@@ -592,6 +608,12 @@ export class RootCourtsGame extends WorldRuntime {
   mayTravel() {
     if (this.story.objective?.(this)) return false;
     return !this.ter[this.state.at].courts.some((c) => !this.courtDone(c) && this.courtOpen(c));
+  }
+  /** The count has reached the area of a court nobody had written: its gate writes it now. */
+  reveal(c) {
+    if (c.shown) return;
+    c.shown = true;
+    c.parts.plaque.userData.set(tiles(c.a));
   }
   /** A court is DONE when its platform rides — or when it was closed as « no mark of this terrace rides it ». */
   courtDone(c) {
@@ -625,17 +647,39 @@ export class RootCourtsGame extends WorldRuntime {
     const m = new THREE.Matrix4();
     this.cells.count = 0;
     this.cells.visible = true;
+    // the canvas of the numbers: one square of pixels a tile, the first tile at the corner post
+    const px = n <= 10 ? 128 : 64;
+    this.numCanvas.width = n * px;
+    this.numCanvas.height = n * px;
+    const g = this.numCanvas.getContext('2d');
+    g.clearRect(0, 0, n * px, n * px);
+    g.font = `900 ${Math.round(px * (total > 99 ? 0.4 : 0.52))}px Cairo, Tajawal, system-ui, sans-serif`;
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.fillStyle = '#0f2147';
+    this.numTex.dispose(); // its size changed: a fresh upload
+    this.numTex.needsUpdate = true;
+    this.cellNums.scale.set(n * c.unit, 1, n * c.unit);
+    this.cellNums.position.set(c.post.x + (n * c.unit) / 2, y + 0.17, c.post.z - (n * c.unit) / 2);
+    this.cellNums.visible = true;
     await this.wait(0.9);
     for (let k = 0; k < total && !this.dead; k += 1) {
+      const [col, row] = [k % n, Math.floor(k / n)];
       m.makeScale(c.unit * 0.9, 1, c.unit * 0.9);
-      m.setPosition(c.post.x + ((k % n) + 0.5) * c.unit, y + 0.12, c.post.z - (Math.floor(k / n) + 0.5) * c.unit);
+      m.setPosition(c.post.x + (col + 0.5) * c.unit, y + 0.12, c.post.z - (row + 0.5) * c.unit);
       this.cells.setMatrixAt(k, m);
       this.cells.count = k + 1;
       this.cells.instanceMatrix.needsUpdate = true;
+      // its number, inside it (the canvas's first row is the far one: the corner post is at the bottom left)
+      g.fillText(String(k + 1), (col + 0.5) * px, (n - 1 - row + 0.5) * px);
+      this.numTex.needsUpdate = true;
       this.set({ count: k + 1 });
-      if (total <= 40 || k % 4 === 0) this.audio.play('lane');
-      await this.wait(Math.max(2.4 / total, 0.26 * 0.9 ** k));
+      const pause = Math.max(2.6 / total, 0.3 * 0.9 ** k);
+      // a note for each tile, climbing with the count (every second or third tile once they come too fast to hear apart)
+      if (pause > 0.07 || k % 3 === 0) this.audio.play('plank', k % 15);
+      await this.wait(pause);
     }
+    this.audio.play('star', 2);
     this.countLabel.userData.set(String(total));
     this.countLabel.position.set(c.post.x + (n * c.unit) / 2, y + 1.3, c.post.z - (n * c.unit) / 2);
     this.countLabel.visible = true;
@@ -668,6 +712,7 @@ export class RootCourtsGame extends WorldRuntime {
     this.particles.burst(this.hero.pos.clone().setY(1.5), 0xfde68a, 40, 5, 2, 0.9);
     this.audio.play('crystal');
     this.cells.visible = false;
+    this.cellNums.visible = false;
     this.countLabel.visible = false;
     this.set({ count: null, phase: 'play' });
     this.guessed(c, true);
@@ -745,6 +790,7 @@ export class RootCourtsGame extends WorldRuntime {
       this.say(this.T.say.grab, 7);
     }
     this.cells.visible = false;
+    this.cellNums.visible = false;
     this.countLabel.visible = false;
     this.set({ equation: null, verdict: null, last: null, count: null });
     this.syncRod();
@@ -784,7 +830,7 @@ export class RootCourtsGame extends WorldRuntime {
     this.set({
       held: this.T.held(text),
       rod: {
-        a: h.court.a,
+        a: h.court.shown === false ? null : h.court.a,
         s: text,
         tex: rodTex(r),
         step: h.step,
@@ -849,7 +895,15 @@ export class RootCourtsGame extends WorldRuntime {
     // area comes from the side)
     const whole = !isWall(r) && /^\d+$/.test(r.q) && Number(r.q) >= 1 && Number(r.q) <= CELLS_SIDE ? Number(r.q) : 0;
     // a rod taken from the wall has no product to show: « its length × itself = the area » is not the world's to say
-    const eq = { s: rodTex(r), covers: tex(out.covers), a: c.a, kind: null, wall: isWall(r) };
+    // an unwritten court stays « ؟ » until the count of a platform that rides has ENDED
+    const hidden = c.shown === false && out.kind !== 'ride';
+    const eq = {
+      s: rodTex(r),
+      covers: tex(out.covers),
+      a: c.shown === false ? null : c.a,
+      kind: null,
+      wall: isWall(r),
+    };
     this.set({ phase: 'forge', overlay: null, prompt: null, verdict: null, equation: whole ? null : eq, count: null });
     this.countLabel.visible = false;
     this.rodLabel.visible = false;
@@ -871,6 +925,10 @@ export class RootCourtsGame extends WorldRuntime {
     if (whole) {
       await this.countCells(c, whole, mid, rest);
       if (this.dead) return;
+    }
+    if (out.kind === 'ride' && c.shown === false) {
+      this.reveal(c);
+      eq.a = c.a;
     }
     p.userData.tone(out.kind);
     if (out.kind === 'ride') {
@@ -896,7 +954,7 @@ export class RootCourtsGame extends WorldRuntime {
       verdict: {
         covers: out.covers,
         kind: out.kind,
-        diff: out.diff,
+        diff: hidden ? null : out.diff,
         wall: isWall(r),
       },
     });
@@ -925,6 +983,7 @@ export class RootCourtsGame extends WorldRuntime {
     if (this.nears(c, r, out.kind)) return;
     // a band, a jam: the platform comes back over the court, the rod stays in his hand
     this.cells.visible = false;
+    this.cellNums.visible = false;
     this.countLabel.visible = false;
     p.rotation.set(0, 0, 0);
     p.userData.tone('hover');
@@ -939,7 +998,7 @@ export class RootCourtsGame extends WorldRuntime {
       equation: null,
       verdict: null,
       count: null,
-      last: { s: eq.s, covers: eq.covers, kind: out.kind, diff: out.diff },
+      last: { s: eq.s, covers: eq.covers, kind: out.kind, diff: hidden ? null : out.diff },
     });
     // the story may take the rod back (this court has nothing more to give for now): he is free to walk elsewhere,
     // and the instruction of the moment is the story's, not « walk until the platform covers the court »
@@ -1144,6 +1203,7 @@ export class RootCourtsGame extends WorldRuntime {
   /** The platform flies, the robot on it: up, across in an arc, down. */
   async fly(c, side) {
     this.cells.visible = false;
+    this.cellNums.visible = false;
     this.countLabel.visible = false;
     const p = c.platform;
     const len = lengthOf(c.ridden) * c.unit;

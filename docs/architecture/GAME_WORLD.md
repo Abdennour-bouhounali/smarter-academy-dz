@@ -335,6 +335,10 @@ platform, and only then is the product written. While he pulls the rod its lengt
 square (the bar and its label along the side wall too). A platform that rides gives THE KEY OF THE COURT: a golden key
 turns in front of him, « خذ مفتاح الساحة » (E, `Game.takeKey`), and only then does the platform carry him on. After a
 reload the key is not shown again: the platform waits and E boards it.
+Each counted tile carries its NUMBER inside it (one canvas laid over the platform, `Game.cellNums`) and sounds a note that
+climbs with the count. A court declared `hide: true` shows « ؟ » on its gate and in the HUD until the count of a platform
+that rides has ended — then the gate writes its area (`Game.reveal`); a band or a jam on such a court is said without a
+number. Lesson 1 hides its three discovery courts (16, 36, 100); a court he must ride FROM its area (30, 49, 196) shows it.
 
 **A terrace of several courts** (added for lesson 2, 2026-11-21 — a court's data: `{ id, a, to?, steps?, ask?, seal? }`):
 - a court WITHOUT `to` flies nowhere: its platform rides and stays; the ONE court of a terrace that has `to` is its way

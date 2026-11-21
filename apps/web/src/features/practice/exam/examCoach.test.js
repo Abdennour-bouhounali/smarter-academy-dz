@@ -9,7 +9,7 @@ const QUESTIONS = readdirSync(DIR).filter((d) => d.startsWith('level-')).flatMap
 describe('مدرّب الامتحان — the exam coach of the exercise bank', () => {
   it('is a pilot on one lesson, with two modes', () => {
     expect(isCoachLesson('qasim-adad-tabii')).toBe(true);
-    expect(isCoachLesson('natiqa-ghayr-natiqa')).toBe(false); // a lesson with no pack (jidhr-tarbii has one since 2026-11-21)
+    expect(isCoachLesson('muadalat-x-murabba')).toBe(false); // a lesson with no pack (jidhr-tarbii and natiqa-ghayr-natiqa have one since 2026-11-21)
     expect(MODES).toEqual(['guide', 'explain']);
   });
 
@@ -23,10 +23,14 @@ describe('مدرّب الامتحان — the exam coach of the exercise bank', 
       seen.add(rule.id);
     }
     expect(seen.size).toBe(4);
-    expect(await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P1')).toBe(null);
+    expect(await loadRule('muadalat-x-murabba', '4am_muadalat-x-murabba_P1')).toBe(null);
     // unit 2, lesson 1 (2026-11-21): each الكفاءة finds its world's sheet
     expect((await loadRule('jidhr-tarbii', '4am_jidhr-tarbii_P1'))?.id).toBe('dil-as-saha');
     expect((await loadRule('jidhr-tarbii', '4am_jidhr-tarbii_P3'))?.id).toBe('dhahab-wa-iyab');
+    // unit 2, lesson 2 (2026-11-21): P1 (classifying) and P2 share the 🧩 sheet; P4 finds the 🎯 one
+    expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P1'))?.id).toBe('murabba-natiq');
+    expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P2'))?.id).toBe('murabba-natiq');
+    expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P4'))?.id).toBe('al-mudawwar');
   });
 
   it('GUIDE mode never contains the answer: no solution line, no result', async () => {

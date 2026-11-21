@@ -22,7 +22,7 @@ const { compareSquare, rationalSqrt, squareOf, exactDecimal, reduce } = squareRo
  */
 
 export const REFINE_SCALES = [1, 10, 100, 1000];
-export const RESIST_AFTER = 3;
+const RESIST_AFTER = 3;
 
 const keyOf = ({ num, den }) => { const r = reduce({ num, den }); return `${r.num}/${r.den}`; };
 

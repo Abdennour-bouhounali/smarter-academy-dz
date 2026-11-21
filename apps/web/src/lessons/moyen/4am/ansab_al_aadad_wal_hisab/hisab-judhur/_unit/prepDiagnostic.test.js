@@ -35,7 +35,7 @@ describe('« أستعدّ » in every lesson of the unit', () => {
   });
 
   it('the v2 lessons of the unit have no « أستعدّ » page left', () => {
-    expect(LESSONS.filter((l) => isV2(l.id)).map((l) => l.id).sort()).toEqual(['jidhr-tarbii']);
+    expect(LESSONS.filter((l) => isV2(l.id)).map((l) => l.id).sort()).toEqual(['jidhr-tarbii', 'natiqa-ghayr-natiqa']);
   });
 
   it.each(ON_PAGES.map((l) => [l.id]))('%s: every item is sourced, typed and uses a declared skill', (id) => {

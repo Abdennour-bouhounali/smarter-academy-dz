@@ -8,8 +8,8 @@
  * Every fraction tried stays in the table. Last, one question asks what he observed — in how many did it ride? — and
  * the world answers with the count.
  *
- * The court is THIS file's drawing (the shared `Court` writes a fraction's rod and difference as plain « 7/5 » text, and
- * its words; here every fraction keeps its bar and the drawing holds no word). `spec.text` is the lesson's wording
+ * The court is THIS file's drawing: the shared `Court` lowers ONE platform and writes the world's own words beside it
+ * (it stacks a fraction too, since 2026-11-21); here the drawing holds no word. `spec.text` is the lesson's wording
  * (GAME_WORLD.md « استكشف », spec shape of `chase`): this file writes no word, and nothing it draws names the rule.
  * The screen is a pure VIEW of the reducer's state (`ChaseView`).
  */

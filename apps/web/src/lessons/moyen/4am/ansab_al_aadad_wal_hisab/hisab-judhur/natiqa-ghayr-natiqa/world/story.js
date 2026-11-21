@@ -23,7 +23,14 @@ import { fractionBox, line } from '../../../../../../common/gameworld/kit/author
 import { counted, ltr } from '../../../../../../common/gameworld/kit/authoring/numbers';
 import { compare, outcome, read, square, tex, write } from '../../../../../../common/gameworld/rootCourts/logic';
 import { tiles } from '../../../../../../common/gameworld/rootCourts/strings';
-import { K1, K2, K3 } from './forges';
+/**
+ * The three keys, in the order the story gives them — the ids of `journey.js › KEYS` and of `forges.js` (forges.test.js
+ * checks the three agree). Written HERE, not imported from the forges: the forges read this story (its courts, the marks
+ * a court was closed between), and a story that imported them back would be evaluated before the forges' ids exist.
+ */
+export const K1 = 'murabba-natiq';
+export const K2 = 'la-kasr-yarkab';
+export const K3 = 'al-mudawwar';
 import { above, calculator, cut, decimalsOf, middle, rounded, typedDecimal, typedFrac } from './math';
 
 /** The marks of the rod's dial this story opens. */

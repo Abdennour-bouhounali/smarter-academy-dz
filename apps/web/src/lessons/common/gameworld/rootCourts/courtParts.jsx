@@ -26,6 +26,9 @@
  * The floor: unit tiles up to 150 tiles; above, blocks of 10 × 10 (100 × 100 for a court of thousands — never more than
  * 15 blocks a side); under one tile, ONE enlarged tile and its subdivisions (4 × 4, 8 × 8 or 10 × 10), the court in its
  * corner — the picture stays honest (MANIPULATION_DNA.md §17.6).
+ * Numbers: every number the drawing writes goes through `Num` — a fraction (the gate's area, the rod, a wall's radicand,
+ * the difference in the fact) is STACKED over a real bar, never « p/q » text; a whole number or a decimal is one line.
+ * A fraction rod's label hangs lower, so the view slides down (`ROD_FRAC`); `aria-label` reads « 23 على 7 ».
  * Text: every glyph is FONT = 27 units. Drawn at 11rem in the forge (1366 × 768: zoom 1.067) that is 27 × 176 / 240 ×
  * 1.067 = 21.1 px; tight (9.5rem) 18.2 px. A screen that draws the court smaller must keep `FONT × height / 240` ≥ 18 px.
  * Hooks: data-court, data-court-rod, data-court-stage, data-court-kind (at done), data-court-zoom (the lens factor, « 1 »
@@ -45,6 +48,13 @@ const PLAQUE = { x0: 496, x1: 638, mid: 567 };
 const LENS = { cx: 186, cy: 60, r: 46 };
 const THIN = 4; // units (≈ px at 11rem): thinner than this, the band or the overhang cannot be seen
 const EPS = 1e-9;
+/**
+ * A rod's label that is a stacked fraction stands lower than one line (`y` its baseline for `Num`; under a radical, 6
+ * more for the radical's top line to clear the rod) and the view slides down by `drop` units to hold it: same size,
+ * same height on the page, only the strip above the floor (where nothing but the lens's top and the plaque's arch
+ * reach) leaves the view.
+ */
+const ROD_FRAC = { q: { y: 249, drop: 26 }, wall: { y: 255, drop: 34 } };
 
 /** The width a text takes, in units — an estimate for the layout (Cairo's digits ≈ 0.6 em). */
 const widthOf = (text, f) =>
@@ -79,32 +89,70 @@ function Txt({ x, y, f = F, max, anchor = 'middle', cls = '', children }) {
   );
 }
 
-/** A number as it is written: a fraction « 49/64 » stacked over a real bar; anything else one line, left to right. */
-function Num({ x, y, f, text, cls = '', max }) {
-  const [n, d] = String(text).split('/');
-  if (d == null)
+/** A fraction « p/q »? Its two parts, else null (a whole number, a decimal, a radical: one line). */
+const fracOf = (text) => {
+  const m = /^(-?\d+)\/(\d+)$/.exec(String(text));
+  return m ? { n: m[1], d: m[2] } : null;
+};
+/** The width a number takes as it is DRAWN: a fraction is as wide as its bar (its parts at `g` units). */
+const numWidth = (text, f, g = f * 0.8) => {
+  const fr = fracOf(text);
+  return fr ? Math.max(widthOf(fr.n, g), widthOf(fr.d, g)) + 8 : widthOf(text, f);
+};
+/** A number read aloud (`aria-label`): « 23/7 » → « 23 على 7 »; anything else as written. */
+const spoken = (text) => String(text).replace(/(\d+)\/(\d+)/g, '$1 على $2');
+
+/**
+ * THE way the court writes a number: a fraction « 49/64 » stacked — its numerator over a real bar over its denominator,
+ * each part at `g` units (default 0.8 × f), the bar as wide as the longer part plus 8, all centred on `x` where the
+ * plain number would stand (the numerator's baseline 0.62 g above `y`, the bar 0.38 g above it, the denominator's
+ * baseline 0.62 g below: the whole spans y − 1.32 g … y + 0.62 g, its middle on a text line of baseline `y`). Never
+ * « p/q » as text. A whole number, a decimal: one line, left to right, exactly as `Txt` draws it.
+ */
+function Num({ x, y, f, g = f * 0.8, text, cls = '', max }) {
+  const fr = fracOf(text);
+  if (!fr)
     return (
       <Txt x={x} y={y} f={f} cls={cls} max={max}>
         {text}
       </Txt>
     );
-  const g = f * 0.8;
-  const bar = Math.max(widthOf(n, g), widthOf(d, g)) + 8;
+  const { n, d } = fr;
+  const bar = Math.min(numWidth(text, f, g), max ?? Infinity);
   return (
     <g className={`crt-frac ${cls}`} data-court-frac={text}>
-      <Txt x={x} y={y - g * 0.62} f={g} cls={cls}>
+      <Txt x={x} y={y - g * 0.62} f={g} cls={cls} max={max && max - 8}>
         {n}
       </Txt>
       <line x1={x - bar / 2} x2={x + bar / 2} y1={y - g * 0.38} y2={y - g * 0.38} className="crt-bar" />
-      <Txt x={x} y={y + g * 0.62} f={g} cls={cls}>
+      <Txt x={x} y={y + g * 0.62} f={g} cls={cls} max={max && max - 8}>
         {d}
       </Txt>
     </g>
   );
 }
 
-/** The radical sign drawn as a stroke over its number (never a glyph that bidi could turn round). */
+/**
+ * The radical sign drawn as a stroke over its number (never a glyph that bidi could turn round). A radicand that is a
+ * fraction is stacked under a radical as tall as it (`y` is then the line's baseline of `Num`).
+ */
 function Radical({ cx, y, radicand, f, maxRight }) {
+  if (fracOf(radicand)) {
+    const fw = numWidth(radicand, f, f);
+    const rw = f * 0.62;
+    const total = rw + fw + 6;
+    const x0 = Math.min(cx - total / 2, maxRight - total);
+    const top = y - f * 1.32 - 4;
+    const bottom = y + f * 0.62 + 2;
+    return (
+      <g className="crt-radical" data-court-radical={radicand}>
+        <path
+          d={`M${x0} ${y - f * 0.38} l${f * 0.16} ${-f * 0.08} L${x0 + f * 0.36} ${bottom} L${x0 + rw} ${top} H${x0 + total}`}
+        />
+        <Num x={x0 + rw + 3 + fw / 2} y={y} f={f} g={f} text={radicand} cls="crt-t--rod" />
+      </g>
+    );
+  }
   const dw = widthOf(radicand, f);
   const rw = f * 0.62;
   const total = rw + dw + 6;
@@ -256,19 +304,56 @@ function Fact({ o, area, lens }) {
       : [{ t: o.kind === 'band' ? 'يبقى شريط مساحته' : 'تعلق: ما يبرز منها', cls: `crt-t--${o.kind}` }];
   if (o.kind !== 'ride') {
     const whole = tiles(diff);
+    if (fracOf(diff)) {
+      // a fraction: drawn stacked, and its noun (what `tiles` writes after it) to its LEFT — the sentence read right to
+      // left meets the number first, the fraction one unit; too wide with its noun: the fraction, then its noun
+      const word = whole.startsWith(`${diff} `) ? whole.slice(diff.length + 1) : tileWord(diff);
+      const fw = numWidth(diff, F, F);
+      if (fw + FRAC_SPACE + widthOf(word, F) <= 270) lines.push({ frac: diff, word, fw, cls: 'crt-t--diff' });
+      else lines.push({ frac: diff, fw, cls: 'crt-t--diff' }, { t: word, cls: 'crt-t--soft' });
+    }
     // a short difference with its noun on one line (« 5 بلاطات »); a long one: the number, then its noun
-    if (widthOf(whole, F) <= 270) lines.push({ t: whole, cls: 'crt-t--diff' });
+    else if (widthOf(whole, F) <= 270) lines.push({ t: whole, cls: 'crt-t--diff' });
     else lines.push({ t: diff, cls: 'crt-t--diff', num: true }, { t: tileWord(diff), cls: 'crt-t--soft' });
   }
-  const gap = 36;
-  const y0 = lens ? 230 - gap * (lines.length - 1) : 124 - (gap * (lines.length - 1)) / 2;
+  // the lines' baselines: 36 units apart, 46 beside a stacked fraction (it spans its baseline − 36 … + 17)
+  const steps = lines.slice(1).map((line, i) => (line.frac || lines[i].frac ? 46 : 36));
+  const span = steps.reduce((a, b) => a + b, 0);
+  const y0 = lens ? 230 - span - (lines.at(-1).frac ? 9 : 0) : 124 - span / 2;
+  const ys = steps.reduce((acc, s) => [...acc, acc.at(-1) + s], [y0]);
   return (
     <g className="crt-fact" data-court-fact={o.kind} data-court-diff={o.diff}>
-      {lines.map((line, i) => (
-        <Txt key={i} x={LEFT_MID} y={y0 + i * gap} f={line.num ? F * 1.05 : F} max={288} cls={line.cls}>
-          {line.t}
+      {lines.map((line, i) =>
+        line.frac ? (
+          <FracLine key={i} line={line} y={ys[i]} />
+        ) : (
+          <Txt key={i} x={LEFT_MID} y={ys[i]} f={line.num ? F * 1.05 : F} max={288} cls={line.cls}>
+            {line.t}
+          </Txt>
+        ),
+      )}
+    </g>
+  );
+}
+
+const FRAC_SPACE = 12; // between a stacked fraction and the word after it
+/**
+ * A line of the fact holding a fraction: the fraction stacked (its parts at 27 units, like every glyph of the court)
+ * and, when it has one, its noun to its left, both centred as one group on the left zone. The noun is drawn right to
+ * left from its own right edge (`direction="rtl"`, anchor start: D23), on the line's baseline.
+ */
+function FracLine({ line, y }) {
+  const ww = line.word ? widthOf(line.word, F) + FRAC_SPACE : 0;
+  const right = LEFT_MID + Math.min(line.fw + ww, 288) / 2;
+  const fx = line.word ? right - line.fw / 2 : LEFT_MID;
+  return (
+    <g className="crt-fact__frac" data-court-fact-frac={line.frac}>
+      <Num x={fx} y={y} f={F} g={F} text={line.frac} cls={line.cls} max={288} />
+      {line.word && (
+        <Txt x={right - line.fw - FRAC_SPACE} y={y} anchor="start" cls={line.cls}>
+          {line.word}
         </Txt>
-      ))}
+      )}
     </g>
   );
 }
@@ -357,15 +442,18 @@ export function Court({
   const kind = o?.kind;
   const wallRod = rod && isWall(rod);
   const rt = rod ? rodText(rod) : '';
-  const rodLabelW = wallRod ? widthOf(rod.root, F) + F * 0.62 + 6 : widthOf(rt, F);
+  const rodLabelW = wallRod ? numWidth(rod.root, F, F) + F * 0.62 + 6 : numWidth(rt, F, F);
   const rodCx = Math.min(POST.x - (l * u) / 2, POST.x + 14 - rodLabelW / 2);
+  // a rod that is a FRACTION is written stacked under it (its parts at 27 units, like every glyph): ROD_FRAC
+  const rodFrac = label && rod && fracOf(wallRod ? rod.root : rt) ? ROD_FRAC[wallRod ? 'wall' : 'q'] : null;
+  const rodY = rodFrac ? rodFrac.y : 236;
   return (
     <svg
-      viewBox={`0 0 ${W} ${H}`}
+      viewBox={`0 ${rodFrac ? rodFrac.drop : 0} ${W} ${H}`}
       className={`crt-court is-${stage} ${done ? `is-${kind}` : ''} ${tight ? 'is-tight' : ''} ${fast ? 'is-fast' : ''} ${className}`}
       direction="ltr"
       role="img"
-      aria-label={`ساحة ${A}${rod ? ` · مقياس ${rt}` : ''}`}
+      aria-label={`ساحة ${spoken(A)}${rod ? ` · مقياس ${spoken(rt)}` : ''}`}
       data-court={A}
       data-court-rod={rod ? rt : undefined}
       data-court-stage={stage}
@@ -448,11 +536,9 @@ export function Court({
           <Plaque area={A} floor={floor} />
           {rod &&
             (wallRod ? (
-              <Radical cx={rodCx} y={236} radicand={rod.root} f={F} maxRight={POST.x + 14} />
+              <Radical cx={rodCx} y={rodY} radicand={rod.root} f={F} maxRight={POST.x + 14} />
             ) : (
-              <Txt x={rodCx} y={236} cls="crt-t--rod">
-                {rt}
-              </Txt>
+              <Num x={rodCx} y={rodY} f={F} g={F} text={rt} cls="crt-t--rod" />
             ))}
           {k && <Lens kind={kind} g={g} k={k} corner={{ x: xL, y: yT }} />}
           {done && <Fact o={o} area={A} lens={Boolean(k)} />}

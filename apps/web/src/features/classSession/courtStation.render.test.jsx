@@ -5,6 +5,7 @@ import MemoFigure from './MemoFigures';
 import { openingFacts } from './lessonMemos';
 import { courtCards, courtShown, courtWords } from './lessonScripts';
 import { tiles } from '../../lessons/common/gameworld/rootCourts/strings';
+import { Court } from '../../lessons/common/gameworld/rootCourts/courtParts';
 
 // the board's layers (pen, pointer) are portals into `document.body`: no DOM here, they draw nothing
 vi.mock('react-dom', async (orig) => ({ ...(await orig()), createPortal: () => null }));
@@ -129,5 +130,27 @@ describe('حصّة القسم — a court of « قصر الساحات » on the 
     expect(cards[2].tex).toBe('\\dfrac{19}{7}');
     expect(board(step)).toContain('data-cs-court-card="19/7"');
     expect(board(step)).toContain('data-court="722/98"'); // the court's gate shows the area as given
+  });
+
+  it('the world’s court on the board writes every fraction over a bar: the gate, the rod, the difference', () => {
+    const svgOf = (html) => html.match(/<svg[^>]*data-court=[\s\S]*?<\/svg>/)?.[0] ?? '';
+    const slashText = (svg) => [...svg.matchAll(/<text[^>]*>(.*?)<\/text>/g)].some(([, t]) => /\d\/\d/.test(t));
+    // the court alone, before a card: its gate 722/98 stacked
+    const alone = svgOf(board({ ...rods, area: '722/98', rods: ['19/7'], answer: ['19/7'] }));
+    expect(alone).toContain('data-court-frac="722/98"');
+    expect(slashText(alone)).toBe(false);
+    // each card as the station draws it once lowered (`<Court area={card.area} rod={card.rod} />`)
+    const step = { ...rods, area: '529/49', rods: ['3', '23/7', '24/7'], answer: ['23/7'] };
+    for (const c of courtCards(step)) {
+      const svg = renderToString(<Court area={c.area} rod={c.rod} stage="done" />);
+      expect(slashText(svg), c.key).toBe(false);
+      expect(svg).toContain('data-court-frac="529/49"');
+      if (c.key.includes('/')) expect(svg).toContain(`data-court-frac="${c.key}"`);
+      if (c.out.kind !== 'ride') expect(svg).toContain(`data-court-fact-frac="${c.out.diff}"`);
+    }
+    // a whole court and a decimal rod: one line each, no bar (lesson 1's board unchanged)
+    const whole = renderToString(<Court area="20" rod={{ q: '4,47' }} stage="done" />);
+    expect(whole).not.toContain('crt-frac');
+    expect(whole).toContain('viewBox="0 0 640 240"');
   });
 });

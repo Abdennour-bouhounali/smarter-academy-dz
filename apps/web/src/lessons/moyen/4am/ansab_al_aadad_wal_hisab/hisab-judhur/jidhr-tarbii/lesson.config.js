@@ -44,7 +44,8 @@ export const LESSON_CONFIG = {
   resources: [
     // DATA only (exported to the DB; `sourceElementIds` are read by scripts/check-textbook-coverage.mjs): the
     // `square-root-side` labs below were the old module pages' instruments; no page of this lesson mounts them any more
-    // (the lab stays in the registry: natiqa-ghayr-natiqa still mounts it). The lesson's instrument in « مختبري » is `court`.
+    // (the lab stays in the closed registry, mounted by no lesson since lesson 2 became v2 too). The lesson's instrument in
+    // « مختبري » is `court`.
     {
       kind: 'manipulation', code: 'square-root-side-36', type: 'square-root-side', module: 1,
       level: 'beginner',

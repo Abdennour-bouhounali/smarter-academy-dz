@@ -37,9 +37,9 @@ export const LESSON_CONFIG = {
     tools: [
       // les ids sont des connaissances des leçons de l'unité (une par leçon) ; `usedIn` : les modules qui s'en servent. La leçon 1
       // est v2 (2026-11-21) : sa clé est celle de son monde (`dil-as-saha`, world/knowledge.js), l'ancien id `jidhr-taarif`
-      // est parti avec son knowledge.jsx
+      // est parti avec son knowledge.jsx ; de même la leçon 2 (2026-11-21) : `al-mudawwar` (🎯 de son monde) remplace `qima-muqarraba`
       { id: 'dil-as-saha', icon: '√', label: 'الجذر التربيعي', usedIn: [1, 2, 4, 7] },
-      { id: 'qima-muqarraba', icon: '📏', label: 'القيم المقرّبة والمدوّر', usedIn: [1, 2, 3, 4, 5, 7] },
+      { id: 'al-mudawwar', icon: '📏', label: 'القيم المقرّبة والمدوّر', usedIn: [1, 2, 3, 4, 5, 7] },
       { id: 'hulul-x2-a', icon: '🔢', label: 'حلول معادلة مربّعها عدد', usedIn: [2, 5, 6, 7] },
       { id: 'jidaa-jidhrayn', icon: '✖️', label: 'جداء جذرين', usedIn: [3, 6] },
       { id: 'kitaba-a-jidhr-b', icon: '🧱', label: 'أبسط كتابة لجذر', usedIn: [1, 3, 4, 5, 6, 7] },
