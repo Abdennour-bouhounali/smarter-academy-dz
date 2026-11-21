@@ -5,7 +5,8 @@
  *                 instruction always opens (the world gives it a `key`: its text). `compact`: one line, while the world
  *                 shows something under it that must stay clear (a bridge being built and its equation).
  *   Recall        what matters from the island before (the gap he crossed, the planks that filled it, what he found), on
- *                 the right of the game, so that he connects one island to the next. Four lines at most.
+ *                 the right of the game, so that he connects one island to the next. Four lines at most. `title`:
+ *                 the world's own words for it (default: the islands').
  *
  * Both name no world and no lesson: the world's `Hud` passes them its words. Lines may hold `$…$` (they go through `MathText`).
  */
@@ -45,11 +46,11 @@ export function Instruction({ text, compact = false }) {
   );
 }
 
-export function Recall({ lines }) {
+export function Recall({ lines, title = KT.recall.title }) {
   if (!lines?.length) return null;
   return (
     <aside className="di-recall" data-di-recall={lines.length}>
-      <h3>{KT.recall.title}</h3>
+      <h3>{title}</h3>
       <ul>
         {lines.slice(0, 3).map((line) => (
           <li key={line}>

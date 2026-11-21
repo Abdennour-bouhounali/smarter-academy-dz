@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import { GL_ARGS } from '../gpu.mjs';
 import { FOREIGN, FOREIGN_NUMBERS, FLOOR_PX } from '../walk.mjs';
+import { boardCourt } from './worlds/rootCourts.mjs';
 
 const CONTENT = join(dirname(fileURLToPath(import.meta.url)), '../../../../../content');
 const NAMES = [
@@ -426,6 +427,11 @@ export async function boardWalk(L, D, opts) {
         );
         await clean(s.id);
         await shot(s.id);
+      } else if (s.kind === 'court') {
+        // « قصر الساحات »: a court and its rods (worlds/rootCourts.mjs › boardCourt)
+        await notYet(`${s.id}, before its name`, still);
+        await boardCourt({ page, check, expect, shot, clean, step: s });
+        await notYet(s.id, still);
       } else {
         expect(
           false,

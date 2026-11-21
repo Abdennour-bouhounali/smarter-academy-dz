@@ -24,7 +24,11 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('awwaliyan-fima-baynahuma')).toBe(true);
     expect(BOARD_LESSONS).toContain('ikhtizal-kasr'); // lesson 8 joined with its script and memo (2026-11-20)
     expect(hasClassBoard('ikhtizal-kasr')).toBe(true);
-    expect(hasClassBoard('jidhr-tarbii')).toBe(false); // a lesson still on the mission player: no board yet
+    expect(BOARD_LESSONS).toContain('jidhr-tarbii'); // unit 2, lesson 1 joined with its script and memo (2026-11-21)
+    expect(hasClassBoard('jidhr-tarbii')).toBe(true);
+    expect(BOARD_LESSONS).toContain('natiqa-ghayr-natiqa'); // unit 2, lesson 2 joined with its script and memo (2026-11-21)
+    expect(hasClassBoard('natiqa-ghayr-natiqa')).toBe(true);
+    expect(hasClassBoard('muadalat-x-murabba')).toBe(false); // a lesson still on the mission player: no board yet
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;
     expect(config.id).toBe('qasim-adad-tabii');
@@ -82,7 +86,17 @@ describe('حصّة القسم — the lessons that have their own board (and no 
       session: true,
     });
     expect(classDoor('jidhr-tarbii', `${base}/jidhr-tarbii`)).toEqual({
-      to: `${base}/jidhr-tarbii`,
+      to: '/enseignant/hissa/jidhr-tarbii',
+      state: undefined,
+      session: true,
+    });
+    expect(classDoor('natiqa-ghayr-natiqa', `${base}/natiqa-ghayr-natiqa`)).toEqual({
+      to: '/enseignant/hissa/natiqa-ghayr-natiqa',
+      state: undefined,
+      session: true,
+    });
+    expect(classDoor('muadalat-x-murabba', `${base}/muadalat-x-murabba`)).toEqual({
+      to: `${base}/muadalat-x-murabba`,
       state: CLASSROOM_START_STATE,
       session: false,
     });
@@ -95,6 +109,8 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(boardLessonOfPath(`${base}/bahth-pgcd/2`)).toBe('bahth-pgcd');
     expect(boardLessonOfPath(`${base}/awwaliyan-fima-baynahuma/2`)).toBe('awwaliyan-fima-baynahuma');
     expect(boardLessonOfPath(`${base}/ikhtizal-kasr/2`)).toBe('ikhtizal-kasr');
+    expect(boardLessonOfPath(`${base}/jidhr-tarbii/2`)).toBe('jidhr-tarbii');
+    expect(boardLessonOfPath(`${base}/natiqa-ghayr-natiqa/2`)).toBe('natiqa-ghayr-natiqa');
     expect(boardLessonOfPath(null)).toBe(null);
     expect(canPresentPath(`${base}/qasim-adad-tabii/2`)).toBe(false);
     expect(canPresentPath(`${base}/qawasim-adad-tabii/2`)).toBe(false);
@@ -104,6 +120,8 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(canPresentPath(`${base}/bahth-pgcd/2`)).toBe(false);
     expect(canPresentPath(`${base}/awwaliyan-fima-baynahuma/2`)).toBe(false);
     expect(canPresentPath(`${base}/ikhtizal-kasr/2`)).toBe(false);
+    expect(canPresentPath(`${base}/jidhr-tarbii/2`)).toBe(false);
+    expect(canPresentPath(`${base}/natiqa-ghayr-natiqa/2`)).toBe(false);
     expect(canPresentPath(undefined)).toBe(false);
   });
 });

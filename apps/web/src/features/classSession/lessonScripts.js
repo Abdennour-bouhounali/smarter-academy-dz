@@ -18,6 +18,13 @@ import {
   QUANTITIES,
   CONDITIONS,
 } from '../../lessons/common/gameworld/divisorIsles/ruleForge';
+import {
+  outcome as courtOutcome,
+  rod as numberRod,
+  rodText,
+  rodTex,
+  tex as numberTex,
+} from '../../lessons/common/gameworld/rootCourts/logic';
 
 /**
  * The cards of the revision: the rules of the earlier الكفاءات the lesson stands on (`family.rules`), core tools first; when
@@ -78,7 +85,12 @@ export function missingEvidence(log) {
  *   statements  sentences the class judges true or false, each proved by an equality;
  *   name        the rule gets its name: the tablet of the lesson (`tablet` key of the game's strings — one wording for the
  *               student's world and for the board), read aloud by a student or by the teacher;
- *   trace       what goes in the copybook.
+ *   trace       what goes in the copybook;
+ *   court       a square court of « قصر الساحات » (`rootCourts/`, drawn by its own `Court`): the class looks at ONE court and
+ *               the board lowers the platform of the card the teacher taps — a rod over a given court (`area`, `rods`),
+ *               or a given rod over candidate courts (`rod`, `areas`) — and shows what the world does: it rides, it
+ *               leaves a band, it jams. `answer` = the cards that ride (a test computes it); `after` (the proof) comes
+ *               once they were lowered, or once every card was when none rides. Its own `words`: `courtWords`.
  */
 
 /** The truth of a sentence about a (the bigger) and b: the same forms as the default tests. */
@@ -96,6 +108,52 @@ export const askRight = (step, picked) =>
 /** The words of an `ask` step's cards: the label of a card and its two verdicts — the step's own `words`, or the planks'. */
 const ASK_WORDS = { card: 'لوح', held: 'يثبت', fell: 'ينهار' };
 export const askWords = (step) => ({ ...ASK_WORDS, ...step.words });
+/**
+ * The words of a `court` step's cards: a card's label (« المقياس », or « الساحة » when the cards are courts) and the three
+ * things a platform does — the world's own nouns, never a plank's (« لوح / يثبت / ينهار ») and never « wrong ». A step's
+ * `words` overrides any of them; a card may carry its own `label` (« الحاسبة », « ضلع الساحة »).
+ */
+const COURT_WORDS = {
+  card: 'المقياس',
+  court: 'الساحة',
+  ride: 'تركب',
+  band: 'شريط',
+  jam: 'تعلق',
+  lower: 'أنزل المنصّة',
+  rod: 'المقياس',
+};
+export const courtWords = (step) => ({ ...COURT_WORDS, ...step.words });
+/** A rod as a script writes it: « 4,2 », { q: '7,28', label }, or the wall of a court { root: '53', label }. */
+const rodOf = (x) => (typeof x === 'object' && x.root != null ? { root: String(x.root) } : numberRod(x?.q ?? x));
+/**
+ * The cards of a `court` step, each with what the world does (`rootCourts/logic.js › outcome`, exact): its `key` (the rod
+ * as it is written — « 18 », « 7,28 », « √53 » — or the court's area), the court and the rod lowered, its label and its
+ * LaTeX.
+ */
+export function courtCards(step) {
+  const w = courtWords(step);
+  if (step.areas) {
+    const r = rodOf(step.rod);
+    return step.areas.map((a) => {
+      const area = String(a);
+      return { key: area, area, rod: r, label: w.court, tex: numberTex(area), out: courtOutcome(r, area) };
+    });
+  }
+  const area = String(step.area);
+  return step.rods.map((x) => {
+    const r = rodOf(x);
+    const label = (typeof x === 'object' && x.label) || w.card;
+    return { key: rodText(r), area, rod: r, label, tex: rodTex(r), out: courtOutcome(r, area) };
+  });
+}
+/** The proof (`after`) is shown once the riding cards were lowered — or every card, when none rides. */
+export const courtShown = (step, tried) =>
+  step.answer.length
+    ? step.answer.every((k) => tried.includes(k))
+    : courtCards(step).every((c) => tried.includes(c.key));
+/** The rod of a step whose cards are courts, in LaTeX (« \\sqrt{61} »). */
+export const courtRodTex = (step) => rodTex(rodOf(step.rod));
+
 /** The rail of the board: one dot per step, with the chapter it belongs to (« نكتشف », « نستنتج », « نسمّي », « نكتب »). */
 export const railOf = (script) =>
   script.steps.map((s, i) => ({
@@ -156,6 +214,22 @@ export function proofOf(form, a, b) {
     a_divisible_by_b: `$${a} \\div ${b} = ${q}$ والباقي 0.`,
   }[form];
 }
+
+/**
+ * Is a tablet drawn DENSE on the board's naming card? Five list items, or a tablet whose words pass `DENSE_WORDS`
+ * characters (its formulas counted as four): the second tablet of the first lesson of « قصر الساحات » (397) left its card at 1366×768 (the walk of
+ * 2026-11-21); the longest tablet of every other lesson then was 279. A fraction of two storeys (`\\dfrac`, `\\frac`) in
+ * its words is taller than a line: it counts `DENSE_FRAC` more — the first tablet of lesson 2 (304 characters, three
+ * fractions in its words) left its card on the board's walk of 2026-11-21.
+ */
+export const DENSE_WORDS = 320;
+const DENSE_FRAC = 16;
+export const denseTablet = (t) => {
+  if ((t.list?.length ?? 0) >= 5) return true;
+  const words = [...t.lines, ...(t.list ?? []), ...(t.notes ?? [])].join('');
+  const fracs = (words.match(/\\d?frac\{/g) ?? []).length;
+  return words.replace(/\$[^$]*\$/g, '····').length + fracs * DENSE_FRAC > DENSE_WORDS;
+};
 
 /**
  * « من يتذكّر؟ »: a line of a rule cut into parts, the `words` to recall hidden — never inside a formula.

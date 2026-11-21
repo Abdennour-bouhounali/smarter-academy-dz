@@ -3805,3 +3805,243 @@
   font-size: 1.5rem;
   font-weight: 800;
 }
+
+/* ── a court of « قصر الساحات » on the board (LessonBoard › CourtStation): the world's own drawing (rootCourts/
+   courtParts.jsx), its tokens turned for this LIGHT board — brand-blue shapes, amber = a band, violet = what sticks out,
+   green = it rides; never black, never the red of an error. The cards are rods (or courts), one column beside it. ── */
+.cs-courtstep {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  min-height: 0;
+}
+.cs-courtstep__main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+  gap: 0.9rem;
+  min-height: 0;
+}
+.cs-courtbox {
+  display: grid;
+  /* ONE track the size of the box: the court's svg (height 100%) fits it instead of overflowing it (its rod's label
+     under the court was cut at 1366×768 — the walk of 2026-11-21) */
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  place-items: center;
+  min-width: 0;
+  min-height: 0;
+  padding: 0.5rem 0.9rem;
+  border-radius: 1.1rem;
+  background: #f5f7ff;
+  border: 1.5px solid #dbe4ff;
+  overflow: hidden;
+}
+.cs-courtbox .crt-court {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  --crt-floor: rgba(59, 91, 219, 0.14);
+  --crt-floor-edge: rgba(59, 91, 219, 0.42);
+  --crt-cut: rgba(59, 91, 219, 0.06);
+  --crt-lit: rgba(59, 91, 219, 0.34);
+  --crt-wall: #3b5bdb;
+  --crt-slab: rgba(59, 91, 219, 0.12);
+  --crt-slab-edge: #3b5bdb;
+  --crt-rod: #3b5bdb;
+  --crt-band: #d97706;
+  --crt-over: #7c3aed;
+  --crt-ride: #059669;
+  --crt-ink: #1e1b4b;
+  --crt-soft: #475569;
+}
+.cs-courtbox .crt-t--area,
+.cs-courtbox .crt-t--diff,
+.cs-courtbox .crt-t--zoom {
+  fill: #1e1b4b;
+}
+.cs-courtbox .crt-t--ride {
+  fill: #047857;
+}
+.cs-courtbox .crt-t--band {
+  fill: #b45309;
+}
+.cs-courtbox .crt-t--jam {
+  fill: #6d28d9;
+}
+.cs-courtbox .crt-bar {
+  stroke: #1e1b4b;
+}
+.cs-courtbox .crt-plaque__arch {
+  fill: #e0e7ff;
+}
+.cs-courtbox .crt-post rect {
+  fill: #fff;
+}
+.cs-courtbox .crt-onetile__edge {
+  fill: rgba(59, 91, 219, 0.05);
+}
+.cs-courtbox .crt-onetile__line {
+  stroke: rgba(59, 91, 219, 0.3);
+}
+.cs-courtbox .crt-plat.is-ask .crt-plat__slab {
+  fill: rgba(59, 91, 219, 0.06);
+}
+.cs-courtbox .crt-plat.is-ride .crt-plat__slab {
+  fill: rgba(16, 185, 129, 0.32);
+  filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.55));
+}
+.cs-courtbox .crt-band {
+  fill: rgba(251, 191, 36, 0.62);
+}
+.cs-courtbox .crt-over {
+  fill: rgba(167, 139, 250, 0.55);
+}
+.cs-courtbox .crt-lens__void {
+  fill: #fff;
+}
+.cs-courtbox .crt-lens__floor {
+  fill: rgba(59, 91, 219, 0.28);
+}
+.cs-courtbox .crt-lens__plat {
+  fill: rgba(59, 91, 219, 0.16);
+}
+.cs-courtbox .crt-lens__ring,
+.cs-courtbox .crt-lens__leader,
+.cs-courtbox .crt-lens__spot {
+  stroke: #3b5bdb;
+}
+.cs-courtbox .crt-lens__handle {
+  stroke: #91a7ff;
+}
+/* a rod given and no court chosen yet: the rod alone, large */
+.cs-courtbox__rod {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+.cs-courtbox__rod small {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #475569;
+}
+.cs-courtbox__rod b {
+  font-size: 4rem;
+  font-weight: 900;
+  color: #3b5bdb;
+}
+.cs-rods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0;
+}
+.cs-root .cs-rodcard {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  min-height: 0;
+  padding: 0.25rem 0.9rem;
+  border-radius: 1rem;
+  border: 3px solid #c7d0e2;
+  background: #f8fafc;
+  text-align: start;
+}
+.cs-root .cs-rodcard.is-on {
+  border-color: #3b5bdb;
+  background: #eef2ff;
+  box-shadow: 0 0 0 4px #c7d2fe;
+}
+.cs-root .cs-rodcard.is-ride {
+  background: #d1fae5;
+  border-color: #059669;
+}
+.cs-root .cs-rodcard.is-band {
+  background: #fffbeb;
+  border-color: #fbbf24;
+}
+.cs-root .cs-rodcard.is-jam {
+  background: #f5f3ff;
+  border-color: #a78bfa;
+}
+.cs-root .cs-rodcard.is-on.is-ride,
+.cs-root .cs-rodcard.is-on.is-band,
+.cs-root .cs-rodcard.is-on.is-jam {
+  box-shadow: 0 0 0 4px #c7d2fe;
+}
+.cs-rodcard__name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.cs-rodcard__name small {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #5b6478;
+}
+.cs-rodcard__name b {
+  font-size: 2.3rem;
+  font-weight: 900;
+  line-height: 1.15;
+  color: #1e1b4b;
+  white-space: nowrap;
+}
+/* the calculator's ten digits, a root: the same card, a smaller number — never cut */
+.cs-rodcard__name b[data-long] {
+  font-size: 1.6rem;
+}
+/* five or six cards in the column: the label beside the number, so a card stays one line high */
+.cs-rods[data-many] .cs-rodcard__name {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.cs-rods[data-many] .cs-rodcard__name b {
+  font-size: 1.9rem;
+}
+.cs-rods[data-many] .cs-rodcard__name b[data-long] {
+  font-size: 1.45rem;
+}
+/* a fraction is two storeys high: its label beside it and a smaller number, so that the card holds it (four fraction
+   cards over-ran their boxes on the board's walk of lesson 2, 2026-11-21) */
+.cs-rodcard__name[data-frac] {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cs-root .cs-rodcard__name[data-frac] b {
+  font-size: 1.6rem;
+}
+.cs-rodcard__out {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.cs-rodcard__out .crt-mini__wall {
+  stroke: #3b5bdb;
+}
+.cs-rodcard__out .crt-mini__floor {
+  fill: rgba(59, 91, 219, 0.22);
+}
+.cs-rodcard__out em {
+  font-style: normal;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+.cs-rodcard.is-ride em {
+  color: #047857;
+}
+.cs-rodcard.is-band em {
+  color: #b45309;
+}
+.cs-rodcard.is-jam em {
+  color: #6d28d9;
+}
+.cs-courtstep .cs-actrow .cs-after {
+  flex: 1;
+  min-width: 0;
+}

@@ -1,5 +1,3 @@
-import GardenBedScene from './GardenBedScene';
-import CarpetLoomScene from './CarpetLoomScene';
 import FoldStripScene from './FoldStripScene';
 import CourtyardSlabsScene from './CourtyardSlabsScene';
 import PaintWallScene from './PaintWallScene';
@@ -23,12 +21,10 @@ import ClubCounterScene from './ClubCounterScene';
 
 /**
  * LA SCÈNE d'une mission (rollout 2026-11-08) : chaque leçon dessine la sienne, choisie par `mission.scene` dans sa config
- * (les scènes des leçons 1–7 de l'unité 1 — `'library'`, `'library-wall'`, `'construction-wall'`, `'flower-shop'`, `'school-bags'`, `'sewing-workshop'`, `'math-club'` — et celle de la leçon 8, `'bakery'`, sont supprimées avec leur lecteur de mission : ces leçons sont v2, LESSON_V2.md §2 ; `'garden-bed'` — le bassin carré sur l'hypoténuse de la leçon jidhr-tarbii, `'carpet-loom'` — le métier à tisser de la leçon natiqa-ghayr-natiqa, `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur, `'paint-wall'` — le mur du stade repeint devant un tréteau en X, leçon aksiya-talis, `'tifo-banner'` — la banderole du derby étendue dans la salle des jeunes, leçon inshaat-talis, `'night-cinema'` — le ciné-club de nuit de la place du quartier, leçon talis-hisab-atwal, `'shadow-square'` — la place à l'heure de l'ombre, la synthèse wadiya-idmajiya-talis). Une nouvelle scène =
+ * (les scènes des leçons 1–7 de l'unité 1 — `'library'`, `'library-wall'`, `'construction-wall'`, `'flower-shop'`, `'school-bags'`, `'sewing-workshop'`, `'math-club'` — et celle de la leçon 8, `'bakery'`, ainsi que `'garden-bed'` et `'carpet-loom'`, les scènes des leçons 1 et 2 de l'unité 2, sont supprimées avec leur lecteur de mission : ces leçons sont v2, LESSON_V2.md §2 ; `'fold-strip'` — la bande pliée de la foire scientifique de la leçon muadalat-x-murabba, `'courtyard-slabs'` — la cour de l'école pavée de dalles carrées de la leçon amaliyat-judhur, `'courtyard-big'` — la même cour repavée de dalles plus grandes, leçon tawzif-khawass-judhur, `'paint-wall'` — le mur du stade repeint devant un tréteau en X, leçon aksiya-talis, `'tifo-banner'` — la banderole du derby étendue dans la salle des jeunes, leçon inshaat-talis, `'night-cinema'` — le ciné-club de nuit de la place du quartier, leçon talis-hisab-atwal, `'shadow-square'` — la place à l'heure de l'ombre, la synthèse wadiya-idmajiya-talis). Une nouvelle scène =
  * un composant `<Nom>Scene({ fill, label, className })` dessiné en code, ajouté à ce registre ; `fill` ∈ [0, 1] suit les outils gagnés.
  */
 const SCENES = {
-  'garden-bed': GardenBedScene,
-  'carpet-loom': CarpetLoomScene,
   'fold-strip': FoldStripScene,
   'courtyard-slabs': CourtyardSlabsScene,
   // la MÊME cour, repavée de dalles plus GRANDES (leçon tawzif-khawass-judhur, conseil du 2026-11-10) : une variante, pas une scène de plus

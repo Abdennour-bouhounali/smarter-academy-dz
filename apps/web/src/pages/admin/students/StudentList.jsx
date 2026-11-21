@@ -2,8 +2,10 @@ import { getAllGrades } from '@smarter-academy/core';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Users } from 'lucide-react';
-import { AdminPage, useAdminLabels, formatDate, Num } from '../adminUi';
+import { UserPlus, Users } from 'lucide-react';
+import { AdminPage, useAdminLabels, formatDate, Num, btnPrimary } from '../adminUi';
+import OneTimeCredentials from '../../../components/admin/OneTimeCredentials';
+import { CreateStudentForm, useCreateStudent } from './CreateStudent';
 import DataTable from '../../../components/admin/ui/DataTable';
 import StatusBadge from '../../../components/admin/ui/StatusBadge';
 import { FilterBar, SearchInput, SelectFilter, Pagination } from '../../../components/admin/ui/FilterBar';
@@ -51,6 +53,7 @@ export default function AdminStudentList() {
   );
   const { data, loading, error, reload, setData } = useAdminResource(loader, [loader]);
   const { token } = useContext(AuthContext);
+  const create = useCreateStudent(token, t, reload);
 
   // Les offres ÉLÈVE activables — mêmes règles que le CommercialPanel de la
   // fiche : actives ou masquées, jamais l'offre par défaut.
@@ -89,8 +92,39 @@ export default function AdminStudentList() {
       eyebrow={t('students.eyebrow')}
       title={t('students.title')}
       subtitle={t('students.subtitle')}
+      actions={!create.form && (
+        <button type="button" className={btnPrimary} onClick={create.start}>
+          <UserPlus size={16} /> {t('students.create.button')}
+        </button>
+      )}
     >
       <div className="space-y-3">
+        {create.secret && (
+          <OneTimeCredentials
+            title={t('students.create.passwordTitle')}
+            hint={t('students.create.passwordHint')}
+            footer={t('students.create.loginAt')}
+            login={create.secret.login}
+            password={create.secret.password}
+            labels={{ copy: t('common.copy'), copied: t('common.copied'), done: t('students.create.done') }}
+            onDone={create.dismissSecret}
+          />
+        )}
+
+        {create.form && (
+          <CreateStudentForm
+            t={t}
+            form={create.form}
+            gradeOptions={GRADE_OPTIONS}
+            busy={create.busy}
+            nameErrors={create.nameErrors}
+            formError={create.formError}
+            onField={create.setField}
+            onSubmit={create.submit}
+            onCancel={create.cancel}
+          />
+        )}
+
         {data?.counts && (
           <div className="flex flex-wrap gap-2">
             {[

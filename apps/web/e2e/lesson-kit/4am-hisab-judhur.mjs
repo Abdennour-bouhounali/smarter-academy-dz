@@ -20,7 +20,9 @@ import { BASE, launch, newCtx, watchErrors, check, summary, noHorizontalScroll, 
 
 const here = dirname(fileURLToPath(import.meta.url));
 const UNIT_DIR = resolve(here, '../../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur');
-const LESSONS = ['jidhr-tarbii', 'natiqa-ghayr-natiqa', 'muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur'];
+// `jidhr-tarbii` and `natiqa-ghayr-natiqa` left out: v2 lessons since 2026-11-21, their module pages deleted
+// (e2e/lessons/<id>.walk.mjs)
+const LESSONS = ['muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur'];
 const CONFIGS = Object.fromEntries(await Promise.all(LESSONS.map(async (id) => [id, (await import(pathToFileURL(`${UNIT_DIR}/${id}/lesson.config.js`).href)).LESSON_CONFIG])));
 const CH = `${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab`;
 const errors = [];
@@ -93,59 +95,7 @@ for (const mobile of [false, true]) {
   }
 }
 
-// ── 3a. square-root-side (refine) — leçon 1 ───────────────────────────────
-{
-  const { ctx, page } = await fresh({ lesson: 'jidhr-tarbii' });
-  await page.goto(`${BASE}${modulePath('jidhr-tarbii', 'trigger')}`, { waitUntil: 'networkidle' });
-  await pickLevel(page, 'beginner');
-  let m = await visibleManip(page, 'square-root-side');
-  await m.waitFor();
-  await setHandle(page, m, 5);
-  check('L1 مبتدئ : 5 donne 25 < 36', (await text(m.locator('[data-manipulation-representation]'))).includes('<36'));
-  await setHandle(page, m, 6);
-  check('L1 مبتدئ : 6 tombe juste (c² = 36)', (await m.locator('[data-root-square]').getAttribute('data-cmp')) === '0');
-  check('L1 مبتدئ : la découverte s’ouvre', (await m.getAttribute('data-phase')) === 'discover');
-
-  await pickLevel(page, 'advanced');
-  m = await visibleManip(page, 'square-root-side');
-  const refine = m.locator('[data-root-refine]');
-  check('L1 متقدم : la loupe est fermée avant tout encadrement', await refine.isDisabled());
-  await setHandle(page, m, 2);
-  await setHandle(page, m, 3);
-  check('L1 متقدم : 2 et 3 encadrent le côté — la loupe s’ouvre', !(await refine.isDisabled()));
-  // Graduations 0,1 puis 0,01 puis 0,001 : l'élève encadre, puis zoome.
-  for (const [lo] of [[2], [3], [6]]) {
-    await refine.click();
-    await page.waitForTimeout(300);
-    await setHandle(page, m, lo);
-    await setHandle(page, m, lo + 1);
-  }
-  check('L1 متقدم : à 0,001 le côté est encadré par 2,236 et 2,237', (await m.locator('[data-root-scale]').getAttribute('data-root-scale')) === '1000'
-    && (await text(m.locator('[data-root-memory]'))).includes('2,236²=4,999696'));
-  check('L1 متقدم : jamais « égal » — la découverte « jamais » s’ouvre', (await m.getAttribute('data-phase')) === 'discover');
-  await ctx.close();
-}
-
-// ── 3b. square-root-side (graduation) — leçon 2 ───────────────────────────
-{
-  const { ctx, page } = await fresh({ lesson: 'natiqa-ghayr-natiqa' });
-  await page.goto(`${BASE}${modulePath('natiqa-ghayr-natiqa', 'trigger')}`, { waitUntil: 'networkidle' });
-  await pickLevel(page, 'advanced');
-  const m = await visibleManip(page, 'square-root-side');
-  await m.waitFor();
-  const cards = await m.locator('[data-root-card]').count();
-  let found = false;
-  for (let i = 0; i < cards && !found; i += 1) {
-    const card = m.locator(`[data-root-card="${i}"]`);
-    if (!(await text(card)).includes('16')) continue;
-    await card.click();
-    await m.locator('[data-root-grad="3"]').click();
-    await setHandle(page, m, 4);
-    found = (await m.locator(`[data-root-card="${i}"]`).getAttribute('data-status')) === 'exact';
-  }
-  check('L2 متقدم : √(16/9) tombe sur la graduation des tiers (4/3)', found);
-  await ctx.close();
-}
+// ── 3b. (leçon 2 `natiqa-ghayr-natiqa`: a v2 lesson since 2026-11-21 — e2e/lessons/natiqa-ghayr-natiqa.walk.mjs)
 
 // ── 3c. square-fold — leçon 3 ─────────────────────────────────────────────
 {
@@ -195,26 +145,6 @@ for (const [lesson, level] of [['amaliyat-judhur', 'advanced'], ['tawzif-khawass
   const n = max; // pour 144 et 288 : kmax = 12
   await setHandle(page, m, 11); // k = 12
   check(`${lesson} : k = 12 écrit le côté (… = 12…)`, (await text(m.locator('[data-manipulation-representation]'))).includes('12') && n >= 12);
-  await ctx.close();
-}
-
-// ── 4. Le glisser réel sur une réglette (L1, pointeur) ────────────────────
-{
-  const { ctx, page } = await fresh({ lesson: 'jidhr-tarbii' });
-  await page.goto(`${BASE}${modulePath('jidhr-tarbii', 'trigger')}`, { waitUntil: 'networkidle' });
-  await pickLevel(page, 'beginner');
-  const m = await visibleManip(page, 'square-root-side');
-  const track = m.locator('[data-root-ruler]');
-  await track.scrollIntoViewIfNeeded();
-  const b = await track.boundingBox();
-  const y0 = await page.evaluate(() => window.scrollY);
-  await page.mouse.move(b.x + 30, b.y + b.height / 2);
-  await page.mouse.down();
-  for (let i = 1; i <= 8; i += 1) await page.mouse.move(b.x + 30 + ((b.width - 60) * i) / 8, b.y + b.height / 2);
-  await page.mouse.up();
-  await page.waitForTimeout(400);
-  const v = await m.locator('[data-root-value]').textContent();
-  check('glisser la réglette pose un côté, sans faire défiler la page', v !== '?' && (await page.evaluate(() => window.scrollY)) === y0, v);
   await ctx.close();
 }
 

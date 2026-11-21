@@ -6,6 +6,13 @@ any commit (§B). Each question below was learned from a defect that passed ever
 
 ## A. The design, before the first brief
 
+Before the keys (owner, 2026-11-21 — `SKILL.md` §0ter):
+
+- Is this plan the student's path, or the book's list? If it has one key per listed learning point in the list's order,
+  start again from what he must be able to DO.
+- What did the lessons before it in the unit already make him do? None of it is forged again here.
+- What is NEW for him in this lesson? Each key answers that.
+
 For each key:
 
 0. **Is there a situation IN THE WORLD that makes the rule necessary?** (owner, 2026-11-19) — a constraint he carries

@@ -45,7 +45,7 @@ export const LESSON_PACK = {
 |---|---|---|
 | `id` | the lesson's id — the generator fails when it differs from the folder | — |
 | `phone` | its home was designed AND walked on a phone held sideways (`GAME_WORLD.md` « On a phone ») | `components/auth/phoneLessons.js`, the launch kit |
-| `world` | `id` = a world of `gameworld/LessonGameWorld.jsx › WORLDS`; `content` = what the world is played with (`GAME_WORLD.md` §3 « The pilot's content ») | `LessonIndex.jsx`, `LessonGameWorld.jsx` |
+| `world` | `id` = a world of `gameworld/worlds.js › WORLDS`; `content` = what the world is played with (`GAME_WORLD.md` §3 « The pilot's content ») | `LessonIndex.jsx`, `LessonGameWorld.jsx` |
 | `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`) and its map (`KNOWLEDGE_GRAPH`, same file) — the lesson's ONLY knowledge source (§2). A rebuilt lesson writes it in `world/knowledge.js`; the two pilots keep it in their root `knowledge.jsx` (imported by their `world/knowledge.js`) | « بطاقة المعارف » on the board, the exam coach, the world's « خريطة المعارف » (through `world.content`) |
 | `coach` | `{ <الكفاءة>: <knowledge item id> }` — the sheet « مدرّب الامتحان » reminds; needs `knowledge` | `features/practice/exam/examCoach.js` |
 | `board` | « حصّة القسم »: the lesson on the board (`script`) and its written memo (`memo`) — both or none. The teacher's card shows « في القسم » only for a lesson that has it; a class session with the tests alone, without a script, cannot be declared (the old `classSession: true` of the config is gone) | `boardLessons.js`, `ClassSessionPage`, `LessonMemoPage`, the teacher's card |
@@ -69,6 +69,15 @@ Rules:
 
 **To give a lesson a pack**: write `lesson.pack.js` beside `lesson.config.js` with the keys it really has, run
 `npm run generate:lesson-index`, run the tests. Nothing else is edited.
+
+### A lesson being built: `notYet` (2026-11-21)
+
+A lesson whose world is shown to the owner before the rest is written declares, in its `world/index.js`,
+`notYet: ['map', 'know', 'progress', 'lab', 'launch', 'sitting', 'test']` — the doors of the kit it has not got yet. The
+title and end screens do not show those doors and the world does not open them; `lessons/lessonPack.test.js` then asks
+of its world only `keys`, `rules`, `story` and `forges`. Each name leaves the list when its part is written; the lesson
+is not « done » (§3) while the list is not empty. First used by `jidhr-tarbii` (world « قصر الساحات »,
+`GAME_WORLD.md` §2ter-3).
 
 ### What is NOT in the pack (and why)
 
@@ -214,7 +223,7 @@ for a lesson whose pack has a world (`LessonModuleChips`), and « واصل » / 
 **The old version is deleted when the lesson becomes v2** (owner, 2026-11-18: « for each lesson that is updated to the
 gaming version, delete the old version »; decision D3). Done for `qasim-adad-tabii`, `qawasim-adad-tabii`,
 `khawass-qawasim`, then (same day) the 1AM `qisma-iqlidiya-baqi`, `qawaid-qabiliyat-qisma` and the 2AM
-`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) and `ikhtizal-kasr` (lesson 8, with its mission scene `bakery`; the unit's last ordinary lesson on the mission player — only the synthesis `wadiya-idmajiya-aadad` stays on it) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
+`qisma-iqlidiya-hasr`, then (2026-11-19) the 4AM `qasim-mushtarak-akbar` (lesson 4, with its mission scene `flower-shop`) `tayin-pgcd` (lesson 5, with its mission scene `school-bags`) and `bahth-pgcd` (lesson 6, with its mission scene `sewing-workshop`), then (2026-11-20) `awwaliyan-fima-baynahuma` (lesson 7, with its mission scene `math-club`) and `ikhtizal-kasr` (lesson 8, with its mission scene `bakery`; the unit's last ordinary lesson on the mission player — only the synthesis `wadiya-idmajiya-aadad` stays on it), then (2026-11-21) the first lesson of unit 2 `jidhr-tarbii` (world `root-courts`, with its mission scene `garden-bed`) and its lesson 2 `natiqa-ghayr-natiqa` (same world, with its mission scene `carpet-loom`) — with the unit's `_unit/prepDiagnostic.jsx` and `_unit/moduleContext.js` when no lesson of the unit
 still has a module page (1AM `darb-qisma-ashriya`); the trace of every reader: `docs/reports/OLD_VERSION_TRACE_2026-11-18.md`. What goes, in the same
 commit as the conversion:
 

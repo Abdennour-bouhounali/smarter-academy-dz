@@ -25,7 +25,7 @@
 import { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import { X, Maximize2, Minimize2, ArrowUp, Star, Gem } from 'lucide-react';
+import { X, Maximize2, Minimize2, ArrowUp, Star, Gem, BookOpen } from 'lucide-react';
 import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
@@ -43,8 +43,9 @@ import { Promotion, ProgressPage } from './Spaces';
 import { PaperChip } from './Paper';
 import { LessonProvider } from './LessonContext';
 import { Toast, Say, Stick, ExitTo, SoundToggle } from './parts';
-import { Tablet } from './Tablet';
+import { Tablet, RulesSheet } from './Tablet';
 import Title from './Title';
+import WorldLoading from '../WorldLoading';
 import PracticeHub from './PracticeHub';
 import Result from './Result';
 import End from './End';
@@ -83,6 +84,16 @@ export default function LessonWorld({
   const [game, setGame] = useState(null);
   const [run, setRun] = useState(0);
   const [failed, setFailed] = useState(() => !hasWebGL());
+  // the loading screen covers the canvas while the scene is built, then fades over the title (WorldLoading.jsx)
+  const [veil, setVeil] = useState(true);
+  useEffect(() => {
+    if (!game) {
+      setVeil(true);
+      return undefined;
+    }
+    const id = setTimeout(() => setVeil(false), 450);
+    return () => clearTimeout(id);
+  }, [game]);
   const onModuleRef = useRef(onModule);
   onModuleRef.current = onModule;
   // الكفاءات: the answers that count are sent to the server, which re-computes their verdict (GameEvidenceController)
@@ -203,7 +214,7 @@ export default function LessonWorld({
         </div>
       )}
       <canvas ref={canvas} className="di-canvas" />
-      {!game && <div className="di-loading">{KT.loading}</div>}
+      {veil && <WorldLoading lessonId={config.id} title={config.title} stage={4} leaving={Boolean(game)} over />}
       {game && (
         <LessonProvider lesson={lesson}>
           <ExitTo.Provider value={{ to: exitTo, label: KT.hud.exit }}>
@@ -302,6 +313,18 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
               </button>
             </>
           )}
+          {/* « قواعدي »: every rule he owns, from anywhere — a tablet he closes flies here (`Tablet › flyToRules`) */}
+          {(s.keys.length > 0 || o?.type === 'tablet') && (
+            <button
+              type="button"
+              className="di-pill di-rules"
+              onClick={() => game.openRules()}
+              title={KT.tablets.all}
+              data-di-rules
+            >
+              <BookOpen size={16} aria-hidden="true" /> {KT.tablets.all}
+            </button>
+          )}
           <SoundToggle game={game} />
           <button type="button" className="di-icon" onClick={toggleFull} aria-label={KT.hud.full} title={KT.hud.full}>
             {full ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
@@ -399,6 +422,7 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
       )}
       {o && world.overlay?.(o, s, game)}
       {o?.type === 'tablet' && <Tablet id={o.key} mine={s.rules?.[o.key]} onClose={() => game.closeTablet()} fresh />}
+      {o?.type === 'rules' && <RulesSheet keys={s.keys} sel={o.key} mine={s.rules} onClose={() => game.closeRules()} />}
       {s.paper && o?.type !== 'know' && o?.type !== 'sitting' && <PaperChip className="di-pchip--float" />}
       {world.Over && <world.Over s={s} game={game} />}
       {o?.type === 'map' && (

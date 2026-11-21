@@ -372,6 +372,19 @@ export function FormLines({ lines, v, set, locked }) {
 }
 
 /** One question, drawn in the look of its format. Every exam question is a <form>: Enter checks, as on any answer sheet. */
+/** A gate of a tap: a fraction « p/q » stacked over a real bar (the sheet's `di-frac`), never « p/q » as text. */
+export function TapOption({ n }) {
+  const m = /^(-?\d+)\/(\d+)$/.exec(String(n));
+  if (!m) return n;
+  return (
+    <span className="di-frac" dir="ltr" data-di-frac>
+      <b>{m[1]}</b>
+      <span className="di-frac__bar" aria-hidden="true" />
+      <b>{m[2]}</b>
+    </span>
+  );
+}
+
 function Question({ q, index, locked, onSubmit, onModel }) {
   const [v, setV] = useState({});
   const set = (k) => (x) => setV((o) => ({ ...o, [k]: x }));
@@ -400,7 +413,7 @@ function Question({ q, index, locked, onSubmit, onModel }) {
         <div className="di-tap__gates" dir="ltr">
           {q.options.map((n) => (
             <button key={n} type="button" disabled={locked} onClick={() => onSubmit(n)} data-di-tr-opt={n}>
-              {n}
+              <TapOption n={n} />
             </button>
           ))}
         </div>

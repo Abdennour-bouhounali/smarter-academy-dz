@@ -33,7 +33,7 @@ import * as L from '../logic/pythagorasTanks';
  * B. « اسكب » : les deux petits bassins se vident (surface horizontale qui descend), le grand se remplit ; on LIT le résultat : plein juste,
  *    débordement (une flaque chiffrée sur la table) ou un vide (un coin vide en pointillés, chiffré).
  * C. Les mathématiques résistent : à tout angle aigu l'eau déborde, à tout angle obtus un vide reste ; avec 2 et 3 AUCUN dixième du ruban ne
- *    remplit (3,6 déborde, 3,7 laisse un vide) — la touche √ (seulement la touche : la racine est construite en 4AM par jidhr-tarbii) règle
+ *    remplit (3,6 déborde, 3,7 laisse un vide) — la touche √ (seulement la touche : la racine est construite en 4AM, unité « الحساب على الجذور ») règle
  *    le ruban sur √13 exact. Chaque versement est un essai : MANUEL (pas de « جرّب كل الإمكانيات »).
  * D. La phase formelle écrit BC² = AB² + AC² avec SES nombres (25 = 16 + 9 ; 169 = 144 + 25 ; √13) et la contraposée avec SON essai raté.
  * E. Les fausses conjectures sont réfutées avec SES versements (« quelle que soit la zone » ← son débordement ; « BC = AB + AC » ← 13 ≠ 17).

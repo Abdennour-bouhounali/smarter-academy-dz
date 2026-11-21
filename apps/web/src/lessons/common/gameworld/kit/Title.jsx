@@ -1,11 +1,15 @@
 /**
  * The TITLE SCREEN of a lesson's game world: the lesson's name, the world's own title and story, « ابدأ » / « واصل », and the
  * doors that open without replaying the story — the knowledge map, the practice space, « تقدّمي », « مختبري », « عُدّتي ».
+ * A door whose part the lesson has not got yet (`lesson.notYet`, while a lesson is being built) is not shown: a door never
+ * opens on nothing.
  */
 import { RotateCcw, Map as MapIcon, BookOpen, Trophy, FlaskConical, Backpack } from 'lucide-react';
 import { KT, TX } from './text';
+import { useLesson } from './LessonContext';
 
 export default function Title({ s, game, world, lessonTitle, onBegin, onRestart, coarse }) {
+  const { notYet = [] } = useLesson();
   return (
     <div className="di-title">
       <div className="di-title__box">
@@ -16,36 +20,46 @@ export default function Title({ s, game, world, lessonTitle, onBegin, onRestart,
           {s.hasSave ? KT.resume : KT.start}
         </button>
         <div className="di-row di-row--wrap di-title__doors">
-          <button type="button" className="di-btn di-btn--map" onClick={() => game.openKnow()} data-di-know-open>
-            <BookOpen size={18} /> {TX.know.open}
-          </button>
-          <button type="button" className="di-btn di-btn--map" onClick={() => game.openMap()} data-di-map>
-            <MapIcon size={18} /> {TX.hub.open}
-          </button>
-          <button
-            type="button"
-            className="di-btn di-btn--map"
-            onClick={() => game.openProgress()}
-            data-di-progress-open
-          >
-            <Trophy size={18} /> {TX.progress.open}
-          </button>
-          <button
-            type="button"
-            className="di-btn di-btn--map di-btn--lab"
-            onClick={() => game.openLab()}
-            data-di-lab-open
-          >
-            <FlaskConical size={18} /> {TX.lab.open}
-          </button>
-          <button
-            type="button"
-            className="di-btn di-btn--map di-btn--kit"
-            onClick={() => game.openLaunch(false)}
-            data-di-launch-open
-          >
-            <Backpack size={18} /> {TX.launch.open}
-          </button>
+          {!notYet.includes('know') && (
+            <button type="button" className="di-btn di-btn--map" onClick={() => game.openKnow()} data-di-know-open>
+              <BookOpen size={18} /> {TX.know.open}
+            </button>
+          )}
+          {!notYet.includes('map') && (
+            <button type="button" className="di-btn di-btn--map" onClick={() => game.openMap()} data-di-map>
+              <MapIcon size={18} /> {TX.hub.open}
+            </button>
+          )}
+          {!notYet.includes('progress') && (
+            <button
+              type="button"
+              className="di-btn di-btn--map"
+              onClick={() => game.openProgress()}
+              data-di-progress-open
+            >
+              <Trophy size={18} /> {TX.progress.open}
+            </button>
+          )}
+          {!notYet.includes('lab') && (
+            <button
+              type="button"
+              className="di-btn di-btn--map di-btn--lab"
+              onClick={() => game.openLab()}
+              data-di-lab-open
+            >
+              <FlaskConical size={18} /> {TX.lab.open}
+            </button>
+          )}
+          {!notYet.includes('launch') && (
+            <button
+              type="button"
+              className="di-btn di-btn--map di-btn--kit"
+              onClick={() => game.openLaunch(false)}
+              data-di-launch-open
+            >
+              <Backpack size={18} /> {TX.launch.open}
+            </button>
+          )}
         </div>
         {s.hasSave && (
           <button type="button" className="di-link" onClick={onRestart}>

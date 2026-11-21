@@ -223,6 +223,12 @@ class ActivityLogger
     /** « التحدّي اليومي » : le barème global (écran d'administration). */
     public const DAILY_CHALLENGE_CONFIG_UPDATED = 'daily_challenge.config_updated';
 
+    /** « التسجيل » : l'administrateur ouvre ou ferme les inscriptions (RegistrationGate::update) — ancien → nouveau. */
+    public const REGISTRATION_SETTINGS_CHANGED = 'registration.settings_changed';
+
+    /** Un compte élève créé par l'administrateur (StudentService::create) : jamais le mot de passe dans le journal. */
+    public const STUDENT_CREATED = 'student.created';
+
     /** La LIBRAIRIE (livres papier) : fiche livre, commande, paiement. Voir docs/architecture/BOOKS_STORE.md. */
     public const BOOK_SAVED = 'book.saved';
 

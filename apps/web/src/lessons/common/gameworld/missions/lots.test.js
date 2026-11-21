@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { deal, euclid, fill, gcd, line, slip } from './lots';
-import { advice } from './lots';
+import { advice, deal, euclid, fill, gcd, line } from './lots';
 
 const REAL = { a: 1188, b: 528 };
 
@@ -41,12 +40,6 @@ describe('the scene « lots »: every act is a line of numbers', () => {
     expect(fill(132, { a: 9, b: 4 }, REAL)).toMatchObject({ outcome: 'exact', empty: 0 });
     expect(fill(132, { a: 132, b: 132 }, REAL)).toMatchObject({ outcome: 'short', full: 4, empty: 128 });
     expect(fill(132, { a: 8, b: 4 }, REAL)).toMatchObject({ outcome: 'left', left: { a: 132, b: 0 } });
-  });
-
-  it('a division typed in its shape is answered by a fact, not by « wrong »', () => {
-    expect(slip(1188, 528, 2, 132)).toBeNull();
-    expect(slip(1188, 528, 3, 132)).toEqual({ kind: 'sum', value: 1716 });
-    expect(slip(1188, 528, 1, 660)).toEqual({ kind: 'rest', value: 660 });
   });
 });
 

@@ -1,13 +1,18 @@
 /**
- * AN INTEGRATION MISSION PLAYED FROM DATA (`docs/reports/INTEGRATION_LESSON_PLAN.md` §6, §8, §9) — the engine of every
- * mission after the first: the situation is a file of the lesson (its exam text, its scene, its steps, the guidance of
+ * AN INTEGRATION MISSION PLAYED FROM DATA (`docs/reports/INTEGRATION_LESSON_PLAN.md` §6, §8, §9) — THE engine of every
+ * mission: the situation is a file of the lesson (its exam text, its scene, its steps, the guidance of
  * each wrong answer); this file names no lesson and no scene.
  *
- * The same contract as mission 1 (`MissionPlayer.jsx`): the paper first, the world checks. A mission card, the message
+ * The contract of every mission (INTEGRATION_LESSON_PLAN.md §8, §9): the paper first, the world checks. A mission card, the message
  * that the clock starts (5 s, nothing closes it), READ THE WHOLE TEXT, then the steps:
  *   { kind: 'data' }   he taps in the text every datum and every condition carried by words (`paper[].mark`); each
  *                      becomes a line of « المعطيات » (the robot does the first one)
  *   { kind: 'goal' }   he taps the question(s) (`paper[].goal`)
+ *   { kind: 'tries' }  FREE TRIES: he types a number, the world carries it out (`try(n, ctx) → { ok, scene, lines,
+ *                      fact, owe }`); a condition the world has just shown (`owe`, a datum marked `late`) is added to
+ *                      « المعطيات » on his sheet; `ready(ctx)` opens the way on
+ *   { kind: 'connect' } « أربط »: he ties to a question (`goal`) the data it needs (`must`); one left out is answered
+ *                      by what cannot be done without it (`without`); `ans(ctx)` adds the answer of the question before
  *   { kind: 'plan' }   the question hides steps: he orders them (`items`, `order`); a step taken too early is answered
  *                      by what it needs (`item.needs`)
  *   { kind: 'review' } A CLASSMATE'S COPY: its lines (`lines`), one of them wrong (`wrong`); he taps the faulty one —
@@ -25,7 +30,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check, Clock, Coins, PenLine, Play, Star, Trophy, X } from 'lucide-react';
 import { M } from '../kit/parts';
 import Ink from './Ink';
-import { Box, Sheet } from './parts';
+import { Box, Connect, Sheet } from './parts';
 import './mission.css';
 
 const BRAVO = ['أحسنت!', 'ممتاز!', 'رائع!', 'صحيح!', 'هكذا!'];
@@ -36,14 +41,14 @@ const clock = (s) => `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(Ma
 const val = (x, ctx) => (typeof x === 'function' ? x(ctx) : x);
 
 /** The exam paper: its text whole; what he taps in it — its data and conditions, then its question. */
-function Paper({ sit, mode, data, goals, next, onMark, onGoal }) {
+function Paper({ sit, mode, data, goals, next, late, onMark, onGoal }) {
   return (
     <aside className="ms-paper" data-ms-paper>
       <h3>{sit.session}</h3>
       <p>
         {sit.paper.map((p, i) => {
           let el;
-          if (p.mark && mode === 'data' && !data.includes(p.mark))
+          if (p.mark && mode === 'data' && !data.includes(p.mark) && !late.includes(p.mark))
             el = (
               <button
                 key={i}
@@ -119,7 +124,9 @@ function Copy({ sit, data, goals, plan, lines, open, onOpen }) {
           {sit.goals
             .filter((g) => goals.includes(g.id))
             .map((g) => (
-              <li key={g.id}>{g.text}</li>
+              <li key={g.id}>
+                {g.label} {g.text}
+              </li>
             ))}
           {plan.map((id, i) => (
             <li key={id} className="is-key">
@@ -132,7 +139,7 @@ function Copy({ sit, data, goals, plan, lines, open, onOpen }) {
       {open === 'work' && (
         <ol>
           {lines.map((l) => (
-            <li key={l.id} className="is-key" data-ms-line={l.id} dir={l.tex ? 'ltr' : 'rtl'}>
+            <li key={l.id} className={`is-${l.tone ?? 'key'}`} data-ms-line={l.id} dir={l.tex ? 'ltr' : 'rtl'}>
               {l.tex ? <M>{l.tex}</M> : l.text}
             </li>
           ))}
@@ -169,13 +176,17 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
   const [pen, setPen] = useState(false);
   const [idle, setIdle] = useState(false);
   const [open, setOpen] = useState('data');
-  const [found, setFound] = useState(null); // the faulty line he found in a classmate's copy (a `review` step)
+  const [found, setFound] = useState(null);
+  const [picked, setPicked] = useState([]); // « أربط »: the data tied to the question
+  const [owed, setOwed] = useState(null); // a condition the world has just shown: to add to « المعطيات » // the faulty line he found in a classmate's copy (a `review` step)
   const acts = useRef(0);
   const act = () => {
     acts.current += 1;
     setIdle(false);
   };
   const step = phase === 'play' ? steps[i] : null;
+  const late = sit.data.filter((d) => d.late).map((d) => d.id);
+  const first = sit.data.filter((d) => !d.late);
   const ctx = { vals, fails: fails[step?.id] ?? 0, data, plan };
   const playing = phase === 'play' && read;
 
@@ -213,19 +224,32 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
   // the robot does the FIRST gesture itself: it underlines the first datum and writes it in « المعطيات »
   useEffect(() => {
     if (!playing || step?.kind !== 'data' || data.length) return undefined;
-    const t = setTimeout(() => mark(sit.data[0].id, true), 1600);
+    const t = setTimeout(() => mark(first[0].id, true), 1600);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playing, step?.kind]);
+  // what the world shows of the data he has named (a quay that counts a stock only once he said what its number counts)
+  useEffect(() => {
+    const shown = sit.quay?.(data);
+    if (shown) world.stock?.(...shown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data.length]);
   // « ورقتي » opens on the section he is working on
   useEffect(() => {
-    if (step) setOpen(step.kind === 'data' ? 'data' : step.kind === 'work' || step.kind === 'review' ? 'work' : 'goal');
+    if (step)
+      setOpen(
+        step.kind === 'data' || step.kind === 'connect'
+          ? 'data'
+          : ['work', 'review', 'tries'].includes(step.kind)
+            ? 'work'
+            : 'goal',
+      );
   }, [step]);
 
   const stars = slips <= 2 ? 3 : slips <= 5 ? 2 : 1;
   // A MISSION LEFT HALF-WAY IS KEPT (his world save, private): at each step forward what his copy holds is handed to the
   // world; the card offers « أكمل من حيث توقّفت » next time. The clock goes on from where it was.
-  const snapshot = { i, data, goals, plan, vals, lines, written, coins, slips, left, found };
+  const snapshot = { i, data, goals, plan, vals, lines, written, coins, slips, left, found, owed };
   const keep = useRef(snapshot);
   keep.current = snapshot;
   useEffect(() => {
@@ -245,6 +269,7 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
     setSlips(s.slips ?? 0);
     setLeft(s.left ?? sit.minutes * 60);
     setFound(s.found ?? null);
+    setOwed(s.owed ?? null);
     setRead(true);
     setPhase('play');
   };
@@ -256,6 +281,7 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
   const advance = (pay = 10) => {
     act();
     setV({});
+    setPicked([]);
     if (i + 1 >= steps.length) {
       setCoins((c) => c + pay);
       world.done?.({ stars, coins: coins + pay });
@@ -313,26 +339,62 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
     setFact(step.why);
     return undefined;
   };
-  const submit = async () => {
-    const r = step.check(Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])), ctx);
+  // FREE TRIES: the world carries out his number whatever it is (a free try is never a slip); the lines of a try that
+  // left something are replaced by the next one, those of a try that worked stay
+  const attempt = async () => {
+    const n = num(v.n);
+    const r = step.try(n, ctx);
+    act();
+    setFact(null);
+    setBusy(true);
+    await world.run(r.scene, r.sceneOpts);
+    setBusy(false);
+    const id = r.ok ? `ok-${n}` : 'try';
+    setLines((ls) => [
+      ...ls.filter((l) => !l.id.startsWith('try-') && !l.id.startsWith(`${id}-`)),
+      ...r.lines.map((l, k) => ({ id: `${id}-${k}`, ...l })),
+    ]);
+    const was = vals[step.id] ?? { worked: [], fails: [] };
+    setVals((s) => ({
+      ...s,
+      [step.id]: r.ok
+        ? { ...was, worked: [...was.worked.filter((x) => x !== n), n].slice(-2), miss: null }
+        : { ...was, fails: [...was.fails.filter((x) => x !== n), n], miss: n },
+    }));
+    if (r.owe && !data.includes(r.owe)) setOwed(r.owe);
+    setFact(r.fact);
+  };
+  const tie = () => {
+    const miss = step.must.find((id) => !picked.includes(id));
+    if (miss) return slipped(step.id, step.without[miss]);
+    setFact(null);
+    return advance(step.pay ?? 10);
+  };
+  const submit = async (choice = null) => {
+    const r = step.check(Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])), ctx, choice);
     act();
     setFact(null);
     let built = null;
     if (r.scene) {
       setBusy(true);
-      built = await world.run(r.scene);
+      built = await world.run(r.scene, r.sceneOpts);
       setBusy(false);
     }
     const said = typeof r.fact === 'function' ? r.fact(built) : r.fact;
     if (!r.ok) return slipped(step.id, said);
     setVals((s) => ({ ...s, [step.id]: Object.fromEntries(Object.entries(v).map(([k, x]) => [k, num(x)])) }));
-    if (r.line) setLines((ls) => [...ls.filter((l) => l.id !== step.id), { id: step.id, ...r.line }]);
+    const fresh = r.lines ?? (r.line ? [r.line] : []);
+    if (fresh.length)
+      setLines((ls) => [
+        ...ls.filter((l) => l.id !== step.id && !l.id.startsWith(`${step.id}-`)),
+        ...fresh.map((l, k) => ({ id: fresh.length > 1 ? `${step.id}-${k}` : step.id, ...l })),
+      ]);
     setFact(said ?? null);
     return advance(step.pay ?? 10);
   };
 
   const stage = phase === 'play' ? step.stage : STAGES;
-  const nextMark = sit.data.find((d) => !data.includes(d.id))?.id;
+  const nextMark = first.find((d) => !data.includes(d.id))?.id;
   const ASK = !read
     ? 'اقرأ التمرين كلّه أوّلًا، حتّى آخر سؤال.'
     : phase === 'model'
@@ -340,8 +402,8 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
       : phase === 'marker'
         ? 'ماذا في ورقتك؟ ضع علامة على ما كتبتَه.'
         : step.kind === 'data'
-          ? data.length < sit.data.length
-            ? `ما المعطيات؟ سطّر في النصّ كلّ عدد وكلّ شرط (${data.length} من ${sit.data.length}).`
+          ? data.length < first.length
+            ? `ما المعطيات؟ سطّر في النصّ ${late.length ? 'كلّ عدد' : 'كلّ عدد وكلّ شرط'} (${data.length} من ${first.length}).`
             : 'هذه معطياتك. اكتبها على ورقتك.'
           : step.kind === 'goal'
             ? 'ما المطلوب؟ اضغط على السؤال في النصّ.'
@@ -349,11 +411,13 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
               ? plan.length < step.order.length
                 ? `السؤال يخفي خطوات. ما الذي تبحث عنه ${plan.length ? 'بعد ذلك' : 'أوّلًا'}؟`
                 : 'هذه خطّتك. اكتبها على ورقتك.'
-              : step.kind === 'review'
-                ? found
-                  ? 'هذا هو السطر. صحّحه على ورقة زميلك.'
-                  : step.ask
-                : val(step.ask, ctx);
+              : step.kind === 'connect'
+                ? step.ask
+                : step.kind === 'review'
+                  ? found
+                    ? 'هذا هو السطر. صحّحه على ورقة زميلك.'
+                    : step.ask
+                  : val(step.ask, ctx);
 
   if (phase === 'card')
     return (
@@ -444,6 +508,7 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
           data={data}
           goals={goals}
           next={nextMark}
+          late={late}
           onMark={(id) => mark(id)}
           onGoal={goal}
         />
@@ -467,6 +532,20 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
                   ))}
               </div>
             </div>
+          )}
+          {playing && step.kind === 'connect' && (
+            <Connect
+              goal={sit.goals.find((g) => g.id === step.goal)}
+              items={[
+                ...sit.data.filter((d) => data.includes(d.id)).map((d) => ({ id: d.id, text: d.text })),
+                ...(step.ans ? [{ id: 'ans', text: step.ans(ctx) }] : []),
+              ]}
+              picked={picked}
+              onPick={(id) => {
+                act();
+                setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+              }}
+            />
           )}
           {playing && step.kind === 'review' && (
             <div className="ms-model ms-review" data-ms-review={found ?? 'open'}>
@@ -527,10 +606,10 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
                 )}
               </>
             )}
-            {playing && step.kind === 'data' && data.length < sit.data.length && (
+            {playing && step.kind === 'data' && data.length < first.length && (
               <span className="ms-hint">الأعداد والشروط في نصّ الامتحان، على اليمين.</span>
             )}
-            {playing && step.kind === 'data' && data.length === sit.data.length && (
+            {playing && step.kind === 'data' && data.length >= first.length && (
               <Sheet
                 id="data"
                 written={false}
@@ -554,6 +633,62 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
                 onWritten={() => advance()}
                 text="اكتب خطّتك تحت « المطلوب »: الخطوات بترتيبها."
               />
+            )}
+            {playing && step.kind === 'tries' && owed && (
+              <Sheet
+                key={owed}
+                id={`owed-${owed}`}
+                written={false}
+                onWritten={() => {
+                  act();
+                  setData((d) => [...d, owed]);
+                  setOwed(null);
+                }}
+                text={`أضف إلى معطياتك: « ${sit.data.find((d) => d.id === owed).text} ».`}
+              />
+            )}
+            {playing && step.kind === 'tries' && !owed && (
+              <>
+                <span>{step.label}</span>
+                <Box
+                  value={v.n}
+                  onChange={(x) => setV((s) => ({ ...s, n: x }))}
+                  label={step.label}
+                  name="n"
+                  onEnter={() => num(v.n) && !busy && attempt()}
+                />
+                <button
+                  type="button"
+                  className="ms-btn"
+                  data-ms-try
+                  disabled={!num(v.n) || num(v.n) > step.max || busy}
+                  onClick={attempt}
+                >
+                  <Play size={18} aria-hidden="true" />
+                  {step.world}
+                </button>
+                {step.ready(ctx) && (
+                  <button
+                    type="button"
+                    className="ms-btn ms-btn--go ms-target"
+                    data-ms-more
+                    disabled={busy}
+                    onClick={() => advance()}
+                  >
+                    {step.go}
+                    <ArrowLeft size={18} aria-hidden="true" />
+                  </button>
+                )}
+              </>
+            )}
+            {playing && step.kind === 'connect' && (
+              <Sheet id={step.id} written={written[step.id]} onWritten={() => wrote(step.id)} text={step.sheet}>
+                <span className="ms-hint">اضغط على ما يحتاجه السؤال.</span>
+                <button type="button" className="ms-btn" data-ms-tie disabled={!picked.length} onClick={tie}>
+                  ربطتُ
+                  <ArrowLeft size={18} aria-hidden="true" />
+                </button>
+              </Sheet>
             )}
             {playing && step.kind === 'review' && !found && (
               <span className="ms-hint">اضغط على السطر الذي فيه الخطأ.</span>
@@ -588,7 +723,7 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
                         label={p.label ?? p.box}
                         name={p.box}
                         w={p.w ?? 3}
-                        onEnter={() => full && !busy && submit()}
+                        onEnter={() => full && !busy && !step.choices && submit()}
                       />
                     ) : p.tex ? (
                       <M key={k}>{p.tex}</M>
@@ -597,10 +732,31 @@ export default function MissionRunner({ situation: sit, world, onClose, resume =
                     ),
                   )}
                 </span>
-                <button type="button" className="ms-btn" data-ms-check disabled={!full || busy} onClick={submit}>
-                  {step.world ? <Play size={18} aria-hidden="true" /> : <Check size={18} aria-hidden="true" />}
-                  {step.world ?? 'أكتبه في ورقتي'}
-                </button>
+                {step.choices ? (
+                  step.choices.map((c) => (
+                    <button
+                      key={c.id}
+                      type="button"
+                      className="ms-btn ms-btn--ghost"
+                      data-ms-name={c.id}
+                      disabled={!full || busy}
+                      onClick={() => submit(c.id)}
+                    >
+                      {c.text}
+                    </button>
+                  ))
+                ) : (
+                  <button
+                    type="button"
+                    className="ms-btn"
+                    data-ms-check
+                    disabled={!full || busy}
+                    onClick={() => submit()}
+                  >
+                    {step.world ? <Play size={18} aria-hidden="true" /> : <Check size={18} aria-hidden="true" />}
+                    {step.world ?? 'أكتبه في ورقتي'}
+                  </button>
+                )}
               </Sheet>
             )}
             {phase === 'model' && !finale && (

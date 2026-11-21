@@ -1,6 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { readdirSync, readFileSync } from 'node:fs';
 import { getItem } from '@smarter-academy/core/curriculum/dz/net/learningNet.js';
+import {
+  compare,
+  equal,
+  magnitude,
+  minus,
+  read,
+  rootOf,
+  square,
+  tex,
+  times,
+  write,
+} from '../../lessons/common/gameworld/rootCourts/logic';
 
 /**
  * THE DEFAULT CLASS TESTS (content/class-tests/**): a teacher projects them in front of his class, so a default test never
@@ -157,6 +169,55 @@ const isReducedOf = (option, nd) => {
 const shows = (q, ...nums) => {
   for (const n of nums) expect(q.text, `${q.id}: the question shows ${n}`).toContain(String(n));
 };
+
+// ── square roots (4AM unit 2, lesson 1): exact arithmetic on text numbers (« 7,94 », « -15 »), never a float ──
+/**
+ * « $7{,}94$ », « 89 » or « $\\dfrac{5}{7}$ » (a fraction, its sign in front: « $-\\dfrac{9}{64}$ ») → the exact number,
+ * or null when the option is not a plain number (« $\\sqrt{63}$ »).
+ */
+const exactOf = (option) => {
+  const t = String(option)
+    .replace(/^\$|\$$/g, '')
+    .replaceAll('{,}', ',')
+    .trim();
+  const f = t.match(/^(-?)\\d?frac\{(\d+(?:,\d+)?)\}\{(\d+(?:,\d+)?)\}$/);
+  if (f) return read(`${f[1]}${f[2]}/${f[3]}`);
+  if (!/^-?\d+(?:,\d+)?$/.test(t)) return null;
+  return read(t);
+};
+/** A number in LaTeX AS IT IS GIVEN: « 50/98 » keeps its terms (never reduced to 25/49), anything else as `tex` writes it. */
+const texGiven = (x) => {
+  const [n, d] = String(x).split('/');
+  return d == null ? tex(x) : `\\dfrac{${tex(n)}}{${tex(d)}}`;
+};
+/** The number under the sign of an option « $\\sqrt{…}$ » (a decimal or « \\dfrac{n}{d} »), exact; null when it is not one. */
+const radicandOf = (option) => {
+  const m = String(option).match(/^\$\\sqrt\{(.+)\}\$$/);
+  return m ? exactOf(`$${m[1]}$`) : null;
+};
+/** A number written in a formula: « 57 », « (-27) », « (0{,}4) » — a negative or a decimal in brackets. */
+const wrapped = (x) => (/^\d+$/.test(String(x)) ? tex(x) : `(${tex(x)})`);
+/** x raised to n, exactly. */
+const powerOf = (x, n) => Array.from({ length: n - 1 }).reduce((v) => times(v, x), read(x));
+/**
+ * A check that COMPUTES one exact value v (or null when none exists among the numbers): a number answers v (a whole
+ * number: the board's keypad has digits only), a choice holds exactly the options equal to v, a true-false is the
+ * sentence « $<formula> = <claim>$ », written as such in the question.
+ */
+function valued(q, v, formula) {
+  const c = q.check;
+  if (q.kind === 'truefalse') {
+    // a claim with no formula is written as given: a fraction with its bar (« $\\dfrac{7}{9}$ »), a decimal with its comma
+    const said = String(c.claim).includes('/') ? `$${texGiven(c.claim)}$` : String(c.claim).replace('.', ',');
+    expect(q.text, q.id).toContain(formula ? `$${formula} = ${tex(c.claim)}$` : said);
+    return v != null && equal(c.claim, v);
+  }
+  if (formula) expect(q.text, q.id).toContain(`$${formula}$`);
+  if (q.kind === 'choice') return q.options.map((o) => v != null && exactOf(o) != null && equal(exactOf(o), v));
+  expect(v, `${q.id}: a value exists`).not.toBe(null);
+  expect(write(v), `${q.id}: a whole number the keypad can type`).toMatch(/^\d{1,6}$/);
+  return Number(write(v));
+}
 
 /** The truth of each option of a choice (or the value of a number / a true-false), from the `check` alone. */
 function truth(q) {
@@ -448,6 +509,94 @@ function truth(q) {
       expect(c.lots, `${q.id}: the lots are the PGCD`).toBe(gcd(c.a, c.b));
       shows(q, c.a, c.b, c.lots);
       return (c.of === 'a' ? c.a : c.b) / c.lots;
+    // ── the square root of a positive number (4AM unit 2, lesson 1): every value exact (rootCourts/logic.js) ──
+    case 'power':
+      // x^n of a rational number (3AM): a negative or a decimal base in brackets
+      return valued(q, powerOf(c.base, c.exp), `${wrapped(c.base)}^${c.exp}`);
+    case 'pythagoras':
+      // the SQUARE of the hypotenuse of a right triangle whose legs are a and b
+      shows(q, c.a, c.b);
+      return valued(q, read(c.a * c.a + c.b * c.b), null);
+    case 'root':
+      // the positive number whose square is a (null when it has none among the numbers); `court`: asked in words, the
+      // area of a square court (and, true-false, the side claimed), else written « $\sqrt{a}$ »
+      // (since lesson 2 of the unit: a fraction keeps the terms it is given, « \\sqrt{\\dfrac{50}{98}} »)
+      if (c.court && String(c.a).includes('/')) expect(q.text, q.id).toContain(`$${texGiven(c.a)}$`);
+      else if (c.court) shows(q, c.a);
+      return valued(q, rootOf(c.a) == null ? null : read(rootOf(c.a)), c.court ? null : `\\sqrt{${texGiven(c.a)}}`);
+    case 'squareOfRoot':
+      // (√a)² = a for a positive a
+      expect(compare(c.a, '0'), `${q.id}: a positive number`).toBeGreaterThanOrEqual(0);
+      return valued(q, read(c.a), `(\\sqrt{${tex(c.a)}})^2`);
+    case 'rootOfSquare':
+      // √(x²) is the positive one of x and −x: a side has no sign
+      return valued(q, magnitude(c.x), `\\sqrt{${wrapped(c.x)}^2}`);
+    case 'rootBetween':
+      // « p و q »: two consecutive whole numbers with p² < a < q² (a has no whole root)
+      if (c.court) shows(q, c.a);
+      else expect(q.text, q.id).toContain(`$\\sqrt{${tex(c.a)}}$`);
+      expect(rootOf(c.a), `${q.id}: a has no exact root`).toBe(null);
+      return q.options.map((o) => {
+        const m = String(o).match(/^(\d+) و (\d+)$/);
+        if (!m) return false;
+        const [p, r] = [m[1], m[2]];
+        return Number(r) === Number(p) + 1 && compare(square(p), c.a) < 0 && compare(c.a, square(r)) < 0;
+      });
+    case 'exactSide':
+      // the side of a court of area a written EXACTLY: « $\sqrt{a}$ », or a decimal whose square is a itself
+      shows(q, c.a);
+      return q.options.map((o) => {
+        const m = String(o).match(/^\$\\sqrt\{(.+)\}\$$/);
+        if (m) return equal(m[1].replaceAll('{,}', ','), c.a);
+        return exactOf(o) != null && equal(square(exactOf(o)), c.a);
+      });
+    case 'rootApprox': {
+      // the value of √a to `step` by default (d² ≤ a < (d + step)²) or by excess ((d − step)² < a ≤ d²), d a multiple of step
+      expect(q.text, q.id).toContain(`$\\sqrt{${tex(c.a)}}$`);
+      expect(q.text, q.id).toContain(`$${tex(c.step)}$`);
+      expect(q.text, q.id).toContain(c.by === 'below' ? 'بالنقصان' : 'بالزيادة');
+      return q.options.map((o) => {
+        const d = exactOf(o);
+        // d is a whole number of steps: d ÷ step has no fraction left
+        if (d == null || times(d, read(`1/${String(c.step).replace(',', '.')}`)).d !== 1n) return false;
+        if (c.by === 'below')
+          return compare(square(d), c.a) <= 0 && compare(c.a, square(minus(d, minus('0', c.step)))) < 0;
+        return compare(square(minus(d, c.step)), c.a) < 0 && compare(c.a, square(d)) <= 0;
+      });
+    }
+    // ── rational and irrational numbers (4AM unit 2, lesson 2): « is this root a rational number? », the ROUNDED value ──
+    case 'isRational': {
+      // true / false: « $\\sqrt{a}$ عدد ناطق » or « … عدد غير ناطق » — the root is rational when a is the square of a
+      // rational (rootOf finds it exactly), whatever the writing of a (whole, decimal, fraction reduced or not)
+      expect(q.text, q.id).toContain(`$\\sqrt{${texGiven(c.a)}}$`);
+      const word = c.says === 'rational' ? 'عدد ناطق' : 'عدد غير ناطق';
+      expect(q.text, `${q.id}: the sentence says « ${word} »`).toContain(word);
+      if (c.says === 'rational') expect(q.text, q.id).not.toContain('غير ناطق');
+      return (rootOf(c.a) != null) === (c.says === 'rational');
+    }
+    case 'rationalPick':
+      // choice: options « $\\sqrt{…}$ »; the right one is the only root that is (`want: 'rational'`) or is not rational
+      if (c.want === 'rational') expect(q.text, q.id).not.toContain('غير ناطق');
+      expect(q.text, q.id).toContain(c.want === 'rational' ? 'ناطق' : 'غير ناطق');
+      return q.options.map((o) => {
+        const r = radicandOf(o);
+        expect(r, `${q.id}: « ${o} » is a root`).not.toBe(null);
+        return (rootOf(r) != null) === (c.want === 'rational');
+      });
+    case 'rounded': {
+      // choice: the ROUNDED value of √a to `step` — a whole number of steps d nearer to √a than half a step:
+      // (d − step/2)² < a < (d + step/2)² (a has no rational root, so √a is never exactly half-way)
+      expect(q.text, q.id).toContain(`$\\sqrt{${tex(c.a)}}$`);
+      expect(q.text, q.id).toContain(`$${tex(c.step)}$`);
+      expect(q.text, q.id).toMatch(/مدوَّر|مدور/);
+      expect(rootOf(c.a), `${q.id}: a has no exact root`).toBe(null);
+      const half = times(c.step, '0,5');
+      return q.options.map((o) => {
+        const d = exactOf(o);
+        if (d == null || times(d, read(`1/${String(c.step).replace(',', '.')}`)).d !== 1n) return false;
+        return compare(square(minus(d, half)), c.a) < 0 && compare(c.a, square(minus(d, minus('0', half)))) < 0;
+      });
+    }
     case 'phrase':
       return q.options.map((o, i) => {
         const f = FORMS[c.forms[i]];
@@ -470,6 +619,8 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/awwaliyan-fima-baynahuma.json'); // lesson 7: coprime numbers (2026-11-19)
     expect(files.map((f) => f.name)).toContain('4am/ikhtizal-kasr.json'); // lesson 8: reducing a fraction (2026-11-20)
     expect(files.map((f) => f.name)).toContain('4am/wadiya-idmajiya-aadad.json'); // lesson 9: أدمج تعلّماتي (2026-11-20)
+    expect(files.map((f) => f.name)).toContain('4am/jidhr-tarbii.json'); // unit 2, lesson 1: the square root (2026-11-21)
+    expect(files.map((f) => f.name)).toContain('4am/natiqa-ghayr-natiqa.json'); // unit 2, lesson 2: rational or not
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -535,6 +686,121 @@ describe('حصّة القسم — the default tests', () => {
     const one = (n, d) => truth({ id: 't', text: `$\\frac{${n}}{${d}}$`, check: { type: 'oneStep', n, d } });
     expect(one(54, 72)).toBe(18);
     expect(() => one(55, 72)).toThrow(); // a fraction that cannot be reduced has no « one step »
+  });
+
+  it('the square-root checks say the truth (exact values, a bracket, an approximation, the sign of a side)', () => {
+    const q = (kind, text, check, options) => ({ id: 't', kind, text, check, options });
+    expect(truth(q('number', 'احسب $57^2$.', { type: 'power', base: '57', exp: 2 }))).toBe(3249);
+    expect(truth(q('truefalse', '$(-5)^3 = -125$.', { type: 'power', base: '-5', exp: 3, claim: '-125' }))).toBe(true);
+    expect(truth(q('truefalse', '$(0{,}4)^2 = 0{,}8$.', { type: 'power', base: '0,4', exp: 2, claim: '0,8' }))).toBe(
+      false,
+    );
+    expect(truth(q('truefalse', '$\\sqrt{0{,}09} = 0{,}3$.', { type: 'root', a: '0,09', claim: '0,3' }))).toBe(true);
+    expect(truth(q('truefalse', '$\\sqrt{0{,}9} = 0{,}3$.', { type: 'root', a: '0,9', claim: '0,3' }))).toBe(false);
+    // √71 = 8,4261…: 8,42 by default to 0,01; 8,4 is a multiple of 0,01 too but (8,41)² < 71 — not the value by default
+    const approx = (o, by, step = '0,01') =>
+      truth(
+        q(
+          'choice',
+          `ما القيمة المقرّبة إلى $${step.replace(',', '{,}')}$ ${by === 'below' ? 'بالنقصان' : 'بالزيادة'} للعدد $\\sqrt{71}$؟`,
+          {
+            type: 'rootApprox',
+            a: '71',
+            step,
+            by,
+          },
+          o,
+        ),
+      );
+    expect(approx(['$8{,}42$', '$8{,}43$', '$8{,}4$', '$8{,}425$'], 'below')).toEqual([true, false, false, false]);
+    expect(approx(['$8{,}42$', '$8{,}43$'], 'above')).toEqual([false, true]);
+    expect(approx(['$8{,}4$', '$8{,}5$'], 'above', '0,1')).toEqual([false, true]);
+    // an exact square: by default AND by excess it is its root itself
+    expect(
+      truth(
+        q(
+          'choice',
+          'ما القيمة المقرّبة إلى $0{,}1$ بالنقصان للعدد $\\sqrt{49}$؟',
+          { type: 'rootApprox', a: '49', step: '0,1', by: 'below' },
+          ['$7$', '$6{,}9$'],
+        ),
+      ),
+    ).toEqual([true, false]);
+    expect(
+      truth(
+        q('choice', 'بين أيّ عددين يقع $\\sqrt{88}$؟', { type: 'rootBetween', a: '88' }, [
+          '9 و 10',
+          '8 و 10',
+          '44 و 45',
+        ]),
+      ),
+    ).toEqual([true, false, false]);
+    expect(() => truth(q('choice', '$\\sqrt{81}$', { type: 'rootBetween', a: '81' }, ['8 و 9']))).toThrow(); // 81 has a root
+    expect(
+      truth(
+        q('choice', 'مساحتها 63', { type: 'exactSide', a: '63' }, ['$\\sqrt{63}$', '$7{,}94$', '$\\sqrt{31{,}5}$']),
+      ),
+    ).toEqual([true, false, false]);
+    expect(truth(q('choice', 'مساحتها 6,25', { type: 'exactSide', a: '6,25' }, ['$2{,}5$', '$3{,}125$']))).toEqual([
+      true,
+      false,
+    ]);
+    expect(truth(q('truefalse', '$\\sqrt{(-15)^2} = 15$.', { type: 'rootOfSquare', x: '-15', claim: '15' }))).toBe(
+      true,
+    );
+    expect(truth(q('truefalse', '$\\sqrt{(-15)^2} = -15$.', { type: 'rootOfSquare', x: '-15', claim: '-15' }))).toBe(
+      false,
+    );
+    expect(() => truth(q('number', '$\\sqrt{50}$', { type: 'root', a: '50' }))).toThrow(); // no whole value to type
+  });
+
+  it('the checks of rational and irrational roots say the truth (a fraction as given, the rounded value)', () => {
+    const q = (kind, text, check, options) => ({ id: 't', kind, text, check, options });
+    // a fraction option is read with its bar; a fraction keeps the terms it was given in the question
+    expect(write(exactOf('$\\dfrac{5}{7}$'))).toBe('5/7');
+    expect(write(exactOf('$-\\dfrac{9}{64}$'))).toBe('-0,140625');
+    expect(texGiven('50/98')).toBe('\\dfrac{50}{98}');
+    expect(texGiven('2,5')).toBe('2{,}5');
+    // √(50/98) = √(25/49) = 5/7: the root of a fraction NOT reduced is found all the same
+    expect(
+      truth(
+        q('choice', 'اكتب $\\sqrt{\\dfrac{50}{98}}$.', { type: 'root', a: '50/98' }, [
+          '$\\dfrac{25}{49}$',
+          '$\\dfrac{5}{7}$',
+          '$\\dfrac{10}{14}$',
+        ]),
+      ),
+    ).toEqual([false, true, true]); // 10/14 = 5/7: equal values are both « right » — a file never offers two of them
+    // 9/20 is not the square of a rational (20 is not a square), 0,0121 is (0,11), 12/75 = 4/25 is (2/5)
+    const says = (a, w) =>
+      truth(
+        q('truefalse', `$\\sqrt{${texGiven(a)}}$ ${w === 'rational' ? 'عدد ناطق' : 'عدد غير ناطق'}.`, {
+          type: 'isRational',
+          a,
+          says: w,
+        }),
+      );
+    expect(says('9/20', 'rational')).toBe(false);
+    expect(says('9/20', 'irrational')).toBe(true);
+    expect(says('0,0121', 'irrational')).toBe(false);
+    expect(says('12/75', 'rational')).toBe(true);
+    expect(
+      truth(
+        q('choice', 'أيّ هذه الأعداد ناطق؟', { type: 'rationalPick', want: 'rational' }, [
+          '$\\sqrt{60}$',
+          '$\\sqrt{\\dfrac{12}{75}}$',
+          '$\\sqrt{0{,}9}$',
+        ]),
+      ),
+    ).toEqual([false, true, false]);
+    // √46 = 6,782…: rounded to 0,1 it is 6,8 (6,75² = 45,5625 < 46 < 46,9225 = 6,85²); 6,7 is the value by default
+    const rounded = (a, step, o) =>
+      truth(q('choice', `ما المدوَّر إلى $${tex(step)}$ للعدد $\\sqrt{${a}}$؟`, { type: 'rounded', a, step }, o));
+    expect(rounded('46', '0,1', ['$6{,}7$', '$6{,}9$', '$6{,}8$'])).toEqual([false, false, true]);
+    // √69 = 8,3066…: to 0,1 it rounds DOWN (8,35² = 69,7225 > 69), to 0,01 UP (8,305² = 68,973025 < 69)
+    expect(rounded('69', '0,1', ['$8{,}3$', '$8{,}4$'])).toEqual([true, false]);
+    expect(rounded('69', '0,01', ['$8{,}3$', '$8{,}31$', '$8{,}305$'])).toEqual([false, true, false]);
+    expect(() => rounded('49', '0,1', ['$7$'])).toThrow(); // an exact root has nothing to round
   });
 
   for (const { name, data } of files) {

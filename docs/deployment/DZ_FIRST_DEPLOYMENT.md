@@ -513,6 +513,11 @@ Contrats : `docs/architecture/MATH_LAB.md`, `docs/architecture/NOTEBOOK.md`.
 | `REGISTRATION_OPEN` | `false` | `false`: no account is created by the public sign-up (form or Google); `/register` shows « المنصّة في مرحلة التجربة » and takes a phone number (`POST /waitlist` → table `contacts`, `objectif = waitlist`, read by the admin in « رسائل التواصل », with the usual push). Existing accounts sign in as before. `true` reopens everything. |
 | `REGISTRATION_CLASS_LINKS` | `true` | While closed, a STUDENT who arrives by the link of his teacher's class (valid link, class still accepting members) still signs up — the way to let invited students try the platform. `false` closes that too. |
 
-Nothing to migrate. The default is CLOSED: a production `.env` without the variable closes the sign-up. To reopen: set
-`REGISTRATION_OPEN=true` and clear the config cache (`php artisan config:clear`). Tests: `RegistrationClosedTest`
-(the API suite runs with registrations open, `phpunit*.xml`); the page: `node apps/web/e2e/waitlist.mjs`.
+**Since 2026-11-21 the two variables are only the DEFAULT**: the admin opens and closes the sign-up from the card
+« التسجيل » of his dashboard (table `platform_settings`, row `registration`, which wins over the `.env`; contract:
+`docs/architecture/ADMIN_PANEL_ARCHITECTURE.md` « Ouvrir ou fermer les inscriptions »). Once he has used the switch, changing
+`REGISTRATION_OPEN` in the `.env` changes nothing. **One migration to run at deployment**:
+`2026_11_21_000001_create_platform_settings_table` (`php artisan migrate --force`); until the admin touches the switch
+the behaviour is the one of the `.env` (CLOSED when the variable is absent). Tests: `RegistrationClosedTest`,
+`AdminRegistrationSwitchTest` (the API suite runs with registrations open, `phpunit*.xml`); the page:
+`node apps/web/e2e/waitlist.mjs`.

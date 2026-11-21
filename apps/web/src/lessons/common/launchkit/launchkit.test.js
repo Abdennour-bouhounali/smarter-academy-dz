@@ -5,7 +5,20 @@ import { bankPairs, readBank } from '../gameworld/kit/authoring/test/bank.js';
 import { TOOLS, toolById, toolsFor } from '../lessonlab/registry';
 import { GRADES, isReached } from '../lessonlab/order';
 import ORDER from '../lessonlab/lessonOrder.generated.json';
-import { FAMILIES, LIST_SEP, MISTAKES, familyFor, makeQuestion, pickForm, nextForm, complete, grade } from './families';
+import {
+  FAMILIES,
+  LIST_SEP,
+  MISTAKES,
+  familyFor,
+  makeQuestion,
+  pickForm,
+  nextForm,
+  complete,
+  grade,
+  slotsOf,
+} from './families';
+// the lesson's world, read to keep its squares off the kit of « حساب قوة عدد نسبي » (a test may name a lesson)
+import { COURTS, YARD } from '../../moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/world/story';
 import {
   planTools,
   nextStep,
@@ -41,7 +54,31 @@ const arithmetic = (text) => {
 };
 /** Every divisor of n, computed here. */
 const divisorsApart = (n) => Array.from({ length: n }, (_, i) => i + 1).filter((d) => n % d === 0);
+/** A number written in LaTeX — « 8 », « (-8) », « (0{,}3) », « \left(\frac{2}{3}\right) », « -8 », « 0{,}09 » — as an exact fraction. */
+const ratApart = (t) => {
+  let x = t
+    .replace(/^\\left\(/, '')
+    .replace(/\\right\)$/, '')
+    .replace(/^\((.*)\)$/, '$1');
+  const f = x.match(/^\\frac\{(\d+)\}\{(\d+)\}$/);
+  if (f) return [BigInt(f[1]), BigInt(f[2])];
+  const neg = x.startsWith('-');
+  if (neg) x = x.slice(1);
+  const [w, dec = ''] = x.split('{,}');
+  return [BigInt(w + dec) * (neg ? -1n : 1n), 10n ** BigInt(dec.length)];
+};
+/** « (0{,}3)^{2} = 0{,}09 », « (-2)^{3} = -8 » → true or false, computed here by repeated products, exactly; null for another shape. */
+const powerTrue = (text) => {
+  const m = String(text).match(/^\$(.+)\^\{(\d+)\} = (.+)\$$/);
+  if (!m) return null;
+  const [bn, bd] = ratApart(m[1]);
+  let [pn, pd] = [1n, 1n];
+  for (let i = 0; i < Number(m[2]); i += 1) [pn, pd] = [pn * bn, pd * bd];
+  const [vn, vd] = ratApart(m[3]);
+  return pn * vd === vn * pd;
+};
 const accepts = (q, c) => {
+  if (powerTrue(c.text) !== null) return powerTrue(c.text); // « 3am.m3.r06 »: a power and its value
   // « n/d = x/y » (1am.m5.r02): two fractions of the same value, judged by the cross products computed here
   const fr = String(c.text).match(/^\$\\frac\{(\d+)\}\{(\d+)\} = \\frac\{(\d+)\}\{(\d+)\}\$/);
   if (fr) return Number(fr[1]) * Number(fr[4]) === Number(fr[2]) * Number(fr[3]);
@@ -66,15 +103,20 @@ const termApart = ({ n, d, m, side }) => {
   for (let t = 1; t <= 1000; t += 1) if (side === 'bottom' ? n * t === d * m : t * d === n * m) return t;
   return NaN;
 };
+/** xᵉ by repeated products (a fraction base has no single value: NaN). */
+const powApart = ({ x, e }) => (x == null ? NaN : Array.from({ length: e }).reduce((p) => p * x, 1));
 const calcApart = (c) => {
   const { op, x, y, z } = c;
+  if (op === 'pow') return powApart(c);
   if (op === 'frac') return termApart(c);
   return op === 'pgcd' ? pgcdApart(x, y) : op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z;
 };
 const right = (q) =>
   q.calc
     ? q.gesture === 'write'
-      ? { v: String(calcApart(q.calc)) }
+      ? q.calc.op === 'pow' && q.calc.n != null
+        ? { n: String(powApart({ x: q.calc.n, e: q.calc.e })), d: String(powApart({ x: q.calc.d, e: q.calc.e })) }
+        : { v: String(calcApart(q.calc)) }
       : { x: calcApart(q.calc), moved: true }
     : q.gesture === 'write'
       ? { q: String(Math.floor(q.a / q.b)), r: String(q.a % q.b) }
@@ -150,6 +192,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       if (f.item === '1am.m1.r01') return; // the operations are not a division: their own ranges, checked below
       if (f.item === '4am.m1.r03') return; // a PGCD, not a division: its own ranges, checked below
       if (f.item === '1am.m5.r02') return; // a fraction, not a division: its own ranges, checked below
+      if (f.item === '3am.m3.r06') return; // a power, not a division: its own ranges, checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -673,6 +716,151 @@ describe('عُدّة الانطلاق — the question families', () => {
     expect(all).not.toMatch(/اختزال|نختزل|مختزل|مراحل|غير قابل|المشترك الأكبر|PGCD|أوّلي/);
   });
 
+  it('« حساب قوة عدد نسبي » (3am.m3.r06): every power computed apart, a typed value never negative, its slips named, no word of the lesson', () => {
+    const item = '3am.m3.r06';
+    // the squares the lesson's world builds are never written by the kit (its courts and its yard, and 9 × 9 of tablet 🔁)
+    const areas = new Set(
+      [...Object.values(COURTS), ...YARD].map(Number).filter((a) => Number.isInteger(Math.sqrt(a))),
+    );
+    areas.add(81);
+    expect(areas.size).toBeGreaterThanOrEqual(6);
+    const seen = new Set();
+    const shapes = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      for (const level of [1, 2]) {
+        const w = makeQuestion(rng(seed * 104729 + level), item, level, 'write', { first: seed % 5 === 0 });
+        const c = w.calc;
+        shapes.add(c.n != null ? 'fraction' : `${c.x < 0 ? '-' : '+'}${c.e}`);
+        expect(c.op).toBe('pow');
+        expect(w.tokens[0].pow[1]).toBe(String(c.e)); // the exponent is drawn as itself
+        expect(w.tokens[1]).toBe('=');
+        if (c.n != null) {
+          // « (p/q)² = ▢/▢ »: a fraction that cannot be divided, both terms boxed under a real bar
+          expect(level).toBe(2);
+          expect(pgcdApart(c.n, c.d)).toBe(1);
+          expect(w.tokens[0].pow[0]).toEqual({ frac: [String(c.n), String(c.d)] });
+          expect(slotsOf(w.tokens).map((t) => t.slot)).toEqual(['n', 'd']);
+          const [N, D] = [c.n * c.n, c.d * c.d];
+          expect(grade(w, { n: String(N), d: String(D) })).toEqual({ correct: true, mistake: null });
+          expect(grade(w, { n: String(2 * N), d: String(2 * D) }).correct).toBe(true); // an equal fraction is the same value
+          expect(grade(w, { n: String(N), d: String(c.d) })).toEqual({ correct: false, mistake: 'fraction-one-term' });
+          expect(grade(w, { n: String(2 * c.n), d: String(2 * c.d) })).toEqual({
+            correct: false,
+            mistake: 'power-times',
+          });
+          expect(grade(w, { n: String(N + 1), d: String(D) }).correct).toBe(false);
+          expect(String(D).length).toBeLessThanOrEqual(3); // the keypad writes three characters a box
+        } else {
+          const v = powApart(c);
+          expect(v).toBeGreaterThan(0); // a typed value is never negative: the keypad has no minus sign
+          expect(String(v).length).toBeLessThanOrEqual(3);
+          expect(w.tokens[0].pow[0]).toBe(c.x < 0 ? `(−${-c.x})` : String(c.x));
+          expect(slotsOf(w.tokens).map((t) => t.slot)).toEqual(['v']);
+          expect(grade(w, { v: String(v) })).toEqual({ correct: true, mistake: null });
+          if (Math.abs(c.x) * c.e !== v)
+            expect(grade(w, { v: String(Math.abs(c.x) * c.e) })).toEqual({ correct: false, mistake: 'power-times' });
+          expect(grade(w, { v: String(v + 1) }).correct).toBe(false);
+          if (level === 1) {
+            expect(c.e).toBe(2);
+            expect(areas.has(v), `${c.x}² = ${v}`).toBe(false);
+            if (seed % 5 === 0) expect([2, 8]).toContain(c.x); // the very first question: a near-certain win
+          } else expect(c.e).toBe(3);
+        }
+        expect(w.prompt).not.toMatch(/\$/);
+      }
+      // the sorts: three equalities of powers, each judged here from its own text, three different bases
+      for (const [level, form] of [
+        [1, 'squares'],
+        [2, 'sort'],
+      ]) {
+        const s = makeQuestion(rng(seed * 7919 + level), item, level, form);
+        expect(s.cards).toHaveLength(3);
+        expect(new Set(s.cards.map((k) => Math.abs(k.base.n))).size, JSON.stringify(s.cards)).toBe(3);
+        expect(s.cards.some((k) => k.bin === 'yes') && s.cards.some((k) => k.bin === 'no')).toBe(true);
+        for (const k of s.cards) {
+          expect(k.bin, k.text).toBe(powerTrue(k.text) ? 'yes' : 'no');
+          if (level === 1) expect(k.e).toBe(2);
+          if (level === 1 && k.bin === 'yes')
+            expect(areas.has(Number(k.text.match(/= (\d+)\$/)[1])), k.text).toBe(false);
+          if (k.bin === 'yes') expect(k.trap).toBe(null);
+          else {
+            expect(MISTAKES[k.trap], k.text).toBeTruthy();
+            expect(grade(s, { ...right(s), [k.id]: 'yes' })).toEqual({ correct: false, mistake: k.trap });
+            seen.add(k.trap);
+          }
+          if (k.trap === 'square-sign') expect(k.text).toMatch(/^\$\(-\d+\)\^\{2\} = -\d+\$$/);
+          if (k.trap === 'odd-sign') expect(k.text).toMatch(/^\$\(-\d+\)\^\{3\} = \d+\$$/);
+          if (k.trap === 'decimal-places') expect(k.text).toMatch(/= \d+\{,\}\d\$$/); // one decimal where two belong
+          if (k.trap === 'fraction-one-term') {
+            const [[p, q], [x, y]] = [...k.text.matchAll(/\\frac\{(\d+)\}\{(\d+)\}/g)].map((m) => [+m[1], +m[2]]);
+            expect([x, y]).toEqual([p * p, q]);
+          }
+        }
+      }
+    }
+    expect([...seen].sort()).toEqual(['decimal-places', 'fraction-one-term', 'odd-sign', 'power-times', 'square-sign']);
+    expect([...shapes].sort()).toEqual(['+2', '+3', '-2', 'fraction']); // every shape of a typed answer was dealt
+    // every equality the worked examples, the rules and the memo write is TRUE (evaluated here; letters are skipped)
+    const value = (t) =>
+      // eslint-disable-next-line no-new-func
+      Function(
+        `return ${t
+          .replace(/\\left\(|\\right\)/g, (m) => (m.includes('left') ? '(' : ')'))
+          .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '(($1)/($2))')
+          .replace(/\\times/g, '*')
+          .replace(/\{,\}/g, '.')
+          .replace(/\^\{(\d+)\}/g, '**$1')};`,
+      )();
+    const checkTexts = (texts) => {
+      let n = 0;
+      for (const t of texts)
+        for (const [, f] of t.matchAll(/\$([^$]+)\$/g)) {
+          if (!f.includes('=') || /[a-z]/.test(f.replace(/\\(frac|times|left|right)/g, ''))) continue;
+          const sides = f.split('=').map(value);
+          for (const v of sides) expect(Math.abs(v - sides[0]) < 1e-9, f).toBe(true);
+          n += 1;
+        }
+      return n;
+    };
+    let shown = 0;
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, ...FAMILIES[item].mistakes]) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          expect(e.steps.length).toBeGreaterThanOrEqual(3);
+          shown += checkTexts(e.steps);
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+          if (mistake === 'odd-sign') expect(e.steps.at(-1)).toMatch(/= -\d+\$/);
+          if (mistake === 'decimal-places') expect(e.steps.at(-1)).toMatch(/= 0\{,\}\d\d\$/);
+          if (mistake === 'fraction-one-term') expect(e.steps.at(-1)).toContain('\\frac');
+        }
+    expect(shown).toBeGreaterThan(500);
+    const texts = [...FAMILIES[item].rules.flatMap((r) => [r.text, r.example]), ...FAMILIES[item].memo];
+    expect(checkTexts(texts)).toBeGreaterThanOrEqual(8);
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // the kit is played BEFORE « الجذر التربيعي »: no root sign, no name of the lesson's keys, no word of its world
+    const examples = Array.from({ length: 20 }, (_, i) =>
+      FAMILIES[item].mistakes.map((m) =>
+        JSON.stringify(FAMILIES[item].example(rng(i + 1), 1 + (i % 2), { mistake: m })),
+      ),
+    ).flat();
+    const all = [
+      JSON.stringify({ ...FAMILIES[item], make: null, example: null }),
+      ...FAMILIES[item].mistakes.map((m) => MISTAKES[m]),
+      ...examples,
+    ].join(' ');
+    expect(all).not.toMatch(/√|sqrt|جذر|الجذر|مضبوط|مقرّب|مقرب|ذهاب|إياب|ضلع|ساحة|بلاط|مقياس|منصّة|شريط/);
+    expect(['🔑', '✍️', '🔁']).not.toContain(FAMILIES[item].icon);
+    expect(FAMILIES[item].labTool).toBe(null); // no instrument of 3AM exists in « مختبري »
+  });
+
+  it('takes the tool of « الجذر التربيعي لعدد موجب » from the learning net: the powers of 3AM, its one core tool', () => {
+    const links = toolsForLesson('jidhr-tarbii');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([['3am.m3.r06', 'quwat-adad-nisbi', 'core']]);
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+  });
+
   it('takes the tools of « اختزال كسر » from the learning net: the PGCD of lesson 4 and the equal fractions of 1AM, each with its family', () => {
     const links = toolsForLesson('ikhtizal-kasr');
     const tools = planTools(links, (id) => Boolean(familyFor(id)));
@@ -816,6 +1004,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       '4am.m1.r02': ['sort', 'write'],
       '4am.m1.r03': ['sort', 'write'],
       '1am.m5.r02': ['sort', 'write'],
+      '3am.m3.r06': ['sort', 'write'],
     });
     for (const item of Object.keys(FAMILIES)) {
       expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered

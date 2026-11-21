@@ -51,6 +51,7 @@ import {
 import './teacherPanel.css';
 import { reviewCards } from './lessonScripts';
 import { usePackPart } from '../../lessons/lessonPack';
+import { LabOpeningSkeleton } from './TeacherSkeletons';
 
 const LessonLab = lazy(() => import('../../lessons/common/lessonlab/LessonLab'));
 
@@ -393,8 +394,9 @@ export default function TeacherLessonPanel({ config, basePath, hasWorld, extraTo
           )}
         </div>
       </Block>
+      {/* the lab is a full-screen layer: between the click and its chunk, the same layer says it is opening */}
       {lab && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<LabOpeningSkeleton />}>
           <LessonLab lessonCode={config.id} lessonTitle={config.title} onClose={() => setLab(false)} />
         </Suspense>
       )}

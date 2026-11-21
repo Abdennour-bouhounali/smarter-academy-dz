@@ -11,6 +11,7 @@
  * The memo of a lesson is in ITS folder (`board/memo.js`, named in its `lesson.pack.js`); here: the model's parts.
  */
 import { lessonPackFlags } from '../../lessons/registry';
+import { outcome as courtOutcome, rod as numberRod } from '../../lessons/common/gameworld/rootCourts/logic';
 
 /** Has this lesson a WRITTEN memo? Read from its pack (`lesson.pack.js › board`): the memo is written with the script. */
 export const hasBoardMemo = (lessonCode) => Boolean(lessonPackFlags(lessonCode).board);
@@ -50,8 +51,27 @@ export const MEMO_PARTS = [
 ];
 export const partKeys = () => MEMO_PARTS.flatMap((g) => g.keys.map(([k]) => k));
 
-/** The numbers of an opening situation, computed: how many fit, how many are left — for the drawing and the caption. */
+/**
+ * The numbers of an opening situation, computed: how many fit, how many are left — for the drawing and the caption.
+ * A `court` (a square court of « قصر الساحات »: area `a`, rods `b` and `alt`, numbers as text): what the platform built
+ * on each rod does — `kind` ride / band / jam, `diff` the band or what sticks out, exact (`rootCourts/logic.js`); `r` is
+ * that difference.
+ */
 export function openingFacts(o) {
+  if (o.kind === 'court') {
+    const try1 = (b) => {
+      const out = courtOutcome(numberRod(String(b)), String(o.a));
+      return {
+        b: String(b),
+        kind: out.kind,
+        covers: out.covers,
+        diff: out.diff,
+        r: out.diff,
+        exact: out.kind === 'ride',
+      };
+    };
+    return { a: String(o.a), first: try1(o.b), second: o.alt != null ? try1(o.alt) : null };
+  }
   const fit = (b) => ({ b, q: Math.floor(o.a / b), r: o.a % b, exact: o.a % b === 0 });
   return { a: o.a, first: fit(o.b), second: o.alt ? fit(o.alt) : null };
 }

@@ -1,5 +1,5 @@
 /*
- * An integration mission over the 3D depot (missions/MissionPlayer.jsx): one screen at 1366×768, nothing scrolls.
+ * An integration mission over the 3D depot (missions/MissionRunner.jsx): one screen at 1366×768, nothing scrolls.
  * NOTHING IS READ BY LEANING TOWARD THE SCREEN (owner, 2026-11-20): no text of a mission is under 18 px (1.125rem).
  */
 .ms-root {
@@ -900,4 +900,9 @@
   background: #fee2e2;
   text-decoration: line-through;
   text-decoration-color: #dc2626;
+}
+/* a sentence of his solution (not a formula) wraps inside the notebook */
+.ms-root .ms-book ol li[dir='rtl'] {
+  white-space: normal;
+  line-height: 1.6;
 }

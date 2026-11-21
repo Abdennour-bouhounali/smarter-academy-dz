@@ -188,6 +188,84 @@ export function probeOf(a, b, d) {
   return { d, a: x, b: y, verdict };
 }
 
+/** The greatest whole number whose square does not pass n (n ≥ 0), in integers only — never a rounded float. */
+const isqrt = (n) => {
+  let x = Math.floor(Math.sqrt(n));
+  while (x * x > n) x -= 1;
+  while ((x + 1) * (x + 1) <= n) x += 1;
+  return x;
+};
+/** n / 10^k written with a decimal comma, trailing zeros dropped: (299209, 4) → « 29,9209 », (302500, 4) → « 30,25 ». */
+export function decText(n, k) {
+  const s = String(n).padStart(k + 1, '0');
+  const dec = s.slice(-k).replace(/0+$/, '');
+  return dec ? `${s.slice(0, -k)},${dec}` : s.slice(0, -k);
+}
+/** A number of hundredths as it is written to 0,01 — the two decimals kept: 547 → « 5,47 », 550 → « 5,50 ». */
+export const hundredths = (h) => `${Math.floor(h / 100)},${String(h % 100).padStart(2, '0')}`;
+
+/**
+ * « ساحة العدد » — a court of `a` whole tiles laid, from its corner, into a square of side `s` the hand chooses: row by
+ * row, `inside` tiles in the square, `out` tiles that do not fit in it, `holes` places of the square left empty.
+ * `verdict`: 'fits' (s × s = a), 'out' (s × s < a) or 'holes' (s × s > a). And what the court is, computed EXACTLY in
+ * integers: `k` the side of the greatest whole square that fits (k × k ≤ a < (k + 1) × (k + 1)), `left` = a − k × k,
+ * `perfect` (a = k × k), and the side to 0,01 from below and from above in hundredths (`lo`, `hi`: lo × lo ≤ a × 10000 <
+ * hi × hi; equal to 100k for a perfect square).
+ */
+export function courtOf(a, s) {
+  const k = isqrt(a);
+  const lo = isqrt(a * 10000);
+  const perfect = k * k === a;
+  const sq = s * s;
+  return {
+    a,
+    s,
+    k,
+    left: a - k * k,
+    perfect,
+    lo,
+    hi: lo * lo === a * 10000 ? lo : lo + 1,
+    inside: Math.min(a, sq),
+    out: Math.max(0, a - sq),
+    holes: Math.max(0, sq - a),
+    verdict: sq === a ? 'fits' : sq < a ? 'out' : 'holes',
+  };
+}
+/** Has the hand tried the sides that settle the court: k (and k + 1 when a is not a perfect square)? */
+export const courtSettled = (a, tried = []) => {
+  const { k, perfect } = courtOf(a, 1);
+  return tried.includes(k) && (perfect || tried.includes(k + 1));
+};
+
+/**
+ * « منصّة الكسر » — a court of `a` whole tiles, each tile cut into q × q small pieces (pieces of side 1/q), and the square
+ * platform built on a rod of p/q laid from the court's corner: it holds p × p pieces, the court a × q × q. Integers
+ * only, never a root: `plat`, `court`, `diff` (plat − court), `far` (its size), `verdict` 'fits' (equal), 'band' (the
+ * platform is smaller: `far` pieces of the court stay uncovered) or 'jam' (it is larger by `far` pieces). `pMax`: the
+ * longest rod the ruler offers — one tile beyond the court's side.
+ */
+export function pieceOf(a, q, p) {
+  const court = a * q * q;
+  const plat = p * p;
+  const diff = plat - court;
+  return {
+    a,
+    q,
+    p,
+    court,
+    plat,
+    diff,
+    far: Math.abs(diff),
+    verdict: diff === 0 ? 'fits' : diff < 0 ? 'band' : 'jam',
+    pMax: isqrt(court) + q + 1,
+  };
+}
+/**
+ * Is the rod x (`{ q, far }`) nearer its court than `best`? The difference in TILES is far ÷ (q × q): compared by
+ * multiplying across, never by a division — the record the hand keeps.
+ */
+export const closerPiece = (x, best) => !best || x.far * best.q * best.q < best.far * x.q * x.q;
+
 /**
  * « شريط الكسر » — a strip of b cells with its first a cells lit (the fraction a/b), and a piece of length k laid along it
  * from 0. What the drawing reads, never a conclusion: the two divisions (the lit part by k, the whole strip by k), where
@@ -322,6 +400,16 @@ export const QUESTS = {
     { id: 'big', text: 'اكتب كسرًا مقامه أكبر من 500 بقطع تجعل مقامه أصغر من 50.' },
     { id: 'split', text: 'جد قطعة تقسم المقام ولا تقسم البسط، والمقام أكبر من 100.' },
   ],
+  court: [
+    { id: 'exact', text: 'جد ساحة أكبر من 100 بلاطة يملؤها مربّع كامل، فلا يبقى منها شيء.' },
+    { id: 'bracket', text: 'احصر ضلع ساحة أكبر من 150 بلاطة بين ضلعَي مربّعين جرّبتهما.' },
+    { id: 'most', text: 'اجعل ما يبقى خارج أكبر مربّع كامل 20 بلاطة على الأقلّ.' },
+  ],
+  piece: [
+    { id: 'exact', text: 'اجعل منصّة مقامُ مقياسها أكبر من 1 تغطّي ساحة أكبر من 10 بلاطات بالضبط.' },
+    { id: 'one', text: 'اجعل الفرق بين المنصّة والساحة قطعة واحدة فقط، والمقام أكبر من 4.' },
+    { id: 'close', text: 'قرّب منصّة من ساحتها حتى يصير الفرق أصغر من جزء من مئة من البلاطة، دون أن يساويها.' },
+  ],
   rules: [
     { id: 'three', text: 'أضِئ ثلاثة مصابيح معًا.' },
     { id: 'nine', text: 'أضِئ مصباح 9 بعدد من ثلاثة أرقام.' },
@@ -427,6 +515,24 @@ export function observe(tool, st, seen) {
       if (S.verdict === 'both' && b > 500 && b / st.k < 50) put('big');
       if (S.verdict === 'b' && b > 100) put('split');
     }
+  } else if (tool === 'court') {
+    // reported only after the hand moved the side (`moved`), with the sides it tried on this court (`tried`)
+    if (st.moved && Number.isInteger(st.s)) {
+      const C = courtOf(a, st.s);
+      const tried = st.tried ?? [];
+      if (C.perfect && st.s === C.k && a > 100) put('exact');
+      if (!C.perfect && a > 150 && courtSettled(a, tried)) put('bracket');
+      if (C.left >= 20 && tried.includes(C.k)) put('most');
+    }
+  } else if (tool === 'piece') {
+    // reported only after the hand moved the rod (`moved`), with the numerator `p` it holds; b is the denominator
+    if (st.moved && Number.isInteger(st.p) && st.p > 0) {
+      const P = pieceOf(a, b, st.p);
+      if (P.verdict === 'fits' && b > 1 && a > 10) put('exact');
+      if (P.far === 1 && b > 4) put('one');
+      // the difference in tiles, far ÷ (b × b), under one hundredth — and not zero
+      if (P.far > 0 && P.far * 100 < b * b) put('close');
+    }
   } else if (tool === 'rules') {
     const lit = digitRules(a).filter((x) => x.ok).length;
     if (a > 0 && lit >= 3) put('three');
@@ -460,6 +566,19 @@ export function luckyPair(tool, rand = Math.random) {
     const g = rand() < 0.5 ? 1 : int(2, 12);
     const d = int(6, 60);
     return { a: g * int(1, d - 1), b: g * d };
+  }
+  if (tool.id === 'court') {
+    // a court of more than one row, a perfect square once in four draws
+    if (rand() < 0.25) {
+      const k = int(4, 20);
+      return { a: k * k, b: 1 };
+    }
+    return { a: int(12, ah), b: 1 };
+  }
+  if (tool.id === 'piece') {
+    // a court of more than one tile — a perfect square once in four draws — and a denominator from 2
+    const k = int(2, 7);
+    return { a: rand() < 0.25 ? k * k : int(2, ah), b: int(2, bh) };
   }
   if (tool.id === 'lists') {
     // two numbers that share a divisor bigger than 1: the two lists meet in more than 1

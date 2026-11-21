@@ -25,6 +25,8 @@ import { createWalk, PHONE } from './walk.mjs';
 export const NB = ' / ';
 export const SHEET_OUT = { exit: ['[data-xs-quit]', '[data-xs-close]'] };
 const fmt = (n) => String(n).replace('.', ',');
+/** Two answers the same — a decimal compared as the same number, comma or point (the screen sends « 7,2 », the bank writes 7.2: defects.md C18). */
+const sameAnswer = (a, b) => JSON.stringify(a)?.replace(/\./g, ',') === JSON.stringify(b)?.replace(/\./g, ',');
 /** The words of a sentence outside its formulas (`$…$`): what must be read on screen as it is written. */
 export const words = (t) =>
   String(t ?? '')
@@ -600,11 +602,17 @@ export async function levelFive(w, { uid, id, grade, url, keys, bank, allow, sta
           const b = bodyOf(answers[k]);
           return (
             b?.attemptUuid?.length === 36 &&
-            JSON.stringify(b.answer) === JSON.stringify(plan[q.id]) &&
+            sameAnswer(b.answer, plan[q.id]) &&
             b.outcome === 'correct'
           );
         }),
-      `one answer per typed step (${answers.length} of ${typed.length}): the raw answer, its own attempt, the browser's guess only as a prediction`,
+      `one answer per typed step (${answers.length} of ${typed.length}): the raw answer, its own attempt, the browser's guess only as a prediction${(() => {
+        const k = typed.findIndex((q, i) => {
+          const b = bodyOf(answers[i]);
+          return !(b?.attemptUuid?.length === 36 && sameAnswer(b.answer, plan[q.id]) && b.outcome === 'correct');
+        });
+        return k < 0 ? '' : ` — step ${typed[k].id}: sent ${JSON.stringify(bodyOf(answers[k]))?.slice(0, 200)}, planned ${JSON.stringify(plan[typed[k].id])}`;
+      })()}`,
     );
     expect(
       posts.some((p) => /\/exercise-completions$/.test(path(p))) && posts.some((p) => /\/complete$/.test(path(p))),
@@ -810,7 +818,10 @@ export async function copies(w, { uid, id, grade, url, keys, bank, allow, stage 
         answers.length === typed.length &&
           typed.every(
             (q, k) =>
-              JSON.stringify(answers[k]?.answer) === JSON.stringify(plan[q.id]) && answers[k]?.outcome !== 'correct',
+              // a decimal is sent in the sheet's writing (« 2,2 » for the « 2.2 » typed — the first bank with decimal
+              // answers, jidhr-tarbii, 2026-11-21): compared as the same number, comma or point
+              JSON.stringify(answers[k]?.answer)?.replace(/\./g, ',') ===
+                JSON.stringify(plan[q.id])?.replace(/\./g, ',') && answers[k]?.outcome !== 'correct',
           ),
         `wrong copy: each of the ${typed.length} answers is sent as he wrote it, never as right`,
       );

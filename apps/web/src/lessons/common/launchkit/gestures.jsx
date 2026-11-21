@@ -77,25 +77,37 @@ export function Write({ q, value, onChange, locked, play }) {
   );
   // a fraction token: its two terms one above the other with a real bar (a term is a number or a box)
   const term = (x, key) => (typeof x === 'string' ? <b key={key}>{x}</b> : box(x, key));
+  const frac = (t, key) => (
+    <span key={key} className="lk-frac" data-lk-frac={t.frac.map((x) => (typeof x === 'string' ? x : '▢')).join('/')}>
+      {term(t.frac[0], 'top')}
+      <i aria-hidden="true" />
+      {term(t.frac[1], 'bottom')}
+    </span>
+  );
+  // a power: its base (a number, « (−8) », or a fraction in tall brackets) and its exponent as a REAL superscript
+  const pow = ([base, exp], key) => (
+    <span key={key} className="lk-pow" data-lk-pow={`${typeof base === 'string' ? base : base.frac.join('/')}^${exp}`}>
+      {typeof base === 'string' ? (
+        <b>{base}</b>
+      ) : (
+        <>
+          <span className="lk-pow__paren" aria-hidden="true">
+            (
+          </span>
+          {frac(base, 'base')}
+          <span className="lk-pow__paren" aria-hidden="true">
+            )
+          </span>
+        </>
+      )}
+      <sup>{exp}</sup>
+    </span>
+  );
   return (
     <div className="lk-write" data-lk-gesture="write">
       <div className="lk-equation" dir="ltr">
         {q.tokens.map((t, i) =>
-          typeof t === 'string' ? (
-            <b key={i}>{t}</b>
-          ) : t.frac ? (
-            <span
-              key={i}
-              className="lk-frac"
-              data-lk-frac={t.frac.map((x) => (typeof x === 'string' ? x : '▢')).join('/')}
-            >
-              {term(t.frac[0], 'top')}
-              <i aria-hidden="true" />
-              {term(t.frac[1], 'bottom')}
-            </span>
-          ) : (
-            box(t, i)
-          ),
+          typeof t === 'string' ? <b key={i}>{t}</b> : t.pow ? pow(t.pow, i) : t.frac ? frac(t, i) : box(t, i),
         )}
       </div>
       <div className="lk-keys" dir="ltr">

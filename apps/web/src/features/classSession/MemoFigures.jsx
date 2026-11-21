@@ -6,6 +6,8 @@
  * what is LEFT, green what fits exactly.
  */
 import { openingFacts } from './lessonMemos';
+import { approx } from '../../lessons/common/gameworld/rootCourts/logic';
+import { tiles } from '../../lessons/common/gameworld/rootCourts/strings';
 
 const INK = '#0f172a';
 const LINE = '#94a3b8';
@@ -14,11 +16,11 @@ const OK = '#34d399';
 const LEFT = '#fbbf24';
 const W = 420;
 const H = 190;
-const Cap = ({ x, y, children, tone = INK, size = 17 }) => (
+const Cap = ({ x, y, children, tone = INK, size = 17, anchor = 'middle' }) => (
   <text
     x={x}
     y={y}
-    textAnchor="middle"
+    textAnchor={anchor}
     fontSize={size}
     fontWeight="800"
     fill={tone}
@@ -202,7 +204,115 @@ function Tiles({ o }) {
   );
 }
 
-const KINDS = { bridge: Bridge, teams: Teams, shelves: Shelves, tiles: Tiles };
+/**
+ * A square court of « قصر الساحات » (area `a`) and two rods tried on it (`b`, `alt`): in each panel the court's walls, and
+ * the square platform built on the rod from the corner post — the BAND it leaves in amber, what STICKS OUT in violet, or
+ * green when it rides. Every size comes from the exact numbers (`openingFacts`); a sliver too thin to see is drawn 2 px.
+ */
+const BLUE = '#3b5bdb';
+const KIND_TONE = { ride: '#047857', band: '#b45309', jam: '#6d28d9' };
+const isFrac = (x) => String(x).includes('/');
+/**
+ * A caption that holds ONE number after its words (`lead`): plain text — or, when the number is a fraction (« 88/49 »,
+ * lesson 2 of « قصر الساحات »), the words, the fraction drawn with a REAL bar, then its noun « بلاطة » (`noun`) — a
+ * fraction is never written with a slash. The fraction sits at `x`, moved by half the difference of the two texts' widths
+ * (estimated) so the caption stays about centred.
+ */
+function NumCap({ x, y, lead, num, noun = 'tiles', tone = INK, size = 17 }) {
+  const s = String(num);
+  if (!isFrac(s))
+    return (
+      <Cap x={x} y={y} tone={tone} size={size}>
+        {`${lead} ${noun === 'tiles' ? tiles(s) : s}`}
+      </Cap>
+    );
+  const [n, d] = s.split('/');
+  const g = Math.round(size * 0.8);
+  const w = Math.max(n.length, d.length) * g * 0.62 + 6;
+  const after = noun === 'tiles' ? 'بلاطة' : '';
+  const fx = x - (lead.length - after.length) * size * 0.22;
+  const mid = y - size * 0.34;
+  return (
+    <g data-memo-frac={s}>
+      <Cap x={fx + w / 2 + 5} y={y} tone={tone} size={size} anchor="end">
+        {lead}
+      </Cap>
+      <g direction="ltr" fill={tone} fontWeight="800" fontSize={g} style={{ fontFamily: 'Cairo, sans-serif' }}>
+        <text x={fx} y={mid - 3} textAnchor="middle">
+          {n}
+        </text>
+        <line x1={fx - w / 2} x2={fx + w / 2} y1={mid} y2={mid} stroke={tone} strokeWidth="1.6" />
+        <text x={fx} y={mid + g + 1} textAnchor="middle">
+          {d}
+        </text>
+      </g>
+      {after && (
+        <Cap x={fx - w / 2 - 5} y={y} tone={tone} size={size} anchor="start">
+          {after}
+        </Cap>
+      )}
+    </g>
+  );
+}
+function CourtPanel({ cx, area, fit, tall }) {
+  // a figure that writes a fraction (its bar takes two lines) lays its captions lower and its court smaller
+  const S = tall ? 84 : 104; // the longest side drawn in a panel
+  const L = Math.sqrt(approx(area));
+  const l = Math.sqrt(approx(fit.covers));
+  const u = S / Math.max(L, l);
+  const post = { x: cx + S / 2, y: 182 };
+  const side = L * u;
+  // a band or an overhang thinner than 2 px is still drawn 2 px: the figure says « a band », the caption says how much
+  const p = fit.kind === 'band' ? Math.min(l * u, side - 2) : fit.kind === 'jam' ? Math.max(l * u, side + 2) : side;
+  const lead = fit.kind === 'band' ? 'شريط مساحته' : 'تعلق: تزيد';
+  return (
+    <g data-memo-court={fit.kind}>
+      {fit.kind === 'jam' && (
+        <rect x={post.x - p} y={post.y - p} width={p} height={p} fill="#ddd6fe" stroke="#7c3aed" />
+      )}
+      <rect
+        x={post.x - side}
+        y={post.y - side}
+        width={side}
+        height={side}
+        fill={fit.kind === 'band' ? LEFT : '#e0e7ff'}
+        stroke={BLUE}
+        strokeWidth="2.5"
+      />
+      <rect
+        x={post.x - Math.min(p, side)}
+        y={post.y - Math.min(p, side)}
+        width={Math.min(p, side)}
+        height={Math.min(p, side)}
+        fill={fit.kind === 'ride' ? OK : '#c7d2fe'}
+        stroke={fit.kind === 'ride' ? '#047857' : BLUE}
+        strokeWidth="1.5"
+      />
+      <rect x={post.x - 4} y={post.y - 4} width="8" height="8" rx="2" fill="#fff" stroke={BLUE} strokeWidth="2" />
+      <NumCap x={cx} y={tall ? 56 : 48} size={15} lead="المقياس" num={fit.b} noun={null} />
+      {fit.kind === 'ride' ? (
+        <Cap x={cx} y={tall ? 84 : 68} size={14} tone={KIND_TONE.ride}>
+          تركب المصعد
+        </Cap>
+      ) : (
+        <NumCap x={cx} y={tall ? 84 : 68} size={14} tone={KIND_TONE[fit.kind]} lead={lead} num={fit.diff} />
+      )}
+    </g>
+  );
+}
+function CourtFig({ o }) {
+  const { a, first, second } = openingFacts(o);
+  const tall = [a, first.b, first.diff, second?.b, second?.diff].some((x) => x != null && isFrac(x));
+  return (
+    <Svg id="court" label={o.title}>
+      <NumCap x={W / 2} y={tall ? 28 : 22} lead="ساحة مربّعة مساحتها" num={a} />
+      <CourtPanel cx={second ? 315 : W / 2} area={a} fit={first} tall={tall} />
+      {second && <CourtPanel cx={105} area={a} fit={second} tall={tall} />}
+    </Svg>
+  );
+}
+
+const KINDS = { bridge: Bridge, teams: Teams, shelves: Shelves, tiles: Tiles, court: CourtFig };
 export default function MemoFigure({ opening }) {
   const Figure = KINDS[opening.kind];
   return Figure ? <Figure o={opening} /> : null;

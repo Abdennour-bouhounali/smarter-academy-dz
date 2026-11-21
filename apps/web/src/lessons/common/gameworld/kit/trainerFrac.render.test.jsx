@@ -3,7 +3,7 @@
 // fraction is printed in the same shape; a line without a fraction draws as it always did. Server render.
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { FormLines } from './Trainer';
+import { FormLines, TapOption } from './Trainer';
 
 globalThis.window = globalThis.window ?? {};
 
@@ -67,5 +67,17 @@ describe('the fraction template of the trainer’s sheet', () => {
     expect(html).toContain('<div class="di-sheet__line" dir="ltr"><span>PGCD(66 ; 78)</span><span>=</span><input');
     expect(html).toContain('data-di-tr="g"');
     expect(html).toContain('<div class="di-sheet__line">النتيجة <b dir="ltr">12</b><span dir="rtl">لوحًا</span></div>');
+  });
+});
+
+describe('a gate of a tap', () => {
+  it('a fraction « p/q » is stacked over a real bar — never « p/q » as text; any other gate as it is written', () => {
+    const html = renderToString(<TapOption n="4/49" />);
+    expect(html).toMatch(
+      /<span class="di-frac" dir="ltr" data-di-frac[^>]*><b>4<\/b><span class="di-frac__bar"[^>]*><\/span><b>49<\/b><\/span>/,
+    );
+    expect(html).not.toContain('4/49');
+    expect(renderToString(<TapOption n="1,4" />)).toBe('1,4');
+    expect(renderToString(<TapOption n="22" />)).toBe('22');
   });
 });

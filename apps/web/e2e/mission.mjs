@@ -82,9 +82,22 @@ await shot('read');
 await p.waitForSelector('[data-ms-read-done]', { timeout: 20000 });
 await p.click('[data-ms-read-done]');
 
+const work = async (id, values, { wrong = false, name = null, by = '[data-ms-check]' } = {}) => {
+  await p.waitForSelector(`[data-ms-at="${id}"]`, { timeout: 20000 });
+  await written();
+  for (const [k, v] of Object.entries(values)) await type(k, v);
+  await p.click(by);
+  await idle();
+  if (name) await shot(name);
+  if (wrong) {
+    if (!(await p.locator('[data-ms-fact]').count())) bad.push(`no guidance at ${id}`);
+    await win(`${id}-wrong`, 0);
+  }
+};
+
 if (which === '1') {
-  await p.waitForSelector('[data-ms-tap="b"]:not([disabled])', { timeout: 15000 });
-  await p.waitForTimeout(2500);
+  await p.waitForSelector('[data-ms-tap="b"]', { timeout: 15000 });
+  await p.waitForTimeout(2500); // the robot underlines the first number
   await shot('data');
   await p.click('[data-ms-tap="b"]');
   await written();
@@ -94,57 +107,68 @@ if (which === '1') {
   await p.click('[data-ms-goal="most"]');
   await p.click('[data-ms-goal="content"]');
   await written();
+  await p.waitForSelector('[data-ms-try]', { timeout: 20000 });
+  if (viaHome) {
+    // LEFT HALF-WAY: closed at the free tries; the home says so and the card gives the step back, with his copy
+    await p.click('[data-ms-close]');
+    await p.waitForSelector('[data-mi-home]', { timeout: 20000 });
+    if (!(await p.locator(`[data-mi-card="${cardId}"]`).innerText()).includes('توقّفتَ في منتصفها'))
+      bad.push('the home does not say mission 1 was left half-way');
+    await p.click(`[data-mi-open="${cardId}"]`);
+    await p.waitForSelector('[data-ms-resume]', { timeout: 20000 });
+    await shot('resume-card');
+    await p.click('[data-ms-resume]');
+    await p
+      .waitForSelector('[data-ms-try]', { timeout: 20000 })
+      .catch(() => bad.push('mission 1: the step was not given back'));
+    await p.click('[data-ms-open="data"]');
+    const kept = await p.locator('[data-ms-data] li').count();
+    console.log('   mission 1 resumed at the free tries; data kept in his copy:', kept);
+    if (kept < 2) bad.push(`mission 1: the copy lost its data on the way back (${kept})`);
+  }
+  await p.waitForTimeout(1700); // the success of the questions has left
   await type('n', 7);
   await p.click('[data-ms-try]');
   await idle();
   await shot('try-7-guidance');
+  if (!(await p.locator('[data-ms-fact]').count())) bad.push('a try that left crates got no guidance');
   await win('wrong-try', 0);
-  await written();
+  await written(); // « كلّ الصناديق تُجمَّع » added to his data
   await type('n', 12);
   await p.click('[data-ms-try]');
   await idle();
-  await written();
+  await written(); // « تشكيلات متماثلة » added to his data
+  await shot('try-12');
   await p.click('[data-ms-more]');
+  await p.waitForSelector('[data-ms-connect="most"]', { timeout: 20000 });
   await written();
   await shot('connect');
-  for (const k of ['a', 'b', 'same', 'all']) await p.click(`[data-ms-need="${k}"]`);
+  await p.click('[data-ms-need="a"]');
+  await p.click('[data-ms-tie]'); // a datum left out: its guidance
+  if (!(await p.locator('[data-ms-fact]').count())) bad.push('« أربط »: a datum left out got no answer');
+  for (const k of ['b', 'same', 'all']) await p.click(`[data-ms-need="${k}"]`);
   await p.click('[data-ms-tie]');
-  await written();
-  await type('q', 2);
-  await type('r', 132);
-  await p.click('[data-ms-pair]');
-  await p.waitForSelector('[data-ms-win]', { timeout: 90000 });
-  await shot('division-1');
-  await idle();
-  await written();
-  await type('q', 4);
-  await type('r', 0);
-  await p.click('[data-ms-pair]');
-  await idle();
-  await written();
-  await type('g', 132);
-  await p.click('[data-ms-pgcd]');
-  await p.waitForTimeout(1600);
-  await shot('test');
-  await p.click('[data-ms-test="12"]');
-  await idle();
-  await written();
-  await type('n', 264);
-  await p.click('[data-ms-attack]');
-  await idle();
+  await work('e0', { q: 2, r: 100 }, { wrong: true });
+  await work('e0', { q: 2, r: 132 }, { name: 'division-1-laid' });
+  await work('e1', { q: 4, r: 0 });
+  await work('pgcd', { g: 4 }, { wrong: true, name: 'pgcd-4' });
+  await work('pgcd', { g: 132 });
+  await work('rest', { n: 12 }, { name: 'rest-12' });
+  await work('attack', { n: 264 }, { name: 'attack-264' });
+  await p.waitForSelector('[data-ms-connect="content"]', { timeout: 20000 });
   await written();
   for (const k of ['a', 'b', 'ans']) await p.click(`[data-ms-need="${k}"]`);
   await p.click('[data-ms-tie]');
-  await written();
-  await type('pa', 9);
-  await type('pb', 4);
-  await p.click('[data-ms-fill]');
-  await idle();
+  await work('content', { pa: 10, pb: 4 }, { wrong: true, name: 'content-wrong-built' });
+  await work('content', { pa: 9, pb: 4 }, { name: 'content-shipped' });
+  await p.waitForSelector('[data-ms-at="answer"]');
   await written();
   await type('sn', 132);
   await type('sa', 1188);
   await type('sb', 528);
   await shot('sentence');
+  await p.click('[data-ms-name="common"]');
+  if (!(await p.locator('[data-ms-fact]').count())) bad.push('a wrong name got no answer');
   await p.click('[data-ms-name="pgcd"]');
 } else {
   // ── a mission played from data (MissionRunner) ──
@@ -172,18 +196,6 @@ if (which === '1') {
   for (const k of ['gap', 'count', 'cost', 'price']) await p.click(`[data-ms-need="${k}"]`);
   await shot('plan-done');
   await written();
-  const work = async (id, values, { wrong = false, name = null } = {}) => {
-    await p.waitForSelector(`[data-ms-at="${id}"]`, { timeout: 20000 });
-    await written();
-    for (const [k, v] of Object.entries(values)) await type(k, v);
-    await p.click('[data-ms-check]');
-    await idle();
-    if (name) await shot(name);
-    if (wrong) {
-      if (!(await p.locator('[data-ms-fact]').count())) bad.push(`no guidance at ${id}`);
-      await win(`${id}-wrong`, 0);
-    }
-  };
   if (viaHome) {
     // LEFT HALF-WAY: the mission is closed after its plan; the home says so, and the card gives the step back
     await p.waitForSelector('[data-ms-at="e0"]', { timeout: 20000 });
@@ -255,7 +267,7 @@ console.log(
 await p.click('[data-ms-finale-next]');
 await p.waitForTimeout(500);
 await shot('model');
-if (which !== '1') {
+{
   await p.click('[data-ms-corrected]');
   await p.waitForSelector('[data-ms-tick="0"]');
   await p.click('[data-ms-tick="0"]');
@@ -266,7 +278,7 @@ if (which !== '1') {
   }
 }
 if (viaHome) {
-  await p.click(which === '1' ? '[data-ms-close]' : '[data-ms-done]');
+  await p.click('[data-ms-done]');
   await p.waitForSelector('[data-mi-home]', { timeout: 20000 });
   await p.waitForTimeout(600);
   await p.screenshot({ path: `${out}/home-after.png` });

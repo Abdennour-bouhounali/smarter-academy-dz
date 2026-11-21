@@ -8,6 +8,7 @@ import { launchWalk, sittingPart } from './launch.mjs';
 import { loadLesson } from './load.mjs';
 import { storyWalk } from './story.mjs';
 import { trainerWalk } from './trainer.mjs';
+import { worldOfLesson } from './worlds/index.mjs';
 
 export const PARTS = {
   story: storyWalk,
@@ -26,14 +27,23 @@ const LONG_NAMES = ['جداء عاملين', 'الرقمان الأخيران'];
 export async function runLessonWalk(D, parts, out) {
   deafAll();
   const L = await loadLesson(D.id);
-  const foreign = foreignWordsFor(D.id, [...LONG_NAMES, ...(D.foreignWords ?? [])]);
+  // a lesson of ANOTHER world than the islands (« قصر الساحات »): its foreign words and its screens' rules are its world's
+  const other = worldOfLesson(L);
+  const foreign = other
+    ? other.foreignWords(L, [...LONG_NAMES, ...(D.foreignWords ?? [])])
+    : foreignWordsFor(D.id, [...LONG_NAMES, ...(D.foreignWords ?? [])]);
   const foreignNumbers = [...new Set([...L.foreignNumbers, ...(D.foreignNumbers ?? [])])].filter(
     (n) => !(D.ownNumbers ?? []).includes(n),
   );
   console.log(
     `NOTE  ${D.id}: ${foreign.length} foreign words, ${foreignNumbers.length} foreign numbers (${foreignNumbers.join(', ')})`,
   );
-  const opts = { foreign, foreignNumbers };
+  // a lesson of another world may add rules of its own screens (`descriptor.textRules`, e.g. no fraction « p/q » as text)
+  const opts = {
+    foreign,
+    foreignNumbers,
+    ...(other ? { textRules: [...other.textRules, ...(D.textRules ?? [])] } : {}),
+  };
   for (const part of parts) {
     const play = PARTS[part];
     if (!play) throw new Error(`no part « ${part} » (${Object.keys(PARTS).join(', ')}, all)`);

@@ -21,6 +21,8 @@ import {
   groupsOf,
   LOG_MAX,
   cellsOf,
+  denseTablet,
+  DENSE_WORDS,
 } from './lessonScripts';
 
 describe('حصّة القسم — the rules revised before the lesson', () => {
@@ -199,5 +201,19 @@ describe('حصّة القسم — the script of the lesson', () => {
         .filter((r) => r.first)
         .map((r) => r.chapter),
     ).toEqual(['نكتشف', 'نستنتج', 'نسمّي', 'نكتشف', 'نسمّي', 'نكتشف', 'نسمّي', 'نكتشف', 'نسمّي', 'نكتب']);
+  });
+});
+
+describe('حصّة القسم — a long tablet is drawn dense on its naming card', () => {
+  const t = (words, list = []) => ({ lines: [words], list, notes: [], math: [] });
+  it('five list items, or more words than DENSE_WORDS (a formula counts four)', () => {
+    expect(denseTablet(t('قصير'))).toBe(false);
+    expect(denseTablet(t('ق', ['1', '2', '3', '4', '5']))).toBe(true);
+    expect(denseTablet(t('ك'.repeat(DENSE_WORDS + 1)))).toBe(true);
+    expect(denseTablet(t(`${'ك'.repeat(DENSE_WORDS - 10)} $\\sqrt{123456789}$`))).toBe(false);
+    // a fraction of two storeys in its words is taller than a line (lesson 2 of « قصر الساحات », its first tablet)
+    const tall = `${'ك'.repeat(DENSE_WORDS - 30)} $\\dfrac{144}{25}$ $\\dfrac{12}{5}$`;
+    expect(denseTablet(t(tall))).toBe(true);
+    expect(denseTablet(t(tall.replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1')))).toBe(false);
   });
 });

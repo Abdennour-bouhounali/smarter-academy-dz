@@ -51,16 +51,6 @@ export function fill(n, per, { a, b }) {
 }
 
 /**
- * A division he typed in its shape, `a = b × q + r`: `null` when it is the Euclidean division; otherwise the fact that
- * shows it is not — the product he wrote, or a remainder that is not smaller than the divisor.
- */
-export function slip(a, b, q, r) {
-  if (b * q + r !== a) return { kind: 'sum', value: b * q + r };
-  if (r >= b) return { kind: 'rest', value: r };
-  return null;
-}
-
-/**
  * WHY a number of lots left crates, and where to look next — the guidance after a wrong try (owner, 2026-11-20: a wrong
  * answer is answered by a guidance, never by « next question »). `fails` = how many of his tries have left crates so far.
  *   which   'a' | 'b' (it divides the other stock, not this one) | 'both'

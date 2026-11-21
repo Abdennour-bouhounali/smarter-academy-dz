@@ -241,65 +241,90 @@ export async function pairChecks(w, page, where) {
 }
 
 /**
+ * What an investigation screen is made of, world by world: its frame, the parts measured inside it, its drawn scenes. The
+ * islands' (`divisorIsles/Inquiry*.jsx`) by default; another world passes its own (`worlds/<world>.mjs`).
+ */
+export const IQ_FRAME = {
+  frame: '.iq',
+  parts:
+    'button, input, .iq-lead p, .iq-goal, .iq-fact, .iq-calc, .iq-scene, .iq-found li, .iq-chips, .iq-tpl, .iq-askline, .iq-lists, .iq-rung, .iq-both__col',
+  scene: 'svg.iq-scene',
+};
+
+/**
  * An investigation screen (a bench or a forge's experiment): nothing leaves its frame, no button covered, no text under
  * 12 px (the frame's zoom counted), SVG text of its scene at its DRAWN size and apart, nothing scrolls (B3, B8).
  */
-export async function inquiryFits(w, page, name, exit = ['[data-di-exit]', '[data-di-bench-back]']) {
+export async function inquiryFits(
+  w,
+  page,
+  name,
+  exit = ['[data-di-exit]', '[data-di-bench-back]'],
+  frameOf = IQ_FRAME,
+) {
   await page.waitForTimeout(250);
-  const bad = await page.evaluate((FLOOR) => {
-    const meet = (a, b) =>
-      Math.min(a.right, b.right) - Math.max(a.left, b.left) > 2 &&
-      Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 2;
-    const out = [];
-    const frame = document.querySelector('.iq');
-    if (!frame) return ['no investigation on screen'];
-    const box = frame.getBoundingClientRect();
-    const zoom = parseFloat(document.querySelector('.rf-fit')?.style.zoom) || 1;
-    for (const el of frame.querySelectorAll(
-      'button, input, .iq-lead p, .iq-goal, .iq-fact, .iq-calc, .iq-scene, .iq-found li, .iq-chips, .iq-tpl, .iq-askline, .iq-lists, .iq-rung, .iq-both__col',
-    )) {
-      const r = el.getBoundingClientRect();
-      if (!r.width) continue;
-      if (r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1)
-        out.push(String(el.className?.baseVal ?? el.className).split(' ')[0] + ' leaves the frame');
-      if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
-        const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-        if (top && !el.contains(top) && !top.contains(el))
-          out.push('covered: « ' + (el.textContent.trim() || el.tagName).slice(0, 18) + ' »');
+  const bad = await page.evaluate(
+    ([FLOOR, F]) => {
+      const meet = (a, b) =>
+        Math.min(a.right, b.right) - Math.max(a.left, b.left) > 2 &&
+        Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 2;
+      const out = [];
+      const frame = document.querySelector(F.frame);
+      if (!frame) return ['no investigation on screen'];
+      const box = frame.getBoundingClientRect();
+      const zoom = parseFloat(document.querySelector('.rf-fit')?.style.zoom) || 1;
+      for (const el of frame.querySelectorAll(F.parts)) {
+        const r = el.getBoundingClientRect();
+        if (!r.width) continue;
+        if (r.left < box.left - 1 || r.right > box.right + 1 || r.top < box.top - 1 || r.bottom > box.bottom + 1)
+          out.push(String(el.className?.baseVal ?? el.className).split(' ')[0] + ' leaves the frame');
+        if (el.tagName === 'BUTTON' || el.tagName === 'INPUT') {
+          const top = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+          if (top && !el.contains(top) && !top.contains(el))
+            out.push('covered: « ' + (el.textContent.trim() || el.tagName).slice(0, 18) + ' »');
+        }
+        if (
+          el.textContent.trim() &&
+          !el.querySelector('*:not(.katex):not(.katex *)') &&
+          parseFloat(getComputedStyle(el).fontSize) * zoom < FLOOR
+        )
+          out.push('text under 12 px: ' + String(el.className).split(' ')[0]);
       }
-      if (
-        el.textContent.trim() &&
-        !el.querySelector('*:not(.katex):not(.katex *)') &&
-        parseFloat(getComputedStyle(el).fontSize) * zoom < FLOOR
-      )
-        out.push('text under 12 px: ' + String(el.className).split(' ')[0]);
-    }
-    for (const svg of frame.querySelectorAll('svg.iq-scene')) {
-      const vb = svg.viewBox.baseVal;
-      const sr = svg.getBoundingClientRect();
-      if (!vb || !vb.width || !sr.width) continue;
-      const k = Math.min(sr.width / vb.width, sr.height / vb.height);
-      for (const el of svg.querySelectorAll('text')) {
-        if (!el.getClientRects().length) continue;
-        const t = el.textContent.trim();
-        if (!t) out.push('an empty label drawn in the scene');
-        else if (parseFloat(getComputedStyle(el).fontSize) * k < FLOOR)
-          out.push(`scene text under 12 px: « ${t.slice(0, 20)} »`);
+      for (const svg of frame.querySelectorAll(F.scene)) {
+        const vb = svg.viewBox.baseVal;
+        const sr = svg.getBoundingClientRect();
+        if (!vb || !vb.width || !sr.width) continue;
+        const k = Math.min(sr.width / vb.width, sr.height / vb.height);
+        for (const el of svg.querySelectorAll('text')) {
+          if (!el.getClientRects().length) continue;
+          const t = el.textContent.trim();
+          if (!t) out.push('an empty label drawn in the scene');
+          else if (parseFloat(getComputedStyle(el).fontSize) * k < FLOOR)
+            out.push(`scene text under 12 px: « ${t.slice(0, 20)} »`);
+        }
       }
-    }
-    const texts = [...frame.querySelectorAll('svg text')]
-      .map((e) => ({ t: e.textContent.trim(), r: e.getBoundingClientRect() }))
-      .filter((x) => x.t && x.r.width);
-    for (let i = 0; i < texts.length; i += 1)
-      for (let j = i + 1; j < texts.length; j += 1)
-        if (meet(texts[i].r, texts[j].r)) out.push(`scene texts overlap: « ${texts[i].t} » / « ${texts[j].t} »`);
-    if (box.bottom > window.innerHeight + 1 || box.right > window.innerWidth + 1)
-      out.push('the frame leaves the screen');
-    for (const el of frame.querySelectorAll('*'))
-      if (/(auto|scroll)/.test(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight + 2)
-        out.push('scrolls: ' + el.className);
-    return [...new Set(out)];
-  }, FLOOR_PX);
+      const texts = [...frame.querySelectorAll('svg text')]
+        .map((e) => ({ t: e.textContent.trim(), r: e.getBoundingClientRect() }))
+        .filter((x) => x.t && x.r.width);
+      // two labels overlap when their boxes meet; a world whose labels stand in tight stacked lines (`F.lines`: « 30 » over
+      // « بلاطة » on a gate) counts it only when they share more than that fraction of the smaller line's height
+      const over = (a, b) =>
+        F.lines == null
+          ? meet(a, b)
+          : Math.min(a.right, b.right) - Math.max(a.left, b.left) > 2 &&
+            Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > F.lines * Math.min(a.height, b.height);
+      for (let i = 0; i < texts.length; i += 1)
+        for (let j = i + 1; j < texts.length; j += 1)
+          if (over(texts[i].r, texts[j].r)) out.push(`scene texts overlap: « ${texts[i].t} » / « ${texts[j].t} »`);
+      if (box.bottom > window.innerHeight + 1 || box.right > window.innerWidth + 1)
+        out.push('the frame leaves the screen');
+      for (const el of frame.querySelectorAll('*'))
+        if (/(auto|scroll)/.test(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight + 2)
+          out.push('scrolls: ' + el.className);
+      return [...new Set(out)];
+    },
+    [FLOOR_PX, frameOf],
+  );
   w.check(
     bad.length === 0,
     `${name}: the investigation fits its frame — nothing cut, covered, scrolled, overlapping or too small${bad.length ? ' — ' + bad.join(' | ') : ''}`,
@@ -308,9 +333,9 @@ export async function inquiryFits(w, page, name, exit = ['[data-di-exit]', '[dat
 }
 
 /** Nothing on an investigation screen names a rule it leads to (A1). */
-export async function tellsNothing(w, page, where, re) {
+export async function tellsNothing(w, page, where, re, frame = '.iq') {
   if (!re) return;
-  const t = (await page.textContent('.iq')) ?? '';
+  const t = (await page.textContent(frame)) ?? '';
   const m = t.match(re);
   w.check(!m, `${where}: the investigation names nothing of a rule not forged yet${m ? ` — « ${m[0]} »` : ''}`);
 }

@@ -30,7 +30,6 @@
   height: 100%;
   display: block;
 }
-.di-loading,
 .di-fallback {
   position: absolute;
   inset: 0;
@@ -146,6 +145,56 @@
   filter: none;
   opacity: 1;
   transform: scale(1.12);
+}
+/* « قواعدي »: the corner where his rules live — it beats when a tablet has just flown into it */
+.di-rules {
+  cursor: pointer;
+  gap: 0.35rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #fde9b0;
+  border: 1.5px solid rgba(253, 233, 176, 0.55);
+}
+.di-rules.is-fresh {
+  animation: di-rules-beat 0.65s ease-in-out 4;
+  background: #fbbf24;
+  color: #0b1b3f;
+  border-color: #fff;
+}
+@keyframes di-rules-beat {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.7);
+  }
+  50% {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 14px rgba(251, 191, 36, 0);
+  }
+}
+.di-rules__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+.di-rules__tabs button {
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  border: 2px solid rgba(15, 33, 71, 0.25);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.di-rules__tabs button.is-on {
+  background: #0f2147;
+  border-color: #0f2147;
+  color: #fff;
 }
 .di-keys--big {
   display: flex;

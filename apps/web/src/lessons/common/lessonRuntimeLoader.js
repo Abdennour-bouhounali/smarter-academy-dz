@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { loadLessonManipulationStrings } from '../../i18n/lessonManipulationStrings';
-import { loadLessonLoaders } from '../registry';
+import { isLessonBuilt, lessonPackFlags, loadLessonLoaders } from '../registry';
+import { preloadWorldCode } from '../worldPreload';
 
 /**
  * Le chargeur UNIQUE du runtime de leçon (common/lessonRuntime.jsx).
@@ -16,14 +17,11 @@ import { loadLessonLoaders } from '../registry';
  * d'inactivité : le clic sur une leçon ne l'attend plus. « / » ne le demande
  * jamais. Voir docs/architecture/BUNDLE_BOUNDARIES.md.
  *
- * Depuis le 2026-10-14, le runtime attend aussi les textes des manipulations
- * (`lesson:manipulation.*`, chargés à la demande) — une page de leçon ne
- * montre jamais une clé brute — et le préchargement demande, avec lui, ces
- * textes et la petite table des chargeurs de leçons (lessonLoaders.js) : le
- * clic sur une leçon n'attend plus que SES routes.
+ * Les textes des manipulations (`lesson:manipulation.*`, ≈ 440 Ko gzip mesurés le
+ * 2026-11-21) ne voyagent avec ce préchargement que si une leçon visée a encore
+ * des pages de module (`lessonsNeedLabStrings`) : une leçon v2 — un monde de jeu —
+ * ne les lit jamais, et ils disputaient la bande passante à son monde.
  */
-const loadLessonRuntime = () => Promise.all([import('./lessonRuntime'), loadLessonManipulationStrings()]).then(([runtime]) => runtime);
-
 /**
  * Le runtime SEUL, sans attendre les textes des manipulations (2026-10-17).
  *
@@ -55,16 +53,53 @@ export function prefetchLessonStringsWhenIdle(delayMs = 2000) {
 }
 
 let requested = false;
+let stringsRequested = false;
 
-function prefetchLessonRuntimeWhenIdle() {
-  if (requested || typeof window === 'undefined') return;
-  requested = true;
-  const run = () => Promise.all([loadLessonRuntime(), loadLessonLoaders()]).catch(() => { requested = false; });
-  if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 4000 });
+function whenIdle(run, timeout) {
+  if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout });
   else setTimeout(run, 200);
 }
 
-/** Pour une page qui liste des leçons : précharge le runtime après son premier rendu. */
-export function usePrefetchLessonRuntime() {
-  useEffect(() => { prefetchLessonRuntimeWhenIdle(); }, []);
+function prefetchLessonRuntimeWhenIdle(strings) {
+  if (typeof window === 'undefined') return;
+  if (!requested) {
+    requested = true;
+    whenIdle(() => Promise.all([loadLessonRuntimeCore(), loadLessonLoaders()]).catch(() => { requested = false; }), 4000);
+  }
+  if (strings && !stringsRequested) {
+    stringsRequested = true;
+    whenIdle(() => loadLessonManipulationStrings().catch(() => { stringsRequested = false; }), 4000);
+  }
+}
+
+/**
+ * Do these lessons still need the labs' strings? Only a lesson that still has MODULE pages reads them: a v2 lesson
+ * (its pack names a world) has none. The file weighs ≈ 440 KB gzip (measured 2026-11-21): a unit whose lessons are all
+ * v2 never asks for it.
+ * @param {string[]} lessonIds
+ */
+const lessonsNeedLabStrings = (lessonIds) => lessonIds.some((id) => isLessonBuilt(id) && !lessonPackFlags(id).world);
+
+/**
+ * Pour une page qui liste des leçons : précharge le runtime après son premier rendu.
+ * `lessonIds` (the lessons the page leads to, when it knows them): the labs' strings travel only if one of them still
+ * needs them. Without it (the student's home, « دروسي »), they travel as before.
+ */
+export function usePrefetchLessonRuntime(lessonIds = null) {
+  const strings = lessonIds ? lessonsNeedLabStrings(lessonIds) : true;
+  useEffect(() => { prefetchLessonRuntimeWhenIdle(strings); }, [strings]);
+}
+
+/**
+ * The CODE of the game worlds of these lessons (three.js and the world: ≈ 400 KB gzip, one chunk set per unit), asked
+ * for once the page that lists them is shown and at rest — the student's click on a lesson no longer waits for it.
+ * `enabled`: only for whoever plays the world (a student), never for a teacher reading the unit.
+ */
+export function usePrefetchWorlds(lessonIds, enabled) {
+  const key = lessonIds.join('|');
+  useEffect(() => {
+    if (!enabled || typeof window === 'undefined') return undefined;
+    const id = window.setTimeout(() => whenIdle(() => key.split('|').forEach(preloadWorldCode), 3000), 1500);
+    return () => window.clearTimeout(id);
+  }, [key, enabled]);
 }

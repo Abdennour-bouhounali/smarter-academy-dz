@@ -172,6 +172,36 @@ export const TOOLS = [
     range: { a: [1, 999], b: [1, 999] },
     load: () => import('./tools/Strip'),
   },
+  {
+    // an area of the student's own laid as a square whose side his hand chooses: the tiles that do not fit, the empty
+    // places; once he tried the greatest whole square and the next, the court is written — √a, or between two whole
+    // numbers and to 0,01. It names the sign √ (the lab opens after the lesson): it is NOT safe before the lesson's keys
+    id: 'court',
+    lesson: 'jidhr-tarbii',
+    lessonTitle: 'الجذر التربيعي لعدد موجب',
+    icon: '🔲',
+    name: 'ساحة العدد',
+    hint: 'رتّب بلاطات ساحتك في مربّع بضلع تختاره: أيّ مربّع كامل يتّسع لها، وأين يقع ضلعها؟',
+    needs: 'a',
+    labels: { a: 'المساحة' },
+    range: { a: [1, 400], b: [1, 400] },
+    load: () => import('./tools/NumberCourt'),
+  },
+  {
+    // a court of the student's own (a whole tiles), each tile cut into b × b small pieces, and a rod of p/b whose
+    // numerator his hand sweeps: the platform holds p × p pieces, the court a × b × b — the drawing and the two counts say
+    // which is more and by how many, and the nearest rod he reached is kept. Facts only: it names no key of its lesson
+    id: 'piece',
+    lesson: 'natiqa-ghayr-natiqa',
+    lessonTitle: 'الأعداد الناطقة والأعداد غير الناطقة',
+    icon: '🟦',
+    name: 'منصّة الكسر',
+    hint: 'مقياس طوله كسر على ساحتك: قطّع البلاطة قطعًا صغيرة، وقارن ما تحمله المنصّة بما تحمله الساحة.',
+    needs: 'ab',
+    labels: { a: 'المساحة', b: 'المقام' },
+    range: { a: [1, 50], b: [1, 12] },
+    load: () => import('./tools/FractionPlatform'),
+  },
 ];
 
 export const toolById = (id) => TOOLS.find((t) => t.id === id) ?? null;

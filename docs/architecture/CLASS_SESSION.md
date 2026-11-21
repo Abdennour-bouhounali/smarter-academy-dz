@@ -21,6 +21,13 @@ and counts, one decision per screen, readable from the last row, nothing to lear
 
 ## 2. On the lesson page: the teacher's card
 
+**While it loads, a skeleton — never an empty gap** (2026-11-21, `BUNDLE_BOUNDARIES.md` rule 13):
+`features/classSession/TeacherSkeletons.jsx` gives the card's shape (`TeacherPanelSkeleton`, the fallback of its lazy
+boundary in `LessonIndex`), the class-session page's (`ClassSessionSkeleton`, while the pack's parts arrive) and its
+set-up screen's (`ClassWorkSkeleton`, while the class's four requests are pending), and the layer of « مختبر الدرس »
+opening (`LabOpeningSkeleton`). A new lazy boundary on the teacher's side uses one of them, never `fallback={null}`.
+The mission of the board opens behind the world's own loading screen (`GAME_WORLD.md` §1bis).
+
 `TeacherLessonPanel.jsx`, shown to a teacher on a lesson whose pack has a `board` or a `world` (`lesson.pack.js`, `LESSON_V2.md` §1). It is the
 teacher's ONE place on the page, in the order of his work (owner, 2026-11-18: « organize the thing and the tools of the
 teacher », then « the UI/UX needs absolutely to be enhanced », « update the colors too »):
@@ -152,7 +159,11 @@ extension; and **« الحصّة في صفحة »**, the one page for the desk.
 
 - **Opening situations are drawn from their own numbers** (`openingFacts`): the planks laid, the players left out, the
   books that do not fit, the gap no tile fills — never a typed count, never a generated image, no person drawn. The one
-  used by the class session is marked and opens it.
+  used by the class session is marked and opens it. A lesson on « قصر الساحات » uses the figure **`court`** (2026-11-21,
+  `jidhr-tarbii`): an opening `{ kind: 'court', a, b, alt }` (numbers as text: « 324 », « 14,44 ») is a square court and
+  two rods tried on it, each panel drawn from the exact `rootCourts/logic.js › outcome` — the band in amber, what sticks
+  out in violet, green when it rides — and captioned in the world's words (« شريط مساحته بلاطتان », « تعلق: تزيد 11
+  بلاطة », agreed by `rootCourts/strings.js › tiles`). `openingFacts` then gives `{ b, kind, covers, diff, r, exact }`.
 - Every equality of the memo is re-computed by `lessonMemos.test.js`; the memo never names « وضع القسم ».
 - **The top bar is one calm line**: the lesson, the title, the length of the hour, print, « ملفّ الدرس », « حصّة القسم ».
 - It has no « كرّاسي » block: the teacher's own notes on the lesson are « ملفّ الدرس », in the top bar. Its text is drawn
@@ -240,6 +251,30 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   `reducedIs` (true / false: « the irreducible form of n/d is p/q »), `stage` (choice: n/d with both terms divided by
   k — k subtracted, or one term divided, are the traps), `resultReduced` (choice: a calculation on two fractions, `+`,
   `−` or `×`, computed by the test; the unreduced result is the trap).
+  **Unit 2, lesson 1 « الجذر التربيعي لعدد موجب » (2026-11-21)**: `4am/jidhr-tarbii.json` — the start test asks the
+  powers of a rational number (3am.m3.r06) and the SQUARE of a hypotenuse (3am.m4.r03); the end test weighs P1–P3 about
+  equally, as the bank does. Every value is computed EXACTLY on text numbers (`rootCourts/logic.js`: « 7,94 » is never a
+  float); a number answer must be a whole number of at most six digits (the board's keypad has digits only), so a
+  decimal or a root is asked as a choice. New `check` types — `power`, `pythagoras`, `root`, `squareOfRoot`,
+  `rootOfSquare` COMPUTE one value and serve all three kinds (`valued`): a number answers it, a choice holds exactly the
+  options equal to it (« $7{,}94$ »), a true-false is « $<formula> = <claim>$ » written as such in the question —
+  `power` (x^n, a negative or decimal base in brackets), `pythagoras` (a² + b², the legs shown), `root` (the positive
+  number whose square is a; none when a has no exact root; `court: true` asks it in words, « ساحة مربّعة مساحتها … »),
+  `squareOfRoot` ((√a)² = a), `rootOfSquare` (√(x²) = |x|: a side has no sign); and `rootBetween` (choice « p و q »: two
+  consecutive whole numbers with p² < a < q², a having no whole root), `exactSide` (choice: « $\sqrt{a}$ » or a decimal
+  whose square IS a — the calculator's digits and the half are the traps), `rootApprox` (choice: the value of √a to a
+  `step` « بالنقصان » (d² ≤ a < (d + step)²) or « بالزيادة » ((d − step)² < a ≤ d²), d a whole number of steps).
+  **Unit 2, lesson 2 « الأعداد الناطقة والأعداد غير الناطقة » (2026-11-21)**: `4am/natiqa-ghayr-natiqa.json` — the start
+  test asks the powers of a rational number (a fraction squared among them, 3am.m3.r06) and what lesson 1 taught (a whole
+  root, a value by default), then two teasers asked in a court's words, never with a key's name; the end test covers the
+  three keys and P1–P4 (P4, the rounded value, is tested by no question of the bank). A FRACTION is now an answer like any
+  number: an option « $\dfrac{5}{7}$ » (or « $-\dfrac{16}{49}$ ») is read exactly, and a fraction given in a question
+  keeps its terms (`texGiven`: « \sqrt{\dfrac{50}{98}} » is never rewritten 25/49) — `root`, `power` and `exactSide`
+  take fractions. New `check` types: `isRational` (true / false: « $\sqrt{a}$ عدد ناطق » or « … عدد غير ناطق », judged by
+  whether a is the square of a rational — whole, decimal, fraction reduced or not), `rationalPick` (choice: the one root
+  that is — `want: 'rational'` — or is not rational), `rounded` (choice: the ROUNDED value of √a to a `step`, a whole
+  number of steps d with (d − step/2)² < a < (d + step/2)², the word « المدوَّر » in the question; the values by default
+  and by excess are the traps).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -302,6 +337,24 @@ lit; the options are planks of the lit stretch (proved by an equality in the tex
 the planks that hold ARE the common divisors; the fractions themselves are formulas of `text` / `after`
 (`$\frac{60}{96} = \frac{30}{48} = …$`). **Not built:** a station that draws a bridge WITH its lit stretch, or a fraction
 with its bar beside a bridge — the board shows the whole bridge only.
+**A lesson NOT on the islands**: `jidhr-tarbii` (11 stations, 2026-11-21) is on « قصر الساحات » (`rootCourts/`): its
+hour is `court` → `court` → `name`, three times, then two `trace` pages — no `situation`, `ask` or `bridges` (those draw
+a bridge). Its `board.test.js` evaluates every formula of the script and the memo EXACTLY (products, `\sqrt{…}`, `^2`,
+chains of `=` and `<`), and checks that nothing before the naming of the first key says « جذر » or shows √ (no wall card
+either: a wall is drawn with its sign).
+`natiqa-ghayr-natiqa` (10 stations, 2026-11-21) is the second hour on the courts, with NO new kind: `court` → `court` →
+`name` (🧩: a court whose gate shows 529/49, then 722/98 not reduced), `court` → `name` (♾️: the court of 14 chased by
+11/3, 3,75, 101/27, 116/31 and the calculator — none rides), `court` → `court` → `name` (🎯: on 69 the middle mark
+of a tenth jams, the middle mark of a hundredth leaves a band), two `trace` pages. **A rod card may be a FRACTION**
+(« 23/7 »: `courtCards` keeps it a fraction whenever its denominator is not made of 2 and 5 only — 31/8 would be written
+3,875 —, its card drawn `\dfrac` with a real bar); a card's own `label` names a middle mark (« العلامة الوسطى »). Its
+`board.test.js` evaluates `\dfrac{…}{…}` and `>` too, checks that no key's word (« ناطق », « غير ناطق », « مدو ») is
+said or labelled before its naming, that no fraction is written with a slash where the class reads, and that a line of
+the script holds at most one of the hour's numbers. **Known, not mine to fix (`rootCourts/courtParts.jsx`)**: inside
+the court's own drawing the rod's label under the platform and the difference written beside it are plain text, so a
+fraction rod reads « 23/7 » there (the card beside it has the bar). **The memo figure `court`** (`MemoFigures.jsx ›
+NumCap`) draws a fraction area, rod or difference with a real bar — its captions laid lower and its courts smaller only
+when a fraction is drawn (lesson 1's figures are unchanged, tested in `courtStation.render.test.jsx`).
 Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most
@@ -319,6 +372,7 @@ shown in the footer for the teacher. Kinds, each drawn by one component of `Less
 | `name` | the rule gets its name: the tablet of the lesson (`tablet` = a key of the lesson's own `rules` — its `world/` content, handed to the board by `ClassSessionPage` through `usePackPart(lessonId, 'world')`: **one wording for the student's world and for the board**; before 2026-11-18 the board read the pilot's strings), read aloud by a student the teacher picks or by the teacher; after a `forge` the class's own rule is shown above it. « من يتذكّر؟ » hides the key words (`recall`), never inside a formula: the class says them, a tap shows them |
 | `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five). A card is labelled « لوح » and its verdict is « يثبت / ينهار »; a step whose choices are NOT planks gives its own `words: { card, held, fell }` (`lessonScripts.js › askWords`; a word left out keeps the default) — lesson 4's `deal`, a number of bouquets: « عدد الباقات », « توزَّع كلّها / تبقى زنابق ». A `card` label holds no number (it would need Arabic number agreement: 3 باقات، 12 باقة) |
 | `statements` | sentences judged « صحيح / خطأ » one after the other; each verdict comes with its reason (`proofOf`) |
+| `court` | **a court of « قصر الساحات »** (2026-11-21, `LessonBoard › CourtStation`, logic `lessonScripts.js › courtCards / courtShown / courtWords`): ONE square court drawn by the world's own `Court` (`rootCourts/courtParts.jsx`, its tokens turned for the light board in `classSession.css`), and a column of at most six cards beside it — rods over a given court (`area`, `rods`: « 4,2 », `{ q, label }`, or the wall `{ root, label }`) or courts under a given rod (`rod`, `areas`). A tap on a card holds its platform over the court, dashed (the class predicts aloud); « أنزل المنصّة » lowers it and the world answers — it rides (green), leaves a band (amber), jams (violet), the exact difference written beside the court, a lens on a band too thin to see. A card lowered keeps its verdict (a thumbnail `CourtMini` and « تركب / شريط / تعلق »). `answer` = the cards that ride (**a test computes it** from `courtCards`: `jidhr-tarbii/board/board.test.js`); the proof `after` replaces the question once they were lowered — or once every card was, when none rides (`answer: []`). Its words are the world's, never a plank's; `words` overrides any (`card`, `court`, `ride`, `band`, `jam`, `lower`, `rod`). Hooks: `data-cs-court` (the step), `data-cs-court-card="<key>"` (« 18 », « 7,28 », « √53 », or the area), `data-cs-court-kind` (after lowering), `data-cs-court-lower`, `data-cs-court-on` / `data-cs-court-stage` (the court box), `data-cs-court-rod` (a given rod, before any court), `data-cs-court-shown`, `data-cs-court-after`. `jidhr-tarbii/board/script.js` |
 | `trace` | what goes in the copybook: the keys of the lesson, in the wording just read. A lesson whose tablets are long splits the copybook into SEVERAL `trace` steps of two keys (lesson 2: `trace-1`, `trace-2`). A chain of four `=` or more (« 60 = 1 × 60 = 2 × 30 = … ») takes its own row and a smaller size (`data-long`); a tablet of five items or more shrinks its card (`data-dense`) — never cut, never broken |
 
 Rules of this screen:
@@ -445,6 +499,8 @@ API (`/api/v1/teacher`, the three locks of every teacher route): `GET|PUT /class
   contradicted by a line, a wrong rule broken by the attack, the right rule sealed, the names, « من يتذكّر؟ », the
   questions and sentences, the copybook), the rail, the memory after leaving and after a reload, and the end test. It
   fails on any scroll, clipped card, cut oral question or broken formula.
+- Unit, the court station and its memo figure: `courtStation.render.test.jsx` (the cards computed by the world's law, the
+  proof's moment, the drawing and its hooks, the figure's agreed words).
 - Unit, the script: `lessonScripts.test.js` (the order of the rule cards, every example true, a name never before the
   action, every choice and sentence re-computed, the evidence needed to conclude, the class's voice, the recall words).
 

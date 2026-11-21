@@ -3,6 +3,9 @@ import { Route } from 'react-router-dom';
 import { getBuiltLessons, loadLessonRoutesFactory } from './registry';
 import { loadLessonRuntimeCore } from './common/lessonRuntimeLoader';
 import { loadLessonManipulationStrings } from '../i18n/lessonManipulationStrings';
+import { useLearningViewer } from '../features/learning/learningViewer';
+import LessonWaiting, { useOpensWorld } from './LessonWaiting';
+import { preloadWorld } from './worldPreload';
 
 /**
  * Un chemin de MODULE (pas le sommaire) : la page qui s'ouvrira attend les textes
@@ -45,7 +48,12 @@ function startStringsIfModule(pathname, basePath) {
  * docs/architecture/BUNDLE_BOUNDARIES.md (§3 « Lesson route boundary »).
  */
 
-const LESSON_FALLBACK = <div className="min-h-screen bg-slate-50" />;
+/**
+ * A STUDENT is looking (not a teacher, whose lesson home is his card): a lesson he points at or opens will be its game
+ * world, so the world travels WITH the routes (worldPreload.js) instead of being discovered four downloads later.
+ * Written by `useLessonRoutes` at each render — the delegated listener below has no React context to ask.
+ */
+let viewerPlaysWorlds = false;
 
 const loadedRoutes = new Map(); // id → l'arbre <Route> de la leçon
 const pending = new Map(); // id → Promise
@@ -74,6 +82,7 @@ function loadLessonRoutes(lessonId) {
     // une URL de module), le sommaire s'en passe et les précharge une fois
     // affiché (LessonIndex › prefetchLessonStringsWhenIdle) (2026-10-17).
     loadLessonRuntimeCore().catch(() => {});
+    if (viewerPlaysWorlds) preloadWorld(lessonId);
     const promise = loadLessonRoutesFactory(lessonId)
       .then((factory) => {
         if (typeof factory !== 'function') throw new Error(`Lesson routes not found: ${lessonId}`);
@@ -131,7 +140,9 @@ function installIntentPrefetch() {
 
 /** L'élément de la route d'attente : suspend jusqu'à l'arrivée des routes réelles. */
 function LessonRoutesLoader({ lessonId, basePath }) {
-  if (loadedRoutes.has(lessonId)) return LESSON_FALLBACK; // App remonte les routes réelles
+  // « جرّب كتلميذ » : l'enseignant ouvre le monde lui aussi — même préchargement (idempotent).
+  if (useOpensWorld(lessonId)) preloadWorld(lessonId);
+  if (loadedRoutes.has(lessonId)) return <LessonWaiting lessonId={lessonId} />; // App remonte les routes réelles
   if (typeof window !== 'undefined') startStringsIfModule(window.location.pathname, basePath);
   if (failures.has(lessonId)) {
     const error = failures.get(lessonId);
@@ -148,13 +159,14 @@ function LessonRoutesLoader({ lessonId, basePath }) {
  */
 export function useLessonRoutes() {
   const current = useSyncExternalStore(subscribe, getVersion, getVersion);
+  viewerPlaysWorlds = !useLearningViewer().freeNavigation;
   useEffect(installIntentPrefetch, []);
   return useMemo(
     () => getBuiltLessons().map(({ id, basePath }) => loadedRoutes.get(id) ?? (
       <Route
         key={`${id}-lazy`}
         path={`${basePath}/*`}
-        element={<Suspense fallback={LESSON_FALLBACK}><LessonRoutesLoader lessonId={id} basePath={basePath} /></Suspense>}
+        element={<Suspense fallback={<LessonWaiting lessonId={id} />}><LessonRoutesLoader lessonId={id} basePath={basePath} /></Suspense>}
       />
     )),
     // `current` : un nouveau tableau à chaque leçon chargée.

@@ -64,7 +64,8 @@ export async function trainerWalk(L, D, opts) {
     const practice = Object.fromEntries(KEYS.map((k) => [`${k}:1`, { stars: 2, best: 800 }]));
     const save = {
       v: 1,
-      stage: L.lesson.story.segments.length,
+      // the islands' road counts its segments; « قصر الساحات » its terraces (the save's last place)
+      stage: L.lesson.story.segments ? L.lesson.story.segments.length : L.lesson.story.terraces.length - 1,
       stars: {},
       gems: [],
       keys: KEYS,
@@ -164,7 +165,9 @@ export async function trainerWalk(L, D, opts) {
         return ok[0];
       }
       if (q.kind === 'tf') {
-        const good = q.reasons ? q.reasons.map((r, i) => (reasonTrue(r.t) ? i : -1)).filter((i) => i >= 0) : [null];
+        // a lesson whose reasons are not the islands' equalities judges them itself (`descriptor.reasonTrue`)
+        const truthOf = D.reasonTrue ?? reasonTrue;
+        const good = q.reasons ? q.reasons.map((r, i) => (truthOf(r.t) ? i : -1)).filter((i) => i >= 0) : [null];
         if (q.reasons)
           check(
             good.length === 1,

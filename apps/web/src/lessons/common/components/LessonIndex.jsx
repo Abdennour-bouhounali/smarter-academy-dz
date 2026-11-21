@@ -40,6 +40,8 @@ const LessonToolsBar = lazy(() => import('../../../features/classSession/LessonT
 import { hasClassBoard } from '../../../features/classSession/boardLessons';
 const LessonGameWorld = lazy(() => import('../gameworld/LessonGameWorld'));
 import { lessonPackFlags } from '../../registry';
+import WorldLoading from '../gameworld/WorldLoading';
+import { TeacherPanelSkeleton } from '../../../features/classSession/TeacherSkeletons';
 import { mathToPlain } from '../../../utils/mathPlain';
 import { hasLab } from '../lessonlab/registry';
 import { useCatalogueHref } from '../../../components/student/catalogueLink';
@@ -147,9 +149,11 @@ export default function LessonIndex({ config, basePath }) {
   const { t: ts } = useTranslation('student');
   // Le sommaire ne lit aucun texte de lab ; ses modules, si. On les précharge
   // une fois le sommaire affiché : le clic sur un module ne les attend plus.
+  // …sauf pour une leçon v2 : son accueil est un monde, elle n'a plus de page de module — ces ≈ 440 Ko gzip
+  // disputaient la bande passante à three.js au moment exact où le monde se charge (mesuré le 2026-11-21).
   useEffect(() => {
-    prefetchLessonStringsWhenIdle();
-  }, []);
+    if (!lessonPackFlags(config.id).world) prefetchLessonStringsWhenIdle();
+  }, [config.id]);
   const catalogueLesson = getLessonById(config.id);
   const unit = config.unit ? getUnitById(config.unit) : null;
   const prereqLessons = (catalogueLesson?.prerequisiteLessonCodes ?? [])
@@ -499,7 +503,7 @@ export default function LessonIndex({ config, basePath }) {
   const worldId = studentWorld || previewAsStudent ? (pack.world ?? null) : null;
   if (worldId) {
     return (
-      <Suspense fallback={null}>
+      <Suspense fallback={<WorldLoading lessonId={config.id} title={config.title} />}>
         <LessonGameWorld
           worldId={worldId}
           config={config}
@@ -681,7 +685,7 @@ export default function LessonIndex({ config, basePath }) {
                   Les autres leçons gardent la rangée. */}
                 {teacherBoard ? (
                   <div data-tour="lesson-index.tools">
-                    <Suspense fallback={null}>
+                    <Suspense fallback={<TeacherPanelSkeleton />}>
                       <TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(pack.world)} />
                     </Suspense>
                   </div>
@@ -693,7 +697,7 @@ export default function LessonIndex({ config, basePath }) {
                     </div>
                     {/* L'ENSEIGNANT d'une leçon pilote : sa fiche d'une page, « جرّب كتلميذ », « حصّة القسم » (CLASS_SESSION.md). */}
                     {teacherCard && (
-                      <Suspense fallback={null}>
+                      <Suspense fallback={<TeacherPanelSkeleton board={false} />}>
                         <TeacherLessonPanel config={config} basePath={basePath} hasWorld={Boolean(pack.world)} />
                       </Suspense>
                     )}

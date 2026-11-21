@@ -21,6 +21,7 @@ use App\Http\Controllers\Admin\AdminMasteryReplayController;
 use App\Http\Controllers\Admin\AdminPlanController;
 use App\Http\Controllers\Admin\AdminProviderEventController;
 use App\Http\Controllers\Admin\AdminPushController;
+use App\Http\Controllers\Admin\AdminRegistrationController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminSchoolController;
 use App\Http\Controllers\Admin\AdminStudentController;
@@ -818,7 +819,13 @@ Route::prefix('v1')->group(function () {
             Route::post('/reports/{id}/notes', [AdminReportController::class, 'addNote'])->whereNumber('id');
             Route::get('/reports/{id}/screenshot', [AdminReportController::class, 'screenshot'])->whereNumber('id');
 
+            // « التسجيل » : ouvrir / fermer les inscriptions (RegistrationGate, platform_settings).
+            Route::get('/registration', [AdminRegistrationController::class, 'show']);
+            Route::patch('/registration', [AdminRegistrationController::class, 'update']);
+
             Route::get('/students', [AdminStudentController::class, 'index']);
+            // Un compte élève créé par l'administrateur ; le mot de passe rendu une fois.
+            Route::post('/students', [AdminStudentController::class, 'store']);
             Route::get('/students/{id}', [AdminStudentController::class, 'show'])->whereNumber('id');
             Route::patch('/students/{id}/status', [AdminStudentController::class, 'changeStatus'])->whereNumber('id');
 

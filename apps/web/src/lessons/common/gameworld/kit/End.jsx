@@ -6,7 +6,7 @@ import { KT } from './text';
 import { Card } from './parts';
 
 export default function End({ s, o, stars, game, world, basePath, config, onRestart }) {
-  const { keys, rules } = useLesson();
+  const { keys, rules, notYet = [] } = useLesson();
   const min = Math.max(1, Math.round(o.elapsed / 60000));
   return (
     <Card wide tone="di-card--gold">
@@ -51,12 +51,16 @@ export default function End({ s, o, stars, game, world, basePath, config, onRest
           ))}
       </div>
       <div className="di-row di-row--wrap">
-        <button type="button" className="di-btn di-btn--primary" onClick={() => game.openMap()} data-di-end-practice>
-          <MapIcon size={17} /> {KT.practice.exam}
-        </button>
-        <Link to={`${basePath}/itqan`} className="di-btn">
-          {KT.end.test}
-        </Link>
+        {!notYet.includes('map') && (
+          <button type="button" className="di-btn di-btn--primary" onClick={() => game.openMap()} data-di-end-practice>
+            <MapIcon size={17} /> {KT.practice.exam}
+          </button>
+        )}
+        {!notYet.includes('test') && (
+          <Link to={`${basePath}/itqan`} className="di-btn">
+            {KT.end.test}
+          </Link>
+        )}
         <Link to={`/espace/pratique/${config.id}`} className="di-btn">
           {KT.end.practice}
         </Link>

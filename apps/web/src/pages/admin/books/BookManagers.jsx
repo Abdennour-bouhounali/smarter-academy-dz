@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from 'react';
 import { KeyRound, UserCheck, UserPlus } from 'lucide-react';
 import { AuthContext } from '../../../context/AuthContext';
 import { AdminPage, AdminCard, formatDate, input, label, btnPrimary, btnSecondary, btnGhost } from '../adminUi';
+import OneTimeCredentials from '../../../components/admin/OneTimeCredentials';
 import DataTable from '../../../components/admin/ui/DataTable';
 import { EmptyState } from '../../../components/admin/ui/states';
 import { useAdminResource } from '../../../hooks/useAdminResource';
@@ -29,7 +30,6 @@ export default function AdminBookManagers() {
   const [busy, setBusy] = useState(false);
   const [formError, setFormError] = useState(null);
   const [secret, setSecret] = useState(null); // { email, password }
-  const [copied, setCopied] = useState(false);
 
   const submit = async (event) => {
     event.preventDefault();
@@ -58,14 +58,6 @@ export default function AdminBookManagers() {
     setSecret({ email: m.email, password: res.password });
   };
 
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(secret.password);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch { /* le mot de passe reste lisible à l'écran */ }
-  };
-
   return (
     <AdminPage
       eyebrow={A.eyebrow}
@@ -79,16 +71,15 @@ export default function AdminBookManagers() {
     >
       <div className="space-y-4">
         {secret && (
-          <AdminCard title={M.passwordTitle} className="border-amber-300 bg-amber-50">
-            <p className="mb-3 font-inter text-sm text-slate-700">{M.passwordHint}</p>
-            <div className="flex flex-wrap items-center gap-3">
-              <span dir="ltr" className="font-mono-jetbrains text-sm text-slate-600">{secret.email}</span>
-              <code dir="ltr" className="rounded-lg border border-amber-300 bg-white px-3 py-1.5 font-mono-jetbrains text-base font-bold text-slate-900 select-all">{secret.password}</code>
-              <button type="button" className={btnSecondary} onClick={copy}>{copied ? M.copied : M.copy}</button>
-              <button type="button" className={btnGhost} onClick={() => setSecret(null)}>{M.done}</button>
-            </div>
-            <p className="mt-2 font-inter text-xs text-slate-500">{M.loginAt}</p>
-          </AdminCard>
+          <OneTimeCredentials
+            title={M.passwordTitle}
+            hint={M.passwordHint}
+            footer={M.loginAt}
+            login={secret.email}
+            password={secret.password}
+            labels={{ copy: M.copy, copied: M.copied, done: M.done }}
+            onDone={() => setSecret(null)}
+          />
         )}
 
         {form && (
