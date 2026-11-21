@@ -55,6 +55,19 @@ describe('a line of evidence — in the world’s words, for each outcome', () =
     expect(out).toContain('rf-inmirror');
     expect(out).toContain('rf-says');
   });
+  it('a court or a rod that is a fraction is stacked over a real bar — never « p/q » as text (defects.md D41)', () => {
+    const out = line(caseOf('49/64', '11/6'));
+    expect(out).toContain('data-rc-frac="49/64"');
+    expect(out).toContain('data-rc-frac="11/6"');
+    expect(out).toMatch(/di-frac[^>]*><b>49<\/b><span class="di-frac__bar"[^>]*><\/span><b>64<\/b>/);
+    const text = out.replace(/<[^>]+>/g, ' ');
+    expect(text).not.toMatch(/\d+\s*\/\s*\d+/);
+    const band = line(caseOf('2', '17/12'));
+    expect(band).toContain('data-rc-frac="17/12"');
+    expect(band.replace(/<[^>]+>/g, ' ')).not.toMatch(/\d+\s*\/\s*\d+/);
+    // a whole and a decimal court stay one plain number
+    expect(line(caseOf('30', '5,47'))).toContain('<strong dir="ltr">30</strong>');
+  });
   it('a case with a `head` is named by it, not by its court and rod', () => {
     const out = line(caseOf('30', '5,47', { head: 'مقياس الحاسبة' }));
     expect(out).toContain('crt-line__name">مقياس الحاسبة<');

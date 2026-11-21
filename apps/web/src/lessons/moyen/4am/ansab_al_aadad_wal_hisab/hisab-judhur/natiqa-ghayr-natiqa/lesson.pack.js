@@ -14,12 +14,11 @@ export const LESSON_PACK = {
   // They live in the world's folder and are the lesson's ONLY knowledge (the world's « خريطة المعارف » too): the old root
   // `knowledge.jsx` / `knowledgeGraph.js` were deleted with the old version (LESSON_V2.md §2).
   knowledge: () => import('./world/knowledge.js').then((m) => m.LESSON_KNOWLEDGE),
-  // « مدرّب الامتحان »: the knowledge sheet behind each الكفاءة of the lesson. P2, P3, P4 as world/evidence.js › POINTS
-  // (🧩 `murabba-natiq`, ♾️ `la-kasr-yarkab`, 🎯 `al-mudawwar`); P1 — classifying a root as « ناطق / غير ناطق » — proves
-  // no key's evidence, and its rule is the 🧩 sheet's (a root is rational exactly when the area is a square of a
-  // rational): the same sheet as P2 — as the world's `cards.fallback` (the map's card `natiq`, which 🧩 opens) answers a
-  // missed P1 sheet of the bank. Two الكفاءات on one sheet: the coach reads `coach[point]`, one sheet per point.
-  coach: { P1: 'murabba-natiq', P2: 'murabba-natiq', P3: 'la-kasr-yarkab', P4: 'al-mudawwar' },
+  // « مدرّب الامتحان »: the knowledge sheet behind each الكفاءة of the lesson. The catalogue gives this lesson THREE
+  // الكفاءات: P1 (saying whether a root is rational) and P2 (the roots of squares of rationals) read the 🧩 sheet — a
+  // root is rational exactly when the area is a square of a rational; P3 (a root that is not rational, and its
+  // approximate values) reads the ♾️ sheet. The 🎯 sheet (the rounded value) is reached from the knowledge map.
+  coach: { P1: 'murabba-natiq', P2: 'murabba-natiq', P3: 'la-kasr-yarkab' },
   // « حصّة القسم »: the lesson on the board and its written memo
   board: {
     script: () => import('./board/script.js').then((m) => m.SCRIPT),

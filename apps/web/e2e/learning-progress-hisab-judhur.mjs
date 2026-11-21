@@ -30,8 +30,9 @@ const EMAIL = process.env.QA_STUDENT_EMAIL || 'qa-eleve@smarter.dz';
 const PASSWORD = process.env.QA_PASSWORD || 'QaPass2026!';
 const here = dirname(fileURLToPath(import.meta.url));
 const UNIT_DIR = resolve(here, '../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur');
-// `jidhr-tarbii` is a v2 lesson since 2026-11-21 (its modules' pages are deleted): walked by e2e/lessons/jidhr-tarbii.walk.mjs
-const CODES = ['natiqa-ghayr-natiqa', 'muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur']
+// `jidhr-tarbii` and `natiqa-ghayr-natiqa` are v2 lessons since 2026-11-21 (their modules' pages are deleted): walked by
+// e2e/lessons/<id>.walk.mjs
+const CODES = ['muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur']
   .filter((c) => existsSync(`${UNIT_DIR}/${c}/lesson.config.js`));
 
 const results = [];

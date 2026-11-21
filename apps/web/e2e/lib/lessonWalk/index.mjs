@@ -38,7 +38,12 @@ export async function runLessonWalk(D, parts, out) {
   console.log(
     `NOTE  ${D.id}: ${foreign.length} foreign words, ${foreignNumbers.length} foreign numbers (${foreignNumbers.join(', ')})`,
   );
-  const opts = { foreign, foreignNumbers, ...(other ? { textRules: other.textRules } : {}) };
+  // a lesson of another world may add rules of its own screens (`descriptor.textRules`, e.g. no fraction « p/q » as text)
+  const opts = {
+    foreign,
+    foreignNumbers,
+    ...(other ? { textRules: [...other.textRules, ...(D.textRules ?? [])] } : {}),
+  };
   for (const part of parts) {
     const play = PARTS[part];
     if (!play) throw new Error(`no part « ${part} » (${Object.keys(PARTS).join(', ')}, all)`);

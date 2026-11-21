@@ -5,11 +5,10 @@
  * « 25/36 », never a float that decides anything).
  */
 import { ltr } from '../../../../../../common/gameworld/kit/authoring/numbers';
-import { compare, read, rootOf, square, write } from '../../../../../../common/gameworld/rootCourts/logic';
+import { compare, read, rootOf, square, tex, write } from '../../../../../../common/gameworld/rootCourts/logic';
 
 export { ltr } from '../../../../../../common/gameworld/kit/authoring/numbers';
 export { compare, equal, read, rootOf, square, tex, write } from '../../../../../../common/gameworld/rootCourts/logic';
-export { tiles } from '../../../../../../common/gameworld/rootCourts/strings';
 // the key ids from the story (forges.js holds the same literals): the forges read the story, so nothing they import
 // imports them back
 export { K1, K2, K3 } from './story';
@@ -82,15 +81,26 @@ export function calculator(area, digits = 10) {
   return write(`${(r + 5n) / 10n}/${10n ** k}`);
 }
 
+/** Is a number written as a fraction (it has no finite decimal writing)? */
+const isFrac = (x) => write(x).includes('/');
 /**
- * What the world does with a rod of length g over a court of area a, as one plain FACT (the platform rides, leaves a
- * band, or jams) and the product that says it, isolated left to right. Never « wrong »: the world's own verdicts.
+ * A number inside a fact: a whole number or a decimal as it is written, a FRACTION as a formula over a real bar
+ * (`$\\dfrac{4}{7}$` — never « 4/7 » as text). A fact is drawn by MathText (the rail's `why`, the trainer's hints).
+ */
+export const said = (x) => (isFrac(x) ? `$${tex(x)}$` : write(x));
+/** A product « g × g = p » inside a fact: isolated left to right, or a formula when a fraction is in it. */
+const product = (g, p) =>
+  isFrac(g) || isFrac(p) ? `$${tex(g)} \\times ${tex(g)} = ${tex(p)}$` : ltr(`${write(g)} × ${write(g)} = ${write(p)}`);
+
+/**
+ * What the world does with a rod of length g over a court of area a, as one FACT (the platform rides, leaves a band, or
+ * jams) and the product that says it. Never « wrong »: the world's own verdicts.
  */
 export function rodFact(g, a) {
   const p = sq(g);
   const c = compare(p, a);
   const what = c === 0 ? 'تركب' : c < 0 ? 'تترك شريطًا في' : 'تعلق في';
-  return `منصّة المقياس ${write(g)} ${what} الساحة ${write(a)}: ${ltr(`${write(g)} × ${write(g)} = ${p}`)}.`;
+  return `منصّة المقياس ${said(g)} ${what} الساحة ${said(a)}: ${product(g, p)}.`;
 }
 
 /** A typed box: its digits, or null (an empty box, a sign, a decimal point typed by a test — the screen keeps digits only). */

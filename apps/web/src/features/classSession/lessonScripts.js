@@ -218,12 +218,18 @@ export function proofOf(form, a, b) {
 /**
  * Is a tablet drawn DENSE on the board's naming card? Five list items, or a tablet whose words pass `DENSE_WORDS`
  * characters (its formulas counted as four): the second tablet of the first lesson of « قصر الساحات » (397) left its card at 1366×768 (the walk of
- * 2026-11-21); the longest tablet of every other lesson then was 279.
+ * 2026-11-21); the longest tablet of every other lesson then was 279. A fraction of two storeys (`\\dfrac`, `\\frac`) in
+ * its words is taller than a line: it counts `DENSE_FRAC` more — the first tablet of lesson 2 (304 characters, three
+ * fractions in its words) left its card on the board's walk of 2026-11-21.
  */
 export const DENSE_WORDS = 320;
-export const denseTablet = (t) =>
-  (t.list?.length ?? 0) >= 5 ||
-  [...t.lines, ...(t.list ?? []), ...(t.notes ?? [])].join('').replace(/\$[^$]*\$/g, '····').length > DENSE_WORDS;
+const DENSE_FRAC = 16;
+export const denseTablet = (t) => {
+  if ((t.list?.length ?? 0) >= 5) return true;
+  const words = [...t.lines, ...(t.list ?? []), ...(t.notes ?? [])].join('');
+  const fracs = (words.match(/\\d?frac\{/g) ?? []).length;
+  return words.replace(/\$[^$]*\$/g, '····').length + fracs * DENSE_FRAC > DENSE_WORDS;
+};
 
 /**
  * « من يتذكّر؟ »: a line of a rule cut into parts, the `words` to recall hidden — never inside a formula.

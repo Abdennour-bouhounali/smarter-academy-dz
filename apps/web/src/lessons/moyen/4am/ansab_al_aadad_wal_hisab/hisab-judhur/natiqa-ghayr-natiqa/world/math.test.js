@@ -62,6 +62,10 @@ describe('the shared numbers of the written world of « الأعداد النا�
   it('says what a rod does on a court in the world’s words, its product isolated left to right', () => {
     expect(rodFact('2,4', '5,76')).toBe('منصّة المقياس 2,4 تركب الساحة 5,76: ⁦2,4 × 2,4 = 5,76⁩.');
     expect(rodFact('0,4', '1,6')).toBe('منصّة المقياس 0,4 تترك شريطًا في الساحة 1,6: ⁦0,4 × 0,4 = 0,16⁩.');
-    expect(rodFact('3/7', '9/50')).toBe('منصّة المقياس 3/7 تعلق في الساحة 0,18: ⁦3/7 × 3/7 = 9/49⁩.');
+    // a fraction over a real bar (a MathText fact), never « 3/7 » as text
+    expect(rodFact('3/7', '9/50')).toBe(
+      'منصّة المقياس $\\dfrac{3}{7}$ تعلق في الساحة 0,18: $\\dfrac{3}{7} \\times \\dfrac{3}{7} = \\dfrac{9}{49}$.',
+    );
+    expect(rodFact('2/7', '4/49').replace(/\$[^$]*\$/g, '')).not.toMatch(/\d\s*\/\s*\d/);
   });
 });

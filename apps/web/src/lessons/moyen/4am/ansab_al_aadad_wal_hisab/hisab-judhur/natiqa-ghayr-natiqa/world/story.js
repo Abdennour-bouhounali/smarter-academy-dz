@@ -77,6 +77,8 @@ export const MISSION = {
   none: '31',
 };
 const MISSION_FRAC = `${MISSION.fracN}/${MISSION.fracD}`;
+/** The second court's area AS THE BUILDER WRITES IT — not reduced (it is the point of the line: reduce, then read). */
+const MISSION_TEX = `\\dfrac{${MISSION.fracN}}{${MISSION.fracD}}`;
 
 const has = (game, key) => game.state.keys.includes(key);
 const doneId = (game, id) => Boolean(game.ridden[id] || game.sealed[id]);
@@ -184,7 +186,7 @@ export const STORY = {
     prompt: 'ابدأ مهمّة القصر',
     title: 'مهمّة القصر — بطاقة البنّاء',
     lead: [
-      `يبني البنّاء ثلاث ساحات مربّعة مساحاتها: $${tex(MISSION.exact)}$ و $${tex(MISSION_FRAC)}$ و $${MISSION.none}$ بلاطة. عرضت حاسبته لأضلاعها: $${tex(calculator(MISSION.exact))}$ و $${tex(calculator(MISSION_FRAC))}$ و $${tex(calculator(MISSION.none))}$.`,
+      `يبني البنّاء ثلاث ساحات مربّعة مساحاتها: $${tex(MISSION.exact)}$ و $${MISSION_TEX}$ و $${MISSION.none}$ بلاطة. عرضت حاسبته لأضلاعها: $${tex(calculator(MISSION.exact))}$ و $${tex(calculator(MISSION_FRAC))}$ و $${tex(calculator(MISSION.none))}$.`,
       'اكتب الضلع بالضبط حين يكتبه عدد عشريّ أو كسر. والضلع الذي لا يكتبه أيّ عدد يقصّه البنّاء مرّتين: بالنقصان، ثمّ عند العلامة الأقرب.',
     ],
     lines: () => [
@@ -223,8 +225,8 @@ export const STORY = {
       if (second.kind !== 'ride') {
         const prod = `$${tex(F)} \\times ${tex(F)} = ${tex(second.covers)}$`;
         return second.kind === 'band'
-          ? `السطر الثاني: ${prod}، أصغر من $${tex(MISSION_FRAC)}$ — يبقى شريط. الأرقام الكثيرة على الحاسبة لا تكفي للحكم.`
-          : `السطر الثاني: ${prod}، أكبر من $${tex(MISSION_FRAC)}$ — المنصّة تعلق.`;
+          ? `السطر الثاني: ${prod}، أصغر من $${MISSION_TEX}$ — يبقى شريط. الأرقام الكثيرة على الحاسبة لا تكفي للحكم.`
+          : `السطر الثاني: ${prod}، أكبر من $${MISSION_TEX}$ — المنصّة تعلق.`;
       }
       // the third line: the third side by default to a hundredth
       const none = MISSION.none;

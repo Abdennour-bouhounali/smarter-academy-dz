@@ -40,6 +40,8 @@ describe('مختبري — « منصّة الكسر » draws what it counts', ()
     expect(factsOf(html)).toContain('2 \\times 25 = 50');
     // the difference: 1 piece of the 25 of a tile
     expect(factsOf(html)).toContain('\\dfrac{1}{25}');
+    // the difference stands on its own line (on the rod's line it ran out of the card at 1366×768)
+    expect(html).toMatch(/<p data-ll-piece-far="[^"]*">الفرق /);
     expect(html).not.toContain('ll-pulse'); // the hand has moved
   });
 

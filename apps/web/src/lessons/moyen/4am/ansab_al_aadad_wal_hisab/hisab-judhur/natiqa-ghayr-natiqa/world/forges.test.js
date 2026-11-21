@@ -5,6 +5,7 @@
  * drawn as what the world does, the forges' arithmetic agrees with math.js, and the numbers of the mirrors and of the
  * last steps against the bank and the other stories.
  */
+import { readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
 import { createElement } from 'react';
 import { renderToString } from 'react-dom/server';
@@ -403,6 +404,21 @@ describe('natiqa-ghayr-natiqa — a case is drawn as what the world does', () =>
 });
 
 describe('natiqa-ghayr-natiqa — the forges’ arithmetic is math.js’s', () => {
+  it('forges.js imports the facts about a root from math.js and defines no copy of them (defects.md D8)', () => {
+    const src = readFileSync(new URL('./forges.js', import.meta.url), 'utf8');
+    expect(src).toMatch(/import \{[^}]*\bcut\b[^}]*\} from '\.\/math'/);
+    for (const name of ['isqrt', 'marksBelow', 'calculator', 'decimalsOf'])
+      expect(src, name).not.toMatch(new RegExp(`function ${name}\\b|const ${name} =`));
+    for (const name of ['cutAt', 'aboveAt', 'middleAt', 'nearestAt'])
+      expect(src, name).not.toMatch(new RegExp(`const ${name} = \\(`));
+    expect([cutAt, aboveAt, middleAt, nearestAt, calculator]).toEqual([
+      math.cut,
+      math.above,
+      math.middle,
+      math.rounded,
+      math.calculator,
+    ]);
+  });
   it('the marks of a tenth and of a hundredth, the middle, the nearer, the calculator', () => {
     const areas = ['19', '66', '31', '18,924', '55', '2', '8,1', '1,6', '57', '71', '34', '0,8', '1/36', '25/81'];
     for (const a of areas) {

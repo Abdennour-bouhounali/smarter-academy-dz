@@ -129,6 +129,8 @@ describe('حصّة القسم — a court of « قصر الساحات » on the 
     ]);
     expect(cards[2].tex).toBe('\\dfrac{19}{7}');
     expect(board(step)).toContain('data-cs-court-card="19/7"');
+    // a fraction card lays its label beside its two storeys (it over-ran a card of the column before: lesson 2's walk)
+    expect(board(step)).toMatch(/data-cs-court-card="19\/7"[^]*?<span class="cs-rodcard__name" data-frac="">/);
     expect(board(step)).toContain('data-court="722/98"'); // the court's gate shows the area as given
   });
 

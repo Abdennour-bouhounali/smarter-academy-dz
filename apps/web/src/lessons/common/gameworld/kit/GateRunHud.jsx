@@ -7,9 +7,11 @@
  *   <GateRunHud run={s.run} game={game} content={lesson.run} />
  *
  * `game` answers `startRun()`, `leaveRun()`, `pauseRun(on)`, `runLane(d)` and holds the engine as `game.gateRun`.
+ * A gate's `why` is drawn by MathText: a fraction in it is written `$\\dfrac{p}{q}$`, never « p/q ».
  * `content.text` is the lesson's: { title, say, rule, start, again, leave, order, gate, of, pause, resume, quit, won: { title, text }, lost: { title, text } }.
  */
 import { ArrowLeft, ArrowRight, Flame, Heart, Pause, Play, Star, Trophy, X, Zap } from 'lucide-react';
+import MathText from '../../components/MathText';
 import { M } from './parts';
 import './styles/gateRun.css';
 
@@ -120,7 +122,10 @@ export default function GateRunHud({ run: r, game, content }) {
                 </span>
               )}
             </small>
-            <strong>{r.why}</strong>
+            {/* a fact may write a fraction over a real bar (`$\\dfrac{4}{7}$`): a fact without `$` reads as before */}
+            <strong>
+              <MathText>{r.why}</MathText>
+            </strong>
           </div>
         )}
       </div>

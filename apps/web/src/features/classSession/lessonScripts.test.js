@@ -211,5 +211,9 @@ describe('حصّة القسم — a long tablet is drawn dense on its naming car
     expect(denseTablet(t('ق', ['1', '2', '3', '4', '5']))).toBe(true);
     expect(denseTablet(t('ك'.repeat(DENSE_WORDS + 1)))).toBe(true);
     expect(denseTablet(t(`${'ك'.repeat(DENSE_WORDS - 10)} $\\sqrt{123456789}$`))).toBe(false);
+    // a fraction of two storeys in its words is taller than a line (lesson 2 of « قصر الساحات », its first tablet)
+    const tall = `${'ك'.repeat(DENSE_WORDS - 30)} $\\dfrac{144}{25}$ $\\dfrac{12}{5}$`;
+    expect(denseTablet(t(tall))).toBe(true);
+    expect(denseTablet(t(tall.replace(/\\dfrac\{(\d+)\}\{(\d+)\}/g, '$1')))).toBe(false);
   });
 });

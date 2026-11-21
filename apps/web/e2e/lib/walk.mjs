@@ -387,8 +387,9 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
     check(!t.learningPoint && !t.money, `${where}: « الكفاءة », never « نقطة التعلّم »; money in « دج » only`);
     // the words a WORLD forbids on every one of its screens (`textRules`: [{ re, what }], given by a world's walk — e.g. the
     // nouns of another world; none for the islands' walks)
+    // (a rule may read the page itself: `on(page)` → what breaks it, or null — e.g. a text node « p/q »)
     for (const rule of textRules) {
-      const m = t.text.match(rule.re);
+      const m = rule.on ? await rule.on(page) : t.text.match(rule.re);
       check(!m, `${where}: ${rule.what}${m ? ` — « ${m[0].trim()} »` : ''}`);
     }
     const tiny = t.tiny;

@@ -657,6 +657,21 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
      1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
 
+  25. [x] **4AM unit 2, lesson 2 `natiqa-ghayr-natiqa` is v2 (2026-11-21)** — three keys built on what is NEW for him
+     (design: `ROOTS_WORLD_PLAN.md` §12; the skill's §0ter): a terrace of courts he sorts by trying, a pursuit in
+     fractions on the court of 2 (experiment kind `chase`), the middle mark that decides the rounded value. The world
+     gained, for every lesson that uses it: several courts on a terrace, courts the world closes, the COUNT of a
+     platform's tiles from above with each tile's number and a note, the length on both sides, the key of a court, a
+     gate that stays « ؟ » until its count has ended (owner's remarks of the day, `play.md`). Walks at 1366×768, 0 FAIL:
+     lesson 2 story 1731, hub 250, trainer 566, board 204, launch 226, sitting 2140, lab step 10; lesson 1 re-walked
+     after the world's change: story 1994, hub 231, board 245, trainer 541; reference island lesson after the kit's
+     trainer change: `ikhtizal-kasr` trainer 543.
+     OPEN: `check:lessons` red on THREE shared textbook-coverage lines (« prep », « qcm », « ex-31 »); the old
+     manipulation « square-root-side » is mounted by no lesson any more; lesson 1's launch, sitting and lab step were
+     not re-walked after the world's change (they do not use what changed).
+     STOP asked by the owner on 2026-11-21: « when you finish the lesson 2 stop, i have to do some changes before
+     continue ». Lesson 3 `muadalat-x-murabba` has its DESIGN (`ROOTS_WORLD_PLAN.md` §13) and one experiment kind
+     (`peel`) written as separate files, not wired in; nothing else of it is started.
   24. [x] **4AM UNIT 2 « الحساب على الجذور » — its world « قصر الساحات » and its first lesson `jidhr-tarbii` are v2
      (2026-11-21)**: a NEW world (`gameworld/rootCourts/`, contract `GAME_WORLD.md` §2ter-3, plan and council
      `docs/reports/ROOTS_WORLD_PLAN.md`), the owner's play remarks written as rules in the skill (`play.md`), three

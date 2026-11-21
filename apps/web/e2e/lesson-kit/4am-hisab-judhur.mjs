@@ -20,8 +20,9 @@ import { BASE, launch, newCtx, watchErrors, check, summary, noHorizontalScroll, 
 
 const here = dirname(fileURLToPath(import.meta.url));
 const UNIT_DIR = resolve(here, '../../src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur');
-// `jidhr-tarbii` left out: a v2 lesson since 2026-11-21, its module pages deleted (e2e/lessons/jidhr-tarbii.walk.mjs)
-const LESSONS = ['natiqa-ghayr-natiqa', 'muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur'];
+// `jidhr-tarbii` and `natiqa-ghayr-natiqa` left out: v2 lessons since 2026-11-21, their module pages deleted
+// (e2e/lessons/<id>.walk.mjs)
+const LESSONS = ['muadalat-x-murabba', 'amaliyat-judhur', 'tawzif-khawass-judhur', 'wadiya-idmajiya-judhur'];
 const CONFIGS = Object.fromEntries(await Promise.all(LESSONS.map(async (id) => [id, (await import(pathToFileURL(`${UNIT_DIR}/${id}/lesson.config.js`).href)).LESSON_CONFIG])));
 const CH = `${BASE}/courses/moyen/4am/ansab_al_aadad_wal_hisab`;
 const errors = [];
@@ -94,26 +95,7 @@ for (const mobile of [false, true]) {
   }
 }
 
-// ── 3b. square-root-side (graduation) — leçon 2 ───────────────────────────
-{
-  const { ctx, page } = await fresh({ lesson: 'natiqa-ghayr-natiqa' });
-  await page.goto(`${BASE}${modulePath('natiqa-ghayr-natiqa', 'trigger')}`, { waitUntil: 'networkidle' });
-  await pickLevel(page, 'advanced');
-  const m = await visibleManip(page, 'square-root-side');
-  await m.waitFor();
-  const cards = await m.locator('[data-root-card]').count();
-  let found = false;
-  for (let i = 0; i < cards && !found; i += 1) {
-    const card = m.locator(`[data-root-card="${i}"]`);
-    if (!(await text(card)).includes('16')) continue;
-    await card.click();
-    await m.locator('[data-root-grad="3"]').click();
-    await setHandle(page, m, 4);
-    found = (await m.locator(`[data-root-card="${i}"]`).getAttribute('data-status')) === 'exact';
-  }
-  check('L2 متقدم : √(16/9) tombe sur la graduation des tiers (4/3)', found);
-  await ctx.close();
-}
+// ── 3b. (leçon 2 `natiqa-ghayr-natiqa`: a v2 lesson since 2026-11-21 — e2e/lessons/natiqa-ghayr-natiqa.walk.mjs)
 
 // ── 3c. square-fold — leçon 3 ─────────────────────────────────────────────
 {

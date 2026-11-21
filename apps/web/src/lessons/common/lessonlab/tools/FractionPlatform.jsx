@@ -301,20 +301,27 @@ export default function FractionPlatform({ a, b, play, report, start = null }) {
             في المنصّة: <M>{`${p} \\times ${p} = ${P.plat}`}</M>
           </p>
           {shown ? (
-            <p data-ll-piece-best={`${shown.p}:${shown.q}:${shown.far}`}>
-              {shown.far === 0 ? 'غطّاها بالضبط: ' : 'أقرب ما وصلتَ إليه: '}
-              <M>{fracTex(shown.p, shown.q)}</M>
-              {shown.far > 0 &&
-                (shown.q === 1 ? (
-                  ` — الفرق ${tiles(String(shown.far))}`
-                ) : (
-                  <>
-                    {' — الفرق '}
-                    <M>{fracTex(shown.far, shown.q * shown.q)}</M>
-                    {' بلاطة'}
-                  </>
-                ))}
-            </p>
+            <>
+              <p data-ll-piece-best={`${shown.p}:${shown.q}:${shown.far}`}>
+                {shown.far === 0 ? 'غطّاها بالضبط: ' : 'أقرب ما وصلتَ إليه: '}
+                <M>{fracTex(shown.p, shown.q)}</M>
+              </p>
+              {/* the difference on a line of its own: on one line with the rod it ran out of the card (the lab's walk of
+                  2026-11-21, « بلاطة » cut at the card's edge) */}
+              {shown.far > 0 && (
+                <p data-ll-piece-far>
+                  {shown.q === 1 ? (
+                    `الفرق ${tiles(String(shown.far))}`
+                  ) : (
+                    <>
+                      {'الفرق '}
+                      <M>{fracTex(shown.far, shown.q * shown.q)}</M>
+                      {' بلاطة'}
+                    </>
+                  )}
+                </p>
+              )}
+            </>
           ) : (
             <p className="ll-court__wait">حرّك المقياس: كم قطعة صغيرة تحمل المنصّة، وكم قطعة تحمل الساحة؟</p>
           )}

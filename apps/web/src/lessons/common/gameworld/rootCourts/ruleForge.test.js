@@ -138,15 +138,20 @@ describe('what the mirror says about a case — facts, agreed, isolated', () => 
     expect(courtFact(caseOf('34', '6'))).toBe('تعلق على الحافّة: تزيد على الساحة ببلاطتين.');
     expect(courtFact(caseOf('30', '6'))).toBe('تعلق على الحافّة: تزيد على الساحة بـ 6 بلاطات.');
     expect(courtFact(caseOf('30', '5,47'))).toBe('يبقى شريط مساحته 0,0791 بلاطة.');
-    expect(courtFact(caseOf('49/64', '0,5'))).toBe('يبقى شريط مساحته 33/64 بلاطة.');
-    expect(courtFact(caseOf('49/64', '1'))).toBe('تعلق على الحافّة: تزيد على الساحة بـ 15/64 بلاطة.');
+    // a fraction over a real bar (a MathText sentence), never « 33/64 » as text (defects.md D41)
+    expect(courtFact(caseOf('49/64', '0,5'))).toBe('يبقى شريط مساحته $\\dfrac{33}{64}$ بلاطة.');
+    expect(courtFact(caseOf('49/64', '1'))).toBe('تعلق على الحافّة: تزيد على الساحة بـ $\\dfrac{15}{64}$ بلاطة.');
+    expect(courtFact(caseOf('2', '17/12'))).toBe('تعلق على الحافّة: تزيد على الساحة بـ $\\dfrac{1}{144}$ بلاطة.');
+    for (const c of [caseOf('49/64', '0,5'), caseOf('2', '7/5'), caseOf('2', '3/2'), caseOf('121/36', '2')])
+      expect(courtFact(c).replace(/\$[^$]*\$/g, '')).not.toMatch(/\d\s*\/\s*\d/);
   });
   it('every plain sentence holds no « $ », no « wrong », and every rod sits in a left-to-right isolate', () => {
     const plain = ['ask', 'fact', 'attack', 'refuted'];
     for (const c of POOL)
       for (const k of plain) {
         const t = COURT_TEXT[k]({ ...c, says: !c.held });
-        expect(t, k).not.toMatch(/\$|خطأ|خاطئ/);
+        // the fact is drawn by MathText: its only formula is a fraction over a real bar
+        expect(k === 'fact' ? t.replace(/\$\\dfrac\{\d+\}\{\d+\}\$/g, '') : t, k).not.toMatch(/\$|خطأ|خاطئ/);
         if (k !== 'fact') expect(t).toContain(`⁦${c.s.root != null ? `√${c.s.root}` : c.s.q}⁩`);
       }
     for (const k of ['says', 'broken']) for (const v of [true, false]) expect(COURT_TEXT[k](v)).not.toMatch(/\$/);

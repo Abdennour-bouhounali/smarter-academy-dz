@@ -27,8 +27,8 @@
  *
  * THE STORY IS READ LAZILY: this file imports `./story` (its courts, `framing`), and the story is evaluated before it in
  * every order — but nothing here touches a story binding while this file is evaluated, only when a forge is used.
- * It imports neither `./math` nor the files that import the key ids (a cycle): the few exact facts about a root it
- * needs are computed here (`forges.test.js` checks they agree with `math.js`).
+ * Its exact facts about a root (the marks around the end of a wall, the calculator's display) are `./math`'s, imported —
+ * never a copy (`forges.test.js` checks this file defines none of them).
  */
 import { slot } from '../../../../../../common/gameworld/kit/forge';
 import { pick } from '../../../../../../common/gameworld/kit/random';
@@ -60,6 +60,7 @@ import {
 import { COURT_TEXT, caseId as courtId, caseOf } from '../../../../../../common/gameworld/rootCourts/ruleForge';
 import { tiles } from '../../../../../../common/gameworld/rootCourts/strings';
 import { CHASE_INQUIRY } from './inquiries';
+import { above, calculator, cut, decimalsOf, isqrt, middle, rounded } from './math';
 import { COURTS, framing } from './story';
 
 /**
@@ -71,42 +72,17 @@ export const K1 = 'murabba-natiq';
 export const K2 = 'la-kasr-yarkab';
 export const K3 = 'al-mudawwar';
 
-// ───────────────────────── exact facts about a root (BigInt; the same as math.js — tested) ─────────────────────────
+// ───────────────────────── exact facts about a root: math.js's, never a copy (defects.md D8) ─────────────────────────
 
-/** The whole square root of a BigInt, rounded down. */
-function isqrt(v) {
-  if (v < 2n) return v;
-  let x = BigInt(Math.floor(Math.sqrt(Number(v))));
-  while (x * x > v) x -= 1n;
-  while ((x + 1n) * (x + 1n) <= v) x += 1n;
-  return x;
-}
-/** ⌊√a × 10^k⌋: the marks of 10^-k below the end of the wall. */
-function marksBelow(area, k) {
-  const { n: p, d } = read(area);
-  return isqrt((p * 10n ** BigInt(2 * k)) / d);
-}
 /** The longest mark of 10^-k whose platform leaves a band (the value by default): « 4,3 » for 19 and k = 1. */
-export const cutAt = (area, k) => write(`${marksBelow(area, k)}/${10n ** BigInt(k)}`);
+export const cutAt = cut;
 /** The next mark (the value by excess): « 4,4 ». */
-export const aboveAt = (area, k) => write(`${marksBelow(area, k) + 1n}/${10n ** BigInt(k)}`);
+export const aboveAt = above;
 /** The MIDDLE mark between the two: « 4,35 ». */
-export const middleAt = (area, k) => write(`${marksBelow(area, k) * 10n + 5n}/${10n ** BigInt(k + 1)}`);
+export const middleAt = middle;
 /** The nearer of the two marks (a middle that rides is rounded up, as the school does). */
-export const nearestAt = (area, k) =>
-  compare(square(middleAt(area, k)), area) <= 0 ? aboveAt(area, k) : cutAt(area, k);
-/** What a calculator of ten digits shows for the side of a court (« 1,414213562 » for 2, « 1,833333333 » for 121/36). */
-export function calculator(area, digits = 10) {
-  const exact = rootOf(area);
-  if (exact != null && !exact.includes('/')) return exact;
-  const { n: p, d } = read(area);
-  const whole = String(isqrt(p / d)).length;
-  const k = BigInt(digits - whole);
-  const r = isqrt((p * 10n ** (2n * (k + 1n))) / d);
-  return write(`${(r + 5n) / 10n}/${10n ** k}`);
-}
-/** The decimals of a number: « 7,549 » → 3. */
-const decimalsOf = (x) => (write(x).split(',')[1] ?? '').length;
+export const nearestAt = rounded;
+export { calculator };
 /** A number cut to k decimals (« 1,414213562 » → « 1,41 »). */
 const cutDigits = (x, k) => {
   const [i, d = ''] = write(x).split(',');

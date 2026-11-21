@@ -339,6 +339,11 @@ Each counted tile carries its NUMBER inside it (one canvas laid over the platfor
 climbs with the count. A court declared `hide: true` shows « ؟ » on its gate and in the HUD until the count of a platform
 that rides has ended — then the gate writes its area (`Game.reveal`); a band or a jam on such a court is said without a
 number. Lesson 1 hides its three discovery courts (16, 36, 100); a court he must ride FROM its area (30, 49, 196) shows it.
+The count is cleared when the verdict is written (the instruction comes back); the ride is SAVED before the key is taken
+(a reload with the key floating keeps the ride); the robot's answer to a guess is never covered by « انطلقنا »; a fact of
+the rail (`why`) and a tap answer of « تدرّب » are drawn through MathText / a stacked fraction — never « p/q » as text.
+Known: on a terrace of five courts not every gate is in view on arrival; the E bubble over the key hides the gate that
+has just written its area.
 
 **A terrace of several courts** (added for lesson 2, 2026-11-21 — a court's data: `{ id, a, to?, steps?, ask?, seal? }`):
 - a court WITHOUT `to` flies nowhere: its platform rides and stays; the ONE court of a terrace that has `to` is its way

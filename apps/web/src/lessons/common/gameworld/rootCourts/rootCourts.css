@@ -182,10 +182,16 @@
   align-items: stretch;
   gap: 0.35rem;
 }
+/* each line stands against the right edge, its words beside its boxes (never spread over the card: « 3      ,      6 »
+   read as three things — the walk of lesson 2, 2026-11-21); a left-to-right line ends on the right, a right-to-left one
+   starts there */
 .di-root .rc-mission__lines .rf-use {
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: flex-end;
   white-space: nowrap;
+}
+.di-root .rc-mission__lines .rf-use[dir='rtl'] {
+  justify-content: flex-start;
 }
 /* the count of a platform's tiles, running at the top of the screen while they light one by one */
 .di-root .rc-count {

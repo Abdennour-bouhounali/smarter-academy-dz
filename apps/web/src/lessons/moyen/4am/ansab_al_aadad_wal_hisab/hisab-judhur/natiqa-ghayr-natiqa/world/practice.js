@@ -30,10 +30,12 @@ import {
   middle,
   read,
   rodFact,
+  said,
   rootOf,
   rounded,
   sq,
   square,
+  tex,
   valueOf,
   wholeBelow,
   write,
@@ -130,8 +132,9 @@ export function noSideFact(g) {
     return `ضلع الساحة ${write(g)} بين ${m} و ${m + 1} (${ltr(`${m} × ${m} = ${m * m}`)} و ${ltr(`${m + 1} × ${m + 1} = ${(m + 1) * (m + 1)}`)})، ولا كسر مربّعه ${write(g)}.`;
   }
   const odd = rootOf(String(n)) === null ? n : d;
-  const written = write(g).includes('/') ? write(g) : ltr(`${write(g)} = ${n}/${d}`);
-  return `${written}، و ${odd} ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة ${write(g)}.`;
+  // a fraction over a real bar, never « n/d » as text (the fact is drawn by MathText)
+  const written = write(g).includes('/') ? said(g) : `$${tex(g)} = \\dfrac{${n}}{${d}}$`;
+  return `${written}، و ${odd} ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة ${said(g)}.`;
 }
 /** The areas that are NOT the square of a fraction, for the sorting waves: one decimal, a whole number, a fraction. */
 const noSquarePool = (rand) => [

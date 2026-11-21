@@ -127,13 +127,18 @@ const texOf = (t) => {
 const KIND_COLOUR = { ride: '#34d399', band: '#fbbf24', jam: '#c4b5fd' };
 const KIND_SIGN = { ride: '=', band: '<', jam: '>' };
 
-/** What the world did, as ONE fact (never « wrong »): « تركب المنصّة المصعد », « يبقى شريط مساحته … », « تعلق: تزيد بـ … ». */
+/**
+ * What the world did, as ONE fact (never « wrong »): « تركب المنصّة المصعد », « يبقى شريط مساحته … », « تعلق: تزيد بـ … ».
+ * A MathText sentence: a difference that is a fraction is written over a real bar (« $\\dfrac{33}{64}$ بلاطة »), never
+ * « 33/64 » as text.
+ */
 export function courtFact(c) {
   const o = runCase(c);
   const diff = inCourtWriting(o.diff, c.a);
   if (o.kind === 'ride') return 'تركب المنصّة المصعد: غطّت الساحة بالضبط.';
-  if (o.kind === 'band') return `يبقى شريط مساحته ${tiles(diff)}.`;
-  return `تعلق على الحافّة: تزيد على الساحة ${byTiles(diff)}.`;
+  const frac = diff.includes('/') ? `$${texOf(diff)}$ بلاطة` : null;
+  if (o.kind === 'band') return `يبقى شريط مساحته ${frac ?? tiles(diff)}.`;
+  return `تعلق على الحافّة: تزيد على الساحة ${frac ? `بـ ${frac}` : byTiles(diff)}.`;
 }
 /** The case in words: « ساحة مساحتها 30 بلاطة، ومقياس طوله 5,47 ». */
 const courtCase = (c) => `ساحة مساحتها ${tiles(c.a)}، ومقياس طوله ${rodIn(c.s)}`;

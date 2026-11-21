@@ -943,7 +943,7 @@ function CourtStation({ step }) {
                 data-cs-court-card={c.key}
                 data-cs-court-kind={seen ? c.out.kind : undefined}
               >
-                <span className="cs-rodcard__name">
+                <span className="cs-rodcard__name" data-frac={c.tex.includes('frac') ? '' : undefined}>
                   <small>{c.label}</small>
                   <b dir="ltr" data-long={c.tex.length > 7 ? '' : undefined}>
                     <MathText>{`$${c.tex}$`}</MathText>

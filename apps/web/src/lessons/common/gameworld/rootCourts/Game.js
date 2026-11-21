@@ -474,6 +474,7 @@ export class RootCourtsGame extends WorldRuntime {
     if (this.dead) return;
     this.cine = null;
     this.set({
+      count: null,
       equation: { s: rodTex(r), covers: tex(out.covers), a: y.a, kind: out.kind, yard: true },
       verdict: { kind: out.kind, diff: out.diff, covers: out.covers, yard: true, side: rodText(r) },
     });
@@ -726,13 +727,13 @@ export class RootCourtsGame extends WorldRuntime {
     this.cellNums.visible = false;
     this.countLabel.visible = false;
     this.set({ count: null, phase: 'play' });
-    this.guessed(c, true);
+    const spoke = this.guessed(c, true);
     // the platform carries him on when this court is the terrace's way out and nothing else waits here
     if (!this.leavesWith(c)) {
       this.refreshObjective();
       return;
     }
-    this.say(this.T.say.ride, 3);
+    if (!spoke) this.say(this.T.say.ride, 3); // what he had said before trying is answered first: never covered by « انطلقنا »
     await this.fly(c, 'away');
   }
   /** He takes the rod of a court. A court that asks « will it ride? » (`ask: 'rides'`) asks it once, BEFORE any try. */
@@ -756,10 +757,11 @@ export class RootCourtsGame extends WorldRuntime {
   }
   /** The court is done (it rides, or it is closed): what he had said before trying is compared with the fact. */
   guessed(c, rides) {
-    if (c.ask !== 'rides' || this.guess[c.id] == null) return;
+    if (c.ask !== 'rides' || this.guess[c.id] == null) return false;
     const right = this.guess[c.id] === rides;
     this.set({ stars: { ...this.state.stars, [c.id]: right ? 3 : 1 } });
     this.say(right ? this.T.say.guessRight : rides ? this.T.say.guessRode : this.T.say.guessSealed, 6);
+    return true;
   }
   /**
    * A court that may be CLOSED (`seal: true`): once a band and a jam are seen on two NEIGHBOURING marks of the finest
@@ -959,7 +961,9 @@ export class RootCourtsGame extends WorldRuntime {
       p.rotation.z = -0.03;
       p.rotation.x = 0.02;
     }
+    // the count has ended: its number stays on the platform (in 3D), the product takes its place at the top
     this.set({
+      count: null,
       equation: { ...eq, kind: out.kind },
       verdict: {
         covers: out.covers,
@@ -987,6 +991,7 @@ export class RootCourtsGame extends WorldRuntime {
       this.park(c, 'home');
       this.showKey(c);
       this.set({ phase: 'play' });
+      this.save(); // the ride is kept before he takes the key: a reload then finds the platform waiting on its court
       this.refreshObjective();
       return;
     }
@@ -1084,7 +1089,9 @@ export class RootCourtsGame extends WorldRuntime {
     this.drop(true);
     const waves = ladder.makeRun(Math.random, node, level);
     const names = this.lesson.text?.levels?.[ladder.nodes[node].id] ?? [];
-    const base = this.lesson.run?.text ?? {};
+    // a lesson without a course of gates of its own (`lesson.run`) gives no words to the rail's end card, which shows for
+    // one frame before the kit's result card replaces it: never undefined
+    const base = this.lesson.run?.text ?? { won: {}, lost: {} };
     this.drill = { node, level, waves };
     this.runSpeed = Math.min(12, 8.5 + level);
     this.runContent = {
@@ -1409,6 +1416,7 @@ export class RootCourtsGame extends WorldRuntime {
     if (!this.hold || !this.rodBar.visible) {
       this.sideBar.visible = false;
       this.sideLabel.visible = false;
+      this.rodLabel.visible = false; // a ridden platform keeps no stale length over its tiles
       this.rodTip.visible = false;
       this.rodLight.intensity = 0;
     }

@@ -151,7 +151,13 @@ describe('حلبة التدريب — the practice ladder of « الأعداد �
       const lines = [w.why.right, ...w.gates.filter((g) => g !== right).map((g) => w.why.wrong[g])];
       for (const line of lines) {
         expect(line, JSON.stringify(w)).toBeTruthy();
-        plain(line);
+        // the rail draws a fact through MathText: its only formulas are fractions over a real bar; the rest is plain,
+        // and no fraction is written « p/q » as text
+        const formulas = [...line.matchAll(/\$([^$]*)\$/g)].map((m) => m[1]);
+        for (const f of formulas) expect(f, line).toMatch(/\\dfrac/);
+        const rest = line.replace(/\$[^$]*\$/g, '');
+        plain(rest);
+        expect(rest, line).not.toMatch(/\d\s*\/\s*\d/);
         expect(line).not.toMatch(/خطأ|خاطئ|غلط/);
         checked += isolatedEqualities(line);
       }
@@ -171,8 +177,13 @@ describe('حلبة التدريب — the practice ladder of « الأعداد �
   });
 
   it('the facts speak the world: why no number writes a side, and which mark is nearer', () => {
-    expect(noSideFact('1,4')).toBe('⁦1,4 = 7/5⁩، و 7 ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة 1,4.');
-    expect(noSideFact('7/36')).toBe('7/36، و 7 ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة 7/36.');
+    // its fraction over a real bar (MathText), never « 7/5 » as text
+    expect(noSideFact('1,4')).toBe(
+      '$1{,}4 = \\dfrac{7}{5}$، و 7 ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة 1,4.',
+    );
+    expect(noSideFact('7/36')).toBe(
+      '$\\dfrac{7}{36}$، و 7 ليس مربّع عدد طبيعي: لا علامة ولا كسر تركب منصّته الساحة $\\dfrac{7}{36}$.',
+    );
     expect(noSideFact('19')).toContain('بين 4 و 5');
     const w = ladder.waveOf(rng(3), 'round', { k: 1 });
     const m = /العلامة الوسطى (\S+):/.exec(w.why.right)[1];

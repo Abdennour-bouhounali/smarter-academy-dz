@@ -80,11 +80,11 @@ describeEvidence({
 });
 
 describe('the evidence of « الأعداد الناطقة والأعداد غير الناطقة » — the lesson’s own', () => {
-  it('each key proves ONE الكفاءة: 🧩 P2, ♾️ P3, 🎯 P4 — P1 has no claim kind (the bank proves it)', () => {
+  it('each key proves ONE of the three الكفاءات of the catalogue: 🧩 P2, ♾️ P1, 🎯 P3', () => {
     expect(KEYS.map((k) => evidence.learningPointOf('natiqa-ghayr-natiqa', k))).toEqual([
       '4am_natiqa-ghayr-natiqa_P2',
+      '4am_natiqa-ghayr-natiqa_P1',
       '4am_natiqa-ghayr-natiqa_P3',
-      '4am_natiqa-ghayr-natiqa_P4',
     ]);
     expect(evidence.caseEvidence()).toBe(null);
   });
@@ -162,7 +162,7 @@ describe('the evidence of « الأعداد الناطقة والأعداد غي
     );
     expect(evidence.payloadOf('natiqa-ghayr-natiqa', 'trainer', ev, 'att-1')).toEqual({
       attemptId: 'att-1',
-      learningPoint: '4am_natiqa-ghayr-natiqa_P4',
+      learningPoint: '4am_natiqa-ghayr-natiqa_P3',
       context: 'trainer',
       claim: { kind: 'stop', a: 9200, b: 95 },
     });

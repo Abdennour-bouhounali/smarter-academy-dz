@@ -480,6 +480,17 @@ this lesson's bank — key 🎯 is taught because lessons 4–6 and the BEM need
 
 ---
 
+**Corrected at the end of the build (2026-11-21):** the catalogue gives this lesson THREE الكفاءات, not the four the
+brief printed — « bracketing and rounding » is not one of them. The three keys stay (the rounded value is needed by the
+lessons after it and by the BEM); the evidence maps 🧩 → P2, ♾️ → P1, 🎯 → P3 (`world/evidence.js`). The same holds for
+lesson 3 below: its catalogue entry has TWO الكفاءات (P1, P2), whatever the brief lists.
+
+**As built:** the story has six terraces of DECIMAL courts (2,56 · 0,64 | 1,96 · 1,6 · 5,76 · 8,1 · 4,41 | 10,24 | 2 |
+19 · 66 · 11,56 | the pavilion); fractions live in the forges, « تدرّب », the board and the final mission (12,96 ·
+50/72 · 31). No course of gates. Three mirrors open the three forges.
+
+---
+
 ## 13. Lesson 3 `muadalat-x-murabba` — design (2026-11-21, by the skill's §0ter)
 
 The unit's order is the catalogue's (x² = a third). The owner once listed it fifth (decision D3, never answered): the
@@ -506,3 +517,10 @@ the lift that waits for every rod that rides, a builder's slab that orders an ar
 **Said at the design stop:** the brief says NO exercise of this lesson's bank tests its third and fourth learning points
 (writing x² = (√a)², equations that reduce to x² = a) although the bank's sheets do ask both in other words; the sitting
 proves them only as far as the bank's own tagging lets it.
+
+**State when the owner asked to stop after lesson 2 (2026-11-21):** nothing of lesson 3 is built except the experiment
+kind `peel`, written as NEW files that nothing imports yet and that are NOT committed (`rootCourts/peel.js`,
+`InquiryPeel.jsx`, `peel.css`, their two tests; the walk player `e2e/lib/lessonWalk/worlds/rootCourtsPeel.mjs`; 34 unit
+tests pass; never seen in a browser). To wire it: one import and `peel: Peel` in `rootCourts/Inquiry.jsx › KINDS`, one
+import and `peel: peelExperiment` in `e2e/lib/lessonWalk/experiments.mjs`; its spec is the complete Arabic example at
+the top of `inquiryPeel.render.test.jsx`. Until then `check:unused` and `check:unreached` flag those files.

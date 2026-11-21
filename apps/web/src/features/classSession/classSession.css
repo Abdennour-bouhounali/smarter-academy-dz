@@ -4005,6 +4005,16 @@
 .cs-rods[data-many] .cs-rodcard__name b[data-long] {
   font-size: 1.45rem;
 }
+/* a fraction is two storeys high: its label beside it and a smaller number, so that the card holds it (four fraction
+   cards over-ran their boxes on the board's walk of lesson 2, 2026-11-21) */
+.cs-rodcard__name[data-frac] {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cs-root .cs-rodcard__name[data-frac] b {
+  font-size: 1.6rem;
+}
 .cs-rodcard__out {
   flex: none;
   display: inline-flex;

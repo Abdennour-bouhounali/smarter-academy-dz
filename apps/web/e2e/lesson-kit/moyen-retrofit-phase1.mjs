@@ -105,10 +105,7 @@ const LESSONS = [
     { slug: 'nashat', lab: '[data-manipulation="square-fold"]', bricksHidden: ['murabba-mutaakisayn'] },
     { slug: 'maarif', lab: '[data-manipulation="square-fold"]', bricksHidden: ['murabba-mutaakisayn', 'hulul-x2-a'] },
   ] },
-  { g: '4am', domain: 'ansab_al_aadad_wal_hisab', id: 'natiqa-ghayr-natiqa', modules: [
-    { slug: 'nashat', lab: '[data-manipulation="square-root-side"]', bricksHidden: ['murabba-natiq'] },
-    { slug: 'maarif', bricksHidden: ['ghayr-natiq'] },
-  ] },
+  // `natiqa-ghayr-natiqa`: a v2 lesson since 2026-11-21, its module pages deleted (e2e/lessons/natiqa-ghayr-natiqa.walk.mjs)
   { g: '4am', domain: 'ansab_al_aadad_wal_hisab', id: 'mutatabiqat-shahira', modules: [
     { slug: 'nashat-murabba', lab: '[data-manipulation="pitch-expansion"]', bricksHidden: ['murabba-majmu', 'murabba-farq', 'hisab-mutamaan'] },
     { slug: 'nashat-jidaa', lab: '[data-manipulation="pitch-expansion"]', bricksHidden: ['jidaa-majmu-farq'] },

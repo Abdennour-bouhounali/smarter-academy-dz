@@ -3,11 +3,14 @@
  * is sent is the kit's rule (`gameworld/kit/evidence.js`); the verdict of a claim is the kit's too (`kit/claims.js`, the
  * same rule as the server's). Here: the الكفاءة each key proves, and the CLAIM each kind of trainer answer makes.
  *
- * ONE الكفاءة A KEY: `createEvidence` maps a key to ONE point (and `bankSitting.keysOfPoints` back), so 🧩 proves P2 (the
- * roots of squares of rational numbers, what its trainer answers compute), ♾️ P3, 🎯 P4. P1 — classifying a root as
- * « ناطق / غير ناطق » — is asked by the trainer as a true / false with its reason, which no claim kind states: the
- * trainer sends NO evidence for P1; the bank's sitting (its own engine, re-computed by the server) is what proves it.
- * P4 is tested by NO exercise of the bank (`lesson:brief`): only these trainer claims can prove it.
+ * ONE الكفاءة A KEY: `createEvidence` maps a key to ONE point (and `bankSitting.keysOfPoints` back), so each key proves ONE of the
+ * lesson's THREE الكفاءات (the catalogue's: P1, P2, P3 — `lesson:brief` once printed a fourth, « bracketing and
+ * rounding », that the catalogue does not hold: `validate:lessons` refuses it):
+ *   🧩 → P2  the roots of squares of rational numbers (what its trainer answers compute);
+ *   ♾️ → P1  saying of a root whether it is rational: what this key makes him able to decide (its trainer answer — the
+ *            square of the calculator's display cut to 0,01 is NOT the area — is the fact a classification stands on);
+ *   🎯 → P3  the approximate values of a root that is not rational (by default, by excess, rounded).
+ * The trainer's true / false « ناطق / غير ناطق » with its reason states no claim: the bank's sitting proves it too.
  *
  * No claim kind was added: a root is stated with the kinds that exist, on natural numbers ≤ 10^6 —
  *   `pair` a = b × b: « his number times itself is the radicand » — a decimal on numbers scaled by 10^k (1,8 typed for
@@ -27,7 +30,7 @@ import { K1, K2, K3, above, cut, read, scaled, typedDecimal, typedWhole } from '
 import { inUnits } from './trainer';
 
 /** The الكفاءة each key proves (the codes of the lesson's `learningPoints`): one per key — see the header. */
-const POINTS = { [K1]: 'P2', [K2]: 'P3', [K3]: 'P4' };
+const POINTS = { [K1]: 'P2', [K2]: 'P1', [K3]: 'P3' };
 /** The evidence of this lesson. It has no real-world case: nothing is claimed from one. */
 export const evidence = { ...createEvidence({ grade: '4am', points: POINTS }), caseEvidence: () => null };
 

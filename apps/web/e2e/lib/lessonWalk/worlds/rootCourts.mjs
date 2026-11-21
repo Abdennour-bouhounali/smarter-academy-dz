@@ -4,7 +4,7 @@
 //
 // What is done BY HAND (keys and buttons of the screen, as a student does): « ابدأ », E at a post / a feature / the
 // pavilion, ← → held along the wall until the rod's dial shows the mark (and released THERE: a hand stops on a mark),
-// the dial's buttons, X and « ضع المقياس », the prediction typed, the forges and experiments through their buttons, the
+// the dial's buttons, X and « ضع المقياس », the yes/no card of a court that asks it, the key taken with E, the forges and experiments through their buttons, the
 // lanes of the rail with ← →, the mission's boxes. What is done BY THE WORLD'S DEV HANDLE (`window.__world`), as the
 // islands' walks do: the robot PLACED at a post, a pad, a feature, the pavilion (`hero.pos`); the clock fast-forwarded
 // (`step`); the state READ for the question (where he stands, the rod's mark, the run's stage) — never for an answer:
@@ -15,6 +15,7 @@ import { worldShot, wordsRe } from '../checks.mjs';
 import { playForge } from '../forge.mjs';
 import { worldOf } from '../world.mjs';
 import { cmp, eq, isqrt, platform, q, sub, write } from './exact.mjs';
+import { rcTerracesWalk } from './rootCourtsTerraces.mjs';
 
 const WRONG_WORDS = /خطأ|خاطئ|غلط/;
 /** The nouns of the islands (a plank « لوح », never the plaque « لوحة »), and the tool's refused name (defects.md D25). */
@@ -125,6 +126,41 @@ export function rcWorld(w, page, L) {
     }
     return test(await s());
   };
+  /** A square says its length on BOTH sides: the bar and its label along the side wall too (3D, read by the dev handle). */
+  const sides = async (target) => {
+    const x = await page.evaluate(() => {
+      const g = window.__world;
+      return {
+        bar: g.rodBar.visible,
+        side: g.sideBar.visible,
+        label: g.sideLabel.visible ? g.sideLabel.userData.text : null,
+        front: g.rodLabel.visible ? g.rodLabel.userData.text : null,
+        lenFront: g.rodBar.scale.x,
+        lenSide: g.sideBar.scale.z,
+      };
+    });
+    check(
+      x.bar &&
+        x.side &&
+        x.label === x.front &&
+        eq(q(x.label ?? '0'), target) &&
+        Math.abs(x.lenFront - x.lenSide) < 1e-6,
+      `the rod at ${target}: its length is written on BOTH sides of the square (front « ${x.front} », side « ${x.label} »)`,
+    );
+  };
+  /**
+   * How long ← or → is held to pass `n` marks of a fine dial (Game.js › stepWorld: min(3.1 / step, 4 + 45 t²) marks a
+   * second, t the time the key has been held) — the walk still stops ON the mark: it releases short and finishes mark by mark.
+   */
+  const holdFor = (n, step) => {
+    const cap = 3.1 / Number(step.replace(',', '.'));
+    let [t, done] = [0, 0];
+    while (done < n && t < 1.2) {
+      done += Math.min(cap, 4 + 45 * t * t) * 0.01;
+      t += 0.01;
+    }
+    return t;
+  };
   /** The rod in his hand, walked mark by mark along the wall (← → held) until its dial SHOWS `target`, released there. */
   const walkTo = async (target) => {
     await blur();
@@ -135,13 +171,14 @@ export function rcWorld(w, page, L) {
         await ff(0.08);
         const now = (await s()).rod.s;
         expect(eq(now, target), `released on the mark ${target}, the dial still shows ${now}`);
+        if (cmp(target, '0') > 0) await sides(target);
         return;
       }
       const dir = cmp(target, r.s) > 0 ? 'ArrowRight' : 'ArrowLeft';
       const marks =
         Math.abs(Number(write(q(target)).replace(',', '.')) - Number(r.s.replace(',', '.'))) /
         Number(r.step.replace(',', '.'));
-      const hold = marks > 8 ? (r.step === '1' ? (marks - 1.5) / 3.1 : 0.2) : 0.04;
+      const hold = marks > 8 ? (r.step === '1' ? (marks - 1.5) / 3.1 : holdFor(marks - 1.5, r.step)) : 0.04;
       await page.keyboard.down(dir);
       await ff(Math.max(0.04, Math.min(hold, 1.2)));
       await page.keyboard.up(dir);
@@ -160,46 +197,219 @@ export function rcWorld(w, page, L) {
     await ff(0.2);
     expect((await s()).rod != null, `${label}: E — the rod is in his hand`);
   };
-  /** E with the rod at a mark: the prediction typed when the world asks it; then the world's answer, checked HERE. */
-  const lower = async (label, { predict, shotName, forbid, OUT }) => {
+  /** The court in his hand as the dev handle sees it (for the QUESTION: its area from the lesson's data, its gate). */
+  const held = () =>
+    page.evaluate(() => {
+      const h = window.__world.hold;
+      if (!h) return null;
+      const c = h.court;
+      return {
+        id: c.id,
+        yard: Boolean(c.yard),
+        a: c.a,
+        shown: c.shown !== false,
+        plaque: c.parts?.plaque?.userData.text ?? null,
+      };
+    });
+  /** Every number of the page's text, the counter at the top left out (it climbs TO the area: that is the count). */
+  const pageText = () =>
+    page.evaluate(() => {
+      const c = document.body.cloneNode(true);
+      c.querySelectorAll('[data-rc-count], script, style').forEach((e) => e.remove());
+      return (c.innerText ?? c.textContent).replace(/[⁦⁩]/g, '');
+    });
+  const numRe = (a) => new RegExp(`(?<![\\d,.])${String(a).replace(',', '[,.]')}(?![\\d]|[,.]\\d)`);
+  /**
+   * A court nobody wrote (`hide: true`): while he pulls the rod its gate and the HUD say « ؟ » and no screen shows its
+   * area (the page's text read whole, the counter left out).
+   */
+  const hiddenNow = async (label, area) => {
+    const c = await held();
+    const chip = await page.evaluate(
+      () => document.querySelector('[data-rc-rod] .rc-rod__cell:nth-child(2) b')?.textContent,
+    );
+    const t = await pageText();
+    check(
+      c && !c.shown && c.plaque === '؟' && chip === '؟' && !numRe(area).test(t),
+      `${label}: a court nobody wrote — its gate « ${c?.plaque} », the HUD « ${chip} », and no screen shows ${area} while he pulls the rod`,
+    );
+  };
+  /**
+   * After E: the platform comes down. A WHOLE rod (1 … 20) is COUNTED from above: the counter `[data-rc-count]` appears and
+   * climbs to n × n (a yard's crate: to min(n², crate)), no product is on screen before the count ends; any other rod is
+   * not counted. On a hidden court no screen shows its area before the count of a platform that rides has ended. Returns
+   * once the world's verdict is set.
+   */
+  const watchCount = async (label, { rod, area, crate = null, hidden = false, shotName = null, OUT = undefined }) => {
+    const n = /^\d+$/.test(rod) && Number(rod) >= 1 && Number(rod) <= 20 ? Number(rod) : 0;
+    const total = n ? (crate != null ? Math.min(n * n, Number(crate)) : n * n) : 0;
+    const re = numRe(area);
+    let max = 0;
+    let seen = false;
+    let early = null;
+    let leak = null;
+    let steps = 0;
+    let lens = false;
+    for (; steps < 2000; steps += 1) {
+      const x = await page.evaluate(() => {
+        const g = window.__world;
+        const st = g.getState();
+        const el = document.querySelector('[data-rc-count]');
+        return {
+          count: el ? Number(el.dataset.rcCount) : null,
+          shownNum: el ? el.textContent.trim() : null,
+          eq: Boolean(document.querySelector('[data-rc-eq]')),
+          verdict: st.verdict != null,
+          cine: g.cine ? g.cine.pos.y - g.cine.look.y : null,
+          nums: g.cellNums.visible,
+        };
+      });
+      if (x.count != null) {
+        seen = true;
+        if (x.count > max) max = x.count;
+        if (String(x.count) !== x.shownNum) early ??= `the counter shows « ${x.shownNum} » for ${x.count}`;
+        if (x.nums && x.cine != null && x.cine > 8) lens = true;
+      }
+      if (n && x.eq && max < total) early ??= `a product on screen at ${max} of ${total}`;
+      if (shotName && n && max >= Math.ceil(total * 0.6) && max < total) {
+        await w.shot(page, shotName, OUT);
+        shotName = null;
+      }
+      if (hidden && !x.verdict) {
+        const t = await pageText();
+        if (re.test(t)) leak ??= `at count ${max}: « ${(t.match(re) ?? [''])[0]} »`;
+      }
+      if (x.verdict) break;
+      await ff(n ? 0.05 : 0.1);
+    }
+    if (n) {
+      check(
+        seen && max === total && !early,
+        `${label}: ${rod} × ${rod} is COUNTED from above, tile by tile — the counter climbs to ${total}${crate != null ? ` (the crate holds ${crate})` : ''}, computed here (${max}); no product before the count ends${early ? ` — ${early}` : ''}`,
+      );
+      check(
+        lens,
+        `${label}: the lens has risen over the court and the tiles carry their numbers while they are counted`,
+      );
+    } else check(!seen, `${label}: a rod of ${rod} is not counted (no counter)`);
+    if (hidden)
+      check(
+        !leak,
+        `${label}: no screen shows the hidden area ${area} before the count has ended${leak ? ` — ${leak}` : ''}`,
+      );
+    return { counted: seen, max };
+  };
+  /** E with the rod at a mark: the platform comes down at once (no question), is counted when whole; the world's answer is checked HERE. */
+  const lower = async (label, { shotName, forbid, OUT, area: given, countShot = null } = {}) => {
     const before = await s();
+    const c = await held();
+    const area = given ?? before.rod.a ?? c.a;
     const said = await prompt();
     expect(
       said?.includes(before.rod.s),
       `${label}: the bubble offers to lower the platform of ${before.rod.s} (« ${said} »)`,
     );
+    if (!c.shown) await hiddenNow(label, area);
     await act();
-    await ff(0.15);
-    const want = platform({ q: before.rod.s }, before.rod.a);
-    const asked = (await s()).overlay === 'predict';
-    if (predict !== undefined) {
-      expect(
-        asked && (await page.locator('[data-rc-predict]').count()) === 1,
-        `${label}: a rod of whole tiles asks a prediction first`,
-      );
-      const typed = predict === 'right' ? want.covers : String(Number(want.covers) + 3);
-      await page.fill('[data-rc-predict]', typed);
-      if (shotName) await w.shot(page, `${shotName}-predict`, OUT);
-      await page.click('[data-rc-predict-go]');
-      await ff(0.1);
-    } else check(!asked, `${label}: a rod of fine marks asks no prediction`);
+    check(
+      (await page.locator('[data-rc-predict]').count()) === 0 && (await s()).overlay !== 'predict',
+      `${label}: lowering asks nothing — no typed prediction`,
+    );
+    const want = platform({ q: before.rod.s }, area);
+    await watchCount(label, { rod: before.rod.s, area, hidden: !c.shown, shotName: countShot, OUT });
     expect(await until((x) => x.verdict != null, 10, 0.1), `${label}: the platform comes down and the world answers`);
     const v = await page.evaluate(() => {
       const el = document.querySelector('[data-di-verdict]');
-      return {
-        kind: el?.dataset.diVerdict ?? null,
-        pred: el?.dataset.rcPredicted ?? null,
-        text: el?.textContent ?? '',
-      };
+      return { kind: el?.dataset.diVerdict ?? null, text: el?.textContent ?? '' };
     });
+    const hiddenFact = !c.shown && want.kind !== 'ride';
     check(
-      v.kind === want.kind && (want.kind === 'ride' || v.text.includes(want.diff)) && !WRONG_WORDS.test(v.text),
-      `${label}: ${before.rod.s} × ${before.rod.s} = ${want.covers} on ${before.rod.a} — ${want.kind}${want.kind === 'ride' ? '' : ` of ${want.diff}`}, computed here; said as a fact (« ${v.text.trim().slice(0, 110)} »)`,
+      v.kind === want.kind &&
+        (want.kind === 'ride' || (hiddenFact ? !numRe(want.diff).test(v.text) : v.text.includes(want.diff))) &&
+        !WRONG_WORDS.test(v.text),
+      `${label}: ${before.rod.s} × ${before.rod.s} = ${want.covers} on ${area} — ${want.kind}${want.kind === 'ride' ? '' : ` of ${want.diff}`}, computed here; said as a fact${hiddenFact ? ' WITHOUT a number (the court is not written)' : ''} (« ${v.text.trim().slice(0, 110)} »)`,
     );
-    if (predict !== undefined)
-      check(v.pred === String(predict === 'right'), `${label}: his prediction is judged (${v.pred})`);
+    if (hiddenFact)
+      check(!numRe(area).test(await pageText()), `${label}: a band or a jam on a hidden court leaves it hidden`);
     if (shotName) await worldShot(w, page, shotName, forbid, OUT);
     return want;
+  };
+  /**
+   * After a platform rides: THE KEY OF THE COURT floats beside him, « خذ مفتاح الساحة » stands, nothing flies before E;
+   * E takes it — the platform carries him to `to`, or (a court that stays, a way out that waits) leaves him where he is.
+   * `hidden`: the area that the gate writes now. `reload`: the page is reloaded with the key floating instead — the key
+   * is not shown again, the platform waits and E at its post boards it.
+   */
+  const keyed = async (label, { id, to = null, area = null, shotName, forbid, OUT, reload = false, taken = null }) => {
+    expect(
+      await until((x) => x.phase === 'play' && x.verdict == null, 10, 0.1),
+      `${label}: the platform has ridden — the world is his again`,
+    );
+    const k = await page.evaluate(() => {
+      const g = window.__world;
+      const h = g.hero.pos;
+      const m = g.keyMesh.position;
+      return {
+        court: g.keyCourt?.id ?? null,
+        visible: g.keyMesh.visible,
+        near: Math.hypot(m.x - h.x, m.z - h.z),
+        at: g.ter[g.getState().at].id,
+        plaque: g.keyCourt?.parts.plaque.userData.text ?? null,
+      };
+    });
+    let said = null;
+    for (let t = 0; t < 8 && !said; t += 1) {
+      await ff(0.15);
+      said = await prompt();
+    }
+    check(
+      k.court === id && k.visible && k.near < 3 && said?.includes('خذ مفتاح الساحة'),
+      `${label}: a golden key floats beside him (${k.near.toFixed(1)} m) and the screen says « خذ مفتاح الساحة » (« ${said} »)`,
+    );
+    if (area != null)
+      check(k.plaque?.includes(area), `${label}: the count has ended — the gate writes the area now (« ${k.plaque} »)`);
+    await ff(1.5);
+    {
+      const x = await s();
+      check(
+        x.at === k.at &&
+          x.phase === 'play' &&
+          /مفتاح/.test(x.objective) &&
+          (await page.evaluate(() => window.__world.keyCourt != null)),
+        `${label}: nothing flies before he takes the key (${x.at}, ${x.phase}); the instruction names the key: « ${x.objective} »`,
+      );
+    }
+    if (shotName) await worldShot(w, page, shotName, forbid, OUT);
+    if (reload) {
+      await base.reload();
+      const r = await page.evaluate((cid) => {
+        const g = window.__world;
+        const c = g.courts.find((x) => x.id === cid);
+        return { key: g.keyMesh.visible || g.keyCourt != null, ridden: Boolean(c.ridden), shuttle: c.shuttle };
+      }, id);
+      check(
+        !r.key && r.ridden && r.shuttle === 'home',
+        `${label}, reloaded with the key floating: the key is not shown again, the platform waits on its court (${JSON.stringify(r)})`,
+      );
+      if (to) {
+        const p = await placeAt({ court: id }, true);
+        check(/اركب المنصّة/.test(p ?? ''), `${label}, after the reload: E at its post boards the platform (« ${p} »)`);
+        await act();
+        await settle(to);
+      }
+      return;
+    }
+    await act();
+    if (taken) await taken();
+    if (to) await settle(to);
+    else {
+      await ff(0.6);
+      const x = await s();
+      check(
+        x.phase === 'play' && x.at === k.at,
+        `${label}: the key taken — a court that stays: he is still on « ${x.at} »`,
+      );
+    }
   };
   /** After a band or a jam: the platform back over the court, the world his again. After a ride: he lands on `to`. */
   const settle = async (to = null) => {
@@ -209,7 +419,25 @@ export function rcWorld(w, page, L) {
     );
     await ff(0.3);
   };
-  return { ...base, ff, s, prompt, placeAt, until, walkTo, grab, lower, settle, blur };
+  return {
+    ...base,
+    ff,
+    s,
+    prompt,
+    placeAt,
+    until,
+    walkTo,
+    grab,
+    lower,
+    settle,
+    blur,
+    keyed,
+    watchCount,
+    held,
+    pageText,
+    numRe,
+    hiddenNow,
+  };
 }
 
 // ───────────────────────────── the rail of light (a course, or a practice level) ─────────────────────────────
@@ -296,6 +524,9 @@ export async function playRail(w, page, ff, judge, { miss = 2, label, OUT, shots
 const KEY_OF = (L, kind) => L.lesson.story.terraces.find((t) => t.feature?.kind === kind)?.feature.forge;
 
 export async function rcStoryWalk(L, D, opts) {
+  // a story without a building yard nor a course of gates — terraces of several courts, courts closed by the world, the
+  // yes/no card — is played terrace by terrace from what the world lights (./rootCourtsTerraces.mjs; lesson 2 first)
+  if (!L.lesson.story.terraces.some((t) => t.yard || t.feature?.kind === 'run')) return rcTerracesWalk(L, D, opts);
   const w = createWalk(`lesson-${L.id}-story`, opts);
   const { expect, check } = w;
   const OUT = { exit: ['[data-di-exit]', '.di-top a.di-icon'], numbers: true };
@@ -360,15 +591,30 @@ export async function rcStoryWalk(L, D, opts) {
       const o = (await s()).objective;
       check(re.test(o), `${what}: the instruction says so (« ${o} »)`);
     };
-    /** Rides a court: rod to its side mark, the prediction (right), E — he lands on its terrace. */
-    const ride = async (id, side, label) => {
+    /** Rides a court: rod to its side mark, E — counted, it rides; the key taken (E), he lands on its terrace. */
+    const ride = async (id, side, label, { reload = false, bandFirst = false } = {}) => {
       const c = court(id);
       await W.grab({ court: id }, label);
+      if (bandFirst) {
+        // a band on a court nobody wrote: said without a number, the court stays « ؟ »
+        const short = String(Number(side) - 1);
+        await W.walkTo(short);
+        await W.lower(`${label} with ${short}`, { shotName: `${label}-hidden-band`, forbid: placesForbid(), OUT });
+        await W.settle();
+      }
       await W.walkTo(side);
       await worldShot(w, page, `${label}-rod`, placesForbid(), OUT);
-      const out = await W.lower(label, { predict: 'right', shotName: label, forbid: placesForbid(), OUT });
+      const out = await W.lower(label, { shotName: label, forbid: placesForbid(), OUT });
       expect(out.kind === 'ride', `${label}: ${side} × ${side} = ${c.a}: the platform rides — computed here`);
-      await W.settle(c.to);
+      await W.keyed(label, {
+        id,
+        to: c.to,
+        area: c.hide ? c.a : null,
+        shotName: `${label}-key`,
+        forbid: placesForbid(),
+        OUT,
+        reload,
+      });
       await shotWorld(`landed-${c.to}`);
     };
 
@@ -414,6 +660,13 @@ export async function rcStoryWalk(L, D, opts) {
           `crate ${crate}: the bubble offers to fix the square of side ${t} (« ${said} »)`,
         );
         await act();
+        await W.watchCount(`crate ${crate}, side ${t}`, {
+          rod: String(t),
+          area: crate,
+          crate,
+          shotName: ci === 0 && t === side ? `yard-${crate}-count` : null,
+          OUT,
+        });
         expect(await W.until((x) => x.verdict != null, 8, 0.1), `crate ${crate}, ${t}: the world answers`);
         const want = platform({ q: String(t) }, crate);
         const v = await page.evaluate(() => ({
@@ -452,7 +705,7 @@ export async function rcStoryWalk(L, D, opts) {
     await W.grab({ court: first.id }, `the court of ${first.a}, a third time`);
     await W.walkTo(String(below));
     await W.lower(`${first.a} with ${below}`, {
-      predict: 'right',
+      countShot: `court-${first.a}-count-${below}`,
       shotName: `court-${first.a}-band`,
       forbid: placesForbid(),
       OUT,
@@ -468,7 +721,6 @@ export async function rcStoryWalk(L, D, opts) {
     }
     await W.walkTo(String(below + 1));
     await W.lower(`${first.a} with ${below + 1}`, {
-      predict: 'wrong',
       shotName: `court-${first.a}-jam`,
       forbid: placesForbid(),
       OUT,
@@ -478,22 +730,24 @@ export async function rcStoryWalk(L, D, opts) {
       const x = await s();
       check(!x.holding && x.rod == null, `a band AND a jam seen: the rod returns to its post BY ITSELF (D24)`);
       check(
-        new RegExp(small.a).test(x.objective),
-        `…and the instruction names the court of ${small.a} (« ${x.objective} »)`,
+        small.hide
+          ? !W.numRe(small.a).test(x.objective) && /الساحة/.test(x.objective)
+          : W.numRe(small.a).test(x.objective),
+        `…and the instruction sends him to the next court${small.hide ? ` without writing its area ${small.a}` : ` of ${small.a}`} (« ${x.objective} »)`,
       );
       await worldShot(w, page, `court-${first.a}-released`, placesForbid(), OUT);
     }
     lap('the court of 30');
 
-    // ══ courts 16 and 36: each asks a prediction first ══
-    await ride(small.id, String(isqrt(Number(small.a))), `court-${small.a}`);
+    // ══ courts 16 and 36: nobody wrote their areas — the count does ══
+    await ride(small.id, String(isqrt(Number(small.a))), `court-${small.a}`, { bandFirst: true });
     {
       // D30: the platform already ridden offers NO flight while this terrace is unfinished
       const said = await W.placeAt({ court: small.id, pad: true }, true);
       check(!said, `on « ${small.to} », unfinished, the platform of ${small.a} offers no flight back (« ${said} »)`);
     }
     const palm = ST.terraces.find((t) => t.id === small.to).courts[0];
-    await ride(palm.id, String(isqrt(Number(palm.a))), `court-${palm.a}`);
+    await ride(palm.id, String(isqrt(Number(palm.a))), `court-${palm.a}`, { reload: true });
     lap('courts 16 and 36');
 
     // ══ the third terrace: the gate of light, the course of 14 gates ══
@@ -649,7 +903,7 @@ export async function rcStoryWalk(L, D, opts) {
       );
       await shotWorld('wall-rides');
     }
-    await W.settle(first.to);
+    await W.keyed('the wall', { id: first.id, to: first.to, shotName: 'wall-key', forbid: placesForbid(), OUT });
     await shotWorld(`landed-${first.to}`);
 
     // ══ the two stations: forge 3 ══

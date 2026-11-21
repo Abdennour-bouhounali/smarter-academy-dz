@@ -42,6 +42,7 @@ export function makeLabel(text, { h = 0.9, bg = '#0f2147', color = '#ffffff', on
     const s = String(t ?? '');
     if (s === shown) return;
     shown = s;
+    sprite.userData.text = s; // what it says, for a walk that reads the 3D labels (the gate's « ؟ », the side's length)
     g.font = font;
     const w = Math.ceil(g.measureText(s).width + 96);
     // a WebGL texture cannot change size once uploaded: a text of another width gets a fresh one

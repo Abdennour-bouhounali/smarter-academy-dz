@@ -34,6 +34,19 @@ export function Mirror({ c, stage, fast = false, tight = false }) {
   );
 }
 
+/** A number of a line: a fraction « p/q » stacked over a real bar (the kit's `di-frac`), never « p/q » as text. */
+function LineNum({ text }) {
+  const m = /^(-?\d+)\/(\d+)$/.exec(String(text));
+  if (!m) return text;
+  return (
+    <span className="di-frac crt-line__frac" data-rc-frac={text}>
+      <b>{m[1]}</b>
+      <span className="di-frac__bar" aria-hidden="true" />
+      <b>{m[2]}</b>
+    </span>
+  );
+}
+
 /** A case as one line of the evidence. */
 export function Line({ c, children }) {
   const { kind } = runCase(c);
@@ -53,11 +66,15 @@ export function Line({ c, children }) {
           ) : (
             <>
               <span>ساحة</span>
-              <strong dir="ltr">{c.a}</strong>
+              <strong dir="ltr">
+                <LineNum text={c.a} />
+              </strong>
               <span className="crt-line__dot">·</span>
               <span>مقياس</span>
               {/* a wall is written with a real radical (its bar over the number), any other rod as its number */}
-              <strong dir="ltr">{isWall(c.s) ? <MathText>{`$${rodTex(c.s)}$`}</MathText> : rodText(c.s)}</strong>
+              <strong dir="ltr">
+                {isWall(c.s) ? <MathText>{`$${rodTex(c.s)}$`}</MathText> : <LineNum text={rodText(c.s)} />}
+              </strong>
             </>
           )}
         </div>
