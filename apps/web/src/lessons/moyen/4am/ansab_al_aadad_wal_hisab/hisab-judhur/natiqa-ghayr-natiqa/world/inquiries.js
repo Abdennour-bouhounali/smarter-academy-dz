@@ -26,7 +26,8 @@ export function smallWord(n) {
   const t = tiles(String(n));
   if (t === 'بلاطة واحدة') return 'بلاطة صغيرة';
   if (t === 'بلاطتان') return 'بلاطتان صغيرتان';
-  return `${t.replace(/^\d+ /, '')} صغيرة`;
+  // the kit glues a number to its noun with a no-break space (an ordinary one in older strings)
+  return `${t.replace(/^\d+[\s  ]+/, '')} صغيرة`;
 }
 /** A number of small tiles in a MathText sentence: the number as a formula, its noun agreed. */
 const smallM = (n) =>
@@ -54,8 +55,7 @@ export const CHASE_INQUIRY = {
     rodName: 'المقياس',
     platformName: 'المنصّة',
     courtName: 'الساحة',
-    smallTile: ({ q, perTile }) =>
-      `بلاطة صغيرة ضلعها $\\dfrac{1}{${q}}$: في البلاطة الواحدة ${smallM(perTile)}.`,
+    smallTile: ({ q, perTile }) => `بلاطة صغيرة ضلعها $\\dfrac{1}{${q}}$: في البلاطة الواحدة ${smallM(perTile)}.`,
     unit: (n) => smallWord(n),
     unknown: '؟',
     fact: ({ kind, platform, court, gap, right }) =>

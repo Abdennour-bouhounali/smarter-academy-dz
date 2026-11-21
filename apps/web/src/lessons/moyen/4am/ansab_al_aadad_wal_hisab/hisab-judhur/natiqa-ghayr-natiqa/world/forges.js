@@ -58,6 +58,7 @@ import {
   write,
 } from '../../../../../../common/gameworld/rootCourts/logic';
 import { COURT_TEXT, caseId as courtId, caseOf } from '../../../../../../common/gameworld/rootCourts/ruleForge';
+import { tiles } from '../../../../../../common/gameworld/rootCourts/strings';
 import { CHASE_INQUIRY } from './inquiries';
 import { COURTS, framing } from './story';
 
@@ -69,7 +70,6 @@ import { COURTS, framing } from './story';
 export const K1 = 'murabba-natiq';
 export const K2 = 'la-kasr-yarkab';
 export const K3 = 'al-mudawwar';
-const n = (v) => Number(v);
 
 // ───────────────────────── exact facts about a root (BigInt; the same as math.js — tested) ─────────────────────────
 
@@ -122,11 +122,6 @@ function typedFrac(p, q) {
   const [a, b] = [String(p ?? '').trim(), String(q ?? '').trim()];
   return /^\d+$/.test(a) && /^\d+$/.test(b) && BigInt(b) > 0n ? read(`${a}/${b}`) : null;
 }
-/** The two parts of a decimal, as a student types them: « 7,55 » → { i: '7', d: '55' }. */
-const partsOf = (x) => {
-  const [i, d = '0'] = write(x).split(',');
-  return { i, d };
-};
 
 // ───────────────────────── the words: a number as the student reads it ─────────────────────────
 
@@ -236,9 +231,11 @@ function evidence1(rows) {
     if (seen.has(`k1|${a}`)) continue;
     const on = raw.filter((r) => r.a === a);
     const rode = on.find((r) => outcome(r.s, a).kind === 'ride');
+    // a court is closed by a band and a jam on two NEIGHBOURING marks of a tenth; a log that let one of them go keeps
+    // what the story guarantees instead (`lived1`)
     const f = rode ? null : framing(on, a);
     if (rode) his.push(rodeCase(a, rode.s.q));
-    else if (f) his.push(closedCase(a, '0,1', f.lo, f.hi));
+    else if (f && compare(f.gap, '0,1') <= 0) his.push(closedCase(a, '0,1', f.lo, f.hi));
     else continue;
     seen.add(`k1|${a}`);
   }
@@ -252,10 +249,7 @@ function evidence1(rows) {
 /** The right rule's hard cases: a REDUCIBLE fraction whose terms are not squares but whose reduced ones are; and a fraction whose numerator is a square, its reduced terms not. */
 export const F1_HARD = lazy(() => [rodeCase('32/98'), closedCase('9/12')]);
 /** Courts the mirror may build to break a rule that survived his own courts — fractions above all. */
-const F1_POOL = lazy(() => [
-  ...F1_HARD(),
-  ...['11/36', '75/147', '2,42', '27/192', '12,1', '28,9'].map(k1Case),
-]);
+const F1_POOL = lazy(() => [...F1_HARD(), ...['11/36', '75/147', '2,42', '27/192', '13,3', '28,9'].map(k1Case)]);
 
 const k1Fact = (c) =>
   c.closed
@@ -281,8 +275,10 @@ function k1Reading(rule, c) {
 const forge1 = {
   key: K1,
   ...J1,
-  ruleText: (rule) =>
-    `تركب الساحةَ منصّةُ مقياسٍ طولُه عدد عندما تُكتب مساحتها ${J1.tile.form[rule.form].label} ${J1.tile.cond[rule.cond].label}.`,
+  ruleText: (rule) => {
+    const cond = J1.tile.cond[rule.cond].label;
+    return `تركب الساحةَ منصّةُ مقياسٍ طولُه عدد عندما تُكتب مساحتها ${J1.tile.form[rule.form].label} ${cond}${cond.endsWith('…') ? '' : '.'}`;
+  },
   explain(rule, c) {
     const yes = J1.says(rule, c);
     return `قاعدتك: ${k1Reading(rule, c)}؛ فهي تقول إنّ منصّة مقياسٍ طوله عدد ${rides(yes)} هذه الساحة.`;
@@ -290,12 +286,11 @@ const forge1 = {
   caseId: k1Id,
   evidence: evidence1,
   predictCases: noPredictions,
-  attacks: (rule, rows) =>
-    attacksOf({ ...J1, caseId: k1Id, pool: F1_POOL, hard: F1_HARD() })(rule, rows),
+  attacks: (rule, rows) => attacksOf({ ...J1, caseId: k1Id, pool: F1_POOL, hard: F1_HARD() })(rule, rows),
   // never a choice between two written rules: two courts built in the mirror, one ridden, one closed
   nudge(k) {
-    if (k === 1) return { kind: 'experiment', cases: [closedCase('0,361'), rodeCase('0,0361')] };
-    if (k === 2) return { kind: 'experiment', cases: [rodeCase('50/98'), closedCase('50/99')] };
+    if (k === 1) return { kind: 'experiment', cases: [closedCase('3,3'), rodeCase('0,0361')] };
+    if (k === 2) return { kind: 'experiment', cases: [rodeCase('50/98'), closedCase('50/93')] };
     return { kind: 'experiment', cases: [rodeCase('8/98'), closedCase('8/99')] };
   },
   use: {
@@ -310,7 +305,7 @@ const forge1 = {
     check(c, v, verdict) {
       const side = (x, area) => (x == null ? 'zero' : outcome({ q: write(x) }, area).kind);
       const dec = side(typedDecimal(v.i, v.d), c.dec);
-      if (dec !== 'ride') return dec === 'band' ? 'decBand' : 'decJam';
+      if (dec !== 'ride') return dec === 'jam' ? 'decJam' : 'decBand';
       for (const [k, terms] of [
         ['1', c.frac],
         ['2', c.red],
@@ -328,7 +323,8 @@ const forge1 = {
     log: 'ساحاتك قبل القاعة',
     fact: k1Fact,
     // the product of a rod that rides is a fact (2/3 × 2/3 = 4/9 = 20/45); a closed court says its two marks instead
-    eq: (c) => (c.closed ? null : COURT_TEXT.eq(c)),
+    // ('' = no equation: the mirror writes none, kit/RuleForge.jsx › `eq &&`)
+    eq: (c) => (c.closed ? '' : COURT_TEXT.eq(c)),
     frame: 'تركب الساحةَ منصّةُ مقياسٍ طولُه عدد، عندما تُكتب مساحتها:',
     buildLead:
       'اختر بطاقة من كلّ عمود. المرآة ستجرّب قاعدتك على كلّ ساحة جرّبتها في السطحين قبل القاعة: ما ركبتَه، وما أُغلق.',
@@ -351,7 +347,7 @@ const forge1 = {
     wordsHint: 'مثال: تركب الساحةَ منصّةٌ عندما…',
     experiment: 'انظر جيّدًا: ساحتان تبنيهما المرآة. أيّهما ركبتها منصّة؟',
     tryKey: (c) =>
-      `اكتب ضلع كلّ ساحة: عددًا عشريًّا في السطر الأوّل، وكسرًا في السطرين الآخرين. ثمّ الساحة ${tilesM(c.fourth)}: هل تركبها منصّة؟`,
+      `اكتب ضلع كلّ ساحة: عددًا عشريًّا في السطر الأوّل، وكسرًا في السطرين الآخرين. ثمّ ساحة رابعة مساحتها ${tilesM(c.fourth)}: هل تركبها منصّة؟`,
     use: {
       decBand: 'السطر الأوّل: منصّة هذا المقياس تترك شريطًا في الساحة. جرّب مقياسًا أطول.',
       decJam: 'السطر الأوّل: منصّة هذا المقياس تعلق في الساحة. جرّب مقياسًا أقصر.',
@@ -380,16 +376,16 @@ const NEAR = '0,01';
 const gapOf = (c) => magnitude(minus(c.a, platform(c.s)));
 const near = (c) => compare(gapOf(c), NEAR) < 0;
 const F2_NUM = [
-  { id: 'never', label: 'لا تركبها أبدًا، مهما اقترب', says: () => false },
-  { id: 'close', label: 'تركبها إن اقترب كفاية', says: (c) => near(c) },
-  { id: 'frac', label: 'يركبها كسرٌ قريب، لا عددٌ عشريّ', says: (c) => !isDecimal(c.s.q) && near(c) },
+  { id: 'never', label: 'لا تركبها أبدًا، مهما قرب', says: () => false },
+  { id: 'close', label: 'تركبها إن قرب كفاية', says: (c) => near(c) },
+  { id: 'frac', label: 'تركبها إن قرب، إلّا العشريّ', says: (c) => !isDecimal(c.s.q) && near(c) },
 ];
 const F2_CALC = [
   { id: 'near', label: 'عدد قريب منه، لا الضلع', says: () => false },
   { id: 'same', label: 'هو الضلع نفسه', says: () => true },
 ];
 const F2_WALL = [
-  { id: 'rides', label: 'تركب منصّته: الجدار ضلعها', says: () => true },
+  { id: 'rides', label: 'تركب: الجدار ضلعها', says: () => true },
   { id: 'none', label: 'لا تركب: لا ضلع لها', says: () => false },
 ];
 const J2 = judge({
@@ -408,8 +404,16 @@ const J2 = judge({
 });
 
 /** A rod of a number on a court of ♾️ (`frac` keeps the fraction as the chase showed it: 3/2, drawn 1,5). */
-export const numCase = (a, q, frac = null) =>
-  caseOf(a, q, { of: K2, tag: '', ...(frac ? { frac } : {}), ...(String(write(q)).includes('/') ? { head: `ساحة ${plainNum(a)} · مقياس ${plainNum(write(q))}` } : {}) });
+export function numCase(a, q, frac = null) {
+  const shown = frac ?? write(q);
+  return caseOf(a, q, {
+    of: K2,
+    tag: '',
+    ...(frac ? { frac } : {}),
+    // a fraction is never written with a slash: its line names it in words (« مقياس 17 على 12 »)
+    ...(shown.includes('/') ? { head: `ساحة ${plainNum(a)} · مقياس ${plainNum(shown)}` } : {}),
+  });
+}
 /** What the calculator shows for the side, as a rod. */
 export const calcCase = (a, shows = calculator(a)) =>
   caseOf(a, shows, { of: K2, calc: write(shows), tag: 'الحاسبة', id: `calc|${write(a)}|${write(shows)}` });
@@ -441,8 +445,8 @@ const rodWords = (c) =>
       : `المقياس ${plainNum(c.frac ?? write(c.s.q))}`;
 /** The product of a rod by itself beside the court — when it is short enough to read. */
 const shortEq = (c) => {
-  if (isWall(c.s)) return null;
-  return write(platform(c.s)).length <= 10 ? COURT_TEXT.eq(c) : null;
+  if (isWall(c.s)) return '';
+  return write(platform(c.s)).length <= 10 ? COURT_TEXT.eq(c) : '';
 };
 
 const forge2 = {
@@ -450,7 +454,7 @@ const forge2 = {
   ...J2,
   chip: (s, o) => (s.id === 'calc' ? `الحاسبة: ${o.label}` : s.id === 'wall' ? `الجدار: ${o.label}` : o.label),
   ruleText: (rule) =>
-    `على ساحة لا تُكتب مساحتها مربّعَ كسر: منصّة الكسر ${J2.tile.num[rule.num].label}؛ ما تعرضه الحاسبة ${J2.tile.calc[rule.calc].label}؛ والجدار ${J2.tile.wall[rule.wall].label}.`,
+    `على ساحة لا تُكتب مساحتها مربّعَ كسر: منصّة كسرٍ ${J2.tile.num[rule.num].label}؛ الحاسبة: ${J2.tile.calc[rule.calc].label}؛ الجدار: ${J2.tile.wall[rule.wall].label}.`,
   explain(rule, c) {
     const yes = J2.says(rule, c);
     if (isWall(c.s))
@@ -465,8 +469,7 @@ const forge2 = {
     if (rule.num === 'never') return `قاعدتك: لا تركب هذه الساحةَ منصّةُ أيّ كسر، فمنصّة $${q}$ لا تركب.`;
     const gap = `تفرق منصّته عن الساحة بـ $${tex(gapOf(c))}$ بلاطة، ${near(c) ? 'أقلّ' : 'ليس أقلّ'} من $${tex(NEAR)}$`;
     if (rule.num === 'close') return `قاعدتك: ${gap} — فمنصّة $${q}$ ${rides(yes)}.`;
-    if (isDecimal(c.s.q))
-      return `قاعدتك: $${q}${c.frac ? ` = ${tex(c.s.q)}$` : '$'} عدد عشريّ، فمنصّته لا تركب.`;
+    if (isDecimal(c.s.q)) return `قاعدتك: $${q}${c.frac ? ` = ${tex(c.s.q)}$` : '$'} عدد عشريّ، فمنصّته لا تركب.`;
     return `قاعدتك: $${q}$ كسر لا يُكتب عددًا عشريًّا؛ ${gap} — فمنصّته ${rides(yes)}.`;
   },
   caseId: courtId,
@@ -499,15 +502,7 @@ const forge2 = {
       const t = cutDigits(shows, 2);
       return { a, shows, t, sq: write(square(t)) };
     },
-    lines: (c) => [
-      line([
-        `${c.t} × ${c.t}`,
-        '=',
-        slot('i', 'الوحدات', 2),
-        ',',
-        slot('d', 'الجزء العشري', 4),
-      ]),
-    ],
+    lines: (c) => [line([`${c.t} × ${c.t}`, '=', slot('i', 'الوحدات', 2), ',', slot('d', 'الجزء العشري', 4)])],
     check(c, v, verdict) {
       const x = typedDecimal(v.i, v.d);
       return firstWrong([
@@ -523,8 +518,7 @@ const forge2 = {
     fact: worldFact,
     eq: shortEq,
     frame: 'على ساحة لا تُكتب مساحتها مربّعَ كسر، كساحة البلاطتين:',
-    buildLead:
-      'اختر بطاقة من كلّ عمود. المرآة ستجرّب قاعدتك على الكسور التي جرّبتها على ساحة البلاطتين، ثمّ تتحدّاها.',
+    buildLead: 'اختر بطاقة من كلّ عمود. المرآة ستجرّب قاعدتك على الكسور التي جرّبتها على ساحة البلاطتين، ثمّ تتحدّاها.',
     testing: 'المرآة تمرّ على مقاييسك واحدًا واحدًا…',
     yes: 'تركب',
     no: 'لا تركب',
@@ -534,17 +528,17 @@ const forge2 = {
     attack: (c) =>
       `المرآة تتحدّى قاعدتك: ${
         c.calc != null
-          ? `الحاسبة تعرض لضلع الساحة ${tilesM(c.a)} العدد $${tex(c.s.q)}$. أتركب منصّة مقياسٍ بهذا الطول؟`
+          ? `ساحة مساحتها ${tilesM(c.a)}، تعرض الحاسبة لضلعها $${tex(c.s.q)}$. أتركب منصّة مقياسٍ بهذا الطول؟`
           : isWall(c.s)
-            ? `شُدّ المقياس على جدار الساحة ${tilesM(c.a)}، من ركن إلى ركن. أتركب منصّته؟`
-            : `على الساحة ${tilesM(c.a)} مقياس طوله $${rodTexOf(c)}$. أتركب منصّته؟`
+            ? `ساحة مساحتها ${tilesM(c.a)}، والمقياس مشدود على جدارها من ركن إلى ركن. أتركب منصّته؟`
+            : `ساحة مساحتها ${tilesM(c.a)}، ومقياس طوله $${rodTexOf(c)}$. أتركب منصّته؟`
       } ماذا تقول قاعدتك؟`,
     survived: 'صمدت قاعدتك: المنصّة فعلت ما قالته.',
     broken: (yes) => `قاعدتك انكسرت هنا: قالت « ${rides(yes)} »، والمنصّة ${yes ? 'لم تركب' : 'ركبت'}.`,
     wordsHint: 'مثال: على ساحة كهذه…',
     experiment: 'انظر جيّدًا: مقياسان تبنيهما المرآة على ساحة واحدة. ماذا فعلت كلّ منصّة؟',
     tryKey: (c) =>
-      `الحاسبة تعرض لضلع الساحة ${tilesM(c.a)}: $${tex(c.shows)}$. احسب بلا حاسبة $${tex(c.t)} \\times ${tex(c.t)}$، ثمّ قل: هل تركب هذه الساحةَ منصّةُ مقياسٍ طوله كسر؟`,
+      `ساحة مساحتها ${tilesM(c.a)}، تعرض الحاسبة لضلعها $${tex(c.shows)}$. احسب بلا حاسبة $${tex(c.t)} \\times ${tex(c.t)}$، ثمّ قل: أتركبها منصّة كسرٍ ما؟`,
     use: {
       square: 'الجداء: اضرب العدد في نفسه — في الجداء أربع منازل بعد الفاصلة.',
       verdict: 'اكتب مساحة الساحة كسرًا غير قابل للاختزال، وانظر إلى بسطه ومقامه.',
@@ -554,7 +548,7 @@ const forge2 = {
 };
 
 /** The last step's courts: two no fraction rides, two a fraction rides although the calculator shows many digits. */
-export const USE2 = ['8,5', '25/81', '13,5', '1/81'];
+export const USE2 = ['8,5', '25/81', '13,5', '1/36'];
 
 // ═════════════════════════ 3. 🎯 al-mudawwar — which of two neighbouring marks is nearer ═════════════════════════
 
@@ -591,11 +585,19 @@ const F3_PICK = [
   { id: 'lo', label: 'العلامة الصغرى' },
 ];
 const F3_WHEN = [
-  { id: 'mid', label: 'إذا تركت منصّة الوسطى شريطًا', test: (c) => compare(square(c.mid), c.a) < 0 },
-  { id: 'gaps', label: 'إذا قلّ شريط الصغرى عن بروز الكبرى', test: (c) => compare(bandOf(c), overOf(c)) < 0 },
-  { id: 'digit', label: 'إذا كان آخر رقم في المساحة 5 فأكثر', test: (c) => lastDigit(c.a) >= 5 },
+  { id: 'mid', label: 'تركت منصّة الوسطى شريطًا', test: (c) => compare(square(c.mid), c.a) < 0 },
+  { id: 'gaps', label: 'شريط الصغرى أقلّ من بروز الكبرى', test: (c) => compare(bandOf(c), overOf(c)) < 0 },
+  { id: 'digit', label: 'آخر رقم في المساحة 5 فأكثر', test: (c) => lastDigit(c.a) >= 5 },
   { id: 'always', label: 'في كلّ ساحة', test: () => true },
 ];
+/** A condition as the rule says it: « إذا … », or « في كلّ ساحة ». */
+const WHEN_WORDS = {
+  mid: 'إذا تركت منصّة الوسطى شريطًا',
+  gaps: 'إذا كان شريط الصغرى أقلّ من بروز الكبرى',
+  digit: 'إذا كان آخر رقم في المساحة 5 فأكثر',
+  always: 'في كلّ ساحة',
+};
+const whenWords = (id) => WHEN_WORDS[id];
 const other = (m) => (m === 'hi' ? 'lo' : 'hi');
 /** The mark a rule picks for a case. */
 const picked = (rule, c) => (F3_WHEN.find((w) => w.id === rule.when).test(c) ? rule.pick : other(rule.pick));
@@ -613,7 +615,10 @@ const F3_COURTS = lazy(() => [
   [COURTS.marksA, 1],
   [COURTS.marksB, 2],
 ]);
-/** His evidence: on each court he closed, the TRUE claim — the nearer mark, as his middle platform said. */
+/**
+ * His evidence: on each court of « سطح العلامات », the TRUE claim — the nearer mark, as the middle platform he lowered
+ * said. The terrace's mirror opens only once both are closed (`story.featureOpen`), so both are always there.
+ */
 function evidence3(rows) {
   const own = rows.filter((r) => r.of === K3);
   const seen = new Set(own.map(k3Id));
@@ -624,12 +629,6 @@ function evidence3(rows) {
     const c = k3Case(a, k, truth);
     if (!seen.has(k3Id(c))) add.push({ ...c, mirror: false });
   }
-  // his rows on those courts come first in the order he closed them (the world's log); a court the log let go is there too
-  const order = (c) => {
-    const i = rows.findIndex((r) => r.of == null && r.a === c.a && framing([r], c.a) == null && r.s?.q != null);
-    return i < 0 ? Infinity : i;
-  };
-  add.sort((x, y) => order(x) - order(y));
   return [...mine, ...add, ...own.filter((c) => c.mirror)];
 }
 
@@ -641,7 +640,7 @@ const F3_POOL = lazy(() => [
     ['18,924', 1],
     ['55', 1],
     ['21', 1],
-    ['53', 2],
+    ['37', 2],
     ['89', 1],
   ].flatMap(([a, k]) => [k3Case(a, k, 'lo'), k3Case(a, k, 'hi')]),
 ]);
@@ -654,11 +653,11 @@ const middleFact = (c) => {
 const forge3 = {
   key: K3,
   ...J3,
-  chip: (s, o) => o.label,
+  chip: (s, o) => (s.id === 'when' ? whenWords(o.id) : o.label),
   ruleText: (rule) =>
     rule.when === 'always'
       ? `بين علامتين متجاورتين ينتهي الجدار: أقربهما إليه ${J3.tile.pick[rule.pick].label} في كلّ ساحة.`
-      : `بين علامتين متجاورتين ينتهي الجدار: أقربهما إليه ${J3.tile.pick[rule.pick].label} ${J3.tile.when[rule.when].label}، وإلّا فالأخرى.`,
+      : `بين علامتين متجاورتين ينتهي الجدار: أقربهما إليه ${J3.tile.pick[rule.pick].label} ${whenWords(rule.when)}، وإلّا فالأخرى.`,
   explain(rule, c) {
     const band = compare(square(c.mid), c.a) < 0;
     const cond = {
@@ -678,7 +677,7 @@ const forge3 = {
   nudge(k) {
     const [a, p] = [
       ['21', 1],
-      ['53', 2],
+      ['37', 2],
       ['89', 1],
     ][k - 1];
     return { kind: 'experiment', cases: [k3Case(a, p, 'lo'), k3Case(a, p, 'hi')] };
@@ -702,9 +701,7 @@ const forge3 = {
         ['1', 'بالنقصان'],
         ['2', 'بالزيادة'],
         ['3', 'الأقرب'],
-      ].map(([i, words]) =>
-        line([slot(`i${i}`, 'الوحدات', 1), ',', slot(`d${i}`, 'الجزء العشري', c.k), ':', words]),
-      ),
+      ].map(([i, words]) => line([slot(`i${i}`, 'الوحدات', 1), ',', slot(`d${i}`, 'الجزء العشري', c.k), ':', words])),
     check(c, v) {
       const is = (i, x) => {
         const t = typedDecimal(v[`i${i}`], v[`d${i}`]);
@@ -741,7 +738,7 @@ const forge3 = {
     wordsHint: 'مثال: بين علامتين، الأقرب…',
     experiment: 'انظر جيّدًا: ساحة واحدة، وعلامتان. المرآة تُنزل منصّة الوسطى.',
     tryKey: (c) =>
-      `الحاسبة تعرض لضلع الساحة ${tilesM(c.a)}: $${tex(c.shows)}$. اكتب العلامتين من $${tex(c.step)}$ اللتين ينتهي الجدار بينهما، ثمّ أقربهما إليه.`,
+      `ساحة مساحتها ${tilesM(c.a)}، تعرض الحاسبة لضلعها $${tex(c.shows)}$. اكتب العلامتين من $${tex(c.step)}$ اللتين ينتهي الجدار بينهما، ثمّ أقربهما إليه.`,
     use: {
       lo: 'السطر الأوّل: أطول علامة لا تتجاوز ما تعرضه الحاسبة، بعدد المنازل المطلوب.',
       hi: 'السطر الثاني: العلامة التي تلي الأولى مباشرة.',
@@ -753,7 +750,7 @@ const forge3 = {
 
 /** The last step's courts and precisions: the nearer mark is the lower one twice, the upper one twice. */
 export const USE3 = [
-  ['57', 1],
+  ['71', 1],
   ['57', 2],
   ['71', 2],
   ['34', 2],

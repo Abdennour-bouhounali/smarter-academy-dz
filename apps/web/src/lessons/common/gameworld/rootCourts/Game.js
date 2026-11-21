@@ -587,7 +587,12 @@ export class RootCourtsGame extends WorldRuntime {
     const T = this.T.objective;
     const here = this.ter[this.state.at];
     // the key of a court he has just ridden comes before anything the story asks next
-    let o = this.keyCourt && !this.hold ? T.key : (this.story.objective?.(this) ?? null);
+    let o =
+      this.keyCourt && !this.hold
+        ? this.leavesWith(this.keyCourt)
+          ? T.key
+          : T.keyStay
+        : (this.story.objective?.(this) ?? null);
     if (!o) {
       const open = here.courts.find((c) => !this.courtDone(c) && this.courtOpen(c));
       const waiting = this.courts.find((c) => c.ridden && c.target != null && this.sideOf(c) === here.i);
@@ -685,11 +690,17 @@ export class RootCourtsGame extends WorldRuntime {
     this.countLabel.visible = true;
     await this.wait(0.8);
   }
+  /** Will taking this court's key carry him on? Only the terrace's way out does, and only once nothing else waits here. */
+  leavesWith(c) {
+    return (
+      c.target != null && !this.ter[c.terrace].courts.some((x) => x !== c && !this.courtDone(x) && this.courtOpen(x))
+    );
+  }
   /** The key of a court he has just ridden floats in front of him: E takes it. */
   showKey(c) {
     const h = this.hero;
     this.keyCourt = c;
-    this.keyMesh.position.set(h.pos.x, 2.5, h.pos.z - 1.4);
+    this.keyMesh.position.set(h.pos.x + 1.3, 3.0, h.pos.z - 1.2); // beside him and above his head: never behind it
     this.keyMesh.scale.setScalar(1.7);
     this.keyMesh.visible = true;
     this.keyIt.x = h.pos.x;
@@ -717,8 +728,7 @@ export class RootCourtsGame extends WorldRuntime {
     this.set({ count: null, phase: 'play' });
     this.guessed(c, true);
     // the platform carries him on when this court is the terrace's way out and nothing else waits here
-    const rest = this.ter[c.terrace].courts.some((x) => x !== c && !this.courtDone(x) && this.courtOpen(x));
-    if (c.target == null || rest) {
+    if (!this.leavesWith(c)) {
       this.refreshObjective();
       return;
     }
@@ -1394,7 +1404,7 @@ export class RootCourtsGame extends WorldRuntime {
     }
     if (this.keyMesh.visible) {
       this.keyMesh.rotation.y += dt * 2.2;
-      this.keyMesh.position.y = 2.5 + Math.sin(this.time * 3) * 0.14;
+      this.keyMesh.position.y = 3.0 + Math.sin(this.time * 3) * 0.14;
     }
     if (!this.hold || !this.rodBar.visible) {
       this.sideBar.visible = false;
