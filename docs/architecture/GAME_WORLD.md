@@ -326,6 +326,19 @@ the court it speaks about instead of the terrace's front right. In `jidhr-tarbii
 marks, the longest rod of two decimals that still leaves a band (5,47) is the stage's goal: the robot says so, the rod
 returns to its post (`story.release`), the court's lamp goes out and the calculator lights up (`flags.near`).
 
+**A terrace of several courts** (added for lesson 2, 2026-11-21 — a court's data: `{ id, a, to?, steps?, ask?, seal? }`):
+- a court WITHOUT `to` flies nowhere: its platform rides and stays; the ONE court of a terrace that has `to` is its way
+  out, and its platform waits on its court until every other open court of the terrace is done (then E boards it);
+- `seal: true` — the court may be CLOSED: once a band and a jam are seen on two NEIGHBOURING marks of the terrace's
+  finest dial (`steps.at(-1)`), no mark of that dial rides it; the world says so, takes the rod back, writes
+  « لا علامة تركبها » over the court (`game.sealed`, `story.onSeal`). A court is DONE when it rides or is closed
+  (`Game.courtDone`): that is what opens travel and puts its lamp out;
+- `ask: 'rides'` — before his first try the court asks « will a mark of this terrace ride it? » (`overlay: 'guess'`,
+  `[data-rc-guess="yes|no"]`, `game.guess`); when the court is done his word is compared with the fact (three stars
+  when they agree);
+- a court smaller than three tiles a side is drawn with bigger tiles (areas like 0,49 or 2,25 stay readable). The 3D
+  world shows DECIMAL areas and marks only: a fraction is drawn with a real bar in the 2D screens (forges, trainer, board).
+
 **The game holds the order** (owner, 2026-11-21): a platform that waits flies him to another terrace only when the
 terrace he stands on is FINISHED — the story asks nothing more there and none of its courts waits to be ridden
 (`Game.mayTravel`). On the last terrace everything is finished: he roams freely.

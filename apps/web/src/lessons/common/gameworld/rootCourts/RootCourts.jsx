@@ -251,6 +251,33 @@ const WORLD = {
   overlay(o, s, game) {
     if (o.type === 'predict') return <Predict key={o.s} o={o} game={game} />;
     if (o.type === 'mission') return <Mission game={game} />;
+    if (o.type === 'guess')
+      return (
+        <Card>
+          <p className="di-card__eyebrow">
+            {game.T.hud.court}: {tiles(o.a)}
+          </p>
+          <h2>{game.T.guess.ask}</h2>
+          <div className="rc-mission__go">
+            <button
+              type="button"
+              className="di-btn di-btn--primary"
+              onClick={() => game.answerGuess(true)}
+              data-rc-guess="yes"
+            >
+              {game.T.guess.yes}
+            </button>
+            <button
+              type="button"
+              className="di-btn di-btn--primary"
+              onClick={() => game.answerGuess(false)}
+              data-rc-guess="no"
+            >
+              {game.T.guess.no}
+            </button>
+          </div>
+        </Card>
+      );
     if (o.type === 'forge')
       return (
         <RuleForge

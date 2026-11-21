@@ -462,8 +462,8 @@ Classification (« ناطق / غير ناطق ») is not a fourth key: it is wha
 the practice ladder and the final mission.
 
 **The story** (terraces in one line; numbers are this lesson's own, checked against its bank before use):
-1. « سطح الكسور » — a yard: crates of 4 quarter-tiles and of 9 third-tiles?? NO — kept simple: two courts whose areas
-   are a fraction and a decimal (16/9, 0,49): the dial offers marks of 1/3 and 0,1. Both ride.
+1. « سطح الكسور » — two courts whose areas are a fraction and a decimal (16/9, 0,49): the dial offers marks of 1/3 and
+   0,1. Both ride.
 2. « سطح الفرز » — five courts: 2,25 · 8/18 · 2,5 · 12 · 1,44. He predicts each, then tries. Three ride.
 3. « قاعة المرايا » — forge 🧩 (tiles: the area written as an irreducible fraction; its two terms squares / even /
    decimals…), then the court of 2 with the mirror's fractions: forge ♾️. The tablets name « عدد ناطق » and

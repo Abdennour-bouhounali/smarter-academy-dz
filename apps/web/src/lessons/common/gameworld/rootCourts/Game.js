@@ -63,6 +63,8 @@ export class RootCourtsGame extends WorldRuntime {
     this.log = [...(sv?.log ?? [])]; // every platform he lowered: { a, s: rod, kind } — the evidence of the forges
     this.ridden = { ...(sv?.ridden ?? {}) }; // court id → the rod that rides it
     this.tries = { ...(sv?.tries ?? {}) };
+    this.sealed = { ...(sv?.sealed ?? {}) }; // court id → true: closed as « no mark of this terrace rides it »
+    this.guess = { ...(sv?.guess ?? {}) }; // court id → what he said before trying: true « تُركب », false « لا تُركب »
     this.hold = null; // the rod in his hand: { court, marks, step, held }
     this.cine = null;
     this.layout();
@@ -74,7 +76,8 @@ export class RootCourtsGame extends WorldRuntime {
     this.ter = this.story.terraces.map((t, i) => {
       const courts = (t.courts ?? []).map((c) => {
         const side = Math.sqrt(approx(c.a));
-        const unit = c.unit ?? clamp(9 / side, 0.6, 1.6);
+        // a court smaller than three tiles a side is drawn with bigger tiles: it stays readable from the rail
+        const unit = c.unit ?? clamp(9 / side, 0.6, side < 3 ? 4.5 : 1.6);
         return { ...c, a: String(c.a), side, unit, size: side * unit, terrace: i, steps: c.steps ?? ['1'] };
       });
       const total = courts.reduce((s, c) => s + c.size, 0) + GAP * Math.max(0, courts.length - 1);
@@ -128,8 +131,10 @@ export class RootCourtsGame extends WorldRuntime {
         };
       });
     for (const c of this.courts) {
-      const to = this.ter[byId[c.to]];
-      c.target = to.i;
+      // a court without `to` flies nowhere: its platform rides and stays (a terrace of several courts has ONE way out)
+      const to = c.to ? this.ter[byId[c.to]] : null;
+      c.target = to ? to.i : null;
+      if (!to) continue;
       // each platform that lands on a terrace has its own pad, at the front left
       c.pad = { x: to.x - 4 + to.pads * 5.6, z: to.z + to.d / 2 - 5.2 };
       to.pads += 1;
@@ -155,7 +160,15 @@ export class RootCourtsGame extends WorldRuntime {
   }
   /** `terrace`: where he stands — never `at`, which the kit's save keeps for its own date (`kit/saveSync.js`). */
   worldSave() {
-    return { stars: this.state.stars, log: this.log, ridden: this.ridden, tries: this.tries, terrace: this.state.at };
+    return {
+      stars: this.state.stars,
+      log: this.log,
+      ridden: this.ridden,
+      tries: this.tries,
+      sealed: this.sealed,
+      guess: this.guess,
+      terrace: this.state.at,
+    };
   }
   worldCentre() {
     const n = this.ter.length;
@@ -304,34 +317,45 @@ export class RootCourtsGame extends WorldRuntime {
     c.platform = makePlatform(c.unit);
     c.platform.visible = false;
     this.scene.add(c.platform);
-    const pad = makePad();
-    pad.position.set(c.pad.x, 0, c.pad.z);
-    this.scene.add(pad);
+    if (c.pad) {
+      const pad = makePad();
+      pad.position.set(c.pad.x, 0, c.pad.z);
+      this.scene.add(pad);
+    }
+    // a court closed as « no mark rides it » says so over its floor
+    c.sealLabel = makeLabel(this.T.hud.sealed, { h: 0.8, bg: '#92400e' });
+    c.sealLabel.position.set(c.post.x + c.size / 2, 1.5, c.post.z - c.size / 2);
+    c.sealLabel.visible = false;
+    this.scene.add(c.sealLabel);
     // the corner post: take the rod — or, once the court is ridden, board its platform when it waits here
     this.addInteract(
       c.post.x,
       c.rail,
       () => {
         if (this.hold) return null;
+        if (c.sealed) return null;
         if (c.ridden)
-          return c.shuttle === 'home' && this.mayTravel() ? this.T.prompt.ride(this.ter[c.target].name) : null;
+          return c.target != null && c.shuttle === 'home' && this.mayTravel()
+            ? this.T.prompt.ride(this.ter[c.target].name)
+            : null;
         return this.courtOpen(c) ? this.T.prompt.grab : null;
       },
-      () => (c.ridden ? this.board(c, 'away') : this.grab(c)),
+      () => (c.ridden ? this.board(c, 'away') : this.take(c)),
       2.3,
       3,
     );
-    this.addInteract(
-      c.pad.x,
-      c.pad.z,
-      () =>
-        c.ridden && c.shuttle === 'away' && !this.hold && this.mayTravel()
-          ? this.T.prompt.ride(this.ter[c.terrace].name)
-          : null,
-      () => this.board(c, 'home'),
-      2.6,
-      3,
-    );
+    if (c.pad)
+      this.addInteract(
+        c.pad.x,
+        c.pad.z,
+        () =>
+          c.ridden && c.shuttle === 'away' && !this.hold && this.mayTravel()
+            ? this.T.prompt.ride(this.ter[c.terrace].name)
+            : null,
+        () => this.board(c, 'home'),
+        2.6,
+        3,
+      );
   }
   buildYard(y) {
     const parts = makeYard(y.unit, y.reach);
@@ -462,9 +486,12 @@ export class RootCourtsGame extends WorldRuntime {
     for (const c of this.courts) {
       c.tries = this.tries[c.id] ?? 0;
       c.ridden = this.ridden[c.id] ?? null;
+      c.sealed = Boolean(this.sealed[c.id]);
+      c.sealLabel.visible = c.sealed;
       if (!c.ridden) continue;
       // a platform that rode waits where he is: on its court, or on its pad of the terrace it reached
-      this.park(c, c.target === this.state.at || c.terrace !== this.state.at ? 'away' : 'home');
+      const away = c.target != null && (c.target === this.state.at || c.terrace !== this.state.at);
+      this.park(c, away ? 'away' : 'home');
     }
     this.hero.island = this.state.at;
     this.set({ recall: this.recallOf(this.state.at) });
@@ -495,8 +522,8 @@ export class RootCourtsGame extends WorldRuntime {
     const here = this.ter[this.state.at];
     let o = this.story.objective?.(this) ?? null;
     if (!o) {
-      const open = here.courts.find((c) => !c.ridden && this.courtOpen(c));
-      const waiting = this.courts.find((c) => c.ridden && this.sideOf(c) === here.i);
+      const open = here.courts.find((c) => !this.courtDone(c) && this.courtOpen(c));
+      const waiting = this.courts.find((c) => c.ridden && c.target != null && this.sideOf(c) === here.i);
       if (this.hold) o = this.hold.court.yard ? T.yard(this.hold.court.a) : T.walk(this.hold.court.a);
       else if (here.i === this.endAt) o = T.end;
       else if (open) o = T.grab(open.a);
@@ -511,7 +538,11 @@ export class RootCourtsGame extends WorldRuntime {
    */
   mayTravel() {
     if (this.story.objective?.(this)) return false;
-    return !this.ter[this.state.at].courts.some((c) => !c.ridden && this.courtOpen(c));
+    return !this.ter[this.state.at].courts.some((c) => !this.courtDone(c) && this.courtOpen(c));
+  }
+  /** A court is DONE when its platform rides — or when it was closed as « no mark of this terrace rides it ». */
+  courtDone(c) {
+    return Boolean(c.ridden || c.sealed);
   }
   /** The terrace where a ridden court's platform waits now. */
   sideOf(c) {
@@ -526,6 +557,57 @@ export class RootCourtsGame extends WorldRuntime {
   rodNow() {
     const h = this.hold;
     return h.held ?? dialRod(Math.round(h.marks), h.step);
+  }
+  /** He takes the rod of a court. A court that asks « will it ride? » (`ask: 'rides'`) asks it once, BEFORE any try. */
+  take(c) {
+    if (c.ask === 'rides' && this.guess[c.id] == null) {
+      this.audio.play('ui');
+      this.set({ phase: 'dialog', prompt: null, overlay: { type: 'guess', court: c.id, a: c.a } });
+      return;
+    }
+    this.grab(c);
+  }
+  answerGuess(yes) {
+    const o = this.state.overlay;
+    if (o?.type !== 'guess') return;
+    const c = this.courts.find((x) => x.id === o.court);
+    this.guess[c.id] = Boolean(yes);
+    this.set({ overlay: null, phase: 'play' });
+    this.input.clear();
+    this.save();
+    this.grab(c);
+  }
+  /** The court is done (it rides, or it is closed): what he had said before trying is compared with the fact. */
+  guessed(c, rides) {
+    if (c.ask !== 'rides' || this.guess[c.id] == null) return;
+    const right = this.guess[c.id] === rides;
+    this.set({ stars: { ...this.state.stars, [c.id]: right ? 3 : 1 } });
+    this.say(right ? this.T.say.guessRight : rides ? this.T.say.guessRode : this.T.say.guessSealed, 6);
+  }
+  /**
+   * A court that may be CLOSED (`seal: true`): once a band and a jam are seen on two NEIGHBOURING marks of the finest
+   * dial of the terrace, no mark of that dial rides it — the world says so, takes the rod back and closes the court.
+   */
+  nears(c, r, kind) {
+    if (!c.seal || isWall(r)) return false;
+    const near = c.near ?? (c.near = { band: null, jam: null });
+    const v = approx(r.q);
+    if (kind === 'band') near.band = Math.max(near.band ?? -Infinity, v);
+    if (kind === 'jam') near.jam = Math.min(near.jam ?? Infinity, v);
+    const finest = this.stepLength(this.stepsOf(c).at(-1));
+    if (near.band == null || near.jam == null || near.jam - near.band > finest + 1e-9) return false;
+    c.sealed = true;
+    this.sealed[c.id] = true;
+    c.sealLabel.visible = true;
+    this.audio.play('key');
+    this.say(this.T.say.sealed, 7);
+    this.guessed(c, false);
+    this.story.onSeal?.(this, c);
+    c.platform.rotation.set(0, 0, 0);
+    this.set({ phase: 'play', equation: null, verdict: null });
+    this.drop(true);
+    this.save();
+    return true;
   }
   grab(c) {
     const step = this.stepsOf(c)[0];
@@ -720,10 +802,21 @@ export class RootCourtsGame extends WorldRuntime {
       this.hold = null;
       this.rodBar.visible = false;
       this.set({ stars: { ...this.state.stars, [c.id]: stars }, rod: null, held: null, equation: null, verdict: null });
+      this.guessed(c, true);
+      // it flies at once when this court is the terrace's way out and nothing else waits here; otherwise the platform
+      // stays on its court (and, for the way out, waits there until the terrace is finished)
+      const rest = this.ter[c.terrace].courts.some((x) => x !== c && !this.courtDone(x) && this.courtOpen(x));
+      if (c.target == null || rest) {
+        this.park(c, 'home');
+        this.set({ phase: 'play' });
+        this.refreshObjective();
+        return;
+      }
       this.say(this.T.say.ride, 3);
       await this.fly(c, 'away');
       return;
     }
+    if (this.nears(c, r, out.kind)) return;
     // a band, a jam: the platform comes back over the court, the rod stays in his hand
     p.rotation.set(0, 0, 0);
     p.userData.tone('hover');
@@ -1135,7 +1228,7 @@ export class RootCourtsGame extends WorldRuntime {
     for (const c of this.courts) {
       if (c.band) c.parts.band.material.opacity = 0.55 + Math.sin(this.time * 7) * 0.25;
       // the lamp of a corner post is lit on a court he can take now, and only there: it shows where to go
-      c.parts.lamp.visible = !c.ridden && this.courtOpen(c);
+      c.parts.lamp.visible = !this.courtDone(c) && this.courtOpen(c);
       c.parts.handle.visible = c.parts.lamp.visible && this.hold?.court !== c;
       const ring = c.parts.handle.userData.halo;
       ring.scale.setScalar(1 + Math.sin(this.time * 3.2) * 0.12);
