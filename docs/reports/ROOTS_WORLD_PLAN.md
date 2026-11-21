@@ -441,3 +441,39 @@ This pass wrote ONE file, as asked: this plan. `docs/README.md` does not list it
 §4ter-0 does not name unit 2's world — both are to be updated with the first change that follows the owner's decision
 (no other file could be edited in this pass). The older `docs/reports/UNIT2_HISAB_JUDHUR_MISSION_PROMPT.md` is a prompt
 for the old mission player on this unit; it is not superseded here and was not read. No contract changed: nothing is built.
+
+---
+
+## 12. Lesson 2 `natiqa-ghayr-natiqa` — design (2026-11-21, by the skill's §0ter)
+
+**What he already owns from lesson 1** (never forged again): the side of a court is the number whose square is its area
+(√a); most courts have no decimal side; a root is bracketed between two marks (5,47 < √30 < 5,48); the calculator's
+display is near the root, not the root; (√a)² = a and √(a²) = a.
+
+**What is NEW for him here** — three things, three keys:
+
+| Key | What he can do after it | Its own experiment (nature) | Where |
+|---|---|---|---|
+| 🧩 `murabba-natiq` « مربّع عدد ناطق » | Look at an area — a whole number, a decimal, a fraction (reduced or not) — and say whether its side is a number that can be WRITTEN (a fraction), and write it: √(16/9) = 4/3, √0,49 = 0,7, √(8/18) = 2/3; 2,5 and 12 are not | **A sorting by trying, in the world**: a terrace of five small courts, the rod's dial has marks of 1/3, 1/4 and 0,1. He predicts « تُركب / لا تُركب » for each before trying. No experiment screen: the forge's evidence is what he did (a key discovered in the world) | terrace 1–2 |
+| ♾️ `la-kasr-yarkab` « عدد غير ناطق » | Know that the side of a court whose area is NOT the square of a rational is written by NO fraction and NO decimal — it is an irrational number — and that a calculator can only show a value near it | **A pursuit that never closes, in fractions** (new experiment kind `chase`): on the court of 2 the mirror proposes better and better fractions (3/2, 7/5, 17/12, 41/29, 99/70); for each he predicts band or jam; the world shows p × p against 2 × q × q: always ONE small tile apart, never zero. (Lesson 1's zoom was in decimals and showed a gap; this one shows the gap can never be zero whatever the fraction.) | the hall of mirrors |
+| 🎯 `al-mudawwar` « المدوَّر » | Give the two values near a root at 1, 0,1, 0,01 (by default, by excess) and choose the ROUNDED one | **A decision by the middle mark, in the world**: between two neighbouring marks he lowers the rod of the MIDDLE mark (5,45 between 5,4 and 5,5): a band says the wall ends beyond the middle — the upper mark is nearer; a jam says the lower one. Evidence from the world's log | terrace 4, the dial gets a mark of 0,05 then 0,005 |
+
+Classification (« ناطق / غير ناطق ») is not a fourth key: it is what key 🧩 and key ♾️ make him able to do together; it is
+the practice ladder and the final mission.
+
+**The story** (terraces in one line; numbers are this lesson's own, checked against its bank before use):
+1. « سطح الكسور » — a yard: crates of 4 quarter-tiles and of 9 third-tiles?? NO — kept simple: two courts whose areas
+   are a fraction and a decimal (16/9, 0,49): the dial offers marks of 1/3 and 0,1. Both ride.
+2. « سطح الفرز » — five courts: 2,25 · 8/18 · 2,5 · 12 · 1,44. He predicts each, then tries. Three ride.
+3. « قاعة المرايا » — forge 🧩 (tiles: the area written as an irreducible fraction; its two terms squares / even /
+   decimals…), then the court of 2 with the mirror's fractions: forge ♾️. The tablets name « عدد ناطق » and
+   « عدد غير ناطق ».
+4. « سطح العلامات » — courts of 7 and 40: the middle marks. Forge 🎯 at the dial-maker's bench.
+5. « السطح الأعلى » — the final mission: three plots of a co-operative (6,25 · 28/63 · 7): which sides can be written,
+   write them; for the third, its two values at 0,1 and its rounded value, from a calculator's display.
+
+**World work** (main session): fraction marks on the ruler (ticks and labels of 1/3, 1/4), courts smaller than one tile
+drawn at a readable size, a dial with a middle mark. **Kit work** (agent): the experiment kind `chase`.
+
+**Said at the design stop:** the fourth learning point of the brief (bracketing, rounding) is tested by NO exercise of
+this lesson's bank — key 🎯 is taught because lessons 4–6 and the BEM need it, and the sitting cannot prove it.
