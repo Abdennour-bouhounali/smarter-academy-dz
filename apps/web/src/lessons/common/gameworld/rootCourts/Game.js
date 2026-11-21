@@ -305,7 +305,7 @@ export class RootCourtsGame extends WorldRuntime {
     // the tiles of a platform, lit one by one while they are counted, and the number the count reaches
     this.cells = new THREE.InstancedMesh(
       new THREE.BoxGeometry(1, 0.06, 1),
-      new THREE.MeshStandardMaterial({ color: 0xfde68a, emissive: 0xf59e0b, emissiveIntensity: 0.9 }),
+      new THREE.MeshStandardMaterial({ color: 0xfbbf24, emissive: 0xf59e0b, emissiveIntensity: 0.55 }),
       CELLS_SIDE * CELLS_SIDE,
     );
     this.cells.count = 0;
@@ -448,9 +448,20 @@ export class RootCourtsGame extends WorldRuntime {
     const out = outcome(r, y.a);
     this.input.clear();
     this.rodLabel.visible = false;
+    this.set({ phase: 'forge', prompt: null, equation: null, verdict: null, count: null });
+    // the tiles he laid are COUNTED from above, one by one — the tiles the crate really gave, never the open cells
+    const n = Math.round(lengthOf(r));
+    const side = n * y.unit;
+    await this.countCells(
+      { post: y.post, unit: y.unit, size: side },
+      n,
+      { x: y.post.x + side / 2, z: y.post.z - side / 2 },
+      y.hover,
+      Math.min(n * n, Number(y.a)),
+    );
+    if (this.dead) return;
+    this.cine = null;
     this.set({
-      phase: 'forge',
-      prompt: null,
       equation: { s: rodTex(r), covers: tex(out.covers), a: y.a, kind: out.kind, yard: true },
       verdict: { kind: out.kind, diff: out.diff, covers: out.covers, yard: true, side: rodText(r) },
     });
@@ -464,16 +475,18 @@ export class RootCourtsGame extends WorldRuntime {
     } else this.audio.play(out.kind === 'band' ? 'plank' : 'hit');
     await this.wait(out.kind === 'ride' ? 2.6 : 2.4);
     if (this.dead) return;
+    this.cells.visible = false;
+    this.countLabel.visible = false;
     if (out.kind !== 'ride') {
       y.platform.userData.tone(null);
-      this.set({ phase: 'play', equation: null, verdict: null });
+      this.set({ phase: 'play', equation: null, verdict: null, count: null });
       this.refreshObjective();
       return;
     }
     this.flags[y.id] = y.done + 1;
     this.hold = null;
     this.rodBar.visible = false;
-    this.set({ phase: 'play', rod: null, held: null, equation: null, verdict: null, last: null });
+    this.set({ phase: 'play', rod: null, held: null, equation: null, verdict: null, last: null, count: null });
     this.loadCrate(y);
     this.story.onYard?.(this, y);
     this.save();
@@ -603,8 +616,7 @@ export class RootCourtsGame extends WorldRuntime {
    * the corner post, row after row, while a counter runs at the top of the screen; the last number stays written on the
    * platform. The first tiles go slowly — he counts with it — then faster (a court of 196 takes about five seconds).
    */
-  async countCells(c, n, mid, y) {
-    const total = n * n;
+  async countCells(c, n, mid, y, total = n * n) {
     const span = Math.max(c.size, n * c.unit);
     this.cine = {
       pos: new THREE.Vector3(mid.x, span * 1.25 + 9, mid.z + span * 0.32 + 0.5),
