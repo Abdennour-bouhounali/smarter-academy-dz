@@ -2,11 +2,13 @@
 
 namespace App\Domain\Admin;
 
+use App\Domain\Classroom\StudentCredentials;
 use App\Domain\Progress\StudentDossier;
 use App\Models\StudentLessonProgress;
 use App\Models\User;
 use DomainException;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Les élèves vus par l'administration.
@@ -19,6 +21,11 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  */
 class StudentService
 {
+    /** Le préfixe du « معرّف الدخول » d'un compte créé par l'administrateur (`s<id>` est celui d'un établissement). */
+    public const ADMIN_LOGIN_PREFIX = 'a';
+
+    public const EMAIL_TAKEN_MESSAGE = 'هذا البريد الإلكتروني مرتبط بحساب موجود.';
+
     public function __construct(private ActivityLogger $log) {}
 
     public function list(array $filters = []): LengthAwarePaginator
@@ -102,5 +109,58 @@ class StudentService
     public function changeStatus(User $admin, int $studentId, string $status): User
     {
         return app(AccountStatusService::class)->change($admin, $this->find($studentId), $status, ActivityLogger::STUDENT_STATUS, 'student');
+    }
+
+    /**
+     * L'administrateur crée un compte élève (propriétaire, 2026-11-21) — que les inscriptions soient ouvertes ou
+     * fermées : ce n'est pas une inscription publique, RegistrationGate n'est pas consulté.
+     *
+     * Comme un élève importé par un établissement (SchoolRosterService::commit) : adresse vérifiée (l'administrateur
+     * remet les identifiants lui-même), mot de passe StudentCredentials rendu UNE fois, aucun consentement légal écrit
+     * à sa place (les colonnes restent nulles, comme pour l'import). Sans adresse, un « معرّف الدخول » généré
+     * (`a.<6>@<domaine>`), sans boîte aux lettres : aucun courriel ne lui part (User::routeNotificationForMail).
+     * Aucune notification « new_student » : l'administrateur sait déjà.
+     *
+     * `$data` : firstName, lastName (déjà validés et normalisés par PersonName), email (minuscules, nettoyée) ou null,
+     * grade (code validé) ou null.
+     *
+     * @param  array{firstName: string, lastName: string, email: ?string, grade: ?string}  $data
+     * @return array{student: User, login: string, password: string}
+     *
+     * @throws DomainException adresse déjà prise (EMAIL_TAKEN_MESSAGE)
+     */
+    public function create(User $admin, array $data): array
+    {
+        $email = $data['email'] ?? null;
+        if ($email !== null && User::where('email', $email)->exists()) {
+            throw new DomainException(self::EMAIL_TAKEN_MESSAGE);
+        }
+
+        $password = StudentCredentials::generate();
+
+        $student = DB::transaction(function () use ($admin, $data, $email, $password) {
+            $student = new User([
+                'first_name' => $data['firstName'],
+                'last_name' => $data['lastName'],
+                'email' => $email ?? StudentCredentials::uniqueLogin(self::ADMIN_LOGIN_PREFIX),
+                'password' => $password,
+                'role' => User::ROLE_STUDENT,
+                'grade' => $data['grade'] ?? null,
+            ]);
+            $student->email_verified_at = now();
+            $student->save();
+
+            // Jamais le mot de passe ; l'identifiant n'est pas un secret (l'administrateur le lit dans la liste).
+            $this->log->log($admin, ActivityLogger::STUDENT_CREATED, 'user', $student->id, null, [
+                'firstName' => $student->first_name,
+                'lastName' => $student->last_name,
+                'grade' => $student->grade,
+                'generatedLogin' => $email === null,
+            ]);
+
+            return $student;
+        });
+
+        return ['student' => $student, 'login' => $student->email, 'password' => $password];
     }
 }

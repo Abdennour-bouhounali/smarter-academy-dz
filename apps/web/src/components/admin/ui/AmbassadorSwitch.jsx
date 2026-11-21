@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../../context/AuthContext';
 import { setTeacherAmbassador } from '../../../services/admin/teacherService';
+import Switch from './Switch';
 
 /**
  * L'interrupteur « سفير » d'un enseignant — désigner / retirer en un geste.
@@ -33,17 +34,13 @@ export default function AmbassadorSwitch({ teacher, onChange, withLabel = false 
 
   return (
     <span className="inline-flex items-center gap-2" data-ambassador-switch>
-      <button
-        type="button"
-        role="switch"
-        aria-checked={on}
-        aria-label={t('teachers.ambassador.switchLabel', { name })}
+      <Switch
+        on={on}
+        onToggle={toggle}
         disabled={busy}
-        onClick={toggle}
-        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors disabled:opacity-50 ${on ? 'bg-amber-500' : 'bg-slate-300'}`}
-      >
-        <span className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4 rtl:-translate-x-4' : 'translate-x-0.5 rtl:-translate-x-0.5'}`} />
-      </button>
+        label={t('teachers.ambassador.switchLabel', { name })}
+        onClass="bg-amber-500"
+      />
       {withLabel && (
         <span className="font-inter text-xs font-semibold text-slate-700">
           {on ? t('teachers.ambassador.on') : t('teachers.ambassador.off')}

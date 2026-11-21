@@ -41,8 +41,6 @@ class SchoolRosterService
 
     public const STATUS_INVALID = 'invalid';
 
-    private const LOGIN_ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
-
     public function __construct(
         private ClassroomMembershipService $memberships,
         private TeacherCapacityService $capacity,
@@ -122,7 +120,7 @@ class SchoolRosterService
                 $student = new User([
                     'first_name' => $row['firstName'],
                     'last_name' => $row['lastName'],
-                    'email' => $this->uniqueLogin($school),
+                    'email' => StudentCredentials::uniqueLogin("s{$school->id}"),
                     'password' => $password,
                     'role' => User::ROLE_STUDENT,
                     'grade' => $classroom->grade,
@@ -329,19 +327,5 @@ class SchoolRosterService
     private static function key(string $first, string $last, string $birth): string
     {
         return mb_strtolower($first).'|'.mb_strtolower($last).'|'.$birth;
-    }
-
-    private function uniqueLogin(School $school): string
-    {
-        $domain = (string) config('school.student_login_domain');
-        do {
-            $suffix = '';
-            for ($i = 0; $i < 6; $i++) {
-                $suffix .= self::LOGIN_ALPHABET[random_int(0, strlen(self::LOGIN_ALPHABET) - 1)];
-            }
-            $login = "s{$school->id}.{$suffix}@{$domain}";
-        } while (User::where('email', $login)->exists());
-
-        return $login;
     }
 }

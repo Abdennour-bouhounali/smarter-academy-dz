@@ -2080,3 +2080,48 @@ gestes dans le journal (`school.*`, jamais le mot de passe). La fiche porte auss
 « رخصة المؤسسة » : activer une licence de sièges (une nouvelle annule l'actuelle),
 la suspendre, la reprendre, l'annuler (§5bis). Contrat complet :
 [`SCHOOL_ADMIN_SPACE.md`](./SCHOOL_ADMIN_SPACE.md) §5.
+
+## A10. Ouvrir ou fermer les inscriptions, créer un compte élève (2026-11-21)
+
+Demande du propriétaire : « make it configurable open or close registration from the dashboard of the admin, and also
+the possibility to create the account for a student as an admin ».
+
+### L'interrupteur « التسجيل »
+
+- **Où** : la carte « التسجيل » en tête du tableau de bord (`components/admin/RegistrationCard.jsx`, montée par
+  `pages/admin/Dashboard.jsx` hors des données du tableau, pour rester utilisable quand elles ne chargent pas). Deux
+  interrupteurs : l'inscription publique (formulaire + Google) ; et, visible seulement quand elle est fermée,
+  « التسجيل برابط القسم » (l'élève invité par le lien de la classe de son enseignant). OUVRIR demande une confirmation.
+- **Où c'est gardé** : table `platform_settings`, ligne `registration` (`values.open`, `values.class_links`,
+  `updated_by`). `App\Domain\Registration\RegistrationGate` est le SEUL lecteur : la ligne l'emporte sur
+  `config/registration.php` (`REGISTRATION_OPEN`, `REGISTRATION_CLASS_LINKS`), qui n'est plus que le DÉFAUT tant que
+  l'administrateur n'a pas touché l'interrupteur. Une valeur absente de la ligne retombe sur le défaut.
+- **Routes** (`can:admin`) : `GET /admin/registration` → `{ registration: { open, classLinks } }` ;
+  `PATCH /admin/registration` avec `open` et/ou `classLinks` (booléens). Le geste est journalisé
+  (`registration.settings_changed`, avant → après). `GET /registration` (public) rend les valeurs effectives.
+- `platform_settings` est une table générale (clé unique, valeurs JSON) : un prochain réglage de plateforme y prend
+  une ligne, il ne crée pas une table.
+
+### Créer un compte élève
+
+- **Où** : « إنشاء حساب تلميذ » sur la liste des élèves (`pages/admin/students/CreateStudent.jsx`) : prénom et nom
+  ARABES (`PersonName`, la règle de l'inscription), courriel FACULTATIF, classe scolaire facultative.
+- **Route** : `POST /admin/students` (`StudentService::create`) → 201 `{ student, login, password }`,
+  `Cache-Control: no-store`. Le mot de passe (`StudentCredentials::generate`) n'existe en clair que dans cette
+  réponse : la page le montre UNE fois (`components/admin/OneTimeCredentials.jsx`, la même carte que
+  « مسيّرو المكتبة »), l'administrateur le remet lui-même.
+- **Sans courriel** : un identifiant généré `a.<6 caractères>@<school.student_login_domain>`
+  (`StudentCredentials::uniqueLogin`, partagé avec l'import d'un établissement, préfixe `s<id>`). Il n'a pas de boîte
+  aux lettres : aucun courriel ne lui part, donc PAS de « نسيت كلمة المرور » — `Not yet implemented` : la
+  réinitialisation du mot de passe d'un élève par l'administrateur.
+- **Ce que le compte est** : élève, adresse vérifiée, aucun consentement légal écrit à sa place (comme un élève importé
+  par un établissement), aucune classe, aucune notification « new_student ». Sans classe scolaire, sa première
+  connexion passe par « /espace/bienvenue ». Fonctionne que les inscriptions soient ouvertes ou fermées
+  (`RegistrationGate` n'est pas consulté). Courriel déjà pris : 422 `reason: email_taken`. Journal : `student.created`
+  (jamais le mot de passe).
+- La classe scolaire doit être un code de `grades` (actif quand `curriculum.enforce_active_grades`).
+
+Tests : `AdminRegistrationSwitchTest`, `AdminStudentCreationTest`, `RegistrationClosedTest` ;
+`RegistrationCard.render.test.jsx`, `CreateStudent.render.test.jsx`. Composants partagés nés ici :
+`components/admin/ui/Switch.jsx` (l'interrupteur accessible, repris par `AmbassadorSwitch`) et `OneTimeCredentials.jsx`.
+

@@ -30,6 +30,9 @@ final class StudentCredentials
     /** Lettres sans ambiguïté à l'écrit (ni i, l, o) — un enfant recopie la carte. */
     private const LETTERS = 'abcdefghjkmnpqrstuvwxyz';
 
+    /** L'alphabet d'un « معرّف الدخول » généré : sans i, l, o, 0, 1. */
+    private const LOGIN_ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789';
+
     public function __construct(private ActivityLogger $log) {}
 
     /**
@@ -84,5 +87,25 @@ final class StudentCredentials
         }
 
         return $letters.str_pad((string) random_int(0, 9999), 4, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Un « معرّف الدخول » neuf (SCHOOL_ADMIN_SPACE.md §7) : `<préfixe>.<6 caractères>@<domaine>` — la forme d'une
+     * adresse, sans boîte aux lettres derrière (User::hasSchoolLogin). Le domaine est
+     * `config('school.student_login_domain')` ; le préfixe dit qui a créé le compte (`s<id>` un établissement, `a`
+     * l'administrateur). Jamais deux fois le même.
+     */
+    public static function uniqueLogin(string $prefix): string
+    {
+        $domain = (string) config('school.student_login_domain');
+        do {
+            $suffix = '';
+            for ($i = 0; $i < 6; $i++) {
+                $suffix .= self::LOGIN_ALPHABET[random_int(0, strlen(self::LOGIN_ALPHABET) - 1)];
+            }
+            $login = "{$prefix}.{$suffix}@{$domain}";
+        } while (User::where('email', $login)->exists());
+
+        return $login;
     }
 }

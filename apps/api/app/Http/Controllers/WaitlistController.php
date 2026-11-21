@@ -23,8 +23,7 @@ class WaitlistController extends Controller
     {
         return response()->json([
             'success' => true,
-            'open' => $gate->isOpen(),
-            'classLinks' => (bool) config('registration.class_links'),
+            ...$gate->settings(),
         ]);
     }
 

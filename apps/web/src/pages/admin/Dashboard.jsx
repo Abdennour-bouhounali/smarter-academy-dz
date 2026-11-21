@@ -13,6 +13,7 @@ import { fetchDashboard } from '../../services/admin/dashboardService';
 import { useDocumentMeta } from '../../hooks/useDocumentMeta';
 import { AdminPage, AdminSection, AdminCard, Loading, ErrorBox, Num, formatDate } from './adminUi';
 import AdminNotifications from './notifications/AdminNotifications';
+import RegistrationCard from '../../components/admin/RegistrationCard';
 
 /**
  * La phrase d'une alerte, écrite ICI et non par le serveur.
@@ -76,6 +77,9 @@ export default function AdminDashboard() {
     >
       {/* Notifications sur le téléphone : inscriptions, messages, بلاغات, commandes… (BOOKS_STORE.md §6quater). */}
       <AdminNotifications />
+      {/* « التسجيل » : ouvrir / fermer l'inscription publique — hors des données du tableau de bord, pour rester
+          visible et utilisable même quand celles-ci ne chargent pas. */}
+      <RegistrationCard />
       {loading && <Loading label={t('dashboard.loading')} />}
       {error && <ErrorBox message={error} onRetry={reload} />}
 
