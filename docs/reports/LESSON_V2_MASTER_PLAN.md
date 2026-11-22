@@ -671,7 +671,7 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      not re-walked after the world's change (they do not use what changed).
      STOP asked by the owner on 2026-11-21: « when you finish the lesson 2 stop, i have to do some changes before
      continue ». Lesson 3 `muadalat-x-murabba` has its DESIGN (`ROOTS_WORLD_PLAN.md` §13) and one experiment kind
-     (`peel`) written as separate files, not wired in; nothing else of it is started.
+     (`peel`) written as separate files and mounted in `Inquiry.jsx` as the kind `peel` on 2026-11-22 (so that `check:unreached` passes) — no lesson declares it, no student reaches it; nothing else of it is started.
   24. [x] **4AM UNIT 2 « الحساب على الجذور » — its world « قصر الساحات » and its first lesson `jidhr-tarbii` are v2
      (2026-11-21)**: a NEW world (`gameworld/rootCourts/`, contract `GAME_WORLD.md` §2ter-3, plan and council
      `docs/reports/ROOTS_WORLD_PLAN.md`), the owner's play remarks written as rules in the skill (`play.md`), three

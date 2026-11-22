@@ -8,14 +8,16 @@
  *        | { kind: 'roundtrip', rounds: [{ from: { rod } | { court } | { walk }, path: ['build' | 'take', …] }], text }
  *                                                                                 (`InquiryRoundtrip.jsx`, `roundtrip.js`)
  *        | { kind: 'chase', a, fracs: ['p/q', …], text }                           (`InquiryChase.jsx`, `chase.js`)
+ *        | { kind: 'peel', … }  — mounted, but NO lesson declares it yet            (`InquiryPeel.jsx`, `peel.js`)
  * `text` is the LESSON's wording: this world names no lesson and writes none of its numbers.
  */
 import { Calc } from './InquiryCalc';
 import { Roundtrip } from './InquiryRoundtrip';
 import { Chase } from './InquiryChase';
+import { Peel } from './InquiryPeel';
 import './inquiry.css';
 
-const KINDS = { calc: Calc, roundtrip: Roundtrip, chase: Chase };
+const KINDS = { calc: Calc, roundtrip: Roundtrip, chase: Chase, peel: Peel };
 
 export default function Inquiry({ spec, game, onDone }) {
   const Kind = KINDS[spec.kind];
