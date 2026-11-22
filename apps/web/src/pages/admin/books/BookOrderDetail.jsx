@@ -12,6 +12,7 @@ import {
   addBookOrderPayment, removeBookOrderPayment, deleteBookOrder,
 } from '../../../features/books/bookService';
 import { S, formatDa } from '../../../features/books/strings';
+import { DELIVERY_MODES } from '../../../features/books/delivery';
 import { Pill, ORDER_TONES, PAYMENT_TONES } from './BookOrders';
 
 const A = S.admin;
@@ -29,6 +30,7 @@ export default function AdminBookOrderDetail() {
   const [problem, setProblem] = useState(null);
   const [fee, setFee] = useState(null);
   const [note, setNote] = useState(null);
+  const [mode, setMode] = useState(null);
   const [pay, setPay] = useState({ kind: 'payment', amount: '', method: 'cash_on_delivery', note: '' });
   const [confirmDelete, setConfirmDelete] = useState(false);
 
@@ -53,10 +55,14 @@ export default function AdminBookOrderDetail() {
 
   const feeValue = fee ?? (o.deliveryFee ?? '');
   const noteValue = note ?? (o.adminNote ?? '');
+  // `deliveryMode` est null sur les commandes d'avant le tarif par wilaya ; envoyé seulement s'il a changé.
+  // Le serveur ne recalcule PAS le frais quand le mode change : l'administrateur le corrige à côté.
+  const modeValue = mode ?? (o.deliveryMode ?? '');
   const saveDetails = () => run(() => updateBookOrder(token, o.id, {
     deliveryFee: feeValue === '' ? null : Number(feeValue),
     adminNote: noteValue,
-  })).then((ok) => { if (ok) { setFee(null); setNote(null); } });
+    ...(mode !== null ? { deliveryMode: mode === '' ? null : mode } : {}),
+  })).then((ok) => { if (ok) { setFee(null); setNote(null); setMode(null); } });
 
   const submitPayment = async (event) => {
     event.preventDefault();
@@ -93,7 +99,14 @@ export default function AdminBookOrderDetail() {
 
           {/* Frais de livraison et note interne */}
           <AdminCard title={A.deliveryFee}>
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-3">
+              <div>
+                <label className={label} htmlFor="dmode">{A.deliveryMode}</label>
+                <select id="dmode" className={input} value={modeValue} onChange={(e) => setMode(e.target.value)}>
+                  <option value="">—</option>
+                  {DELIVERY_MODES.map((m) => <option key={m} value={m}>{A.deliveryModes[m]}</option>)}
+                </select>
+              </div>
               <div>
                 <label className={label} htmlFor="fee">{A.deliveryFee}</label>
                 <input id="fee" type="number" min="0" dir="ltr" placeholder={A.deliveryUnset} className={input} value={feeValue} onChange={(e) => setFee(e.target.value)} />
@@ -103,7 +116,7 @@ export default function AdminBookOrderDetail() {
                 <input id="anote" className={input} value={noteValue} onChange={(e) => setNote(e.target.value)} />
               </div>
             </div>
-            <div className="mt-4"><button type="button" disabled={busy || (fee === null && note === null)} onClick={saveDetails} className={btnPrimary}>{A.save}</button></div>
+            <div className="mt-4"><button type="button" disabled={busy || (fee === null && note === null && mode === null)} onClick={saveDetails} className={btnPrimary}>{A.save}</button></div>
           </AdminCard>
 
           {/* Paiements */}
@@ -151,6 +164,7 @@ export default function AdminBookOrderDetail() {
                     <span className="text-slate-500">
                       {e.type === 'status' && `من ${A.status[e.from] ?? e.from} إلى ${A.status[e.to] ?? e.to}`}
                       {e.type === 'created' && (A.status[e.to] ?? e.to)}
+                      {e.type === 'delivery_mode' && (A.deliveryModes[e.to] ?? '—')}
                       {['payment', 'refund', 'delivery_fee'].includes(e.type) && (e.to ? formatDa(e.to) : A.deliveryUnset)}
                     </span>
                   )}
@@ -177,7 +191,7 @@ export default function AdminBookOrderDetail() {
           <AdminCard title={A.columns.total}>
             <dl className="space-y-1.5 font-inter text-sm">
               <div className="flex justify-between"><dt className="text-slate-500">{formatDa(o.unitPrice)} × {o.quantity}</dt><dd><Num>{formatDa(o.subtotal)}</Num></dd></div>
-              <div className="flex justify-between"><dt className="text-slate-500">{S.order.delivery}</dt><dd>{o.deliveryFee === null ? A.deliveryUnset : <Num>{formatDa(o.deliveryFee)}</Num>}</dd></div>
+              <div className="flex justify-between"><dt className="text-slate-500">{S.order.delivery}{o.deliveryMode && ` (${A.deliveryModes[o.deliveryMode]})`}</dt><dd>{o.deliveryFee === null ? A.deliveryUnset : <Num>{formatDa(o.deliveryFee)}</Num>}</dd></div>
               <div className="flex justify-between border-t border-slate-100 pt-2 font-bold"><dt>{A.columns.total}</dt><dd><Num>{formatDa(o.total)}</Num></dd></div>
             </dl>
           </AdminCard>

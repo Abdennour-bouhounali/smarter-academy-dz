@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Domain\Books\BookPresenter;
+use App\Domain\Books\DeliveryFees;
 use App\Domain\Books\Wilayas;
 use App\Domain\Push\AdminPush;
 use App\Models\Book;
@@ -60,7 +61,11 @@ class BookStoreController extends Controller
             'address' => 'nullable|string|max:500',
             'customerNote' => 'nullable|string|max:500',
             'quantity' => 'required|integer|min:1|max:10',
+            // Nullable exprès : un navigateur qui garde l'ancien formulaire en cache commande
+            // encore ; mode et frais restent alors NULL, fixés à l'appel comme avant.
+            'deliveryMode' => ['nullable', Rule::in(DeliveryFees::MODES)],
         ]);
+        $mode = $data['deliveryMode'] ?? null;
 
         $order = BookOrder::create([
             'reference' => $this->newReference(),
@@ -74,6 +79,9 @@ class BookStoreController extends Controller
             'customer_note' => $data['customerNote'] ?? null,
             'quantity' => $data['quantity'],
             'unit_price' => $book->price,
+            // Le frais est CALCULÉ ici par le tarif du transporteur, jamais lu du client.
+            'delivery_mode' => $mode,
+            'delivery_fee' => DeliveryFees::fee($data['wilaya'], $mode),
             'status' => BookOrder::PENDING,
         ]);
 
@@ -87,6 +95,8 @@ class BookStoreController extends Controller
             'success' => true,
             'reference' => $order->reference,
             'subtotal' => $order->subtotal(),
+            'deliveryFee' => $order->delivery_fee,
+            'total' => $order->total(),
         ], 201);
     }
 
