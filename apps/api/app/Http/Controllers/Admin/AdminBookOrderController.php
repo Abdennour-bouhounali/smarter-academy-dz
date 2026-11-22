@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Domain\Admin\ActivityLogger;
 use App\Domain\Books\BookPresenter;
+use App\Domain\Books\DeliveryFees;
 use App\Http\Controllers\Controller;
 use App\Models\BookOrder;
 use App\Models\BookOrderEvent;
@@ -15,7 +16,7 @@ use Illuminate\Validation\ValidationException;
 
 /**
  * Le suivi des commandes de livres : liste filtrée, états (avec transitions
- * contrôlées), frais de livraison fixé après coup, paiements en lignes.
+ * contrôlées), frais et mode de livraison corrigeables après coup, paiements en lignes.
  */
 class AdminBookOrderController extends Controller
 {
@@ -120,11 +121,18 @@ class AdminBookOrderController extends Controller
         return response()->json(['order' => $this->present($order)]);
     }
 
-    /** Frais de livraison et note interne — fixés par l'administrateur, après coup. */
+    /**
+     * Frais et mode de livraison, note interne — corrigés par l'administrateur.
+     * Le frais est figé à la commande quand le client a choisi un mode (DeliveryFees) ; sinon,
+     * ou pour une wilaya sans tarif, il est NULL. L'admin peut le fixer ou le corriger, et
+     * changer le mode à l'appel de confirmation : changer le mode ne recalcule PAS le frais —
+     * le frais saisi par l'admin reste l'autorité.
+     */
     public function update(Request $request, int $id)
     {
         $data = $request->validate([
             'deliveryFee' => 'nullable|integer|min:0|max:100000',
+            'deliveryMode' => ['nullable', Rule::in(DeliveryFees::MODES)],
             'adminNote' => 'nullable|string|max:2000',
         ]);
         $order = $this->find($id);
@@ -134,12 +142,16 @@ class AdminBookOrderController extends Controller
                 $this->event($order, 'delivery_fee', (string) $order->delivery_fee, (string) $data['deliveryFee'], $request);
                 $order->delivery_fee = $data['deliveryFee'];
             }
+            if (array_key_exists('deliveryMode', $data) && $data['deliveryMode'] !== $order->delivery_mode) {
+                $this->event($order, 'delivery_mode', $order->delivery_mode, $data['deliveryMode'], $request);
+                $order->delivery_mode = $data['deliveryMode'];
+            }
             if (array_key_exists('adminNote', $data)) {
                 $order->admin_note = $data['adminNote'];
             }
             $order->save();
         });
-        $this->logger->log($request->user(), ActivityLogger::BOOK_ORDER_UPDATED, 'book_order', $order->id, null, ['deliveryFee' => $order->delivery_fee]);
+        $this->logger->log($request->user(), ActivityLogger::BOOK_ORDER_UPDATED, 'book_order', $order->id, null, ['deliveryFee' => $order->delivery_fee, 'deliveryMode' => $order->delivery_mode]);
 
         return response()->json(['order' => $this->present($order)]);
     }

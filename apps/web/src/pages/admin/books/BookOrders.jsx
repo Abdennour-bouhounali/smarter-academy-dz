@@ -101,7 +101,7 @@ export default function AdminBookOrders() {
             { key: 'ref', label: A.columns.ref, render: (o) => <Link to={`/admin/livres/commandes/${o.id}`} className="whitespace-nowrap font-mono-jetbrains text-xs font-semibold text-violet-700 hover:underline"><Num>{o.reference}</Num></Link> },
             { key: 'customer', label: A.columns.customer, render: (o) => (<div><span className="font-semibold text-slate-900">{o.customerName}</span><Num className="block text-xs text-slate-500">{o.phone}</Num></div>) },
             { key: 'book', label: A.columns.book, render: (o) => o.book?.title ?? '—' },
-            { key: 'wilaya', label: A.columns.wilaya, render: (o) => o.wilaya },
+            { key: 'wilaya', label: A.columns.wilaya, render: (o) => (<div>{o.wilaya}{o.deliveryMode && <span className="block text-[11px] text-slate-400">{A.deliveryModes[o.deliveryMode]}</span>}</div>) },
             { key: 'qty', label: A.columns.qty, render: (o) => <Num>{o.quantity}</Num> },
             { key: 'total', label: A.columns.total, render: (o) => (<div><Num className="whitespace-nowrap">{formatDa(o.total)}</Num>{o.deliveryFee === null && <span className="block text-[11px] text-slate-400">{A.deliveryPending}</span>}</div>) },
             { key: 'status', label: A.columns.status, render: (o) => <Pill tone={ORDER_TONES[o.status]}>{A.status[o.status]}</Pill> },

@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Une commande de livre. Le total et l'état du paiement sont CALCULÉS (jamais
- * stockés) : le frais de livraison est fixé après coup et les paiements sont
- * des lignes — une valeur stockée serait fausse dès le premier changement.
+ * stockés) : le frais de livraison peut changer après coup (l'admin le corrige
+ * à l'appel de confirmation) et les paiements sont des lignes — une valeur
+ * stockée serait fausse dès le premier changement. Le frais lui-même est figé à
+ * la commande par le tarif du transporteur (DeliveryFees) quand un mode est choisi.
  */
 class BookOrder extends Model
 {
@@ -39,7 +41,7 @@ class BookOrder extends Model
 
     protected $fillable = [
         'reference', 'book_id', 'customer_name', 'phone', 'email', 'wilaya', 'commune',
-        'address', 'customer_note', 'quantity', 'unit_price', 'delivery_fee', 'status', 'admin_note',
+        'address', 'customer_note', 'quantity', 'unit_price', 'delivery_fee', 'delivery_mode', 'status', 'admin_note',
     ];
 
     protected function casts(): array

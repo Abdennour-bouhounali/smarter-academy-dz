@@ -1,5 +1,5 @@
 /**
- * THE INVESTIGATION `peel` of this world (to be mounted by `Inquiry.jsx`; logic and state machine: `peel.js`). A round
+ * THE INVESTIGATION `peel` of this world (mounted by `Inquiry.jsx`; logic and state machine: `peel.js`). A round
  * shows a PLAQUE written for several equal courts together, for a part of a court, or for a court with a pile of tiles
  * added or taken — drawn: the courts side by side under ONE plate, the pile beside them marked « + » (amber) or « − »
  * (violet). He PEELS one operation at a time: four cards (share between the courts, multiply them, add tiles, take

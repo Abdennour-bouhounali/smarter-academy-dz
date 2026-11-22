@@ -69,8 +69,6 @@ export const PEEL_LAYOUT = {
 
 /** The four peels, in the order the screen offers them. */
 export const OPS = ['share', 'grow', 'add', 'take'];
-/** How many rods ride a lone court: two (a > 0), one (a = 0), none (a < 0). */
-export const ENDS = { 2: 'two', 1: 'one', 0: 'none' };
 
 const zero = '0';
 const isWhole = (x) => read(x).d === 1n;
@@ -222,7 +220,7 @@ export function answerOk(said) {
 }
 
 /** Is the rod he typed the same LENGTH as the world's (the side of the court of `area`)? */
-export const sameRod = (said, area) => said != null && equal(platform(said), area);
+const sameRod = (said, area) => said != null && equal(platform(said), area);
 
 /**
  * His answer against the world: { countRight, rods: [{ side, said, ok }], right } — `right` when he said as many rods as

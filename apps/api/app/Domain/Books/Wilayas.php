@@ -9,11 +9,18 @@ namespace App\Domain\Books;
  */
 final class Wilayas
 {
-    /** @return array<int, array{id:int, fr:string, ar:string, label:string}> */
+    /**
+     * `delivery` : le tarif du transporteur (DeliveryFees), null pour une wilaya sans tarif.
+     *
+     * @return array<int, array{id:int, fr:string, ar:string, label:string, delivery:array{home:int, desk:int}|null}>
+     */
     public static function all(): array
     {
         return array_map(
-            fn (array $row) => ['id' => $row[0], 'fr' => $row[1], 'ar' => $row[2], 'label' => $row[2].' - '.$row[1]],
+            fn (array $row) => [
+                'id' => $row[0], 'fr' => $row[1], 'ar' => $row[2], 'label' => $row[2].' - '.$row[1],
+                'delivery' => DeliveryFees::forWilaya($row[0]),
+            ],
             self::ROWS,
         );
     }

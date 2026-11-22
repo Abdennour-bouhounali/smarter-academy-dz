@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Books\DeliveryFees;
+use App\Domain\Books\Wilayas;
 use App\Models\Book;
 use App\Models\BookOrder;
 use App\Models\User;
@@ -41,7 +43,7 @@ class BookStoreTest extends TestCase
         $this->getJson('/api/v1/books/smart-protocol')->assertOk()->assertJsonPath('book.price', 1400);
     }
 
-    public function test_une_commande_fige_le_prix_et_n_a_pas_de_frais_de_livraison(): void
+    public function test_une_commande_fige_le_prix_et_sans_mode_n_a_pas_de_frais_de_livraison(): void
     {
         $book = $this->book();
         $res = $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload())->assertCreated();
@@ -50,11 +52,95 @@ class BookStoreTest extends TestCase
         $this->assertSame($res->json('reference'), $order->reference);
         $this->assertSame(1400, $order->unit_price);
         $this->assertNull($order->delivery_fee);
+        $this->assertNull($order->delivery_mode);
+        $res->assertJsonPath('deliveryFee', null)->assertJsonPath('total', 2800);
         $this->assertSame('0555123456', $order->phone);
         $this->assertSame(2800, $order->total());
 
         $book->update(['price' => 2000]);
         $this->assertSame(2800, $order->fresh()->total(), 'changer le prix ne réécrit pas une commande reçue');
+    }
+
+    public function test_a_domicile_a_alger_le_frais_est_calcule_et_fige(): void
+    {
+        $this->book();
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryMode' => 'home']))
+            ->assertCreated()
+            ->assertJsonPath('subtotal', 2800)->assertJsonPath('deliveryFee', 400)->assertJsonPath('total', 2 * 1400 + 400);
+
+        $order = BookOrder::firstOrFail();
+        $this->assertSame('home', $order->delivery_mode);
+        $this->assertSame(400, $order->delivery_fee);
+    }
+
+    public function test_au_bureau_a_alger_le_frais_est_celui_du_bureau(): void
+    {
+        $this->book();
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryMode' => 'desk']))
+            ->assertCreated()->assertJsonPath('deliveryFee', 300)->assertJsonPath('total', 3100);
+        $this->assertSame('desk', BookOrder::firstOrFail()->delivery_mode);
+    }
+
+    public function test_une_wilaya_sans_tarif_garde_le_mode_sans_frais(): void
+    {
+        $this->book();
+        $label = collect(Wilayas::all())->firstWhere('id', 50)['label'];
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['wilaya' => $label, 'deliveryMode' => 'home']))
+            ->assertCreated()->assertJsonPath('deliveryFee', null);
+
+        $order = BookOrder::firstOrFail();
+        $this->assertSame('home', $order->delivery_mode);
+        $this->assertNull($order->delivery_fee);
+    }
+
+    public function test_un_mode_inconnu_est_refuse(): void
+    {
+        $this->book();
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryMode' => 'drone']))->assertStatus(422);
+        $this->assertSame(0, BookOrder::count());
+    }
+
+    public function test_un_frais_envoye_par_le_client_est_ignore(): void
+    {
+        $this->book();
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryMode' => 'home', 'deliveryFee' => 0]))
+            ->assertCreated()->assertJsonPath('deliveryFee', 400);
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryFee' => 5]))
+            ->assertCreated()->assertJsonPath('deliveryFee', null);
+        $this->assertSame([400, null], BookOrder::orderBy('id')->pluck('delivery_fee')->all());
+    }
+
+    public function test_la_liste_des_wilayas_expose_le_tarif(): void
+    {
+        $wilayas = collect($this->getJson('/api/v1/books/wilayas')->assertOk()->json('wilayas'));
+        $this->assertSame(['home' => 400, 'desk' => 300], $wilayas->firstWhere('id', 16)['delivery']);
+        $this->assertNull($wilayas->firstWhere('id', 50)['delivery']);
+        $this->assertNull($wilayas->firstWhere('id', 54)['delivery']);
+    }
+
+    public function test_le_tarif_a_56_lignes_toutes_des_wilayas_connues(): void
+    {
+        $table = DeliveryFees::table();
+        $this->assertCount(56, $table);
+        $ids = array_column(Wilayas::all(), 'id');
+        foreach (array_keys($table) as $id) {
+            $this->assertContains($id, $ids);
+        }
+        $this->assertArrayNotHasKey(50, $table);
+        $this->assertArrayNotHasKey(54, $table);
+    }
+
+    public function test_l_admin_change_le_mode_sans_recalculer_le_frais(): void
+    {
+        $this->book();
+        $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload(['deliveryMode' => 'home']))->assertCreated();
+        $id = BookOrder::firstOrFail()->id;
+        $h = ['Authorization' => 'Bearer '.$this->admin()];
+
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id", ['deliveryMode' => 'desk'])
+            ->assertOk()->assertJsonPath('order.deliveryMode', 'desk')->assertJsonPath('order.deliveryFee', 400);
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id", ['deliveryMode' => 'boat'])->assertStatus(422);
+        $this->assertSame('desk', BookOrder::firstOrFail()->delivery_mode);
     }
 
     public function test_une_commande_sans_adresse_est_acceptee(): void

@@ -58,6 +58,7 @@ final class BookPresenter
             'unitPrice' => $order->unit_price,
             'subtotal' => $order->subtotal(),
             'deliveryFee' => $order->delivery_fee,
+            'deliveryMode' => $order->delivery_mode,
             'total' => $order->total(),
             'paidAmount' => $order->paidAmount(),
             'paymentStatus' => $order->paymentStatus(),

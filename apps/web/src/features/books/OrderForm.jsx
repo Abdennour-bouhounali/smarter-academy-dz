@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Minus, Plus, CheckCircle2, Loader2, MapPin } from 'lucide-react';
+import { Minus, Plus, CheckCircle2, Loader2, MapPin, Home, Store } from 'lucide-react';
 import { fetchWilayas, submitBookOrder } from './bookService';
 import { S, formatDa } from './strings';
 import SearchSelect from './SearchSelect';
 import { filterOptions } from './dzSearch';
 import { normalizePhone, validateOrder } from './orderValidation';
 import { trackPixel } from './metaPixel';
+import { DELIVERY_MODES, deliveryFeeFor, orderTotal } from './delivery';
 
 const field = 'h-14 w-full rounded-xl border bg-white px-3.5 font-inter text-base text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200';
 const lbl = 'mb-1.5 block font-inter text-sm font-semibold text-slate-700';
 const errCls = 'mt-1.5 font-inter text-sm font-medium text-rose-600';
 
-const EMPTY = { customerName: '', phone: '', email: '', wilaya: '', commune: '', customerNote: '', quantity: 1, website: '' };
+const EMPTY = { customerName: '', phone: '', email: '', wilaya: '', commune: '', customerNote: '', quantity: 1, deliveryMode: 'home', website: '' };
 // Un champ refusé par le serveur (422) → la clé de SON message arabe.
 const SERVER_FIELD = { customerName: 'name', phone: 'phone', wilaya: 'wilaya', commune: 'commune', quantity: 'quantity' };
 const FIELD_ORDER = ['customerName', 'phone', 'wilaya', 'commune'];
@@ -36,9 +37,13 @@ function clearDraft(slug) {
 
 /**
  * Le formulaire de commande d'un livre — téléphone d'abord (BOOKS_STORE.md §4).
- * AUCUN paiement en ligne et AUCUN frais de livraison calculé ici : le serveur fige
- * le prix du livre, le frais est fixé à l'appel de confirmation. Plus d'adresse
- * (2026-11-13) : wilaya + commune, l'adresse exacte se demande au téléphone.
+ * AUCUN paiement en ligne. Le client choisit le mode de livraison (à domicile ou
+ * stop-desk) ; le frais de SA wilaya (tarif du transporteur, `GET /books/wilayas`)
+ * s'affiche dès la wilaya choisie, avec le total à payer à la réception. Ce frais
+ * n'est qu'affiché : le serveur fige le prix et recalcule le frais lui-même, on ne
+ * l'envoie jamais. Une wilaya sans tarif (`delivery: null`) : le frais se fixe à
+ * l'appel de confirmation, et le total affiché dit qu'il est « دون التوصيل ».
+ * Plus d'adresse (2026-11-13) : wilaya + commune, l'adresse exacte se demande au téléphone.
  *
  * - Wilaya : numérotée, cherchée par numéro OU par nom (arabe affiché seul) ; un nom
  *   de COMMUNE la trouve aussi et remplit les deux champs.
@@ -166,12 +171,13 @@ export default function OrderForm({ book }) {
         ...form,
         phone: normalizePhone(form.phone),
         quantity: Math.min(10, Math.max(1, Number(form.quantity) || 1)),
+        deliveryMode: DELIVERY_MODES.includes(form.deliveryMode) ? form.deliveryMode : 'home',
         email: form.email || null,
         customerNote: form.customerNote || null,
       });
       trackPixel('Lead', { content_name: book.title, content_ids: [book.slug], content_type: 'product', value: book.price * (Number(form.quantity) || 1), currency: 'DZD', num_items: Number(form.quantity) || 1 });
       clearDraft(book.slug);
-      setDone(result.reference);
+      setDone({ reference: result.reference, total: result.total ?? null, deliveryFee: result.deliveryFee ?? null });
       setForm(EMPTY);
       setTouched({});
     } catch (caught) {
@@ -188,12 +194,18 @@ export default function OrderForm({ book }) {
   };
 
   if (done) {
+    const feeKnown = done.deliveryFee !== null && done.total !== null;
     return (
       <div role="status" className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 text-center sm:p-8">
         <CheckCircle2 className="mx-auto mb-3 text-emerald-600" size={44} />
         <h3 className="font-space text-2xl font-bold text-slate-900">{S.order.successTitle}</h3>
-        <p className="mx-auto mt-2 max-w-md font-inter text-slate-600">{S.order.successBody}</p>
-        <p dir="ltr" className="mt-3 inline-block rounded-xl bg-white px-4 py-2 font-mono-jetbrains text-lg font-bold text-slate-900">{done}</p>
+        <p className="mx-auto mt-2 max-w-md font-inter text-slate-600">{feeKnown ? S.order.successBody : S.order.successBodyLater}</p>
+        <p dir="ltr" className="mt-3 inline-block rounded-xl bg-white px-4 py-2 font-mono-jetbrains text-lg font-bold text-slate-900">{done.reference}</p>
+        {feeKnown && (
+          <p className="mt-3 font-inter text-slate-700">
+            {S.order.successAmount} <span dir="ltr" className="font-space text-lg font-bold text-slate-900">{formatDa(done.total)}</span>
+          </p>
+        )}
         <div className="mt-5">
           <button type="button" onClick={() => setDone(null)} className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 py-2 font-inter text-sm font-semibold text-slate-700 hover:bg-slate-50">
             {S.order.another}
@@ -203,7 +215,12 @@ export default function OrderForm({ book }) {
     );
   }
 
-  const subtotal = book.price * (Number(form.quantity) || 1);
+  const fee = deliveryFeeFor(selectedWilaya, form.deliveryMode);
+  const total = orderTotal(book.price, form.quantity, fee);
+  const homeFee = deliveryFeeFor(selectedWilaya, 'home');
+  const deskFee = deliveryFeeFor(selectedWilaya, 'desk');
+  // Sans wilaya, ou une wilaya sans tarif : une seule phrase sous les deux cartes.
+  const deliveryHint = !selectedWilaya ? S.order.deliveryChooseWilaya : (homeFee === null && deskFee === null ? S.order.deliveryNoTariff : null);
   const border = (key) => (shownError(key) ? 'border-rose-400' : 'border-slate-300');
 
   return (
@@ -268,6 +285,42 @@ export default function OrderForm({ book }) {
               </p>
             )}
         </div>
+        {/* Le mode de livraison : deux cartes côte à côte, même sur 360 px ; chaque carte dit SON frais. */}
+        <fieldset className="min-w-0 md:col-span-2" aria-describedby={deliveryHint ? 'bo-delivery-hint' : undefined}>
+          <legend className={lbl}>{S.order.deliveryMode}</legend>
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            {DELIVERY_MODES.map((mode) => {
+              const checked = form.deliveryMode === mode;
+              const modeFee = mode === 'home' ? homeFee : deskFee;
+              const Icon = mode === 'home' ? Home : Store;
+              return (
+                <label
+                  key={mode}
+                  className={`flex min-h-14 min-w-0 cursor-pointer items-start gap-2 rounded-xl border p-3 transition ${checked ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-200' : 'border-slate-300 bg-white hover:border-slate-400'}`}
+                >
+                  <input
+                    type="radio" name="bo-delivery" value={mode} checked={checked}
+                    onChange={() => setForm((f) => ({ ...f, deliveryMode: mode }))}
+                    className="mt-0.5 h-4 w-4 shrink-0 accent-blue-600"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-start gap-1.5 font-inter text-sm font-semibold leading-snug text-slate-800">
+                      <Icon size={16} aria-hidden="true" className="mt-0.5 shrink-0 text-blue-600" />
+                      <span className="min-w-0">{S.order.deliveryModes[mode]}</span>
+                    </span>
+                    {modeFee !== null && (
+                      <span className="mt-1 block font-space text-base font-bold text-slate-900"><span dir="ltr">{formatDa(modeFee)}</span></span>
+                    )}
+                    {mode === 'desk' && deskFee !== null && homeFee !== null && deskFee < homeFee && (
+                      <span className="block font-inter text-xs font-semibold text-blue-700">{S.order.deliveryCheaper}</span>
+                    )}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          {deliveryHint && <p id="bo-delivery-hint" className="mt-1.5 font-inter text-xs text-slate-500">{deliveryHint}</p>}
+        </fieldset>
         <div className="md:col-span-2">
           <span className={lbl}>{S.order.quantity}</span>
           <div className="inline-flex items-center gap-3 rounded-xl border border-slate-300 bg-white p-1">
@@ -316,8 +369,11 @@ export default function OrderForm({ book }) {
       {/* Le récapitulatif juste AU-DESSUS du bouton : le client voit ce qu'il paiera en appuyant. */}
       <dl className="mt-6 space-y-2 rounded-2xl bg-slate-50 p-4 font-inter text-sm">
         <div className="flex justify-between gap-4"><dt className="text-slate-600">{S.order.price}</dt><dd dir="ltr" className="font-semibold">{formatDa(book.price)}</dd></div>
-        <div className="flex justify-between gap-4"><dt className="text-slate-600">{S.order.delivery}</dt><dd className="text-end text-slate-500">{S.order.deliveryLater}</dd></div>
-        <div className="flex justify-between gap-4 border-t border-slate-200 pt-2"><dt className="font-semibold text-slate-800">{S.order.total}</dt><dd dir="ltr" className="font-space text-lg font-bold text-slate-900">{formatDa(subtotal)}</dd></div>
+        <div className="flex justify-between gap-4"><dt className="text-slate-600">{S.order.delivery}</dt>{fee !== null
+          ? <dd dir="ltr" className="font-semibold">{formatDa(fee)}</dd>
+          : <dd className="text-end text-slate-500">{selectedWilaya ? S.order.deliveryLater : S.order.deliveryChooseWilaya}</dd>}</div>
+        {/* Jamais un total qui tait un frais CONNU : le libellé dit si le frais y est. */}
+        <div className="flex justify-between gap-4 border-t border-slate-200 pt-2"><dt className="font-semibold text-slate-800">{fee !== null ? S.order.totalOnDelivery : S.order.total}</dt><dd dir="ltr" className="font-space text-lg font-bold text-slate-900">{formatDa(total)}</dd></div>
       </dl>
 
       {error && <p role="alert" className="mt-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 font-inter text-sm text-rose-700">{error}</p>}
