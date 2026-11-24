@@ -4,20 +4,18 @@
  * `<LessonProvider lesson={lesson}>`; a screen of the kit reads it with `useLesson()` and never imports this folder.
  * Named in the lesson's pack (`lesson.pack.js`, wave 2).
  *
- * WAVE 1a (the written world) exports what exists, so that its tests run. Wave 2 adds, in this file:
- *   import { FORGES } from './forges';         → forges: FORGES          (the four forges, keyed by KEYS)
- *   import { STORY } from './story';           → story: STORY            (legs: LEGS from './run', forges by stage,
- *                                                                         mission, box, recall, onArrive…)
- *   import { TABLETS } from './tablets';       → rules: TABLETS          (the tablet of each key)
- * and the inquiries through FORGES. Until then the lesson names the doors it has not got (`notYet`, the kit's rule:
- * a door never opens on nothing).
+ * The four forges (`forges.js`, their experiments `inquiries.js`), the story the world plays (`story.js`: the forge
+ * of each stage, the felucca's legs, the final mission and the box at noon) and the tablets (`tablets.js`) are wave 2.
  */
 import { evidence, trainerEvidence } from './evidence';
+import { FORGES } from './forges';
 import { KEYS, journey } from './journey';
 import { KNOWLEDGE } from './knowledge';
 import { ladder, PRACTICE_MAP } from './practice';
 import { LEGS } from './run';
 import { sittings } from './sitting';
+import { STORY } from './story';
+import { TABLETS } from './tablets';
 import { TEXT } from './text';
 import { trainer } from './trainer';
 import { K1, K2, K3, K4 } from './math';
@@ -25,9 +23,13 @@ import { K1, K2, K3, K4 } from './math';
 export const lesson = {
   /** The rules of the lesson, in the order the story gives them. */
   keys: KEYS,
-  /** The forge of each rule (wave 2). */
-  forges: {},
-  /** The felucca's four legs (`story.legs` at wave 2 — the world reads them from the story). */
+  /** The forge of each rule, keyed by its key. */
+  forges: FORGES,
+  /** The tablet of each rule: its name, after its forge. */
+  rules: TABLETS,
+  /** What the world « الأهرامات » plays: the forge of each stage, the legs, the mission, the box. */
+  story: STORY,
+  /** The felucca's four legs — the world reads them from the story (`story.legs`); kept here for the road's tests. */
   legs: LEGS,
   /** « فضاء التدريب »: a level is a run of the kit's rail (the world's `startPractice` — not built yet). */
   ladder,
