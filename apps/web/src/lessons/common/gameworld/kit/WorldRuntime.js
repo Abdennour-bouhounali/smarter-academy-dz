@@ -27,6 +27,12 @@
  *                          student has turned ROUND with « back »: the camera then looks back along the road)
  *   cameraShot(phase)      { pos, look, k } when the camera is not following the robot (a cinematic `this.cine` by default)
  *   followsHero(phase), fov(), skyTarget()
+ *   sunDir()               the unit vector towards the sun (default: the fixed sun of every world before 2026-11-24)
+ *   shadowBox()            { half, near, far, distance, at? }: the box the sun's shadow map covers, how far the sun stands
+ *                          from its target, and that target (default: ±26 around the robot)
+ *   fogRange()             [near, far] of the fog (default [70, 300]); the camera's far plane follows it (never under 1200)
+ *                          — a shadow that carries mathematics is never the shadow map: a slow machine drops the map
+ *                          (`adaptQuality`), so a world DRAWS such a shadow as a mesh of its own
  *   busy()                 is the student in the middle of something the hub must not interrupt?
  *   pausesWorld(page)      does this full-screen page hide the world (nothing is simulated or drawn behind it)?
  */
@@ -40,6 +46,12 @@ import { examLevelOpen, emptyExam } from './journey';
 const SPEED = 6.2;
 const JUMP = 7.4;
 const GRAVITY = 21;
+// THE LIGHT OF A WORLD THAT SAYS NOTHING (PYRAMIDS_WORLD_PLAN K-f): the values every world had before the hooks existed
+const SUN_OFFSET = new THREE.Vector3(22, 38, 16);
+const SUN_DIR = SUN_OFFSET.clone().normalize();
+const SHADOW_BOX = Object.freeze({ half: 26, near: 1, far: 120, distance: SUN_OFFSET.length(), at: null });
+const FOG_RANGE = Object.freeze([70, 300]);
+const FAR_MIN = 1200;
 const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
 export const easeOut = (t) => 1 - (1 - t) ** 3;
 export const damp = (k, dt) => 1 - Math.exp(-k * dt);
@@ -163,6 +175,18 @@ export class WorldRuntime {
   fov() {
     return 55;
   }
+  /** The unit vector from the ground towards the sun (K-f). */
+  sunDir() {
+    return SUN_DIR;
+  }
+  /** The box of the sun's shadow map: `half` its half side, `near` / `far` its depth, `distance` from the sun to its target, `at` that target ({ x, z }; default: the robot). */
+  shadowBox() {
+    return SHADOW_BOX;
+  }
+  /** [near, far] of the fog; the camera sees twice as far (never under 1200). */
+  fogRange() {
+    return FOG_RANGE;
+  }
   busy() {
     return false;
   }
@@ -231,8 +255,9 @@ export class WorldRuntime {
     r.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer = r;
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.Fog(0xcfeeff, 70, 300);
-    this.camera = new THREE.PerspectiveCamera(55, 1, 0.1, 1200);
+    const [fogNear, fogFar] = this.fogRange();
+    this.scene.fog = new THREE.Fog(0xcfeeff, fogNear, fogFar);
+    this.camera = new THREE.PerspectiveCamera(55, 1, 0.1, Math.max(FAR_MIN, fogFar * 2));
     this.camPos = new THREE.Vector3(0, 9, 14);
     this.camLook = new THREE.Vector3();
     this.camDir = new THREE.Vector2(0, -1);
@@ -255,13 +280,7 @@ export class WorldRuntime {
     this.sun = new THREE.DirectionalLight(0xfff4dc, 2.5);
     this.sun.castShadow = true;
     this.sun.shadow.mapSize.set(2048, 2048);
-    const sc = this.sun.shadow.camera;
-    sc.left = -26;
-    sc.right = 26;
-    sc.top = 26;
-    sc.bottom = -26;
-    sc.near = 1;
-    sc.far = 120;
+    this.fitShadow(this.shadowBox());
     this.sun.shadow.bias = -0.0006;
     this.sun.shadow.normalBias = 0.04;
     this.scene.add(this.sun);
@@ -734,9 +753,35 @@ export class WorldRuntime {
     this.hemi.intensity = this.skyNow[4];
     this.hemi.color.set(this.skyNow[1]).lerp(cB.set(0xffffff), 0.55);
     this.sky.position.copy(this.camera.position);
-    const h = this.hero.pos;
-    this.sun.position.set(h.x + 22, 38, h.z + 16);
-    this.sun.target.position.set(h.x, 0, h.z);
+    this.applyLight();
+  }
+
+  /** The sun, its shadow box and the fog, from the world's hooks (K-f) — every frame; a change re-fits the cameras. */
+  applyLight() {
+    const box = this.shadowBox();
+    const at = box.at ?? this.hero.pos;
+    this.sun.target.position.set(at.x, 0, at.z);
+    this.sun.position.copy(this.sun.target.position).addScaledVector(this.sunDir(), box.distance);
+    this.fitShadow(box);
+    const [near, far] = this.fogRange();
+    this.scene.fog.near = near;
+    this.scene.fog.far = far;
+    const see = Math.max(FAR_MIN, far * 2);
+    if (this.camera.far !== see) {
+      this.camera.far = see;
+      this.camera.updateProjectionMatrix();
+    }
+  }
+  fitShadow({ half, near, far }) {
+    const sc = this.sun.shadow.camera;
+    if (sc.right === half && sc.near === near && sc.far === far) return;
+    sc.left = -half;
+    sc.right = half;
+    sc.top = half;
+    sc.bottom = -half;
+    sc.near = near;
+    sc.far = far;
+    sc.updateProjectionMatrix();
   }
 
   loop(now) {
@@ -789,7 +834,10 @@ export class WorldRuntime {
     el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
   }
 
-  /** A slow machine first loses the retina resolution, then the shadows — the game stays playable on a school laptop. */
+  /**
+   * A slow machine first loses the retina resolution, then the shadows — the game stays playable on a school laptop.
+   * It drops the shadow MAP only: a shadow a world draws as a mesh (one that carries mathematics, K-f) stays.
+   */
   adaptQuality(raw) {
     if (this.quality === 0 || raw > 0.5) return;
     this.frameAvg = this.frameAvg == null ? raw : this.frameAvg * 0.95 + raw * 0.05;

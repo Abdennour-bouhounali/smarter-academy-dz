@@ -235,6 +235,10 @@ const RtlLessonFixture = QA_FIXTURES_ENABLED
   : null;
 // The prototype of an integration mission (dev builds only, like the fixture above).
 const MissionPrototype = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx')) : null;
+// « الأهرامات », phase 1: the world without a lesson (PYRAMIDS_WORLD_PLAN §6 row 1) — development only
+const NilePyramidsPreview = QA_FIXTURES_ENABLED
+  ? lazy(() => import('./qa/nilePyramids/NilePyramidsPreview.jsx'))
+  : null;
 const MissionsHome = QA_FIXTURES_ENABLED
   ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx').then((m) => ({ default: m.MissionsHome })))
   : null;
@@ -675,6 +679,7 @@ function AppRoutes() {
         {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-1" element={<MissionPrototype />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-2" element={<MissionPrototype n={2} />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/missions" element={<MissionsHome />} />}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/nile-pyramids" element={<NilePyramidsPreview />} />}
       </Route>
     </Routes>
   );
