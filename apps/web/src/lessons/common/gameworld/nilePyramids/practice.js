@@ -1,5 +1,5 @@
 /**
- * « فضاء التدريب » on « الأهرامات » — a level of the lesson's practice ladder (`kit/ladder.js`) is sailed by the felucca on
+ * The practice space on the pyramids world — a level of the lesson's practice ladder (`kit/ladder.js`) is sailed by the felucca on
  * the kit's run in the river's skin, crocodiles in the lanes (`PYRAMIDS_WORLD_PLAN.md` §1.3: « the same rail is the
  * practice ladder »; §3.9: « levels on the river rail »). PURE: `Game.js › startPractice / endPractice` hold the 3D.
  *

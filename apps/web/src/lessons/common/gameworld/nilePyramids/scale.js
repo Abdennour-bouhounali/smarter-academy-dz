@@ -1,5 +1,5 @@
 /**
- * THE EXPERIMENT `scale` « آلة النسخ » (key 🔍 — PYRAMIDS_WORLD_PLAN §2.3, §3.6) — PURE reducer; the screen is
+ * THE EXPERIMENT `scale`, the copying frame (key 🔍 — PYRAMIDS_WORLD_PLAN §2.3, §3.6) — PURE reducer; the screen is
  * `InquiryScale.jsx`. A copying frame fixed at the vertex V: a number k is set on its dial, a triangle is fed to it, and
  * the copy is drawn from V with every side × k. BEFORE each copy he says how it will stand against the target
  * triangle — larger · exact · smaller; the world draws it: beyond the target, covering it exactly, or inside it, its

@@ -3,17 +3,17 @@
  * §3.3–§3.6, final). These specs are EXAMPLES of the shapes a lesson's `inquiries.js` writes.
  */
 import { describe, expect, it } from 'vitest';
-import { initPlan, planReducer, planResult, toolsOf, unknownsOf, CARDS, hintCards } from './plan';
+import { initPlan, planReducer, planResult, toolsOf, unknownsOf, CARDS, hintCards, laidOn, roundFig } from './plan';
 import { initHalfturn, halfturnReducer, rotate } from './halfturn';
 import { initScale, scaleReducer, perimeterChoices } from './scale';
 import { thalesCase, caseId, runCase, segName } from './ruleForge';
-import { gauge, points, chain } from './figure';
+import { gauge, points, chain, withPieces } from './figure';
 
-import { NESTED, PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC } from './test/specs';
+import { NESTED, PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC, BUTTERFLY_PLAN_SPEC, ACROSS_PLAN_SPEC } from './test/specs';
 
 const run = (reducer, spec, s, actions) => actions.reduce((acc, a) => reducer(spec, acc, a), s);
 
-describe('plan « خطّة الحساب » (key 📐)', () => {
+describe('plan, the computing plan (key 📐)', () => {
   it('round 1 is HIS course: the side SB and the piece BM give SM by a cut; 88 fits', () => {
     let s = initPlan(PLAN_SPEC);
     expect(toolsOf(s).map((t) => t.id)).toEqual(['VB-MB']);
@@ -26,7 +26,7 @@ describe('plan « خطّة الحساب » (key 📐)', () => {
     s = run(planReducer, PLAN_SPEC, s, [{ type: 'type', text: '88' }, { type: 'lay' }]);
     expect(s.laid).toMatchObject({ fact: 'fits', diff: '0' });
   });
-  it('a card with two « ؟ » refuses itself; the piece 11 leaves a gap of 77, written (the mirror)', () => {
+  it('a card with two unknowns refuses itself; the piece 11 leaves a gap of 77, written (the mirror)', () => {
     let s = initPlan(PLAN_SPEC);
     s = planReducer(PLAN_SPEC, s, { type: 'pick', card: 'VC' });
     expect(s.refused).toBe('VC');
@@ -71,7 +71,110 @@ describe('plan « خطّة الحساب » (key 📐)', () => {
   });
 });
 
-describe('halfturn « نصف دورة » (key 🦋)', () => {
+describe('plan on BUTTERFLIES (France K2: 416 ; 5,5 ; 12,5 — the across once: too long)', () => {
+  const B = BUTTERFLY_PLAN_SPEC;
+  it('a butterfly gets its lengths ACROSS the vertex under their own keys, never a piece MB / NC', () => {
+    const fig = roundFig(B, 2).fig;
+    expect(fig.len).toMatchObject({ VMB: '31,5', VNC: '38,5' });
+    expect(fig.len).not.toHaveProperty('MB');
+    expect(fig.len).not.toHaveProperty('NC');
+    expect(roundFig(B, 0).fig.len.VMB).toBe('81'); // the river: EA = ES + SA = 9 + 72
+    // a length already given is kept; a rational plus a root is no one length: null
+    const raw = B.rounds[2].fig;
+    expect(withPieces({ ...raw, len: { ...raw.len, VMB: '30' } }).len.VMB).toBe('30');
+    expect(roundFig(B, 0).fig.len.VNC).toBe('9√2785');
+    expect(withPieces({ ...raw, len: { ...raw.len, VC: '√2' } }).len.VNC).toBeNull();
+    // the nested figure keeps its pieces, and no across key
+    expect(roundFig(B, 1).fig.len).toMatchObject({ MB: '4', NC: '9' });
+    expect(roundFig(B, 1).fig.len).not.toHaveProperty('VMB');
+    expect(segName(fig, 'VMB')).toBe('AE');
+    expect(segName(fig, 'VNC')).toBe('BF');
+  });
+  it('round 1, HIS river: the across join is offered; 468 (the across) overhangs by 52, 416 fits', () => {
+    let s = initPlan(B);
+    expect(s.kind).toBe('butterfly');
+    expect(toolsOf(s)).toEqual([{ id: 'VM+VB', gives: 'VMB' }]);
+    s = run(planReducer, B, s, [
+      { type: 'pick', card: 'VB' },
+      { type: 'pick', card: 'BC' },
+      { type: 'type', text: '468' },
+      { type: 'lay' },
+    ]);
+    expect(s.laid).toMatchObject({ fact: 'overhang', diff: '52' });
+    s = run(planReducer, B, s, [{ type: 'next' }, { type: 'type', text: '416' }, { type: 'lay' }]);
+    expect(s.laid).toMatchObject({ fact: 'fits', unknown: 'BC' });
+  });
+  it('round 2, nested: a join along the side (AB = 6), the piece’s 8,25 overhangs, 5,5 fits', () => {
+    let s = run(planReducer, B, initPlan(B), [
+      { type: 'pick', card: 'VB' },
+      { type: 'pick', card: 'BC' },
+      { type: 'type', text: '416' },
+      { type: 'lay' },
+      { type: 'next' },
+    ]);
+    expect(s).toMatchObject({ i: 1, kind: 'nested' });
+    expect(toolsOf(s).map((t) => t.id)).toEqual(['VM+MB']);
+    s = run(planReducer, B, s, [
+      { type: 'tool', id: 'VM+MB' },
+      { type: 'pick', card: 'VB' },
+      { type: 'pick', card: 'BC' },
+      { type: 'type', text: '8,25' },
+      { type: 'lay' },
+    ]);
+    expect(s.laid).toMatchObject({ fact: 'overhang', diff: '2,75' });
+    s = run(planReducer, B, s, [{ type: 'next' }, { type: 'type', text: '5,5' }, { type: 'lay' }]);
+    expect(s.laid.fact).toBe('fits');
+  });
+  it('round 3, the butterfly at k = 2/5: a CUT across (OE = AE − OA = 22,5); the across’s 17,5 overhangs, 2 leaves a gap, 12,5 fits', () => {
+    const lay = (text) => [{ type: 'type', text }, { type: 'lay' }, { type: 'next' }];
+    const cards = [
+      { type: 'pick', card: 'VB' },
+      { type: 'pick', card: 'BC' },
+    ];
+    let s = run(planReducer, B, initPlan(B), [
+      ...cards,
+      ...lay('416'),
+      { type: 'tool', id: 'VM+MB' },
+      ...cards,
+      ...lay('5,5'),
+    ]);
+    expect(s).toMatchObject({ i: 2, kind: 'butterfly', known: ['VM', 'VMB', 'MN'] });
+    expect(toolsOf(s)).toEqual([{ id: 'VMB-VM', gives: 'VB' }]);
+    s = run(planReducer, B, s, [...cards, { type: 'type', text: '17,5' }, { type: 'lay' }]);
+    expect(s.laid).toMatchObject({ fact: 'overhang', diff: '5' });
+    s = run(planReducer, B, s, [{ type: 'next' }, { type: 'type', text: '2' }, { type: 'lay' }]);
+    expect(s.laid).toMatchObject({ fact: 'gap', diff: '10,5' });
+    s = run(planReducer, B, s, [
+      { type: 'next' },
+      { type: 'tool', id: 'VMB-VM' },
+      { type: 'type', text: '12,5' },
+      { type: 'lay' },
+      { type: 'next' },
+    ]);
+    expect(s.known).toContain('VB');
+    expect(s.done).toBe(true);
+    expect(planResult(s).plan).toEqual({ cards: ['VB', 'BC'], joins: ['VMB-VM'] });
+    expect(laidOn(roundFig(B, 2).fig, 'BC')).toBe('course');
+  });
+  it('the unknown ACROSS the vertex is laid as a rope from the vertex: OF = 27,5 typed for BF falls short by 11', () => {
+    const A = ACROSS_PLAN_SPEC;
+    const fig = roundFig(A, 0).fig;
+    expect(laidOn(fig, 'VNC')).toBe('line');
+    expect(laidOn(fig, 'VB')).toBe('line');
+    expect(laidOn(roundFig(B, 1).fig, 'MB')).toBe('course'); // a nested piece stays a course (the DZ lesson's round 4)
+    let s = run(planReducer, A, initPlan(A), [
+      { type: 'pick', card: 'VB' },
+      { type: 'pick', card: 'VC' },
+      { type: 'type', text: '27,5' },
+      { type: 'lay' },
+    ]);
+    expect(s.laid).toMatchObject({ unknown: 'VNC', fact: 'gap', diff: '11' });
+    s = run(planReducer, A, s, [{ type: 'next' }, { type: 'type', text: '38,5' }, { type: 'lay' }]);
+    expect(s.laid.fact).toBe('fits');
+  });
+});
+
+describe('halfturn, the half-turn (key 🦋)', () => {
   it('he says where K lands, turns by 30° steps, and K lands on line (IP); the crooked one lands crooked', () => {
     let s = initHalfturn(HALFTURN_SPEC);
     s = halfturnReducer(HALFTURN_SPEC, s, { type: 'predict', line: 'C' });
@@ -95,7 +198,7 @@ describe('halfturn « نصف دورة » (key 🦋)', () => {
   });
 });
 
-describe('scale « آلة النسخ » (key 🔍)', () => {
+describe('scale, the copying frame (key 🔍)', () => {
   it('the capstone is a fact; 6/5 on AMN covers ABC; on ABC it goes beyond; 5/6 brings ABC back; × k is the perimeter', () => {
     let s = initScale(SCALE_SPEC);
     expect(s.stage).toBe('fact');

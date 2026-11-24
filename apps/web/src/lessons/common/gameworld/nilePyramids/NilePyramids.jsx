@@ -1,7 +1,8 @@
 /**
- * « الأهرامات » on screen — what this world gives the kit's shell (`kit/LessonWorld.jsx` lists every field): its HUD (the
- * instruction that stays, the rope's knots, the fact of what the world built), the register « سجلّ الحقل », the card of
- * the ONE order (one typed box with its printed unit « م »), and the kit's rail between two docks. It names no lesson.
+ * The pyramids world on screen — what this world gives the kit's shell (`kit/LessonWorld.jsx` lists every field): its HUD (the
+ * instruction that stays, the rope's knots, the fact of what the world built), the field register, the card of
+ * the ONE order (one typed box with its printed unit, `WORLD_TEXT.unit`), and the kit's rail between two docks. It
+ * names no lesson.
  *
  * Hooks for the walks: `data-np-stage`, `data-np-rope=<knots>`, `data-np-drop`, `data-np-sight` (the sight line of
  * stage 3), `data-np-register` (rows: `data-np-row=<id>`), `data-np-order=<canal|course|mark|ferry|capstone>` (+
@@ -147,7 +148,7 @@ function Hud({ s, game }) {
 }
 
 /**
- * « منظر من الأعلى »: the camera over the whole stage, looking down; pressed again, back behind Zero (`Game.toggleTop`).
+ * The top view: the camera over the whole stage, looking down; pressed again, back behind Zero (`Game.toggleTop`).
  * Shown in play (never on the river run nor inside a forge or a card — the shell's `Under` slot).
  */
 export function TopButton({ on, game }) {
@@ -166,7 +167,7 @@ export function TopButton({ on, game }) {
   );
 }
 
-/** « سجلّ الحقل »: the record he was given, then what HE measured and typed. */
+/** The field register: the record he was given, then what HE measured and typed. */
 export function Register({ reg }) {
   return (
     <aside className="np-register" data-np-register={reg.rows.length}>
@@ -194,7 +195,7 @@ const decimal = (v) => {
 };
 
 /**
- * THE ONE ORDER's card: one number with its printed unit « م » — or, for the capstone (« كلّ طول × [ ] »), one number
+ * THE ONE ORDER's card: one number with its printed unit — or, for the capstone (« every length × [ ] »), one number
  * written as a fraction over a real bar.
  */
 export function OrderCard({ o, game }) {
@@ -277,7 +278,7 @@ export function OrderCard({ o, game }) {
 
 /**
  * THE MISSION CARD (`story.mission`) and THE BOX AT NOON (`story.box`): a written problem in the kit's `UseLines`, beside
- * a schematic figure (GeoFigure, not to scale — and it says so, gate F4). « تحقّق » makes the world act; a line that does
+ * a schematic figure (GeoFigure, not to scale — and it says so, gate F4). « check » makes the world act; a line that does
  * not hold yet is answered with a FACT.
  */
 export function StoryCard({ kind, game }) {

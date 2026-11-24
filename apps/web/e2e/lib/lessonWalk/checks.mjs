@@ -3,6 +3,22 @@
 // lib/walk.mjs › shot (nothing scrolls, 12 px, raw LaTeX, formulas, foreign words, a way out): these add what it cannot see.
 import { FLOOR_PX } from '../walk.mjs';
 
+/**
+ * A sentence that calls his answer WRONG (« خطأ », « خاطئ », « غلط »): never said by the world, the forge or a hint —
+ * the world shows what happens. The same name in France's walk library holds the French words: a world's player reads
+ * it from here and holds no word itself.
+ */
+export const WRONG_WORD = /خطأ|خاطئ|غلط/;
+
+/**
+ * The nouns of OTHER worlds that a world never says, by world id (this country's words; a world's player reads its own
+ * entry through `import * as`, so a walk library without it simply has no such rule).
+ */
+export const OTHER_WORLD_NOUNS = {
+  // the islands' and « قصر الساحات »'s nouns (« لوح البنّائين » is the pyramids' own board)
+  'nile-pyramids': /(?<![؀-ۿ])[وفبل]?(?:ال)?(?:جزير|جسر|جسور|هوّة|هوة|قضيب|ألواح)/,
+};
+
 /** A regexp of the words that may not be read yet (null: none). */
 export const wordsRe = (words) =>
   words.length ? new RegExp(words.map((x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')) : null;

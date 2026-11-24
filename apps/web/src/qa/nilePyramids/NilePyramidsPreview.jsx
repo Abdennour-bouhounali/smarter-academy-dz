@@ -1,5 +1,5 @@
 /**
- * PREVIEW page (development builds only, `/__qa/nile-pyramids`): the world « الأهرامات » in its PHASE 1 grey box
+ * PREVIEW page (development builds only, `/__qa/nile-pyramids`): the pyramids world in its PHASE 1 grey box
  * (`docs/reports/PYRAMIDS_WORLD_PLAN.md` §6 row 1), mounted with NO lesson — its lesson `talis-hisab-atwal` is not built
  * yet. The host below is the least the kit's shell needs: no key, no rule, no practice, no sitting, every door of the
  * title screen closed (`notYet`), its own save (`qa-nile-pyramids`), and a preview: nothing is sent.
@@ -18,6 +18,7 @@ import Inquiry from '../../lessons/common/gameworld/nilePyramids/Inquiry';
 import { Mirror } from '../../lessons/common/gameworld/nilePyramids/forgeParts';
 import { thalesCase } from '../../lessons/common/gameworld/nilePyramids/ruleForge';
 import { slot } from '../../lessons/common/gameworld/kit/forge';
+import { WORLD_TEXT } from '../../lessons/common/gameworld/nilePyramids/strings';
 import { PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC } from '../../lessons/common/gameworld/nilePyramids/test/specs';
 import { loadKit, saveKit } from '../../lessons/common/launchkit/store';
 import '../../lessons/common/gameworld/kit/ruleForge.css';
@@ -99,14 +100,14 @@ const LESSON = {
         ],
         ariaLabel: 'مثلّثان متداخلان',
       },
-      lines: () => [{ dir: 'ltr', tokens: ['h =', slot('h', 'h', 5, { decimal: true }), 'م'] }],
+      lines: () => [{ dir: 'ltr', tokens: ['h =', slot('h', 'h', 5, { decimal: true }), WORLD_TEXT.unit] }],
       check: (v) => (v.h === '146' ? 'ok' : 'زيرو لم يصل إلى القمّة.'),
       height: (v) => v.h,
     },
     box: {
       title: 'صندوق ابن الهيثم',
       lead: ['الصورة مقلوبة على الجدار الخلفيّ.'],
-      lines: () => [{ dir: 'ltr', tokens: ['SH =', slot('sh', 'SH', 5, { decimal: true }), 'م'] }],
+      lines: () => [{ dir: 'ltr', tokens: ['SH =', slot('sh', 'SH', 5, { decimal: true }), WORLD_TEXT.unit] }],
       check: (v) => (v.sh === '146' ? 'ok' : 'الصورة لا توافق هذا الارتفاع.'),
     },
   },
@@ -149,7 +150,7 @@ function KindAlone({ kind }) {
 export default function NilePyramidsPreview() {
   const kind = new URLSearchParams(window.location.search).get('kind');
   if (kind) return <KindAlone kind={kind} />;
-  // « ابدأ » enters the world at once: this preview has no launch kit (the title screen asks it only once per lesson)
+  // the start button enters the world at once: this preview has no launch kit (the title screen asks it only once per lesson)
   const kit = loadKit();
   if (!kit.lessons?.[ID]) saveKit({ ...kit, lessons: { ...(kit.lessons ?? {}), [ID]: true } });
   return (

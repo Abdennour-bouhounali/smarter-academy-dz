@@ -564,6 +564,23 @@ Registered last in `worlds.js` as `nile-pyramids`. No lesson plays it yet; `/__q
 it with a stub host (placeholder legs, mission and box), and `/__qa/nile-pyramids?kind=plan|halfturn|scale|mirror` shows
 one experiment (or a case in the forge's mirror) alone in the forge's experiment panel.
 
+- **ONE code for two countries (2026-11-24, W1 of `smarter-academy-fr-next/docs/reports/UNIT_3E_THALES_DESIGN.md`).**
+  France copies every file of the folder unchanged except its words. `strings.js` re-exports the country's file —
+  `export * from './strings.ar'` here, `./strings.fr` in France (the same keys) — and keeps `withStory` (code, not words);
+  every other file imports `./strings`. No other file of the folder holds an Arabic character (comments and tests
+  included): a stage is named by its id (field, workshop, river, summit, plateau), every visible or spoken word is a key
+  of `strings.ar.js` (`WORLD_TEXT`, `KIND_TEXT`, `THALES_TEXT` — re-exported by `ruleForge.js` for its importers —,
+  `FIGURE_TEXT` the screen-reader labels of a figure). **The direction is a word too: `DIR`** (`'rtl'`; France `'ltr'`),
+  read by `Inquiry.jsx` and `InquiryHalfturn.jsx`; a formula or a number keeps its own `dir="ltr"`. The HUD's `left` of
+  the register and the top-view button stays PHYSICAL: it answers the kit's recall card, placed by `right`. A test whose
+  point is the Arabic wording (no experiment names a rule, the words of a rope from the vertex) is `strings.ar.test.js`,
+  which France does not copy; the walk players (`e2e/lib/lessonWalk/worlds/nilePyramids*.mjs`, `gateRun.mjs`) read their
+  words from the country's `lessonWalk/checks.mjs` (`WRONG_WORD`, `OTHER_WORLD_NOUNS['nile-pyramids']`). Check:
+  `grep -rlP "[\x{0600}-\x{06FF}]" apps/web/src/lessons/common/gameworld/nilePyramids` lists `strings.ar.js` and
+  `strings.ar.test.js` only.
+- **A story plays only its docks: `story.stages`** (ids of `logic.js › STAGE_IDS`; none given: the five) — sailed
+  downstream whatever the order written, an unknown id refused (`logic.js › stageRoute`); a dock off the route keeps its
+  scenery and has no jetty, no step and no table.
 - **One unit is one metre.** Zero (the kit's robot) is scaled to about 1,2 m (`Game.js › ZERO`) and the follow camera is
   brought closer for him. Labels are sprites of a fixed screen size (≥ 18 px at 1366×768, `logic.js › labelScale`);
   far ones are hidden, a stage's framing shows that stage's only.
@@ -593,9 +610,12 @@ one experiment (or a case in the forge's mirror) alone in the forge's experiment
   `window.__np.labelRects()`, the lens and the HUD). A stage's labels are those of its bounds (`Game.js › stageOf`). Zero stays where he is: his keys walk nothing while it is open (`steers()`),
   the rope in his hand still answers ← →. Pressed again — or any phase other than play or a card — it closes.
 - **The experiment `halfturn` shows FACTS only** (review gate A, 2026-11-24): where M′ and N′ landed and the gauge
-  WITHOUT its ratios' names (`Gauge names={false}`) — never the chain of ratios, in any letters (it used to write it in
-  the butterfly's own letters after each turn: on the river, the right tiles of 🦋's forge before the tiles; ledger A1).
-  The lesson's `inquiries.test.js` renders every landed round and refuses a ratio of two segment names.
+  WITHOUT its ratios' names (`Gauge names={false}`) — never the chain in the turned letters. **`chainOwn`** (W3,
+  2026-11-24; default `false`): nothing prints the chain — the student writes it himself with the forge's tiles (on the
+  river it WAS the right tiles of 🦋's forge; ledger A1). Only **`chainOwn: true`** shows one line that rewrites the
+  chain in the butterfly's OWN letters after the turn (`KIND_TEXT.halfturn.chainOwn`, `data-iq-chain-own`), for a
+  lesson whose forge is not about that chain. The DZ lesson's `inquiries.test.js` renders every landed round and
+  refuses a ratio of two segment names.
 - **The mirror lays a tall case low** (`figure.js › mirrorFigure`): a figure taller than 1,05 × its width is turned (by
   15°) to lie lowest at the width its 12 px labels need (≤ 360 px) — a tall right triangle pushed the attack's question
   and its button out of the window. The line under the mirror (`text.eq`) is a MathText formula at text size (`\tfrac`).
@@ -656,7 +676,12 @@ tag?, show?, parallel?, tested?, draw? })` — `held` defaults to « the three r
   agrees with `held`: a 🔑 canal run through a wrong chain, a 🔍 copy against its target 1. `runCase(c).aligned` is the
   gauge's.
 - **A whole side given** (`show` a list holding VB or VC, on a nested figure) is written on the inner side of its line,
-  named: « AB = 54 » (« AB = ? » when asked) — never with `show: 'all'`.
+  named: « AB = 54 » (« AB = ? » when asked) — never with `show: 'all'`. On a BUTTERFLY the same holds for a length
+  ACROSS the vertex (`VMB` from M through V to B, `VNC`): « AE = 31,5 » along its line.
+- **Pieces and across lengths** (`figure.js › withPieces`, W4): a nested figure gets its pieces `MB = VB − VM`,
+  `NC = VC − VN`; a butterfly its lengths across the vertex under their OWN keys, `VMB = VM + VB`, `VNC = VN + VC` —
+  never `MB`, which would mean two things (null when a rational meets a root). `segName(c, 'VMB')` names it by its two
+  ends (« AE »).
 - `Mirror` draws the figure through `components/GeoFigure.jsx` (never a second renderer) and, once built, THE RATIO GAUGE
   (`data-rf-gauge`, `data-rf-aligned`); `Line` a thumbnail and the gauge in small; `beats()` = 3; `UseFigure({ c })` the
   last step's figure (`figure.js › lastStepFigure`: `show`, `ask` written « ? », `parallel`, `turn` in degrees; never
@@ -668,10 +693,17 @@ UseFigure }`).
 
 **Spec shapes of the three kinds** (examples: `nilePyramids/test/specs.js`; words: `strings.js › KIND_TEXT`, the
 lesson's `spec.text` over them):
-`{ kind: 'plan', rounds: [{ fig: { kind: 'nested', names, len }, given: [keys], unknown: key }], writes? }` → result
-`{ rows: [{ unknown, typed, fact, diff, picked, joins }], plan: { cards, joins } }`;
-`{ kind: 'halfturn', rounds: [{ fig: { kind: 'butterfly', names, len } }] }` → `{ rows: [{ predicted, landed, right,
-parallel }] }`;
+`{ kind: 'plan', rounds: [{ fig: { kind: 'nested' | 'butterfly', names, len }, given: [keys], unknown: key }], writes? }`
+→ result `{ rows: [{ unknown, typed, fact, diff, picked, joins }], plan: { cards, joins } }`. **`plan` on butterflies**
+(W4): the joins and cuts are per figure kind (`plan.js › SIDES`) — nested `VM+MB → VB`, `VB-VM → MB` along a side;
+butterfly `VM+VB → VMB`, `VMB-VM → VB` across the vertex (`given` and `unknown` may be `VMB` / `VNC`); the state carries
+the round's `kind`. The three cards stay the chain FROM THE VERTEX. How the world lays his number is `plan.js › laidOn`:
+MN or BC (a side facing the vertex) is a course (`KIND_TEXT.plan.fact`), a length on a line through a butterfly's
+vertex is a rope stretched from the vertex (`KIND_TEXT.plan.line`: reaches · stops short · passes, the size written;
+`data-iq-laid-on=<course|line>`); a nested figure's pieces stay courses (the DZ lesson's round 4 unchanged). Example:
+`test/specs.js › BUTTERFLY_PLAN_SPEC` (France's K2: 416 ; 5,5 ; 12,5);
+`{ kind: 'halfturn', rounds: [{ fig: { kind: 'butterfly', names, len } }], chainOwn? }` → `{ rows: [{ predicted,
+landed, right, parallel }] }`;
 `{ kind: 'scale', tri: { small: { V, P, Q, sides }, big: { … } }, rounds: [{ fact: { k, lines } } | { k, feed } |
 { k: null, feed } | { k, feed, perimeter: true }] }` → `{ rows: [{ feed, k, image, said, right, perimeter }] }`.
 
@@ -1242,8 +1274,8 @@ drawing); its `inquiries.test.js` fails if two keys share a (kind, mode) — see
 | `sort` | a pair whose only common plank is 1 / a pair that shares a longer plank — for lesson 8, a fraction that can / cannot be counted again in a longer unit (a CLASSIFICATION) | a HAND of 5–8 cards, one pair of gaps `(a ; b)` each, or one fraction `a/b` with a real bar (the numerator is gap a); the card on the table lies between two BASKETS named by the lesson (never the mathematical name before the key is forged) and its two gaps are drawn as strips on one scale (up to 700 cells: a gap is one bar, a plank too thin to draw is one bar); the cards left in his hand are small cards he may tap to play another first. For each card he MAY open ONE instrument he already owns, among those the spec lists — `lists` (the planks of each gap, shortest first from the right, the planks of both outlined green), `summit` (the planks of the shorter gap from the longest down, each laid on both strips with its rest on the longer gap written under it, stopping on the first that fills), `ladder` (Euclid's rows `a = b × q + r` down to the rest 0, rest amber, 0 green); the world runs it fact by fact — numbers, divisions, planks laid, never a conclusion. Then he DRAGS the card into a basket (touch and mouse) or taps the basket. A card in its own basket stays there. A card in the OTHER basket is answered by what the world does: said « only 1 » for a pair that shares a longer plank → the longest shared plank is laid on both strips, both divisions written (rest 0); said « a longer plank » for a pair that shares none → the planks of the shorter gap are laid on both strips from the longest down, each rest written: none but 1 leaves no rest. Then « next » takes the card to the basket it belongs to (outlined amber there: the world moved it). Never the word « wrong ». At the end both baskets stay on screen with their cards — the evidence his rule is written from. |
 | `measure` | two gaps one above the other are ONE fraction; a plank that fills both is a UNIT in which both are counted again, and the fraction it writes is the same fraction; by any road the counts end on the same fraction, and one stage is enough with the longest common plank (a CHANGE OF UNIT) | two strips, the numerator above the denominator, a fraction bar drawn between them; the chain of equal fractions is written with real bars (KaTeX, one formula, never broken). He picks a plank — a chip of the lesson's candidates and/or a typed length, counted in the CURRENT unit (2 … the longer strip). One that does not fill both is laid: what is left shows in amber, both divisions are written, nothing changes (the chip is struck while that fraction stands). One that fills both: the world counts both strips again — they are re-drawn as that many planks — and the new fraction joins the chain with « = » (66/78 = 22/26 = 11/13). **Mode `stages`**: he goes on by the road HE chooses and ends a run by claiming « no plank but 1 fills both »; the world answers by trying the planks of the upper strip (shortest first) on the lower one — one that fills is laid and the run goes on, none: the run ends. Before a SECOND run (`runs`, default 2, never more than the planks that can open a road) he types where it will end (a fraction template); the second road must open with another plank (while one exists); it ends on the same fraction — a fact, his prediction beside it. **Mode `direct`**: one stage only; a plank that fills both is counted honestly (66/99 = 22/33), then the world tries the planks of the upper strip on the lower: when one still fills both, one stage was not enough and he starts again from the fraction given. |
 | `part` | a part of a whole, re-cut in a longer unit: the painted length does not move, its writing does (13/39 = 1/3) — a fraction that comes out of a calculation is written again in the longest unit (a RE-CUT) | ONE strip, the whole (up to ~130 cells), and a painted part the world paints in strokes one after the other (5 cells, then 8), each stroke's length printed over it. He writes the fraction painted in its template (two boxes over a real bar — exactly the cells: painted over whole; a miss is answered by which count differs). Then he picks a plank (chips and/or typed, 2 … the whole) that fills the painted part AND the whole: one that does not is laid along the strip, outlined so the paint stays visible, what is left amber, both divisions written; one that does RE-CUTS the strip — the new cuts are drawn over the paint, which does not move, and the two writings stand side by side with « = ». He may instead claim « no plank but 1 fills both »: the world tries the planks of the painted part on the whole (a round whose part and whole share only 1 ends there, the writing unchanged; otherwise the plank it finds is laid and he picks again). One re-cut ends the round. |
-| `plan` (« الأهرامات », key 📐) | the fourth proportional on a Thalès figure, the data given in pieces (a PROCEDURE: `writes` may take his plan as his rule) | on a nested figure with ONE unknown, picks two of the THREE ratio cards of the chain (a card with two « ؟ » refuses itself), joins two ropes (VM + MB = VB) or cuts a piece off (VB − VM = MB), types the unknown; the world lays it as a course: fits · gap · overhang, the size written (the mirror). After two misses the cards holding the unknown are lit (a fact). `nilePyramids/plan.js`, `InquiryPlan.jsx` |
-| `halfturn` (« الأهرامات », key 🦋) | the butterfly is the nested figure turned half round the vertex | BEFORE the turn, says on which line M will land, (VB) or (VC); turns the small triangle with ← → (30° steps, it stops at 180°): it lands inside the big one, the ratio gauge shows its marks together (parallel) or apart (crooked), the chain is written with the turned letters, then with the butterfly's own. `halfturn.js`, `InquiryHalfturn.jsx` |
+| `plan` (« الأهرامات », key 📐) | the fourth proportional on a Thalès figure, the data given in pieces (a PROCEDURE: `writes` may take his plan as his rule) | on a figure with ONE unknown, picks two of the THREE ratio cards of the chain (a card with two « ؟ » refuses itself), joins two ropes or cuts a piece off — along a side on a nested figure (VM + MB = VB, VB − VM = MB), across the vertex on a butterfly (VM + VB = VMB, VMB − VM = VB) — types the unknown; the world lays it as a course (fits · gap · overhang) or, a length on a line through a butterfly's vertex, as a rope from the vertex; the size written (the mirror). After two misses the cards holding the unknown are lit (a fact). `nilePyramids/plan.js`, `InquiryPlan.jsx` |
+| `halfturn` (« الأهرامات », key 🦋) | the butterfly is the nested figure turned half round the vertex | BEFORE the turn, says on which line M will land, (VB) or (VC); turns the small triangle with ← → (30° steps, it stops at 180°): it lands inside the big one, the ratio gauge shows its marks together (parallel) or apart (crooked); where M′ and N′ landed is written as facts, and (unless `chainOwn: false`) one line rewrites the chain in the butterfly's own letters. `halfturn.js`, `InquiryHalfturn.jsx` |
 | `scale` (« الأهرامات », key 🔍) | k: one number for every side, its direction (k > 1 enlarges), 1/k back, the perimeter × k | a copying frame at the vertex: a round may be a FACT (the capstone), a prediction (the copy against the target: larger · exact · smaller), a k he SETS himself (a fraction) until the copy covers the target, or which perimeter the copy will have (× k · + k · × 3k); the copy is drawn from the vertex, its sides and perimeter written. `scale.js`, `InquiryScale.jsx` |
 
 **Key 3 of `qawaid-qabiliyat-qisma` (« الرقمان الأخيران », plank 4) — what the code does, and an OPEN choice.** The

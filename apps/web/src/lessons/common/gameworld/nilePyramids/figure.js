@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — A THALÈS FIGURE (PURE; PYRAMIDS_WORLD_PLAN §2.3): the one shape every case, mirror, experiment and
+ * The pyramids world — A THALÈS FIGURE (PURE; PYRAMIDS_WORLD_PLAN §2.3): the one shape every case, mirror, experiment and
  * card of this world is about, and its ONE drawing — a spec for the shared `components/GeoFigure.jsx` (never a second
  * renderer). It names no lesson.
  *
@@ -7,7 +7,8 @@
  *     kind: 'nested' | 'butterfly',
  *     names: { V, M, B, N, C },            the letters: the vertex V, M on line (VB), N on line (VC)
  *     len: { VM, VB, VN, VC, MN, BC },     exact lengths as TEXT (« 42,5 », « 5/6 », a root « 8√2785 » — surd.js);
- *                                          MN and BC may be null (unknown)
+ *                                          MN and BC may be null (unknown); `withPieces` adds the pieces MB, NC of a
+ *                                          nested figure, the lengths ACROSS the vertex VMB, VNC of a butterfly
  *     draw?: { VM, VB, VN, VC, MN, BC },   lengths for the DRAWING only, when the true shape cannot be read (the river:
  *                                          9 beside 416) — a schematic figure; every value written is still `len`'s
  *   }
@@ -17,6 +18,7 @@
 import { sheetFigure } from '../kit/sheetFigure';
 import { layoutGeoFigure } from '../../components/geoFigure';
 import { lenApprox as approx, lenCompare as compare, lenOver, lenPlus, lenTimes, lenWrite as write } from './surd';
+import { FIGURE_TEXT } from './strings';
 
 const sq = (x) => approx(x) ** 2;
 
@@ -101,7 +103,8 @@ const lab = (x) => (x == null ? '?' : write(x));
 
 /**
  * The GeoFigure spec of a figure. `show`: which lengths are written ('all' | a list of keys of `len` — on a nested
- * figure a whole side VB or VC in the list is written « AB = 54 » on the inner side of its line);
+ * figure a whole side VB or VC in the list is written « AB = 54 » on the inner side of its line; on a butterfly a length
+ * ACROSS the vertex, VMB or VNC, is written « AE = 31,5 » the same way, along its line through the vertex);
  * `ask`: segments written « ? » (an unknown); `parallel`: draw the chevrons of (MN) ∥ (BC) (when the case says so);
  * `small`: a thumbnail (no length written); `turn`: the figure turned by that many degrees (a triangle « on its side »).
  */
@@ -117,10 +120,11 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
   });
   const arrows = parallel ?? fig.parallel ?? chainSafe(fig);
   const butterfly = fig.kind === 'butterfly';
-  // a WHOLE side given in a list (📐's « VB », « VC ») on a nested figure is no segment of its own: it is written on
-  // the inner side of its line, named (« AB = 54 »), under the pieces' segments — never with `show: 'all'`
+  // a WHOLE side given in a list (📐's « VB », « VC ») on a nested figure — or a length ACROSS the vertex (« VMB »,
+  // « VNC ») on a butterfly — is no segment of its own: it is written on the inner side of its line, named
+  // (« AB = 54 »), under the pieces' segments — never with `show: 'all'`
   const whole = (a, b, k, side) =>
-    !butterfly && show !== 'all' && wants(k)
+    show !== 'all' && wants(k)
       ? [
           {
             from: a,
@@ -133,8 +137,8 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
   return {
     points: P,
     segments: [
-      ...whole(V, B, 'VB', -1),
-      ...whole(V, C, 'VC', 1),
+      ...(butterfly ? whole(M, B, 'VMB', -1) : whole(V, B, 'VB', -1)),
+      ...(butterfly ? whole(N, C, 'VNC', 1) : whole(V, C, 'VC', 1)),
       seg(V, M, 'VM', { tone: 'indigo' }),
       butterfly ? seg(V, B, 'VB') : seg(M, B, 'MB', shortPiece(P, M, B, V) ? { labelSide: -1 } : {}),
       seg(V, N, 'VN', { tone: 'indigo' }),
@@ -143,7 +147,7 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
       seg(B, C, 'BC', { tone: 'rose', bold: true, ...(arrows ? { arrows: 1 } : {}) }),
     ],
     polygons: [{ points: [V, M, N], tone: 'indigo' }],
-    ariaLabel: butterfly ? `فراشة رأسها ${V}` : `مثلث ${V}${B}${C} والقطعة [${M}${N}]`,
+    ariaLabel: butterfly ? FIGURE_TEXT.butterfly(V) : FIGURE_TEXT.nested(V, B, C, M, N),
     maxWidth: small ? 120 : 360,
     // a thumbnail (the evidence's lines) draws the shape only: its letters would be 3 px (the walk, 2026-11-24)
     ...(small ? { hidden: Object.keys(P) } : {}),
@@ -217,10 +221,27 @@ export function mirrorFigure(c) {
   return best && best.height < flat.height ? { turn: best.turn, width: best.width } : { turn: 0, width: null };
 }
 
-/** The lengths of a figure with its pieces added (MB = VB − VM, NC = VC − VN) for a nested one. */
+/**
+ * The lengths of a figure with its pieces added. Nested: the pieces MB = VB − VM, NC = VC − VN. Butterfly: the lengths
+ * ACROSS the vertex, under their OWN keys — VMB = VM + VB (from M through V to B), VNC = VN + VC — never `MB`, which on
+ * a nested figure is a piece. A length already given is kept; one that cannot be written as one length (a rational
+ * plus a root) is null.
+ */
 export function withPieces(fig) {
-  if (fig.kind !== 'nested') return fig;
   const { VM, VB, VN, VC } = fig.len;
-  const piece = (a, b) => (a != null && b != null ? lenPlus(b, lenTimes(a, '-1')) : null);
-  return { ...fig, len: { ...fig.len, MB: fig.len.MB ?? piece(VM, VB), NC: fig.len.NC ?? piece(VN, VC) } };
+  const add = (a, b) => {
+    if (a == null || b == null) return null;
+    try {
+      return lenPlus(a, b);
+    } catch {
+      return null;
+    }
+  };
+  if (fig.kind === 'nested') {
+    const piece = (a, b) => (a != null && b != null ? lenPlus(b, lenTimes(a, '-1')) : null);
+    return { ...fig, len: { ...fig.len, MB: fig.len.MB ?? piece(VM, VB), NC: fig.len.NC ?? piece(VN, VC) } };
+  }
+  if (fig.kind === 'butterfly')
+    return { ...fig, len: { ...fig.len, VMB: fig.len.VMB ?? add(VM, VB), VNC: fig.len.VNC ?? add(VN, VC) } };
+  return fig;
 }

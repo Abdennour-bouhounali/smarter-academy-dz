@@ -1,9 +1,9 @@
-// The EXPERIMENT KINDS of « الأهرامات » (`nilePyramids/InquiryPlan.jsx`, `InquiryHalfturn.jsx`, `InquiryScale.jsx`),
+// The EXPERIMENT KINDS of the pyramids world (`nilePyramids/InquiryPlan.jsx`, `InquiryHalfturn.jsx`, `InquiryScale.jsx`),
 // registered in ../experiments.mjs › EXPERIMENTS under `plan`, `halfturn` and `scale`. Each plays its screen through its
 // `data-iq-*` hooks; every answer is computed HERE (./thales.mjs, ./exact.mjs) from what the round GIVES — the spec is
 // the question (the lengths shown, the triangles fed), never what comes out (defects.md C1) — and each ends before its
 // last « next » (`playExperiment` clicks it).
-import { inquiryFits, tellsNothing } from '../checks.mjs';
+import { inquiryFits, tellsNothing, WRONG_WORD as WRONG } from '../checks.mjs';
 import { cmp, eq, mul, q, sub, write } from './exact.mjs';
 import { chainHolds, solveLength } from './thales.mjs';
 
@@ -15,7 +15,6 @@ export const NP_FRAME = {
   scene: 'svg',
   lines: 0.5,
 };
-const WRONG = /خطأ|خاطئ|غلط/;
 const stage = (page) => page.getAttribute('.np-iq', 'data-iq-stage');
 const fits = (ctx, label) => inquiryFits(ctx.w, ctx.page, label, ['.rf-root [data-di-exit]'], NP_FRAME);
 const iq = (page) => page.evaluate(() => window.__inquiry);
@@ -38,7 +37,7 @@ function planCards(known, unknown) {
 /**
  * `plan` — per round: the lengths GIVEN (and the joins the walk makes: two pieces of a side end to end), the two cards
  * of a plan, the unknown computed here and typed, laid: it FITS. On the first round a course of the WRONG length first
- * (the piece's ratio: the length times MB / VB), laid as a gap or an overhang, then « اطلب مدماكًا آخر ».
+ * (the piece's ratio: the length times MB / VB), laid as a gap or an overhang, then the button for another course (`data-iq-next`).
  */
 export async function planExperiment(ctx, spec) {
   const { w, page } = ctx;

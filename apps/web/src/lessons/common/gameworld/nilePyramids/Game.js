@@ -1,23 +1,23 @@
 /**
- * « الأهرامات » — THE WORLD OF A UNIT ABOUT THALÈS'S PROPERTY, played with a lesson's story (it names no lesson).
+ * The pyramids world — THE WORLD OF A UNIT ABOUT THALÈS'S PROPERTY, played with a lesson's story (it names no lesson).
  * Design: `docs/reports/PYRAMIDS_WORLD_PLAN.md` (§1 the world, §2.2 this class, §3.3–§3.7 the stages).
  *
  *   The Nile runs away from the camera; five DOCKS stand on its east bank in the order of play, the Great Pyramid on the
  *   horizon from the first second. A stage is ONE list of steps (DATA, `stageData`) played with ONE gesture and ONE
  *   order:
- *     1 « حقل النيل »        six rope measures, two predictions of a canal's length (as typed · longer · shorter)
- *     2 « ورشة البنّائين »   the rope up the edge on the built steps; two courses ordered (fits · gap · overhang); then
+ *     1 field                six rope measures, two predictions of a canal's length (as typed · longer · shorter)
+ *     2 workshop             the rope up the edge on the built steps; two courses ordered (fits · gap · overhang); then
  *                            the row already cut: HE types its mark, the masons build up to it and lay it there
- *     3 « عرض النيل »        the bank AS, then SE, then inland ER until, in Zero's eye, the stake S hides the post F
+ *     3 river                the bank AS, then SE, then inland ER until, in Zero's eye, the stake S hides the post F
  *                            (`data-np-sight`); the ferry rope cut before crossing (ties · short · slack)
- *     4 « حجر القمّة »       up the ramp to the summit, framed close; « كلّ طول × [k] » to the stone-cutter: the
+ *     4 summit               up the ramp to the summit, framed close; « every length × [k] » to the stone-cutter: the
  *                            capstone sits · is too small · too big (a block too big is the quarry's written order)
- *     5 « ظلّ الهرم الأكبر » the stick IN THE SUN, the shadows (DRAWN meshes from `shadowTip`, never the shadow map),
+ *     5 plateau              the stick IN THE SUN, the shadows (DRAWN meshes from `shadowTip`, never the shadow map),
  *                            the stick's drawn triangle slid along the axis until the tips meet (B5); the mission card;
- *                            Zero rises to his h (apex · below · above); noon, and « صندوق ابن الهيثم »
+ *                            Zero rises to his h (apex · below · above); noon, and Ibn al-Haytham's box
  *   Each of stages 1–4 ends at the masons' table, where the lesson's forge opens (`story.forges[stageId]`).
  *   Between two docks he sails on the kit's rail (`story.legs[i]`, to the route's next dock) — without a leg the felucca simply sails.
- *   A level of the practice ladder (`lesson.ladder`, « فضاء التدريب ») is sailed on the same river (`startPractice`,
+ *   A level of the practice ladder (`lesson.ladder`, the practice space) is sailed on the same river (`startPractice`,
  *   `practice.js`): the level's waves as buoys, its pace, crocodiles, three hearts; its stars are the hearts left.
  *
  * THE ONE GESTURE is `gestures.js › slide`, THE ONE ORDER `orders.js › order`; the law is `logic.js`; the look
@@ -1100,7 +1100,7 @@ export class NilePyramidsGame extends WorldRuntime {
     for (const d of this.docks) d.userData.lamp.visible = d.userData.stage === i && !step && this.nextDock(i) != null;
   }
 
-  /** « سجلّ الحقل »: the record he was given, then what HE measured and typed, in the order he did it. */
+  /** The field register: the record he was given, then what HE measured and typed, in the order he did it. */
   registerOf() {
     const i = this.state.at;
     const st = this.stages[i];
@@ -1318,7 +1318,7 @@ export class NilePyramidsGame extends WorldRuntime {
       prompt: null,
     });
   }
-  /** « لاحقًا »: the card closes; the place where it is asked opens it again. */
+  /** « later »: the card closes; the place where it is asked opens it again. */
   closeOrder() {
     this.closeOverlay();
     this.refreshObjective();
@@ -1545,7 +1545,7 @@ export class NilePyramidsGame extends WorldRuntime {
     this.refreshObjective();
   }
   /**
-   * « تحقّق » on the mission card: Zero RISES along the axis to the h he wrote — whatever it is (the world carries out a
+   * « check » on the mission card: Zero RISES along the axis to the h he wrote — whatever it is (the world carries out a
    * misreading, defects D16) — and ends at the apex, below or above it. Then the card's own fact, or noon.
    */
   checkMission(vals) {
@@ -1792,7 +1792,7 @@ export class NilePyramidsGame extends WorldRuntime {
     }
   }
 
-  // ───────────────────────────── « فضاء التدريب »: a level of the practice ladder, sailed on the river ─────────────────────────────
+  // ───────────────────────────── the practice space: a level of the practice ladder, sailed on the river ─────────────────────────────
   /**
    * A level of the lesson's ladder (`lesson.ladder`, the kit's) is a trip of the felucca on the kit's run in the river's
    * skin (plan §1.3 « the same rail is the practice ladder », §3.9): its waves are the buoys, crocodiles in the lanes,
@@ -1842,7 +1842,7 @@ export class NilePyramidsGame extends WorldRuntime {
     });
     this.save();
   }
-  /** « خروج » or « الرجوع إلى الخريطة » during a level: nothing is kept, back to the hub on that node. */
+  /** « quit » or « back to the map » during a level: nothing is kept, back to the hub on that node. */
   quitPractice() {
     const d = this.drill;
     if (!d) return;
@@ -1860,7 +1860,7 @@ export class NilePyramidsGame extends WorldRuntime {
     this.hero.grounded = true;
     this.lookTo(Math.PI);
   }
-  /** « ذكّرني بالقاعدة » from the hub or a result: the tablet of a rule; closing it comes back where he was. */
+  /** « remind me of the rule » from the hub or a result: the tablet of a rule; closing it comes back where he was. */
   showRule(key, from) {
     if (!key) return;
     this.audio.play('ui');

@@ -8,7 +8,7 @@ import NilePyramids, { Fact, Register, OrderCard, RopeChip, StoryCard, TopButton
 import { NilePyramidsGame } from './Game';
 import { slot } from '../kit/forge';
 import { WORLDS } from '../worlds';
-import { WORLD_TEXT } from './strings';
+import { FIGURE_TEXT, WORLD_TEXT } from './strings';
 
 const game = {
   T: WORLD_TEXT,
@@ -20,7 +20,7 @@ const game = {
     mission: {
       title: 'm',
       lead: ['$h$'],
-      figure: { points: { A: [0, 0], B: [4, 0], C: [4, 3] }, segments: [['A', 'B']], ariaLabel: 'مثلّث' },
+      figure: { points: { A: [0, 0], B: [4, 0], C: [4, 3] }, segments: [['A', 'B']], ariaLabel: FIGURE_TEXT.pair('A') },
       lines: () => [{ dir: 'ltr', tokens: ['h =', slot('h', 'h', 5, { decimal: true })] }],
       check: () => 'ok',
     },
@@ -28,7 +28,7 @@ const game = {
 };
 const plain = (html) => html.replace(/<[^>]+>/g, ' ');
 
-describe('« الأهرامات » on screen', () => {
+describe('the pyramids world on screen', () => {
   it('is registered last among the worlds and its shell is a component', async () => {
     expect(Object.keys(WORLDS).at(-1)).toBe('nile-pyramids');
     expect(typeof NilePyramids).toBe('function');
@@ -56,7 +56,7 @@ describe('« الأهرامات » on screen', () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it('the top view has ONE toggle: « منظر من الأعلى », then back to Zero (aria-pressed)', () => {
+  it('the top view has ONE toggle: the top view, then back to Zero (aria-pressed)', () => {
     const off = renderToString(<TopButton on={false} game={game} />);
     expect(off).toContain('data-np-top="off"');
     expect(off).toContain('aria-pressed="false"');

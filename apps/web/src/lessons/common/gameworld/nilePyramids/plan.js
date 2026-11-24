@@ -1,14 +1,17 @@
 /**
- * THE EXPERIMENT `plan` « خطّة الحساب » (key 📐 — PYRAMIDS_WORLD_PLAN §2.3, §3.4) — PURE reducer; the screen is
- * `InquiryPlan.jsx`. On a nested figure with ONE unknown length he builds his plan: he picks two of the THREE RATIO CARDS
- * of the chain, joins two ropes end to end (VM + MB = VB) or cuts a piece off a side (VB − VM = MB), then types the
- * unknown — the cross product is his. The world lays his number as a course on the drawn face: fits · gap · overhang,
- * the size written (this is the mirror). A card with two « ؟ » refuses itself. No sentence names the criterion (gate P2).
+ * THE EXPERIMENT `plan`, the computing plan (key 📐 — PYRAMIDS_WORLD_PLAN §2.3, §3.4) — PURE reducer; the screen is
+ * `InquiryPlan.jsx`. On a figure with ONE unknown length he builds his plan: he picks two of the THREE RATIO CARDS of
+ * the chain (every term a length FROM THE VERTEX), joins two ropes end to end or cuts a piece off — on a NESTED figure
+ * along a side (VM + MB = VB, VB − VM = MB), on a BUTTERFLY across the vertex (VM + VB = VMB, VMB − VM = VB) — then
+ * types the unknown: the cross product is his. The world lays his number: a side facing the vertex (MN, BC) as a course
+ * on the drawn face (fits · gap · overhang), a length on a line through the vertex of a butterfly as a rope from the
+ * vertex (`laidOn`, its own words `KIND_TEXT.plan.line`); the size written (this is the mirror). A card with two unknowns refuses itself. No sentence names the criterion (gate P2).
  *
  *   spec = { kind: 'plan', rounds: [{ fig: { kind: 'nested', names, len }, given: ['VM', 'MB', 'BC'], unknown: 'MN' }],
  *            text? }
- * `len` holds the TRUE lengths (VM, VB, VN, VC, MN, BC; MB and NC are added); `given` what he is shown; `unknown` what
- * he computes. The result (`planResult`) is the rows of every course laid and his last plan: `inquiry.writes` reads it.
+ *   a butterfly round: { fig: { kind: 'butterfly', names, len }, given: ['VM', 'VMB', 'MN'], unknown: 'BC' }
+ * `len` holds the TRUE lengths (VM, VB, VN, VC, MN, BC; `figure.js › withPieces` adds MB and NC to a nested figure, the
+ * across lengths VMB and VNC to a butterfly); `given` what he is shown; `unknown` what he computes. The result (`planResult`) is the rows of every course laid and his last plan: `inquiry.writes` reads it.
  */
 import { withPieces } from './figure';
 import { write, compare, minus, plus, magnitude, tryRead } from '../kit/exact';
@@ -19,12 +22,26 @@ export const CARDS = Object.freeze([
   { id: 'VC', top: 'VN', bottom: 'VC' },
   { id: 'BC', top: 'MN', bottom: 'BC' },
 ]);
-/** The two sides from the vertex and their pieces: a whole and its two parts. */
-const SIDES = [
-  ['VB', 'VM', 'MB'],
-  ['VC', 'VN', 'NC'],
-];
-/** After this many courses that do not fit, the cards holding the unknown are lit (a fact: where the « ؟ » is). */
+/**
+ * Per figure kind, the two lines through the vertex as a whole and its two parts: on a nested figure a side and its
+ * pieces; on a butterfly the length across the vertex and its two lengths from the vertex.
+ */
+const SIDES = Object.freeze({
+  nested: [
+    ['VB', 'VM', 'MB'],
+    ['VC', 'VN', 'NC'],
+  ],
+  butterfly: [
+    ['VMB', 'VM', 'VB'],
+    ['VNC', 'VN', 'VC'],
+  ],
+});
+/**
+ * How the world lays a length: a side facing the vertex (MN, BC) is a course; on a butterfly, a length on a line
+ * through the vertex is a rope stretched from the vertex ('line'). A nested figure's pieces stay courses.
+ */
+export const laidOn = (fig, key) => (fig.kind === 'butterfly' && key !== 'MN' && key !== 'BC' ? 'line' : 'course');
+/** After this many courses that do not fit, the cards holding the unknown are lit (a fact: where the unknown is). */
 const HINT_AFTER = 2;
 
 const roundOf = (spec, i) => {
@@ -40,6 +57,7 @@ function start(spec, i, rows) {
   const r = roundOf(spec, i);
   return {
     i,
+    kind: r.fig.kind,
     known: [...r.given],
     picked: [],
     joins: [],
@@ -55,14 +73,17 @@ function start(spec, i, rows) {
 /** What a segment is worth now: its length when known, else null. */
 export const valueOf = (spec, s, key) => (s.known.includes(key) ? roundOf(spec, s.i).fig.len[key] : null);
 
-/** How many « ؟ » a card holds now. */
+/** How many unknowns a card holds now. */
 export const unknownsOf = (s, card) => [card.top, card.bottom].filter((k) => !s.known.includes(k)).length;
 
-/** The joins and cuts he may make now: `{ id: 'VM+MB', gives: 'VB' }`, `{ id: 'VB-VM', gives: 'MB' }`. */
+/**
+ * The joins and cuts he may make now: `{ id: 'VM+MB', gives: 'VB' }`, `{ id: 'VB-VM', gives: 'MB' }`; on a butterfly
+ * `{ id: 'VM+VB', gives: 'VMB' }`, `{ id: 'VMB-VM', gives: 'VB' }`.
+ */
 export function toolsOf(s) {
   const out = [];
   const has = (k) => s.known.includes(k);
-  for (const [whole, a, b] of SIDES) {
+  for (const [whole, a, b] of SIDES[s.kind] ?? SIDES.nested) {
     if (has(a) && has(b) && !has(whole)) out.push({ id: `${a}+${b}`, gives: whole });
     if (has(whole) && has(a) && !has(b)) out.push({ id: `${whole}-${a}`, gives: b });
     if (has(whole) && has(b) && !has(a)) out.push({ id: `${whole}-${b}`, gives: a });

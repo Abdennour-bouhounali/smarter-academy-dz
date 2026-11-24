@@ -38,7 +38,7 @@ function knotsAfter(t, top) {
 const labelPx = (scale, fov, viewH = 768) =>
   (scale * (viewH / 2) * (1 / Math.tan(((fov / 2) * Math.PI) / 180))) / (96 / 64);
 
-describe('stage 1 « حقل النيل » — the field and its two canals (plan §3.3)', () => {
+describe('stage 1 (field) — the field and its two canals (plan §3.3)', () => {
   const [fresh, old] = FIELD.canals;
 
   it('every rope reads a whole knot: MN² = 324, PQ² = 1681 (cos A = 2/7)', () => {
@@ -79,7 +79,7 @@ describe('stage 1 « حقل النيل » — the field and its two canals (plan
   });
 });
 
-describe('stage 2 « ورشة البنّائين » — the courses of the face SBC (plan §3.4)', () => {
+describe('stage 2 (workshop) — the courses of the face SBC (plan §3.4)', () => {
   it('course 1 at BM = 10 is 88; course 2 at BM = 20 is 77', () => {
     expect(courseAt(FACE, '10')).toEqual({ SM: '80', MN: '88' });
     expect(courseAt(FACE, '20')).toEqual({ SM: '70', MN: '77' });
@@ -103,7 +103,7 @@ describe('stage 2 « ورشة البنّائين » — the courses of the face 
   });
 });
 
-describe('stage 3 « عرض النيل » — the river’s width without crossing it (plan §3.5)', () => {
+describe('stage 3 (river) — the river’s width without crossing it (plan §3.5)', () => {
   it('AF = 72 × 52 / 9 = 416; the inverted ratio gives 6,5 and the sum 133 (gate B4)', () => {
     expect(riverWidth(RIVER)).toBe('416');
     expect(write(fourth(RIVER.AS, RIVER.SE, RIVER.ER))).toBe('6,5');
@@ -129,7 +129,7 @@ describe('stage 3 « عرض النيل » — the river’s width without crossi
   });
 });
 
-describe('stage 5 « ظلّ الهرم الأكبر » — shadows computed, drawn as meshes (B2, B5)', () => {
+describe('stage 5 (plateau) — shadows computed, drawn as meshes (B2, B5)', () => {
   it('tan = 2/3: the stick’s shadow is 3, the pyramid’s 219 from its centre (104 beyond the base edge)', () => {
     expect(shadowLength(PLATEAU.stick, PLATEAU.tan)).toBe('3');
     expect(shadowLength(PLATEAU.h, PLATEAU.tan)).toBe('219');

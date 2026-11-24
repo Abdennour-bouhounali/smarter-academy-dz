@@ -1,5 +1,5 @@
 /**
- * « فضاء التدريب » on « الأهرامات »: a level of the ladder is sailed on the river (plan §1.3, §3.9). The pure part
+ * The practice space on the pyramids world: a level of the ladder is sailed on the river (plan §1.3, §3.9). The pure part
  * (`practice.js`) and the world's hooks (`Game.js › startPractice / endPractice / quitPractice / showRule / closeRule`),
  * played on a stand-in of the runtime — no renderer: what the river (`kit/GateRun.js`) is asked is recorded.
  */
@@ -20,10 +20,10 @@ const wave = (key) => (rand) => {
     key,
     a,
     b: a,
-    say: `ضعف ${a}`,
+    say: `twice ${a}`,
     gates: [2 * a, 2 * a + 1, '3/4'],
     good: 0,
-    why: { right: `${a} + ${a} = ${2 * a}`, wrong: { [2 * a + 1]: 'فرديّ', '3/4': 'كسر' } },
+    why: { right: `${a} + ${a} = ${2 * a}`, wrong: { [2 * a + 1]: 'odd', '3/4': 'a fraction' } },
   };
 };
 const isRight = (w, g) => g === 2 * w.a;
@@ -61,15 +61,15 @@ describe('a practice level on the river — the pure part', () => {
       node: 0,
       level: 1,
       random: rng(3),
-      names: ['أ', 'ب'],
+      names: ['level a', 'level b'],
       text: WORLD_TEXT.practice,
     });
     expect(drill).toMatchObject({ node: 0, level: 1, speed: 6.6 });
     expect(drill.waves).toHaveLength(6);
     expect(content.total).toBe(6);
     expect(content.gates).toBeGreaterThan(content.total);
-    expect(content.levels).toEqual([{ name: 'ب', from: '' }]);
-    expect(content.text.title).toBe('ب');
+    expect(content.levels).toEqual([{ name: 'level b', from: '' }]);
+    expect(content.text.title).toBe('level b');
     expect(content.text.bump).toBe(WORLD_TEXT.practice.bump);
     // every word the run's HUD reads (`kit/GateRunHud.jsx › content.text`) is there
     for (const k of ['say', 'rule', 'start', 'again', 'leave', 'order', 'gate', 'of', 'pause', 'resume', 'quit'])
@@ -85,7 +85,7 @@ describe('a practice level on the river — the pure part', () => {
     expect(r.ask).toBe(w.say);
     expect(r.right).toBe(0);
     expect(r.options).toEqual([{ t: String(2 * w.a) }, { t: String(2 * w.a + 1) }, { tex: '\\dfrac{3}{4}' }]);
-    expect(r.why).toEqual([w.why.right, 'فرديّ', 'كسر']);
+    expect(r.why).toEqual([w.why.right, 'odd', 'a fraction']);
     expect(buoyOption('−2/5')).toEqual({ tex: '-\\dfrac{2}{5}' });
     expect(buoyOption('13,75')).toEqual({ t: '13,75' });
   });
@@ -137,7 +137,7 @@ function standIn({ keys = ['k1'], phase = 'play', practice = {} } = {}) {
   const calls = [];
   const g = Object.create(NilePyramidsGame.prototype);
   Object.assign(g, {
-    lesson: { ladder, text: { levels: { k1: ['أوّل', 'ثانٍ'], k2: ['أوّل'], [SUMMARY]: ['مزيج'] } } },
+    lesson: { ladder, text: { levels: { k1: ['first', 'second'], k2: ['first'], [SUMMARY]: ['mixed'] } } },
     T: WORLD_TEXT,
     keysEver: new Set(keys),
     practice,
@@ -173,11 +173,11 @@ describe('a practice level on the river — the world’s hooks (Game.js)', () =
     expect(g.startPractice(0, 0)).toBe(true);
     const open = calls.find((c) => c[0] === 'open')[1];
     expect(open.total).toBe(6);
-    expect(open.text.title).toBe('أوّل');
+    expect(open.text.title).toBe('first');
     expect(g.runContent).toBe(open);
     expect(calls.map((c) => c[0])).toContain('start');
     expect(g.drill).toMatchObject({ node: 0, level: 0, speed: 6 });
-    g.leaveRun(); // « خروج »: nothing kept, back to the hub on that node
+    g.leaveRun(); // « quit »: nothing kept, back to the hub on that node
     expect(g.drill).toBe(null);
     expect(calls.at(-1)).toEqual(['map', 0]);
     expect(g.hero.pos.toArray()).toEqual([5, 0, -300]);
@@ -216,7 +216,7 @@ describe('a practice level on the river — the world’s hooks (Game.js)', () =
     expect(g.practice).toEqual({});
   });
 
-  it('« ذكّرني بالقاعدة » shows the rule’s tablet and closing it comes back to the card it came from', () => {
+  it('« remind me of the rule » shows the rule’s tablet and closing it comes back to the card it came from', () => {
     const { g } = standIn();
     g.state.overlay = { type: 'map', sel: 0 };
     g.showRule('k1', { sel: 0, space: null });

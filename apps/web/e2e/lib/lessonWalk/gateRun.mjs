@@ -1,12 +1,12 @@
 // THE KIT'S RAIL in a lesson walk (`kit/GateRun.js`, `kit/GateRunHud.jsx`, hooks `data-gr-*`): a run of gates — a
-// course of « قصر الساحات », a leg of the felucca of « الأهرامات », a practice level of either — played gate by gate,
+// course of the root courts, a leg of the felucca of the pyramids world, a practice level of either — played gate by gate,
 // each gate's right lane computed by the descriptor's own arithmetic from what the rail SHOWS. Shared by every world
-// that runs on the rail (moved out of worlds/rootCourts.mjs on 2026-11-24, when « الأهرامات » came).
+// that runs on the rail (moved out of worlds/rootCourts.mjs on 2026-11-24, when the pyramids world came).
 //
 // Obstacles (`hazards`, the river's crocodiles): the dev handle `window.__gateRun` says the lane of the obstacle ahead
 // (never the right gate); the walk leaves that lane before it is met and comes back to the gate's lane after it —
 // deterministically, so a heart is lost only on the gate taken wrong on purpose.
-const WRONG_WORDS = /خطأ|خاطئ|غلط/;
+import { WRONG_WORD as WRONG_WORDS } from './checks.mjs';
 
 /**
  * Plays the run open on the kit's rail: each gate's right lane is computed by `judge(ask, tex, gateText)` from what the
@@ -114,7 +114,7 @@ export async function playRail(w, page, ff, judge, { miss = 2, label, OUT, shots
 }
 
 /**
- * « واصل التدريب » on the practice hub: the level it proposes is run on the kit's rail (`Game.startPractice`): every gate
+ * The practice hub's « continue practising » (`data-di-next`): the level it proposes is run on the kit's rail (`Game.startPractice`): every gate
  * judged by `descriptor.run`, the second taken wrong on purpose (its fact, a heart), then the kit's result card — its
  * stars are the hearts left — and back to the hub, then to the title screen.
  */
@@ -131,7 +131,7 @@ export async function railPractice({ w, page, D, TEXT }) {
     Object.values(TEXT.levels)
       .flat()
       .some((x) => nextName.includes(x)),
-    `« واصل التدريب » proposes one of the lesson's levels (« ${nextName} »)`,
+    `the hub's next button proposes one of the lesson's levels (« ${nextName} »)`,
   );
   await page.click('[data-di-next]');
   await ff(page, 0.4);
@@ -163,7 +163,7 @@ export async function railPractice({ w, page, D, TEXT }) {
   await shot(page, 'practice-result', { exit: ['[data-di-result-map]', '[data-di-exit]'], numbers: false });
   await page.click('[data-di-result-map]');
   await page.waitForSelector('[data-di-mapcard]');
-  check((await st()).overlay?.type === 'map', '« الخريطة » on the result card comes back to the hub');
+  check((await st()).overlay?.type === 'map', 'the result card’s map button comes back to the hub');
   await page.click('[data-di-map-close]');
   await page.waitForSelector('[data-di-start]');
   expect((await st()).phase === 'title', 'the hub closed: back on the title screen');

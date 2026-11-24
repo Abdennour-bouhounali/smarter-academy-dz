@@ -11,6 +11,7 @@ import { M } from '../kit/parts';
 import { approx } from '../kit/exact';
 import { initScale, scaleReducer, scaleResult, perimeterChoices, PREDICTS, PERIMETERS } from './scale';
 import { expose, textOf, texNum } from './inquiryParts';
+import { FIGURE_TEXT } from './strings';
 
 /** Both triangles from the vertex (the angle of the big one), and the copy when there is one. */
 function scaleSpec(spec, s) {
@@ -41,7 +42,7 @@ function scaleSpec(spec, s) {
   points.c2 = [R, R * 0.9];
   // the copy's corners are not named: it is drawn over the target, and two names would overlap
   const hidden = ['c1', 'c2', ...(s.copy ? ["P'", "Q'"] : [])];
-  return { points, hidden, segments, polygons, ariaLabel: `مثلّثان رأسهما ${big.V}`, maxWidth: 380 };
+  return { points, hidden, segments, polygons, ariaLabel: FIGURE_TEXT.pair(big.V), maxWidth: 380 };
 }
 
 const triName = (t) => `${t.V}${t.P}${t.Q}`;

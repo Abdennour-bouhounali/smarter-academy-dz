@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — A LENGTH OF A FIGURE, EXACT (pure; it names no lesson). Most lengths of this world are rationals
+ * The pyramids world — A LENGTH OF A FIGURE, EXACT (pure; it names no lesson). Most lengths of this world are rationals
  * (the kit's `kit/exact.js`: « 77,5 », « 5/6 »). A few are not: on the river the two crooked sides SR and SF stand on
  * right angles (the 3-4-5 rope), so SR² = SE² + ER² = 2785 and SF² = SA² + AF² = 64 × 2785 — SR = √2785 and
  * SF = 8√2785, never a whole knot. Their ratio is still exact: SR / SF = 1/8.

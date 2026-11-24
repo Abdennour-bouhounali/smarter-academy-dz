@@ -1,12 +1,12 @@
 /**
- * « الأهرامات » — the rule forge IN THIS WORLD (PURE; the frame is kit/forge.js, the screen kit/RuleForge.jsx, the drawing
- * of a case forgeParts.jsx). It names no lesson: a lesson's `world/forges.js` builds its forges on these cases.
+ * The pyramids world — the rule forge IN THIS WORLD (PURE; the frame is kit/forge.js, the screen kit/RuleForge.jsx,
+ * the drawing of a case forgeParts.jsx). It names no lesson: a lesson's `world/forges.js` builds its forges on these cases.
  *
  * A CASE is a Thalès figure (`figure.js`) and what is true of it:
  *   { kind: 'nested' | 'butterfly', names: { V, M, B, N, C }, len: { VM, VB, VN, VC, MN, BC }, held, …extras }
  *   held    what the case is TRUE of — given by the lesson's question (default: « the three ratios are equal »,
  *           `chain`, exact)
- *   extras  `id` (an identity of its own), `head` (the case's name in a line of evidence: « القناة الجديدة »),
+ *   extras  `id` (an identity of its own), `head` (the case's name in a line of evidence, e.g. the field's new canal),
  *           `tag` (a short word under it), `show` (the lengths the mirror writes; default all), `parallel` (draw
  *           the chevrons — default: when the chain holds)
  *   tested  the three values the case was TESTED through, when they are not the ratios from the vertex
@@ -32,25 +32,18 @@ export const caseId = (c) =>
 /** What the world shows of a case: the three ratios (exact text) and whether the gauge's marks stand on one line. */
 export const runCase = (c) => ({ ratios: ratios(c), aligned: gauge(c).aligned });
 
-/** The segment of `len` named with the case's letters: « VM » → « AM » (for a sentence or a card). */
+/** A length ACROSS the vertex of a butterfly is named by its two ends (`figure.js › withPieces`). */
+const ACROSS = { VMB: 'MB', VNC: 'NC' };
+
+/**
+ * The segment of `len` named with the case's letters: « VM » → « AM »; across the vertex « VMB » → « AE » (its two
+ * ends, the vertex between them) — for a sentence or a card.
+ */
 export const segName = (c, key) =>
-  key
+  (ACROSS[key] ?? key)
     .split('')
     .map((ch) => c.names[ch] ?? ch)
     .join('');
 
-/** The wording the world gives the forges by default — a lesson's forge overrides what its rule changes. */
-export const THALES_TEXT = {
-  title: 'لوح البنّائين',
-  sub: 'اصنع مفتاحك: قاعدة تصمد أمام المرآة.',
-  log: 'ما قِسته وما بُني',
-  next: 'حالة أخرى',
-  testing: 'المرآة تمرّ على حالاتك واحدةً واحدة…',
-  agreed: 'قاعدتك توافق كلّ الحالات التي رأيتَها. الآن المرآة تتحدّاها بحالة جديدة.',
-  fire: 'ابنِ الحالة',
-  survived: 'صمدت قاعدتك أمام هذه الحالة.',
-  wordsHint: 'قل قاعدتك بكلماتك…',
-  aligned: 'العلامات الثلاث على خطّ واحد.',
-  apart: 'العلامات الثلاث ليست على خطّ واحد.',
-  mirrored: 'بنته المرآة',
-};
+/** The wording the world gives the forges by default (its words: `strings.js`). */
+export { THALES_TEXT } from './strings';

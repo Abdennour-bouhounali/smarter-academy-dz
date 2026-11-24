@@ -1,5 +1,5 @@
 /**
- * « منظر من الأعلى » — THE TOP VIEW of a stage (owner, 2026-11-24: « to see all the distances and the shape »). Pure
+ * THE TOP VIEW of a stage (owner, 2026-11-24: « to see all the distances and the shape »). Pure
  * framing and label placement; `Game.js › toggleTop` uses them. The camera stands above the stage's figure and looks
  * straight down; the top of the screen is the way the lens looked before (so left and right stay his).
  * A TRUE view from above, as near a plan as a perspective lens gives: a narrow lens (TOP_FOV) from high up, so that a

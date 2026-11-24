@@ -1,15 +1,23 @@
 /**
  * The screen of `halfturn` (logic: `halfturn.js`) — a PURE view (`HalfturnView`) and its player (`Halfturn`), which
  * reads ← → itself while the turn is open. Hooks: `data-iq="halfturn"`, `data-iq-stage`, `data-iq-predict=<B|C>`,
- * `data-iq-angle`, `data-iq-turn=<-1|1>`, `data-iq-landed`, `data-iq-parallel`, `data-iq-aligned`, `data-iq-next`.
+ * `data-iq-angle`, `data-iq-turn=<-1|1>`, `data-iq-landed`, `data-iq-parallel`, `data-iq-aligned`, `data-iq-chain-own`,
+ * `data-iq-next`.
+ *
+ * `spec.chainOwn` (default false): the student writes the chain of ratios himself, with the forge's tiles — nothing
+ * prints it. Only an inquiry that says `chainOwn: true` shows, after the turn, ONE line that rewrites the chain in the
+ * butterfly's OWN letters (`VM/VB`, `VN/VC`, `MN/BC` named with the figure's points): for a lesson whose forge is not
+ * about that chain.
  */
 import { useEffect, useReducer } from 'react';
 import GeoFigure from '../../components/GeoFigure';
 import MathText from '../../components/MathText';
+import { M } from '../kit/parts';
 import { points, gauge } from './figure';
 import { Gauge } from './Gauge';
 import { initHalfturn, halfturnReducer, halfturnResult, rotate, turned } from './halfturn';
 import { expose, textOf } from './inquiryParts';
+import { DIR, FIGURE_TEXT } from './strings';
 
 /** The butterfly with its small triangle turned by `angle`; four hidden corners keep the drawing's frame still. */
 function turnedSpec(fig, angle) {
@@ -34,10 +42,12 @@ function turnedSpec(fig, angle) {
       { through: [V, C], dashed: true },
     ],
     polygons: [{ points: [V, m, N], tone: 'amber' }],
-    ariaLabel: `مثلّثان رأسهما ${V}`,
+    ariaLabel: FIGURE_TEXT.pair(V),
     maxWidth: 380,
   };
 }
+
+const ratioTex = (a, b) => `\\dfrac{${a}}{${b}}`;
 
 export function HalfturnView({ spec, state: s, act }) {
   const T = textOf('halfturn', spec);
@@ -102,12 +112,18 @@ export function HalfturnView({ spec, state: s, act }) {
               >
                 <MathText>{`${row.right ? T.hit : T.miss} ${T.landed(`${m}'`, V, B)}`}</MathText>
               </p>
-              {/* FACTS only (review gate A, 2026-11-24): where each turned point lies — never the chain of ratios, in
-                  any letters: he writes it himself in the forge (ledger A1) */}
-              <p className="np-iq__chain" dir="rtl">
+              {/* FACTS (review gate A, 2026-11-24): where each turned point lies — never the chain in the turned
+                  letters (ledger A1) */}
+              <p className="np-iq__chain" dir={DIR}>
                 <MathText>{T.landed(`${N}'`, V, C)}</MathText>
               </p>
               <Gauge c={turned(fig)} names={false} />
+              {spec.chainOwn === true && (
+                <p className="np-iq__chain" dir={DIR} data-iq-chain-own>
+                  {T.chainOwn}{' '}
+                  <M>{`${ratioTex(`${V}${m}`, `${V}${B}`)} \\; ${ratioTex(`${V}${N}`, `${V}${C}`)} \\; ${ratioTex(`${m}${N}`, `${B}${C}`)}`}</M>
+                </p>
+              )}
               <button type="button" className="rf-btn rf-btn--main" onClick={act.next} data-iq-next>
                 {T.next}
               </button>

@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — THE LOOK (PYRAMIDS_WORLD_PLAN §1.4): realistic, « not a boy game », drawn in code. The builders of the
+ * The pyramids world — THE LOOK (PYRAMIDS_WORLD_PLAN §1.4): realistic, « not a boy game », drawn in code. The builders of the
  * validated mock-up (`docs/reports/mockups/thales-egypt-3d/main.js`) PORTED here, not redrawn: the physical sky, the
  * procedural sand, limestone, silt and crops, the dunes, the Nile, date palms, the felucca, the stepped pyramids — merged
  * into few draw calls for a school laptop. One unit is one metre. It names no lesson.
@@ -178,7 +178,7 @@ export function makeLabel(text, { bg = 'rgba(16,20,36,0.84)', fg = '#ffffff', px
     g.fillStyle = fg;
     g.textAlign = 'center';
     g.textBaseline = 'middle';
-    g.direction = /[؀-ۿ]/.test(str) ? 'rtl' : 'ltr';
+    g.direction = /[\u0600-\u06FF]/.test(str) ? 'rtl' : 'ltr'; // a label in Arabic script reads right to left
     g.fillText(str, c.width / 2, 52);
     tex.needsUpdate = true;
     const r = s.userData.r ?? 1;
@@ -690,7 +690,7 @@ export function makeRightAngle(at, u, v, size = 2.4) {
   return g;
 }
 
-/** « صندوق ابن الهيثم »: a dark box, a hole O at its front, the pyramid's image upside down on its back wall. */
+/** Ibn al-Haytham's box: a dark box, a hole O at its front, the pyramid's image upside down on its back wall. */
 export function makeCameraBox() {
   const g = new THREE.Group();
   const box = new THREE.Mesh(

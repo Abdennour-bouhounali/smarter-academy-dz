@@ -1,5 +1,5 @@
 /*
- * « الأهرامات » — the world's own HUD. Every selector is prefixed by the shell's root: a colour set on a class alone is
+ * The pyramids world — the world's own HUD. Every selector is prefixed by the shell's root: a colour set on a class alone is
  * beaten by `.di-root p { color: inherit }` (defects D13). What he must read is 18 px or more at 1366×768; a button
  * inside the HUD takes the pointer back from the middle column (defects D21).
  */
@@ -90,7 +90,7 @@
 .di-root .np-back {
   pointer-events: auto;
 }
-/* « منظر من الأعلى »: bottom left, above the register's column, clear of the instruction and the kit's buttons */
+/* The top view's button: bottom left, above the register's column, clear of the instruction and the kit's buttons */
 .di-root .np-top {
   position: absolute;
   left: 1rem;
@@ -102,7 +102,8 @@
   background: #1d4ed8;
   color: #ffffff;
 }
-/* « سجلّ الحقل »: on the left, the kit's recall card keeps the right */
+/* The field register: on the left, the kit's recall card keeps the right (both PHYSICAL sides: the kit's card is
+   placed by `right`, so these stay `left` in either direction) */
 .di-root .np-register {
   position: absolute;
   top: 4.4rem;

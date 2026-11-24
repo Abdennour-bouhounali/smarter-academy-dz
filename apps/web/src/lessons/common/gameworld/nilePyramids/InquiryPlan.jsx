@@ -1,8 +1,8 @@
 /**
  * The screen of `plan` (logic: `plan.js`) — a PURE view of its reducer (`PlanView`) and its player (`Plan`).
  * Hooks: `data-iq="plan"`, `data-iq-stage`, `data-iq-unknown`, `data-iq-card=<VB|VC|BC>` (+ `data-iq-picked`,
- * `data-iq-refused`, `data-iq-hint`), `data-iq-join=<VM+MB|VB-VM…>`, `data-iq-in`, `data-iq-lay`, `data-iq-laid=<fact>`,
- * `data-iq-fact`, `data-iq-next`.
+ * `data-iq-refused`, `data-iq-hint`), `data-iq-join=<VM+MB|VB-VM|VM+VB|VMB-VM…>`, `data-iq-in`, `data-iq-lay`,
+ * `data-iq-laid=<fact>`, `data-iq-laid-on=<course|line>` (`plan.js › laidOn`), `data-iq-fact`, `data-iq-next`.
  */
 import { useReducer } from 'react';
 import GeoFigure from '../../components/GeoFigure';
@@ -11,7 +11,18 @@ import { M } from '../kit/parts';
 import { typedDecimal } from '../kit/forge';
 import { figureSpec } from './figure';
 import { segName } from './ruleForge';
-import { CARDS, initPlan, planReducer, planResult, toolsOf, valueOf, hintCards, roundFig, joinText } from './plan';
+import {
+  CARDS,
+  initPlan,
+  planReducer,
+  planResult,
+  toolsOf,
+  valueOf,
+  hintCards,
+  roundFig,
+  joinText,
+  laidOn,
+} from './plan';
 import { expose, textOf, texNum } from './inquiryParts';
 
 /** The course laid: the level's length (the bar) and his course centred on it — a gap amber, an overhang violet. */
@@ -46,6 +57,9 @@ export function PlanView({ spec, state: s, act }) {
   const hints = hintCards(spec, s);
   const tools = toolsOf(s);
   const cell = (k) => (s.known.includes(k) ? texNum(valueOf(spec, s, k)) : '?');
+  // a course on the face, or a rope from a butterfly's vertex: each has its own words
+  const on = laidOn(fig, r.unknown);
+  const said = on === 'line' ? T.line : T.fact;
   return (
     <section
       className="np-iq np-iq--plan"
@@ -138,10 +152,10 @@ export function PlanView({ spec, state: s, act }) {
         </div>
       </div>
       {s.laid && (
-        <div className="np-iq__out">
+        <div className="np-iq__out" data-iq-laid-on={on}>
           <Laid laid={s.laid} truth={fig.len[r.unknown]} />
           <p className={`np-iq__fact is-${s.laid.fact}`} data-iq-fact={s.laid.fact}>
-            <MathText>{s.laid.fact === 'fits' ? T.fact.fits : T.fact[s.laid.fact](texNum(s.laid.diff))}</MathText>
+            <MathText>{s.laid.fact === 'fits' ? said.fits : said[s.laid.fact](texNum(s.laid.diff))}</MathText>
           </p>
           <button type="button" className="rf-btn rf-btn--main" onClick={act.next} data-iq-next>
             {s.laid.fact === 'fits' ? T.next : T.again}

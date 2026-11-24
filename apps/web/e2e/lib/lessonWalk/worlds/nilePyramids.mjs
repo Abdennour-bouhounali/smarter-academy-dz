@@ -1,9 +1,9 @@
-// « الأهرامات » (`gameworld/nilePyramids/`, GAME_WORLD.md §2ter-4, PYRAMIDS_WORLD_PLAN.md §2.5) in the lesson walk: its
+// The pyramids world (`gameworld/nilePyramids/`, GAME_WORLD.md §2ter-4, PYRAMIDS_WORLD_PLAN.md §2.5) in the lesson walk: its
 // gestures, its STORY played from the world's own stages (`Game.js › stageData`, read for the QUESTION: which step, from
 // which stake, towards which — never its target), the felucca's legs and the practice levels on the kit's rail
 // (../gateRun.mjs), the forges (../forge.mjs) and their experiments (./nilePyramidsExperiments.mjs).
 //
-// BY HAND, as a student: « ابدأ »; E at a stake, a table, a dock, the ramp, the box; ← → TAPPED and HELD on the rope until
+// BY HAND, as a student: the start button; E at a stake, a table, a dock, the ramp, the box; ← → TAPPED and HELD on the rope until
 // the knot stands where the walk computed it — and released THERE (a hand stops on a knot); the order's box; the
 // mission's and the box's lines; the top view's button; the keys that walk Zero (each stage: → walks him to the right of
 // the screen, ← to its left — owner, 2026-11-24). BY THE DEV HANDLE: Zero PLACED beside a place (`hero.pos`); the clock
@@ -12,7 +12,7 @@
 // drawn points — a length read off the drawing is what the rope would read there.
 import { createWalk } from '../../walk.mjs';
 import { namesOf, WORLD_LESSONS } from '../../lessonWords.mjs';
-import { worldShot, wordsRe } from '../checks.mjs';
+import * as checks from '../checks.mjs';
 import { playForge } from '../forge.mjs';
 import { playRail, railPractice } from '../gateRun.mjs';
 import { worldOf } from '../world.mjs';
@@ -20,9 +20,10 @@ import { q, sub, write } from './exact.mjs';
 import { slashFractions } from './rootCourtsTerraces.mjs';
 import { solveLength } from './thales.mjs';
 
-const WRONG_WORDS = /خطأ|خاطئ|غلط/;
-/** The nouns of the islands and of « قصر الساحات » that this world never says (« لوح البنّائين » is its own board). */
-const OTHER_NOUNS = /(?<![؀-ۿ])[وفبل]?(?:ال)?(?:جزير|جسر|جسور|هوّة|هوة|قضيب|ألواح)/;
+// the words are the country's (../checks.mjs): this player holds none
+const { worldShot, wordsRe, WRONG_WORD: WRONG_WORDS } = checks;
+/** The nouns of the other worlds that this world never says (none where the country's checks list none). */
+const OTHER_NOUNS = checks.OTHER_WORLD_NOUNS?.['nile-pyramids'] ?? null;
 const STAGES = ['field', 'workshop', 'river', 'summit', 'plateau'];
 
 /** Every string inside a value (functions left out). */
@@ -38,7 +39,7 @@ function stringsOf(v, out = [], seen = new Set()) {
 export const NILE_PYRAMIDS = {
   id: 'nile-pyramids',
   story: (L, D, opts) => npStoryWalk(L, D, opts),
-  /** The hub's « واصل التدريب »: a level is a trip of the felucca on the kit's rail, crocodiles in the lanes. */
+  /** The hub's « continue practising »: a level is a trip of the felucca on the kit's rail, crocodiles in the lanes. */
   practice: (args) => railPractice(args),
   foreignWords(L, extra = []) {
     const own = stringsOf([L.lesson, L.script, L.memo, L.config]).join('\n');
@@ -48,7 +49,7 @@ export const NILE_PYRAMIDS = {
     return [...out];
   },
   textRules: [
-    { re: OTHER_NOUNS, what: 'no noun of the islands nor of « قصر الساحات »' },
+    ...(OTHER_NOUNS ? [{ re: OTHER_NOUNS, what: 'no noun of another world (the islands, the root courts)' }] : []),
     { on: slashFractions, what: 'every fraction over a real bar — no text « p/q »' },
   ],
 };
@@ -57,7 +58,7 @@ export const NILE_PYRAMIDS = {
 export function npWorld(w, page, L) {
   const base = worldOf(w, page, L);
   const { expect, check } = w;
-  /** The clock forward — after a tablet's flight to « قواعدي » (real time, kit/Tablet.jsx) has ended. */
+  /** The clock forward — after a tablet's flight to the rules button (real time, kit/Tablet.jsx) has ended. */
   const ff = async (sec) => {
     const flying = await page.evaluate(() =>
       [...document.querySelectorAll('.di-card')].some((c) => c.style.transform.includes('scale(0.05)')),
@@ -114,7 +115,7 @@ export function npWorld(w, page, L) {
   const actAt = async (p, what, d) => {
     await near(p, d);
     const pr = await promptText();
-    expect(pr, `${what}: the prompt « اضغط E » shows there (« ${pr ?? ''} »)`);
+    expect(pr, `${what}: the « press E » prompt shows there (« ${pr ?? ''} »)`);
     await base.act();
     await ff(0.2);
   };
@@ -260,7 +261,7 @@ export async function npStoryWalk(L, D, opts) {
       }
     };
     /**
-     * The register's rows: id → the length written (« AM = 14 » → '14') — what the card « سجلّ الحقل » shows (read from
+     * The register's rows: id → the length written (« AM = 14 » → '14') — what the field register's card shows (read from
      * the world's state: an order's card covers the register while it is open).
      */
     const register = () =>
@@ -331,7 +332,7 @@ export async function npStoryWalk(L, D, opts) {
     /** The top view of the stage: the whole figure from above, its lengths written, none over another. */
     const topView = async (label) => {
       const btn = '[data-np-top="off"]';
-      expect((await page.locator(btn).count()) === 1, `${label}: the button « منظر من الأعلى » is on screen`);
+      expect((await page.locator(btn).count()) === 1, `${label}: the top view's button is on screen`);
       await page.click(btn);
       await ff(2.2);
       const x = await s();
@@ -389,7 +390,7 @@ export async function npStoryWalk(L, D, opts) {
       check(dist(before, after) < 0.05, `${label}: Zero stays where he is while the top view is open`);
       await page.click('[data-np-top-back]');
       await ff(1.5);
-      check(!(await s()).top, `${label}: « عُد إلى زيرو » brings the camera back behind him`);
+      check(!(await s()).top, `${label}: the back-to-Zero button brings the camera back behind him`);
     };
 
     // ══ the title ══

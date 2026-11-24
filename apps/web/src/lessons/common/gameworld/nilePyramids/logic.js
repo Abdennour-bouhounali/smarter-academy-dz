@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — THE LAW OF THE WORLD (pure; it names no lesson). Design: `docs/reports/PYRAMIDS_WORLD_PLAN.md` §1–§2.
+ * The pyramids world — THE LAW OF THE WORLD (pure; it names no lesson). Design: `docs/reports/PYRAMIDS_WORLD_PLAN.md` §1–§2.
  *
  * One unit is ONE METRE, everywhere (§1.5). Zero's hand holds a KNOTTED ROPE, a knot every metre: the rope lies on the
  * ground or on what is BUILT — never across the river, never in the air. What it reaches, he measures; what it cannot
@@ -17,7 +17,7 @@ export { write, approx };
 // ───────────────────────────── the five stages' numbers (§1.1, §3.3–§3.7) ─────────────────────────────
 
 /**
- * « حقل النيل »: a triangular field ABC (cos A = 2/7, so every rope reads a whole knot) and its two canals from side
+ * The field: a triangular field ABC (cos A = 2/7, so every rope reads a whole knot) and its two canals from side
  * [AB] to side [AC]. The new canal is dug parallel to (BC); the old crooked one is not.
  */
 /** The five docks, downstream — a stage's id is its place in the world, whatever the lesson plays. */
@@ -49,19 +49,19 @@ export const FIELD = Object.freeze({
   ]),
 });
 
-/** « ورشة البنّائين »: the unfinished pyramid, square base 99, lateral edge 90; its face SBC; course 1 at BM = 10. */
+/** The workshop: the unfinished pyramid, square base 99, lateral edge 90; its face SBC; course 1 at BM = 10. */
 export const FACE = Object.freeze({ base: '99', edge: '90', courses: Object.freeze(['10', '20']), row: '55' });
 
-/** « عرض النيل »: the stake S at 72 along the bank, E 9 further, R 52 inland — the far post F across the water (416). */
+/** The river: the stake S at 72 along the bank, E 9 further, R 52 inland — the far post F across the water (416). */
 export const RIVER = Object.freeze({ AS: '72', SE: '9', ER: '52' });
 
-/** « حجر القمّة »: the capstone of the same shape as the pyramid of the workshop, k = 1/36 (base 2,75, edges 2,5). */
+/** The summit: the capstone of the same shape as the pyramid of the workshop, k = 1/36 (base 2,75, edges 2,5). */
 export const CAPSTONE = Object.freeze({ k: '1/36' });
 
-/** « صندوق ابن الهيثم » at noon: the box 177 m from the base edge, its wall 0,5 m behind the hole, the image 0,25 m. */
+/** Ibn al-Haytham's box at noon: the box 177 m from the base edge, its wall 0,5 m behind the hole, the image 0,25 m. */
 export const CAMERA_BOX = Object.freeze({ fromEdge: '177', depth: '0,5', image: '0,25' });
 
-/** « ظلّ الهرم الأكبر »: the Great Pyramid (h 146, base 230), the 2 m stick, the morning sun of tan = 2/3. */
+/** The plateau: the Great Pyramid (h 146, base 230), the 2 m stick, the morning sun of tan = 2/3. */
 export const PLATEAU = Object.freeze({ h: '146', base: '230', stick: '2', tan: '2/3' });
 
 /**

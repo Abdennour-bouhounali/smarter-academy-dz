@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — THE ONE GESTURE (PYRAMIDS_WORLD_PLAN §2.1, gate cut 1): a SLIDE of the knotted rope along a line marked
+ * The pyramids world — THE ONE GESTURE (PYRAMIDS_WORLD_PLAN §2.1, gate cut 1): a SLIDE of the knotted rope along a line marked
  * with knots — along the ground from a stake, up a pyramid's edge on the built steps, inland from the bank, the stick
  * along the shadow's axis. He takes the end with E at a stake; ← → move the knot: a tap is one knot, a key held goes
  * faster and faster (`logic.js › knotRate`). His slide IS the length (`play.md` §4).

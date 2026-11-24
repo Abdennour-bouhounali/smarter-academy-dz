@@ -1,4 +1,4 @@
-// The walk's OWN arithmetic of a Thalès figure (« الأهرامات »; defects.md C1: never the world's `figure.js` nor the
+// The walk's OWN arithmetic of a Thalès figure (the pyramids world; defects.md C1: never the world's `figure.js` nor the
 // lesson's `math.js`). A figure is named as the world names it: V the vertex, M on line (VB), N on line (VC); its
 // lengths VM, VB, VN, VC, MN, BC, and on a NESTED figure the pieces MB = VB − VM, NC = VC − VN. A length is a number as a
 // screen writes it (« 42,5 », « 5/6 ») or a root « a√n » (the river's SR = √2785, SF = 8√2785).

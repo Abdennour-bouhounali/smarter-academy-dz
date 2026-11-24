@@ -1,5 +1,5 @@
 /**
- * « الأهرامات » — THE ONE ORDER (PYRAMIDS_WORLD_PLAN §2.1, gate cut 1). Every order is ONE number he types; the world
+ * The pyramids world — THE ONE ORDER (PYRAMIDS_WORLD_PLAN §2.1, gate cut 1). Every order is ONE number he types; the world
  * builds one thing from it, and what it built is one of three FACTS. Pure: `order(kind, typed, truth)`.
  *
  *   canal   typed BEFORE the rope reads the canal     as · longer · shorter   (the rope's reading against his number)
@@ -33,7 +33,7 @@ const YARD = '20';
 /**
  * The world carries out his number. `truth` is what the world holds: the rope's reading (canal), the level's length
  * (course), `{ face, row }` (mark), the river's width (ferry), the pyramid's height (flight), `{ k, base }` (capstone:
- * « كلّ طول × [k] », typed as a fraction or a decimal; the base cut is base × his k).
+ * « every length × [k] », typed as a fraction or a decimal; the base cut is base × his k).
  * → { kind, typed, fact, built } — or { kind, refused: 'empty' | 'out' } when nothing can be built from it.
  */
 export function order(kind, text, truth) {

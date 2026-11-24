@@ -1,12 +1,14 @@
 /**
- * THE EXPERIMENT `halfturn` « نصف دورة » (key 🦋 — PYRAMIDS_WORLD_PLAN §2.3, §3.5) — PURE reducer; the screen is
+ * THE EXPERIMENT `halfturn`, the half-turn (key 🦋 — PYRAMIDS_WORLD_PLAN §2.3, §3.5) — PURE reducer; the screen is
  * `InquiryHalfturn.jsx`. A BUTTERFLY: the small triangle VMN on one side of the vertex, the big VBC on the other. BEFORE
  * the turn he says where M will land — on line (VB) or on line (VC); then he turns the small triangle round the vertex
  * with ← → (steps of 30°; it stops at 180°). His act is the prediction (gate cut 5). The turned triangle lands INSIDE the
- * big one: key 🔑's nested figure appears with its gauge, and the chain is written twice — with the turned letters,
- * then with the butterfly's own. On a crooked butterfly the turned side lands crooked: the gauge stands apart.
+ * big one: key 🔑's nested figure appears with its gauge; where each turned point lies is written as a FACT, never the
+ * chain of ratios — except, when the inquiry says `chainOwn: true`, ONE line that rewrites the chain in the
+ * butterfly's own letters (InquiryHalfturn.jsx; off by default). On a crooked butterfly the turned side lands crooked: the gauge stands
+ * apart.
  *
- *   spec = { kind: 'halfturn', rounds: [{ fig: { kind: 'butterfly', names: { V, M, B, N, C }, len } }], text? }
+ *   spec = { kind: 'halfturn', rounds: [{ fig: { kind: 'butterfly', names: { V, M, B, N, C }, len } }], chainOwn?, text? }
  */
 import { chain } from './figure';
 
