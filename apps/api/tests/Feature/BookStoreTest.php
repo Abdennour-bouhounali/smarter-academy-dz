@@ -6,6 +6,7 @@ use App\Domain\Books\DeliveryFees;
 use App\Domain\Books\Wilayas;
 use App\Models\Book;
 use App\Models\BookOrder;
+use App\Models\BookOrderEvent;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -249,5 +250,23 @@ class BookStoreTest extends TestCase
             $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload())->assertCreated();
         }
         $this->postJson('/api/v1/books/smart-protocol/orders', $this->orderPayload())->assertStatus(429);
+    }
+
+    public function test_la_migration_remet_les_anciennes_commandes_au_premier_etat(): void
+    {
+        $book = $this->book();
+        $make = fn (string $ref, string $call, ?string $delivery) => BookOrder::create([
+            'reference' => $ref, 'book_id' => $book->id, 'customer_name' => 'N', 'phone' => '0555000000',
+            'wilaya' => '16 الجزائر', 'commune' => 'x', 'quantity' => 1, 'unit_price' => 1400,
+            'call_status' => $call, 'delivery_status' => $delivery,
+        ]);
+        $old = $make('BK-OLD', 'confirmed', 'delivered');      // report de l'ancien état, jamais touché à la main
+        $handled = $make('BK-HAND', 'confirmed', 'shipped');   // traitée sous le nouveau système
+        BookOrderEvent::create(['book_order_id' => $handled->id, 'type' => 'delivery_status', 'from_value' => null, 'to_value' => 'shipped']);
+
+        (require database_path('migrations/2026_11_24_000002_reset_old_book_orders_to_new.php'))->up();
+
+        $this->assertSame(['new', null], [$old->fresh()->call_status, $old->fresh()->delivery_status]);
+        $this->assertSame(['confirmed', 'shipped'], [$handled->fresh()->call_status, $handled->fresh()->delivery_status]);
     }
 }

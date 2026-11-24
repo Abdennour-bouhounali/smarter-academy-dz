@@ -42,6 +42,9 @@ Règles :
     `in_transit` (En livraison) | `delivered` (Livrée) | `returned` (Retour).
   La migration a reporté l'ancien `status` : `pending`→new, `confirmed`→confirmed,
   `in_way`→confirmed+in_transit, `delivered`/`returned`→confirmed+idem, `cancelled`→cancelled.
+  **Puis (owner, 2026-11-24) `2026_11_24_000002` a remis les anciennes commandes au premier état** :
+  `new` + non expédiée, sauf celles déjà traitées sous le nouveau système (au moins un événement
+  `call_status` / `delivery_status`) — l'ancien état unique n'est donc plus lisible que dans l'historique.
   Une commande est « vivante » sauf annulée ou retournée (`BookOrder::isLive`) ; seule une
   commande annulée ou retournée peut être supprimée.
 - Un remboursement ne peut dépasser l'encaissé.
