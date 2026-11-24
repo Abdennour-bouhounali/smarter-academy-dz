@@ -49,8 +49,11 @@ class GameEvidenceController extends Controller
             'context' => ['required', Rule::in(['trainer', 'case'])],
             'claim' => ['required', 'array'],
             'claim.kind' => ['required', Rule::in(ClaimVerifier::KINDS)],
-            'claim.a' => ['required', 'integer', 'min:0', 'max:'.ClaimVerifier::MAX],
-            'claim.b' => ['required', 'integer', 'min:0', 'max:'.ClaimVerifier::MAX],
+            // a `scale` claim names no a and b: its lengths are two lists, read by the verifier itself
+            'claim.a' => ['required_unless:claim.kind,scale', 'integer', 'min:0', 'max:'.ClaimVerifier::MAX],
+            'claim.b' => ['required_unless:claim.kind,scale', 'integer', 'min:0', 'max:'.ClaimVerifier::MAX],
+            'claim.from' => ['required_if:claim.kind,scale', 'array', 'max:6'],
+            'claim.to' => ['required_if:claim.kind,scale', 'array', 'max:6'],
         ]);
 
         $claim = $request->input('claim');

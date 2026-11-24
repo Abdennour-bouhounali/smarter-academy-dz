@@ -248,6 +248,9 @@ final class ClaimVerifier
     /** L'identité d'un item généré : la même division posée deux fois est le MÊME item (règle des items distincts). */
     public static function itemId(array $c): string
     {
+        if (($c['kind'] ?? null) === 'scale') { // its item is its first pair of partner lengths
+            $c = ['kind' => 'scale', 'a' => $c['from'][0] ?? null, 'b' => $c['to'][0] ?? null];
+        }
         $parts = array_map(static fn ($k) => isset($c[$k]) && is_int($c[$k]) ? (string) $c[$k] : '-', ['a', 'b']);
 
         return ($c['kind'] ?? 'x').'-'.implode('x', $parts);
