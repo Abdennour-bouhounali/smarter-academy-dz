@@ -1,8 +1,9 @@
 /**
  * THE RATIO GAUGE (PYRAMIDS_WORLD_PLAN §2.3): each whole side from the vertex stretched to ONE common length, its piece
  * marked on it. When the three marks stand on one vertical line the ratios are equal (a gold line); otherwise the marks
- * stand apart. Shared by the mirror, its lines of evidence and the experiment `halfturn`. Hooks: `data-rf-gauge`,
- * `data-rf-aligned=<yes|no>`.
+ * stand apart. Shared by the mirror, its lines of evidence and the experiment `halfturn`. A case TESTED through other
+ * values (`c.tested`, figure.js › gauge) shows THOSE, with their names and the target line (dashed) when it has one —
+ * the gauge agrees with the case's `held`. Hooks: `data-rf-gauge`, `data-rf-aligned=<yes|no>`, `data-rf-gauge-target`.
  */
 import { gauge } from './figure';
 import { segName, THALES_TEXT } from './ruleForge';
@@ -12,7 +13,8 @@ const W = 300;
 const X0 = 28;
 const BAR = W - 2 * X0;
 const ROWS = { VB: 'VM/VB', VC: 'VN/VC', BC: 'MN/BC' };
-const texRatio = (c, k) => {
+const texRatio = (c, k, name) => {
+  if (name) return name;
   const [a, b] = ROWS[k].split('/');
   return `\\dfrac{${segName(c, a)}}{${segName(c, b)}}`;
 };
@@ -28,7 +30,7 @@ export function Gauge({ c, small = false }) {
         <div className="np-gauge__names" dir="ltr">
           {g.marks.map((m) => (
             <span key={m.k}>
-              <M>{texRatio(c, m.k)}</M>
+              <M>{texRatio(c, m.k, m.name)}</M>
             </span>
           ))}
         </div>
@@ -52,6 +54,18 @@ export function Gauge({ c, small = false }) {
             </g>
           );
         })}
+        {g.target != null && (
+          <line
+            x1={X0 + g.target * BAR}
+            y1={2}
+            x2={X0 + g.target * BAR}
+            y2={h - 2}
+            stroke="#64748b"
+            strokeWidth={small ? 1 : 2}
+            strokeDasharray={small ? '2 2' : '5 4'}
+            data-rf-gauge-target
+          />
+        )}
         {g.aligned && (
           <line
             x1={X0 + g.marks[0].at * BAR}

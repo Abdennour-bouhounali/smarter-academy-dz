@@ -132,10 +132,16 @@ describe('📐 `plan` on the lesson’s numbers — the false procedures are ref
 });
 
 describe('🦋 `halfturn` — the turned side lands straight on the parallel pair, crooked on the other', () => {
+  it('round 1 is HIS river, whole: SE 9, SA 72, ER 52, AF 416 — SR = √2785, SF = 8√2785; only the measured lengths drawn', () => {
+    const river = HALFTURN_INQUIRY.rounds[0].fig;
+    expect(river.names).toEqual({ V: 'S', M: 'E', B: 'A', N: 'R', C: 'F' });
+    expect(river.len).toEqual({ VM: '9', VB: '72', VN: '√2785', VC: '8√2785', MN: '52', BC: '416' });
+    expect(river.show).toEqual(['VM', 'VB', 'MN', 'BC']);
+  });
   it('the parallel pair (k = 7/10) holds its chain, the crooked one (PQ = 92) does not; the point always lands on its own line', () => {
-    expect(HALFTURN_INQUIRY.rounds.map((r) => chain(r.fig))).toEqual([true, false]);
+    expect(HALFTURN_INQUIRY.rounds.map((r) => chain(r.fig))).toEqual([true, true, false]);
     let s = initHalfturn(HALFTURN_INQUIRY);
-    for (const guess of ['C', 'B']) {
+    for (const guess of ['B', 'C', 'B']) {
       s = halfturnReducer(HALFTURN_INQUIRY, s, { type: 'predict', line: guess });
       for (let i = 0; i < 6; i += 1) s = halfturnReducer(HALFTURN_INQUIRY, s, { type: 'turn', d: 1 });
       expect(s.rows.at(-1)).toMatchObject({ landed: 'B', right: guess === 'B' });
@@ -143,7 +149,8 @@ describe('🦋 `halfturn` — the turned side lands straight on the parallel pai
     }
     expect(s.done).toBe(true);
     const rows = FORGES[K3].fromInquiry(halfturnResult(s)).rows;
-    expect(rows.map((c) => c.held)).toEqual([true, false]);
+    expect(rows.map((c) => c.held)).toEqual([true, true, false]);
+    expect(rows[0].head).toBe('النهر');
   });
 });
 

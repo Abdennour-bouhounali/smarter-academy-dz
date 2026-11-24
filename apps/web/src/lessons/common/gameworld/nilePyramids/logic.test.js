@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { chain, points, ratios } from './figure';
 import {
   FIELD,
   FACE,
@@ -11,6 +12,7 @@ import {
   markOfRow,
   pyramidHeight,
   riverWidth,
+  riverFigure,
   shadowLength,
   shadowTip,
   sunVector,
@@ -90,6 +92,25 @@ describe('stage 3 « عرض النيل » — the river’s width without crossi
   it('AF = 72 × 52 / 9 = 416; the inverted ratio gives 6,5 and the sum 133 (gate B4)', () => {
     expect(riverWidth(RIVER)).toBe('416');
     expect(write(fourth(RIVER.AS, RIVER.SE, RIVER.ER))).toBe('6,5');
+  });
+  it('the river whole, exact: SR = √2785, SF = 8√2785 (both lines square to the bank), SR/SF = SE/SA = ER/AF = 1/8', () => {
+    const f = riverFigure(RIVER);
+    expect(f.len).toEqual({ VM: '9', VB: '72', VN: '√2785', VC: '8√2785', MN: '52', BC: '416' });
+    expect(9 * 9 + 52 * 52).toBe(2785);
+    expect(72 * 72 + 416 * 416).toBe(64 * 2785);
+    expect(ratios(f)).toEqual({ VB: '0,125', VC: '0,125', BC: '0,125' });
+    expect(chain(f)).toBe(true);
+    // at scale (no `draw`) every point stands at its exact lengths
+    const P = points({ ...f, draw: undefined });
+    expect(Math.hypot(...P.R)).toBeCloseTo(Math.sqrt(2785), 6);
+    expect(Math.hypot(P.R[0] - P.E[0], P.R[1] - P.E[1])).toBeCloseTo(52, 6);
+    expect(Math.hypot(P.F[0] - P.A[0], P.F[1] - P.A[1])).toBeCloseTo(416, 6);
+    // drawn schematic: the same right angles at E and A, (ER) ∥ (AF), k = 1/3 — S and E apart
+    expect(ratios({ ...f, len: f.draw })).toEqual({ VB: '1/3', VC: '1/3', BC: '1/3' });
+    const D = points(f);
+    expect(D.R[0]).toBeCloseTo(D.E[0], 6);
+    expect(D.F[0]).toBeCloseTo(D.A[0], 6);
+    expect(Math.abs(D.S[0] - D.E[0])).toBe(24);
   });
 });
 

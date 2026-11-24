@@ -9,10 +9,12 @@
  *   extras  `id` (an identity of its own), `head` (the case's name in a line of evidence: « القناة الجديدة »),
  *           `tag` (a short word under it), `show` (the lengths the mirror writes; default all), `parallel` (draw
  *           the chevrons — default: when the chain holds)
- * Every length is exact text: 50,1 is never taken for 351/7.
+ *   tested  the three values the case was TESTED through, when they are not the ratios from the vertex
+ *           (`figure.js › gauge`): `{ values, to?, names? }` — the gauge draws them, so it agrees with `held`
+ * Every length is exact text: 50,1 is never taken for 351/7; a root is written « 8√2785 » (`surd.js`).
  */
-import { chain, ratios, withPieces } from './figure';
-import { write, over } from '../kit/exact';
+import { chain, gauge, ratios, withPieces } from './figure';
+import { lenOver, lenWrite as write } from './surd';
 
 /** A case of this world. Lengths are written once (« 14.0 » becomes « 14 »). */
 export function thalesCase({ kind = 'nested', names, len, ...extra }) {
@@ -27,8 +29,8 @@ export const caseId = (c) =>
   c.id ??
   `${c.kind}|${Object.values(c.names).join('')}|${['VM', 'VB', 'VN', 'VC', 'MN', 'BC'].map((k) => c.len[k] ?? '?').join(':')}`;
 
-/** What the world shows of a case: the three ratios (exact text) and whether they stand on one line of the gauge. */
-export const runCase = (c) => ({ ratios: ratios(c), aligned: chain(c) });
+/** What the world shows of a case: the three ratios (exact text) and whether the gauge's marks stand on one line. */
+export const runCase = (c) => ({ ratios: ratios(c), aligned: gauge(c).aligned });
 
 /**
  * The lines of evidence from the world's log — rows `{ …case, mirror? }` — one per identity, oldest first; when a case
@@ -52,7 +54,7 @@ export function ratioOf(c, top, bottom) {
   const a = c.len[top];
   const b = c.len[bottom];
   if (a == null || b == null) return null;
-  return write(over(a, b));
+  return lenOver(a, b);
 }
 
 /** The segment of `len` named with the case's letters: « VM » → « AM » (for a sentence or a card). */

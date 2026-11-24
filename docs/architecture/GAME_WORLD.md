@@ -166,7 +166,11 @@ than `k × --di-min-font` (its smallest label ≥ 12 px whatever the panel's `Fi
 taller than 220 px; `trainerFigure(fig).fits` says it stays within the room the trainer has at 1366 × 768 (560 × 260 px
 at its floor) — a lesson's trainer test asserts it for every figure it gives. A question without `figure` draws exactly
 as before (`kit/trainerFigure.render.test.jsx`: jidhr-tarbii's and bahth-pgcd's sessions carry none and draw none).
-Not yet measured in a browser.
+Not yet measured in a browser. First user: `talis-hisab-atwal/world/trainer.js › figureOf` — every kind that is about a
+configuration (tf, nisba, nisab, tul, tulJuz, farasha, farashaNisab, muamil) carries the world's Thalès figure
+(`nilePyramids/figure.js › figureSpec`), its given lengths written and « ? » on what it asks, turned by 15° when it would
+stand too high; the words keep the parallel and the lengths only; `trainer.test.js` asserts `fits` (and a label ≥ 12 px)
+for every question of every kind over 60 seeds per card.
 
 A wrong answer gets a HINT first — what the answer gives, never the answer — then, after a second one, the written correction
 « التصحيح » (`check` → `hint`, `fix`). Stars = questions right at the first try, kept per card (`know.trained`). The 13 cards map
@@ -593,14 +597,33 @@ one experiment (or a case in the forge's mirror) alone in the forge's experiment
 `box: { title, lead, figure?, lines(), check(vals) }`; `recall`, `onArrive`, `afterKey[key]`, `complete`.
 A card's figure is the lesson's `GeoFigure` spec; the card prints « الشكل تخطيطيّ » under it (gate F4).
 
-**The forge in this world** (`ruleForge.js`, `forgeParts.jsx`, `Gauge.jsx`, `figure.js`): a CASE is a Thalès figure
-`thalesCase({ kind: 'nested' | 'butterfly', names: { V, M, B, N, C }, len: { VM, VB, VN, VC, MN, BC }, held?, head?, tag?,
-show?, parallel? })` — `held` defaults to « the three ratios are equal » (exact); `evidenceOf`, `caseId`, `ratioOf`,
-`segName`, `THALES_TEXT`. `Mirror` draws the figure through `components/GeoFigure.jsx` (never a second renderer) and, once
-built, THE RATIO GAUGE (each side from the vertex stretched to one length, its piece marked; gold line when the marks
-stand together — `data-rf-gauge`, `data-rf-aligned`); `Line` a thumbnail and the gauge in small; `beats()` = 3.
+**The forge in this world** (`ruleForge.js`, `forgeParts.jsx`, `Gauge.jsx`, `figure.js`, `surd.js`): a CASE is a Thalès
+figure `thalesCase({ kind: 'nested' | 'butterfly', names: { V, M, B, N, C }, len: { VM, VB, VN, VC, MN, BC }, held?, head?,
+tag?, show?, parallel?, tested?, draw? })` — `held` defaults to « the three ratios are equal » (exact); `evidenceOf`,
+`caseId`, `ratioOf`, `segName`, `THALES_TEXT`.
+- **A length may be a root** (`surd.js`, 2026-11-24): « √2785 », « 8√2785 » — a rational times the root of a whole number
+  with no square factor; `lenOver`, `lenTimes`, `lenPlus` (same root), `lenCompare` (by the squares), `lenTex`,
+  `lenRoot`. `figure.js` (ratios, chain, gauge, drawing) and `ratioOf` read it; nothing compares floats.
+- **The river is whole** (`logic.js › riverFigure(RIVER)`): S the vertex, E and R on this bank, A and F across;
+  SE 9, SA 72, ER 52, AF 416 and, both lines square to the bank, SR = √2785, SF = 8√2785 — SR/SF = SE/SA = ER/AF = 1/8.
+  `show` writes the measured lengths and the width only; `draw` (lengths for the DRAWING only, a schematic: the same
+  right angles at k = 1/3, legs 72 and 120) keeps S and E apart — at scale 9 stands beside 416. `game.forgeLog('river')`
+  gives that case, with `typed` (his ferry) and `ferry` (the rope's fact); its `held` is the world's (the chain holds).
+- **The gauge shows what the case was TESTED with**: by default the three ratios from the vertex; a case carrying
+  `tested: { values: [a, b, c], to?, names? }` shows those values (`names` their LaTeX labels; `to` a target the three
+  must reach, drawn dashed, `data-rf-gauge-target`) — aligned = the three equal (and equal to `to`). So the gauge always
+  agrees with `held`: a 🔑 canal run through a wrong chain, a 🔍 copy against its target 1. `runCase(c).aligned` is the
+  gauge's.
+- **A whole side given** (`show` a list holding VB or VC, on a nested figure) is written on the inner side of its line,
+  named: « AB = 54 » (« AB = ? » when asked) — never with `show: 'all'`.
+- `Mirror` draws the figure through `components/GeoFigure.jsx` (never a second renderer) and, once built, THE RATIO GAUGE
+  (`data-rf-gauge`, `data-rf-aligned`); `Line` a thumbnail and the gauge in small; `beats()` = 3; `UseFigure({ c })` the
+  last step's figure (`figure.js › lastStepFigure`: `show`, `ask` written « ? », `parallel`, `turn` in degrees; never
+  below its 12 px label floor — `kit/sheetFigure.js › k`; without `turn` it is turned by 15° steps to lie lowest when it
+  does not fit LAST_STEP_FIGURE.room, 380 × 250 at 1280 × 720; `data-np-use-figure=<fits|over>`).
 `game.forgeLog(stageId)` gives the world's own cases (the canals, the courses, the river's butterfly, the capstones)
-and what the mirror showed. The parts object is `forgeParts.jsx › FORGE_PARTS`.
+and what the mirror showed. The parts object is `forgeParts.jsx › FORGE_PARTS` (`{ Mirror, Line, beats, Inquiry,
+UseFigure }`).
 
 **Spec shapes of the three kinds** (examples: `nilePyramids/test/specs.js`; words: `strings.js › KIND_TEXT`, the
 lesson's `spec.text` over them):
@@ -1065,6 +1088,10 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
 - **The last step (`use`) asks ONE verdict** besides its lines: `use.verdict` is a single yes / no
   (`data-rf-use-verdict`, `RuleForge.jsx`), and `check(case, values, verdict)` receives one boolean. Since 2026-11-24
   (K-c, `PYRAMIDS_WORLD_PLAN.md`) any other judgement is a CHOICE token of a line (below), as many as the step needs.
+- **The last step may draw its figure** (2026-11-24, optional): a world whose `parts` carry `UseFigure({ c })` gets it
+  drawn beside the step (`.rf-usewith`: one column — the question, the lines, the buttons, the feedback — and the figure,
+  `data-rf-use-figure`); `c` is `forge.use.figure(case)` when the lesson gives it, else the case `use.make()` gave. A
+  world without that part draws the step as before (jidhr-tarbii's and bahth-pgcd's forges, unchanged).
 - **The tokens of a `use` line** (2026-11-24, K-c; built by `authoring/forgeBlocks.js`, drawn by `RuleForge.jsx ›
   UseLines`; `check` receives `{ [name]: text }`):
 

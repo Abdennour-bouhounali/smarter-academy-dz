@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { describeTrainer } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
 import { linesWithBoth, readBank } from '../../../../../../common/gameworld/kit/authoring/test/bank.js';
 import { rng } from '../../../../../../common/gameworld/kit/random';
+import { trainerFigure } from '../../../../../../common/gameworld/kit/trainerFigure';
+import { validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import { answerLabel, check, PLAN_OF, solution, trainer } from './trainer';
 import { trainerEvidence } from './evidence';
 import { KNOWLEDGE } from './knowledge';
@@ -119,5 +121,48 @@ describe('« تدرّب » of « خاصية طالس وحساب الأطوال �
         .map((x) => [x.VM, x.VB]),
     ].map(([a, b]) => `${num(a)};${num(b)}`);
     for (const fig of figs) expect(story, JSON.stringify(fig)).not.toContain(`${num(fig.VM)};${num(fig.VB)}`);
+  });
+
+  it('every question about a configuration carries its figure, and it FITS the trainer at its 12 px floor — every kind, many seeds', () => {
+    const DRAWN = ['tf', ...EXAM];
+    const seen = new Set();
+    for (const q of all(60)) {
+      if (!DRAWN.includes(q.kind)) {
+        expect(q.figure, q.kind).toBeUndefined();
+        continue;
+      }
+      seen.add(q.kind);
+      expect(q.figure, `${q.kind} ${q.prompt}`).toBeTruthy();
+      expect(validateGeoFigure(q.figure), q.prompt).toEqual([]);
+      const t = trainerFigure(q.figure);
+      expect(t.kind).toBe('plane');
+      expect(t.fits, `${q.kind} ${t.width}×${t.height} k=${t.k}`).toBe(true);
+      expect(t.label).toBeGreaterThanOrEqual(12);
+      // the words no longer describe the configuration: the parallel and the lengths only
+      expect(q.prompt).not.toMatch(/نقطة من|متقاطعان/);
+    }
+    expect([...seen].sort()).toEqual(DRAWN.sort());
+  });
+
+  it('a figure writes the lengths its question gives and « ? » on what it asks, never the answer', () => {
+    const labels = (q) => q.figure.segments.map((x) => x.label).filter((x) => x != null);
+    for (const q of all(10)) {
+      if (!q.figure) continue;
+      const shown = labels(q).join(' ');
+      if (q.kind === 'tul') {
+        expect(shown, q.prompt).toContain('?');
+        const ans = solution(q).x;
+        expect(
+          labels(q).some((x) => x === ans || x.endsWith(`= ${ans}`)),
+          q.prompt,
+        ).toBe(false);
+      }
+      if (q.kind === 'farasha') expect(labels(q).filter((x) => x.includes('?')).length).toBe(2);
+      if (q.kind === 'nisab' || q.kind === 'farashaNisab') expect(labels(q)).toEqual([]);
+      if (q.kind === 'muamil') {
+        expect(shown).toContain('?');
+        expect(labels(q)).not.toContain(solution(q).mn);
+      }
+    }
   });
 });

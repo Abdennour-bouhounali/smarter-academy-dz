@@ -65,3 +65,14 @@
   font-size: 1.08rem;
   color: #475569;
 }
+
+/* the last step's figure beside its lines (forgeParts.jsx › UseFigure): its width is its 12 px label floor */
+.np-usefig {
+  flex: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: 1rem;
+  background: #fffdf6;
+}
+.np-usefig figure {
+  margin: 0;
+}

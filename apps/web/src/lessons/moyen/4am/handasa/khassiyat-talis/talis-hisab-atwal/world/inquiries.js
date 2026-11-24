@@ -8,15 +8,18 @@
  *   📐 `plan`      (writes the rule) round 1 is HIS first course of the workshop (SB = 90, BM = 10, BC = 99 → 88);
  *                  then ONE figure, k = 7/9, with another unknown each round: MN from AM and MB, BC from AN and NC,
  *                  MB from AM, AN and NC. The world lays his number: fits · a gap · an overhang, its size written.
- *   🦋 `halfturn`  a parallel pair on both sides of the vertex (k = 7/10), then a crooked one (PQ = 92, exact): before
+ *   🦋 `halfturn`  round 1 is HIS river, whole (SE 9, SA 72, ER 52, AF 416; SR = √2785 and SF = 8√2785, both lines
+ *                  square to the bank — `logic.js › riverFigure`, k = 1/8); then a parallel pair on both sides of the
+ *                  vertex (k = 7/10), then a crooked one (PQ = 92, exact): before
  *                  each turn he says on which line the point will land; the turned side lands straight, or crooked.
  *   🔍 `scale`     the capstone as the world's fact (k = 1/36); the frame at 6/5 fed AMN, then fed ABC; the k he sets
  *                  himself to bring ABC back to AMN; the perimeter of a copy.
  * Every sentence is a FACT about what he did — never a rule, never a key's name (`inquiries.test.js` lists the
- * forbidden words of each key). The river of stage 3 is NOT a round of `halfturn`: its two lengths SR and SF were never
- * measured, and the world's figure cannot be drawn without them (reported).
+ * forbidden words of each key). The river's drawing writes only what he measured (and the width): SR and SF are exact
+ * roots the world knows, never shown as numbers.
  */
-import { NUMBERS } from './math';
+import { riverFigure } from '../../../../../../common/gameworld/nilePyramids/logic';
+import { NUMBERS, RIVER } from './math';
 
 /** A figure's letters: the vertex V, M on line (VB), N on line (VC). */
 const NAMES = {
@@ -49,12 +52,14 @@ export const PLAN_INQUIRY = {
 };
 
 /** 🦋 a parallel pair round the vertex I (k = 7/10), then a crooked one: PQ² = 60² + 64² + 2 × 60 × 64 / 10 = 92². */
+/** 🦋 HIS river round the stake S: E and R on this bank, A and F across (k = 1/8). */
+export const TURN_RIVER = { ...riverFigure(RIVER), head: 'النهر' };
 export const TURN_PARALLEL = { kind: 'butterfly', names: NAMES.turn, len: { ...NUMBERS.farasha.parallel } };
 export const TURN_CROOKED = { kind: 'butterfly', names: NAMES.turn, len: { ...NUMBERS.farasha.crooked } };
 
 export const HALFTURN_INQUIRY = {
   kind: 'halfturn',
-  rounds: [{ fig: TURN_PARALLEL }, { fig: TURN_CROOKED }],
+  rounds: [{ fig: TURN_RIVER }, { fig: TURN_PARALLEL }, { fig: TURN_CROOKED }],
   text: {
     lead: 'مثلّثان على جهتي الرأس، كضفّتي النهر. أدِر المثلّث الصغير نصف دورة حول الرأس، وانظر أين يقع.',
   },

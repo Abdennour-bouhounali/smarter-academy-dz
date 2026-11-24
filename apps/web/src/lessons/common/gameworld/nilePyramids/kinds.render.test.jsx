@@ -8,7 +8,8 @@ import Inquiry from './Inquiry';
 import { PlanView } from './InquiryPlan';
 import { HalfturnView } from './InquiryHalfturn';
 import { ScaleView } from './InquiryScale';
-import { Mirror, Line, beats, FORGE_PARTS } from './forgeParts';
+import { Mirror, Line, UseFigure, beats, FORGE_PARTS } from './forgeParts';
+import { RIVER, riverFigure } from './logic';
 import { initPlan, planReducer } from './plan';
 import { initHalfturn, halfturnReducer } from './halfturn';
 import { initScale, scaleReducer } from './scale';
@@ -100,6 +101,39 @@ describe('the forge parts draw through GeoFigure', () => {
     const out = renderToString(<Line c={{ ...c, head: 'القناة', tag: '⭐' }} />);
     expect(out).toContain('data-np-line="aligned"');
     expect(beats()).toBe(3);
-    expect(Object.keys(FORGE_PARTS)).toEqual(['Mirror', 'Line', 'beats', 'Inquiry']);
+    expect(Object.keys(FORGE_PARTS)).toEqual(['Mirror', 'Line', 'beats', 'Inquiry', 'UseFigure']);
+  });
+  it('the gauge shows the values a case was TESTED with: a wrong chain apart, a copy short of its target apart', () => {
+    // the new canal through the chain « piece »: 2/7, 2/7, 2/9 — the whole ratios are equal, the tested ones are not
+    const piece = { ...c, held: false, tested: { values: ['2/7', '2/7', '2/9'] } };
+    let out = renderToString(<Mirror c={piece} stage="done" />);
+    expect(out).toContain('data-rf-aligned="no"');
+    expect(out).toContain('data-rf-kind="apart"');
+    expect(renderToString(<Line c={piece} />)).toContain('data-np-line="apart"');
+    // a copy at 6/5 of a pair at k = 5/6: three equal values that are not the target 1
+    const copy = { ...c, held: false, tested: { values: ['36/25', '36/25', '36/25'], to: '1' } };
+    out = renderToString(<Mirror c={copy} stage="done" />);
+    expect(out).toContain('data-rf-aligned="no"');
+    expect(out).toContain('data-rf-gauge-target');
+    const exact = { ...copy, held: true, tested: { values: ['1', '1', '1'], to: '1' } };
+    expect(renderToString(<Mirror c={exact} stage="done" />)).toContain('data-rf-aligned="yes"');
+  });
+  it('a whole side given is written on the mirror’s drawing; the river is drawn whole, its measured lengths only', () => {
+    const given = { ...c, show: ['VB', 'MB', 'BC'] };
+    const out = plain(renderToString(<Mirror c={given} stage="ask" />));
+    expect(out).toContain('AB = 63');
+    expect(out).not.toContain('AC = 72');
+    expect(plain(renderToString(<Mirror c={c} stage="ask" />))).not.toContain('AB = 63');
+    const river = thalesCase(riverFigure(RIVER));
+    const r = plain(renderToString(<Mirror c={river} stage="done" />));
+    for (const x of ['72', '9', '52', '416']) expect(r).toContain(x);
+    expect(r).not.toContain('√');
+    expect(renderToString(<Line c={river} />)).toContain('data-np-line="aligned"');
+  });
+  it('the last step’s figure: drawn at its 12 px floor when it fits, nothing for a case without one', () => {
+    const out = renderToString(<UseFigure c={{ ...c, show: ['VM', 'VB', 'MN'], ask: ['MN'] }} />);
+    expect(out).toContain('data-geo-figure');
+    expect(out).toContain('data-np-use-figure="fits"');
+    expect(renderToString(<UseFigure c={{ names: c.names }} />)).toBe('');
   });
 });

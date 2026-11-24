@@ -6,6 +6,9 @@
  *                                the screen with the tiles (the robot's experiment while he builds) — draw it in less height
  *   Line({ c })                  the case as one line of the evidence
  *   beats(c)                     how many strokes the mirror needs to build it (the sound and the wait follow)
+ *   UseFigure({ c })             OPTIONAL: the last step's figure, drawn beside its lines (`data-rf-use-figure`); `c` is
+ *                                `forge.use.figure(case)` when the lesson gives it, else the case `use.make()` gave.
+ *                                Without it the last step is its lines alone, as before
  * The student does not receive the rule on a tablet: he predicts, writes HIS rule with tiles, and the MIRROR tests it —
  * first on his own evidence, then on a new case chosen to break it. A rule that survives becomes his key. The verdict is
  * always what the world does in front of him, never « wrong ».
@@ -254,6 +257,57 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
     play('ui');
     setUse({ ...use, fb });
   };
+  /** The last step's question, lines, buttons and feedback (one column beside the world's figure when it draws one). */
+  const useBody = use && (
+    <>
+      <p className="rf-q">
+        <MathText>{T.tryKey(use.c)}</MathText>
+      </p>
+      <UseLines
+        lines={useLines}
+        vals={use.vals}
+        onType={(name, value) => setUse({ ...use, vals: { ...use.vals, [name]: value }, fb: null })}
+      />
+      <div className="rf-row">
+        {forge.use.verdict && (
+          <>
+            <button
+              type="button"
+              className={`rf-btn rf-btn--hold ${use.verdict === true ? 'is-on' : ''}`}
+              onClick={() => setUse({ ...use, verdict: true, fb: null })}
+              aria-pressed={use.verdict === true}
+              data-rf-use-verdict="yes"
+            >
+              {T.yes}
+            </button>
+            <button
+              type="button"
+              className={`rf-btn rf-btn--fall ${use.verdict === false ? 'is-on' : ''}`}
+              onClick={() => setUse({ ...use, verdict: false, fb: null })}
+              aria-pressed={use.verdict === false}
+              data-rf-use-verdict="no"
+            >
+              {T.no}
+            </button>
+          </>
+        )}
+        <button
+          type="button"
+          className="rf-btn rf-btn--main"
+          onClick={checkUse}
+          disabled={!useFilled || use.fb === 'ok'}
+          data-rf-use-check
+        >
+          {L.check}
+        </button>
+      </div>
+      {use.fb && (
+        <p className={`rf-fb ${use.fb === 'ok' ? 'is-right' : ''}`} data-rf-use-fb={use.fb}>
+          {use.fb === 'ok' ? `✓ ${T.useOk}` : T.use[use.fb]}
+        </p>
+      )}
+    </>
+  );
 
   // ── the robot: never the rule ──
   const askHelp = () => {
@@ -645,51 +699,17 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
 
             {phase === 'use' && use && (
               <>
-                <p className="rf-q">
-                  <MathText>{T.tryKey(use.c)}</MathText>
-                </p>
-                <UseLines
-                  lines={useLines}
-                  vals={use.vals}
-                  onType={(name, value) => setUse({ ...use, vals: { ...use.vals, [name]: value }, fb: null })}
-                />
-                <div className="rf-row">
-                  {forge.use.verdict && (
-                    <>
-                      <button
-                        type="button"
-                        className={`rf-btn rf-btn--hold ${use.verdict === true ? 'is-on' : ''}`}
-                        onClick={() => setUse({ ...use, verdict: true, fb: null })}
-                        aria-pressed={use.verdict === true}
-                        data-rf-use-verdict="yes"
-                      >
-                        {T.yes}
-                      </button>
-                      <button
-                        type="button"
-                        className={`rf-btn rf-btn--fall ${use.verdict === false ? 'is-on' : ''}`}
-                        onClick={() => setUse({ ...use, verdict: false, fb: null })}
-                        aria-pressed={use.verdict === false}
-                        data-rf-use-verdict="no"
-                      >
-                        {T.no}
-                      </button>
-                    </>
-                  )}
-                  <button
-                    type="button"
-                    className="rf-btn rf-btn--main"
-                    onClick={checkUse}
-                    disabled={!useFilled || use.fb === 'ok'}
-                    data-rf-use-check
-                  >
-                    {L.check}
-                  </button>
-                </div>
-                {use.fb && (
-                  <p className={`rf-fb ${use.fb === 'ok' ? 'is-right' : ''}`} data-rf-use-fb={use.fb}>
-                    {use.fb === 'ok' ? `✓ ${T.useOk}` : T.use[use.fb]}
-                  </p>
+                {/* an OPTIONAL part of the world: the last step's figure beside its question, lines, buttons and
+                    feedback (none: unchanged) */}
+                {parts.UseFigure ? (
+                  <div className="rf-usewith">
+                    <div className="rf-usecol">{useBody}</div>
+                    <div className="rf-usefig" data-rf-use-figure>
+                      <parts.UseFigure c={forge.use.figure?.(use.c) ?? use.c} />
+                    </div>
+                  </div>
+                ) : (
+                  useBody
                 )}
               </>
             )}

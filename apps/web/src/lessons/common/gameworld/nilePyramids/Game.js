@@ -47,6 +47,7 @@ import {
   fieldPoints,
   courseAt,
   riverWidth,
+  riverFigure,
   pyramidHeight,
   shadowTip,
   sunVector,
@@ -1464,14 +1465,9 @@ export class NilePyramidsGame extends WorldRuntime {
       }
     if (stageId === 'river' && this.done.ER != null) {
       const ferry = [...this.log].reverse().find((l) => l.kind === 'ferry');
-      rows.push(
-        thalesCase({
-          kind: 'butterfly',
-          names: { V: 'S', M: 'E', B: 'A', N: 'R', C: 'F' },
-          len: { VM: RIVER.SE, VB: RIVER.AS, VN: null, VC: null, MN: RIVER.ER, BC: ferry?.typed ?? null },
-          held: ferry ? holds(ferry.fact) : false,
-        }),
-      );
+      // the river whole (`logic.js › riverFigure`: SR = √2785, SF = 8√2785, AF = 416): what he typed for the ferry
+      // and the rope's fact ride along; `held` is the world's — the three ratios are equal (both lines square to the bank)
+      rows.push(thalesCase({ ...riverFigure(RIVER), typed: ferry?.typed ?? null, ferry: ferry?.fact ?? null }));
     }
     if (stageId === 'summit')
       for (const l of this.log.filter((x) => x.kind === 'capstone')) {

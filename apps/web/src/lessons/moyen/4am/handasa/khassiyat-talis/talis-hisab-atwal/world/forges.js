@@ -43,7 +43,15 @@ import {
 import { THALES_TEXT, caseId, segName, thalesCase } from '../../../../../../common/gameworld/nilePyramids/ruleForge';
 import { chain } from '../../../../../../common/gameworld/nilePyramids/figure';
 import { canalReading } from '../../../../../../common/gameworld/nilePyramids/logic';
-import { HALFTURN_INQUIRY, PLAN_INQUIRY, SCALE_INQUIRY } from './inquiries';
+import {
+  isRational,
+  lenEqual,
+  lenOver,
+  lenPlus,
+  lenTex,
+  lenWrite,
+} from '../../../../../../common/gameworld/nilePyramids/surd';
+import { HALFTURN_INQUIRY, PLAN_INQUIRY, SCALE_INQUIRY, TURN_RIVER } from './inquiries';
 import {
   FIELD,
   K1,
@@ -83,6 +91,10 @@ const rt = (x) => {
   const { n, d } = read(x);
   return d === 1n ? String(n) : `\\dfrac{${n}}{${d}}`;
 };
+/** A value that may hold a root (the river's SE/SF, `surd.js`): « 1/8 », or « 9/22280√2785 » as text. */
+const frL = (x) => (isRational(x) ? fr(x) : lenWrite(x));
+/** The same in a formula: over a real bar, its root drawn as a root. */
+const rtL = (x) => (isRational(x) ? rt(x) : lenTex(x));
 /** A Latin run inside a PLAIN sentence (the bidi algorithm never scrambles it — defects B7). */
 const L = (t) => ltr(t);
 /** The triangle of the vertex and two points: « AMN ». */
@@ -173,6 +185,11 @@ export const chainHolds = (id, c) => {
   const v = chainValues(id, c);
   return v.every((x) => equal(x, v[0]));
 };
+/** The three terms of a chain with the case's letters (LaTeX), one per value. */
+const chainNames = (id, c) =>
+  CHAIN_OF[id].pairs.map(([a, b]) =>
+    CHAIN_OF[id].minus ? `${segName(c, a)} - ${segName(c, b)}` : frac(segName(c, a), segName(c, b)),
+  );
 /** The chain written with the case's letters (LaTeX). */
 const chainTex = (id, c) =>
   CHAIN_OF[id].pairs
@@ -188,11 +205,19 @@ const J1 = judge({
   says: (rule, c, tile) => tile.cond[rule.cond].test(c),
 });
 
-/** A case of 🔑 seen through a rule's chain: `held` = « his three values are equal there ». */
-const throughChain = (id, c) => ({ ...c, chainId: id, held: chainHolds(id, c) });
+/**
+ * A case of 🔑 seen through a rule's chain: `held` = « his three values are equal there » — and the gauge shows THOSE
+ * three values (`tested`, figure.js › gauge), so it agrees with `held` whatever chain he wrote.
+ */
+const throughChain = (id, c) => ({
+  ...c,
+  chainId: id,
+  held: chainHolds(id, c),
+  tested: { values: chainValues(id, c), names: chainNames(id, c) },
+});
 /** A case back to what the world shows (the gauge: the three ratios from the vertex). */
 function plainCase(c) {
-  const { chainId: _x, ...rest } = c;
+  const { chainId: _x, tested: _t, ...rest } = c;
   return { ...rest, held: chain(rest) };
 }
 
@@ -304,6 +329,7 @@ const forge1 = {
   use: {
     /** The field DEF, G on [DE], H on [DF], the canal [GH] dug parallel to (EF): the names only — the ratios are written. */
     make: () => USE1,
+    figure: () => USE1_FIG,
     lines: (c) => {
       const s = (k) => segName(c, k);
       const { M, N } = c.names;
@@ -383,6 +409,12 @@ const forge1 = {
 
 /** The last step's field: names only (plan §3.3 — « اكتب النسب الثلاث »). */
 export const USE1 = { names: { ...NUMBERS.talis.use.names } };
+/**
+ * THE LAST STEPS' FIGURES (`use.figure`, drawn beside the lines by the world's `UseFigure`): what the question says,
+ * drawn — never a length it does not give; an unknown is « ? ». 🔑's field DEF is drawn in the shape of RST (no length
+ * written), turned on its side when it lies too high (figure.js › useFigure).
+ */
+export const USE1_FIG = { kind: 'nested', names: USE1.names, len: { ...FIGS.R.len }, show: [], parallel: true };
 
 // ═════════════════════════ 2. 📐 hisab-tul — a length nobody can measure ═════════════════════════
 
@@ -534,6 +566,7 @@ const forge2 = {
   nudge: () => ({ kind: 'experiment', cases: [...F2_HARD] }),
   use: {
     make: () => USE2,
+    figure: () => USE2_FIG,
     lines: () => [
       line(['AB', '=', slot('p1', 'القطعة الأولى', 2), '+', slot('p2', 'القطعة الثانية', 2), '=', slot('ab', 'AB', 3)]),
       line(['AF', '=', slot('af', 'AF', 3)]),
@@ -600,29 +633,33 @@ export const USE2 = thalesCase({
   },
 });
 
+/** AE, EB, AC and BC given (« AC = 66 » on its line); AF and EF asked. */
+export const USE2_FIG = { ...USE2, show: ['VM', 'MB', 'VC', 'BC', 'VN', 'MN'], ask: ['VN', 'MN'], parallel: true };
+
 // ═════════════════════════ 3. 🦋 wadiyat-al-farasha — the points on the other side of the vertex ═════════════════════════
 
 /**
  * The tiles are written with the river's letters: S the crossing, E and R on this side, A and F across (S = V, E = M,
  * A = B, R = N, F = C). On a case, EA = SE + SA and RF = SR + SF (the two points stand on both sides of S).
  */
-const across = (c, a, b) => write(plus(c.len[a], c.len[b]));
+// a length may be a root (the river: SR = √2785, SF = 8√2785 — `surd.js`): every ratio is computed exactly
+const across = (c, a, b) => lenPlus(c.len[a], c.len[b]);
 const ONE = [
-  { id: 'se_sa', label: L('SE/SA'), t: ['VM', 'VB'], v: (c) => over(c.len.VM, c.len.VB) },
-  { id: 'se_sf', label: L('SE/SF'), t: ['VM', 'VC'], v: (c) => over(c.len.VM, c.len.VC) },
-  { id: 'sa_se', label: L('SA/SE'), t: ['VB', 'VM'], v: (c) => over(c.len.VB, c.len.VM) },
-  { id: 'se_ea', label: L('SE/EA'), t: ['VM', 'MB'], v: (c) => over(c.len.VM, across(c, 'VM', 'VB')) },
+  { id: 'se_sa', label: L('SE/SA'), t: ['VM', 'VB'], v: (c) => lenOver(c.len.VM, c.len.VB) },
+  { id: 'se_sf', label: L('SE/SF'), t: ['VM', 'VC'], v: (c) => lenOver(c.len.VM, c.len.VC) },
+  { id: 'sa_se', label: L('SA/SE'), t: ['VB', 'VM'], v: (c) => lenOver(c.len.VB, c.len.VM) },
+  { id: 'se_ea', label: L('SE/EA'), t: ['VM', 'MB'], v: (c) => lenOver(c.len.VM, across(c, 'VM', 'VB')) },
 ];
 const TWO = [
-  { id: 'sr_sf', label: L('SR/SF'), t: ['VN', 'VC'], v: (c) => over(c.len.VN, c.len.VC) },
-  { id: 'sr_sa', label: L('SR/SA'), t: ['VN', 'VB'], v: (c) => over(c.len.VN, c.len.VB) },
-  { id: 'sf_sr', label: L('SF/SR'), t: ['VC', 'VN'], v: (c) => over(c.len.VC, c.len.VN) },
-  { id: 'sr_rf', label: L('SR/RF'), t: ['VN', 'NC'], v: (c) => over(c.len.VN, across(c, 'VN', 'VC')) },
+  { id: 'sr_sf', label: L('SR/SF'), t: ['VN', 'VC'], v: (c) => lenOver(c.len.VN, c.len.VC) },
+  { id: 'sr_sa', label: L('SR/SA'), t: ['VN', 'VB'], v: (c) => lenOver(c.len.VN, c.len.VB) },
+  { id: 'sf_sr', label: L('SF/SR'), t: ['VC', 'VN'], v: (c) => lenOver(c.len.VC, c.len.VN) },
+  { id: 'sr_rf', label: L('SR/RF'), t: ['VN', 'NC'], v: (c) => lenOver(c.len.VN, across(c, 'VN', 'VC')) },
 ];
-const third3 = (c) => over(c.len.MN, c.len.BC);
+const third3 = (c) => lenOver(c.len.MN, c.len.BC);
 /** The three values of a rule of 🦋 on a case: his two ratios and the third one, MN/BC. */
 export const values3 = (rule, c, tile = J3.tile) =>
-  [tile.one[rule.one].v(c), tile.two[rule.two].v(c), third3(c)].map(fr);
+  [tile.one[rule.one].v(c), tile.two[rule.two].v(c), third3(c)].map(frL);
 
 const J3 = judge({
   slots: [
@@ -632,7 +669,7 @@ const J3 = judge({
   right: { one: 'se_sa', two: 'sr_sf' },
   says: (rule, c, tile) => {
     const [a, b, t] = values3(rule, c, tile);
-    return equal(a, b) && equal(b, t);
+    return lenEqual(a, b) && lenEqual(b, t);
   },
 });
 
@@ -644,10 +681,23 @@ export const turnCase = (f) =>
     ...f,
     len: { ...f.len },
     of: K3,
-    head: `${L(tri(f, 'M', 'N'))} و ${L(tri(f, 'B', 'C'))}`,
+    head: f.head ?? `${L(tri(f, 'M', 'N'))} و ${L(tri(f, 'B', 'C'))}`,
     tag: chain(f) ? 'متوازيان' : 'غير متوازيين',
   });
 const asTurn = (f) => turnCase({ ...f, kind: 'butterfly' });
+/**
+ * HIS RIVER (stage 3) as a case of 🦋, whole (`logic.js › riverFigure`: SR = √2785, SF = 8√2785 — both lines square
+ * to the bank): SE/SA = SR/SF = ER/AF = 1/8. Round 1 of the experiment, and his evidence when the world logs it.
+ */
+export const RIVER_CASE = turnCase(TURN_RIVER);
+/** A row of the world's log that is his river (`Game.forgeLog('river')`). */
+const isRiver = (r) => r.kind === 'butterfly' && !r.of && caseId({ ...r, id: undefined }) === caseId(RIVER_CASE);
+/** What the world's row of the river carries besides the figure: what he typed for the ferry, the rope's fact. */
+const riverExtras = (r) => ({
+  ...(r.typed != null ? { typed: r.typed } : {}),
+  ...(r.ferry != null ? { ferry: r.ferry } : {}),
+  mirror: Boolean(r.mirror),
+});
 const FIELD_OLD = fig(
   { V: 'A', M: 'P', B: 'B', N: 'Q', C: 'C' },
   {
@@ -685,11 +735,14 @@ const forge3 = {
     const yes = J3.says(rule, c);
     const one = J3.tile.one[rule.one];
     const two = J3.tile.two[rule.two];
-    return `قاعدتك على هذا الشكل: $${ratioTex3(c, one.t)} = ${rt(a)}$ و $${ratioTex3(c, two.t)} = ${rt(b)}$، والنسبة الثالثة $${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rt(t)}$ — فهي تقول إنّ النسب الثلاث ${eqWord(yes)}.`;
+    return `قاعدتك على هذا الشكل: $${ratioTex3(c, one.t)} = ${rtL(a)}$ و $${ratioTex3(c, two.t)} = ${rtL(b)}$، والنسبة الثالثة $${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rtL(t)}$ — فهي تقول إنّ النسب الثلاث ${eqWord(yes)}.`;
   },
   caseId,
+  // his river as the world logged it (the same case as round 1 of the experiment), the experiment's, then the mirror's
   evidence: (rows) => {
-    const own = rows.filter((r) => r.of === K3);
+    const own = rows
+      .filter((r) => r.of === K3 || isRiver(r))
+      .map((r) => (r.of === K3 ? r : { ...RIVER_CASE, ...riverExtras(r) }));
     const uniq = own.filter((c, i) => own.findIndex((x) => caseId(x) === caseId(c)) === i);
     return [...uniq.filter((c) => !c.mirror), ...uniq.filter((c) => c.mirror)];
   },
@@ -712,6 +765,7 @@ const forge3 = {
   },
   use: {
     make: () => USE3,
+    figure: () => USE3_FIG,
     lines: () => [line(['OD', '=', slot('od', 'OD', 3)]), line(['AB', '=', slot('ab', 'AB', 3)])],
     check(c, v) {
       const od = typedNumber(v.od);
@@ -736,7 +790,7 @@ const forge3 = {
     says: (yes) => `قاعدتك: ${eqWord(yes)}`,
     refuted: (m) =>
       m.held
-        ? `قاعدتك تقول إنّ نسبتيك لا تساويان ${L(`${seg3(m, 'MN')}/${seg3(m, 'BC')} = ${fr(third3(m))}`)} — لكنّ الضلعين متوازيان هنا: بعد نصف الدورة وقفت العلامات الثلاث على خطّ واحد.`
+        ? `قاعدتك تقول إنّ نسبتيك لا تساويان ${L(`${seg3(m, 'MN')}/${seg3(m, 'BC')} = ${frL(third3(m))}`)} — لكنّ الضلعين متوازيان هنا: بعد نصف الدورة وقفت العلامات الثلاث على خطّ واحد.`
         : `قاعدتك تقول إنّ النسب الثلاث متساوية في ${m.head} — لكنّ الضلعين غير متوازيين: بعد نصف الدورة لم تقف العلامات على خطّ واحد.`,
     attack: (c) =>
       `المرآة تتحدّى قاعدتك: المثلّثان $${tri(c, 'M', 'N')}$ و $${tri(c, 'B', 'C')}$ حول $${c.names.V}$، أطوالهما على الشكل. هل النسب الثلاث متساوية؟ ماذا تقول قاعدتك؟`,
@@ -745,7 +799,7 @@ const forge3 = {
     wordsHint: 'مثال: حول نقطة التقاطع…',
     experiment: 'انظر جيّدًا: شكلان تبنيهما المرآة. في أيّهما تقف العلامات الثلاث على خطّ واحد؟',
     eq: (c) =>
-      `${frac(seg3(c, 'VM'), seg3(c, 'VB'))} = ${rt(over(c.len.VM, c.len.VB))} \\;;\\; ${frac(seg3(c, 'VN'), seg3(c, 'VC'))} = ${rt(over(c.len.VN, c.len.VC))} \\;;\\; ${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rt(third3(c))}`,
+      `${frac(seg3(c, 'VM'), seg3(c, 'VB'))} = ${rtL(lenOver(c.len.VM, c.len.VB))} \\;;\\; ${frac(seg3(c, 'VN'), seg3(c, 'VC'))} = ${rtL(lenOver(c.len.VN, c.len.VC))} \\;;\\; ${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rtL(third3(c))}`,
     tryKey: () =>
       '$[AC]$ و $[BD]$ يتقاطعان في $O$، و $(AB) \\parallel (CD)$: $OA = 18$ و $OC = 48$ و $OB = 21$ و $CD = 88$. احسب $OD$ و $AB$.',
     use: {
@@ -771,10 +825,14 @@ export const USE3 = thalesCase({
   },
 });
 
+/** OA, OC, OB and CD given; OD and AB asked. */
+export const USE3_FIG = { ...USE3, show: ['VM', 'VB', 'VN', 'BC', 'VC', 'MN'], ask: ['VC', 'MN'], parallel: true };
+
 // ═════════════════════════ 4. 🔍 muamil-k — one number, and its direction ═════════════════════════
 
 /** The sides of triangle (1) or (2) of a case: the small one VMN or the big one VBC. */
 const sidesOf = (c, which) => (which === 'small' ? [c.len.VM, c.len.VN, c.len.MN] : [c.len.VB, c.len.VC, c.len.BC]);
+const SIDE_KEYS = { small: ['VM', 'VN', 'MN'], big: ['VB', 'VC', 'BC'] };
 const otherOf = (which) => (which === 'small' ? 'big' : 'small');
 const triOf = (c, which) => (which === 'small' ? tri(c, 'M', 'N') : tri(c, 'B', 'C'));
 const maxOf = (xs) => xs.reduce((a, b) => (compare(a, b) >= 0 ? a : b));
@@ -821,6 +879,15 @@ export function frameCase(f, one, x, extra = {}) {
     one,
     x: fr(x),
     held: equal(k, x),
+    // the gauge: each side of the copy (x × a side of (1)) over its partner in (2) — the three reach 1 exactly when
+    // the copy IS (2), so the gauge agrees with `held` (the pair itself is always a Thalès one)
+    tested: {
+      values: sidesOf(c, one).map((s, i) => fr(over(times(s, x), sidesOf(c, otherOf(one))[i]))),
+      to: '1',
+      names: SIDE_KEYS[one].map(
+        (k, i) => `${rt(x)} \\times ${frac(segName(c, k), segName(c, SIDE_KEYS[otherOf(one)][i]))}`,
+      ),
+    },
     head: `من ${L(triOf(c, one))} إلى ${L(triOf(c, otherOf(one)))}`,
     tag: `القرص ${fr(x)}`,
   };
@@ -902,6 +969,7 @@ const forge4 = {
   },
   use: {
     make: () => USE4,
+    figure: () => USE4_FIG,
     lines: () => [
       line(
         [
@@ -980,6 +1048,18 @@ export const USE4 = {
   MN: NUMBERS.muamil.use.MN,
   k: fr(over(NUMBERS.muamil.use.AM, NUMBERS.muamil.use.AB)),
 };
+
+/**
+ * 🔍's last step drawn: AB = 68 (« AB = 68 » on its line), BC = 92, AM = 42,5, MN asked. AC is not given: the drawing
+ * takes AC = 80 (AN = 50 at k = 5/8) for its shape only, and writes neither.
+ */
+export const USE4_FIG = thalesCase({
+  names: { V: 'A', M: 'M', B: 'B', N: 'N', C: 'C' },
+  len: { VM: USE4.AM, VB: USE4.AB, VN: write(times('80', USE4.k)), VC: '80', MN: USE4.MN, BC: USE4.BC },
+  show: ['VM', 'VB', 'MN', 'BC'],
+  ask: ['MN'],
+  parallel: true,
+});
 
 /** The forges of the lesson, keyed by its keys in the order of the story. */
 export const FORGES = {

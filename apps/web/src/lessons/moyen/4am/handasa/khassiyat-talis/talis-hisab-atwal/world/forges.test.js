@@ -11,9 +11,10 @@ import { renderToString } from 'react-dom/server';
 import { runOn, testsOf, ruleKey } from '../../../../../../common/gameworld/kit/forge';
 import { allRules, describeForges, plain } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
 import { collisions, readBank, storiesOf } from '../../../../../../common/gameworld/kit/authoring/test/bank.js';
-import { Mirror, Line } from '../../../../../../common/gameworld/nilePyramids/forgeParts';
+import { Mirror, Line, UseFigure } from '../../../../../../common/gameworld/nilePyramids/forgeParts';
 import { thalesCase, caseId, segName } from '../../../../../../common/gameworld/nilePyramids/ruleForge';
-import { canalReading } from '../../../../../../common/gameworld/nilePyramids/logic';
+import { canalReading, riverFigure } from '../../../../../../common/gameworld/nilePyramids/logic';
+import { gauge, lastStepFigure } from '../../../../../../common/gameworld/nilePyramids/figure';
 import { laidFact } from '../../../../../../common/gameworld/nilePyramids/plan';
 import { copyOf } from '../../../../../../common/gameworld/nilePyramids/scale';
 import {
@@ -28,6 +29,11 @@ import {
   USE2,
   USE3,
   USE4,
+  USE1_FIG,
+  USE2_FIG,
+  USE3_FIG,
+  USE4_FIG,
+  RIVER_CASE,
   chainValues,
   planValue,
   values3,
@@ -63,14 +69,8 @@ const courseRow = (sm, typed, held) =>
     len: { VM: sm, VB: FACE.edge, VN: sm, VC: FACE.edge, MN: typed, BC: FACE.base },
     held,
   });
-/** The river as the world logs it: SR and SF were never measured (VN, VC null). */
-const riverRow = (typed, held) =>
-  thalesCase({
-    kind: 'butterfly',
-    names: { V: 'S', M: 'E', B: 'A', N: 'R', C: 'F' },
-    len: { VM: RIVER.SE, VB: RIVER.AS, VN: null, VC: null, MN: RIVER.ER, BC: typed },
-    held,
-  });
+/** The river as the world logs it (`Game.forgeLog('river')`): whole — SR = √2785, SF = 8√2785 — his ferry rope kept. */
+const riverRow = (typed, ferry) => thalesCase({ ...riverFigure(RIVER), typed, ferry });
 const capRow = (k, held) => {
   const side = (x) => write(times(x, k));
   return thalesCase({
@@ -93,13 +93,13 @@ const ROADS = {
   AT_ONCE: {
     [K1]: [canalRow(NEW, '18'), canalRow(OLD, '50,1')],
     [K2]: [courseRow('80', '88', true), courseRow('70', '77', true)],
-    [K3]: [riverRow('416', true)],
+    [K3]: [riverRow('416', 'ties')],
     [K4]: [capRow('1/36', true)],
   },
   MISSED: {
     [K1]: [canalRow(NEW, '20'), canalRow(OLD, '31,5'), canalRow(NEW, '18')],
     [K2]: [courseRow('80', '11', false), courseRow('80', '88', true), courseRow('70', '77', true)],
-    [K3]: [riverRow('6,5', false), riverRow('416', true)],
+    [K3]: [riverRow('6,5', 'short'), riverRow('416', 'ties')],
     [K4]: [capRow('36', false), capRow('1/36', true)],
   },
   LOST: { [K1]: [], [K2]: [], [K3]: [], [K4]: [] },
@@ -117,8 +117,9 @@ const PLAN_RESULT = {
 };
 const HALFTURN_RESULT = {
   rows: [
-    { round: 0, predicted: 'C', landed: 'B', right: false, parallel: true },
-    { round: 1, predicted: 'B', landed: 'B', right: true, parallel: false },
+    { round: 0, predicted: 'B', landed: 'B', right: true, parallel: true },
+    { round: 1, predicted: 'C', landed: 'B', right: false, parallel: true },
+    { round: 2, predicted: 'B', landed: 'B', right: true, parallel: false },
   ],
 };
 const scaleRow = (round, feed, k, said = null) => {
@@ -294,11 +295,24 @@ describe('📐 the procedure — run on what is GIVEN only', () => {
   });
 });
 
-describe('🦋 the pairs students write fall on the parallel round — the third ratio is named (gate P4)', () => {
+describe('🦋 the pairs students write fall on HIS river — the third ratio is named (gate P4)', () => {
   const rows = suite.rowsOf(K3, ROADS.AT_ONCE);
-  const parallel = rows[0];
+  const [river, parallel] = rows;
 
-  it('two wrong pairs are true equalities between themselves; the third ratio 63/90 = 7/10 is not theirs', () => {
+  it('his river comes first, whole and exact: SE/SA = SR/SF = ER/AF = 1/8; RF = SR + SF = 9√2785', () => {
+    expect(caseId(river)).toBe(caseId(RIVER_CASE));
+    expect(river.len).toMatchObject({ VM: '9', VB: '72', VN: '√2785', VC: '8√2785', MN: '52', BC: '416' });
+    expect(river.held).toBe(true);
+    expect(values3({ one: 'se_sa', two: 'sr_sf' }, river)).toEqual(['1/8', '1/8', '1/8']);
+    expect(values3({ one: 'sa_se', two: 'sf_sr' }, river)).toEqual(['8', '8', '1/8']);
+    expect(values3({ one: 'se_ea', two: 'sr_rf' }, river)).toEqual(['1/9', '1/9', '1/8']);
+    expect(values3({ one: 'se_sf', two: 'sr_sa' }, river)).toEqual(['9/22280√2785', '1/72√2785', '1/8']);
+    // the world's log, with what he typed for the ferry, gives that same case
+    for (const road of [ROADS.AT_ONCE, ROADS.MISSED])
+      expect(F[K3].evidence(road[K3]).map(caseId)).toEqual([caseId(RIVER_CASE)]);
+  });
+
+  it('two wrong pairs are true equalities between themselves; the third ratio ER/AF = 1/8 is not theirs', () => {
     expect(values3({ one: 'sa_se', two: 'sf_sr' }, parallel)).toEqual(['10/7', '10/7', '7/10']);
     expect(values3({ one: 'se_ea', two: 'sr_rf' }, parallel)).toEqual(['7/17', '7/17', '7/10']);
     for (const r of [
@@ -308,14 +322,20 @@ describe('🦋 the pairs students write fall on the parallel round — the third
     ]) {
       const f = fallOf(K3, r);
       expect(f.on).toBe('evidence');
-      expect(caseId(f.c)).toBe(caseId(parallel));
-      expect(F[K3].text.refuted({ ...f.c, says: false, held: true })).toContain('7/10');
+      expect(caseId(f.c)).toBe(caseId(river));
+      expect(F[K3].text.refuted({ ...f.c, says: false, held: true })).toContain('ER/AF = 1/8');
+      // without his river, the parallel round refutes it, naming 7/10
+      expect(runOn(F[K3], rule(K3, r), rows.slice(1)).bad, JSON.stringify(r)).toBe(0);
+      expect(F[K3].text.refuted({ ...parallel, says: false, held: true })).toContain('7/10');
     }
+    // a root is written as a root in a formula, never as a float
+    expect(F[K3].explain(rule(K3, { one: 'se_sf', two: 'sr_sa' }), river)).toContain('\\sqrt{2785}');
+    expect(F[K3].text.eq(river)).toContain('\\dfrac{1}{8}');
   });
 
   it('the crooked round is exact (PQ = 92) and refuses the chain; the attacks: other letters, then a crooked pair', () => {
     expect(60 * 60 + 64 * 64 + (2 * 60 * 64) / 10).toBe(92 * 92);
-    const crooked = rows[1];
+    const crooked = rows[2];
     expect(crooked.held).toBe(false);
     const right = allRules(F[K3]).find(F[K3].isTheRule);
     expect(F[K3].says(right, crooked)).toBe(false);
@@ -324,9 +344,11 @@ describe('🦋 the pairs students write fall on the parallel round — the third
     expect(24 * 24 + 32 * 32).toBe(40 * 40);
   });
 
-  it('the river of the world (SR and SF never measured) never reaches the forge: the mirror could not draw it', () => {
-    for (const road of Object.values(ROADS)) expect(F[K3].evidence(road[K3])).toEqual([]);
-    expect(() => renderToString(createElement(Line, { c: riverRow('416', true) }))).toThrow();
+  it('the river of the world is drawn whole by the mirror, its measured lengths only (no root written)', () => {
+    const out = textOf(renderToString(createElement(Mirror, { c: riverRow('416', 'ties'), stage: 'done' })));
+    for (const x of ['72', '9', '52', '416']) expect(out).toContain(x);
+    expect(out).not.toContain('√');
+    expect(renderToString(createElement(Line, { c: RIVER_CASE }))).toContain('data-np-line="aligned"');
   });
 
   it('the last step: OD = 56 and AB = 33 (k = 3/8); the trap OA + OC = 66 is answered', () => {
@@ -391,6 +413,59 @@ describe('🔑 the last step: the reason, then the three ratios', () => {
     const flip = { ...v, an: v.ad, ad: v.an, bn: v.bd, bd: v.bn, cn: v.cd, cd: v.cn };
     expect(F[K1].use.check(USE1, flip)).toBe('ok');
     expect(F[K1].use.check(USE1, { ...v, ad: 'GE' })).toBe('piece');
+  });
+});
+
+/** The text a rendered element shows (its tags and the formulas' annotations left out). */
+const textOf = (html) => html.replace(/<annotation[^>]*>.*?<\/annotation>/g, '').replace(/<[^>]+>/g, ' ');
+
+describe('the gauge agrees with what each case is TRUE of (`held`)', () => {
+  it('🔑: a canal run through a wrong chain shows HIS three values; the parallel canal through « piece » stands apart', () => {
+    const r = rule(K1, { cond: 'par', chain: 'piece' });
+    const shown = testsOf(F[K1], r, suite.rowsOf(K1, ROADS.AT_ONCE));
+    const fresh = shown.find((c) => c.id === 'canal:new');
+    expect(fresh.tested.values).toEqual(['2/7', '2/7', '2/9']);
+    expect(gauge(fresh).aligned).toBe(false);
+    expect(fresh.held).toBe(false);
+    for (const chain of ['whole', 'piece', 'diff', 'flip'])
+      for (const c of testsOf(F[K1], rule(K1, { cond: 'par', chain }), suite.rowsOf(K1, ROADS.AT_ONCE)))
+        expect(gauge(c).aligned, `${chain} ${c.id}`).toBe(c.held);
+  });
+  it('🔍: a copy at the wrong number stands apart from its target 1, at its k it reaches it — every frame', () => {
+    const cases = [...suite.rowsOf(K4, ROADS.AT_ONCE), ...Object.values(F4_CASES), CAPSTONE_CASE];
+    for (const c of cases) expect(gauge(c).aligned, caseId(c)).toBe(c.held);
+    expect(cases.some((c) => !c.held)).toBe(true);
+    const out = renderToString(createElement(Mirror, { c: F4_CASES.OF, stage: 'done' }));
+    expect(out).toContain('data-rf-aligned="no"');
+    expect(out).toContain('data-rf-gauge-target');
+  });
+  it('🦋: the gauge of every pair he turned, his river first, is its `held` (parallel or not)', () => {
+    for (const c of suite.rowsOf(K3, ROADS.AT_ONCE)) expect(gauge(c).aligned, caseId(c)).toBe(c.held);
+  });
+});
+
+describe('the last steps draw their figure beside their lines', () => {
+  const FIGS_OF = { [K1]: USE1_FIG, [K2]: USE2_FIG, [K3]: USE3_FIG, [K4]: USE4_FIG };
+  it('each forge gives its figure; it fits beside the lines at its 12 px label floor', () => {
+    for (const key of KEYS) {
+      const c = F[key].use.figure(F[key].use.make());
+      expect(c).toBe(FIGS_OF[key]);
+      const f = lastStepFigure(c);
+      expect(f.fits, `${key} ${f.width}×${f.height}`).toBe(true);
+    }
+  });
+  it('a figure writes what the question gives and « ? » for what it asks — nothing else', () => {
+    const text = (c) => textOf(renderToString(createElement(UseFigure, { c })));
+    expect(text(USE1_FIG)).not.toMatch(/\d/);
+    const two = text(USE2_FIG);
+    for (const x of ['45', '10', 'AC = 66', '77', '?']) expect(two).toContain(x);
+    expect(two).not.toMatch(/55|54|63/);
+    const three = text(USE3_FIG);
+    for (const x of ['18', '48', '21', '88', '?']) expect(three).toContain(x);
+    expect(three).not.toMatch(/56|33/);
+    const four = text(USE4_FIG);
+    for (const x of ['42,5', 'AB = 68', '92', '?']) expect(four).toContain(x);
+    expect(four).not.toMatch(/57|80|50/);
   });
 });
 

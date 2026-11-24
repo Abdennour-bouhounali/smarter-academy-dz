@@ -11,14 +11,19 @@
  *     🦋 two lengths of a butterfly, its three ratios written;
  *     🔍 k (a fraction), « تكبير / تصغير », the image of a side, and the number back.
  *
- * THE KIT'S LIMITS, designed around (not bent): the trainer draws NO figure (`kit/Trainer.jsx` has none — reported):
- * every statement says its configuration in words (« M نقطة من [AB] … (MN) ∥ (BC) »); a length is the kit's DECIMAL
- * box `{ num, decimal: true }` (« 32,5 »), read exactly (`math.js › typedNumber`); a ratio of segment names is a
- * fraction of two CHOICES (`{ frac: { n: { choice }, d: { choice } } }`, buttons); a line of a form is plain text, its
- * Arabic words to the RIGHT of the boxes on a left-to-right line (defects.md D22).
+ * EVERY QUESTION ABOUT A CONFIGURATION CARRIES ITS FIGURE (`q.figure`, drawn above it by the kit's trainer —
+ * `kit/trainerFigure.js`, at its 12 px label floor): the world's Thalès figure (`nilePyramids/figure.js › figureSpec`,
+ * never a second drawing) with the lengths the question gives and « ? » on what it asks, the chevrons of the parallel;
+ * turned by 15° steps when it would stand too high for the trainer's room (`trainerFigure(fig).fits`, asserted for every
+ * question of every kind in trainer.test.js). The words say only « في الشكل: (MN) ∥ (BC) » and the lengths. A length is
+ * the kit's DECIMAL box `{ num, decimal: true }` (« 32,5 »), read exactly (`math.js › typedNumber`); a ratio of segment
+ * names is a fraction of two CHOICES (`{ frac: { n: { choice }, d: { choice } } }`, buttons); a line of a form is plain
+ * text, its Arabic words to the RIGHT of the boxes on a left-to-right line (defects.md D22).
  */
 import { pick, shuffle } from '../../../../../../common/gameworld/kit/random';
 import { createTrainer } from '../../../../../../common/gameworld/kit/trainer';
+import { trainerFigure } from '../../../../../../common/gameworld/kit/trainerFigure';
+import { figureSpec } from '../../../../../../common/gameworld/nilePyramids/figure';
 import {
   equal,
   FIGURES,
@@ -73,12 +78,36 @@ const withPieces = (f, butterfly) => ({
   MB: write(butterfly ? plus(f.VM, f.VB) : minus(f.VB, f.VM)),
   NC: write(butterfly ? plus(f.VN, f.VC) : minus(f.VC, f.VN)),
 });
-/** The configuration in words (no figure in the trainer). */
-function describe(names, butterfly) {
+/** The configuration in words, now that the figure is drawn: the parallel only (the figure shows the rest). */
+function describe(names) {
   const s = (k) => seg(names, k);
-  return butterfly
-    ? `المستقيمان $(${s('MB')})$ و $(${s('NC')})$ متقاطعان في النقطة $${names.V}$ ، و $(${s('MN')}) \\parallel (${s('BC')})$.`
-    : `$${names.V}${names.B}${names.C}$ مثلث، $${names.M}$ نقطة من $[${s('VB')}]$ و $${names.N}$ نقطة من $[${s('VC')}]$ ، و $(${s('MN')}) \\parallel (${s('BC')})$.`;
+  return `في الشكل: $(${s('MN')}) \\parallel (${s('BC')})$.`;
+}
+/**
+ * THE FIGURE of a question (`q.figure`): the world's Thalès figure with its letters, the lengths `show` written and
+ * those `ask` written « ? ». Drawn as it is when it fits the trainer's room at its 12 px floor, else turned by 15°
+ * steps to the turn that stands lowest. `f` holds the lengths (`draw`: other lengths for its shape only).
+ */
+function figureOf(f, names, butterfly, { show = [], ask = [], draw = null } = {}) {
+  const fig = {
+    kind: butterfly ? 'butterfly' : 'nested',
+    names,
+    len: { VM: f.VM, VB: f.VB, VN: f.VN, VC: f.VC, MN: f.MN, BC: f.BC, MB: f.MB, NC: f.NC },
+    ...(draw ? { draw } : {}),
+  };
+  const at = (turn) => {
+    const spec = figureSpec(fig, { show, ask, parallel: true, turn });
+    return { spec, t: trainerFigure(spec) };
+  };
+  const flat = at(0);
+  if (flat.t.fits) return flat.spec;
+  const turns = Array.from({ length: 23 }, (_, i) => at((i + 1) * 15)).filter((x) => x.t.fits);
+  return (turns.sort((a, b) => a.t.height - b.t.height)[0] ?? flat).spec;
+}
+/** A scale figure (only AB, BC, AM, MN given): its AC for the drawing only — 3/5 of AB + BC, AN at the same k. */
+function scaleDraw(f) {
+  const VC = write(times(plus(f.VB, f.BC), '3/5'));
+  return { VM: f.VM, VB: f.VB, VN: write(times(VC, over(f.VM, f.VB))), VC, MN: f.MN, BC: f.BC };
 }
 /** « $AM = 35$ و $AB = 42$ … » — the lengths given, each a formula. */
 const lengths = (names, f, keys) => keys.map((k) => `$${seg(names, k)} = ${tex(f[k])}$`).join(' و ');
@@ -110,62 +139,75 @@ const TF = {
   [K1]: (rand) => {
     const { f, names } = drawFigure(rand, false, { whole: true });
     const s = (k) => seg(names, k);
-    const head = `${describe(names, false)} ${lengths(names, f, ['VM', 'VB', 'VN', 'VC'])}.`;
+    const head = `${describe(names)} ${lengths(names, f, ['VM', 'VB', 'VN', 'VC'])}.`;
+    const figure = figureOf(f, names, false, { show: ['VM', 'VB', 'VN', 'VC'] });
     const fr = (a, b) => `\\dfrac{${s(a)}}{${s(b)}}`;
     const num = (a, b) => `\\dfrac{${f[a]}}{${f[b]}}`;
     return pick(rand, [
-      [`${head} إذن $${fr('VM', 'VB')} = ${fr('VN', 'VC')}$`, true, `$${num('VM', 'VB')} = ${num('VN', 'VC')}$`],
+      [
+        `${head} إذن $${fr('VM', 'VB')} = ${fr('VN', 'VC')}$`,
+        true,
+        `$${num('VM', 'VB')} = ${num('VN', 'VC')}$`,
+        figure,
+      ],
       [
         `${head} إذن $${fr('VM', 'MB')} = ${fr('VN', 'VC')}$`,
         false,
         `$${num('VM', 'MB')} = ${tex(over(f.VM, f.MB))}$ و $${num('VN', 'VC')} = ${tex(over(f.VN, f.VC))}$`,
+        figure,
       ],
       [
         `${head} إذن $${fr('VM', 'VB')} = ${fr('VC', 'VN')}$`,
         false,
         `$${num('VM', 'VB')} = ${tex(over(f.VM, f.VB))}$ و $${num('VC', 'VN')} = ${tex(over(f.VC, f.VN))}$`,
+        figure,
       ],
     ]);
   },
   [K2]: (rand) => {
     const { f, names } = drawFigure(rand, false, { whole: true });
     const s = (k) => seg(names, k);
-    const head = `${describe(names, false)} ${lengths(names, f, ['VM', 'VB', 'BC'])}.`;
+    const head = `${describe(names)} ${lengths(names, f, ['VM', 'VB', 'BC'])}.`;
+    const figure = figureOf(f, names, false, { show: ['VM', 'VB', 'BC', 'MN'], ask: ['MN'] });
     const right = `$\\dfrac{${f.VM} \\times ${f.BC}}{${f.VB}} = ${tex(f.MN)}$`;
     const piece = write(over(times(f.MB, f.BC), f.VB));
     const inverted = write(over(times(f.VB, f.BC), f.VM));
     return pick(rand, [
-      [`${head} إذن $${s('MN')} = ${tex(f.MN)}$`, true, right],
-      [`${head} إذن $${s('MN')} = ${tex(piece)}$`, false, right],
-      [`${head} إذن $${s('MN')} = ${tex(inverted)}$`, false, right],
+      [`${head} إذن $${s('MN')} = ${tex(f.MN)}$`, true, right, figure],
+      [`${head} إذن $${s('MN')} = ${tex(piece)}$`, false, right, figure],
+      [`${head} إذن $${s('MN')} = ${tex(inverted)}$`, false, right, figure],
     ]);
   },
   [K3]: (rand) => {
     const { f, names } = drawFigure(rand, true);
     const s = (k) => seg(names, k);
-    const head = `${describe(names, true)} ${lengths(names, f, ['VM', 'VB', 'VN'])}.`;
+    const head = `${describe(names)} ${lengths(names, f, ['VM', 'VB', 'VN'])}.`;
+    const figure = figureOf(f, names, true, { show: ['VM', 'VB', 'VN', 'VC'], ask: ['VC'] });
     const right = `$\\dfrac{${f.VB} \\times ${f.VN}}{${f.VM}} = ${tex(f.VC)}$`;
     const crossed = write(over(times(f.VM, f.VN), f.VB));
     return pick(rand, [
-      [`${head} إذن $${s('VC')} = ${tex(f.VC)}$`, true, right],
-      [`${head} إذن $${s('VC')} = ${tex(crossed)}$`, false, right],
-      [`${head} إذن $${s('VC')} = ${tex(plus(f.VM, f.VN))}$`, false, right],
+      [`${head} إذن $${s('VC')} = ${tex(f.VC)}$`, true, right, figure],
+      [`${head} إذن $${s('VC')} = ${tex(crossed)}$`, false, right, figure],
+      [`${head} إذن $${s('VC')} = ${tex(plus(f.VM, f.VN))}$`, false, right, figure],
     ]);
   },
   [K4]: (rand) => {
     const f = pick(rand, FIGURES.scale);
     const k = over(f.VM, f.VB);
-    const head = `المثلثان $ABC$ و $AMN$ في وضعية طالس، $AB = ${tex(f.VB)}$ و $AM = ${tex(f.VM)}$.`;
+    const head = `في الشكل: $(MN) \\parallel (BC)$ ، $AB = ${tex(f.VB)}$ و $AM = ${tex(f.VM)}$.`;
+    const figure = figureOf(f, SCALE_NAMES, false, { show: ['VM', 'VB'], draw: scaleDraw(f) });
     const down = `$\\dfrac{${tex(f.VM)}}{${tex(f.VB)}} = ${tex(k)}$ أصغر من 1`;
     const up = `$\\dfrac{${tex(f.VB)}}{${tex(f.VM)}} = ${tex(over('1', k))}$ أكبر من 1`;
     return pick(rand, [
-      [`${head} المثلث $AMN$ تصغير للمثلث $ABC$`, true, down],
-      [`${head} المثلث $AMN$ تكبير للمثلث $ABC$`, false, down],
-      [`${head} المعامل من $AMN$ إلى $ABC$ هو $${tex(over('1', k))}$`, true, up],
-      [`${head} المعامل من $AMN$ إلى $ABC$ هو $${tex(k)}$`, false, up],
+      [`${head} المثلث $AMN$ تصغير للمثلث $ABC$`, true, down, figure],
+      [`${head} المثلث $AMN$ تكبير للمثلث $ABC$`, false, down, figure],
+      [`${head} المعامل من $AMN$ إلى $ABC$ هو $${tex(over('1', k))}$`, true, up, figure],
+      [`${head} المعامل من $AMN$ إلى $ABC$ هو $${tex(k)}$`, false, up, figure],
     ]);
   },
 };
+/** The letters of the scale figures (🔍): ABC and AMN. */
+const SCALE_NAMES = { V: 'A', M: 'M', B: 'B', N: 'N', C: 'C' };
 /** Two reasons that prove nothing, per key: each states a false fact. */
 const FOILS = {
   [K1]: ['لأنّ كلّ قطعة تقسم على القطعة التي تليها', 'لأنّ النسب متساوية في كلّ مثلث مهما كان المستقيم'],
@@ -205,7 +247,7 @@ const Q = {
 
   /** true / false. game: one tap. exam: « صحيح أم خطأ؟ علّل » — the truth AND its reason. */
   tf(rand, format, key) {
-    const [statement, truth, why] = TF[key](rand);
+    const [statement, truth, why, figure] = TF[key](rand);
     return {
       format,
       kind: 'tf',
@@ -213,6 +255,7 @@ const Q = {
       statement,
       truth,
       why,
+      figure,
       reasons:
         format === 'exam'
           ? shuffle(rand, [{ t: `لأنّ ${why}`, ok: true }, ...FOILS[key].map((t) => ({ t, ok: false }))])
@@ -238,7 +281,8 @@ const Q = {
       pieces,
       asked,
       k: write(k),
-      prompt: `${describe(names, false)} ${lengths(names, f, pieces ? ['VM', 'MB'] : ['VM', 'VB'])}. احسب النسبة $\\dfrac{${s(asked[0])}}{${s(asked[1])}}$.`,
+      figure: figureOf(f, names, false, { show: pieces ? ['VM', 'MB'] : ['VM', 'VB'] }),
+      prompt: `${describe(names)} ${lengths(names, f, pieces ? ['VM', 'MB'] : ['VM', 'VB'])}. احسب النسبة $\\dfrac{${s(asked[0])}}{${s(asked[1])}}$.`,
       form: {
         tip: 'tipCompute',
         lines: [{ ltr: true, tokens: [{ frac: { n: s(asked[0]), d: s(asked[1]) } }, '=', fracBox('n', 'd')] }],
@@ -248,7 +292,7 @@ const Q = {
 
   /** 🔑 exam — « اكتب النسب الثلاث المتساوية »: segment names chosen inside three fractions. */
   nisab(rand, format, butterfly = false) {
-    const names = pick(rand, butterfly ? BUTTERFLY_NAMES : NESTED_NAMES);
+    const { f, names } = drawFigure(rand, butterfly);
     const s = (k) => seg(names, k);
     const options = [
       [s('VM'), s('VB'), s('MB')],
@@ -260,7 +304,8 @@ const Q = {
       kind: butterfly ? 'farashaNisab' : 'nisab',
       key: butterfly ? K3 : K1,
       names,
-      prompt: `${describe(names, butterfly)} اكتب النسب الثلاث المتساوية.`,
+      figure: figureOf(f, names, butterfly),
+      prompt: `${describe(names)} اكتب النسب الثلاث المتساوية.`,
       form: {
         tip: 'tipWrite',
         lines: [
@@ -300,7 +345,8 @@ const Q = {
       f,
       names,
       sol,
-      prompt: `${describe(names, false)} ${UNIT_NOTE} ${lengths(names, f, [sol.P, sol.Q, sol.D])}. احسب الطول $${seg(names, sol.U)}$.`,
+      figure: figureOf(f, names, false, { show: [sol.P, sol.Q, sol.D, sol.U], ask: [sol.U] }),
+      prompt: `${describe(names)} ${UNIT_NOTE} ${lengths(names, f, [sol.P, sol.Q, sol.D])}. احسب الطول $${seg(names, sol.U)}$.`,
       form: {
         tip: 'tipCompute',
         lines: [{ ltr: true, tokens: [seg(names, sol.U), '=', lengthBox('x', seg(names, sol.U)), UNIT] }],
@@ -325,7 +371,11 @@ const Q = {
       f,
       names,
       ...spec,
-      prompt: `${describe(names, false)} ${UNIT_NOTE} ${lengths(names, f, [spec.part, spec.piece, spec.other])}. احسب الطول $${seg(names, spec.side)}$ ، ثمّ الطول $${seg(names, spec.sol.U)}$.`,
+      figure: figureOf(f, names, false, {
+        show: [spec.part, spec.piece, spec.other, spec.sol.U],
+        ask: [spec.sol.U],
+      }),
+      prompt: `${describe(names)} ${UNIT_NOTE} ${lengths(names, f, [spec.part, spec.piece, spec.other])}. احسب الطول $${seg(names, spec.side)}$ ، ثمّ الطول $${seg(names, spec.sol.U)}$.`,
       form: {
         tip: 'tipCompute',
         lines: [
@@ -348,7 +398,8 @@ const Q = {
       f,
       names,
       sols,
-      prompt: `${describe(names, true)} ${UNIT_NOTE} ${lengths(names, f, ['VM', 'VB', 'VN', 'BC'])}. احسب الطولين $${seg(names, 'VC')}$ و $${seg(names, 'MN')}$.`,
+      figure: figureOf(f, names, true, { show: ['VM', 'VB', 'VN', 'BC', 'VC', 'MN'], ask: ['VC', 'MN'] }),
+      prompt: `${describe(names)} ${UNIT_NOTE} ${lengths(names, f, ['VM', 'VB', 'VN', 'BC'])}. احسب الطولين $${seg(names, 'VC')}$ و $${seg(names, 'MN')}$.`,
       form: {
         tip: 'tipCompute',
         lines: sols.map((s, i) => ({
@@ -373,7 +424,7 @@ const Q = {
           ['VM', 'MN'],
           ['VB', 'BC'],
         ];
-    const names = { V: 'A', M: 'M', B: 'B', N: 'N', C: 'C' };
+    const names = SCALE_NAMES;
     const [t1, t2] = down ? ['ABC', 'AMN'] : ['AMN', 'ABC'];
     const s = (key) => seg(names, key);
     return {
@@ -384,7 +435,12 @@ const Q = {
       one,
       two,
       k: write(over(f[two[0]], f[one[0]])),
-      prompt: `المثلثان $ABC$ و $AMN$ في وضعية طالس، $M$ من $[AB]$ و $N$ من $[AC]$. ${UNIT_NOTE} ${lengths(names, f, [one[0], one[1], two[0]])}. أعط معامل التناسبية $k$ من المثلث الأوّل $${t1}$ إلى المثلث الثاني $${t2}$ ، ثمّ احسب $${s(two[1])}$ ، ثمّ المعامل $k'$ من الثاني إلى الأوّل.`,
+      figure: figureOf(f, names, false, {
+        show: [one[0], one[1], two[0], two[1]],
+        ask: [two[1]],
+        draw: scaleDraw(f),
+      }),
+      prompt: `في الشكل: $(MN) \\parallel (BC)$. ${UNIT_NOTE} ${lengths(names, f, [one[0], one[1], two[0]])}. أعط معامل التناسبية $k$ من المثلث الأوّل $${t1}$ إلى المثلث الثاني $${t2}$ ، ثمّ احسب $${s(two[1])}$ ، ثمّ المعامل $k'$ من الثاني إلى الأوّل.`,
       form: {
         tip: 'tipCompute',
         lines: [

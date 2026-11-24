@@ -10,6 +10,7 @@
  * Floats exist here for DRAWING only (positions, the camera, the size of a label).
  */
 import { read, write, compare, equal, times, over, minus, plus, fourth, tryRead, approx } from '../kit/exact';
+import { lenRoot } from './surd';
 
 export { write, approx };
 
@@ -116,6 +117,26 @@ export const pyramidHeight = (base, edge) => Math.sqrt(approx(edge) ** 2 - appro
 
 /** The width of the river AF: SE / SA = ER / AF, so AF is the fourth proportional — exact. */
 export const riverWidth = (river) => write(fourth(river.SE, river.AS, river.ER));
+
+/**
+ * The river as a Thalès figure, ALL its lengths exact: a butterfly round the stake S (V = S, M = E, B = A, N = R,
+ * C = F). Both lines stand square to the bank (the 3-4-5 rope), so the crooked sides are hypotenuses:
+ * SR² = SE² + ER² = 2785 and SF² = SA² + AF² = 178240 = 64 × 2785 — SR = √2785, SF = 8√2785 (`surd.js`), and
+ * SR / SF = 1/8 = SE / SA = ER / AF. Only what he MEASURED (and the width) is written on its drawing (`show`); the
+ * drawing is schematic (`draw`: the same right angles, k = 1/3, legs 72 and 120) — at scale it is a needle.
+ */
+export function riverFigure(river) {
+  const AF = riverWidth(river);
+  const hyp = (a, b) => lenRoot(plus(times(a, a), times(b, b)));
+  return {
+    kind: 'butterfly',
+    names: { V: 'S', M: 'E', B: 'A', N: 'R', C: 'F' },
+    len: { VM: river.SE, VB: river.AS, VN: hyp(river.SE, river.ER), VC: hyp(river.AS, AF), MN: river.ER, BC: AF },
+    show: ['VM', 'VB', 'MN', 'BC'],
+    // drawn SCHEMATIC (figure.js › draw): at scale, S and E (9 m apart) would print on one another beside a 416 m width
+    draw: { VM: '24', VB: '72', VN: hyp('24', '40'), VC: hyp('72', '120'), MN: '40', BC: '120' },
+  };
+}
 
 // ───────────────────────────── stage 5: the shadows (drawn meshes, never the shadow map — B2, B5) ─────────────────────────────
 

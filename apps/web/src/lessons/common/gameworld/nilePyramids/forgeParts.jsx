@@ -6,10 +6,12 @@
  *                                vertical line (gold) when the ratios are equal, apart otherwise
  *   Line({ c, children })        one line of evidence: a thumbnail, the case's name, the gauge in small
  *   beats()                      three strokes: the three marks of the gauge
- * The world's investigations (`Inquiry`) are another file: the parts object is `{ Mirror, Line, beats, Inquiry }`.
+ *   UseFigure({ c })             the last step's figure beside its lines (figure.js › lastStepFigure: `show`, `ask`,
+ *                                `parallel`, `turn`; never below its 12 px label floor) — the kit's optional part
+ * The world's investigations (`Inquiry`) are another file: the parts object is `{ Mirror, Line, beats, Inquiry, UseFigure }`.
  */
 import GeoFigure from '../../components/GeoFigure';
-import { figureSpec } from './figure';
+import { figureSpec, lastStepFigure } from './figure';
 import { caseId, runCase, THALES_TEXT } from './ruleForge';
 import { Gauge } from './Gauge';
 import Inquiry from './Inquiry';
@@ -65,8 +67,19 @@ export function Line({ c, children }) {
   );
 }
 
+/** The last step's figure (the kit's optional part): nothing for a case without one. */
+export function UseFigure({ c }) {
+  const f = lastStepFigure(c);
+  if (!f) return null;
+  return (
+    <div className="np-usefig" style={{ width: `${f.width}px` }} data-np-use-figure={f.fits ? 'fits' : 'over'}>
+      <GeoFigure {...f.spec} maxWidth="100%" />
+    </div>
+  );
+}
+
 /** Three strokes: the three marks of the gauge. */
 export const beats = () => 3;
 
 /** The parts object a lesson's forge is played with (NilePyramids.jsx passes it to the kit's RuleForge). */
-export const FORGE_PARTS = { Mirror, Line, beats, Inquiry };
+export const FORGE_PARTS = { Mirror, Line, beats, Inquiry, UseFigure };
