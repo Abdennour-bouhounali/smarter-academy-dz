@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { chain, points, ratios } from './figure';
+import { STAGE_IDS, stageRoute } from './logic';
 import {
   FIELD,
   FACE,
@@ -189,5 +190,22 @@ describe('the scale rule (§1.5, gate B6)', () => {
     const s = labelScale(20, 60);
     expect(labelPx(s, 60)).toBeCloseTo(20, 9);
     for (const fov of [50, 55, 60]) expect(labelPx(s, fov)).toBeGreaterThanOrEqual(18);
+  });
+});
+
+describe('the docks a story plays (`story.stages`)', () => {
+  it('plays the five when the story names none', () => {
+    expect(stageRoute()).toEqual([0, 1, 2, 3, 4]);
+    expect(stageRoute(null)).toEqual([0, 1, 2, 3, 4]);
+    expect(stageRoute([...STAGE_IDS])).toEqual([0, 1, 2, 3, 4]);
+  });
+  it('keeps the named docks only, by their place in the world, sailed downstream whatever order was written', () => {
+    expect(stageRoute(['river', 'summit', 'plateau'])).toEqual([2, 3, 4]);
+    expect(stageRoute(['plateau', 'river'])).toEqual([2, 4]);
+    expect(stageRoute(['summit', 'summit'])).toEqual([3]);
+  });
+  it('refuses a dock the world does not have, and an empty route', () => {
+    expect(() => stageRoute(['harbour'])).toThrow(/harbour/);
+    expect(() => stageRoute([])).toThrow();
   });
 });

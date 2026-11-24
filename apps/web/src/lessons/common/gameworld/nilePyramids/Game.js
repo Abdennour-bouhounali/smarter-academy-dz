@@ -16,7 +16,7 @@
  *                            the stick's drawn triangle slid along the axis until the tips meet (B5); the mission card;
  *                            Zero rises to his h (apex · below · above); noon, and « صندوق ابن الهيثم »
  *   Each of stages 1–4 ends at the masons' table, where the lesson's forge opens (`story.forges[stageId]`).
- *   Between two docks he sails on the kit's rail (`story.legs[i]`) — without a leg the felucca simply sails.
+ *   Between two docks he sails on the kit's rail (`story.legs[i]`, to the route's next dock) — without a leg the felucca simply sails.
  *   A level of the practice ladder (`lesson.ladder`, « فضاء التدريب ») is sailed on the same river (`startPractice`,
  *   `practice.js`): the level's waves as buoys, its pace, crocodiles, three hearts; its stars are the hearts left.
  *
@@ -25,7 +25,9 @@
  *
  * THE STORY is the lesson's (`lesson.story`, every field optional):
  *   text                its sentences over the world's (`strings.js`)
- *   legs[i]             the content of the kit's rail from dock i to dock i + 1
+ *   stages              the docks this story plays, by id (`logic.js › STAGE_IDS`; none given: the five). The felucca
+ *                       sails them downstream; a dock off the route keeps its scenery, without jetty, step or table
+ *   legs[i]             the content of the kit's rail from dock i (its place in the world, 0–4) to the route's next
  *   forges              { field?, workshop?, river?, summit? }: the key of the lesson's forge played at that stage's
  *                       table (`lesson.forges[key]`); a stage without one ends at its last order
  *   mission             { title, lead: [..], figure?, lines(), check(vals) → 'ok' | fact, height(vals) → h }
@@ -57,6 +59,8 @@ import {
   approx,
   write,
   TURN,
+  STAGE_IDS,
+  stageRoute,
 } from './logic';
 import { order, holds } from './orders';
 import { slide, slideStep, slideTap, knotsOf, slidePoint, tied } from './gestures';
@@ -97,7 +101,6 @@ import { topFrame, declutter, TOP_FOV } from './topView';
 
 const SKY = [0xa9c4dd, 0xe6cfa2, 0xfff0d6, 4.4, 0.35, 0];
 const DOCK_Z = [0, -160, -330, -560, -760];
-const STAGE_IDS = ['field', 'workshop', 'river', 'summit', 'plateau'];
 const PLAY = { x0: BANK_X, x1: 700, z0: -1150, z1: 60 };
 const JETTY = { x0: -12.3, half: 1.8 };
 const RAIL = { x: -300, y: WATER_Y + 0.05, z: -380 };
@@ -112,7 +115,6 @@ const SUMMIT_TOP = write(times(FACE.base, CAPSTONE.k));
 const ZERO = 0.55; // the kit's robot is about 2,2 units tall: drawn about 1,2 m, as planned (§1.2)
 const AMBER = 0xf59e0b;
 const VIOLET = 0x8b5cf6;
-const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const v3 = (p) => new THREE.Vector3(p.x, p.y ?? 0, p.z);
 
 export class NilePyramidsGame extends WorldRuntime {
@@ -127,7 +129,7 @@ export class NilePyramidsGame extends WorldRuntime {
     this.hold = null; // the rope in his hand: { step, s (the slide), sign, cam }
     this.cine = null;
     this.layout();
-    this.atStart = clamp(sv?.dock ?? 0, 0, DOCK_Z.length - 1);
+    this.atStart = this.dockOf(sv?.dock);
   }
 
   /** Where everything stands, in metres, from the law's numbers (`logic.js`). */
@@ -194,7 +196,7 @@ export class NilePyramidsGame extends WorldRuntime {
     };
     this.pts = { field, ws, river, summit, plateau };
     this.P = [field, ws, river, summit, plateau];
-    this.stages = this.stageData();
+    this.stages = this.stageData().map((st, i) => (this.route.includes(i) ? st : { ...st, steps: [] }));
   }
 
   /** The five stages as DATA: their steps, in order. A step is a slide, a prediction, an order, a climb, a card or a forge. */
@@ -383,8 +385,22 @@ export class NilePyramidsGame extends WorldRuntime {
     ];
   }
 
+  /** The docks this story plays, downstream (`logic.js › stageRoute`) — read from the lesson: the state needs it first. */
+  get route() {
+    this.routeMemo ??= stageRoute(this.lesson.story?.stages);
+    return this.routeMemo;
+  }
+  /** The dock after dock i on the route, or null at its last one. */
+  nextDock(i) {
+    return this.route[this.route.indexOf(i) + 1] ?? null;
+  }
+  /** A saved dock, if this story still plays it; else the route's first. */
+  dockOf(saved) {
+    return this.route.includes(saved) ? saved : this.route[0];
+  }
+
   worldState(sv) {
-    const at = clamp(sv?.dock ?? 0, 0, DOCK_Z.length - 1);
+    const at = this.dockOf(sv?.dock);
     return {
       at,
       objective: '',
@@ -581,8 +597,10 @@ export class NilePyramidsGame extends WorldRuntime {
 
     sc.add(makeGround(PLAY));
     this.buildPalms();
-    this.docks = DOCK_Z.map((z, i) => {
+    this.docks = this.route.map((i) => {
+      const z = DOCK_Z[i];
       const d = makeDock(this.T.docks[i]);
+      d.userData.stage = i;
       d.position.set(BANK_X, 0, z);
       sc.add(d);
       return d;
@@ -616,10 +634,10 @@ export class NilePyramidsGame extends WorldRuntime {
         );
     });
     // the dock of the stage he stands on: board the felucca once the stage is over
-    DOCK_Z.forEach((z, i) =>
+    this.route.forEach((i) =>
       this.addInteract(
         BANK_X + 2,
-        z,
+        DOCK_Z[i],
         () => this.dockPrompt(i),
         () => this.dockAct(i),
         3.2,
@@ -1065,8 +1083,8 @@ export class NilePyramidsGame extends WorldRuntime {
     const step = this.stepNow();
     let o;
     if (step) o = this.objectiveOf(step);
-    else if (i === DOCK_Z.length - 1) o = this.S.objective.end;
-    else o = T.board(this.T.docks[i + 1]);
+    else if (this.nextDock(i) == null) o = this.S.objective.end;
+    else o = T.board(this.T.docks[this.nextDock(i)]);
     if (o !== this.state.objective) this.set({ objective: o });
     this.lightUp();
   }
@@ -1079,9 +1097,7 @@ export class NilePyramidsGame extends WorldRuntime {
     for (const [k, s] of Object.entries(this.stakes)) s.userData.lamp.visible = !this.hold && k === key;
     for (const [id, t] of Object.entries(this.tables))
       t.userData.board.visible = step?.kind === 'forge' && id === STAGE_IDS[i];
-    this.docks.forEach((d, j) => {
-      d.userData.lamp.visible = j === i && !step && j < DOCK_Z.length - 1;
-    });
+    for (const d of this.docks) d.userData.lamp.visible = d.userData.stage === i && !step && this.nextDock(i) != null;
   }
 
   /** « سجلّ الحقل »: the record he was given, then what HE measured and typed, in the order he did it. */
@@ -1156,11 +1172,11 @@ export class NilePyramidsGame extends WorldRuntime {
   }
   dockPrompt(i) {
     if (this.state.at !== i || this.hold || this.onTop || this.topView) return null;
-    if (!this.stepNow() && i < DOCK_Z.length - 1) return this.T.prompt.board(this.T.docks[i + 1]);
+    if (!this.stepNow() && this.nextDock(i) != null) return this.T.prompt.board(this.T.docks[this.nextDock(i)]);
     return null;
   }
   dockAct(i) {
-    if (!this.stepNow() && i < DOCK_Z.length - 1) this.board(i);
+    if (!this.stepNow() && this.nextDock(i) != null) this.board(i);
   }
 
   // ───────────────────────────── THE ONE GESTURE: the rope ─────────────────────────────
@@ -1765,7 +1781,7 @@ export class NilePyramidsGame extends WorldRuntime {
     if (this.drill) return this.quitPractice();
     this.gateRun.hide();
     this.set({ run: null });
-    if (this.runWon) this.arrive(this.fromDock + 1);
+    if (this.runWon) this.arrive(this.nextDock(this.fromDock));
     else {
       this.hero.pos.copy(this.dockSpot(this.state.at));
       this.hero.vel.set(0, 0, 0);
@@ -1859,7 +1875,7 @@ export class NilePyramidsGame extends WorldRuntime {
 
   /** Without a course of gates the felucca simply sails, Zero aboard. */
   sail(i) {
-    this.sailing = { from: i, to: i + 1, t: 0 };
+    this.sailing = { from: i, to: this.nextDock(i), t: 0 };
     this.say(this.T.say.sail, 3);
     this.set({ phase: 'sail', prompt: null, objective: '', verdict: null });
   }
@@ -1878,7 +1894,7 @@ export class NilePyramidsGame extends WorldRuntime {
     const id = STAGE_IDS[i];
     this.set({
       at: i,
-      stage: Math.max(this.state.stage, i),
+      stage: Math.max(this.state.stage, this.route.indexOf(i)), // the shell's dots count the docks PLAYED
       phase: 'play',
       islandName: this.T.docks[i],
       recall: this.story.recall?.(this, id) ?? [],

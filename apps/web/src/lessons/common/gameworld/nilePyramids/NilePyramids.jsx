@@ -23,6 +23,7 @@ import { Card, M } from '../kit/parts';
 import { sheetFigure } from '../kit/sheetFigure';
 import { Instruction, Recall } from '../kit/Instruction';
 import { NilePyramidsGame, devHandles } from './Game';
+import { stageRoute } from './logic';
 import { WORLD_TEXT, withStory } from './strings';
 import './nilePyramids.css';
 
@@ -384,13 +385,14 @@ const WORLD = {
   },
 };
 
-/** What the shell needs to know of the STORY being played: five docks, three stars each, its title and its end. */
+/** What the shell needs to know of the STORY being played: its docks (the five, or `story.stages`), three stars each, its title and its end. */
 function worldOf(lesson) {
   const T = withStory(WORLD_TEXT, lesson.story?.text ?? {});
+  const docks = stageRoute(lesson.story?.stages).length;
   return {
     ...WORLD,
-    stages: T.docks.length,
-    maxStars: T.docks.length * 3,
+    stages: docks,
+    maxStars: docks * 3,
     text: { title: T.title, subtitle: T.subtitle, turn: T.turn.body, end: T.end },
   };
 }

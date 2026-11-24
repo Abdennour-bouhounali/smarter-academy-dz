@@ -20,6 +20,24 @@ export { write, approx };
  * « حقل النيل »: a triangular field ABC (cos A = 2/7, so every rope reads a whole knot) and its two canals from side
  * [AB] to side [AC]. The new canal is dug parallel to (BC); the old crooked one is not.
  */
+/** The five docks, downstream — a stage's id is its place in the world, whatever the lesson plays. */
+export const STAGE_IDS = Object.freeze(['field', 'workshop', 'river', 'summit', 'plateau']);
+/**
+ * The docks a story plays (`story.stages`, ids; none given: the five), as dock indexes in the order the felucca sails
+ * them — always downstream, whatever order the story wrote. An unknown id is refused: a story never plays a dock the
+ * world does not have. A dock off the route keeps its scenery and has no jetty, no step and no table.
+ */
+export function stageRoute(ids) {
+  if (ids == null) return STAGE_IDS.map((_, i) => i);
+  const route = [...new Set(ids)].map((id) => {
+    const i = STAGE_IDS.indexOf(id);
+    if (i < 0) throw new Error(`nilePyramids: the world has no stage « ${id} »`);
+    return i;
+  });
+  if (!route.length) throw new Error('nilePyramids: a story plays one stage at least');
+  return route.sort((a, b) => a - b);
+}
+
 export const FIELD = Object.freeze({
   AB: '63',
   AC: '72',
