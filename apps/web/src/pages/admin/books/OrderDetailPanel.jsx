@@ -134,7 +134,7 @@ export default function OrderDetailPanel({ orderId, onLoaded, onChange, onDelete
         <div className="rounded-xl bg-slate-50 p-3"><p className="font-inter text-xs text-slate-500">{formatDa(o.unitPrice)} × <Num>{o.quantity}</Num></p><Num className="font-space text-lg font-bold">{formatDa(o.subtotal)}</Num></div>
         <div className="rounded-xl bg-slate-50 p-3"><p className="font-inter text-xs text-slate-500">{S.order.delivery}</p>{o.deliveryFee === null ? <p className="font-inter text-sm text-slate-500">{A.deliveryUnset}</p> : <Num className="font-space text-lg font-bold">{formatDa(o.deliveryFee)}</Num>}</div>
         <div className="rounded-xl bg-emerald-50 p-3"><p className="font-inter text-xs text-emerald-700">{A.paid}</p><Num className="font-space text-lg font-bold text-emerald-700">{formatDa(o.paidAmount)}</Num></div>
-        <div className="rounded-xl bg-amber-50 p-3"><p className="font-inter text-xs text-amber-700">{A.remaining} / {formatDa(o.total)}</p><Num className="font-space text-lg font-bold text-amber-700">{formatDa(remaining)}</Num></div>
+        <div className="rounded-xl bg-amber-50 p-3"><p className="font-inter text-xs text-amber-700">{A.remaining}{' / '}{formatDa(o.total)}</p><Num className="font-space text-lg font-bold text-amber-700">{formatDa(remaining)}</Num></div>
       </div>
 
       {/* 3. Livraison et note interne. */}
