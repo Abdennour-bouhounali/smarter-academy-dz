@@ -275,6 +275,18 @@ Two moments: **« اختبار البداية »** (the earlier الكفاءات
   that is — `want: 'rational'` — or is not rational), `rounded` (choice: the ROUNDED value of √a to a `step`, a whole
   number of steps d with (d − step/2)² < a < (d + step/2)², the word « المدوَّر » in the question; the values by default
   and by excess are the traps).
+  **Unit « خاصية طالس », lesson 1 « خاصية طالس وحساب الأطوال » (2026-11-24)**: `4am/talis-hisab-atwal.json` — the start
+  test asks the fourth proportional (3am.m1.r08) and the proportional lengths of 3AM (3am.m2.r03), then two teasers in
+  plain geometric words (a length from a piece of a side, a length across the meeting point), never with a key's name;
+  the end test covers the four keys and P1–P3. Every length is exact (`kit/exact.js`). New `check` types: `fourth`
+  (« $\dfrac{a}{b} = \dfrac{c}{x}$ », or `at: 'num'` « … = \dfrac{x}{c} », written as such), `thales` (a length of a
+  configuration from the lengths the question gives: `s` the triangle's three lengths from the vertex and its cut side,
+  `b` their partners, `p` the pieces of a NESTED one — the whole side rebuilt, a piece asked as the side less the length
+  from the vertex —, `butterfly` for points across the vertex; `ask` « s3 », « b1 », « p2 »; every pair given must agree
+  with one k, the text must hold `\parallel`), `thalesRatios` (choice: the chain of three equal ratios of `vertex` and
+  `lines`, each a length from the vertex over its partner and all the same way up — the piece, a crossed partner or one
+  ratio upside down are the traps), `scale` (P3: `from` (1) and `to` (2) or `k` given; `ask` `k`, `back` (1 ÷ k), `kind`
+  (« تكبير » when k > 1, « تصغير » when k < 1), `perimeter`, `side`).
 - **The teacher's copy** lives beside it (`class_tests`, one per teacher and lesson): remove, reorder, add from the pool,
   **write his own question** (choice, true / false, number). Writing one, he reads « أنت المسؤول عن صحّة هذا السؤال: المنصّة
   لا تتحقّق من الأسئلة التي تكتبها »; it is marked « سؤال الأستاذ » and stays private to him.
@@ -355,6 +367,15 @@ the court's own drawing the rod's label under the platform and the difference wr
 fraction rod reads « 23/7 » there (the card beside it has the bar). **The memo figure `court`** (`MemoFigures.jsx ›
 NumCap`) draws a fraction area, rod or difference with a real bar — its captions laid lower and its courts smaller only
 when a fraction is drawn (lesson 1's figures are unchanged, tested in `courtStation.render.test.jsx`).
+**A geometry lesson, NO figure station yet**: `talis-hisab-atwal` (13 stations, 2026-11-24, world « الأهرامات ») is
+`ask` → `ask` → `name` (🔑), `ask` → `ask` → `name` (📐), `ask` → `name` (🦋), `ask` → `ask` → `name` (🔍), two `trace`
+pages, on figures of its own (a park, a roof truss, an easel, two streets at a roundabout, a school yard). The board has
+no station that draws a figure, so each `ask` describes its figure in words and formulas, its cards are LENGTHS
+(`words: { card: 'الطول', held: 'يوافق', fell: 'لا يوافق' }`), and `a` is the right length so that the card drawn as
+filling is exactly the answer (its `board.test.js` re-computes each figure, and each other card as the error it makes:
+the piece, the difference, the crossed partner, k not turned). **Not built — to build before this board is shown to a
+class:** a `figure` station (the board still draws a plank bridge and « a = b × q + r » under each length card), and a
+memo figure kind for its `thales` openings (`MemoFigures.jsx` draws none).
 Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most

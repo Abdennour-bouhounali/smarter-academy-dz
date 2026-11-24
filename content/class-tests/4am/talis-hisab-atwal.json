@@ -1,0 +1,225 @@
+{
+  "_comment": "« حصّة القسم » — the DEFAULT class tests of lesson « خاصية طالس وحساب الأطوال » (docs/architecture/CLASS_SESSION.md §4). `start` opens the hour: what the lesson stands on (the fourth proportional and the cross product, 3am.m1.r08; the proportional lengths of a triangle cut by a parallel, 3am.m2.r03), then two questions of the NEW lesson asked in plain geometric words, never with the name of a key (`teaser`: a length when the data are a piece of a side, a length when the points are on the other side of the meeting point — asked again at the end with other numbers and the same answer). `end` closes it on the four keys and the three الكفاءات of the lesson (all one item of the learning net, 4am.m2.r01; P1 the three equal ratios, nested and butterfly, e3 e4; P2 a length, pieces included, e1 e2 e5; P3 the coefficient k, its direction and enlargement or reduction, e6 e7 e8). `pool` holds more prepared questions a teacher may add to his own copy. The numbers are the platform's own: none of the lesson's exercise bank, none of the student's world (PYRAMIDS_WORLD_PLAN.md §3.8), none of the board (scripts/lesson-bank-numbers.mjs). A number answer is a whole number (the board's keypad has digits only); a fraction is asked as a choice. Every question carries a `check` from which its answer is RE-COMPUTED, exactly, by a test (defaultTests.test.js): a default test never ships a wrong answer. A class test never changes a student's progress.",
+  "lesson": "talis-hisab-atwal",
+  "grade": "4am",
+  "version": 1,
+  "start": [
+    {
+      "id": "s1",
+      "item": "3am.m1.r08",
+      "kind": "number",
+      "text": "ما قيمة $x$ في المساواة $\\dfrac{14}{6} = \\dfrac{35}{x}$؟",
+      "answer": 15,
+      "check": { "type": "fourth", "a": "14", "b": "6", "c": "35" }
+    },
+    {
+      "id": "s2",
+      "item": "3am.m1.r08",
+      "kind": "truefalse",
+      "text": "في المساواة $\\dfrac{10}{25} = \\dfrac{x}{65}$ لدينا $x = 24$.",
+      "answer": false,
+      "check": { "type": "fourth", "a": "10", "b": "25", "c": "65", "at": "num", "claim": "24" }
+    },
+    {
+      "id": "s3",
+      "item": "3am.m2.r03",
+      "kind": "number",
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 8$ و $AB = 26$ و $BC = 39$ . احسب $MN$ .",
+      "answer": 12,
+      "check": { "type": "thales", "s": ["8", null, null], "b": ["26", null, "39"], "ask": "s3" }
+    },
+    {
+      "id": "s4",
+      "item": "3am.m2.r03",
+      "kind": "choice",
+      "text": "في المثلث $EFG$ ، النقطة $K$ من $[EF]$ والنقطة $L$ من $[EG]$ ، و $(KL) \\parallel (FG)$ . أيّ كتابة صحيحة؟",
+      "options": [
+        "$\\dfrac{EK}{KF} = \\dfrac{EL}{LG} = \\dfrac{KL}{FG}$",
+        "$\\dfrac{EK}{EF} = \\dfrac{EL}{EG} = \\dfrac{KL}{FG}$",
+        "$\\dfrac{EK}{EF} = \\dfrac{EG}{EL} = \\dfrac{KL}{FG}$"
+      ],
+      "answer": 1,
+      "check": {
+        "type": "thalesRatios",
+        "vertex": "E",
+        "lines": [
+          ["K", "F"],
+          ["L", "G"]
+        ]
+      }
+    },
+    {
+      "id": "s5",
+      "item": "3am.m2.r03",
+      "kind": "truefalse",
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 14$ و $AB = 34$ و $AC = 51$ ، إذن $AN = 21$ .",
+      "answer": true,
+      "check": { "type": "thales", "s": ["14", null, null], "b": ["34", "51", null], "ask": "s2", "claim": "21" }
+    },
+    {
+      "id": "s6",
+      "item": "3am.m1.r08",
+      "kind": "choice",
+      "text": "ما قيمة $x$ في المساواة $\\dfrac{35}{42} = \\dfrac{x}{18}$؟",
+      "options": ["$15$", "$11$", "$25$"],
+      "answer": 0,
+      "check": { "type": "fourth", "a": "35", "b": "42", "c": "18", "at": "num" }
+    },
+    {
+      "id": "s7",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "teaser": true,
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 15$ و $MB = 10$ و $BC = 35$ . احسب $MN$ .",
+      "answer": 21,
+      "check": { "type": "thales", "s": ["15", null, null], "b": [null, null, "35"], "p": ["10", null], "ask": "s3" }
+    },
+    {
+      "id": "s8",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "teaser": true,
+      "text": "النقط $A$ و $O$ و $C$ على استقامة واحدة، والنقط $B$ و $O$ و $D$ على استقامة واحدة، و $(AB) \\parallel (CD)$ . $OA = 6$ و $OC = 21$ و $AB = 10$ . احسب $CD$ .",
+      "answer": 35,
+      "check": { "type": "thales", "butterfly": true, "s": ["6", null, "10"], "b": ["21", null, null], "ask": "b3" }
+    }
+  ],
+  "end": [
+    {
+      "id": "e1",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "pairOf": "s7",
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 7$ و $MB = 8$ و $BC = 45$ . احسب $MN$ .",
+      "answer": 21,
+      "check": { "type": "thales", "s": ["7", null, null], "b": [null, null, "45"], "p": ["8", null], "ask": "s3" }
+    },
+    {
+      "id": "e2",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "pairOf": "s8",
+      "text": "النقط $A$ و $O$ و $C$ على استقامة واحدة، والنقط $B$ و $O$ و $D$ على استقامة واحدة، و $(AB) \\parallel (CD)$ . $OA = 10$ و $OC = 14$ و $AB = 25$ . احسب $CD$ .",
+      "answer": 35,
+      "check": { "type": "thales", "butterfly": true, "s": ["10", null, "25"], "b": ["14", null, null], "ask": "b3" }
+    },
+    {
+      "id": "e3",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "في المثلث $HKL$ ، النقطة $E$ من $[HK]$ والنقطة $F$ من $[HL]$ ، و $(EF) \\parallel (KL)$ . أيّ كتابة صحيحة؟",
+      "options": [
+        "$\\dfrac{HE}{HK} = \\dfrac{HL}{HF} = \\dfrac{EF}{KL}$",
+        "$\\dfrac{HE}{EK} = \\dfrac{HF}{FL} = \\dfrac{EF}{KL}$",
+        "$\\dfrac{HE}{HK} = \\dfrac{HF}{HL} = \\dfrac{EF}{KL}$"
+      ],
+      "answer": 2,
+      "check": {
+        "type": "thalesRatios",
+        "vertex": "H",
+        "lines": [
+          ["E", "K"],
+          ["F", "L"]
+        ]
+      }
+    },
+    {
+      "id": "e4",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "النقط $B$ و $O$ و $D$ على استقامة واحدة، والنقط $C$ و $O$ و $E$ على استقامة واحدة، و $(BC) \\parallel (DE)$ . أيّ كتابة صحيحة؟",
+      "options": [
+        "$\\dfrac{OD}{OB} = \\dfrac{OE}{OC} = \\dfrac{DE}{BC}$",
+        "$\\dfrac{OD}{OC} = \\dfrac{OE}{OB} = \\dfrac{DE}{BC}$",
+        "$\\dfrac{OD}{BD} = \\dfrac{OE}{CE} = \\dfrac{DE}{BC}$"
+      ],
+      "answer": 0,
+      "check": {
+        "type": "thalesRatios",
+        "vertex": "O",
+        "lines": [
+          ["B", "D"],
+          ["C", "E"]
+        ]
+      }
+    },
+    {
+      "id": "e5",
+      "item": "4am.m2.r01",
+      "kind": "truefalse",
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 6$ و $AB = 22$ و $AC = 33$ ، إذن $NC = 9$ .",
+      "answer": false,
+      "check": { "type": "thales", "s": ["6", null, null], "b": ["22", "33", null], "ask": "p2", "claim": "9" }
+    },
+    {
+      "id": "e6",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "المثلثان $ABC$ و $AMN$ في وضعية طالس، $M$ من $[AB]$ و $N$ من $[AC]$ ، مع $AB = 28$ و $AM = 6$ . ما معامل التناسبية الذي يحوّل المثلث $ABC$ إلى المثلث $AMN$؟",
+      "options": ["$\\dfrac{14}{3}$", "$\\dfrac{3}{11}$", "$\\dfrac{3}{14}$"],
+      "answer": 2,
+      "check": { "type": "scale", "from": ["28"], "to": ["6"], "ask": "k" }
+    },
+    {
+      "id": "e7",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "المثلثان $ABC$ و $AEF$ في وضعية طالس، $E$ على $(AB)$ و $F$ على $(AC)$ ، مع $AB = 16$ و $AE = 28$ . المثلث $AEF$ بالنسبة إلى المثلث $ABC$ هو:",
+      "options": ["تكبير", "تصغير"],
+      "answer": 0,
+      "check": { "type": "scale", "from": ["16"], "to": ["28"], "ask": "kind" }
+    },
+    {
+      "id": "e8",
+      "item": "4am.m2.r01",
+      "kind": "truefalse",
+      "text": "معامل التناسبية الذي يحوّل المثلث $ABC$ إلى المثلث $AMN$ هو $\\dfrac{5}{11}$ ، إذن المعامل الذي يحوّل المثلث $AMN$ إلى المثلث $ABC$ هو $\\dfrac{11}{5}$ .",
+      "answer": true,
+      "check": { "type": "scale", "k": "5/11", "ask": "back", "claim": "11/5" }
+    }
+  ],
+  "pool": [
+    {
+      "id": "p1",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "text": "في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . $AM = 9$ و $MB = 12$ و $MN = 15$ . احسب $BC$ .",
+      "answer": 35,
+      "check": { "type": "thales", "s": ["9", null, "15"], "b": [null, null, null], "p": ["12", null], "ask": "b3" }
+    },
+    {
+      "id": "p2",
+      "item": "4am.m2.r01",
+      "kind": "number",
+      "text": "أطوال أضلاع مثلث هي $13$ و $17$ و $20$ . نكبّره بمعامل التناسبية $\\dfrac{3}{2}$ . ما محيط المثلث الجديد؟",
+      "answer": 75,
+      "check": { "type": "scale", "from": ["13", "17", "20"], "k": "3/2", "ask": "perimeter" }
+    },
+    {
+      "id": "p3",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "النقط $A$ و $O$ و $C$ على استقامة واحدة، والنقط $B$ و $O$ و $D$ على استقامة واحدة، و $(AB) \\parallel (CD)$ . $OA = 8$ و $OB = 14$ و $OC = 20$ . ما الطول $OD$؟",
+      "options": ["$26$", "$35$", "$28$"],
+      "answer": 1,
+      "check": { "type": "thales", "butterfly": true, "s": ["8", "14", null], "b": ["20", null, null], "ask": "b2" }
+    },
+    {
+      "id": "p4",
+      "item": "3am.m1.r08",
+      "kind": "number",
+      "text": "ما قيمة $x$ في المساواة $\\dfrac{20}{35} = \\dfrac{12}{x}$؟",
+      "answer": 21,
+      "check": { "type": "fourth", "a": "20", "b": "35", "c": "12" }
+    },
+    {
+      "id": "p5",
+      "item": "4am.m2.r01",
+      "kind": "choice",
+      "text": "معامل التناسبية الذي يحوّل المثلث $ABC$ إلى المثلث $AMN$ هو $\\dfrac{9}{14}$ . المثلث $AMN$ بالنسبة إلى المثلث $ABC$ هو:",
+      "options": ["تكبير", "تصغير"],
+      "answer": 1,
+      "check": { "type": "scale", "k": "9/14", "ask": "kind" }
+    }
+  ]
+}

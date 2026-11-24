@@ -13,6 +13,7 @@ import {
   times,
   write,
 } from '../../lessons/common/gameworld/rootCourts/logic';
+import { over, plus } from '../../lessons/common/gameworld/kit/exact';
 
 /**
  * THE DEFAULT CLASS TESTS (content/class-tests/**): a teacher projects them in front of his class, so a default test never
@@ -169,6 +170,59 @@ const isReducedOf = (option, nd) => {
 const shows = (q, ...nums) => {
   for (const n of nums) expect(q.text, `${q.id}: the question shows ${n}`).toContain(String(n));
 };
+
+// ── Thalès (4AM unit « خاصية طالس », lesson 1): exact lengths (`kit/exact.js`) ──
+/** A segment named by its two points, in any order (« AM » = « MA »). */
+const seg = (x, y) => [x, y].sort().join('');
+/** « $\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$ » → [[numerator, denominator], …] as segments, or null. */
+const ratiosOf = (option) => {
+  const fr = String(option)
+    .replace(/^\$|\$$/g, '')
+    .split(' = ')
+    .map((p) => p.trim().match(/^\\dfrac\{([A-Z])([A-Z])\}\{([A-Z])([A-Z])\}$/));
+  return fr.some((m) => !m) ? null : fr.map((m) => [seg(m[1], m[2]), seg(m[3], m[4])]);
+};
+/**
+ * The three partner pairs of a Thalès configuration — nested or butterfly, the same pairs: the vertex V, the points
+ * [p, P] on one line through V and [q, Q] on the other, (pq) ∥ (PQ): Vp with VP, Vq with VQ, pq with PQ.
+ */
+const partnersOf = ({ vertex: v, lines: [[p, P], [q, Q]] }) => [
+  [seg(v, p), seg(v, P)],
+  [seg(v, q), seg(v, Q)],
+  [seg(p, q), seg(P, Q)],
+];
+/**
+ * A configuration's lengths, completed: `s` the three lengths of the triangle (vp, vq, pq), `b` their partners (vP,
+ * vQ, PQ), `p` the pieces pP and qQ of a NESTED one (vP = vp + pP), null where unknown. k = s ÷ b from the first pair
+ * known; every pair given must agree with it (a question never gives an impossible figure).
+ */
+function thalesOf(q, c) {
+  const s = [...c.s];
+  const b = [...c.b];
+  const p = [...(c.p ?? [null, null])];
+  expect(c.butterfly && p.some((x) => x != null), `${q.id}: a butterfly has no piece`).toBeFalsy();
+  shows(q, ...[...s, ...b, ...p].filter((x) => x != null));
+  for (const i of [0, 1]) if (b[i] == null && s[i] != null && p[i] != null) b[i] = write(plus(s[i], p[i]));
+  const i0 = [0, 1, 2].find((i) => s[i] != null && b[i] != null);
+  expect(i0, `${q.id}: a pair of partners is known`).toBeDefined();
+  const k = over(s[i0], b[i0]);
+  for (const i of [0, 1, 2])
+    if (s[i] != null && b[i] != null) expect(equal(over(s[i], b[i]), k), `${q.id}: pair ${i}`).toBe(true);
+  for (const i of [0, 1, 2]) {
+    if (s[i] == null && b[i] != null) s[i] = write(times(b[i], k));
+    if (b[i] == null && s[i] != null) b[i] = write(over(s[i], k));
+  }
+  for (const i of [0, 1]) if (p[i] == null && !c.butterfly && b[i] != null) p[i] = write(minus(b[i], s[i]));
+  return { s, b, p, k };
+}
+/** Which of the configuration's lengths a `thales` check asks: « s3 », « b1 », « p2 ». */
+const thalesAsked = (q, c) => {
+  const [, kind, n] = String(c.ask).match(/^([sbp])([123])$/);
+  expect((c[kind] ?? [])[n - 1] ?? null, `${q.id}: the length asked is not given`).toBe(null);
+  return thalesOf(q, c)[kind][n - 1];
+};
+/** The two words a class reads for k: an enlargement when k > 1, a reduction when k < 1. */
+const SCALE_WORDS = { up: 'تكبير', down: 'تصغير' };
 
 // ── square roots (4AM unit 2, lesson 1): exact arithmetic on text numbers (« 7,94 », « -15 »), never a float ──
 /**
@@ -597,6 +651,78 @@ function truth(q) {
         return compare(square(minus(d, half)), c.a) < 0 && compare(c.a, square(minus(d, minus('0', half)))) < 0;
       });
     }
+    // ── Thalès (4AM unit « خاصية طالس », lesson 1): every length exact (kit/exact.js) ──
+    case 'fourth': {
+      // the fourth proportional (3AM): « $\\dfrac{a}{b} = \\dfrac{c}{x}$ » (x = b × c ÷ a) or, `at: 'num'`,
+      // « $\\dfrac{a}{b} = \\dfrac{x}{c}$ » (x = a × c ÷ b), written as such in the question
+      const [a, b, cc] = [c.a, c.b, c.c].map(tex);
+      const f = c.at === 'num' ? `\\dfrac{${a}}{${b}} = \\dfrac{x}{${cc}}` : `\\dfrac{${a}}{${b}} = \\dfrac{${cc}}{x}`;
+      expect(q.text, q.id).toContain(`$${f}$`);
+      return valued(q, c.at === 'num' ? over(times(c.a, c.c), c.b) : over(times(c.b, c.c), c.a), null);
+    }
+    case 'thales':
+      // a length of a Thalès configuration (nested, or `butterfly`), from the lengths the question gives — pieces
+      // included (`p`): the whole side is rebuilt, a piece is the side less the length from the vertex
+      expect(q.text, `${q.id}: the parallel is given`).toContain('\\parallel');
+      return valued(q, read(thalesAsked(q, c)), null);
+    case 'thalesRatios':
+      // choice: the three equal ratios of the configuration `vertex` / `lines` — each ratio a length from the vertex over
+      // its partner (or the parallel side over the parallel side), all three the same way up; the piece, a crossed
+      // partner or one ratio upside down are the traps
+      expect(q.text, `${q.id}: the parallel is given`).toContain('\\parallel');
+      return q.options.map((o) => {
+        const r = ratiosOf(o);
+        expect(r, `${q.id}: « ${o} » is a chain of ratios of segments`).not.toBe(null);
+        const pairs = partnersOf(c);
+        const up = r.every(([n, d]) => pairs.some(([x, y]) => x === n && y === d));
+        const down = r.every(([n, d]) => pairs.some(([x, y]) => x === d && y === n));
+        const all = pairs.every(([x, y]) => r.some(([n, d]) => (n === x && d === y) || (n === y && d === x)));
+        return r.length === 3 && all && (up || down);
+      });
+    case 'scale': {
+      // P3: triangle (2) is triangle (1) × k, k = a side of (2) ÷ its partner in (1) — `from` (1) and `to` (2), null where
+      // unknown, or `k` given (shown as a fraction). Asked: `k`, `back` (from (2) to (1): 1 ÷ k), `kind` (« تكبير » when
+      // k > 1, « تصغير » when k < 1), `perimeter` (of (2)), or `side` (the side `i` of (2) unknown)
+      const from = [...(c.from ?? [])];
+      const to = [...(c.to ?? [])];
+      shows(q, ...[...from, ...to].filter((x) => x != null));
+      let k = null;
+      if (c.k != null) {
+        expect(q.text, q.id).toContain(`$${texGiven(c.k)}$`);
+        k = read(c.k);
+      } else {
+        const i = from.findIndex((x, j) => x != null && to[j] != null);
+        expect(i, `${q.id}: a pair of partners is known`).toBeGreaterThanOrEqual(0);
+        k = over(to[i], from[i]);
+      }
+      from.forEach((x, j) => {
+        if (x != null && to[j] != null) expect(equal(over(to[j], x), k), `${q.id}: pair ${j}`).toBe(true);
+      });
+      if (c.ask === 'kind') {
+        const word = compare(k, '1') > 0 ? SCALE_WORDS.up : SCALE_WORDS.down;
+        expect(equal(k, '1'), `${q.id}: k is not 1`).toBe(false);
+        if (q.kind === 'truefalse') {
+          expect(q.text, q.id).toContain(c.says);
+          return c.says === word;
+        }
+        return q.options.map((o) => o === word);
+      }
+      if (c.ask === 'k') return valued(q, k, null);
+      if (c.ask === 'back') return valued(q, over('1', k), null);
+      if (c.ask === 'side') {
+        expect(to[c.i] ?? null, `${q.id}: the side asked is not given`).toBe(null);
+        return valued(q, times(from[c.i], k), null);
+      }
+      expect(c.ask).toBe('perimeter');
+      return valued(
+        q,
+        times(
+          from.reduce((sum, x) => plus(sum, x), read('0')),
+          k,
+        ),
+        null,
+      );
+    }
     case 'phrase':
       return q.options.map((o, i) => {
         const f = FORMS[c.forms[i]];
@@ -621,6 +747,7 @@ describe('حصّة القسم — the default tests', () => {
     expect(files.map((f) => f.name)).toContain('4am/wadiya-idmajiya-aadad.json'); // lesson 9: أدمج تعلّماتي (2026-11-20)
     expect(files.map((f) => f.name)).toContain('4am/jidhr-tarbii.json'); // unit 2, lesson 1: the square root (2026-11-21)
     expect(files.map((f) => f.name)).toContain('4am/natiqa-ghayr-natiqa.json'); // unit 2, lesson 2: rational or not
+    expect(files.map((f) => f.name)).toContain('4am/talis-hisab-atwal.json'); // unit « خاصية طالس », lesson 1 (2026-11-24)
     // the division road (2026-11-18): two 1AM lessons and the 2AM one, each in its grade's folder
     for (const name of [
       '1am/qisma-iqlidiya-baqi.json',
@@ -801,6 +928,69 @@ describe('حصّة القسم — the default tests', () => {
     expect(rounded('69', '0,1', ['$8{,}3$', '$8{,}4$'])).toEqual([true, false]);
     expect(rounded('69', '0,01', ['$8{,}3$', '$8{,}31$', '$8{,}305$'])).toEqual([false, true, false]);
     expect(() => rounded('49', '0,1', ['$7$'])).toThrow(); // an exact root has nothing to round
+  });
+
+  it('the Thalès checks say the truth (the pairing of the ratios, a piece, the butterfly, the direction of k)', () => {
+    const q = (kind, text, check, options) => ({ id: 't', kind, text, check, options });
+    const par = '$(MN) \\parallel (BC)$';
+    // AM = 4, AB = 10, BC = 15: MN = 6; the piece MB = 6 gives 10 — the right one only
+    expect(
+      truth(q('number', `${par} 4 10 15`, { type: 'thales', s: ['4', null, null], b: ['10', null, '15'], ask: 's3' })),
+    ).toBe(6);
+    expect(
+      truth(
+        q('number', `${par} 4 6 15`, {
+          type: 'thales',
+          s: ['4', null, null],
+          b: [null, null, '15'],
+          p: ['6', null],
+          ask: 's3',
+        }),
+      ),
+    ).toBe(6);
+    // a butterfly: OA = 3, OC = 9, AB = 5 → CD = 15; an impossible figure is refused
+    expect(
+      truth(
+        q('number', `${par} 3 9 5`, {
+          type: 'thales',
+          butterfly: true,
+          s: ['3', null, '5'],
+          b: ['9', null, null],
+          ask: 'b3',
+        }),
+      ),
+    ).toBe(15);
+    expect(() =>
+      truth(q('number', `${par} 4 10 6 16`, { type: 'thales', s: ['4', null, '6'], b: ['10', null, '16'], ask: 's2' })),
+    ).toThrow();
+    const ratios = (options) =>
+      truth(
+        q(
+          'choice',
+          par,
+          {
+            type: 'thalesRatios',
+            vertex: 'A',
+            lines: [
+              ['M', 'B'],
+              ['N', 'C'],
+            ],
+          },
+          options,
+        ),
+      );
+    expect(
+      ratios([
+        '$\\dfrac{AM}{AB} = \\dfrac{AN}{AC} = \\dfrac{MN}{BC}$',
+        '$\\dfrac{AB}{AM} = \\dfrac{CA}{NA} = \\dfrac{BC}{MN}$',
+        '$\\dfrac{AM}{MB} = \\dfrac{AN}{NC} = \\dfrac{MN}{BC}$',
+        '$\\dfrac{AM}{AB} = \\dfrac{AC}{AN} = \\dfrac{MN}{BC}$',
+        '$\\dfrac{AM}{AC} = \\dfrac{AN}{AB} = \\dfrac{MN}{BC}$',
+      ]),
+    ).toEqual([true, true, false, false, false]);
+    const kind = (k) => truth(q('choice', `$${texGiven(k)}$`, { type: 'scale', k, ask: 'kind' }, ['تكبير', 'تصغير']));
+    expect(kind('7/4')).toEqual([true, false]);
+    expect(kind('4/7')).toEqual([false, true]);
   });
 
   for (const { name, data } of files) {
