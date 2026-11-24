@@ -1148,7 +1148,8 @@
   },
   "ex-3": {
    "lesson": "talis-hisab-atwal",
-   "module": 4
+   "module": 4,
+   "notIntegrated": "قرار المالك 2026-11-19: الدرس « talis-hisab-atwal » أُعيد بناؤه من الصفر (v2) بأعداد المنصّة الخاصّة؛ نسخته القديمة التي كانت تستشهد بهذا العنصر حُذفت في 2026-11-24."
   },
   "ex-4": {
    "lesson": "talis-hisab-atwal",

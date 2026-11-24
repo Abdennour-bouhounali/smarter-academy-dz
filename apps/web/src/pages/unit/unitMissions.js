@@ -224,7 +224,7 @@ export const UNIT_MISSIONS = Object.freeze({
   // cinq clés sont les cinq outils de la mission de la synthèse (`mission.tools`).
   'khassiyat-talis': {
     icons: {
-      'talis-hisab-atwal': '🎬',
+      'talis-hisab-atwal': '🪢', // the knotted rope of « الأهرامات » (v2, 2026-11-24; the cinema of its old mission is gone)
       'aksiya-talis': '🖌️',
       'inshaat-talis': '🚩',
       'wadiya-idmajiya-talis': '🧩',

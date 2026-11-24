@@ -57,6 +57,9 @@ describe('the sittings of every v2 lesson, on their real banks — money is « �
   for (const [file, mod] of entries) {
     // a world not wired to its bank yet (`sittings = []`): its bank is read through the same adapter all the same
     const id = file.split('/').at(-3);
+    // a GEOMETRY bank names its segments: « DA » there is a segment (`$CA = CD + DA$`), never money — the money rule
+    // still holds on it (unit 9, lesson 1, the first geometry bank of a v2 lesson, 2026-11-24)
+    const geometry = /\/handasa\//.test(file);
     const sittings = typeof mod.sittings?.prepare === 'function' ? mod.sittings : createBankSittings({ lesson: id });
     it(`${id}: every sheet of every level shows no « DA » of money`, async () => {
       await sittings.prepare();
@@ -70,8 +73,8 @@ describe('the sittings of every v2 lesson, on their real banks — money is « �
           sheets += 1;
           for (const line of shownStrings(sittings, s)) {
             expect(line, `${id}: ${line}`).not.toMatch(MONEY_DA);
-            // these banks are arithmetic: no segment is named DA, so not one « DA » is left at all
-            expect(line, `${id}: ${line}`).not.toMatch(/(?<![A-Za-z])DA(?![A-Za-z])/);
+            // the arithmetic banks name no segment DA, so not one « DA » is left at all
+            if (!geometry) expect(line, `${id}: ${line}`).not.toMatch(/(?<![A-Za-z])DA(?![A-Za-z])/);
           }
         }
       }

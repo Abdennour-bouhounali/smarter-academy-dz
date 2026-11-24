@@ -23,8 +23,8 @@ import { $, Mx, useTick, spreadAll } from './thalesCp';
 import * as L from '../logic/shadowMeet';
 
 /**
- * shadow-meet — « الظلّان يلتقيان » : UN COULOIR, un objet trop haut pour être mesuré, un bâton de 1 m (unité 9 « خاصية طالس », leçon 1
- * `talis-hisab-atwal`, dans le LECTEUR DE MISSION ; conseil du 2026-11-10, verdict L1.1 = C). Le monde `shadow-world` (cinq couloirs, le soleil
+ * shadow-meet — « الظلّان يلتقيان » : UN COULOIR, un objet trop haut pour être mesuré, un bâton de 1 m (unité 9 « خاصية طالس », né pour la leçon 1
+ * dans le LECTEUR DE MISSION — v2 depuis le 2026-11-24 ; la synthèse de l'unité le joue toujours ; conseil du 2026-11-10, verdict L1.1 = C). Le monde `shadow-world` (cinq couloirs, le soleil
  * tenu, la règle écrite, le compagnon) reste le labo de la PAGE et de l'enseignant : celui-ci est NEUF, à un couloir, joué en MANCHES.
  *
  * LES CINQ QUESTIONS (MANIPULATION_CONTRACT §1)
@@ -853,7 +853,7 @@ export function Scene({ geo, lab, step, side, met, solved, reduce, unknown, figu
  *            posé à gauche ; OB, OA et le leurre BA — la قطعة) ; « rule » quand la hauteur est trouvée : choisir la phrase parmi trois.
  *   readEasy « read » seul, sans le bâti.
  *   same     quand toutes les étapes sont résolues (deux heures) : ce qui n'a pas changé — le rapport OB/OA.
- *   readFigure (talis-hisab-atwal, manche 1 — conseil du 2026-11-11) : « read » (lire OB et OA SUR LA PLACE) ; puis la place DEVIENT FIGURE
+ *   readFigure (leçon 1 de l'unité 9, manche 1 — conseil du 2026-11-11) : « read » (lire OB et OA SUR LA PLACE) ; puis la place DEVIENT FIGURE
  *            (`figure`) : désigner les deux droites parallèles parmi (AM), (BE), (OM), (OA) — les chevrons se posent ensuite — et dire POURQUOI
  *            (deux droites perpendiculaires à la même droite (OA), une raison qui vaut sans sol) ; puis « ratio » (bâtir l'égalité) — l'hypothèse
  *            AVANT la conclusion — et « rule » quand la hauteur est trouvée.

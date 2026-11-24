@@ -37,6 +37,10 @@ describe('مدرّب الامتحان — the exam coach of the exercise bank', 
     expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P1'))?.id).toBe('murabba-natiq');
     expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P2'))?.id).toBe('murabba-natiq');
     expect((await loadRule('natiqa-ghayr-natiqa', '4am_natiqa-ghayr-natiqa_P3'))?.id).toBe('la-kasr-yarkab');
+    // unit 9, lesson 1 (2026-11-24): P1 finds the 🔑 sheet, P2 the 📐 one, P3 the 🔍 one
+    expect((await loadRule('talis-hisab-atwal', '4am_talis-hisab-atwal_P1'))?.id).toBe('wadiyat-talis');
+    expect((await loadRule('talis-hisab-atwal', '4am_talis-hisab-atwal_P2'))?.id).toBe('hisab-tul');
+    expect((await loadRule('talis-hisab-atwal', '4am_talis-hisab-atwal_P3'))?.id).toBe('muamil-k');
   });
 
   it('GUIDE mode never contains the answer: no solution line, no result', async () => {

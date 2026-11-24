@@ -1,5 +1,5 @@
 /**
- * shadow-meet — LA LOGIQUE PURE du labo « الظلّان يلتقيان » (unité 9 « خاصية طالس », leçon 1 `talis-hisab-atwal` dans le LECTEUR DE MISSION ;
+ * shadow-meet — LA LOGIQUE PURE du labo « الظلّان يلتقيان » (unité 9 « خاصية طالس », né pour la leçon 1 dans le LECTEUR DE MISSION, v2 depuis le 2026-11-24 ;
  * conseil du 2026-11-10, verdict L1.1 = C : un labo NEUF à UN couloir, bâti sur les fonctions pures de `shadowWorld.js` — le monde
  * `shadow-world` de la page et de l'enseignant n'est pas touché).
  *
@@ -79,7 +79,7 @@ export function stepOf(raw, i = 0) {
 }
 
 /** Les étapes d'un jeu de props : `steps`, ou le raccourci { object, objectName, height, hour, task, ask } (une étape). */
-export function stepsOf(props = {}) {
+function stepsOf(props = {}) {
   const list = Array.isArray(props.steps) && props.steps.length
     ? props.steps
     : [{ object: props.object, objectName: props.objectName, height: props.height ?? '2,75', hour: props.hour ?? '14:00', task: props.task, ask: props.ask }];

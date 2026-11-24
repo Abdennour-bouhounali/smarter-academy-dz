@@ -1097,3 +1097,84 @@ world » (the orchestrator). `check:unreached` ✅ (4,923 files). `check:unused`
 touched files ✅ · `prettier --check` on the pack, `routes.jsx`, `world/`, `board/`, `boardLessons.test.js` ✅.
 `check-textbook-coverage.mjs`: 2 problems before (`prep`, `qcm`), 4 after the deletion, 3 after `ict-sqrt2` (17.1 h).
 NOT run: the whole suite, a build, `check:lessons`, `validate:lessons`, any walk, the API tests.
+
+## 18. Unit 9, lesson 1 — `talis-hisab-atwal` (2026-11-24, branch `feat/thales-pyramids`)
+
+Lesson: 4AM `talis-hisab-atwal` « خاصية طالس وحساب الأطوال » (`…/handasa/khassiyat-talis/talis-hisab-atwal/`), the first
+lesson of a NEW world, `nile-pyramids` « الأهرامات » (`gameworld/nilePyramids/`, plan `PYRAMIDS_WORLD_PLAN.md`). Same job
+and shape as §17. Its new version — `world/` (written by other agents, NOT touched here), `board/`, the class test — was
+not touched. Its pack `lesson.pack.js` was CREATED in this change: `world` (`nile-pyramids`), `phone: false`, `knowledge`
+= `world/knowledge.js › LESSON_KNOWLEDGE`, `coach` P1 `wadiyat-talis` · P2 `hisab-tul` · P3 `muamil-k`
+(`world/evidence.js › POINTS`: 🔑 → P1, 📐 and 🦋 → P2, 🔍 → P3; the 🦋 sheet is reached from the map), `board` script and
+memo. New beside it: the launch family `3am.m2.r03` and the instrument `rope`. The lesson was on the MISSION PLAYER
+(scene `night-cinema`).
+
+### 18.1 Phase 1 — the readers
+
+Rows 1, 3–5, 10–12, 14–15 and 17 of §1 and rows a, b, d of §15.1 hold unchanged. What is specific:
+
+| # | Reader | Reads | Decision |
+|---|---|---|---|
+| a | `lesson.config.js › studentView`, `mission` (scene `night-cinema`, five tools, four checkpoints), `lessonProblem`, `knowledgeMapOpen`, `textbookRef`, the French header | the mission player, `LessonProblemCard`, the old 🧠 provider | **deleted**; the config REWRITTEN: modules 0–8 keep ids, numbers, slugs, stages; titles neutral — 1–4 the four docks (« حقل النيل » P1, « ورشة البنّائين » P2, « عرض النيل » P1 P2, « حجر القمّة » P3), 5 « مسألة الدرس », 6–7 « مسألة 2 / 3 », 8 « التقويم »; `teachingScope` without the textbook; the description names no key; `resources` kept as data (the `shadow-world` titles without the old square) |
+| b | `routes.jsx` (`import.meta.glob('./modules/Module*.jsx')`, `loadKnowledge`) | pages, the 🧠 map | `retiredModules: true`, no `loadKnowledge` |
+| c | `common/mission/MissionScene.jsx › 'night-cinema'` → `NightCinemaScene.jsx`, and `thalesSceneKit.jsx › Projector`, `LightBeam`, `CinemaScreen`, `ChairRows` | this config only | **deleted** (the four pieces had no other reader; the kit's header names the deletion) |
+| d | `modules/` (9 pages), `content/` (`exercises`, `figures`, `forbidden`, `peerSheet`, `prep`, `problems`, `shadows`, `textbook` + `mission.test`, `peerSheet.test`, `prep.test`, `problems.test`, `shadows.test`, `shadowActivity.test`), root `knowledge.jsx`, `knowledgeGraph.js`, `moduleContext.js` | the pages and the old 🧠 map only (`world/` and `board/` import none of them) | **deleted** |
+| e | the labs `shadow-world` and `shadow-meet` (`manipulationRegistry.js`, `ShadowWorld.jsx`, `ShadowMeet.jsx`, `logic/shadowWorld.js`, `logic/shadowMeet.js`, `levels.js`, their tests) | `resources` here; the unit's synthesis `wadiya-idmajiya-talis` MOUNTS both (module 7, `content/rounds.js`) | **kept** — comments that named this lesson reworded (`lessonPack.test.js`); `shadowMeet.js › stepsOf` was exported for the deleted `content/shadows.js` only: `export` removed (`check:unused`) |
+| f | **`wadiya-idmajiya-talis`**: `mission.tools` `hisab-atwal`, `muamil-tanasub` — ids of this lesson's deleted `knowledge.jsx` (`content/mission.test.js › knowledgeOf`) | ids | **re-pointed** to the world keys `hisab-tul`, `muamil-k`; `knowledgeOf` also globs `world/knowledge.js`. Its `content/prep.js › PREP_LESSON.talis`, its `BackLink`s and `textbook.js` name the lesson's HOME: unchanged |
+| g | `_unit/missionStrings.test.js` (imported `content/forbidden.js › CLIMAX_TEXT`; globbed the root knowledge files), `_unit/prepDiagnostic.test.js` (every lesson has an « أستعدّ » page) | files | adapted (18.3); `_unit/prepDiagnostic.jsx`, `_unit/moduleContext.js` **kept** (three lessons still use them) |
+| h | **`check-textbook-coverage.mjs`**: `ex-3` (module 4) and `know-1` (module 2) were cited by the deleted `content/textbook.js` only; the script also failed to IMPORT `content/problems.js` (its `lessonProblem` gone) | coverage | `ex-3`: **`notIntegrated`** with the D11 reason (edited by id in `docs/sources/4am/unit9/extraction.json`). `know-1`: **NOT changed** — `duplicatedIn` `aksiya-talis`, which cites it: stays red (D40) |
+| i | shared code naming the lesson (`lessonPack.test.js` fails once it has a pack): `TextbookExercise.jsx`, `gameworld/kit/bankSitting.js` (comments; the second also named `qisma-iqlidiya-baqi`) | the id | comments reworded |
+| j | `gameworld/kit/bankDisplay.test.js` (globs every `world/sitting.js`; « no segment is named DA ») | the bank | its first GEOMETRY bank names a segment DA (l4-004): the strict line skips `/handasa/` banks, the money rule still holds on them |
+| k | `pages/unit/unitMissions.js` (icon 🎬 of the cinema), `moduleLayoutMigrations.js`, the API's remap migration `2026_10_07_000009_…unit9_talis.php`, compass and calendar data, the learning net, `practice-oracle/talis-hisab-atwal.mjs`, `content/practice`, `content/class-tests` | ids, slugs, the bank | the icon becomes 🪢; the rest unchanged |
+| l | `exportContentRegistry.mjs` (deploy) | page files | **the items of the deleted « إختبار أولي » disappear** — follow-up 49 |
+| m | `docs/reports/knowledge-contracts/4am_talis-hisab-atwal.json` | the audit's stale report | **deleted** |
+| n | e2e walks | pages | 18.4 |
+
+### 18.2 Phase 2 — deleted
+
+| What | Files | Lines |
+|---|---|---|
+| module pages (« أستعدّ », نشاط, معارف, طرائق, أوظّف, three مسائل, « إختبار أولي ») | 9 | 962 |
+| `moduleContext.js`, root `knowledge.jsx`, `knowledgeGraph.js` | 3 | 277 |
+| `content/` (8 files + 6 tests) | 14 | 1,974 |
+| **lesson folder, total** | **26** | **3,213** |
+| mission scene `NightCinemaScene.jsx` | 1 | 58 |
+| four pieces of `thalesSceneKit.jsx` | — | 72 |
+| stale audit report | 1 | 555 |
+| **total** | **28** | **3,898** |
+
+### 18.3 Tests changed
+
+- `features/classSession/boardLessons.test.js`: the lesson joined `BOARD_LESSONS`.
+- `features/practice/exam/examCoach.test.js`: P1, P2, P3 find `wadiyat-talis`, `hisab-tul`, `muamil-k`.
+- `knowledge/finalSynthesis.test.js`: 63 → 62 evaluation modules (unit 9: 4 → 3).
+- `_unit/prepDiagnostic.test.js`: the unit-2 pattern (`isV2` by `retiredModules`).
+- `_unit/missionStrings.test.js`: the scans read `world/knowledge.js`; the lesson's signature is now its final mission's
+  height and shadow (146, 219), with its own controls.
+- `wadiya-idmajiya-talis/content/mission.test.js`: 18.1 f. `bankDisplay.test.js`: 18.1 j.
+- `lessonlab/lab.test.js` (the PGCD lesson's count leaves `rope` out — it comes after), `launchkit.test.js`: the new
+  instrument and family.
+
+### 18.4 Walks (NONE was run)
+
+Opening this lesson's deleted pages: `lesson-kit/4am-khassiyat-talis.mjs`, `lesson-kit/moyen-retrofit-phase1.mjs`,
+`lesson-kit/predict-lesson.mjs` (the module pages, the `shadow-world` lab on `/nashat`). Move on by themselves:
+`no-back-and-forth.mjs`, `mission-opening-align.mjs`. The lesson's own walk: the descriptor
+`e2e/lessons/talis-hisab-atwal.walk.mjs`, not runnable before the world's walk handlers (its header lists them).
+
+### 18.5 Follow-ups NOT done
+
+49. The items of the deleted « إختبار أولي » are retired at the next deploy, as follow-ups 40 and 45.
+50. `check:textbook` red on « know-1 » (shared with `aksiya-talis`) until that lesson is rebuilt.
+51. The three walks of 18.4: drop this lesson from their lists (with 43 and 48).
+52. Stale mentions in documents not of this change: `LESSON_DEVELOPMENT_GUIDE.md` (`'night-cinema'`),
+    `MISSION_ROLLOUT_PROGRESS.md` (unit 9, lesson 1), `MANIPULATION_CONTRACT.md`.
+
+### 18.6 Checks run (one at a time)
+
+Listed in the commit's report: the lesson's unit folder, the synthesis, `lessonPack`, `registry`, the board, coach,
+knowledge, mission, launch-kit, lab and kit tests; `check-unreached.mjs` ✅ (4,963 files); `check-unused.mjs`: 38, of
+which ONE came from this deletion (`shadowMeet.js › stepsOf`, fixed) — the rest are the new world's
+(`gameworld/nilePyramids/*`, the lesson's `world/math.js`) and `lessonScripts.js › ASK_PROOFS`, `kit/exact.js › ratio`,
+`chainHolds`; `check-textbook-coverage.mjs`: 4 problems (« prep », « qcm », « ex-31 » of unit 2, « know-1 »). NOT run:
+the whole suite, a build, `check:lessons`, any walk.

@@ -28,6 +28,8 @@ describe('حصّة القسم — the lessons that have their own board (and no 
     expect(hasClassBoard('jidhr-tarbii')).toBe(true);
     expect(BOARD_LESSONS).toContain('natiqa-ghayr-natiqa'); // unit 2, lesson 2 joined with its script and memo (2026-11-21)
     expect(hasClassBoard('natiqa-ghayr-natiqa')).toBe(true);
+    expect(BOARD_LESSONS).toContain('talis-hisab-atwal'); // unit 9, lesson 1 joined with its script and memo (2026-11-24)
+    expect(hasClassBoard('talis-hisab-atwal')).toBe(true);
     expect(hasClassBoard('muadalat-x-murabba')).toBe(false); // a lesson still on the mission player: no board yet
     expect(hasClassBoard(undefined)).toBe(false);
     const config = LESSON_CONFIG;

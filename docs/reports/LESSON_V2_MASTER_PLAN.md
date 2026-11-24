@@ -657,6 +657,18 @@ and its look (`NAVIGATION_REBUILD_PLAN.md`).
      the board cannot draw a lit stretch or a fraction card; the corrected copy of a sitting is not paged; lessons
      1–7's stories were not re-walked after the world changes of this lesson (one reference is owed).
 
+  26. [~] **4AM unit 9, lesson 1 `talis-hisab-atwal` on the world « الأهرامات » (`nile-pyramids`, branch
+     `feat/thales-pyramids`, 2026-11-24) — wave 2, the pack and the satellites; the old version deleted.** Its
+     `lesson.pack.js` (world, knowledge, coach P1 🔑 · P2 📐 · P3 🔍, board, `phone: false`), its new `lesson.config.js`
+     (modules 1–4 = the four docks and keys, ids and numbers kept), `routes.jsx` with `retiredModules`; the launch family
+     `3am.m2.r03` « النسب في المثلث » (`LAUNCH_KIT.md` §4); the instrument `rope` « الحبل والمثلّث » (`LESSON_LAB.md` §3);
+     the walk DESCRIPTOR `e2e/lessons/talis-hisab-atwal.walk.mjs` — not runnable until the world's walk handlers exist
+     (`worlds/nilePyramids.mjs`, its experiments, `gateRun.mjs`; its header lists them). Old version deleted (module
+     pages, `content/`, root knowledge, the mission scene `night-cinema`): `OLD_VERSION_TRACE_2026-11-18.md` §18.
+     `status:lesson-v2 -- --lesson talis-hisab-atwal` prints ✅ (its « walk » line counts the descriptor, NOT a walk run).
+     OPEN: no walk run, no screenshot looked at; `check:textbook` red on « know-1 » (shared with `aksiya-talis`,
+     defects D40); the world agents' `world/evidence.test.js` still reads its own stand-in config (to point at the new
+     `LESSON_CONFIG`).
   25. [x] **4AM unit 2, lesson 2 `natiqa-ghayr-natiqa` is v2 (2026-11-21)** — three keys built on what is NEW for him
      (design: `ROOTS_WORLD_PLAN.md` §12; the skill's §0ter): a terrace of courts he sorts by trying, a pursuit in
      fractions on the court of 2 (experiment kind `chase`), the middle mark that decides the rounded value. The world

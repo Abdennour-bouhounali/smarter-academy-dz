@@ -1,10 +1,11 @@
 import { describe, it, expect } from 'vitest';
-import { CLIMAX_TEXT as TALIS_1 } from '../talis-hisab-atwal/content/forbidden.js';
 
 /**
  * Unité 9 « خاصية طالس » — ce que l'élève LIT de la mission, de la carte des معارف et des données du manuel (modèle : l'unité 2,
  * hisab-judhur/_unit/missionStrings.test.js ; rollout 2026-11-10). Une leçon CONVERTIE entre dans `CLIMAX` avec la signature de SA مسألة
  * (aksiya-talis, inshaat-talis puis talis-hisab-atwal le 2026-11-10 — les trois leçons de l'unité) :
+ *   A v2 lesson (LESSON_V2.md §2 — talis-hisab-atwal since 2026-11-24) has no root knowledge.jsx / knowledgeGraph.js /
+ *   content/: its only knowledge (sheets and map) is its world's `world/knowledge.js`, scanned here by the same rules;
  *   - aucun caractère de contrôle dans un point d'étape ni dans l'ouverture (« \times » dans une chaîne JS à apostrophes devient TAB + « imes ») ;
  *   - aucune ligne de la carte des معارف (knowledgeGraph.js) ne renvoie au manuel ;
  *   - les cartes de connaissance (knowledge.jsx) et la carte des معارف — ouvertes dès le début (`knowledgeMapOpen`) — ne montrent pas la
@@ -14,8 +15,8 @@ import { CLIMAX_TEXT as TALIS_1 } from '../talis-hisab-atwal/content/forbidden.j
  *     « الكتاب », ni « تمرين N : », ni « خطأً مطبعيًا » (indépendance du manuel) — hors commentaires et métadonnées `src(...)`.
  */
 const configs = import.meta.glob('../*/lesson.config.js', { eager: true });
-const graphs = import.meta.glob('../*/knowledgeGraph.js', { eager: true });
-const raw = import.meta.glob(['../*/knowledge.jsx', '../*/knowledgeGraph.js', '../*/content/textbook.js', '../*/content/exercises.js'], { eager: true, query: '?raw', import: 'default' });
+const graphs = import.meta.glob(['../*/knowledgeGraph.js', '../*/world/knowledge.js'], { eager: true });
+const raw = import.meta.glob(['../*/knowledge.jsx', '../*/knowledgeGraph.js', '../*/world/knowledge.js', '../*/content/textbook.js', '../*/content/exercises.js'], { eager: true, query: '?raw', import: 'default' });
 const CONTROL = /[\t\n\r\f\v\b]/;
 
 /** Le texte d'un fichier sans ses commentaires ni ses métadonnées de source. */
@@ -34,10 +35,8 @@ const strings = (src) => src
  *   10/7, 40/3 et l'écriture décimale 5,7. (3/7 — le leurre MB/AB de la مسألة — n'est PAS dans ce balayage de texte : la طريقة « قطعة طولها
  *   14/3 » écrit la proportion DONNÉE 3/7 = 2/AB, un autre rôle ; dans le labo, le balayage par rôle de content/forbidden.js l'interdit comme
  *   part du tout.)
- *   talis-hisab-atwal (module 5, le ciné-club) : ses nombres sont de PETITS nombres (3, 4, 5, 6, 8, 9, 10, 12) que les données du manuel de la
- *   leçon portent dans d'AUTRES rôles (AC = 4,5 du نشاط, BE = 12, AP = 10…) — sa signature de texte est donc PAR RÔLE (content/forbidden.js ›
- *   CLIMAX_TEXT) : 180, 54, 56, 4,8, 2,4, 5,6, 0,4, la fraction 2/5, et les couples « AB = 10 », « AC = 12 », « BC = 6 », « AB′ = 4 / 4,5 / 5 »,
- *   « AD = 15 », « DE = 9 ». Aucune liste d'exceptions, la مسألة n'est pas retouchée (conseil du 2026-11-10).
+ *   talis-hisab-atwal (v2, 2026-11-24 — the world « الأهرامات »): its final mission « ظلّ الهرم الأكبر » — the height 146 and the
+ *   shadow 219 it is computed from (world/story.js); the old cinema problem and its signature were deleted with the old version.
  */
 const num = (list) => new RegExp(`(^|[^0-9,{}.])(${list.join('|')})(?![0-9]|\\{,\\})`);
 const frac = (n, d) => new RegExp(`frac\\{${n}\\}\\{${d}\\}`);
@@ -45,7 +44,7 @@ const CLIMAX = {
   'aksiya-talis': [num(['80', '100', '24', '30', '36', '44', '45', '46', '2400', '3600', '3680']), frac(3, 10), frac(9, 20), frac(23, 50), /0\{?,\}?(3|45|46)(?![0-9])/],
   'inshaat-talis': [num(['10', '40', '30', '35', '20', '15', '650', '600', '13000', '9000', '22000', '3000']), frac(4, 3), frac(3, 4), frac(4, 7),
     frac(40, 7), frac(30, 7), frac(10, 7), frac(40, 3), /5\{?,\}?7(?![0-9])/],
-  'talis-hisab-atwal': TALIS_1,
+  'talis-hisab-atwal': [num(['146', '219'])],
   // la synthèse (2026-11-10, pilote du recette « synthèse ») : des jetons DISTINCTIFS seulement — le défi 🏆 (module 8) et les réponses de la
   // وضعية de l'unité (module 7). Jamais 2 ou 4 nus (ils toucheraient r^2 ou 1→2→3→4) ; le balayage complet par rôle est
   // wadiya-idmajiya-talis/content/mission.test.js.
@@ -62,8 +61,11 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     // the raw scans really read each converted lesson's knowledge, map, textbook and exercise files
     // (la synthèse n'a pas de content/exercises.js : chaque leçon convertie a au moins ses cartes, sa carte des معارف et ses textes)
     Object.keys(CLIMAX).forEach((id) => {
-      ['knowledge.jsx', 'knowledgeGraph.js', 'content/textbook.js'].forEach((f) => expect(Object.keys(raw).some((path) => path === `../${id}/${f}`), `${id}/${f}`).toBe(true));
+      const files = Object.keys(raw).some((path) => path === `../${id}/world/knowledge.js`) ? ['world/knowledge.js'] : ['knowledge.jsx', 'knowledgeGraph.js', 'content/textbook.js'];
+      files.forEach((f) => expect(Object.keys(raw).some((path) => path === `../${id}/${f}`), `${id}/${f}`).toBe(true));
     });
+    // the v2 lesson of the unit has its world's knowledge only — no old file left beside it
+    expect(Object.keys(raw).filter((path) => path.startsWith('../talis-hisab-atwal/'))).toEqual(['../talis-hisab-atwal/world/knowledge.js']);
     expect(Object.values(raw).every((src) => typeof src === 'string' && src.length > 100)).toBe(true);
   });
   it('the signature regexes catch what they must (negative controls)', () => {
@@ -74,14 +76,14 @@ describe('unit 9 — mission strings and knowledge maps', () => {
     const hit3 = (s) => CLIMAX['inshaat-talis'].some((re) => re.test(s));
     ['طولها 10 cm', '$\\dfrac{MA}{MB} = \\dfrac{4}{3}$', '\\dfrac{4}{7}', '$AN = 40$', '35 m', '$5{,}7$', '\\dfrac{40}{7}', '650'].forEach((s) => expect(hit3(s), s).toBe(true));
     ['$AB = 9$', '\\dfrac{14}{3}', '\\dfrac{2}{3}', '$2{,}4$', '\\sqrt{13}', '\\dfrac{3}{5}', '12 cm', '110', '5,75', '$a^2+b^2$'].forEach((s) => expect(hit3(s), s).toBe(false));
-    // leçon 1 : des jetons PAR RÔLE — le couple « lettre = valeur » de la مسألة, jamais ses petits nombres nus
     // la synthèse : ses jetons distinctifs (défi 🏆 et réponses du module 7), jamais ses petits nombres
     const hitS = (s) => CLIMAX['wadiya-idmajiya-talis'].some((re) => re.test(s));
     ['$64\\pi$', '$10{,}5$ m', '$\\dfrac{14}{2}$', '$12 - h$', '$18r = 72$', '$24r = 108$', '$7{,}25$', '$\\dfrac{18 - h}{18}$', '201{,}06'].forEach((s) => expect(hitS(s), s).toBe(true));
     ['$r^2$', '$1\\to2\\to3\\to4$', '$12{,}5$', '$40r=336$', '$75\\pi$', '$\\dfrac{16-h}{16}$', '$6{,}5$'].forEach((s) => expect(hitS(s), s).toBe(false));
+    // leçon 1 (v2) : the final mission's height and shadow, never a smaller number that contains them
     const hit1 = (s) => CLIMAX['talis-hisab-atwal'].some((re) => re.test(s));
-    ['$AB = 10$', 'AC = 12', "$AB' = 4$", "$AB' = 4{,}5$", '$4{,}8$', '$B\'C\' = 2{,}4$', '5,6', '\\dfrac{2}{5}', '$0{,}4$', '180 كرسيًّا', '54', '$AD = 15$', '$DE = 9$', '$BC = 6$'].forEach((s) => expect(hit1(s), s).toBe(true));
-    ['$AC = 4{,}5$', '$BE = 12$', '$AP = 10$', '$AB = 6$', "$AB' = 3{,}2$", "$AB' = 1{,}6$", '$BC = 6{,}1$', '$2{,}45$', '12,54', '$DN = 2{,}5$', '\\dfrac{1}{3}', '$AB = 5$', '$OE = 1{,}5$', '2,24', '$0{,}45$', '154'].forEach((s) => expect(hit1(s), s).toBe(false));
+    ['$h = 146$', '219 م', '146'].forEach((s) => expect(hit1(s), s).toBe(true));
+    ['1460', '21,9', '$146{,}5$', '2190', '14,6'].forEach((s) => expect(hit1(s), s).toBe(false));
   });
   it('no checkpoint string holds a control character (a lost backslash)', () => {
     Object.entries(configs).forEach(([path, m]) => {

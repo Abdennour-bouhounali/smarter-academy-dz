@@ -51,8 +51,9 @@ export const LESSON_CONFIG = {
     },
     toolsOwned: true,
     tools: [
-      { id: 'hisab-atwal', icon: '📏', label: 'حساب طول بخاصية طالس', usedIn: [1, 2, 4, 5, 6, 7] },
-      { id: 'muamil-tanasub', icon: '🔍', label: 'معامل التناسبية', usedIn: [6] },
+      // the two tools of lesson 1 are its world keys since it became v2 (2026-11-24): 📐 `hisab-tul`, 🔍 `muamil-k`
+      { id: 'hisab-tul', icon: '📏', label: 'حساب طول بخاصية طالس', usedIn: [1, 2, 4, 5, 6, 7] },
+      { id: 'muamil-k', icon: '🔍', label: 'معامل التناسبية', usedIn: [6] },
       { id: 'khassiya-aksiya', icon: '🪜', label: 'الخاصية العكسية: إثبات التوازي', usedIn: [5] },
       { id: 'tariqa-adam-tawazi', icon: '⚖️', label: 'إثبات عدم التوازي', usedIn: [2] },
       { id: 'taqsim-qitaa', icon: '✂️', label: 'تقسيم قطعة إلى قطع متقايسة', usedIn: [3] },

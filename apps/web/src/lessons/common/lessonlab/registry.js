@@ -202,6 +202,21 @@ export const TOOLS = [
     range: { a: [1, 50], b: [1, 12] },
     load: () => import('./tools/FractionPlatform'),
   },
+  {
+    // a triangle of the student's own (the ropes AB = a and AC = b, knotted every metre) and a cut [MN] whose two knots
+    // his hand ties: the two ropes drawn at one length show where each knot stands on its rope, the figure (GeoFigure)
+    // what the cut does. Facts only: it names no key of its lesson, writes no ratio and runs nothing on its own
+    id: 'rope',
+    lesson: 'talis-hisab-atwal',
+    lessonTitle: 'خاصية طالس وحساب الأطوال',
+    icon: '🪢',
+    name: 'الحبل والمثلّث',
+    hint: 'اعقد طرفَي قطعٍ على حبلَي المثلّث: متى يوازي القطعُ الضلعَ الثالث؟',
+    needs: 'ab',
+    labels: { a: 'الحبل AB', b: 'الحبل AC' },
+    range: { a: [2, 30], b: [2, 30] },
+    load: () => import('./tools/RopeTriangle'),
+  },
 ];
 
 export const toolById = (id) => TOOLS.find((t) => t.id === id) ?? null;

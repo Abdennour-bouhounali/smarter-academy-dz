@@ -19,6 +19,8 @@ import {
 } from './families';
 // the lesson's world, read to keep its squares off the kit of « حساب قوة عدد نسبي » (a test may name a lesson)
 import { COURTS, YARD } from '../../moyen/4am/ansab_al_aadad_wal_hisab/hisab-judhur/jidhr-tarbii/world/story';
+// the figures of « الأهرامات », read to keep them off the kit of « النسب في المثلث » (a test may name a lesson)
+import { NUMBERS, FIGURES } from '../../moyen/4am/handasa/khassiyat-talis/talis-hisab-atwal/world/math';
 import {
   planTools,
   nextStep,
@@ -77,7 +79,15 @@ const powerTrue = (text) => {
   const [vn, vd] = ratApart(m[3]);
   return pn * vd === vn * pd;
 };
+/** The length « AC » or « MN » of a triangle cut by a parallel, found by trying every whole number (AM/AB = AN/AC = MN/BC). */
+const triApart = (T, ask) => {
+  for (let v = 1; v <= 999; v += 1) if (ask === 'AC' ? T.AM * v === T.AB * T.AN : T.AB * v === T.AM * T.BC) return v;
+  return NaN;
+};
 const accepts = (q, c) => {
+  // « AC = v », « MN = v » (3am.m2.r03): the length of the question's triangle, computed here
+  const tri = String(c.text).match(/^\$(AC|MN) = (\d+)\$$/);
+  if (q.tri && tri) return triApart(q.tri, tri[1]) === Number(tri[2]);
   if (powerTrue(c.text) !== null) return powerTrue(c.text); // « 3am.m3.r06 »: a power and its value
   // « n/d = x/y » (1am.m5.r02): two fractions of the same value, judged by the cross products computed here
   const fr = String(c.text).match(/^\$\\frac\{(\d+)\}\{(\d+)\} = \\frac\{(\d+)\}\{(\d+)\}\$/);
@@ -109,6 +119,7 @@ const calcApart = (c) => {
   const { op, x, y, z } = c;
   if (op === 'pow') return powApart(c);
   if (op === 'frac') return termApart(c);
+  if (op === 'fourth') return termApart({ n: c.a, d: c.b, m: c.c, side: 'bottom' }); // a/b = c/▢
   return op === 'pgcd' ? pgcdApart(x, y) : op === 'times' ? x * y : op === 'minus' ? x - y : x * y + z;
 };
 const right = (q) =>
@@ -193,6 +204,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       if (f.item === '4am.m1.r03') return; // a PGCD, not a division: its own ranges, checked below
       if (f.item === '1am.m5.r02') return; // a fraction, not a division: its own ranges, checked below
       if (f.item === '3am.m3.r06') return; // a power, not a division: its own ranges, checked below
+      if (f.item === '3am.m2.r03') return; // a triangle, not a division: its own ranges, checked below
       if (q.gesture === 'write' && level === 1) {
         expect(q.b).toBeLessThanOrEqual(9);
         expect(Math.floor(q.a / q.b)).toBeLessThanOrEqual(9);
@@ -854,6 +866,150 @@ describe('عُدّة الانطلاق — the question families', () => {
     expect(FAMILIES[item].labTool).toBe(null); // no instrument of 3AM exists in « مختبري »
   });
 
+  it('« النسب في المثلث » (3am.m2.r03): every length computed apart, whole, its slips named, no figure and no word of the lesson', () => {
+    const item = '3am.m2.r03';
+    // every figure of « الأهرامات » (its cases and its practice figures): two of its numbers from 10 up never stand
+    // together in a question of the kit
+    const groups = [];
+    const walk = (o) => {
+      if (!o || typeof o !== 'object') return;
+      const nums = Object.values(o)
+        .filter((v) => typeof v === 'string' && /^\d+$/.test(v))
+        .map(Number)
+        .filter((x) => x >= 10);
+      if (nums.length >= 2) groups.push(nums);
+      Object.values(o).forEach(walk);
+    };
+    walk(NUMBERS);
+    walk(FIGURES);
+    expect(groups.length).toBeGreaterThanOrEqual(25);
+    const together = (xs) => {
+      const big = [...new Set(xs.filter((x) => x >= 10))];
+      return groups.find((g) => big.filter((x) => g.includes(x)).length >= 2) ?? null;
+    };
+    const seen = new Set();
+    const asked = new Set();
+    for (let seed = 1; seed <= 300; seed += 1) {
+      for (const [level, form] of [
+        [1, 'fourth'],
+        [1, 'triangle'],
+        [2, 'side'],
+      ]) {
+        const w = makeQuestion(rng(seed * 104729 + level), item, level, form, { first: seed % 5 === 0 });
+        const c = w.calc;
+        expect(c.op).toBe('fourth');
+        const v = calcApart(c);
+        expect(Number.isInteger(v) && v > 0, JSON.stringify(c)).toBe(true); // a whole length: the keypad has no comma
+        expect(String(v).length).toBeLessThanOrEqual(3);
+        expect(slotsOf(w.tokens).map((t) => t.slot)).toEqual(['v']);
+        expect(grade(w, { v: String(v) })).toEqual({ correct: true, mistake: null });
+        // the difference added instead of a product, and a fraction turned upside down, are named
+        const add = c.c + (c.b - c.a);
+        if (add !== v && add > 0)
+          expect(grade(w, { v: String(add) })).toEqual({ correct: false, mistake: 'add-not-times' });
+        if ((c.a * c.c) % c.b === 0 && (c.a * c.c) / c.b !== v && (c.a * c.c) / c.b !== add)
+          expect(grade(w, { v: String((c.a * c.c) / c.b) })).toEqual({ correct: false, mistake: 'ratio-flipped' });
+        expect(grade(w, { v: String(v + 1) }).correct).toBe(false);
+        expect(together([c.a, c.b, c.c, v]), JSON.stringify(c)).toBe(null);
+        if (form === 'fourth') {
+          expect(w.tokens[0]).toEqual({ frac: [String(c.a), String(c.b)] });
+          expect(w.prompt).not.toMatch(/\$/);
+          if (seed % 5 === 0) expect(c.b).toBeLessThanOrEqual(8); // the very first question: a near-certain win
+        } else {
+          asked.add(w.tokens[0]);
+          expect(w.tokens.at(-1)).toBe('cm'); // a length typed with its printed unit
+          expect(w.prompt).toContain('\\parallel'); // the parallel is given, never to be guessed
+          if (level === 1) expect(Math.max(c.b, v)).toBeLessThanOrEqual(30);
+        }
+      }
+      // the sort: three claims about ONE triangle, each judged here from the triangle of the question
+      const s = makeQuestion(rng(seed * 7919 + 2), item, 2, 'sort');
+      expect(s.cards).toHaveLength(3);
+      expect(new Set(s.cards.map((k) => k.text)).size).toBe(3);
+      expect(s.cards.some((k) => k.bin === 'yes') && s.cards.some((k) => k.bin === 'no')).toBe(true);
+      expect(together([...Object.values(s.tri), ...s.cards.map((k) => k.v)]), JSON.stringify(s.tri)).toBe(null);
+      expect(Math.max(s.tri.AB, s.tri.AC, s.tri.BC)).toBeGreaterThanOrEqual(13);
+      for (const k of s.cards) {
+        expect(k.bin, k.text).toBe(accepts(s, k) ? 'yes' : 'no');
+        if (k.bin === 'yes') expect(k.trap).toBe(null);
+        else {
+          expect(MISTAKES[k.trap], k.text).toBeTruthy();
+          expect(grade(s, { ...right(s), [k.id]: 'yes' })).toEqual({ correct: false, mistake: k.trap });
+          seen.add(k.trap);
+        }
+      }
+    }
+    expect([...seen].sort()).toEqual(['add-not-times', 'ratio-flipped']);
+    expect([...asked].sort()).toEqual(['AC', 'MN']);
+    // every equality with numbers only that the worked examples, the rules and the memo write is TRUE
+    const value = (t) =>
+      // eslint-disable-next-line no-new-func
+      Function(
+        `return ${t
+          .replace(/\\frac\{([^{}]+)\}\{([^{}]+)\}/g, '(($1)/($2))')
+          .replace(/\\times/g, '*')
+          .replace(/\\div/g, '/')};`,
+      )();
+    const checkTexts = (texts) => {
+      let n = 0;
+      for (const t of texts)
+        for (const [, f] of t.matchAll(/\$([^$]+)\$/g)) {
+          if (!f.includes('=') || /[A-Za-z]/.test(f.replace(/\\(frac|times|div)/g, ''))) continue;
+          const sides = f.split('=').map(value);
+          for (const x of sides) expect(Math.abs(x - sides[0]) < 1e-9, f).toBe(true);
+          n += 1;
+        }
+      return n;
+    };
+    for (let seed = 1; seed <= 80; seed += 1)
+      for (const level of [1, 2])
+        for (const mistake of [null, ...FAMILIES[item].mistakes]) {
+          const e = FAMILIES[item].example(rng(seed), level, { mistake });
+          expect(e.steps.length).toBeGreaterThanOrEqual(4);
+          checkTexts(e.steps);
+          expect(`${e.title} ${e.steps.join(' ')}`).not.toMatch(/undefined|NaN/);
+          // the last step: the length, computed apart from the two fractions of step 2
+          const [, am, ab, an] = e.steps[1].match(/\\frac\{(\d+)\}\{(\d+)\} = \\frac\{(\d+)\}\{AC\}/).map(Number);
+          expect(e.steps.at(-1)).toContain(`= ${triApart({ AM: am, AB: ab, AN: an }, 'AC')}$`);
+        }
+    for (const r of FAMILIES[item].rules) {
+      // « m / w = t / v »: the part over the whole, a part over its unknown whole (keys apart from the division cards' a, b, q, r)
+      expect(r.check.m * r.check.v).toBe(r.check.w * r.check.t);
+      expect(r.example).toContain(`= ${r.check.v}$`);
+    }
+    for (const m of FAMILIES[item].mistakes) expect(MISTAKES[m], m).toBeTruthy();
+    // the kit is played BEFORE « خاصية طالس وحساب الأطوال »: never the names of its keys (the configuration, the
+    // butterfly, k, enlargement, reduction), never a point beyond the vertex, never a word of its world
+    const examples = Array.from({ length: 20 }, (_, i) =>
+      [null, ...FAMILIES[item].mistakes].map((m) =>
+        JSON.stringify(FAMILIES[item].example(rng(i + 1), 1 + (i % 2), { mistake: m })),
+      ),
+    ).flat();
+    const prompts = Array.from({ length: 40 }, (_, i) =>
+      ['fourth', 'triangle', 'sort', 'side'].map((form, j) =>
+        JSON.stringify(makeQuestion(rng(i * 31 + j + 1), item, j < 2 ? 1 : 2, form)),
+      ),
+    ).flat();
+    const all = [
+      JSON.stringify({ ...FAMILIES[item], make: null, example: null }),
+      ...FAMILIES[item].mistakes.map((m) => MISTAKES[m]),
+      ...examples,
+      ...prompts,
+    ].join(' ');
+    expect(all).not.toMatch(/طالس|فراش|معامل|تكبير|تصغير|وضعية|امتداد|الجهة الأخرى|حبل|عقد|نيل|هرم|مرسى|قناة|\bk\b/);
+    expect(['🔑', '📐', '🦋', '🔍']).not.toContain(FAMILIES[item].icon);
+    expect(FAMILIES[item].labTool).toBe(null); // its 3AM lesson is not built: no instrument of it in « مختبري »
+  });
+
+  it('takes the tools of « خاصية طالس وحساب الأطوال » from the learning net: the triangle of 3AM, its one core tool with a family', () => {
+    const links = toolsForLesson('talis-hisab-atwal');
+    const tools = planTools(links, (id) => Boolean(familyFor(id)));
+    expect(tools.map((t) => [t.item, t.lesson.code, t.weight])).toEqual([
+      ['3am.m2.r03', 'tanasub-atwal-muthallath', 'core'],
+    ]);
+    for (const t of links.filter((l) => l.weight !== 'support')) expect(familyFor(t.id), t.id).toBeTruthy();
+  });
+
   it('takes the tool of « الجذر التربيعي لعدد موجب » from the learning net: the powers of 3AM, its one core tool', () => {
     const links = toolsForLesson('jidhr-tarbii');
     const tools = planTools(links, (id) => Boolean(familyFor(id)));
@@ -1005,6 +1161,7 @@ describe('عُدّة الانطلاق — the question families', () => {
       '4am.m1.r03': ['sort', 'write'],
       '1am.m5.r02': ['sort', 'write'],
       '3am.m3.r06': ['sort', 'write'],
+      '3am.m2.r03': ['sort', 'side'],
     });
     for (const item of Object.keys(FAMILIES)) {
       expect(order(item, 1), item).toEqual(FAMILIES[item].forms[1]); // level 1 is never reordered

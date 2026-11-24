@@ -59,7 +59,7 @@ export const MANIPULATION_COMPONENTS = {
   'segment-divider': lazy(() => import('./geometry/SegmentDivider')),
   'shadow-stick': lazy(() => import('./geometry/ShadowStick')),
   'shadow-world': lazy(() => import('./geometry/ShadowWorld')),
-  // Le labo à UN couloir du lecteur de mission (leçon talis-hisab-atwal, 2026-11-10) : `shadow-world` reste celui de la page et de l'enseignant.
+  // Le labo à UN couloir du lecteur de mission (leçon 1 de l'unité 9, 2026-11-10 ; cette leçon est v2 depuis le 2026-11-24, la synthèse de l'unité le garde) : `shadow-world` reste celui de la page et de l'enseignant.
   'shadow-meet': lazy(() => import('./geometry/ShadowMeet')),
   'cone-cylinder': lazy(() => import('./geometry/ConeCylinder')),
   // Unité 10 « حساب المثلثات في المثلث القائم » (2026-10-04).

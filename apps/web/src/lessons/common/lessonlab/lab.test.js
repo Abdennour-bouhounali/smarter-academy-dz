@@ -25,6 +25,7 @@ import {
   courtSettled,
   pieceOf,
   closerPiece,
+  ropeOf,
   decText,
   hundredths,
   QUESTS,
@@ -95,8 +96,8 @@ describe('مختبري — the instruments a lesson may show', () => {
       'qasim-mushtarak-akbar',
       'tayin-pgcd',
     ]);
-    // the instruments of lessons 7 and 8 come after it
-    expect(lab.all.length).toBe(TOOLS.filter((t) => !['duo', 'strip', 'court', 'piece'].includes(t.id)).length);
+    // the instruments of lessons 7 and 8, of unit 2 and of unit 9 come after it
+    expect(lab.all.length).toBe(TOOLS.filter((t) => !['duo', 'strip', 'court', 'piece', 'rope'].includes(t.id)).length);
   });
 
   it('« تعيين القاسم المشترك الأكبر »: its own instrument (the two lists BUILT), lesson 4’s beside it in the cabinet', () => {
@@ -531,6 +532,48 @@ describe('مختبري — the mathematics the instruments draw', () => {
     expect(src).not.toMatch(/<img|\.png|\.jpg/);
   });
 
+  it('« خاصية طالس وحساب الأطوال »: its own instrument, never before the lesson, naming no key of it', () => {
+    const lab = toolsFor('talis-hisab-atwal');
+    expect(lab.mine.map((t) => t.id)).toEqual(['rope']);
+    expect(toolsFor('natiqa-ghayr-natiqa').all.map((t) => t.id)).not.toContain('rope');
+    expect(toolsFor('aksiya-talis').all.map((t) => t.id)).toContain('rope'); // lesson 2 finds it in the cabinet
+    const before = toolsFor('talis-hisab-atwal', { earlierOnly: true });
+    expect(before.all.map((t) => t.id)).not.toContain('rope'); // the launch kit's lab: the cabinet only
+    const tile = TOOLS.find((t) => t.id === 'rope');
+    expect(tile.needs).toBe('ab');
+    expect(tile.range).toEqual({ a: [2, 30], b: [2, 30] });
+    // the words of the lesson's four keys never stand on the tile, its quests or the instrument's own strings — nor a
+    // ratio written, nor a verdict of error. The lab may open before the keys (LESSON_LAB.md §2): it states facts only
+    const src = readFileSync(new URL('./tools/RopeTriangle.jsx', import.meta.url), 'utf8');
+    const said = [tile.name, tile.hint, ...QUESTS.rope.map((q) => q.text), src].join(' ');
+    expect(said).not.toMatch(/طالس|فراش|معامل|تناسب|تكبير|تصغير|نسب|\\frac|\\dfrac|خطأ|خاطئ|غلط/);
+    expect(src).toMatch(/import GeoFigure from '\.\.\/\.\.\/components\/GeoFigure'/); // drawn by the shared figure
+    expect(src).not.toMatch(/<img|\.png|\.jpg/);
+  });
+
+  it('« الحبل والمثلّث »: the two knots stand on one line exactly when the cut is parallel — for every triangle it can show', () => {
+    let aligned = 0;
+    for (let a = 2; a <= 30; a += 1)
+      for (let b = 2; b <= 30; b += 1) {
+        let here = 0;
+        for (let m = 1; m < a; m += 1)
+          for (let n = 1; n < b; n += 1) {
+            const R = ropeOf(a, b, m, n);
+            expect([R.am, R.mb, R.an, R.nc]).toEqual([m, a - m, n, b - n]);
+            // the same place along the two ropes: m/a = n/b, compared as fractions — never as floats
+            expect(R.aligned).toBe(m * b === n * a);
+            if (R.aligned) here += 1;
+          }
+        // a parallel cut on whole knots exists exactly when the two ropes share a divisor bigger than 1 — then PGCD − 1 of them
+        expect(here).toBe(gcd(a, b) - 1);
+        aligned += here;
+      }
+    expect(aligned).toBeGreaterThan(500);
+    expect(ropeOf(12, 9, 8, 6).aligned).toBe(true);
+    expect(ropeOf(12, 9, 4, 8).aligned).toBe(false);
+    expect(ropeOf(13, 7, 6, 3).aligned).toBe(false); // nothing shared: no knot of AC answers a knot of AB
+  });
+
   it('pairs every divisor with its partner', () => {
     expect(divisorPairs(36)).toEqual([
       [1, 36],
@@ -606,6 +649,18 @@ describe('مختبري — « جرّب »', () => {
     expect(observe('piece', { a: 2, b: 12, p: 17, moved: true }, new Set())).toEqual(['one', 'close']); // 1/144
     expect(observe('piece', { a: 3, b: 11, p: 19, moved: true }, new Set())).toEqual([]); // 361 − 363: 2/121
     expect(observe('piece', { a: 3, b: 12, p: 21, moved: true }, new Set())).toEqual([]); // 441 − 432: 9/144
+    expect(observe('rope', { a: 12, b: 9, m: 8, n: 6 }, new Set())).toEqual([]); // the hand never moved a knot
+    expect(observe('rope', { a: 12, b: 9, m: 4, n: 8, moved: true }, new Set())).toEqual([]); // not parallel
+    expect(observe('rope', { a: 12, b: 9, m: 8, n: 6, moved: true, found: [8] }, new Set())).toEqual(['align']);
+    expect(observe('rope', { a: 12, b: 9, m: 4, n: 3, moved: true, found: [8, 4] }, new Set())).toEqual([
+      'align',
+      'two',
+    ]);
+    expect(observe('rope', { a: 10, b: 10, m: 3, n: 3, moved: true, found: [3] }, new Set())).toEqual([]); // two equal ropes
+    expect(observe('rope', { a: 24, b: 22, m: 12, n: 11, moved: true, found: [12] }, new Set())).toEqual([
+      'align',
+      'big',
+    ]);
     expect(observe('court', { a: 399, b: 1, s: 20, moved: true, tried: [19, 20] }, new Set())).toEqual([
       'bracket',
       'most',
@@ -661,6 +716,7 @@ describe('مختبري — the sounds', () => {
       'Strip',
       'NumberCourt',
       'FractionPlatform',
+      'RopeTriangle',
     ].map((n) => `./tools/${n}.jsx`),
   ];
   /** Every sound name written in the lab's code: play('x'…), useChime(play, 'x'…), and the two names of a « a ? 'x' : 'y' ». */

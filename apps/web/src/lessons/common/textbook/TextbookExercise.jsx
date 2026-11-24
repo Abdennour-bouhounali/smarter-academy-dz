@@ -72,7 +72,7 @@ export default function TextbookExercise({ exercise, solved = false, onAnswered,
   const q = ex.question ?? {};
   // lecteur : la carte (énoncé, sous-questions, question) est UN écran — sauf une grille de lignes (`batch`, `trueFalse`) : ses lignes forment
   // déjà un bloc, et le découpage range la figure qui la précède À CÔTÉ de l'énoncé et des lignes (`pairFigures`) ; gardée entière, la carte
-  // de « أربعة أشكال » (talis-hisab-atwal) descendait sous le zoom minimum
+  // de « أربعة أشكال » (leçon 1 de l'unité 9) descendait sous le zoom minimum
   // (une grille qui porte un `context` ou des `items` reste entière : sans figure avant elle, l'énoncé partirait seul sur son écran)
   const rowsGrid = ['batch', 'trueFalse'].includes(ex.interaction) && !ex.context && !ex.items;
   const keepWhole = inPlayer && Boolean(ex.statement || ex.context || ex.items || ex.figure) && !rowsGrid;

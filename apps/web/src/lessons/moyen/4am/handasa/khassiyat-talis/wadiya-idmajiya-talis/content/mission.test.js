@@ -11,7 +11,8 @@ import * as CC from '../../../../../../common/manipulations/logic/coneCylinder.j
 import * as SM from '../../../../../../common/manipulations/logic/shadowMeet.js';
 import { emptyLog, logEvent, roundWon, starsFor, easierProps } from '../../../../../../common/manipulations/rounds/roundsModel.js';
 
-const knowledgeOf = import.meta.glob('../../*/knowledge.jsx', { eager: true });
+// a sibling's knowledge: its root knowledge.jsx, or — a v2 lesson (LESSON_V2.md §2, lesson 1 since 2026-11-24) — its world's
+const knowledgeOf = import.meta.glob(['../../*/knowledge.jsx', '../../*/world/knowledge.js'], { eager: true });
 
 /**
  * La synthèse de l'unité 9 dans le lecteur de mission (pilote du recette « synthèse », 2026-11-10) — LE BALAYAGE PAR RÔLE, écrit AVANT la

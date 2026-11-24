@@ -71,6 +71,8 @@ export const MISTAKES = {
   'odd-sign': 'انتبه: جداء ثلاثة أعداد سالبة سالب — الأُسّ الفردي يُبقي الإشارة.',
   'decimal-places': 'انتبه: في جداء عددين عشريين، عدد الأرقام بعد الفاصلة هو مجموع أرقامهما بعد الفاصلة.',
   'fraction-one-term': 'انتبه: في مربّع كسر نضرب البسط في نفسه والمقام في نفسه — كليهما.',
+  'add-not-times': 'انتبه: الأطوال متناسبة — نضربها في العدد نفسه، ولا نضيف إليها الفرق نفسه.',
+  'ratio-flipped': 'انتبه: اكتب الكسرين في الترتيب نفسه، ثمّ استعمل الجداء المتصالب — لا تقلب أحدهما.',
 };
 
 // ───────────────────────── 1am.m1.r01 — الجمع والطرح والضرب ─────────────────────────
@@ -87,6 +89,8 @@ const CALC = {
   frac: (c) => (c.side === 'bottom' ? (c.d * c.m) / c.n : (c.n * c.m) / c.d),
   // « 3am.m3.r06 »: xᵉ = ▢ for a whole base (a fraction base is judged by `gradePower`, term by term)
   pow: (c) => c.x ** c.e,
+  // « 3am.m2.r03 »: a/b = c/▢ — the fourth proportional, the term v with a × v = b × c
+  fourth: (c) => (c.b * c.c) / c.a,
 };
 const calcValue = (c) => CALC[c.op](c);
 /** The difference written digit by digit, the small digit taken from the big one (the borrow forgotten). */
@@ -281,6 +285,7 @@ function gradeCalc(q, answer) {
   if (!Number.isFinite(v)) return { correct: false, mistake: null };
   if (c.op === 'pgcd') return { correct: false, mistake: pgcdSlip(c.x, c.y, v) };
   if (c.op === 'frac') return { correct: false, mistake: fracSlip(c, v) };
+  if (c.op === 'fourth') return { correct: false, mistake: fourthSlip(c, v) };
   const p = c.x * c.y;
   const slip = (w) => [c.x * (c.y - 1), c.x * (c.y + 1), (c.x - 1) * c.y, (c.x + 1) * c.y].includes(w) && w !== p;
   if (c.op === 'times') return { correct: false, mistake: slip(v) ? 'table-slip' : null };
@@ -1431,6 +1436,181 @@ function powerExample(rand, level, { mistake = null } = {}) {
   };
 }
 
+// ───────────────────────── 3am.m2.r03 — النسب في المثلث (and the fourth proportional of 3am.m1.r08) ─────────────────────────
+// What « خاصية طالس وحساب الأطوال » stands on (PYRAMIDS_WORLD_PLAN.md §3.1): in a triangle ABC cut by (MN) ∥ (BC), M on
+// [AB] and N on [AC] — the NESTED position of 3AM only —, the lengths of AMN are proportional to those of ABC; and the
+// fourth proportional found by the cross product. Every length is a whole number of centimetres: the triangles are
+// similar by p/q (p < q, nothing shared), AM = p·s, AB = q·s, AN = p·t, AC = q·t, MN = p·w, BC = q·w. Nothing here names
+// the lesson's keys (the configuration, a butterfly, k, an enlargement), nor writes a word of its world.
+/**
+ * The figures of the lesson's world « الأهرامات » (its story's cases, `world/math.js › NUMBERS`, its practice figures
+ * `FIGURES`, and the plan's groups, PYRAMIDS_WORLD_PLAN.md §3.8), their lengths from 10 up, one figure a line: a
+ * triangle of the kit never shows TWO numbers that stand together in one of them — a figure met first in the lesson is
+ * not one the kit has just shown. `launchkit.test.js` reads the lesson's files and checks every pair.
+ */
+const TRI_AVOID = [
+  '63 72 81 14 16 18 49 56',
+  '63 72 81 39 28 41 24 44',
+  '19 38 16 32',
+  '48 66 56 77 64 88',
+  '42 54 56 72 63 81 12 16',
+  '45 10 66 77 55 54 63 12',
+  '35 50 49 70 63 90',
+  '35 60 49 64 63 92',
+  '24 54 32 72 40 90',
+  '18 48 21 88 56 33',
+  '20 40 55 24 48 66 115 138',
+  '68 92 42 57',
+  '104 115 219 146 73 177 292 584',
+  '90 99 10 80 88 20 70 77 55 50 40 11 89 36 279 3564',
+  '72 52 416 133',
+  '35 42 55 66 65 78',
+  '18 21 66 77 78 91',
+  '16 36 28 63 40 90',
+  '42 48 77 88 84 96',
+  '65 78 70 84 80 96',
+  '21 33 39',
+  '20 32 35 56 45 72',
+  '48 56 78 91 84 98',
+  '65 78 75 90 15 18',
+  '32 44 20',
+  '48 64 42 56',
+  '63 77 54 66',
+  '78 96 65 80',
+  '36 90 16 40',
+].map((line) => line.split(' ').map(Number));
+const triPairKey = (x, y) => (x < y ? `${x};${y}` : `${y};${x}`);
+const TRI_PAIRS = new Set(TRI_AVOID.flatMap((g) => g.flatMap((x, i) => g.slice(i + 1).map((y) => triPairKey(x, y)))));
+/** Do the numbers shown hold no pair of a figure of the world (numbers below 10 stand in every sheet: never a pair)? */
+const triFree = (xs) => {
+  const big = [...new Set(xs.filter((x) => x >= 10))];
+  return big.every((x, i) => big.slice(i + 1).every((y) => !TRI_PAIRS.has(triPairKey(x, y))));
+};
+/** Where a level draws its triangle: the ratio's denominator q, the multipliers s, t, w and the longest side. */
+const TRI_FROM = {
+  first: { q: [2, 2], m: [1, 4], top: 8 },
+  1: { q: [2, 5], m: [1, 4], top: 30 },
+  2: { q: [2, 6], m: [2, 9], top: 60 },
+};
+const TRI_CACHE = {};
+/** Every triangle a level may show, filtered once: s ≠ t ≠ w (the additive slip never equals the truth), a true triangle. */
+function triPool(level) {
+  if (TRI_CACHE[level]) return TRI_CACHE[level];
+  const R = TRI_FROM[level];
+  const list = [];
+  for (let q = R.q[0]; q <= R.q[1]; q += 1)
+    for (let p = 1; p < q; p += 1) {
+      if (gcdOf(p, q) !== 1) continue;
+      for (let s = R.m[0]; s <= R.m[1]; s += 1)
+        for (let t = R.m[0]; t <= R.m[1]; t += 1)
+          for (let w = R.m[0]; w <= R.m[1]; w += 1) {
+            if (s === t || s === w || t === w || s + t <= w || s + w <= t || t + w <= s) continue;
+            const T = { AM: p * s, AB: q * s, AN: p * t, AC: q * t, MN: p * w, BC: q * w };
+            if (Math.max(T.AB, T.AC, T.BC) > R.top) continue;
+            // level 2 writes two-digit lengths; the additive slips stay positive and apart from the truth
+            if (level === 2 && Math.max(T.AB, T.AC, T.BC) < 13) continue;
+            if (T.BC - (T.AB - T.AM) <= 0) continue;
+            // every number a question of the level may show: the six lengths and, at level 2, the slips of the sort
+            const slips = level === 2 ? [T.AN + (T.AB - T.AM), T.BC - (T.AB - T.AM), (T.AB * T.BC) / T.AM] : [];
+            if (!triFree([...Object.values(T), ...slips])) continue;
+            list.push(T);
+          }
+    }
+  TRI_CACHE[level] = list;
+  return list;
+}
+const triangleOf = (rand, level, first = false) => pick(rand, triPool(first ? 'first' : level));
+const triData = (T, keys) => keys.map((k) => `$${k} = ${T[k]}$`).join(' ، ');
+const TRI_INTRO =
+  'في المثلث $ABC$ ، النقطة $M$ من $[AB]$ والنقطة $N$ من $[AC]$ ، و $(MN) \\parallel (BC)$ . الأطوال بالسنتيمتر:';
+/** The slip an answer v to « a/b = c/▢ » shows: the difference added (additive), or one fraction turned upside down. */
+function fourthSlip(c, v) {
+  if (v === c.c + (c.b - c.a)) return 'add-not-times';
+  if (v * c.b === c.a * c.c) return 'ratio-flipped';
+  return null;
+}
+const cmBox = (v) => S('v', 'الطول', String(v).length);
+
+/** « a/b = c/▢ » (level 1): the fourth proportional, two real fraction bars. */
+function fourthWrite(rand, level, first) {
+  const T = triangleOf(rand, 1, first);
+  const c = { op: 'fourth', a: T.AM, b: T.AB, c: T.AN };
+  return {
+    gesture: 'write',
+    calc: c,
+    prompt: 'أكمل لتكون المساواة صحيحة.',
+    tokens: [{ frac: [String(c.a), String(c.b)] }, '=', { frac: [String(c.c), S('v', 'المقام', String(T.AC).length)] }],
+  };
+}
+
+/** A length of the triangle from three others: AC (level 1, from AM, AB, AN) or MN (level 2, from AM, AB, BC). */
+function triWrite(rand, level, first) {
+  const T = triangleOf(rand, level, first);
+  const ask = level === 1 ? 'AC' : 'MN';
+  // AM/AB = AN/AC → AM × AC = AB × AN; AB/AM = BC/MN → AB × MN = AM × BC
+  const c = ask === 'AC' ? { op: 'fourth', a: T.AM, b: T.AB, c: T.AN } : { op: 'fourth', a: T.AB, b: T.AM, c: T.BC };
+  return {
+    gesture: 'write',
+    calc: c,
+    prompt: `${TRI_INTRO} ${triData(T, ask === 'AC' ? ['AM', 'AB', 'AN'] : ['AM', 'AB', 'BC'])}. احسب $${ask}$ .`,
+    tokens: [ask, '=', cmBox(T[ask]), 'cm'],
+  };
+}
+
+/** Three claims « AC = v », « MN = v » about one triangle: true, the difference added, a fraction turned upside down. */
+function triSort(rand) {
+  const T = triangleOf(rand, 2);
+  const flipMN = (T.AB * T.BC) % T.AM === 0 ? (T.AB * T.BC) / T.AM : null;
+  const CARDS = {
+    ac: ['AC', T.AC, null],
+    acAdd: ['AC', T.AN + (T.AB - T.AM), 'add-not-times'],
+    mn: ['MN', T.MN, null],
+    mnAdd: ['MN', T.BC - (T.AB - T.AM), 'add-not-times'],
+    mnFlip: ['MN', flipMN, 'ratio-flipped'],
+  };
+  const shapes = [
+    ['ac', 'mnAdd', 'mn'],
+    ['acAdd', 'mn', 'ac'],
+    ['ac', 'mnFlip', 'acAdd'],
+    ['mn', 'acAdd', 'mnFlip'],
+    ['mnAdd', 'ac', 'mnFlip'],
+  ].filter((k) => flipMN != null || !k.includes('mnFlip'));
+  const kinds = shuffle(rand, pick(rand, shapes));
+  return {
+    gesture: 'sort',
+    tri: T,
+    prompt: `${TRI_INTRO} ${triData(T, ['AM', 'AB', 'AN', 'BC'])}. هل كلّ طول صحيح؟ أرسله إلى صندوقه.`,
+    bins: [
+      { id: 'yes', label: 'صحيح' },
+      { id: 'no', label: 'خاطئ' },
+    ],
+    cards: kinds.map((kind, i) => {
+      const [ask, v, trap] = CARDS[kind];
+      return { id: `c${i + 1}`, text: `$${ask} = ${v}$`, ask, v, bin: trap ? 'no' : 'yes', trap };
+    }),
+  };
+}
+
+/** The worked example: the two equal fractions of the triangle, the cross product, the length. Its first step answers the mistake shown. */
+function triExample(rand, level, { mistake = null } = {}) {
+  const T = triangleOf(rand, level === 2 ? 2 : 1);
+  let first;
+  if (mistake === 'add-not-times')
+    first = `لو أضفنا الفرق $${T.AB - T.AM}$ بين $AB$ و $AM$ إلى $AN$ لوجدنا $${T.AN + (T.AB - T.AM)}$: خطأ، فأطوال المثلثين متناسبة — نضرب ولا نضيف.`;
+  else if (mistake === 'ratio-flipped')
+    first = `نكتب الكسرين في الترتيب نفسه: طول من المثلث الصغير على الطول الذي يقابله في المثلث الكبير، في الكسرين معًا.`;
+  else first = 'المستقيم $(MN)$ يوازي $(BC)$: أطوال المثلث $AMN$ متناسبة مع أطوال المثلث $ABC$.';
+  return {
+    title: `حساب الطول AC في مثلث`,
+    steps: [
+      first,
+      `$\\frac{AM}{AB} = \\frac{AN}{AC}$ ، أي $\\frac{${T.AM}}{${T.AB}} = \\frac{${T.AN}}{AC}$.`,
+      `الجداء المتصالب: $${T.AM} \\times AC = ${T.AB} \\times ${T.AN} = ${T.AB * T.AN}$.`,
+      `إذن $AC = ${T.AB * T.AN} \\div ${T.AM} = ${T.AC}$ cm.`,
+    ],
+  };
+}
+
 export const FAMILIES = {
   '1am.m1.r01': {
     item: '1am.m1.r01',
@@ -1780,6 +1960,45 @@ export const FAMILIES = {
       'جداء عددين سالبين موجب: $(-11)^{2} = 121$؛ وجداء ثلاثة أعداد سالبة سالب: $(-2)^{3} = -8$.',
       'مربّع كسر: $\\left(\\frac{3}{5}\\right)^{2} = \\frac{9}{25}$؛ ومربّع عدد عشري: $(0{,}4)^{2} = 0{,}16$.',
       'قوى العدد 10: $10^{3} = 1000$ و $10^{5} = 100000$.',
+    ],
+  },
+  '3am.m2.r03': {
+    item: '3am.m2.r03',
+    name: 'النسب في المثلث',
+    icon: '🔺',
+    // NO instrument: the 3AM lesson of this item (« تناسبية الأطوال في المثلث ») is not built, and the instrument of the
+    // lesson whose kit shows the family is that lesson's own (`earlierOnly`, LESSON_LAB.md §2)
+    labTool: null,
+    mistakes: ['add-not-times', 'ratio-flipped'],
+    forms: { 1: ['fourth', 'triangle'], 2: ['sort', 'side'] },
+    make: (rand, level, form, { first = false } = {}) =>
+      form === 'fourth'
+        ? fourthWrite(rand, level, first)
+        : form === 'sort'
+          ? triSort(rand)
+          : triWrite(rand, level, first),
+    example: triExample,
+    rules: [
+      {
+        id: 'fourth',
+        title: 'الرابع المتناسب',
+        text: 'إذا كان $\\frac{a}{b} = \\frac{c}{d}$ فإنّ $a \\times d = b \\times c$: نجد العدد الرابع بالجداء المتصالب.',
+        example: '$\\frac{2}{6} = \\frac{3}{d}$ : $2 \\times d = 6 \\times 3 = 18$، إذن $d = 9$.',
+        check: { m: 2, w: 6, t: 3, v: 9 },
+      },
+      {
+        id: 'triangle',
+        title: 'أطوال مثلثين متناسبة',
+        text: 'في المثلث $ABC$ ، إذا كانت $M$ من $[AB]$ و $N$ من $[AC]$ و $(MN) \\parallel (BC)$ فإنّ أطوال المثلث $AMN$ متناسبة مع أطوال المثلث $ABC$.',
+        example: '$AM = 2$ و $AB = 6$ و $AN = 3$ : $\\frac{2}{6} = \\frac{3}{AC}$ ، إذن $AC = 9$.',
+        check: { m: 2, w: 6, t: 3, v: 9 },
+      },
+    ],
+    memo: [
+      'في المثلث $ABC$ مع $(MN) \\parallel (BC)$ ، $M$ من $[AB]$ و $N$ من $[AC]$: أطوال المثلث $AMN$ متناسبة مع أطوال المثلث $ABC$.',
+      'نكتب كسرين متساويين في الترتيب نفسه، ثمّ الجداء المتصالب: $\\frac{a}{b} = \\frac{c}{d}$ يعني $a \\times d = b \\times c$.',
+      'نضرب ولا نضيف: الفرق بين طولين لا يبقى نفسه في المثلث الآخر.',
+      'مثال: $\\frac{2}{6} = \\frac{3}{AC}$ ، إذن $2 \\times AC = 18$ و $AC = 9$.',
     ],
   },
 };
