@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>عالم الأهرامات — خاصية طالس</title>
+<style>
+  :root {
+    --sand: #f3e2bf; --sand-d: #e2c78f; --stone: #d9b77a; --stone-d: #b98f4e; --ink: #2b1d0e;
+    --sky: #1d3557; --sky-l: #f6d28b; --nile: #2f7fb5; --green: #6a994e; --red: #c8553d;
+    --gold: #e9a23b; --paper: #fffaf0; --muted: #6b5a43; --line: #e7d6b4;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink);
+    font: 17px/1.75 "Noto Naskh Arabic", "Amiri", "Segoe UI", Tahoma, sans-serif; }
+  header { background: linear-gradient(180deg, #1d3557 0%, #c97b3c 70%, var(--sand) 100%); color: #fff;
+    padding: 48px 24px 64px; text-align: center; }
+  header h1 { margin: 0 0 8px; font-size: 2.3rem; }
+  header p { max-width: 820px; margin: 0 auto; font-size: 1.1rem; color: #fff8e6; }
+  main { max-width: 1120px; margin: 0 auto; padding: 0 16px 64px; }
+  .story { background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 22px 26px; margin: -36px 0 32px;
+    box-shadow: 0 8px 24px rgba(80, 50, 10, .08); }
+  .story h2 { margin-top: 0; }
+  .math { direction: ltr; unicode-bidi: isolate; font-family: "Cambria Math", "STIX Two Math", serif; white-space: nowrap; }
+  .prop { background: #fff; border: 1px solid var(--line); border-radius: 22px; margin: 34px 0; overflow: hidden;
+    box-shadow: 0 10px 28px rgba(80, 50, 10, .08); }
+  .prop > .head { display: flex; align-items: baseline; gap: 14px; padding: 20px 26px 6px; }
+  .tag { background: var(--ink); color: #fff; border-radius: 999px; padding: 2px 14px; font-weight: 700; }
+  .prop h2 { margin: 0; font-size: 1.6rem; }
+  .prop .sub { color: var(--muted); padding: 0 26px 12px; margin: 0; }
+  .scenes { display: grid; grid-template-columns: 1.45fr 1fr; gap: 14px; padding: 0 20px; }
+  .scenes figure { margin: 0; background: #fbf4e4; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .scenes figcaption { font-size: .92rem; color: var(--muted); padding: 6px 12px 10px; }
+  svg { display: block; width: 100%; height: auto; direction: ltr; }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; padding: 18px 20px 6px; }
+  .box { background: #fffdf7; border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; }
+  .box h3 { margin: 0 0 6px; font-size: 1.05rem; color: #8a4b12; }
+  .box ul { margin: 0; padding-inline-start: 18px; }
+  .keys { padding: 6px 20px 20px; }
+  .keys table { width: 100%; border-collapse: collapse; font-size: .96rem; }
+  .keys th, .keys td { border-bottom: 1px solid var(--line); padding: 7px 8px; text-align: right; vertical-align: top; }
+  .keys th { color: #8a4b12; }
+  .risk { margin: 0 20px 22px; background: #fff3ef; border: 1px solid #f1c8bb; border-radius: 12px; padding: 10px 16px; }
+  .compare table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; }
+  .compare th, .compare td { border: 1px solid var(--line); padding: 9px 10px; text-align: center; }
+  .compare th { background: #f7ead0; }
+  .reco { background: #eef6e8; border: 1px solid #c8dfb8; border-radius: 18px; padding: 18px 24px; margin-top: 26px; }
+  .ask { background: #eaf2fb; border: 1px solid #bcd3ea; border-radius: 18px; padding: 18px 24px; margin-top: 18px; }
+
+  .game { position: relative; margin: 6px 20px 14px; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: #e6cfa2; }
+  .game canvas { display: block; width: 100%; height: 470px; cursor: grab; }
+  .game .hint { position: absolute; top: 10px; left: 12px; background: rgba(16,20,36,.62); color: #fff; font-size: .82rem; padding: 3px 10px; border-radius: 999px; }
+  .hud { display: grid; gap: 6px; margin: 0 20px 10px; padding: 12px 16px; background: #fffdf7; border: 1px solid var(--line); border-radius: 14px; }
+  .hud label { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+  .hud input[type=range] { flex: 1; accent-color: #c8553d; }
+  .hud b { min-width: 120px; direction: ltr; unicode-bidi: isolate; text-align: left; color: #8a4b12; }
+  .hud .row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .hud button { font: inherit; font-weight: 700; padding: 4px 14px; border-radius: 10px; border: 1px solid #c9a46a; background: #f7ead0; cursor: pointer; }
+  .hud input[type=number] { width: 90px; font: inherit; padding: 2px 6px; border-radius: 8px; border: 1px solid #c9a46a; direction: ltr; }
+  .hud .facts p { margin: 2px 0; }
+  .hud .ok { color: #2f7a32; font-weight: 700; }
+  .hud .verdict { font-weight: 700; color: #8a4b12; min-height: 1.6em; }
+  .scenes.one { grid-template-columns: minmax(0, 520px); justify-content: center; }
+  .err { color: #c8553d; padding: 0 20px; }
+  .bar { position: fixed; top: 12px; left: 12px; z-index: 10; display: flex; gap: 14px; background: rgba(16,20,36,.86); color: #fff; padding: 6px 16px; border-radius: 999px; font-weight: 700; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+  .hud .q { font-size: 1.15rem; direction: ltr; unicode-bidi: isolate; }
+  .hud .note { margin: 4px 0 0; color: var(--muted); font-size: .92rem; }
+  .hud button:disabled { opacity: .5; }
+  @media (max-width: 860px) { .scenes, .cols { grid-template-columns: 1fr; } header h1 { font-size: 1.7rem; } }
+</style>
+</head>
+<body>
+<div class="bar" data-bar></div>
+<header>
+  <h1>🏜️ عالم الأهرامات — حيث وُلدت خاصية طالس</h1>
+  <p>اقتراحات ثلاثة لعالم الوحدة 9 « خاصية طالس »، الدرس 1 « خاصية طالس وحساب الأطوال »، للمنصّة الجزائرية أوّلًا.
+     كلّ اقتراح يُبنى على شيء حقيقيّ من مصر القديمة، وكلّ واحد منها يجعل التلميذ يحتاج إلى الخاصية ليحسب طولًا لا يستطيع قياسه.</p>
+</header>
+<main>
+
+<section class="story">
+  <h2>القصّة الحقيقية</h2>
+  <p>يُروى أنّ طاليس زار مصر فسأله الكهنة عن ارتفاع الهرم الأكبر. لم يتسلّقه: غرس عصًا في الرمل وانتظر.
+     أشعّة الشمس متوازية، فالعصا وظلّها يرسمان مثلّثًا صغيرًا له « شكل » المثلّث الكبير الذي يرسمه الهرم وظلّه.
+     ومن تساوي النسب حسب الارتفاع. هذه بالضبط خاصية الدرس: مستقيمان متوازيان يقطعان مثلّثًا، فتتناسب الأطوال.</p>
+  <p class="math">AM / AB = AN / AC = MN / BC</p>
+</section>
+
+<article class="prop">
+  <div class="head"><span class="tag">🗺️</span><h2>خريطة العالم — زيرو على طريق النيل</h2></div>
+  <p class="sub">العالم مراحل على طريق واحد، من حقول النيل إلى الهرم الأكبر. زيرو يقف عند المرحلة المفتوحة؛ كلّ مرحلة تُربح تفتح التي بعدها فيمشي إليها.</p>
+  <div class="game"><canvas data-game="W"></canvas><span class="hint">اسحب لتدوير المشهد · العجلة للتقريب</span></div>
+  <div class="hud" data-hud="W"></div>
+</article>
+
+<article class="prop">
+  <div class="head"><span class="tag">⛵</span><h2>الرحلة على النيل — بين مرحلتين</h2></div>
+  <p class="sub">بعد كلّ مرحلة يركب زيرو القارب إلى المرسى التالي. على الطريق: مسائل نسب على العوّامات، وتماسيح يجب تفاديها.</p>
+  <div class="game"><canvas data-game="R"></canvas></div>
+  <div class="hud" data-hud="R"></div>
+</article>
+
+<!-- ───────────── Proposition A ───────────── -->
+<article class="prop">
+  <div class="head"><span class="tag">أ</span><h2>ظلّ الهرم — « عصا طاليس »</h2></div>
+  <p class="sub">التلميذ يعيد تجربة طاليس بيديه: عصا، شمس، ظلّان، وهرم لا يُتسلَّق.</p>
+  <div class="game"><canvas data-game="A"></canvas><span class="hint">اسحب لتدوير المشهد · العجلة للتقريب</span></div>
+  <div class="hud" data-hud="A"></div>
+  <div class="scenes one">
+    <figure>
+      <svg viewBox="0 0 360 300" role="img" aria-label="الشكل الهندسي">
+        <rect width="360" height="300" fill="#fffdf7"/>
+        <polygon points="320,250 40,250 40,40" fill="#f6e3bd" stroke="#8a4b12" stroke-width="2.5"/>
+        <line x1="40" y1="250" x2="40" y2="40" stroke="#8a4b12" stroke-width="3"/>
+        <line x1="250" y1="250" x2="250" y2="92.5" stroke="#2f7fb5" stroke-width="3.5"/>
+        <g font-size="18" font-weight="700" direction="ltr">
+          <text x="326" y="268">A</text><text x="22" y="268">B</text><text x="22" y="38">C</text>
+          <text x="244" y="270">M</text><text x="256" y="88">N</text>
+        </g>
+        <g font-size="14" fill="#3b2410" direction="ltr">
+          <text x="270" y="244">3</text><text x="256" y="175">2</text><text x="140" y="282">219</text><text x="46" y="150">h ?</text>
+        </g>
+        <text x="180" y="22" font-size="14" fill="#6b5a43" text-anchor="middle">(MN) // (BC) : العصا والهرم عموديان</text>
+      </svg>
+      <figcaption>ما يراه التلميذ بعد التجربة: مثلّث طالس فوق المشهد. <span class="math">3/219 = 2/h</span> ⟸ <span class="math">h = 146 m</span>.</figcaption>
+    </figure>
+  </div>
+  <div class="cols">
+    <div class="box"><h3>الآلية</h3><ul>
+      <li>الشمس تتحرّك عبر اليوم، فتطول الظلال وتقصر.</li>
+      <li>العصا تُحمل وتُغرس في أيّ مكان؛ الشريط يقيس على الرمل فقط.</li>
+      <li>الهرم والمسلّات والنخيل: كلّ شيء عالٍ له ظلّ، ولا شيء عالٍ يُقاس مباشرة.</li>
+    </ul></div>
+    <div class="box"><h3>حركة التلميذ</h3><ul>
+      <li>يحرّك العصا حتّى ينطبق طرفا الظلّين.</li>
+      <li>يقيس ظلّين على الأرض، ثمّ يتوقّع الارتفاع قبل أن يصعد « المسّاح » ليتحقّق.</li>
+      <li>يعيد في ساعة أخرى: الظلال تتغيّر، والارتفاع لا يتغيّر.</li>
+    </ul></div>
+    <div class="box"><h3>لماذا تصبح الرياضيات ضرورية</h3><ul>
+      <li>الهرم لا يُتسلَّق: لا طريق غير النسب.</li>
+      <li>تخمين « الفرق » (219 − 3) يُرفض بحقيقة: في ساعة أخرى يعطي ارتفاعًا آخر.</li>
+      <li>تكرار التجربة في ساعات مختلفة يُظهر أنّ <b>النسبة</b> هي الثابتة.</li>
+    </ul></div>
+  </div>
+  <div class="keys"><table>
+    <tr><th>مفتاح مقترح</th><th>ما يكتشفه</th><th>على ماذا</th></tr>
+    <tr><td>النسب ثابتة</td><td>ظلّ ÷ ارتفاع هو نفسه لكلّ شيء في نفس الساعة</td><td>عصا، نخلة، مسلّة</td></tr>
+    <tr><td>خاصية طالس</td><td><span class="math">AM/AB = AN/AC = MN/BC</span></td><td>الهرم <span class="math">146 m</span></td></tr>
+    <tr><td>حساب طول مجهول</td><td>الجداء المتقاطع على نسبتين</td><td>مسلّة في ساعة أخرى</td></tr>
+  </table></div>
+  <p class="risk"><b>ما يقلقني:</b> لا يرى التلميذ إلّا شكلًا واحدًا (عمودان على الأرض). خاصية الدرس أعمّ: مستقيمان متوازيان في أيّ اتجاه. الاقتراح قويّ كقصّة وكمهمّة نهائية، وأضعف كآلية لكلّ المفاتيح.</p>
+</article>
+
+<!-- ───────────── Proposition B ───────────── -->
+<article class="prop">
+  <div class="head"><span class="tag">ب</span><h2>مداميك الهرم — « ورشة البنّائين »</h2></div>
+  <p class="sub">الهرم يُبنى مدماكًا فوق مدماك. كلّ مدماك موازٍ للقاعدة: هي المستقيمات المتوازية التي تقطع وجه الهرم.</p>
+  <div class="game"><canvas data-game="B"></canvas><span class="hint">اسحب لتدوير المشهد · العجلة للتقريب</span></div>
+  <div class="hud" data-hud="B"></div>
+  <div class="scenes one">
+    <figure>
+      <svg viewBox="0 0 360 300" role="img" aria-label="الشكل الهندسي">
+        <rect width="360" height="300" fill="#fffdf7"/>
+        <polygon points="180,30 30,260 330,260" fill="#f6e3bd" stroke="#8a4b12" stroke-width="2.5"/>
+        <line x1="130" y1="106.7" x2="230" y2="106.7" stroke="#c8553d" stroke-width="3.5"/>
+        <g stroke="#b98f4e" opacity=".45"><line x1="80" y1="183" x2="280" y2="183"/><line x1="105" y1="145" x2="255" y2="145"/><line x1="155" y1="68" x2="205" y2="68"/></g>
+        <g font-size="18" font-weight="700" direction="ltr">
+          <text x="173" y="22">A</text><text x="12" y="276">B</text><text x="334" y="276">C</text>
+          <text x="108" y="104">M</text><text x="236" y="104">N</text>
+        </g>
+        <g font-size="14" fill="#3b2410" direction="ltr"><text x="166" y="254">180</text><text x="166" y="100">?</text></g>
+        <text x="180" y="290" font-size="14" fill="#6b5a43" text-anchor="middle">40 / 120 = MN / 180</text>
+      </svg>
+      <figcaption>كلّ مدماك مستقيم موازٍ لـ <span class="math">(BC)</span>. <span class="math">MN = 180 × 40/120 = 60 m</span>.</figcaption>
+    </figure>
+  </div>
+  <div class="cols">
+    <div class="box"><h3>الآلية</h3><ul>
+      <li>الهرم يرتفع مدماكًا بعد مدماك؛ كلّ مدماك أقصر من الذي تحته.</li>
+      <li>الحجّار يقطع الأحجار مسبقًا في المقلع؛ القارب ينقلها عبر النيل.</li>
+      <li>حجر مقطوع أطول أو أقصر من اللازم: لا يدخل المدماك، أو يترك فراغًا يراه التلميذ.</li>
+    </ul></div>
+    <div class="box"><h3>حركة التلميذ</h3><ul>
+      <li>يختار طول الحجارة لمدماك ما زال في الهواء، ثمّ يرى البنّائين يضعونها.</li>
+      <li>يقيس على ما بُني (مداميك تحت) ليتوقّع ما لم يُبنَ (مداميك فوق).</li>
+      <li>الكيس محدود: حجر خاطئ يكلّف رحلة قارب.</li>
+    </ul></div>
+    <div class="box"><h3>لماذا تصبح الرياضيات ضرورية</h3><ul>
+      <li>المدماك لم يوجد بعد: لا يُقاس، يُحسب.</li>
+      <li>قاعدة « ننقص نفس الطول في كلّ مدماك » تُرفض بحقيقة: على الأطراف لا تلتقي الأحجار بالقمّة.</li>
+      <li>أرقام كثيرة ومختلفة: كلّ مدماك تمرين جديد بنفس الشكل.</li>
+    </ul></div>
+  </div>
+  <div class="keys"><table>
+    <tr><th>مفتاح مقترح</th><th>ما يكتشفه</th><th>على ماذا</th></tr>
+    <tr><td>المدماك نسبة من القاعدة</td><td>عرض المدماك ÷ القاعدة = بُعده عن القمّة ÷ الارتفاع</td><td>هرم <span class="math">120 m</span>، قاعدة <span class="math">180 m</span></td></tr>
+    <tr><td>خاصية طالس</td><td>نفس النسبة على الضلعين المائلين وعلى المدماك</td><td><span class="math">AM/AB = AN/AC = MN/BC</span></td></tr>
+    <tr><td>حساب طول مجهول</td><td>أيّ طول من الثلاثة يُحسب من الآخرين</td><td>مدماك، حافة، ارتفاع</td></tr>
+  </table></div>
+  <p class="risk"><b>ما يقلقني:</b> المستقيمات المتوازية كلّها أفقية. يجب أن يرى التلميذ في محطّة ما مثلّثًا مائلًا (ممرّ داخلي، منحدر) حتّى لا يربط الخاصية بالأفقي فقط.</p>
+</article>
+
+<!-- ───────────── Proposition C ───────────── -->
+<article class="prop">
+  <div class="head"><span class="tag">ج</span><h2>شادّو الحبال — « حقول النيل بعد الفيضان »</h2></div>
+  <p class="sub">كلّ سنة يغمر النيل الحقول ويمحو حدودها. مسّاحو مصر كانوا يعيدون رسمها بحبال معقودة وأوتاد.</p>
+  <div class="game"><canvas data-game="C"></canvas><span class="hint">اسحب لتدوير المشهد · العجلة للتقريب</span></div>
+  <div class="hud" data-hud="C"></div>
+  <div class="scenes one">
+    <figure>
+      <svg viewBox="0 0 360 300" role="img" aria-label="الشكل الهندسي">
+        <rect width="360" height="300" fill="#fffdf7"/>
+        <polygon points="180,30 40,260 320,260" fill="#e4f0d6" stroke="#4f7a32" stroke-width="2.5"/>
+        <line x1="96" y1="168" x2="264" y2="168" stroke="#2f7fb5" stroke-width="3.5"/>
+        <g font-size="18" font-weight="700" direction="ltr">
+          <text x="173" y="22">A</text><text x="22" y="276">B</text><text x="324" y="276">C</text>
+          <text x="74" y="170">M</text><text x="270" y="170">N</text>
+        </g>
+        <g font-size="14" fill="#2b1d0e" direction="ltr"><text x="116" y="100">18</text><text x="54" y="222">12</text><text x="170" y="254">45</text><text x="174" y="160">?</text></g>
+        <text x="180" y="292" font-size="14" fill="#6b5a43" text-anchor="middle">18 / 30 = MN / 45 ⟹ MN = 27</text>
+      </svg>
+      <figcaption>الحبل يعطي الأطوال على الضلعين؛ الخاصية تعطي القناة: <span class="math">MN = 27</span> ذراعًا، و<span class="math">AN = 24</span> إذا كان <span class="math">AC = 40</span>.</figcaption>
+    </figure>
+  </div>
+  <div class="cols">
+    <div class="box"><h3>الآلية</h3><ul>
+      <li>حبال بعُقد منتظمة، أوتاد تُغرس، قنوات تُحفر موازية لضلع.</li>
+      <li>كلّ حقل مثلّث يُعاد رسمه بعد الفيضان، والقناة تقسمه.</li>
+      <li>الحبل المعقود 3-4-5 (الزاوية القائمة) هديّة لوحدات قادمة.</li>
+    </ul></div>
+    <div class="box"><h3>حركة التلميذ</h3><ul>
+      <li>يشدّ الحبل بين وتدين، يعدّ العقد، يغرس وتدًا جديدًا.</li>
+      <li>يتوقّع أين تقع نهاية القناة، ثمّ يرى الماء يجري: يصل أو لا يصل.</li>
+      <li>يقسم الأرض بين عائلتين بعدل: الحساب يحمي الحقّ.</li>
+    </ul></div>
+    <div class="box"><h3>لماذا تصبح الرياضيات ضرورية</h3><ul>
+      <li>الحدود ممحوّة: لا يبقى إلّا ما يُقاس على ضلع، والباقي يُحسب.</li>
+      <li>قناة غير موازية لا تعطي النسب: يرى التلميذ الحقّين غير متساويين.</li>
+      <li>أطوال تُقاس بالأذرع والعقد: أعداد صغيرة يلمسها.</li>
+    </ul></div>
+  </div>
+  <div class="keys"><table>
+    <tr><th>مفتاح مقترح</th><th>ما يكتشفه</th><th>على ماذا</th></tr>
+    <tr><td>القناة الموازية تحفظ النسب</td><td><span class="math">AM/AB = AN/AC</span></td><td>حقل 30-40-45 ذراعًا</td></tr>
+    <tr><td>طول القناة</td><td><span class="math">MN/BC</span> هي نفس النسبة</td><td><span class="math">MN = 27</span></td></tr>
+    <tr><td>إذا لم تكن موازية</td><td>النسب لا تتساوى (تمهيد للخاصية العكسية لاحقًا)</td><td>قناة مائلة</td></tr>
+  </table></div>
+  <p class="risk"><b>ما يقلقني:</b> أقلّ إبهارًا من الهرم. قوّته في اليد (حبل، عقد، أوتاد) وفي الأشكال المائلة بكلّ الاتجاهات، لا في المنظر.</p>
+</article>
+
+<section class="compare">
+  <h2>مقارنة</h2>
+  <table>
+    <tr><th></th><th>أ — ظلّ الهرم</th><th>ب — المداميك</th><th>ج — شادّو الحبال</th></tr>
+    <tr><td>صدق القصّة التاريخية</td><td>★★★ (طاليس نفسه)</td><td>★★</td><td>★★★</td></tr>
+    <tr><td>الإبهار عند الدخول</td><td>★★★</td><td>★★★</td><td>★★</td></tr>
+    <tr><td>تنوّع الأشكال (متوازيات في كلّ اتجاه)</td><td>★</td><td>★★</td><td>★★★</td></tr>
+    <tr><td>عدد التمارين التي تولّدها الآلية</td><td>★★</td><td>★★★</td><td>★★★</td></tr>
+    <tr><td>شيء يُلمس ويُحرَّك</td><td>العصا</td><td>الحجر المقطوع</td><td>الحبل والأوتاد</td></tr>
+  </table>
+</section>
+
+<section class="reco">
+  <h2>اقتراحي</h2>
+  <p><b>عالم واحد: « الأهرامات »</b>، بآلية <b>ب (المداميك)</b> لأنّها تولّد أكثر التمارين وتجعل المتوازيات بادية في الحجر،
+     مع <b>محطّة ج (الحقل والحبال)</b> لكسر « الأفقي فقط » وإظهار القناة المائلة، و<b>أ (ظلّ الهرم)</b> كمهمّة نهائية:
+     التلميذ يقيس ارتفاع الهرم كما فعل طاليس. الدرس يبدأ بقصّة ويُختم بها.</p>
+</section>
+
+<section class="ask">
+  <h2>أسئلة لك</h2>
+  <ul>
+    <li>أيّ اقتراح، أو أيّ مزج؟</li>
+    <li>الأسماء: « عصا طاليس »، « ورشة البنّائين »، « شادّو الحبال » — هل تناسب؟</li>
+    <li>الوحدة « ذراع » في الحقل (تاريخية) أم المتر في كلّ مكان؟</li>
+    <li>هل يظهر طاليس كشخصية (زائر يونانيّ في مصر)، أم يكفي ذكر القصّة؟</li>
+  </ul>
+</section>
+
+</main>
+<!-- 3D:js -->
+</body>
+</html>
