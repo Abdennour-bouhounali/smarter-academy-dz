@@ -249,7 +249,7 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
         {paper && !fb?.final && <PaperChip />}
         {/* once the answer is final, the sheet gives way to ONE line — the question and what was answered — so the correction has the room */}
         {/* a question with a figure that is not flat lays it BESIDE the question: above it, the two did not fit the
-            panel's height at 1366 × 768 without zooming its text under 12 px (the walk of talis-hisab-atwal, 2026-11-24) */}
+            panel's height at 1366 × 768 without zooming its text under 12 px (the walk of the first lesson of « الأهرامات », 2026-11-24) */}
         <div className="di-tr-q" data-di-tr-q={besideIt(q) ? 'figure' : 'plain'}>
           <QuestionFigure fig={q.figure} />
           {fb?.final && q.format === 'exam' ? (

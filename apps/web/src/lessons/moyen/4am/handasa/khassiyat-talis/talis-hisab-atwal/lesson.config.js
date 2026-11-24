@@ -83,7 +83,8 @@ export const LESSON_CONFIG = {
       title: 'الشمس والظلال — مئذنة أعلى',
       objective:
         'إذا كان (B′C′) يوازي (BC) فإن AB′/AB = AC′/AC = B′C′/BC، أينما كانت B′ على المستقيم (AB)؛ ظلّ كل شيء شاقولي ÷ طوله عدد واحد في اللحظة نفسها لأنّ أشعة الشمس متوازية',
-      autonomy: '',
+      autonomy:
+        'المسار نفسه بأرقام أخرى (مئذنة 6,5 م): التلميذ يعيد الاكتشاف ويُصلح قاعدته كلّما تغيّرت الساعة، فلا يحفظ عددًا بل يفهم أنّ الشكل (× عدد) هو الباقي',
       experience: { type: 'textbook', reason: '', theme: 'minaret' },
       learningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2'],
       sourceElementIds: ['act-1'],

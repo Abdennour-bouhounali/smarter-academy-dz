@@ -12,8 +12,8 @@
  *
  * No rule is told: nothing here names a key or states a rule before its forge (`story.test.js` reads every sentence a
  * stage plays before each seal). The final mission needs the four keys (plan §3.7): the shadow starts UNDER the apex
- * (📐's piece: 104 + 115), the stick and the height are both vertical (🔑's condition), 3/219 = 2/h (📐), k = 73 (🔍);
- * the box is a pair round the hole (🦋). Its distractors: 104 alone (h = 69,3…), the ratio upside down (h = 328,5).
+ * (📐's piece: the shadow outside + the half base), the stick and the height are both vertical (🔑's condition), 3/219 = 2/h (📐), k = 73 (🔍);
+ * the box is a pair round the hole (🦋). Its distractors: the outside shadow alone (h = 69,3…), the ratio upside down (h = 328,5).
  */
 import { slot } from '../../../../../../common/gameworld/kit/forge';
 import {
@@ -46,7 +46,7 @@ import {
   write,
 } from './math';
 
-/** The final mission's numbers (plan §3.7): the stick 2 casts 3; the shadow 104 from the middle of the base edge. */
+/** The final mission's numbers (plan §3.7): the stick 2 casts 3; the shadow `PLATEAU` gives, from the middle of the base edge. */
 const MI = NUMBERS.mission;
 /** Half the base: the shadow starts under the APEX, at the centre of the base. */
 export const HALF = write(over(PLATEAU.base, '2'));

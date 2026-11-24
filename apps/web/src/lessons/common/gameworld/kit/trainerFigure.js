@@ -11,7 +11,7 @@
  * TRAINER_FIGURE.room, a COLUMN: a figure that is not flat stands BESIDE its question (Trainer.jsx › besideIt), in a panel
  * about 570 px wide, and the question keeps the rest (about 250 px — an exam form's line of two fractions holds in 220).
  * A landscape figure at its floor took 340 px of it: the question, squeezed into 220 px, grew taller than the panel, the
- * panel zoomed down and its words fell under 12 px (the scale figures of talis-hisab-atwal, 2026-11-24). `pad`: the
+ * panel zoomed down and its words fell under 12 px (the scale figures of the first lesson of « الأهرامات », 2026-11-24). `pad`: the
  * figure's frame (its padding, trainer.css), outside the drawing. `fits` says whether a figure is drawn within that room
  * AT its floor (`fitsAbove`: within TRAINER_FIGURE.above, for a question whose form needs the whole width): a lesson's trainer test asserts it for every figure it gives (a figure too wide for its labels is turned
  * or redrawn in its own units, never shrunk below its floor).
