@@ -103,6 +103,9 @@ export function withoutMetadata(text) {
   return lines.filter((_, i) => !drop.has(i)).join('\n');
 }
 
+/** What is searched in a sheet: its `body`, or its whole `text` for a bank built by hand (tests, `{ text }` only). */
+const bodyOf = (s) => s.body ?? withoutMetadata(s.text);
+
 /** A decimal « 7,5 » / « 7{,}5 », a fraction « \dfrac{5}{6} » / « 5/6 », or a whole number, as written in a text. */
 const NUMBER_RE =
   /\\[dt]?frac\s*\{\s*(\d+)\s*\}\s*\{\s*(\d+)\s*\}|(?<![0-9.])(\d+)\s*\/\s*(\d+)(?![0-9.])|(?<![0-9.])(\d+)(?:,|\{,\})(\d+)(?![0-9])|(?<![0-9.,])(\d+)(?![0-9])(?!\.[0-9])/g;
@@ -118,7 +121,7 @@ const JSON_NUMBER = /^\s*(?:"[^"]+":\s*)?-?\d+(?:\.\d+)?,?\s*$/;
 export function bankNumbers(bank) {
   const out = new Map();
   for (const s of bank.sheets) {
-    const written = s.body
+    const written = bodyOf(s)
       .split('\n')
       .filter((l) => !NOT_WRITTEN.test(l) && !JSON_NUMBER.test(l))
       .join('\n');
@@ -156,10 +159,10 @@ export const pairLines = (text, x, y, most = 6) =>
   text.split('\n').filter((l) => alone(x).test(l) && alone(y).test(l) && (l.match(/\d+/g) ?? []).length <= most);
 /** The lines of the bank where x and y stand together (`pairLines`), with their sheet. */
 export const linesWithBoth = (bank, x, y) =>
-  bank.sheets.flatMap((s) => pairLines(s.body, x, y).map((l) => `${s.file}: ${l.trim()}`));
+  bank.sheets.flatMap((s) => pairLines(bodyOf(s), x, y).map((l) => `${s.file}: ${l.trim()}`));
 
 /** The sheets where n stands alone. */
-const sheetsWith = (bank, n) => bank.sheets.filter((s) => alone(n).test(s.body)).map((s) => s.file);
+const sheetsWith = (bank, n) => bank.sheets.filter((s) => alone(n).test(bodyOf(s))).map((s) => s.file);
 
 /** Every `world/story.js` of the lessons, but `exceptId`'s: { file, text }. */
 export function storiesOf({ exceptId = null } = {}) {
