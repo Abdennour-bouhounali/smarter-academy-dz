@@ -1,10 +1,12 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
-import { SCRIPT, BOARD, KEYS } from './script';
+import { SCRIPT, BOARD, KEYS, FIGURES, ASKED } from './script';
 import { MEMO } from './memo';
 import { MOMENTS } from '../../../../../../../features/classSession/boardLessons';
 import { partKeys } from '../../../../../../../features/classSession/lessonMemos';
-import { askWords, fills } from '../../../../../../../features/classSession/lessonScripts';
+import { askWords, askHeld, askProof } from '../../../../../../../features/classSession/lessonScripts';
+import { boardFigure, BOARD_LABEL_PX } from '../../../../../../../features/classSession/boardFigure';
+import { layoutGeoFigure, validateGeoFigure } from '../../../../../../common/components/geoFigure';
 import { compare, equal, minus, over, plus, read, times, write } from '../../../../../../common/gameworld/kit/exact';
 import { collisions, readBank, storiesOf } from '../../../../../../common/gameworld/kit/authoring/test/bank';
 
@@ -209,6 +211,37 @@ const FIG = (() => {
   };
 })();
 
+/** The lengths each figure writes: the station's data, as written (the one asked is « ? »). */
+const GIVEN = {
+  park: [P.AB, P.AM, P.AC, P.BC],
+  path: [P.AB, W.AP, P.AC],
+  roof: [R.AB, R.BE, R.AB, R.BC],
+  easel: [E.AE, E.EB, E.EF],
+  streets: [S.OA, S.OC, S.OB],
+  yard: [Y.AB, Y.AM, Y.AC, Y.BC],
+  corner: [C.MN],
+};
+const num = (x) => Number(read(x).n) / Number(read(x).d);
+/** The labels of a figure (point names, lengths) whose boxes meet, as GeoFigure lays them out (geoFigure.js). */
+function overlaps(fig) {
+  const L = layoutGeoFigure(fig);
+  const boxes = Object.entries(L.pointLabels).map(([k, q]) => [k, q[0], q[1] - 5, 10, 14]);
+  for (const x0 of fig.segments) {
+    const x = Array.isArray(x0) ? { from: x0[0], to: x0[1] } : x0;
+    if (x.label == null) continue;
+    const q = L.segmentLabel(x.from, x.to, x.labelSide, x.label);
+    boxes.push([`${x.from}${x.to}`, q[0], q[1] - 4.5, String(x.label).length * 7.4 + 2, 14]);
+  }
+  const out = [];
+  boxes.forEach((a, i) =>
+    boxes.slice(i + 1).forEach((b) => {
+      if (Math.abs(a[1] - b[1]) < (a[3] + b[3]) / 2 && Math.abs(a[2] - b[2]) < (a[4] + b[4]) / 2)
+        out.push(`${a[0]}×${b[0]}`);
+    }),
+  );
+  return out;
+}
+
 describe('خاصية طالس وحساب الأطوال — the evaluator of the board’s formulas', () => {
   it('says the truth on hand-worked cases', () => {
     expect(holds('\\dfrac{AM}{AB} = \\dfrac{84}{98} = \\dfrac{6}{7}')).toBe(true);
@@ -253,15 +286,16 @@ describe('خاصية طالس وحساب الأطوال — the script of the le
     });
   });
 
-  it('every ask’s answer is the right length, computed from the figure — the card the board draws as filling', () => {
+  it('every ask’s answer is the right length, computed from the figure — the one card the board says agrees', () => {
     expect(asks.map((s) => s.id)).toEqual(['park', 'path', 'roof', 'easel', 'streets', 'yard', 'corner']);
     for (const s of asks) {
       const f = FIG[s.id];
-      expect(s.a, s.id).toBe(n(f.right));
       expect(s.answer, s.id).toEqual([n(f.right)]);
-      // the board draws as « filling » the cards that divide `a`: exactly the right one (lessonScripts.js › fills)
+      // a station with its figure draws no bridge: a card agrees when it is the answer (lessonScripts.js › askHeld)
+      expect(askProof(s), s.id).toBe('none');
+      expect(s.a, `${s.id}: no gap of a bridge`).toBeUndefined();
       expect(
-        s.options.filter((o) => fills(s, o)),
+        s.options.filter((o) => askHeld(s, o)),
         s.id,
       ).toEqual(s.answer);
       // the other cards are the errors the lesson fights, each computed, each whole, each wrong
@@ -274,11 +308,55 @@ describe('خاصية طالس وحساب الأطوال — the script of the le
       expect(new Set(s.options).size, s.id).toBe(s.options.length);
       expect(s.options.length, s.id).toBeGreaterThanOrEqual(3);
       expect(s.options.length, s.id).toBeLessThanOrEqual(6);
-      expect(s.options.indexOf(s.a), s.id).toBeGreaterThanOrEqual(0);
+      expect(s.options.indexOf(s.answer[0]), s.id).toBeGreaterThanOrEqual(0);
       expect(s.after, s.id).toContain('$');
     }
     // the right card is not always in the same place
-    expect(new Set(asks.map((s) => s.options.indexOf(s.a))).size).toBeGreaterThanOrEqual(2);
+    expect(new Set(asks.map((s) => s.options.indexOf(s.answer[0]))).size).toBeGreaterThanOrEqual(2);
+  });
+
+  it('every ask CARRIES its figure: the data of a bank sheet’s figure, drawn to scale, its given lengths and « ? »', () => {
+    for (const s of asks) {
+      const fig = s.figure;
+      expect(fig, s.id).toBe(FIGURES[s.id]);
+      expect(validateGeoFigure(fig), s.id).toEqual([]);
+      const seg = fig.segments.map((x) => (Array.isArray(x) ? { from: x[0], to: x[1] } : x));
+      const dist = (x) => Math.hypot(...[0, 1].map((k) => fig.points[x.from][k] - fig.points[x.to][k]));
+      // the lengths written on the figure are the station's own, as written — and the figure is drawn to their scale
+      const given = seg.filter((x) => x.label != null && x.label !== ASKED);
+      expect(given.map((x) => x.label).sort(), s.id).toEqual(GIVEN[s.id].map(String).sort());
+      for (const x of given) expect(dist(x) / num(x.label), `${s.id}: ${x.from}${x.to}`).toBeCloseTo(1, 9);
+      // the parallels are parallel; the one length asked carries « ? » — and, measured, it IS the answer
+      const par = seg.filter((x) => x.arrows);
+      expect(par.length, s.id).toBe(2);
+      const dir = (x) => [0, 1].map((k) => fig.points[x.to][k] - fig.points[x.from][k]);
+      const [u, v] = par.map(dir);
+      expect(u[0] * v[1] - u[1] * v[0], s.id).toBeCloseTo(0, 6);
+      const asked = seg.filter((x) => x.label === ASKED);
+      if (s.id === 'yard') {
+        expect(asked, s.id).toEqual([]); // the perimeter of the painted corner AMN: its three sides, measured
+        const P3 = ['AM', 'MN', 'NA'].map(([a, b]) => dist({ from: a, to: b })).reduce((x, y) => x + y);
+        expect(P3, s.id).toBeCloseTo(s.answer[0], 9);
+      } else {
+        expect(asked, s.id).toHaveLength(1);
+        expect(dist(asked[0]), s.id).toBeCloseTo(s.answer[0], 9);
+      }
+      // its words say what the figure cannot: no length is written twice — only the corner's number k is in its text
+      const numbers = formulas(s.text).filter((f) => /\d/.test(f));
+      expect(numbers, s.id).toEqual(s.id === 'corner' ? [`\\dfrac{2}{15}`] : []);
+      expect(s.text.length, s.id).toBeLessThanOrEqual(130);
+    }
+  });
+
+  it('draws each figure for the back of the class: labels of 18 px at 1366 × 768, beside the cards, none on another', () => {
+    for (const s of asks) {
+      const f = boardFigure(s.figure);
+      expect(f.label, s.id).toBeGreaterThanOrEqual(BOARD_LABEL_PX);
+      // it stands beside the question and its cards on a board of 1280 × 720, with what they need
+      expect(f.width, s.id).toBeLessThanOrEqual(500);
+      expect(f.height, s.id).toBeLessThanOrEqual(480);
+      expect(overlaps(s.figure), s.id).toEqual([]);
+    }
   });
 
   it('draws possible figures: points on their sides, real triangles, the piece trap far from the truth', () => {
@@ -458,6 +536,31 @@ describe('خاصية طالس وحساب الأطوال — the written memo', (
     expect(tent.story).toMatch(/65.*15.*6/);
     expect(write(over(times('15', '26'), '10'))).toBe('39');
     expect(cross.story).toMatch(/10.*15.*26/);
+  });
+
+  it('draws each opening with its figure: the park is the board’s, the tent and the streets to scale, « ? » on the length asked', () => {
+    const [park, tent, cross] = MEMO.openings;
+    expect(park.figure).toBe(FIGURES.park);
+    const dist = (fig, a, b) => Math.hypot(...[0, 1].map((k) => fig.points[a][k] - fig.points[b][k]));
+    const asked = (fig) => fig.segments.filter((x) => x.label === ASKED);
+    for (const o of MEMO.openings) {
+      expect(validateGeoFigure(o.figure), o.id).toEqual([]);
+      expect(asked(o.figure), o.id).toHaveLength(1);
+      expect(overlaps(o.figure), o.id).toEqual([]);
+    }
+    // the tent: the pole is 26 dm (the stick of 6 at 15 from the peg, the pole at 65); the streets: 39 m
+    expect(dist(tent.figure, 'B', 'C')).toBeCloseTo(26, 9);
+    expect(tent.figure.segments.filter((x) => x.label && x.label !== ASKED).map((x) => x.label)).toEqual([
+      '15',
+      '65',
+      '6',
+    ]);
+    expect(dist(cross.figure, 'O', 'D')).toBeCloseTo(39, 9);
+    expect(cross.figure.segments.filter((x) => x.label && x.label !== ASKED).map((x) => x.label)).toEqual([
+      '10',
+      '26',
+      '15',
+    ]);
   });
 
   it('anticipates answers (right and wrong) with a question to check and one to push forward — the wrong ones ARE wrong', () => {

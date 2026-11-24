@@ -164,6 +164,13 @@ extension; and **« الحصّة في صفحة »**, the one page for the desk.
   two rods tried on it, each panel drawn from the exact `rootCourts/logic.js › outcome` — the band in amber, what sticks
   out in violet, green when it rides — and captioned in the world's words (« شريط مساحته بلاطتان », « تعلق: تزيد 11
   بلاطة », agreed by `rootCourts/strings.js › tiles`). `openingFacts` then gives `{ b, kind, covers, diff, r, exact }`.
+- **A geometry opening carries its FIGURE** (2026-11-24, `talis-hisab-atwal`): `figure` is the data of a bank sheet's
+  `statement.figure` (plane: `points` drawn to scale from the opening's numbers, `segments` with their lengths and « ? »
+  on the one asked, `arrows` on the parallels, `rightAngles`, `polygons`), drawn by the practice space's own
+  `components/StatementFigure.jsx` (`MemoFigures.jsx › Geo` — never a second renderer), at its practice width and never
+  narrower than the width where its smallest label reads 12 px (`gameworld/kit/sheetFigure.js`, the exam sitting's
+  rule). An opening with a `figure` draws it whatever its `kind`; `openingFacts` gives `{ a: null, first: { r: null } }`
+  (nothing laid, nothing left). The opening the board plays reuses the station's own figure (`script.js › FIGURES`).
 - Every equality of the memo is re-computed by `lessonMemos.test.js`; the memo never names « وضع القسم ».
 - **The top bar is one calm line**: the lesson, the title, the length of the hour, print, « ملفّ الدرس », « حصّة القسم ».
 - It has no « كرّاسي » block: the teacher's own notes on the lesson are « ملفّ الدرس », in the top bar. Its text is drawn
@@ -367,15 +374,19 @@ the court's own drawing the rod's label under the platform and the difference wr
 fraction rod reads « 23/7 » there (the card beside it has the bar). **The memo figure `court`** (`MemoFigures.jsx ›
 NumCap`) draws a fraction area, rod or difference with a real bar — its captions laid lower and its courts smaller only
 when a fraction is drawn (lesson 1's figures are unchanged, tested in `courtStation.render.test.jsx`).
-**A geometry lesson, NO figure station yet**: `talis-hisab-atwal` (13 stations, 2026-11-24, world « الأهرامات ») is
-`ask` → `ask` → `name` (🔑), `ask` → `ask` → `name` (📐), `ask` → `name` (🦋), `ask` → `ask` → `name` (🔍), two `trace`
-pages, on figures of its own (a park, a roof truss, an easel, two streets at a roundabout, a school yard). The board has
-no station that draws a figure, so each `ask` describes its figure in words and formulas, its cards are LENGTHS
-(`words: { card: 'الطول', held: 'يوافق', fell: 'لا يوافق' }`), and `a` is the right length so that the card drawn as
-filling is exactly the answer (its `board.test.js` re-computes each figure, and each other card as the error it makes:
-the piece, the difference, the crossed partner, k not turned). **Not built — to build before this board is shown to a
-class:** a `figure` station (the board still draws a plank bridge and « a = b × q + r » under each length card), and a
-memo figure kind for its `thales` openings (`MemoFigures.jsx` draws none).
+**A geometry lesson: stations that CARRY their figure** (2026-11-24): `talis-hisab-atwal` (13 stations, world
+« الأهرامات ») is `ask` → `ask` → `name` (🔑), `ask` → `ask` → `name` (📐), `ask` → `name` (🦋), `ask` → `ask` → `name`
+(🔍), two `trace` pages, on figures of its own (a park, a roof truss, an easel, two streets at a roundabout, a school
+yard). Each `ask` carries its `figure` (the data of a bank sheet's `statement.figure`), built in `script.js › FIGURES`
+from the station's own numbers: points to scale (`triangle` from three sides, `along` a side, `crossing` for the
+butterfly), the given lengths written as written, « ? » on the length asked, `arrows` on the parallels; its words say
+only what the figure cannot (the story, the units, the parallel). Its cards are LENGTHS (`words: { card: 'الطول', held:
+'يوافق', fell: 'لا يوافق' }`); it has no `a`: a card agrees when it is the `answer`. Its `board.test.js` re-computes each
+figure (to scale, the parallels parallel, « ? » measured = the answer, the yard's corner perimeter measured), each other
+card as the error it makes (the piece, the difference, the crossed partner, k not turned), and that no two labels meet.
+**Labels on a figure meet nothing**: a label is set outside its triangle with `labelSide` when the layout would put it on
+another line (a short side inside a small corner, the partner across the meeting point) — the test checks label boxes,
+the eyes check labels against lines.
 Lessons 2 and 3 are the reference scripts (`qawasim-adad-tabii` 11 stations, `khawass-qawasim` 13: an `ask` whose answer the
 board COMPUTES, then a `name` step that reads the lesson's own tablet; 1AM `qisma-iqlidiya-baqi` has 14 stations). **Tip, tested:**
 a long `cue` is cut in the footer at 1024 px, so keep it at about 70 characters or fewer, and a tablet's `math` holds at most
@@ -391,7 +402,7 @@ shown in the footer for the teacher. Kinds, each drawn by one component of `Less
 | `bridges` | **experiments**: it chooses a gap and a plank (two big steppers, or a suggested bridge), PREDICTS « يثبت / ينهار » (or builds without predicting), the board builds; the bridge joins « جسور القسم » (the class's evidence, the last 8); a right prediction earns the class a star; the equality $a = b \times q + r$ is written under each bridge |
 | `forge` | **concludes**: its bridges become a table (planks laid, cells left, held or not); it writes a rule with two tiles (the same tiles as the student's rule forge, `ruleForge.js`); the board runs the rule on every line, then ATTACKS it with a gap the class has not built. A rule contradicted by a line, or broken by the attack, goes back to the class — the bridge that broke it joins the evidence. The rule that survives two attacks is sealed « قاعدة القسم صمدت » |
 | `name` | the rule gets its name: the tablet of the lesson (`tablet` = a key of the lesson's own `rules` — its `world/` content, handed to the board by `ClassSessionPage` through `usePackPart(lessonId, 'world')`: **one wording for the student's world and for the board**; before 2026-11-18 the board read the pilot's strings), read aloud by a student the teacher picks or by the teacher; after a `forge` the class's own rule is shown above it. « من يتذكّر؟ » hides the key words (`recall`), never inside a formula: the class says them, a tap shows them |
-| `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five). A card is labelled « لوح » and its verdict is « يثبت / ينهار »; a step whose choices are NOT planks gives its own `words: { card, held, fell }` (`lessonScripts.js › askWords`; a word left out keeps the default) — lesson 4's `deal`, a number of bouquets: « عدد الباقات », « توزَّع كلّها / تبقى زنابق ». A `card` label holds no number (it would need Arabic number agreement: 3 باقات، 12 باقة) |
+| `ask` | one question whose choices are planks (`a` = the gap, `options`, `answer` = the planks that fill it — **a test must compute it**); « نتحقّق بالجسور » builds every choice in one line (bar + equality). **What is drawn under a card is the WORLD's business** (`lessonScripts.js › askProof`): `'bridge'` by default (every lesson before the geometry units), `'none'` when the lesson's world content says `boardAsk: 'none'` (handed by `ClassSessionPage` from `usePackPart(lessonId, 'world')`) — the verdict word only, a card agreeing when it is in `answer` (`askHeld`). **A station may carry a `figure`** (2026-11-24; the SAME data as a bank sheet's `statement.figure`, plane): it is drawn by the practice space's `StatementFigure` at the inline end of the station (`.cs-askstep--figure`, the question and its cards beside it), at the width where its smallest label reads **18 px or more at 1366 × 768** (`boardFigure.js`: the exam sitting's `sheetFigure` size rule with the board's floor `BOARD_LABEL_PX` and the board's zoom), and such a station draws NO bridge under its cards whatever the world; its button reads « نتحقّق بالشكل » and a miss « لننظر إلى الشكل. » (a world `'none'` without a figure: « نتحقّق », « لننظر من جديد. »). Hooks: `data-cs-ask-proof`, `data-cs-figure` (the figure box). `talis-hisab-atwal/board/script.js`. Up to SIX choices stand on ONE row (`.cs-planks[data-many]`, smaller type from five). A card is labelled « لوح » and its verdict is « يثبت / ينهار »; a step whose choices are NOT planks gives its own `words: { card, held, fell }` (`lessonScripts.js › askWords`; a word left out keeps the default) — lesson 4's `deal`, a number of bouquets: « عدد الباقات », « توزَّع كلّها / تبقى زنابق ». A `card` label holds no number (it would need Arabic number agreement: 3 باقات، 12 باقة) |
 | `statements` | sentences judged « صحيح / خطأ » one after the other; each verdict comes with its reason (`proofOf`) |
 | `court` | **a court of « قصر الساحات »** (2026-11-21, `LessonBoard › CourtStation`, logic `lessonScripts.js › courtCards / courtShown / courtWords`): ONE square court drawn by the world's own `Court` (`rootCourts/courtParts.jsx`, its tokens turned for the light board in `classSession.css`), and a column of at most six cards beside it — rods over a given court (`area`, `rods`: « 4,2 », `{ q, label }`, or the wall `{ root, label }`) or courts under a given rod (`rod`, `areas`). A tap on a card holds its platform over the court, dashed (the class predicts aloud); « أنزل المنصّة » lowers it and the world answers — it rides (green), leaves a band (amber), jams (violet), the exact difference written beside the court, a lens on a band too thin to see. A card lowered keeps its verdict (a thumbnail `CourtMini` and « تركب / شريط / تعلق »). `answer` = the cards that ride (**a test computes it** from `courtCards`: `jidhr-tarbii/board/board.test.js`); the proof `after` replaces the question once they were lowered — or once every card was, when none rides (`answer: []`). Its words are the world's, never a plank's; `words` overrides any (`card`, `court`, `ride`, `band`, `jam`, `lower`, `rod`). Hooks: `data-cs-court` (the step), `data-cs-court-card="<key>"` (« 18 », « 7,28 », « √53 », or the area), `data-cs-court-kind` (after lowering), `data-cs-court-lower`, `data-cs-court-on` / `data-cs-court-stage` (the court box), `data-cs-court-rod` (a given rod, before any court), `data-cs-court-shown`, `data-cs-court-after`. `jidhr-tarbii/board/script.js` |
 | `trace` | what goes in the copybook: the keys of the lesson, in the wording just read. A lesson whose tablets are long splits the copybook into SEVERAL `trace` steps of two keys (lesson 2: `trace-1`, `trace-2`). A chain of four `=` or more (« 60 = 1 × 60 = 2 × 30 = … ») takes its own row and a smaller size (`data-long`); a tablet of five items or more shrinks its card (`data-dense`) — never cut, never broken |
@@ -401,7 +412,8 @@ Rules of this screen:
 - **The verdict is what the class sees**: planks drop into the water and the open cells blink, or the child crosses
   (`BoardBridge.jsx`, the shared `KidFigure`). Never « wrong »: a prediction that misses is met by « لماذا؟ », a choice
   that misses by « لننظر إلى الجسور ».
-- **On the board, an `ask`'s `answer` is what FILLS the gap** (2026-11-19): `LessonBoard › Ask` draws every choice as the
+- **On the board, an `ask`'s `answer` is what FILLS the gap** — over a bridge, the default (2026-11-19; a station with a
+  `figure` or a world `'none'` has no gap: its cards agree when they are the `answer`): `LessonBoard › Ask` draws every choice as the
   bridge of the gap and that plank — green when the plank fills it, amber and falling when it does not. So the right choice
   must be a plank that fills `a`: a question whose right answer is a plank that LEAVES cells (« which plank leaves 2? »)
   would show the right answer as a fallen bridge. Ask it the other way round. `qisma-iqlidiya-baqi` re-asked its questions
@@ -522,6 +534,10 @@ API (`/api/v1/teacher`, the three locks of every teacher route): `GET|PUT /class
   fails on any scroll, clipped card, cut oral question or broken formula.
 - Unit, the court station and its memo figure: `courtStation.render.test.jsx` (the cards computed by the world's law, the
   proof's moment, the drawing and its hooks, the figure's agreed words).
+- Unit, a station and a memo opening that draw a geometry figure: `figureStation.render.test.jsx` (the figure drawn by
+  StatementFigure at the board's width, 18 px labels at 1366 × 768, no bridge under its cards once checked, the bridge
+  kept for a station without a figure, a world `'none'`; the memo's figure and its 12 px floor). The default unchanged:
+  the board tests of `natiqa-ghayr-natiqa` and `bahth-pgcd`.
 - Unit, the script: `lessonScripts.test.js` (the order of the rule cards, every example true, a name never before the
   action, every choice and sentence re-computed, the evidence needed to conclude, the class's voice, the recall words).
 

@@ -6,12 +6,13 @@
  * `BoardMemo.jsx` (goal, idea, trap, can, stands, the openings, the phases, the sequence, next) hold no formula; the
  * others may. ONE NUMBER A LINE where a line is data; a sentence is built from them.
  *
- * KNOWN, REPORTED: `MemoFigures.jsx` draws no geometry figure (its kinds are bridge, teams, shelves, tiles, court), so the
- * openings of kind `thales` are described in words only, until a figure kind exists.
+ * Each opening CARRIES its figure (`figure`, the data of a bank sheet's `statement.figure`, drawn by the practice space's
+ * StatementFigure — `MemoFigures.jsx`): the park is the board's own (`script.js › FIGURES`), the tent and the two
+ * streets are drawn here to scale from their numbers, with « ? » on the length asked.
  */
 import { minus, over, plus, read, tex, times, write } from '../../../../../../common/gameworld/kit/exact';
 import { counted } from '../../../../../../common/gameworld/kit/authoring/numbers';
-import { BOARD } from './script';
+import { ASKED, BOARD, FIGURES, OUT, crossing, side } from './script';
 
 const { park: P, roof: R, streets: S, yard: Y } = BOARD;
 const F = (p, q) => `\\dfrac{${p}}{${q}}`;
@@ -49,13 +50,49 @@ const CROSS = {
   OB: '15',
 };
 
-/** The opening situations a teacher may choose from. A `thales` opening is not drawn yet (no memo figure kind). */
+/** The tent: the peg A, the stick [MN] and the pole [BC], both upright; the pole's height is computed, then drawn. */
+const tentPole = w(over(times(TENT.MN, TENT.AB), TENT.AM));
+const at = (x, y = 0) => [Number(write(x)), Number(write(y))];
+const TENT_FIGURE = {
+  points: { A: at(0), M: at(TENT.AM), N: at(TENT.AM, TENT.MN), B: at(TENT.AB), C: at(TENT.AB, tentPole) },
+  segments: [
+    side('A', 'M', TENT.AM),
+    side('A', 'B', TENT.AB, { labelSide: 1 }),
+    side('M', 'N', TENT.MN, { labelSide: 1 }),
+    side('B', 'C', ASKED, { tone: 'indigo', bold: true }),
+    ['A', 'C'],
+  ],
+  rightAngles: [
+    ['A', 'M', 'N'],
+    ['A', 'B', 'C'],
+  ],
+  labels: { N: 'n' },
+  ariaLabel: 'حبل الخيمة [AC]، والعصا [MN] والعمود [BC] شاقوليان',
+};
+/** The two streets crossing at the square O, and the two parallel roads (AB) and (CD) across them. */
+const crossOD = w(over(times(CROSS.OB, CROSS.OC), CROSS.OA));
+const CROSS_FIGURE = {
+  points: crossing({ ...CROSS, OD: crossOD }, 80),
+  segments: [
+    side('O', 'A', CROSS.OA, OUT.OA),
+    side('O', 'C', CROSS.OC, OUT.OC),
+    side('O', 'B', CROSS.OB, OUT.OB),
+    side('O', 'D', ASKED, { tone: 'indigo', bold: true, ...OUT.OD }),
+    side('A', 'B', null, { arrows: 1 }),
+    side('C', 'D', null, { arrows: 1 }),
+  ],
+  labels: { O: 'se' },
+  ariaLabel: 'شارعان يتقاطعان في الساحة O، ونهجان متوازيان (AB) و(CD)',
+};
+
+/** The opening situations a teacher may choose from, each with its figure. */
 const OPENINGS = [
   {
     id: 'park',
     kind: 'thales',
     board: true,
     title: 'ممرّ في الحديقة',
+    figure: FIGURES.park,
     story: `حديقة عمومية على شكل مثلّث أضلاعه ${m(P.AB)} و ${m(P.AC)} و ${m(P.BC)}، يُشقّ فيها ممرّ مستقيم يوازي الضلع الذي طوله ${m(P.BC)}، ويبدأ على بعد ${m(P.AM)} من الرأس.`,
     ask: 'كم طول الممرّ؟ وكيف نعرفه دون أن نقيسه؟',
     why: 'هي وضعية «الدرس على السبّورة»: الأداة التي يعرفها التلميذ من السنة الثالثة، والفخّ الأكبر في التمارين، القسمة على القطعة.',
@@ -66,6 +103,7 @@ const OPENINGS = [
     kind: 'thales',
     board: false,
     title: 'حبل الخيمة',
+    figure: TENT_FIGURE,
     story: `حبل مشدود من رأس عمود خيمة إلى وتد في الأرض يبعد ${TENT.AB} دسم عن أسفل العمود. على بعد ${TENT.AM} دسم من الوتد، عصا شاقولية طولها ${TENT.MN} دسم تلمس الحبل.`,
     ask: 'كم ارتفاع عمود الخيمة؟',
     why: 'تبيّن أنّ العصا والعمود متوازيان لأنّهما شاقوليان: الشرط في الوضعية قبل الحساب.',
@@ -76,6 +114,7 @@ const OPENINGS = [
     kind: 'thales',
     board: false,
     title: 'شارعان يتقاطعان',
+    figure: CROSS_FIGURE,
     story: `شارعان مستقيمان يتقاطعان في ساحة، ويقطعهما نهجان متوازيان، أحدهما من كلّ جهة. من الساحة إلى النهج الأوّل ${m(CROSS.OA)} و ${m(CROSS.OB)} على الشارعين، وإلى النهج الثاني ${m(CROSS.OC)} على الشارع الأوّل.`,
     ask: 'كم مترًا من الساحة إلى النهج الثاني على الشارع الآخر؟',
     why: 'تفتح وضعية الفراشة: الشريك على المستقيم نفسه في الجهة الأخرى.',

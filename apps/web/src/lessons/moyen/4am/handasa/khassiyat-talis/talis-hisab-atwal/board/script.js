@@ -15,11 +15,11 @@
  *   🔍  every length of the yard × one number gives the painted corner — its perimeter too; and from the corner back
  *       to the yard the number is turned upside down.
  *
- * KNOWN, REPORTED (no figure station exists): the board kit has no station that draws a geometry figure. Each question
- * is an `ask` whose figure is described in words and in formulas; its choices are lengths (`words`), and `a` is the
- * right length, so that the card the board draws as « filling » is exactly the answer (`lessonScripts.js › fills`) —
- * but the board still draws a plank bridge and « a = b × q + r » under each card. A `figure` station is to be built
- * before this board is shown to a class.
+ * Each question is an `ask` that CARRIES its figure (`figure`, the data of a bank sheet's `statement.figure`: points
+ * drawn to scale from the station's lengths, its segments, its parallels, its given lengths and « ? » on the one asked),
+ * drawn by the practice space's own StatementFigure; its words say only what the figure cannot (the story, the units,
+ * the parallel). Its choices are lengths (`words`); a card agrees when it is the `answer` — nothing is drawn under a card
+ * but its verdict (`lessonScripts.js › askProof`).
  *
  * The numbers are the board's own — none of the student's world (§3.8), none of the exercise bank, none of another
  * lesson's story (scripts/lesson-bank-numbers.mjs) — and `board.test.js` computes all of them. ONE NUMBER A LINE: a line
@@ -94,8 +94,41 @@ const frac = (x) => {
 const cross = (a, b, c) => `${F(`${tex(a)} \\times ${tex(b)}`, tex(c))} = ${tex(over(times(a, b), c))}`;
 /** The words of a card that is a length (never a plank's « لوح / يثبت / ينهار » — defects.md A10). */
 const LENGTH = { card: 'الطول', held: 'يوافق', fell: 'لا يوافق' };
-/** The choices of an `ask`, in the order written, and the ones that « fill » `a` (the right length only — tested). */
-const ask = (a, options) => ({ a: n(a), options: options.map(n), answer: [n(a)] });
+/** The choices of an `ask`, in the order written, and its answer: the right length only (tested). */
+const ask = (right, options) => ({ options: options.map(n), answer: [n(right)] });
+
+// ── the FIGURES: drawn to scale from the station's own lengths (y up, free units); labels are the lengths as written ──
+/** An exact number of the board as a JS number, for a drawing only (« 2/15 » too). */
+const num = (x) => {
+  const r = read(x);
+  return Number(r.n) / Number(r.d);
+};
+/** A triangle ABC drawn from its three sides: B at the origin, C along the axis, A above (the law of cosines). */
+export const triangle = (AB, AC, BC) => {
+  const [c, b, a] = [AB, AC, BC].map(num);
+  const x = (c * c - b * b + a * a) / (2 * a);
+  return { A: [x, Math.sqrt(c * c - x * x)], B: [0, 0], C: [a, 0] };
+};
+/** The point of [PQ] at the fraction `t` of the way from P (an exact number of the board). */
+export const along = (p, q, t) => [p[0] + (q[0] - p[0]) * num(t), p[1] + (q[1] - p[1]) * num(t)];
+/** Two lines crossing at O (the butterfly): A and C on one, B and D on the other, each across O from its partner. */
+export const crossing = ({ OA, OC, OB, OD }, turn = 70) => {
+  const u = [Math.cos((turn * Math.PI) / 180), Math.sin((turn * Math.PI) / 180)];
+  const on = (v, d) => [v[0] * d, v[1] * d];
+  return { O: [0, 0], A: on(u, num(OA)), C: on(u, -num(OC)), B: [num(OB), 0], D: [-num(OD), 0] };
+};
+/** A side with its length written on it (« ? » for the one asked); `more`: parallel arrows, a side for the label… */
+export const side = (from, to, label, more = {}) => ({
+  from,
+  to,
+  label: label == null ? undefined : String(label),
+  ...more,
+});
+export const ASKED = '?';
+/** The lengths from O of a `crossing`, each written outside its two triangles (never on the other street). */
+export const OUT = { OA: { labelSide: -1 }, OC: { labelSide: -1 }, OB: { labelSide: 1 }, OD: { labelSide: 1 } };
+const PARALLEL = { arrows: 1 };
+const SOUGHT = { arrows: 1, tone: 'indigo', bold: true };
 
 // ── 🔑 the park: the right length, the piece in place of the side, the side less the piece ──
 const pk = {
@@ -143,6 +176,121 @@ const co = { BC: w(over(C.MN, C.k)) };
 const coTimes = w(times(C.MN, C.k));
 const coTop = w(times(C.MN, String(ck.n)));
 
+/** Each station's figure (`ask.figure`), and the memo's opening of the park (`memo.js`). */
+const parkAt = triangle(P.AB, P.AC, P.BC);
+const yardAt = triangle(Y.AB, Y.AC, Y.BC);
+const roofAt = triangle(R.AB, R.AB, R.BC);
+const easelAt = triangle(es.AB, es.AB, es.BC);
+const cornerAt = { B: [0, 0], C: [num(co.BC), 0], A: [num(co.BC) * 0.3, num(co.BC) * 0.62] };
+export const FIGURES = {
+  park: {
+    points: {
+      ...parkAt,
+      M: along(parkAt.A, parkAt.B, over(P.AM, P.AB)),
+      N: along(parkAt.A, parkAt.C, over(P.AM, P.AB)),
+    },
+    segments: [
+      side('A', 'B', P.AB),
+      side('A', 'M', P.AM, { labelSide: -1 }),
+      side('A', 'C', P.AC),
+      side('B', 'C', P.BC, PARALLEL),
+      side('M', 'N', ASKED, SOUGHT),
+    ],
+    ariaLabel: 'حديقة مثلّثة ABC وممرّ [MN] يوازي (BC)',
+  },
+  path: {
+    points: {
+      ...parkAt,
+      P: along(parkAt.A, parkAt.B, over(W.AP, P.AB)),
+      Q: along(parkAt.A, parkAt.C, over(W.AP, P.AB)),
+    },
+    segments: [
+      side('A', 'B', P.AB),
+      side('A', 'P', W.AP, { labelSide: 1 }),
+      side('A', 'C', P.AC),
+      side('A', 'Q', ASKED, { labelSide: -1, tone: 'indigo' }),
+      side('B', 'C', null, PARALLEL),
+      side('P', 'Q', null, SOUGHT),
+    ],
+    ariaLabel: 'الحديقة ABC وممرّ ثانٍ [PQ] يوازي (BC)',
+  },
+  roof: {
+    points: {
+      ...roofAt,
+      E: along(roofAt.B, roofAt.A, over(R.BE, R.AB)),
+      F: along(roofAt.C, roofAt.A, over(R.BE, R.AB)),
+    },
+    segments: [
+      side('A', 'B', R.AB),
+      side('B', 'E', R.BE, { labelSide: -1 }),
+      side('A', 'C', R.AB),
+      side('B', 'C', R.BC, PARALLEL),
+      side('E', 'F', ASKED, { ...SOUGHT, labelSide: -1 }),
+    ],
+    ariaLabel: 'هيكل سقف ABC وعارضة [EF] توازي [BC]',
+  },
+  easel: {
+    points: {
+      ...easelAt,
+      E: along(easelAt.A, easelAt.B, over(E.AE, es.AB)),
+      F: along(easelAt.A, easelAt.C, over(E.AE, es.AB)),
+    },
+    segments: [
+      side('A', 'E', E.AE),
+      side('E', 'B', E.EB),
+      ['A', 'C'],
+      side('E', 'F', E.EF, PARALLEL),
+      side('B', 'C', ASKED, SOUGHT),
+    ],
+    ariaLabel: 'حامل رسم: ساقاه من القمّة A والقضيب [EF] يوازي الأرض (BC)',
+  },
+  streets: {
+    points: crossing({ ...S, OD: st.OD }),
+    segments: [
+      side('O', 'A', S.OA, OUT.OA),
+      side('O', 'C', S.OC, OUT.OC),
+      side('O', 'B', S.OB, OUT.OB),
+      side('O', 'D', ASKED, { tone: 'indigo', bold: true, ...OUT.OD }),
+      side('A', 'B', null, PARALLEL),
+      side('C', 'D', null, PARALLEL),
+    ],
+    labels: { O: 's' },
+    ariaLabel: 'شارعان يتقاطعان في الدوّار O، و(AB) يوازي (CD)',
+  },
+  yard: {
+    points: {
+      ...yardAt,
+      M: along(yardAt.A, yardAt.B, yk),
+      N: along(yardAt.A, yardAt.C, yk),
+    },
+    polygons: [{ points: ['A', 'M', 'N'], tone: 'amber' }],
+    segments: [
+      side('A', 'B', Y.AB),
+      side('A', 'M', Y.AM, { labelSide: 1 }),
+      side('A', 'C', Y.AC),
+      side('B', 'C', Y.BC, PARALLEL),
+      side('M', 'N', null, PARALLEL),
+    ],
+    labels: { M: 's' },
+    ariaLabel: 'ساحة مثلّثة ABC وركن مدهون AMN و(MN) يوازي (BC)',
+  },
+  corner: {
+    points: {
+      ...cornerAt,
+      M: along(cornerAt.A, cornerAt.B, C.k),
+      N: along(cornerAt.A, cornerAt.C, C.k),
+    },
+    polygons: [{ points: ['A', 'M', 'N'], tone: 'amber' }],
+    segments: [
+      ['A', 'B'],
+      ['A', 'C'],
+      side('B', 'C', ASKED, SOUGHT),
+      side('M', 'N', C.MN, { ...PARALLEL, labelSide: 1 }),
+    ],
+    ariaLabel: 'ساحة ABC وركنها المدهون AMN و(MN) يوازي (BC)',
+  },
+};
+
 export const SCRIPT = {
   title: 'خاصية طالس وحساب الأطوال',
   steps: [
@@ -151,7 +299,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'ممرّ في الحديقة',
-      text: `حديقة عمومية على شكل مثلّث $ABC$: $AB = ${P.AB}$ و $AC = ${P.AC}$ و $BC = ${P.BC}$ (بالمتر). يُشقّ فيها ممرّ مستقيم $[MN]$ يوازي $(BC)$، النقطة $M$ من $[AB]$ و $N$ من $[AC]$، و $AM = ${P.AM}$.`,
+      text: 'حديقة عمومية مثلّثة $ABC$ (الأطوال بالمتر)، يُشقّ فيها ممرّ مستقيم $[MN]$ يوازي $(BC)$.',
+      figure: FIGURES.park,
       question: 'كم طول الممرّ؟ اختاروا قبل أن نتحقّق.',
       ...ask(pk.MN, [pkPiece, pk.MN, pkDiff]),
       words: LENGTH,
@@ -163,7 +312,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'ممرّ ثانٍ موازٍ',
-      text: `في الحديقة نفسها، ممرّ ثانٍ يبدأ من النقطة $P$ من $[AB]$ حيث $AP = ${W.AP}$، وينتهي في النقطة $Q$ من $[AC]$. نريده موازيًا لـ $(BC)$.`,
+      text: 'في الحديقة نفسها ممرّ ثانٍ $[PQ]$، من $P$ على $[AB]$ إلى $Q$ على $[AC]$، نريده موازيًا لـ $(BC)$.',
+      figure: FIGURES.path,
       question: 'على أيّ بعد من الرأس توضع نهايته؟',
       ...ask(pa.AQ, [paSame, pa.AQ, paShift]),
       words: LENGTH,
@@ -183,7 +333,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'عارضة في هيكل سقف',
-      text: `هيكل سقف مثلّث $ABC$ قمّته $A$، عارضتاه المائلتان $AB = AC = ${R.AB}$ وعارضة الأرضية $BC = ${R.BC}$ (بالسنتيمتر). عارضة $[EF]$ توازي $(BC)$، والنجّار علّم $E$ من الركن: $BE = ${R.BE}$.`,
+      text: 'هيكل سقف قمّته $A$ (بالسنتيمتر): العارضة $[EF]$ توازي عارضة الأرضية $[BC]$، والنجّار علّم $E$ من الركن $B$.',
+      figure: FIGURES.roof,
       question: 'كم طول العارضة؟',
       ...ask(rf.EF, [rfDiff, rfPiece, rf.EF]),
       words: LENGTH,
@@ -195,7 +346,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'حامل الرسم',
-      text: `حامل رسم خشبي: ساقاه تلتقيان في القمّة $A$، وقضيب أفقيّ $[EF]$ يوازي الأرض $(BC)$. على الساق: $AE = ${E.AE}$ و $EB = ${E.EB}$، وطول القضيب $EF = ${E.EF}$ (بالسنتيمتر).`,
+      text: 'حامل رسم خشبي (بالسنتيمتر): ساقاه تلتقيان في القمّة $A$، والقضيب الأفقيّ $[EF]$ يوازي الأرض $(BC)$.',
+      figure: FIGURES.easel,
       question: 'كم تتباعد القدمان على الأرض؟',
       ...ask(es.BC, [esPiece, esSum, es.BC]),
       words: LENGTH,
@@ -215,7 +367,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'شارعان عند الدوّار',
-      text: `شارعان مستقيمان يتقاطعان في الدوّار $O$: النقط $A$ و $O$ و $C$ على استقامة واحدة، والنقط $B$ و $O$ و $D$ على استقامة واحدة، والشارعان $(AB)$ و $(CD)$ متوازيان. $OA = ${S.OA}$ و $OC = ${S.OC}$ و $OB = ${S.OB}$ (بالمتر).`,
+      text: 'شارعان مستقيمان يتقاطعان في الدوّار $O$ (بالمتر)، ويقطعهما شارعان متوازيان $(AB)$ و $(CD)$.',
+      figure: FIGURES.streets,
       question: 'كم يبعد الركن الرابع عن الدوّار؟',
       ...ask(st.OD, [stCrossed, st.OD, stShift, stSum]),
       words: LENGTH,
@@ -235,7 +388,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'ركن مدهون في الساحة',
-      text: `ساحة مدرسة مثلّثة $ABC$: $AB = ${Y.AB}$ و $AC = ${Y.AC}$ و $BC = ${Y.BC}$ (بالمتر). في ركنها $A$ مثلّث مدهون $AMN$، $M$ من $[AB]$ و $N$ من $[AC]$ و $(MN) \\parallel (BC)$، و $AM = ${Y.AM}$.`,
+      text: 'ساحة مدرسة مثلّثة $ABC$ (بالمتر)، وفي ركنها $A$ مثلّث مدهون $AMN$ و $(MN) \\parallel (BC)$.',
+      figure: FIGURES.yard,
       question: 'نخطّ حول الركن المدهون خطًّا أبيض: كم طوله؟',
       ...ask(yd.P2, [yd.P2, ydRest, ydOne]),
       words: LENGTH,
@@ -247,7 +401,8 @@ export const SCRIPT = {
       kind: 'ask',
       chapter: 'نكتشف',
       title: 'من الركن إلى الساحة',
-      text: `في ساحة أخرى، كلّ طول من المثلّث $ABC$ مضروب في $${frac(C.k)}$ يعطي الطول المقابل في الركن المدهون $AMN$ و $(MN) \\parallel (BC)$. نقيس $MN = ${C.MN}$.`,
+      text: `في ساحة أخرى، كلّ طول من المثلّث $ABC$ مضروب في $${frac(C.k)}$ يعطي الطول المقابل في الركن المدهون $AMN$.`,
+      figure: FIGURES.corner,
       question: 'كم طول الضلع المقابل في الساحة؟',
       ...ask(co.BC, [coTimes, coTop, co.BC]),
       words: LENGTH,
