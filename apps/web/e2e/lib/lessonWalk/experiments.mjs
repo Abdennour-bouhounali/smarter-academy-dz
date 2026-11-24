@@ -4,6 +4,7 @@
 // A kind the library does not know stops the walk with the sentence to write its handler (README « An experiment kind »).
 import { inquiryFits, ownTools, tellsNothing } from './checks.mjs';
 import { calcExperiment, chaseExperiment, roundtripExperiment } from './worlds/rootCourtsExperiments.mjs';
+import { halfturnExperiment, planExperiment, scaleExperiment } from './worlds/nilePyramidsExperiments.mjs';
 
 // ───────────────────────────── the walk's own arithmetic (never the lesson's answers) ─────────────────────────────
 export const gcd = (a, b) => (b ? gcd(b, a % b) : a);
@@ -356,6 +357,10 @@ export const EXPERIMENTS = {
   calc: calcExperiment,
   roundtrip: roundtripExperiment,
   chase: chaseExperiment,
+  // « الأهرامات » (worlds/nilePyramidsExperiments.mjs)
+  plan: planExperiment,
+  halfturn: halfturnExperiment,
+  scale: scaleExperiment,
 };
 
 /** Plays the experiment `spec` on the screen now open; ends on its « next » (a bench: back to its workshop). */
