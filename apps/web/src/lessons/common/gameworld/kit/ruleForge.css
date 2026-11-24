@@ -635,6 +635,28 @@
   font-size: 1.15rem;
 }
 
+/* a CHOICE of the last step (`{ choice, label, options }`, ChoiceToken.jsx — the look `kit-choice`, styles/trainer.css):
+   cyan like the boxes, the picked one filled; its label under it on a one-line step */
+.rf-use .rf-use__choice {
+  display: grid;
+  justify-items: center;
+  --kit-choice-on: #7dfcff;
+  --kit-choice-on-text: #0b1d33;
+  color: #7dfcff;
+}
+.rf-use .kit-choice > button {
+  min-height: 2.6rem;
+  font-size: 1.35rem;
+}
+.rf-uselines:not([data-rf-lines='1']) .rf-use .kit-choice > button {
+  min-height: 2.2rem;
+  font-size: 1.05rem;
+}
+.rf-uselines .rf-use .rf-frac .kit-choice > button {
+  min-height: 1.9rem;
+  font-size: 0.95rem;
+}
+
 @keyframes rf-lay {
   from {
     opacity: 0;

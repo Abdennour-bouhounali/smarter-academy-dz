@@ -23,7 +23,7 @@ final class ClaimVerifier
 {
     public const KINDS = [
         'division', 'product', 'phrase', 'sure', 'containers', 'pair', 'divisors', 'stop', 'divisible',
-        'bracket', 'fullNeeded', 'pgcd', 'coprime', 'commonDivisor', 'fraction',
+        'bracket', 'fullNeeded', 'pgcd', 'coprime', 'commonDivisor', 'fraction', 'scale',
     ];
 
     /** Les nombres admis : des entiers naturels de taille scolaire. */
@@ -178,6 +178,35 @@ final class ClaimVerifier
 
                 return $a * $q === $p * $b && (($c['reduced'] ?? null) === false || self::gcd($p, $q) === 1)
                     && (! array_key_exists('op', $c) || self::isResult($c, $a, $b, $n));
+            case 'scale':
+                // L'ÉCHELLE de deux triangles en position de Thalès : chaque longueur de (1) `from[i]` fois k = p/q donne
+                // sa partenaire de (2) `to[i]` (from[i] × p = to[i] × q, pour chaque paire — 1 à 6 paires) ; toute
+                // écriture de k égale est admise. Les longueurs sont des naturels dans UNE unité commune (42,5 et 68
+                // arrivent en dixièmes : 425 et 680). Avec `says` ('enlargement' ou 'reduction'), le mot de l'élève doit
+                // être celui que donne k : k > 1 un agrandissement, k < 1 une réduction (k = 1 n'est ni l'un ni l'autre).
+                [$p, $q] = [$n('p'), $n('q')];
+                $from = $c['from'] ?? null;
+                $to = $c['to'] ?? null;
+                if ($p === null || $q === null || $p === 0 || $q === 0 || ! is_array($from) || ! is_array($to)
+                    || ! array_is_list($from) || ! array_is_list($to) || count($from) < 1 || count($from) > 6
+                    || count($from) !== count($to)) {
+                    return false;
+                }
+                foreach ([...$from, ...$to] as $x) {
+                    if (! is_int($x) || $x < 1 || $x > self::MAX) {
+                        return false;
+                    }
+                }
+                foreach ($from as $i => $x) {
+                    if ($x * $p !== $to[$i] * $q) {
+                        return false;
+                    }
+                }
+                if (! array_key_exists('says', $c)) {
+                    return true;
+                }
+
+                return $c['says'] === ($p > $q ? 'enlargement' : ($p < $q ? 'reduction' : null)) && $c['says'] !== null;
             default:
                 return false;
         }

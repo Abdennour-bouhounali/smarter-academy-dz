@@ -27,8 +27,11 @@ import {
   testsOf,
   streak,
   sealRecord,
+  boxName,
+  typedDecimal,
 } from './forge';
 import { boxesOf } from './authoring/forgeBlocks';
+import ChoiceToken from './ChoiceToken';
 import './ruleForge.css';
 
 /** The words of the forge itself — the same in every lesson. What speaks of a case is the forge's own `text`. */
@@ -239,7 +242,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const useLines = use ? forge.use.lines(use.c) : [];
   const useSlots = useLines.flatMap((line) => boxesOf(line.tokens));
   const useFilled =
-    use && useSlots.every((t) => (use.vals[t.slot] ?? '') !== '') && (!forge.use.verdict || use.verdict !== null);
+    use && useSlots.every((t) => (use.vals[boxName(t)] ?? '') !== '') && (!forge.use.verdict || use.verdict !== null);
   const checkUse = () => {
     const fb = forge.use.check(use.c, use.vals, use.verdict);
     if (fb === 'ok') {
@@ -699,27 +702,51 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
 
 /**
  * The lines of the last step: tokens read left to right — a printed string, a box `slot(name, label, w)` (its label under
- * it when the step is one line), or a FRACTION `{ frac: { n, d } }` drawn in its own shape: numerator, a real bar,
- * denominator, each printed or typed (forgeBlocks.js › fractionBox / givenFraction; the look `di-frac`,
- * styles/trainer.css). `onType(name, digits)` receives what a box now holds.
+ * it when the step is one line; digits only), a DECIMAL box `slot(name, label, w, { decimal: true })` (digits and one
+ * comma, `inputMode="decimal"`, `data-rf-decimal`), a CHOICE `{ choice, label, options }` (ChoiceToken.jsx — its hooks
+ * `data-kit-choice` / `data-kit-option`), or a FRACTION `{ frac: { n, d } }` drawn in its own shape: numerator, a real bar,
+ * denominator, each printed, typed or chosen (forgeBlocks.js › fractionBox / givenFraction / ratioChoice; the look
+ * `di-frac`, styles/trainer.css). `onType(name, value)` receives what a box now holds, or the id a choice picked.
  */
 export function UseLines({ lines, vals, onType }) {
   const named = lines.length === 1;
+  const input = (t) =>
+    t.choice != null ? (
+      <ChoiceToken
+        name={t.choice}
+        label={t.label}
+        options={t.options}
+        value={vals[t.choice] ?? null}
+        onPick={(id) => onType(t.choice, id)}
+        dir={t.dir ?? 'rtl'}
+      />
+    ) : (
+      <input
+        inputMode={t.decimal ? 'decimal' : 'numeric'}
+        style={{ width: `${(t.w ?? 3) * 0.7 + 0.9}em` }}
+        value={vals[t.slot] ?? ''}
+        onChange={(e) =>
+          onType(t.slot, t.decimal ? typedDecimal(e.target.value, t.w ?? 5) : digits(e.target.value, t.w ?? 3))
+        }
+        aria-label={t.label}
+        data-rf-use={t.slot}
+        data-rf-decimal={t.decimal ? '' : undefined}
+      />
+    );
+  // a choice is never inside a <label>: a click on its words would pick its first option
   const token = (t, key, label) =>
-    typeof t === 'object' ? (
+    typeof t !== 'object' ? (
+      <b key={key}>{t}</b>
+    ) : t.choice != null ? (
+      <span key={key} className="rf-use__choice">
+        {input(t)}
+        {label && <small>{t.label}</small>}
+      </span>
+    ) : (
       <label key={key}>
-        <input
-          inputMode="numeric"
-          style={{ width: `${(t.w ?? 3) * 0.7 + 0.9}em` }}
-          value={vals[t.slot] ?? ''}
-          onChange={(e) => onType(t.slot, digits(e.target.value, t.w ?? 3))}
-          aria-label={t.label}
-          data-rf-use={t.slot}
-        />
+        {input(t)}
         {label && <small>{t.label}</small>}
       </label>
-    ) : (
-      <b key={key}>{t}</b>
     );
   return (
     <div className="rf-uselines" data-rf-lines={lines.length}>
@@ -731,7 +758,7 @@ export function UseLines({ lines, vals, onType }) {
                 key={k}
                 className={`di-frac rf-frac${boxesOf([t]).length ? ' di-frac--typed' : ''}`}
                 dir="ltr"
-                data-rf-frac={[t.frac.n, t.frac.d].map((x) => x.slot ?? x).join('/')}
+                data-rf-frac={[t.frac.n, t.frac.d].map((x) => (typeof x === 'object' ? boxName(x) : x)).join('/')}
               >
                 {token(t.frac.n, 'n', false)}
                 <span className="di-frac__bar" aria-hidden="true" />

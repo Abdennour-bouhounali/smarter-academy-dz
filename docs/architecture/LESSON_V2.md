@@ -95,14 +95,21 @@ The server holds no code of a lesson's game. An answer that counts toward a ال
 the question and what the student wrote) to `POST /lessons/{code}/game-evidence`, and `Domain/GameWorld/ClaimVerifier.php`
 re-computes its verdict from the numbers alone. The kinds of claim (`division`, `product`, `phrase`, `sure`,
 `containers`, `pair`, `divisors`, `stop`, `divisible`, `bracket`, `fullNeeded`, `pgcd`, `coprime`, `commonDivisor`,
-`fraction`) are statements about natural numbers — they belong to no lesson. Each states the WHOLE answer (e.g. `bracket`:
+`fraction`, `scale`) are statements about natural numbers — they belong to no lesson. Each states the WHOLE answer (e.g. `bracket`:
 b × lo ≤ a < b × hi with hi = lo + 1; `fullNeeded`: full = ⌊a ÷ b⌋ and need = ⌈a ÷ b⌉; `pgcd`: g = PGCD(a ; b), a and b
 not both 0; `coprime`: `says` = (PGCD = 1); `commonDivisor`: d ≥ 1 divides a and b — with the option `notOne: true` (2026-11-20, for `awwaliyan-fima-baynahuma`'s
 witness ❌), d ≥ 2: a common divisor OTHER THAN 1, so the answer d = 1 is a false claim; `fraction` (a/b given, p/q written):
 a × q = p × b, b and q > 0, and PGCD(p ; q) = 1 unless `reduced: false` — with the option `op` (2026-11-20, for
 `ikhtizal-kasr`'s « result of a calculation in irreducible form »), the claim also carries the calculation `x/y op z/w`
 (`op` ∈ `'+'`, `'-'`, `'*'`; x, y, z, w naturals ≤ 10^6, y and w > 0) and a/b must EQUAL its result, computed on each side
-(the irreducible forms compared; a negative result is false) — the server then trusts neither the browser's a/b nor p/q). The kinds from `bracket` on admit only naturals ≤ 10^6 on both sides.
+(the irreducible forms compared; a negative result is false) — the server then trusts neither the browser's a/b nor p/q);
+`scale` (2026-11-24, K-c of `PYRAMIDS_WORLD_PLAN.md`, the geometry keys): the lengths of triangle (1) `from` and their
+partners in (2) `to` (1 to 6 pairs, naturals ≥ 1 in ONE unit for the claim — a decimal length is sent in a smaller unit,
+42,5 and 68 as 85 and 136 halves: `kit/claims.js › scaleClaim` reads « 42,5 » exactly and does it), and the student's
+k = p/q (p, q > 0, any equal writing): from[i] × p = to[i] × q for EVERY pair; with `says` (`'enlargement'` |
+`'reduction'`) his word must be the one k gives (k > 1 an enlargement, k < 1 a reduction, k = 1 neither — a present
+`says` that is null or another string is false). A ratio or a fourth proportional is the `fraction` kind, not a new one.
+The kinds from `bracket` on admit only naturals ≤ 10^6 on both sides.
 
 - A lesson says, in its `world/evidence.js`, WHICH claim each of its answers makes and which الكفاءة each key proves
   (`createEvidence({ grade, points })`); the verdict is the kit's `kit/claims.js › verifyClaim`.

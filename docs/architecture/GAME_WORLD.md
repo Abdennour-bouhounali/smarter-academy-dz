@@ -954,10 +954,27 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
   (`khawass-qawasim › noPredictions`, its four forges) and leaves the words of that step (`text.ask`, `fact`, `next`)
   unwritten. (Other v2 lessons still return cases there; on a forge that opens on an experiment the kit has no
   « تنبّأ » phase, so they are computed and never shown.)
-- **Known limit of the kit — the last step (`use`) asks ONE verdict**: besides the typed boxes of `use.lines`, `use.verdict`
-  is a single yes / no (`data-rf-use-verdict`, `RuleForge.jsx`), and `check(case, values, verdict)` receives one boolean. A
-  last step that needs two separate judgements (or a choice among more than two) cannot be written yet: the lesson
-  folds it into boxes, or the kit must grow first.
+- **The last step (`use`) asks ONE verdict** besides its lines: `use.verdict` is a single yes / no
+  (`data-rf-use-verdict`, `RuleForge.jsx`), and `check(case, values, verdict)` receives one boolean. Since 2026-11-24
+  (K-c, `PYRAMIDS_WORLD_PLAN.md`) any other judgement is a CHOICE token of a line (below), as many as the step needs.
+- **The tokens of a `use` line** (2026-11-24, K-c; built by `authoring/forgeBlocks.js`, drawn by `RuleForge.jsx ›
+  UseLines`; `check` receives `{ [name]: text }`):
+
+  | Token | Built with | Drawn | Hooks |
+  |---|---|---|---|
+  | a printed string | `'='`, `'AB'` | `<b>` | — |
+  | a box, digits only | `slot(name, label, w)` | `<input inputMode="numeric">`, w digits | `data-rf-use=<name>` |
+  | a DECIMAL box | `decimalBox(name, label, w = 5)` = `slot(name, label, w, { decimal: true })` | `<input inputMode="decimal">`: digits and ONE comma, a point (or « ٫ ») typed becomes a comma, Eastern digits read as 0–9, w characters with the comma (`forge.js › typedDecimal`) | `data-rf-use=<name>` + `data-rf-decimal` |
+  | a CHOICE | `choiceBox(name, label, options, { dir })` — options strings or `{ id, text }` | `kit/ChoiceToken.jsx`: a radio group of buttons all visible, click or arrows in reading order (← forward on an RTL line), Home / End, Tab enters on the picked one; never inside a `<label>`; its value is the id picked | `data-kit-choice=<name>` (+ `data-kit-chosen=<id>`, '' while none), `data-kit-option=<id>`, `aria-checked` |
+  | a fraction | `fractionBox`, `givenFraction`, `ratioChoice(n, d, options, { dOptions })` (a ratio of segment names: a choice over a real bar over a choice) | stacked, `di-frac` | `data-rf-frac="n/d"` and its parts' hooks |
+
+  A decimal value is TEXT (« 57,5 »): the lesson reads it with `exact.js › read` / `tryRead`, never `Number` (NaN). A
+  box is answered under its `slot`, a choice under its `choice` (`forge.js › boxName`); `boxesOf(tokens)` lists both, a
+  fraction's parts in order. The look of a choice is `kit-choice` (styles/trainer.css — the one place; ruleForge.css
+  sizes it in cyan; ≥ 12 px). `describeForges` reads them: a choice's right value is one of its option ids and EVERY
+  other option must be refused with a sentence of `text.use`; a decimal answer is written `\d+(,\d+)?` and is made
+  wrong by + 100 exactly (« 157,5 »). Tests: `kit/choiceDecimal.render.test.jsx`. Walked by no walk yet (K-c was
+  closed on unit and render tests; the reference walk on `jidhr-tarbii` is plan step 6).
 - **A fraction in the last step is typed in its own shape** (2026-11-20, lesson 8 `ikhtizal-kasr` first): a token
   `{ frac: { n, d } }` of a `use` line, each part a box `slot(…)` or a printed number — built with
   `authoring/forgeBlocks.js › fractionBox(n, d, { w, nw, dw })` (typed) and `givenFraction(n, d)` (printed; never
@@ -966,10 +983,8 @@ predictions (§2ter-1 « A situation lived on the islands ») — opens directly
   holds boxes; `span.di-frac__bar`); its boxes keep `data-rf-use=<name>` and `aria-label` (« البسط » / « المقام »),
   numerator first, no label under them. `kit/ruleForge.css` only sizes them (2.6rem one-line step, 2.1rem on a step of
   several lines) and centres a line that holds one. The boxes of a line are `forgeBlocks.js › boxesOf(tokens)` (a
-  fraction gives its numerator's box, then its denominator's) — the frame reads them so. Tests:
-  `kit/ruleForgeFrac.render.test.jsx`. NOT yet: `authoring/test/suites.js › describeForges` reads a line's boxes as its
-  object tokens — a lesson with fractions hands the suite its lines flattened (`ikhtizal-kasr/world/forges.test.js ›
-  flat`) until the suite reads `boxesOf`; `describeLimits` counts a fraction as ONE object of its line.
+  fraction gives its numerator's box, then its denominator's) — the frame and `describeForges` read them so. Tests:
+  `kit/ruleForgeFrac.render.test.jsx`. `describeLimits` counts a fraction as ONE object of its line.
 - **A case that is a FRACTION** (lesson 8): drawn as a `pair` — `{ a: the whole, b: its lit stretch, d: the plank laid
   on both }` — with its own `head` (an isolated LTR run, « 66/78 → 33/39 »): `forgeParts.jsx › Line` then names the
   pair by that head, never « 78 و 66 لوح 6 ».
@@ -1958,7 +1973,8 @@ state line under the tables):
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
 | `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |
-| `claims.js` (+ test) | the kinds of claim a game answer can make and `verifyClaim` — the browser's copy of the server's `ClaimVerifier` (one fixture) | — |
+| `claims.js` (+ test) | the kinds of claim a game answer can make and `verifyClaim` — the browser's copy of the server's `ClaimVerifier` (one fixture; the kinds are listed in `LESSON_V2.md` §1bis, the last one `scale`); `scaleClaim` builds a `scale` claim from decimal lengths | — |
+| `ChoiceToken.jsx` | a CHOICE inside a written answer: a radio group of buttons (the forge's last step, the trainer's form) | — |
 | `forge.js`, `RuleForge.jsx`, `ruleForge.css` | « مصهر القاعدة »: the frame of a rule forge (pure) and its screen — predict, write the rule with tiles, the mirror tests and attacks it, seal, use (§2sexies) | `forges` (one description per key) and the world's `parts` |
 | `parts.jsx` | a formula, the toast, the robot's bubble, the touch stick, a card over the world, three stars, a box for a number | — |
 | `styles/` | eleven style sheets, one per screen (`world`, `practice`, `knowledge`, `cases`, `trainer`, `paper`, `steps`, `knowledgeJourney`, `fit`, `spaces`, `phone`), imported by `styles/index.js` **in the order of the cascade** — `fit.css` and `phone.css` override the others, so a new sheet takes its place in that list and is never imported from a screen. Classes `di-…` | — |
@@ -2060,6 +2076,13 @@ A lesson declares its content in ONE `lesson.pack.js` (`LESSON_V2.md` §1, 2026-
 - a trainer question is a `tap` (`options`), a true / false (`statement`, `truth`, `reasons?`), or a `form` — lines of
   tokens: a string, `{ strong }`, `{ text, rtl? }`, `{ num, label }`, `{ choice, options }`, `{ frac: { n, d } }` —
   `kit/trainer.js`, drawn by `kit/Trainer.jsx › FormLines`.
+  **A decimal box and a choice as buttons** (2026-11-24, K-c): `{ num, label, decimal: true, w? }` takes digits and ONE
+  comma (« 77,5 »; a point typed becomes a comma; w characters, default 5; hooks `data-di-tr=<num>` +
+  `data-di-tr-decimal`) — every box without `decimal` is unchanged (digits only, `Num` w = 3). `{ choice, options,
+  buttons: true }` draws the choice with `kit/ChoiceToken.jsx` (buttons all visible, keyboard and click; hooks
+  `data-kit-choice=<choice>`, `data-kit-option=<id or value>`; its options left to right inside a fraction) and sets the
+  option's `value` as the list does; without `buttons` the choice stays the `<select data-di-tr>` it always was (the
+  walks drive it with `selectOption`). Both may stand inside a `{ frac }`.
   **The fraction template** (2026-11-20, lesson 8 `ikhtizal-kasr` first): ONE token `{ frac: { n, d } }`, `n` and `d`
   each a box `{ num, label }` (typed) or a printed number / string (a fraction GIVEN by the statement — never `'66/78'`
   as text). It is drawn stacked: `span.di-frac` (`dir="ltr"`, `data-di-frac`, `di-frac--typed` when it holds boxes)

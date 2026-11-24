@@ -256,6 +256,61 @@
   height: 2.15rem;
   font-size: 1.2rem;
 }
+/* ───────── a CHOICE inside a written answer (ChoiceToken.jsx): buttons all visible, one picked ─────────
+   THE ONE PLACE of this look in the kit (2026-11-24, K-c): the trainer's form (`{ choice, options, buttons: true }`) and the
+   forge's last step (`{ choice, label, options }`). The border follows the text (currentColor), so it reads on the white
+   sheet and on a dark panel; a screen sizes it and sets the picked colours. Never under 12 px. */
+.kit-choice {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  vertical-align: middle;
+  unicode-bidi: isolate;
+}
+.kit-choice > button {
+  min-height: 2.2rem;
+  padding: 0 0.7rem;
+  border: 2px solid currentColor;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: inherit;
+  font:
+    800 max(var(--di-min-font, 12px), 1.05rem) 'Cairo',
+    sans-serif;
+  line-height: 1.2;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.78;
+}
+.kit-choice > button:hover:not(:disabled),
+.kit-choice > button:focus-visible {
+  opacity: 1;
+  outline: 3px solid rgba(251, 191, 36, 0.6);
+  outline-offset: 1px;
+}
+/* the picked one is filled: ink on the white sheet; a dark panel sets --kit-choice-on and --kit-choice-on-text */
+.kit-choice > button.is-on {
+  opacity: 1;
+  background: var(--kit-choice-on, #1e293b);
+  box-shadow: none;
+  border-color: var(--kit-choice-on, #1e293b);
+  color: var(--kit-choice-on-text, #fff);
+}
+.kit-choice > button:disabled {
+  cursor: default;
+}
+/* inside a fraction (a segment name over the bar): smaller, on one row */
+.di-frac .kit-choice {
+  flex-wrap: nowrap;
+  gap: 0.2rem;
+}
+.di-frac .kit-choice > button {
+  min-height: 1.9rem;
+  padding: 0 0.4rem;
+  font-size: max(var(--di-min-font, 12px), 0.95rem);
+}
 .di-sheet__reasons {
   display: grid;
   gap: 0.3rem;

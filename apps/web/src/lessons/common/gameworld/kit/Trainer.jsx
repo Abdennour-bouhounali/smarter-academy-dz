@@ -15,6 +15,8 @@ import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { useLesson } from './LessonContext';
 import { sessionStars, SESSION } from './trainer';
+import { typedDecimal } from './forge';
+import ChoiceToken from './ChoiceToken';
 import { PaperGate, PaperModel, PaperChip, PT } from './Paper';
 import { twin } from './longDivision';
 import { guardEvidence } from './evidence';
@@ -60,18 +62,32 @@ const L = {
 };
 /** The value an option is known by in the page: its `id`, or its value written out. */
 const idOf = (option) => option.id ?? String(option.value);
-const Num = ({ value, onChange, w = 3, ...rest }) => (
-  <input
-    className="di-num di-num--tr"
-    dir="ltr"
-    inputMode="numeric"
-    pattern="[0-9]*"
-    value={value}
-    style={{ width: `${w + 1.4}ch` }}
-    onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, '').slice(0, w + 1))}
-    {...rest}
-  />
-);
+/** A box: digits only (w + 1 at most) — or, `decimal`, digits and ONE comma (« 77,5 », a point typed becomes a comma;
+ * at most w characters, default 5): the lesson reads it with `exact.js › read`. */
+const Num = ({ value, onChange, w = 3, decimal = false, ...rest }) =>
+  decimal ? (
+    <input
+      className="di-num di-num--tr"
+      dir="ltr"
+      inputMode="decimal"
+      value={value}
+      style={{ width: `${w + 1.4}ch` }}
+      onChange={(e) => onChange(typedDecimal(e.target.value, w))}
+      data-di-tr-decimal=""
+      {...rest}
+    />
+  ) : (
+    <input
+      className="di-num di-num--tr"
+      dir="ltr"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      value={value}
+      style={{ width: `${w + 1.4}ch` }}
+      onChange={(e) => onChange(e.target.value.replace(/[^0-9]/g, '').slice(0, w + 1))}
+      {...rest}
+    />
+  );
 
 export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence }) {
   const { makeSession, check, solution, answerLabel, evidenceOf } = useLesson().trainer;
@@ -302,24 +318,68 @@ const boxesOf = (t) => (isFrac(t) ? [t.frac.n, t.frac.d].filter(isBox) : isBox(t
  *   'text'                       a sign or words (on an `ltr` line: a sign of the formula);
  *   { strong } · { text, rtl? }  a printed number · a printed piece;
  *   { num, label }               a box to type a whole number in (`data-di-tr=<num>`);
+ *   { num, label, decimal, w? }  a DECIMAL box: digits and one comma, « 77,5 » (a point typed becomes a comma; w
+ *                                characters, default 5; the same hook, plus `data-di-tr-decimal`) — read it with
+ *                                `exact.js › read`, never `Number`;
  *   { choice, options }          a list to choose from (`data-di-tr=<choice>`);
+ *   { choice, options, buttons } the same choice as buttons all visible (ChoiceToken.jsx: keyboard and click; hooks
+ *                                `data-kit-choice=<choice>`, `data-kit-option=<id or value>`) — also inside a fraction;
  *   { frac: { n, d } }           a FRACTION in its own shape: n stacked over a real bar over d, each a box `{ num, label }`
  *                                (typed — the same hook `data-di-tr=<num>`, numerator first in the keyboard order) or a
  *                                printed number / string (a fraction GIVEN by the statement). It is one answer in its
  *                                shape: on a line it counts as ONE (describeTrainer, defects.md B17).
  */
 export function FormLines({ lines, v, set, locked }) {
-  const box = (t, key) => (
-    <Num
-      key={key}
-      value={v[t.num] ?? ''}
-      onChange={set(t.num)}
-      disabled={locked}
-      aria-label={t.label}
-      data-di-tr={t.num}
-    />
-  );
-  const part = (x, key) => (isBox(x) ? box(x, key) : <b key={key}>{x}</b>);
+  // a choice drawn as buttons (`buttons: true`, ChoiceToken.jsx — inside a fraction its options read left to right) or,
+  // by default, the list it always was
+  const choice = (t, key, inFrac = false) => {
+    const chosen = t.options.find((o) => o.value === v[t.choice]);
+    if (t.buttons)
+      return (
+        <ChoiceToken
+          key={key}
+          name={t.choice}
+          label={t.label}
+          options={t.options.map((o) => ({ id: idOf(o), text: o.text }))}
+          value={chosen ? idOf(chosen) : null}
+          onPick={(id) => set(t.choice)(t.options.find((o) => idOf(o) === id)?.value ?? null)}
+          disabled={locked}
+          dir={t.dir ?? (inFrac ? 'ltr' : 'rtl')}
+        />
+      );
+    return (
+      <select
+        key={key}
+        value={chosen ? idOf(chosen) : ''}
+        onChange={(e) => set(t.choice)(t.options.find((o) => idOf(o) === e.target.value)?.value ?? null)}
+        disabled={locked}
+        data-di-tr={t.choice}
+      >
+        <option value="">{L.pick}</option>
+        {t.options.map((o) => (
+          <option key={idOf(o)} value={idOf(o)}>
+            {o.text}
+          </option>
+        ))}
+      </select>
+    );
+  };
+  const box = (t, key, inFrac = false) => {
+    if (t.choice) return choice(t, key, inFrac);
+    const extra = t.decimal ? { decimal: true, w: t.w ?? 5 } : {};
+    return (
+      <Num
+        key={key}
+        value={v[t.num] ?? ''}
+        onChange={set(t.num)}
+        disabled={locked}
+        aria-label={t.label}
+        data-di-tr={t.num}
+        {...extra}
+      />
+    );
+  };
+  const part = (x, key) => (isBox(x) ? box(x, key, true) : <b key={key}>{x}</b>);
   const token = (t, i, ltr) => {
     if (typeof t === 'string') return ltr ? <span key={i}>{t}</span> : <Fragment key={i}>{t} </Fragment>;
     if (isFrac(t)) {
@@ -345,24 +405,7 @@ export function FormLines({ lines, v, set, locked }) {
           {t.text}
         </span>
       );
-    if (t.num) return box(t, i);
-    const chosen = t.options.find((o) => o.value === v[t.choice]);
-    return (
-      <select
-        key={i}
-        value={chosen ? idOf(chosen) : ''}
-        onChange={(e) => set(t.choice)(t.options.find((o) => idOf(o) === e.target.value)?.value ?? null)}
-        disabled={locked}
-        data-di-tr={t.choice}
-      >
-        <option value="">{L.pick}</option>
-        {t.options.map((o) => (
-          <option key={idOf(o)} value={idOf(o)}>
-            {o.text}
-          </option>
-        ))}
-      </select>
-    );
+    return box(t, i);
   };
   return lines.map((line, k) => (
     <div key={k} className="di-sheet__line" dir={line.ltr ? 'ltr' : undefined}>

@@ -17,7 +17,8 @@
  * Usage and a skeleton of every test file: `authoring/README.md`. Proved on two real lessons: `authoring/proof.*.test.js`.
  */
 import { describe, it, expect } from 'vitest';
-import { complete, ruleKey, runOn, testsOf } from '../../forge';
+import { boxName, complete, ruleKey, runOn, testsOf } from '../../forge';
+import { plus, tryRead, write } from '../../exact';
 import { verifyClaim } from '../../claims';
 import { guardEvidence } from '../../evidence';
 import { rng } from '../../random';
@@ -709,21 +710,46 @@ export function describeForges(opts) {
             const lines = F.use.lines(c);
             expect(lines.length).toBeGreaterThanOrEqual(1);
             expect(lines.length).toBeLessThanOrEqual(4);
-            // a typed fraction (`fractionBox`) gives its numerator's box, then its denominator's (lesson 8)
+            // a typed fraction (`fractionBox`) gives its numerator's box, then its denominator's (lesson 8); a box is
+            // answered under its `slot`, a choice (`choiceBox`) under its `choice` (forge.js › boxName)
             const boxes = lines.flatMap((l) => boxesOf(l.tokens));
-            expect(boxes.map((t) => t.slot).sort()).toEqual(Object.keys(vals).sort());
-            for (const t of boxes) expect(String(vals[t.slot]).length, t.slot).toBeLessThanOrEqual(t.w);
+            expect(boxes.map(boxName).sort()).toEqual(Object.keys(vals).sort());
+            for (const t of boxes)
+              if (t.choice != null)
+                expect(
+                  t.options.map((o) => o.id),
+                  t.choice,
+                ).toContain(vals[t.choice]);
+              else if (t.decimal) {
+                // a decimal box: what the student types — digits and one comma, never a point
+                expect(String(vals[t.slot]), t.slot).toMatch(/^\d+(,\d+)?$/);
+                expect(String(vals[t.slot]).length, t.slot).toBeLessThanOrEqual(t.w);
+              } else expect(String(vals[t.slot]).length, t.slot).toBeLessThanOrEqual(t.w);
+            const words = (t) =>
+              typeof t === 'string' ? [t] : [t.label, ...(t.choice != null ? t.options.map((o) => o.text) : [])];
             for (const l of lines)
               for (const t of l.tokens)
-                if (t?.frac) for (const x of [t.frac.n, t.frac.d]) plain(typeof x === 'string' ? x : x.label);
-                else plain(typeof t === 'string' ? t : t.label);
+                if (t?.frac) for (const x of [t.frac.n, t.frac.d]) words(x).forEach(plain);
+                else words(t).forEach(plain);
             const asText = Object.fromEntries(Object.entries(vals).map(([k, v]) => [k, String(v)]));
             expect(F.use.check(c, asText, verdict)).toBe('ok');
             said(F.text.tryKey(c));
+            // each answer wrong in turn: a number off by 100 (a decimal stays a decimal: « 157,5 »), every OTHER option
+            // of a choice — each must be refused, with a sentence of `text.use`
+            const box = Object.fromEntries(boxes.map((t) => [boxName(t), t]));
             for (const name of Object.keys(vals)) {
-              const fb = F.use.check(c, { ...asText, [name]: String(Number(vals[name]) + 100) }, verdict);
-              expect(fb, `${key} ${name}`).not.toBe('ok');
-              expect(typeof F.text.use[fb], `${key} text.use.${fb}`).toBe('string');
+              const t = box[name];
+              const wrong =
+                t?.choice != null
+                  ? t.options.map((o) => o.id).filter((id) => id !== vals[name])
+                  : t?.decimal && tryRead(vals[name])
+                    ? [write(plus(tryRead(vals[name]), 100))]
+                    : [String(Number(vals[name]) + 100)];
+              for (const w of wrong) {
+                const fb = F.use.check(c, { ...asText, [name]: w }, verdict);
+                expect(fb, `${key} ${name} = ${w}`).not.toBe('ok');
+                expect(typeof F.text.use[fb], `${key} text.use.${fb}`).toBe('string');
+              }
             }
             const p = pairOf(c);
             if (p) expect(bankSet.has(pairKey(...p)), `${key} last step ${p}: a pair of the bank`).toBe(false);
