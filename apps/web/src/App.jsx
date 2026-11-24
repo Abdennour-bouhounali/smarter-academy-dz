@@ -384,6 +384,8 @@ function AppRoutes() {
           <Route path="livres" element={<AdminBookCatalog />} />
           <Route path="livres/commandes" element={<AdminBookOrders />} />
           <Route path="livres/commandes/:id" element={<AdminBookOrderDetail />} />
+          <Route path="livres/livrees" element={<AdminBookOrders key="delivered" view="delivered" />} />
+          <Route path="livres/retours" element={<AdminBookOrders key="returned" view="returned" />} />
           <Route path="livres/messages" element={<AdminBookMessages />} />
         </Route>
       </Route>

@@ -12,36 +12,39 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * à l'appel de confirmation) et les paiements sont des lignes — une valeur
  * stockée serait fausse dès le premier changement. Le frais lui-même est figé à
  * la commande par le tarif du transporteur (DeliveryFees) quand un mode est choisi.
+ *
+ * Deux états indépendants, corrigibles librement (2026-11-24) : l'appel
+ * (`call_status`) et le colis (`delivery_status`, NULL tant qu'il n'est pas expédié).
  */
 class BookOrder extends Model
 {
-    public const PENDING = 'pending';
+    // L'appel de confirmation (call_status).
+    public const CALL_NEW = 'new';
 
-    public const CONFIRMED = 'confirmed';
+    public const CALL_CONTACTED = 'contacted';
 
-    public const IN_WAY = 'in_way';
+    public const CALL_NO_ANSWER = 'no_answer';
+
+    public const CALL_CONFIRMED = 'confirmed';
+
+    public const CALL_CANCELLED = 'cancelled';
+
+    public const CALL_STATUSES = [self::CALL_NEW, self::CALL_CONTACTED, self::CALL_NO_ANSWER, self::CALL_CONFIRMED, self::CALL_CANCELLED];
+
+    // Le colis (delivery_status) ; NULL = pas encore expédié.
+    public const SHIPPED = 'shipped';
+
+    public const IN_TRANSIT = 'in_transit';
 
     public const DELIVERED = 'delivered';
 
     public const RETURNED = 'returned';
 
-    public const CANCELLED = 'cancelled';
-
-    public const STATUSES = [self::PENDING, self::CONFIRMED, self::IN_WAY, self::DELIVERED, self::RETURNED, self::CANCELLED];
-
-    /** @var array<string, array<int, string>> */
-    public const TRANSITIONS = [
-        self::PENDING => [self::CONFIRMED, self::CANCELLED],
-        self::CONFIRMED => [self::IN_WAY, self::CANCELLED],
-        self::IN_WAY => [self::DELIVERED, self::RETURNED],
-        self::DELIVERED => [self::RETURNED],
-        self::RETURNED => [],
-        self::CANCELLED => [],
-    ];
+    public const DELIVERY_STATUSES = [self::SHIPPED, self::IN_TRANSIT, self::DELIVERED, self::RETURNED];
 
     protected $fillable = [
         'reference', 'book_id', 'customer_name', 'phone', 'email', 'wilaya', 'commune',
-        'address', 'customer_note', 'quantity', 'unit_price', 'delivery_fee', 'delivery_mode', 'status', 'admin_note',
+        'address', 'customer_note', 'quantity', 'unit_price', 'delivery_fee', 'delivery_mode', 'call_status', 'delivery_status', 'admin_note',
     ];
 
     protected function casts(): array
@@ -99,8 +102,15 @@ class BookOrder extends Model
         };
     }
 
-    public function canMoveTo(string $status): bool
+    /** Une commande vivante : ni annulée à l'appel, ni retournée. */
+    public function isLive(): bool
     {
-        return in_array($status, self::TRANSITIONS[$this->status] ?? [], true);
+        return $this->call_status !== self::CALL_CANCELLED && $this->delivery_status !== self::RETURNED;
+    }
+
+    /** Seule une commande annulée ou retournée peut être supprimée. */
+    public function isDeletable(): bool
+    {
+        return ! $this->isLive();
     }
 }

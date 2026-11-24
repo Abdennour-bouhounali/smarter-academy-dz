@@ -82,10 +82,10 @@ class BookStoreController extends Controller
             // Le frais est CALCULÉ ici par le tarif du transporteur, jamais lu du client.
             'delivery_mode' => $mode,
             'delivery_fee' => DeliveryFees::fee($data['wilaya'], $mode),
-            'status' => BookOrder::PENDING,
+            'call_status' => BookOrder::CALL_NEW,
         ]);
 
-        BookOrderEvent::create(['book_order_id' => $order->id, 'type' => 'created', 'to_value' => BookOrder::PENDING]);
+        BookOrderEvent::create(['book_order_id' => $order->id, 'type' => 'created', 'to_value' => BookOrder::CALL_NEW]);
 
         // Notification « طلب جديد » aux appareils de la librairie — APRÈS la réponse : le client
         // n'attend jamais l'envoi, et une panne d'envoi ne touche pas sa commande.

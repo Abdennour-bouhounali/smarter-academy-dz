@@ -186,10 +186,20 @@ class BookStoreTest extends TestCase
         $id = BookOrder::firstOrFail()->id;
         $h = ['Authorization' => 'Bearer '.$this->admin()];
 
-        // Transition interdite : pending → delivered.
-        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['status' => 'delivered'])->assertStatus(422);
-        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['status' => 'confirmed'])->assertOk();
-        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['status' => 'in_way'])->assertOk();
+        // Deux états libres : l'appel et le colis. Une valeur inconnue est refusée.
+        $this->withHeaders($h)->getJson("/api/v1/admin/book-orders/$id")->assertJsonPath('order.callStatus', 'new')->assertJsonPath('order.deliveryStatus', null);
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['callStatus' => 'pending'])->assertStatus(422);
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", [])->assertStatus(422);
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['callStatus' => 'no_answer'])->assertOk()->assertJsonPath('order.callStatus', 'no_answer');
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['callStatus' => 'confirmed'])->assertOk();
+        // Un clic erroné se corrige : « livrée » puis retour à « en livraison ».
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['deliveryStatus' => 'delivered'])->assertOk();
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['deliveryStatus' => 'in_transit'])->assertOk()
+            ->assertJsonPath('order.deliveryStatus', 'in_transit')->assertJsonPath('order.callStatus', 'confirmed');
+        // Filtres par état.
+        $this->withHeaders($h)->getJson('/api/v1/admin/book-orders?deliveryStatus=in_transit')->assertJsonPath('total', 1);
+        $this->withHeaders($h)->getJson('/api/v1/admin/book-orders?deliveryStatus=none')->assertJsonPath('total', 0);
+        $this->withHeaders($h)->getJson('/api/v1/admin/book-orders?callStatus=new')->assertJsonPath('total', 0);
 
         // Le frais est fixé après coup et entre dans le total.
         $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id", ['deliveryFee' => 600])
@@ -202,14 +212,17 @@ class BookStoreTest extends TestCase
         // Remboursement au-delà de l'encaissé : refusé.
         $this->withHeaders($h)->postJson("/api/v1/admin/book-orders/$id/payments", ['kind' => 'refund', 'amount' => 9999, 'method' => 'ccp'])->assertStatus(422);
 
-        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['status' => 'delivered'])->assertOk();
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['deliveryStatus' => 'delivered'])->assertOk();
         $stats = $this->withHeaders($h)->getJson('/api/v1/admin/book-orders/stats')->assertOk();
-        $stats->assertJsonPath('collected', 3400)->assertJsonPath('deliveredRevenue', 3400)->assertJsonPath('toCollect', 0)->assertJsonPath('copiesDelivered', 2);
+        $stats->assertJsonPath('byCall.confirmed', 1)->assertJsonPath('byDelivery.delivered', 1)
+            ->assertJsonPath('collected', 3400)->assertJsonPath('deliveredRevenue', 3400)->assertJsonPath('toCollect', 0)->assertJsonPath('copiesDelivered', 2);
 
         $detail = $this->withHeaders($h)->getJson("/api/v1/admin/book-orders/$id")->assertOk();
         $this->assertGreaterThanOrEqual(5, count($detail->json('order.events')));
-        // Une commande livrée ne se supprime pas.
+        // Une commande livrée ne se supprime pas ; retournée, si.
         $this->withHeaders($h)->deleteJson("/api/v1/admin/book-orders/$id")->assertStatus(422);
+        $this->withHeaders($h)->patchJson("/api/v1/admin/book-orders/$id/status", ['deliveryStatus' => 'returned'])->assertOk();
+        $this->withHeaders($h)->deleteJson("/api/v1/admin/book-orders/$id")->assertOk();
     }
 
     public function test_un_eleve_n_atteint_pas_l_admin_librairie(): void

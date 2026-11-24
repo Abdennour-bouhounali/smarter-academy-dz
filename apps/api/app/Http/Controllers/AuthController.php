@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -185,12 +186,27 @@ class AuthController extends Controller
         ], 401);
     }
 
+    /** Âge à partir duquel `/auth/me` renouvelle le jeton d'un compte du tableau de bord. */
+    public const DASHBOARD_TOKEN_RENEW_AFTER_DAYS = 7;
+
     public function me(Request $request)
     {
-        return response()->json([
-            'success' => true,
-            'user' => UserPresenter::format($request->user()),
-        ]);
+        $user = $request->user();
+        $response = ['success' => true, 'user' => UserPresenter::format($user)];
+
+        // Le tableau de bord installé sur le téléphone (admin, « مسيّر المكتبة ») ne doit pas
+        // redemander la connexion : un jeton expire 30 jours après sa CRÉATION (sanctum.expiration),
+        // même utilisé chaque jour. Ouvrir l'application avec un jeton de plus de 7 jours en
+        // délivre un neuf (glissant). L'ancien n'est PAS révoqué : un appel déjà parti avec lui
+        // ne doit pas recevoir un 401 qui fermerait la session ; il expire seul.
+        $current = $user->currentAccessToken();
+        if (in_array($user->role, [User::ROLE_ADMIN, User::ROLE_BOOK_MANAGER], true)
+            && $current instanceof PersonalAccessToken
+            && $current->created_at?->lte(now()->subDays(self::DASHBOARD_TOKEN_RENEW_AFTER_DAYS))) {
+            $response['token'] = $user->createToken($user->role.'-token')->plainTextToken;
+        }
+
+        return response()->json($response);
     }
 
     public function logout(Request $request)

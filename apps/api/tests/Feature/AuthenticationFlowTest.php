@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Domain\Identity\EmailVerificationLink;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -211,7 +212,7 @@ class AuthenticationFlowTest extends TestCase
             ->assertJsonPath('emailVerified', false);
 
         $user = User::where('email', 'onboarding@example.com')->firstOrFail();
-        $this->get(\App\Domain\Identity\EmailVerificationLink::for($user))
+        $this->get(EmailVerificationLink::for($user))
             ->assertRedirect(config('app.frontend_url').'/verification-email?statut=succes');
 
         // Le garde d'authentification mémorise l'utilisateur qu'il a résolu,
@@ -347,5 +348,35 @@ class AuthenticationFlowTest extends TestCase
         $response = $this->get('/api/v1/contact');
 
         $response->assertStatus(401);
+    }
+
+    public function test_me_renews_an_old_dashboard_token_but_not_a_fresh_one_nor_a_student_s(): void
+    {
+        $manager = User::factory()->create(['role' => User::ROLE_BOOK_MANAGER]);
+        $student = User::factory()->create(['role' => 'student']);
+
+        // Un jeton récent : rien de neuf.
+        $fresh = $manager->createToken('book_manager-token')->plainTextToken;
+        $this->withHeaders(['Authorization' => "Bearer $fresh"])->getJson('/api/v1/auth/me')
+            ->assertOk()->assertJsonMissingPath('token');
+
+        // Un jeton de 8 jours : un neuf, utilisable, et l'ancien reste valide.
+        $old = $manager->createToken('book_manager-token');
+        $old->accessToken->forceFill(['created_at' => now()->subDays(8)])->save();
+        $this->app['auth']->forgetGuards();
+        $renewed = $this->withHeaders(['Authorization' => 'Bearer '.$old->plainTextToken])->getJson('/api/v1/auth/me')
+            ->assertOk()->json('token');
+        $this->assertIsString($renewed);
+        $this->app['auth']->forgetGuards();
+        $this->withHeaders(['Authorization' => "Bearer $renewed"])->getJson('/api/v1/auth/me')->assertOk()->assertJsonPath('user.role', 'book_manager');
+        $this->app['auth']->forgetGuards();
+        $this->withHeaders(['Authorization' => 'Bearer '.$old->plainTextToken])->getJson('/api/v1/auth/me')->assertOk();
+
+        // Un élève n'est pas concerné.
+        $this->app['auth']->forgetGuards();
+        $s = $student->createToken('student-token');
+        $s->accessToken->forceFill(['created_at' => now()->subDays(8)])->save();
+        $this->withHeaders(['Authorization' => 'Bearer '.$s->plainTextToken])->getJson('/api/v1/auth/me')
+            ->assertOk()->assertJsonMissingPath('token');
     }
 }

@@ -1,7 +1,6 @@
 import {
   LayoutDashboard, BarChart3, BookOpen, Flag, Users, KeyRound, Package,
-  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, UserCheck, GraduationCap, School, Building2, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame,
-} from 'lucide-react';
+  UserCog, ScrollText, Library, ShoppingBag, MessageSquare, UserCheck, GraduationCap, School, Building2, BadgeCheck, Inbox, CreditCard, SlidersHorizontal, Flame, PackageCheck, Undo2 } from 'lucide-react';
 
 /**
  * L'arborescence du panneau d'administration (spec §4).
@@ -116,6 +115,9 @@ export const adminNavSections = [
     roles: BOOKS_ROLES,
     links: [
       { labelKey: 'nav.booksOrders', path: '/admin/livres/commandes', icon: ShoppingBag, roles: BOOKS_ROLES },
+      // Pages dédiées : la même liste, l'état du colis fixé (BOOKS_STORE.md §4).
+      { labelKey: 'nav.booksDelivered', path: '/admin/livres/livrees', icon: PackageCheck, roles: BOOKS_ROLES },
+      { labelKey: 'nav.booksReturned', path: '/admin/livres/retours', icon: Undo2, roles: BOOKS_ROLES },
       { labelKey: 'nav.booksCatalog', path: '/admin/livres', icon: Library, end: true, roles: BOOKS_ROLES },
       { labelKey: 'nav.booksMessages', path: '/admin/livres/messages', icon: MessageSquare, roles: BOOKS_ROLES },
       // « مسيّرو المكتبة » : l'administrateur seul les crée.

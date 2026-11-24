@@ -15,8 +15,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 /**
- * Le suivi des commandes de livres : liste filtrée, états (avec transitions
- * contrôlées), frais et mode de livraison corrigeables après coup, paiements en lignes.
+ * Le suivi des commandes de livres : liste filtrée, deux états libres (l'appel,
+ * le colis), frais et mode de livraison corrigeables après coup, paiements en lignes.
  */
 class AdminBookOrderController extends Controller
 {
@@ -26,8 +26,12 @@ class AdminBookOrderController extends Controller
     {
         $query = BookOrder::with(['book:id,title,slug', 'payments']);
 
-        if ($status = $request->query('status')) {
-            $query->where('status', $status);
+        if ($call = $request->query('callStatus')) {
+            $query->where('call_status', $call);
+        }
+        // `deliveryStatus=none` : pas encore expédiée.
+        if ($delivery = $request->query('deliveryStatus')) {
+            $delivery === 'none' ? $query->whereNull('delivery_status') : $query->where('delivery_status', $delivery);
         }
         if ($bookId = $request->query('bookId')) {
             $query->where('book_id', (int) $bookId);
@@ -65,7 +69,8 @@ class AdminBookOrderController extends Controller
             ->when($request->query('bookId'), fn ($q, $id) => $q->where('book_id', (int) $id))
             ->get();
 
-        $byStatus = array_fill_keys(BookOrder::STATUSES, 0);
+        $byCall = array_fill_keys(BookOrder::CALL_STATUSES, 0);
+        $byDelivery = array_fill_keys(BookOrder::DELIVERY_STATUSES, 0);
         $expected = 0;   // commandes vivantes (ni annulées ni retournées)
         $delivered = 0;  // valeur livrée
         $collected = 0;  // encaissé net
@@ -73,13 +78,16 @@ class AdminBookOrderController extends Controller
         $copies = 0;
 
         foreach ($orders as $o) {
-            $byStatus[$o->status]++;
+            $byCall[$o->call_status] = ($byCall[$o->call_status] ?? 0) + 1;
+            if ($o->delivery_status !== null) {
+                $byDelivery[$o->delivery_status] = ($byDelivery[$o->delivery_status] ?? 0) + 1;
+            }
             $paid = $o->paidAmount();
             $collected += $paid;
-            if (! in_array($o->status, [BookOrder::CANCELLED, BookOrder::RETURNED], true)) {
+            if ($o->isLive()) {
                 $expected += $o->total();
             }
-            if ($o->status === BookOrder::DELIVERED) {
+            if ($o->delivery_status === BookOrder::DELIVERED) {
                 $delivered += $o->total();
                 $copies += $o->quantity;
                 $toCollect += max(0, $o->total() - $paid);
@@ -88,7 +96,8 @@ class AdminBookOrderController extends Controller
 
         return response()->json([
             'totalOrders' => $orders->count(),
-            'byStatus' => $byStatus,
+            'byCall' => $byCall,
+            'byDelivery' => $byDelivery,
             'expectedRevenue' => $expected,
             'deliveredRevenue' => $delivered,
             'collected' => $collected,
@@ -102,21 +111,35 @@ class AdminBookOrderController extends Controller
         return response()->json(['order' => $this->present($this->find($id))]);
     }
 
+    /**
+     * L'appel et le colis, chacun corrigé LIBREMENT (owner, 2026-11-24 : une erreur de clic
+     * se reprend) — aucune transition imposée. `deliveryStatus: null` = pas encore expédiée.
+     * Chaque changement laisse une ligne dans l'historique.
+     */
     public function updateStatus(Request $request, int $id)
     {
-        $data = $request->validate(['status' => ['required', Rule::in(BookOrder::STATUSES)]]);
-        $order = $this->find($id);
-
-        if (! $order->canMoveTo($data['status'])) {
-            throw ValidationException::withMessages(['status' => ["Transition impossible : {$order->status} → {$data['status']}."]]);
+        $data = $request->validate([
+            'callStatus' => ['sometimes', 'required', Rule::in(BookOrder::CALL_STATUSES)],
+            'deliveryStatus' => ['sometimes', 'nullable', Rule::in(BookOrder::DELIVERY_STATUSES)],
+        ]);
+        if ($data === []) {
+            throw ValidationException::withMessages(['callStatus' => ['Aucun état à changer.']]);
         }
+        $order = $this->find($id);
+        $before = ['callStatus' => $order->call_status, 'deliveryStatus' => $order->delivery_status];
 
-        $from = $order->status;
-        DB::transaction(function () use ($order, $data, $request, $from) {
-            $order->update(['status' => $data['status']]);
-            $this->event($order, 'status', $from, $data['status'], $request);
+        DB::transaction(function () use ($order, $data, $request) {
+            if (array_key_exists('callStatus', $data) && $data['callStatus'] !== $order->call_status) {
+                $this->event($order, 'call_status', $order->call_status, $data['callStatus'], $request);
+                $order->call_status = $data['callStatus'];
+            }
+            if (array_key_exists('deliveryStatus', $data) && $data['deliveryStatus'] !== $order->delivery_status) {
+                $this->event($order, 'delivery_status', $order->delivery_status, $data['deliveryStatus'], $request);
+                $order->delivery_status = $data['deliveryStatus'];
+            }
+            $order->save();
         });
-        $this->logger->log($request->user(), ActivityLogger::BOOK_ORDER_STATUS, 'book_order', $order->id, ['status' => $from], ['status' => $data['status']]);
+        $this->logger->log($request->user(), ActivityLogger::BOOK_ORDER_STATUS, 'book_order', $order->id, $before, ['callStatus' => $order->call_status, 'deliveryStatus' => $order->delivery_status]);
 
         return response()->json(['order' => $this->present($order)]);
     }
@@ -202,7 +225,7 @@ class AdminBookOrderController extends Controller
     public function destroy(Request $request, int $id)
     {
         $order = $this->find($id);
-        if (! in_array($order->status, [BookOrder::CANCELLED, BookOrder::RETURNED], true)) {
+        if (! $order->isDeletable()) {
             throw ValidationException::withMessages(['status' => ['Seule une commande annulée ou retournée peut être supprimée.']]);
         }
         $order->delete();

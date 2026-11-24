@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { fetchCurrentUser, logout as logoutRequest, updateGrade as updateGradeRequest, updateProfile as updateProfileRequest } from '../services/authService';
+import { fetchCurrentUser, fetchCurrentSession, logout as logoutRequest, updateGrade as updateGradeRequest, updateProfile as updateProfileRequest } from '../services/authService';
 import { storage, migrateLegacyStorageToUser } from '../utils/storage';
 import { setCurrentUserId } from '../utils/authUserId';
 import { flushStudyTimeNow } from '../services/studyTimeService';
@@ -93,14 +93,23 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const currentUser = await fetchCurrentUser(token);
-      applyUser(currentUser);
+      const session = await fetchCurrentSession(token);
+      // Jeton renouvelé par le serveur (comptes du tableau de bord, AuthController::me) :
+      // l'application installée sur le téléphone reste connectée tant qu'elle est ouverte
+      // au moins une fois par mois.
+      const activeToken = session.token ?? token;
+      if (session.token) {
+        storage.setItem('token', session.token);
+        setToken(session.token);
+      }
+      applyUser(session.user, activeToken);
     } catch (error) {
       console.error('Error fetching user:', error);
-      // Avec un compte déjà connu, seul un refus du SERVEUR ferme la session :
-      // une coupure réseau ou une erreur 5xx ne déconnecte plus l'élève.
+      // Seul un refus du SERVEUR ferme la session : une coupure réseau ou une erreur
+      // 5xx au démarrage (téléphone qui se réveille) ne jette plus le jeton — la
+      // prochaine ouverture le réessaie.
       const refused = error?.type === 'AUTHENTICATION_ERROR' || error?.type === 'AUTHORIZATION_ERROR';
-      if (!initial.user || refused) clearSession();
+      if (refused) clearSession();
     } finally {
       setLoading(false);
     }

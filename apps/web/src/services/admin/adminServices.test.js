@@ -158,7 +158,7 @@ describe('la porte du panneau d’administration', () => {
     const sections = adminNavSectionsFor('book_manager');
     expect(sections.map((s) => s.labelKey)).toEqual(['nav.books', 'nav.account']);
     const paths = sections.flatMap((s) => s.links.map((l) => l.path));
-    expect(paths).toEqual(['/admin/livres/commandes', '/admin/livres', '/admin/livres/messages', '/admin/compte', '/admin/compte/securite']);
+    expect(paths).toEqual(['/admin/livres/commandes', '/admin/livres/livrees', '/admin/livres/retours', '/admin/livres', '/admin/livres/messages', '/admin/compte', '/admin/compte/securite']);
     // L'administrateur, lui, voit tout — y compris « مسيّرو المكتبة ».
     expect(adminNavSectionsFor('admin').flatMap((s) => s.links)).toHaveLength(adminNavLinks.length);
     expect(adminNavSectionsFor('student')).toEqual([]);

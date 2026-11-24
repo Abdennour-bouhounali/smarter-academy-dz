@@ -9,7 +9,7 @@ import { useAdminResource } from '../../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchAdminBooks, saveAdminBook } from '../../../features/books/bookService';
 import { S, formatDa } from '../../../features/books/strings';
-import { Pill } from './BookOrders';
+import { Pill } from './orderUi';
 
 const A = S.admin;
 const BLANK = { slug: '', title: '', subtitle: '', author: '', summary: '', price: 0, coverImage: '', status: 'draft', sortOrder: 0, content: {}, gallery: [] };

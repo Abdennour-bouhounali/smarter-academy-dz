@@ -62,8 +62,8 @@ final class BookPresenter
             'total' => $order->total(),
             'paidAmount' => $order->paidAmount(),
             'paymentStatus' => $order->paymentStatus(),
-            'status' => $order->status,
-            'allowedStatuses' => BookOrder::TRANSITIONS[$order->status] ?? [],
+            'callStatus' => $order->call_status,
+            'deliveryStatus' => $order->delivery_status,
             'createdAt' => $order->created_at,
             'updatedAt' => $order->updated_at,
         ];

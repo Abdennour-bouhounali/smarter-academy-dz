@@ -23,7 +23,7 @@ contact) est porté ; son backend est remplacé par l'API Laravel.
 | Table | Rôle |
 |---|---|
 | `books` | un livre : `slug`, titre, prix (DA, entier), `status` (`draft` \| `published`), `content` JSON (badge, stats, steps, highlights, faq), `gallery` JSON |
-| `book_orders` | une commande : client, wilaya/commune, adresse **facultative** (`NULL` depuis le 2026-11-13, migration `2026_11_13_000001`), `quantity`, `unit_price` **figé**, `delivery_mode` (`home` \| `desk` \| `NULL`, migration `2026_11_22_000001`), `delivery_fee` **NULLABLE** (calculé à la commande par le tarif, §2bis ; `NULL` = à fixer à l'appel), `status` |
+| `book_orders` | une commande : client, wilaya/commune, adresse **facultative** (`NULL` depuis le 2026-11-13, migration `2026_11_13_000001`), `quantity`, `unit_price` **figé**, `delivery_mode` (`home` \| `desk` \| `NULL`, migration `2026_11_22_000001`), `delivery_fee` **NULLABLE** (calculé à la commande par le tarif, §2bis ; `NULL` = à fixer à l'appel), `call_status`, `delivery_status` (migration `2026_11_24_000001`, qui a remplacé `status`) |
 | `book_order_payments` | un encaissement = UNE ligne (`payment` ou `refund`, montant, méthode, date) |
 | `book_order_events` | l'historique d'une commande (création, états, livraison, paiements) |
 | `book_messages` | la boîte de réception des formulaires de contact des pages livres |
@@ -33,10 +33,17 @@ Règles :
   `paymentStatus()` : `unpaid | partial | paid | overpaid`), jamais stockés.
 - Le prix d'une commande est figé : modifier le prix du livre ne réécrit pas
   les commandes reçues.
-- États : `pending → confirmed → in_way → delivered`, `→ cancelled` (avant
-  l'expédition), `→ returned` (depuis `in_way`/`delivered`). Transitions
-  contrôlées par `BookOrder::TRANSITIONS` (422 sinon). Seule une commande
-  annulée ou retournée peut être supprimée.
+- **Deux états indépendants (owner, 2026-11-24)**, chacun corrigé LIBREMENT à tout moment
+  (une erreur de clic se reprend ; aucune transition imposée, chaque changement est dans
+  l'historique — événements `call_status` / `delivery_status`) :
+  - l'appel `call_status` : `new` (Nouvelle, en attente) | `contacted` (Contactée) |
+    `no_answer` (Pas de réponse) | `confirmed` (Confirmée) | `cancelled` (Annulée) ;
+  - le colis `delivery_status` : `NULL` (Non expédiée) | `shipped` (Expédiée) |
+    `in_transit` (En livraison) | `delivered` (Livrée) | `returned` (Retour).
+  La migration a reporté l'ancien `status` : `pending`→new, `confirmed`→confirmed,
+  `in_way`→confirmed+in_transit, `delivered`/`returned`→confirmed+idem, `cancelled`→cancelled.
+  Une commande est « vivante » sauf annulée ou retournée (`BookOrder::isLive`) ; seule une
+  commande annulée ou retournée peut être supprimée.
 - Un remboursement ne peut dépasser l'encaissé.
 - Le frais de livraison est **calculé par le SERVEUR à la commande** (§2bis) et figé sur
   la commande ; l'administrateur peut le corriger (`PATCH /admin/book-orders/{id}`).
@@ -78,8 +85,10 @@ demandée par le formulaire (`address` : `nullable`) ; la commune reste une cha�
 libre côté serveur (le client la choisit dans la liste officielle).
 
 Admin (`can:books` — l'administrateur ET le gestionnaire `book_manager`, §6ter — `/admin/…`) : `books` (liste, création, mise à jour),
-`book-orders` (liste filtrable `status|bookId|wilaya|paymentStatus|search`,
-`stats`, fiche, `PATCH` livraison (frais, mode)/note, `PATCH …/status`, `POST …/payments`,
+`book-orders` (liste filtrable `callStatus|deliveryStatus|bookId|wilaya|paymentStatus|search`,
+`deliveryStatus=none` = pas encore expédiée ; `stats` → `byCall`, `byDelivery` et les montants ;
+fiche, `PATCH` livraison (frais, mode)/note, `PATCH …/status` (`{ callStatus?, deliveryStatus? }`,
+libres), `POST …/payments`,
 `DELETE`), `book-order-payments/{id}` (DELETE), `book-messages` (liste, PATCH
 état/note). Gestes journalisés (`ActivityLogger::BOOK_*`). Les formes JSON
 sont dans `Domain/Books/BookPresenter.php` (camelCase).
@@ -101,9 +110,23 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
   `@SmartMathProtocol` sur YouTube et Facebook (2026-10-20, migration
   `2026_10_20_000001_add_socials_to_smart_protocol_book` — le seeder n'écrase pas une fiche existante).
 - Admin : `pages/admin/books/` — `BookOrders` (chiffres + liste),
-  `BookOrderDetail` (état, livraison, paiements, historique),
+  `OrderDetailPanel` (la fiche : client, les deux états, montants, livraison, paiements,
+  historique replié), `BookOrderDetail` (la même fiche en page — l'adresse des notifications),
+  `orderUi.jsx` (couleurs, sélecteurs d'état en pastille, « copier le numéro »),
   `BookCatalog` (fiches), `BookMessages`. Routes `/admin/livres/*`, section
   « الكتب » de la barre latérale. Images : `public/images/books/<slug>/`.
+- **La liste des commandes (2026-11-24)** :
+  - les ÉTATS et les CARTES DE CHIFFRES sont en **français** (owner) ; le reste du panneau en arabe ;
+  - colonnes « الاتصال » et « التوصيل » : la pastille EST un sélecteur — l'état se lit et se
+    change dans la liste, sans ouvrir la commande ; la ligne est remplacée sans recharger ;
+  - plus de colonne « الدفع » (le filtre reste ; l'état du paiement est dans la fiche) ;
+    la colonne et le filtre « الكتاب » n'apparaissent que s'il y a plus d'un livre ;
+  - « الأعمدة » : une case par colonne, choix gardé sur l'appareil
+    (`admin_book_orders_hidden_columns`) ;
+  - le numéro de téléphone a un bouton « نسخ الرقم » (liste et fiche), la fiche un bouton « اتصال » ;
+  - un clic sur une ligne ouvre la fiche dans une **fenêtre** (`Modal`), avec « فتح في صفحة » ;
+  - pages dédiées « المسلَّمة » `/admin/livres/livrees` et « المرتجعة » `/admin/livres/retours` :
+    la même liste, l'état du colis fixé (`<AdminBookOrders view="delivered|returned" />`).
 - Lien « الكتب » dans la navigation visiteur (`data/navigation.js`).
 - **Chargement sans cascade (2026-10-17)** : `features/books/bookCache.js` (importé par `App.jsx`,
   ne dépend que d'`apiClient`) lance `/books` ou `/books/:slug` DANS le `lazy()` de la route — les
@@ -308,6 +331,14 @@ de bord qui l'ont activée — même site fermé. Un événement = un **sujet** 
   case par sujet du rôle ; l'administrateur l'a sur l'accueil du tableau de bord, le gestionnaire
   sur « طلبات الكتب ». Il propose aussi « أرسل إشعارًا تجريبيًا », « إيقاف على هذا الجهاز » et
   « أضف إلى الشاشة الرئيسية » (`beforeinstallprompt`, sinon la marche à suivre).
+- **Rester connecté dans l'application installée (2026-11-24)** : le jeton est dans
+  `localStorage` ; l'application s'ouvre sur `/` (`start_url`) et `HomeRedirect` y envoie
+  maintenant aussi le « مسيّر المكتبة » vers `/admin/livres/commandes` (avant, il voyait la page
+  publique et se croyait déconnecté). Un jeton Sanctum expire 30 jours après sa CRÉATION :
+  pour un compte admin ou `book_manager`, `GET /auth/me` renvoie un `token` neuf quand le
+  courant a plus de 7 jours (`AuthController::DASHBOARD_TOKEN_RENEW_AFTER_DAYS`) — l'ancien
+  n'est pas révoqué, il expire seul ; `AuthContext` le garde. Une coupure réseau au démarrage
+  ne jette plus le jeton (seul un 401/403 ferme la session).
 - **`public/sw.js` n'a AUCUN gestionnaire `fetch`** : rien en cache ; il affiche la notification
   et ouvre sa page au toucher. Il n'est enregistré qu'au clic d'un compte du tableau de bord —
   jamais chez un élève. Pas de raccourci dans le manifeste (visible de tout visiteur).
