@@ -4,11 +4,27 @@
  */
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import NilePyramids, { Fact, Register, OrderCard, RopeChip } from './NilePyramids';
+import NilePyramids, { Fact, Register, OrderCard, RopeChip, StoryCard } from './NilePyramids';
+import { slot } from '../kit/forge';
 import { WORLDS } from '../worlds';
 import { WORLD_TEXT } from './strings';
 
-const game = { T: WORLD_TEXT, drop() {}, sendOrder() {}, closeOrder() {} };
+const game = {
+  T: WORLD_TEXT,
+  drop() {},
+  sendOrder() {},
+  closeOrder() {},
+  closeCard() {},
+  story: {
+    mission: {
+      title: 'm',
+      lead: ['$h$'],
+      figure: { points: { A: [0, 0], B: [4, 0], C: [4, 3] }, segments: [['A', 'B']], ariaLabel: 'مثلّث' },
+      lines: () => [{ dir: 'ltr', tokens: ['h =', slot('h', 'h', 5, { decimal: true })] }],
+      check: () => 'ok',
+    },
+  },
+};
 const plain = (html) => html.replace(/<[^>]+>/g, ' ');
 
 describe('« الأهرامات » on screen', () => {
@@ -56,5 +72,38 @@ describe('« الأهرامات » on screen', () => {
     expect(out).toContain('data-np-order-in');
     expect(out).toContain('data-np-refused="empty"');
     expect(plain(out)).toContain(WORLD_TEXT.unit);
+  });
+
+  it("the new facts of stages 2–5 speak with the world's words; a block too big is the quarry's order", () => {
+    const cap = renderToString(
+      <Fact verdict={{ kind: 'capstone', fact: 'big', typed: '36', seg: 'k', quarry: '3564' }} game={game} />,
+    );
+    expect(cap).toContain('data-np-fact="big"');
+    expect(cap).toContain('data-np-quarry="3564"');
+    expect(plain(cap)).toContain(WORLD_TEXT.stage.fact.big);
+    const mark = renderToString(<Fact verdict={{ kind: 'mark', fact: 'gap', typed: '30', seg: 'BM' }} game={game} />);
+    expect(plain(mark)).toContain(WORLD_TEXT.stage.fact.markGap);
+    for (const f of ['ties', 'short', 'slack', 'apex', 'below', 'above'])
+      expect(renderToString(<Fact verdict={{ kind: 'x', fact: f, typed: '1', seg: 'h' }} game={game} />)).toContain(
+        `data-np-fact="${f}"`,
+      );
+  });
+
+  it('the capstone card asks k as a fraction; the mark and the ferry cards print their unit', () => {
+    const cap = renderToString(<OrderCard o={{ kind: 'capstone', seg: 'k', id: 'capstone' }} game={game} />);
+    expect(cap).toContain('data-np-order-n');
+    expect(cap).toContain('data-np-order-d');
+    for (const kind of ['mark', 'ferry']) {
+      const out = renderToString(<OrderCard o={{ kind, seg: 'AF', id: kind, row: '55' }} game={game} />);
+      expect(out).toContain(`data-np-order="${kind}"`);
+      expect(out).toContain('data-np-order-in');
+    }
+  });
+
+  it('the mission card: its figure says it is not to scale, its boxes and its check', () => {
+    const out = renderToString(<StoryCard kind="mission" game={game} />);
+    expect(out).toContain('data-np-mission');
+    expect(out).toContain('data-np-card-check');
+    expect(plain(out)).toContain(WORLD_TEXT.stage.card.notToScale);
   });
 });

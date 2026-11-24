@@ -6,9 +6,21 @@
  *
  * `story.legs` is a PLACEHOLDER course of gates for the felucca (the kit's rail as it is, gate F3): four buoys of the
  * nested chain with mental numbers. The lesson's real legs (`world/run.js`, plan §1.3) replace it at wave 1.
+ * `story.mission` and `story.box` are PLACEHOLDER cards with bare boxes (the lesson's cards, plan §3.7, replace them).
+ *
+ * `/__qa/nile-pyramids?kind=plan|halfturn|scale|mirror` shows ONE experiment of the world (or a case in the forge's
+ * mirror) alone in a forge-sized frame, on the example specs of its tests — to look at a kind without a lesson.
  */
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import NilePyramids from '../../lessons/common/gameworld/nilePyramids/NilePyramids';
+import Inquiry from '../../lessons/common/gameworld/nilePyramids/Inquiry';
+import { Mirror } from '../../lessons/common/gameworld/nilePyramids/forgeParts';
+import { thalesCase } from '../../lessons/common/gameworld/nilePyramids/ruleForge';
+import { slot } from '../../lessons/common/gameworld/kit/forge';
+import { PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC } from '../../lessons/common/gameworld/nilePyramids/test/specs';
 import { loadKit, saveKit } from '../../lessons/common/launchkit/store';
+import '../../lessons/common/gameworld/kit/ruleForge.css';
 
 const ID = 'qa-nile-pyramids';
 const pick = (random, list) => list[Math.floor(random() * list.length)];
@@ -72,11 +84,71 @@ const LESSON = {
   sittings: null,
   journey: { examOpen: () => false },
   evidence: { verify: () => false, payloadOf: () => null },
-  story: { legs: [LEG, LEG, LEG, LEG] },
+  story: {
+    legs: [LEG, LEG, LEG, LEG],
+    mission: {
+      title: 'بطاقة المهمّة',
+      lead: ['ارتفاع الهرم الأكبر $h$.'],
+      figure: {
+        points: { A: [0, 0], M: [3, 0], N: [3, 2], B: [10, 0], C: [10, 6.7] },
+        segments: [
+          ['A', 'B'],
+          ['A', 'C'],
+          ['M', 'N'],
+          ['B', 'C'],
+        ],
+        ariaLabel: 'مثلّثان متداخلان',
+      },
+      lines: () => [{ dir: 'ltr', tokens: ['h =', slot('h', 'h', 5, { decimal: true }), 'م'] }],
+      check: (v) => (v.h === '146' ? 'ok' : 'زيرو لم يصل إلى القمّة.'),
+      height: (v) => v.h,
+    },
+    box: {
+      title: 'صندوق ابن الهيثم',
+      lead: ['الصورة مقلوبة على الجدار الخلفيّ.'],
+      lines: () => [{ dir: 'ltr', tokens: ['SH =', slot('sh', 'SH', 5, { decimal: true }), 'م'] }],
+      check: (v) => (v.sh === '146' ? 'ok' : 'الصورة لا توافق هذا الارتفاع.'),
+    },
+  },
 };
 const CONFIG = { id: ID, title: 'معاينة العالم — المرحلة الأولى', modules: [] };
 
+const KIND_SPECS = { plan: PLAN_SPEC, halfturn: HALFTURN_SPEC, scale: SCALE_SPEC };
+const MIRROR_CASE = thalesCase({
+  names: { V: 'A', M: 'M', B: 'B', N: 'N', C: 'C' },
+  len: { VM: '14', VB: '63', VN: '16', VC: '72', MN: '18', BC: '81' },
+});
+
+/** One experiment (or the mirror) alone, in the forge's experiment panel at 1366 × 768 (1205 × 587 px, `CALC_LAYOUT`). */
+function KindAlone({ kind }) {
+  const [done, setDone] = useState(null);
+  const game = { audio: { play: () => {} } };
+  return createPortal(
+    <div dir="rtl" style={{ position: 'fixed', inset: 0, zIndex: 2000, background: '#1f2937', padding: 60 }}>
+      <div
+        style={{ position: 'relative', width: 1205, height: 587, margin: '0 auto', fontSize: 17 }}
+        data-qa-kind={kind}
+      >
+        <div className="rf-fit">
+          {kind === 'mirror' ? (
+            <div style={{ gridColumn: '1 / -1' }}>
+              <Mirror c={MIRROR_CASE} stage="done" />
+            </div>
+          ) : done ? (
+            <pre dir="ltr">{JSON.stringify(done, null, 1)}</pre>
+          ) : (
+            <Inquiry spec={KIND_SPECS[kind]} game={game} onDone={setDone} />
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
 export default function NilePyramidsPreview() {
+  const kind = new URLSearchParams(window.location.search).get('kind');
+  if (kind) return <KindAlone kind={kind} />;
   // « ابدأ » enters the world at once: this preview has no launch kit (the title screen asks it only once per lesson)
   const kit = loadKit();
   if (!kit.lessons?.[ID]) saveKit({ ...kit, lessons: { ...(kit.lessons ?? {}), [ID]: true } });

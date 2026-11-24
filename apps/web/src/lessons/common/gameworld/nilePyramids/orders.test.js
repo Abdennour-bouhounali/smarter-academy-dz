@@ -37,6 +37,14 @@ describe('THE ONE ORDER — one number, one thing built, three facts (plan §2.1
     expect(Object.keys(out).sort()).toEqual(['built', 'fact', 'kind', 'typed']);
     expect(JSON.stringify(out)).not.toContain('77');
   });
+  it("the capstone « كلّ طول × [k] »: 1/36 sits (base 2,75); 1/40 is too small; 36 is the quarry's order", () => {
+    const truth = { k: '1/36', base: '99' };
+    expect(order('capstone', '1/36', truth)).toMatchObject({ fact: 'sits', built: { base: '2,75', quarry: false } });
+    expect(order('capstone', '2/72', truth).fact).toBe('sits');
+    expect(order('capstone', '1/40', truth).fact).toBe('small');
+    expect(order('capstone', '36', truth)).toMatchObject({ fact: 'big', built: { base: '3564', quarry: true } });
+    expect(order('capstone', 'x', truth).refused).toBe('empty');
+  });
   it('exactly one fact of each order holds', () => {
     for (const facts of Object.values(FACTS)) expect(facts.filter(holds)).toHaveLength(1);
   });

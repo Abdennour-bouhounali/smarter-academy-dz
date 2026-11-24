@@ -537,6 +537,61 @@ world's HUD shows in the middle and marks so is never covered by the « E » bub
 are not walked — the walk places the robot); the typed radical sign the last steps need does not exist in the kit (the forges spell
 « ضلع الساحة [ ] »); no test renders `RootCourts.jsx` (a wrong import path in it reached the browser on 2026-11-21 — see `defects.md`).
 
+## 2ter-4. A fourth world: « الأهرامات » (`gameworld/nilePyramids/`, 2026-11-24 — BEING BUILT, not validated)
+
+The world of 4AM unit 9 « خاصية طالس » (design: `docs/reports/PYRAMIDS_WORLD_PLAN.md`; the numbers there are final).
+Registered last in `worlds.js` as `nile-pyramids`. No lesson plays it yet; `/__qa/nile-pyramids` (development only) mounts
+it with a stub host (placeholder legs, mission and box), and `/__qa/nile-pyramids?kind=plan|halfturn|scale|mirror` shows
+one experiment (or a case in the forge's mirror) alone in the forge's experiment panel.
+
+- **One unit is one metre.** Zero (the kit's robot) is scaled to about 1,2 m (`Game.js › ZERO`) and the follow camera is
+  brought closer for him. Labels are sprites of a fixed screen size (≥ 18 px at 1366×768, `logic.js › labelScale`);
+  far ones are hidden, a stage's framing shows that stage's only.
+- **ONE gesture, ONE order.** Every measure is `gestures.js › slide` (E at a stake, ← → move the knot: a tap is a knot,
+  held it goes faster; the rope ties when he lets go on the stake's knot; E or the HUD button puts it down). Every
+  computed thing is `orders.js › order(kind, typed, truth)` → one of three FACTS, never « wrong », never a size in the
+  world: `canal` (as · longer · shorter), `course` / `mark` (fits · gap · overhang), `ferry` (ties · short · slack),
+  `capstone` (sits · small · big; a block over 20 m is written as the quarry's order), `flight` (apex · below · above).
+- **The stages are DATA** (`Game.js › stageData`): 1 the field and its two canals (the prediction typed before the rope
+  reads); 2 the workshop's edge, two courses, then the row already cut placed by HIS mark; 3 the bank AS, SE, then ER
+  inland until, in Zero's eye, S hides F (`cameraShot` « sight », `data-np-sight`), and the ferry rope; 4 up the ramp,
+  the capstone ordered by « كلّ طول × [k] » and framed close; 5 the stick in the sun, the shadows HA and the base DG,
+  the stick's drawn triangle slid along the axis until the tips meet (B5), the mission card, Zero's flight to his h,
+  noon and the box of Ibn al-Haytham. Each of stages 1–4 ends at the masons' table where the lesson's forge opens.
+- **Shadows that carry mathematics are DRAWN** (`logic.js › shadowTip`, `scenery.js › makeGroundShadow`); the sun, its
+  shadow box and the fog come from the runtime's K-f hooks (`sunDir`, `shadowBox`, `fogRange`).
+- **Between two docks** the felucca sails on the kit's run with the river skin and crocodiles (`riverMeshes.js ›
+  riverRun()`, K-b); without a leg in the story it simply sails.
+
+**What the lesson's story gives** (`lesson.story`, every field optional): `text`; `legs[i]` (the run from dock i);
+`forges: { field?, workshop?, river?, summit? }` → a key of `lesson.forges`, played at that stage's table;
+`mission: { title, lead, figure?, lines(), check(vals) → 'ok' | fact, height(vals) → h }`;
+`box: { title, lead, figure?, lines(), check(vals) }`; `recall`, `onArrive`, `afterKey[key]`, `complete`.
+A card's figure is the lesson's `GeoFigure` spec; the card prints « الشكل تخطيطيّ » under it (gate F4).
+
+**The forge in this world** (`ruleForge.js`, `forgeParts.jsx`, `Gauge.jsx`, `figure.js`): a CASE is a Thalès figure
+`thalesCase({ kind: 'nested' | 'butterfly', names: { V, M, B, N, C }, len: { VM, VB, VN, VC, MN, BC }, held?, head?, tag?,
+show?, parallel? })` — `held` defaults to « the three ratios are equal » (exact); `evidenceOf`, `caseId`, `ratioOf`,
+`segName`, `THALES_TEXT`. `Mirror` draws the figure through `components/GeoFigure.jsx` (never a second renderer) and, once
+built, THE RATIO GAUGE (each side from the vertex stretched to one length, its piece marked; gold line when the marks
+stand together — `data-rf-gauge`, `data-rf-aligned`); `Line` a thumbnail and the gauge in small; `beats()` = 3.
+`game.forgeLog(stageId)` gives the world's own cases (the canals, the courses, the river's butterfly, the capstones)
+and what the mirror showed. The parts object is `forgeParts.jsx › FORGE_PARTS`.
+
+**Spec shapes of the three kinds** (examples: `nilePyramids/test/specs.js`; words: `strings.js › KIND_TEXT`, the
+lesson's `spec.text` over them):
+`{ kind: 'plan', rounds: [{ fig: { kind: 'nested', names, len }, given: [keys], unknown: key }], writes? }` → result
+`{ rows: [{ unknown, typed, fact, diff, picked, joins }], plan: { cards, joins } }`;
+`{ kind: 'halfturn', rounds: [{ fig: { kind: 'butterfly', names, len } }] }` → `{ rows: [{ predicted, landed, right,
+parallel }] }`;
+`{ kind: 'scale', tri: { small: { V, P, Q, sides }, big: { … } }, rounds: [{ fact: { k, lines } } | { k, feed } |
+{ k: null, feed } | { k, feed, perimeter: true }] }` → `{ rows: [{ feed, k, image, said, right, perimeter }] }`.
+
+**Hooks for walks:** `data-np-stage`, `-rope`, `-drop`, `-sight`, `-register`, `-row`, `-order=<canal|course|mark|ferry|
+capstone>`, `-predict`, `-order-in` (`-order-n` / `-order-d` for k), `-order-send`, `-order-later`, `-refused`, `-fact`,
+`-quarry`, `-mission`, `-box`, `-card-check`, `-card-later`, `-card-fact`; the kinds' `data-iq-*` (listed at the top of
+each `Inquiry*.jsx`) and `window.__inquiry`; `window.__world` and `window.__np` (development).
+
 ## 2quater. « الامتحان الأبيض » — the exam sitting (PROTOTYPE, 2026-11-16)
 
 **Status: a prototype of the SITTING, to judge the feel, not validated. Since 2026-11-18 its sheets are the lesson's EXERCISE
@@ -1089,6 +1144,9 @@ drawing); its `inquiries.test.js` fails if two keys share a (kind, mode) — see
 | `sort` | a pair whose only common plank is 1 / a pair that shares a longer plank — for lesson 8, a fraction that can / cannot be counted again in a longer unit (a CLASSIFICATION) | a HAND of 5–8 cards, one pair of gaps `(a ; b)` each, or one fraction `a/b` with a real bar (the numerator is gap a); the card on the table lies between two BASKETS named by the lesson (never the mathematical name before the key is forged) and its two gaps are drawn as strips on one scale (up to 700 cells: a gap is one bar, a plank too thin to draw is one bar); the cards left in his hand are small cards he may tap to play another first. For each card he MAY open ONE instrument he already owns, among those the spec lists — `lists` (the planks of each gap, shortest first from the right, the planks of both outlined green), `summit` (the planks of the shorter gap from the longest down, each laid on both strips with its rest on the longer gap written under it, stopping on the first that fills), `ladder` (Euclid's rows `a = b × q + r` down to the rest 0, rest amber, 0 green); the world runs it fact by fact — numbers, divisions, planks laid, never a conclusion. Then he DRAGS the card into a basket (touch and mouse) or taps the basket. A card in its own basket stays there. A card in the OTHER basket is answered by what the world does: said « only 1 » for a pair that shares a longer plank → the longest shared plank is laid on both strips, both divisions written (rest 0); said « a longer plank » for a pair that shares none → the planks of the shorter gap are laid on both strips from the longest down, each rest written: none but 1 leaves no rest. Then « next » takes the card to the basket it belongs to (outlined amber there: the world moved it). Never the word « wrong ». At the end both baskets stay on screen with their cards — the evidence his rule is written from. |
 | `measure` | two gaps one above the other are ONE fraction; a plank that fills both is a UNIT in which both are counted again, and the fraction it writes is the same fraction; by any road the counts end on the same fraction, and one stage is enough with the longest common plank (a CHANGE OF UNIT) | two strips, the numerator above the denominator, a fraction bar drawn between them; the chain of equal fractions is written with real bars (KaTeX, one formula, never broken). He picks a plank — a chip of the lesson's candidates and/or a typed length, counted in the CURRENT unit (2 … the longer strip). One that does not fill both is laid: what is left shows in amber, both divisions are written, nothing changes (the chip is struck while that fraction stands). One that fills both: the world counts both strips again — they are re-drawn as that many planks — and the new fraction joins the chain with « = » (66/78 = 22/26 = 11/13). **Mode `stages`**: he goes on by the road HE chooses and ends a run by claiming « no plank but 1 fills both »; the world answers by trying the planks of the upper strip (shortest first) on the lower one — one that fills is laid and the run goes on, none: the run ends. Before a SECOND run (`runs`, default 2, never more than the planks that can open a road) he types where it will end (a fraction template); the second road must open with another plank (while one exists); it ends on the same fraction — a fact, his prediction beside it. **Mode `direct`**: one stage only; a plank that fills both is counted honestly (66/99 = 22/33), then the world tries the planks of the upper strip on the lower: when one still fills both, one stage was not enough and he starts again from the fraction given. |
 | `part` | a part of a whole, re-cut in a longer unit: the painted length does not move, its writing does (13/39 = 1/3) — a fraction that comes out of a calculation is written again in the longest unit (a RE-CUT) | ONE strip, the whole (up to ~130 cells), and a painted part the world paints in strokes one after the other (5 cells, then 8), each stroke's length printed over it. He writes the fraction painted in its template (two boxes over a real bar — exactly the cells: painted over whole; a miss is answered by which count differs). Then he picks a plank (chips and/or typed, 2 … the whole) that fills the painted part AND the whole: one that does not is laid along the strip, outlined so the paint stays visible, what is left amber, both divisions written; one that does RE-CUTS the strip — the new cuts are drawn over the paint, which does not move, and the two writings stand side by side with « = ». He may instead claim « no plank but 1 fills both »: the world tries the planks of the painted part on the whole (a round whose part and whole share only 1 ends there, the writing unchanged; otherwise the plank it finds is laid and he picks again). One re-cut ends the round. |
+| `plan` (« الأهرامات », key 📐) | the fourth proportional on a Thalès figure, the data given in pieces (a PROCEDURE: `writes` may take his plan as his rule) | on a nested figure with ONE unknown, picks two of the THREE ratio cards of the chain (a card with two « ؟ » refuses itself), joins two ropes (VM + MB = VB) or cuts a piece off (VB − VM = MB), types the unknown; the world lays it as a course: fits · gap · overhang, the size written (the mirror). After two misses the cards holding the unknown are lit (a fact). `nilePyramids/plan.js`, `InquiryPlan.jsx` |
+| `halfturn` (« الأهرامات », key 🦋) | the butterfly is the nested figure turned half round the vertex | BEFORE the turn, says on which line M will land, (VB) or (VC); turns the small triangle with ← → (30° steps, it stops at 180°): it lands inside the big one, the ratio gauge shows its marks together (parallel) or apart (crooked), the chain is written with the turned letters, then with the butterfly's own. `halfturn.js`, `InquiryHalfturn.jsx` |
+| `scale` (« الأهرامات », key 🔍) | k: one number for every side, its direction (k > 1 enlarges), 1/k back, the perimeter × k | a copying frame at the vertex: a round may be a FACT (the capstone), a prediction (the copy against the target: larger · exact · smaller), a k he SETS himself (a fraction) until the copy covers the target, or which perimeter the copy will have (× k · + k · × 3k); the copy is drawn from the vertex, its sides and perimeter written. `scale.js`, `InquiryScale.jsx` |
 
 **Key 3 of `qawaid-qabiliyat-qisma` (« الرقمان الأخيران », plank 4) — what the code does, and an OPEN choice.** The
 experiment is `join` / `sum` (`world/inquiries.js › HUNDREDS_INQUIRY`): it starts from the gate dash he has just ridden

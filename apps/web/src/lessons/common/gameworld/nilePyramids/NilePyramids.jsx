@@ -3,12 +3,19 @@
  * instruction that stays, the rope's knots, the fact of what the world built), the register « سجلّ الحقل », the card of
  * the ONE order (one typed box with its printed unit « م »), and the kit's rail between two docks. It names no lesson.
  *
- * Hooks for the walks: `data-np-stage`, `data-np-rope=<knots>`, `data-np-drop`, `data-np-register` (rows:
- * `data-np-row=<id>`), `data-np-order=<kind>` (+ `data-np-predict` on the canal's card), `data-np-order-in`,
- * `data-np-order-send`, `data-np-order-later`, `data-np-refused=<why>`, `data-np-fact=<fact>`, `data-np-look`,
- * `data-np-look-back`; the rail's are the kit's (`data-gr-*`).
+ * Hooks for the walks: `data-np-stage`, `data-np-rope=<knots>`, `data-np-drop`, `data-np-sight` (the sight line of
+ * stage 3), `data-np-register` (rows: `data-np-row=<id>`), `data-np-order=<canal|course|mark|ferry|capstone>` (+
+ * `data-np-predict` on the canal's card), `data-np-order-in` (or `data-np-order-n` / `data-np-order-d` for the
+ * capstone's k), `data-np-order-send`, `data-np-order-later`, `data-np-refused=<why>`, `data-np-fact=<fact>`,
+ * `data-np-quarry`, `data-np-mission` / `data-np-box` (the cards: `data-np-card-check`, `data-np-card-later`,
+ * `data-np-card-fact`), `data-np-look`, `data-np-look-back`; the forge's are the kit's (`data-rf-*`, `data-iq-*`), the
+ * rail's too (`data-gr-*`).
  */
 import { useMemo, useState } from 'react';
+import GeoFigure from '../../components/GeoFigure';
+import RuleForge, { UseLines } from '../kit/RuleForge';
+import { boxesOf } from '../kit/authoring/forgeBlocks';
+import { FORGE_PARTS } from './forgeParts';
 import GateRunHud from '../kit/GateRunHud';
 import LessonWorld from '../kit/LessonWorld';
 import MathText from '../../components/MathText';
@@ -18,18 +25,29 @@ import { NilePyramidsGame, devHandles } from './Game';
 import { WORLD_TEXT, withStory } from './strings';
 import './nilePyramids.css';
 
-const texOf = (n) => String(n).replace(',', '{,}');
+/** A number in LaTeX: « 77{,}5 », a fraction over a real bar (defects D41). */
+const texOf = (n) => {
+  const [a, b] = String(n).split('/');
+  const one = (x) => x.replace(',', '{,}');
+  return b == null ? one(a) : `\\dfrac{${one(a)}}{${one(b)}}`;
+};
 
 /** The rope in his hand: its knots, written beside it, and the way to let it go whenever he wants (defects D26). */
 export function RopeChip({ rope, game }) {
   const T = game.T.hud;
   return (
     <div className="np-rope" data-np-rope={rope.knots} data-di-clear>
-      <span className="np-rope__cell">
-        <small>{T.rope}</small>
-        <b dir="ltr">{rope.knots}</b>
-        <small>{game.T.unit}</small>
-      </span>
+      {rope.ghost ? (
+        <span className="np-rope__cell">
+          <small>{game.T.stage.hud.triangle}</small>
+        </span>
+      ) : (
+        <span className="np-rope__cell">
+          <small>{T.rope}</small>
+          <b dir="ltr">{rope.knots}</b>
+          <small>{game.T.unit}</small>
+        </span>
+      )}
       <button type="button" className="np-rope__drop" onClick={() => game.drop()} data-np-drop>
         <kbd>E</kbd>
         {T.drop}
@@ -39,13 +57,40 @@ export function RopeChip({ rope, game }) {
 }
 
 /** What the world built from his number: a FACT, in the colour of that fact (amber a gap, violet an overhang). */
+const TONE = {
+  as: 'ok',
+  fits: 'ok',
+  ties: 'ok',
+  sits: 'ok',
+  apex: 'ok',
+  meet: 'ok',
+  longer: 'gap',
+  gap: 'gap',
+  short: 'gap',
+  small: 'gap',
+  below: 'gap',
+  shorter: 'over',
+  overhang: 'over',
+  slack: 'over',
+  big: 'over',
+  above: 'over',
+};
+/** The sentence of a fact: the world's words for it (a `mark` speaks of the row at HIS mark). */
+function factText(verdict, game) {
+  const S = game.T.stage.fact;
+  if (verdict.kind === 'meet') return S.meet;
+  if (verdict.kind === 'mark')
+    return verdict.fact === 'fits' ? S.markFits : verdict.fact === 'gap' ? S.markGap : S.markOver;
+  if (verdict.kind === 'capstone') return S[verdict.fact];
+  return game.T.fact[verdict.fact];
+}
+
 export function Fact({ verdict, game }) {
   const T = game.T;
-  const tone = { as: 'ok', fits: 'ok', longer: 'gap', gap: 'gap', shorter: 'over', overhang: 'over' }[verdict.fact];
   return (
-    <div className={`di-verdict np-fact np-fact--${tone}`} data-np-fact={verdict.fact} data-di-clear>
+    <div className={`di-verdict np-fact np-fact--${TONE[verdict.fact]}`} data-np-fact={verdict.fact} data-di-clear>
       <p className="np-fact__line">
-        {verdict.kind === 'canal' ? (
+        {verdict.kind === 'meet' ? null : verdict.kind === 'canal' ? (
           <>
             <span>
               {T.hud.typed} <M>{`${verdict.seg} = ${texOf(verdict.typed)}`}</M>
@@ -60,14 +105,26 @@ export function Fact({ verdict, game }) {
           </span>
         )}
       </p>
-      <p className="np-fact__what">{T.fact[verdict.fact]}</p>
+      <p className="np-fact__what">
+        <MathText>{factText(verdict, game)}</MathText>
+      </p>
+      {verdict.quarry && (
+        <p className="np-fact__quarry" data-np-quarry={verdict.quarry}>
+          {T.stage.fact.quarry(verdict.quarry)}
+        </p>
+      )}
     </div>
   );
 }
 
 function Hud({ s, game }) {
   return (
-    <div className="np-hud" data-np-stage={s.at} data-np-look={s.look ?? undefined}>
+    <div
+      className="np-hud"
+      data-np-stage={s.at}
+      data-np-look={s.look ?? undefined}
+      {...(s.sight ? { 'data-np-sight': '' } : {})}
+    >
       {s.objective && !s.look && (
         <Instruction key={s.objective} text={s.objective} compact={Boolean(s.rope || s.verdict)} />
       )}
@@ -96,7 +153,7 @@ export function Register({ reg }) {
         {reg.rows.map((r) => (
           <li key={r.id} className={`is-${r.kind}`} data-np-row={r.id}>
             <M>{r.tex}</M>
-            <small>{WORLD_TEXT.unit}</small>
+            {!r.noUnit && <small>{WORLD_TEXT.unit}</small>}
             {r.by && <small className="np-register__by">{r.by}</small>}
           </li>
         ))}
@@ -105,38 +162,78 @@ export function Register({ reg }) {
   );
 }
 
-/** THE ONE ORDER's card: one box, digits and one comma (« 77,5 »), its unit printed after it. */
+/** What a box keeps: digits and ONE comma (a point typed is read as the comma). */
+const decimal = (v) => {
+  const [a, ...rest] = v
+    .replace('.', ',')
+    .replace(/[^0-9,]/g, '')
+    .split(',');
+  return rest.length ? `${a},${rest.join('')}` : a;
+};
+
+/**
+ * THE ONE ORDER's card: one number with its printed unit « م » — or, for the capstone (« كلّ طول × [ ] »), one number
+ * written as a fraction over a real bar.
+ */
 export function OrderCard({ o, game }) {
   const T = game.T.order;
-  const C = T[o.kind];
+  const C = T[o.kind] ?? game.T.stage.order[o.kind];
+  const frac = o.kind === 'capstone';
   const [text, setText] = useState('');
-  const send = () => game.sendOrder(text);
+  const [d, setD] = useState('');
+  const value = frac ? (d ? `${text}/${d}` : text) : text;
+  const send = () => game.sendOrder(value);
+  const seg = C.seg ?? o.seg;
   return (
     <Card>
       <div data-np-order={o.kind} {...(o.kind === 'canal' ? { 'data-np-predict': '' } : {})}>
         <p className="di-card__eyebrow">{C.title}</p>
         <h2 className="np-order__ask">
-          <MathText>{C.ask(o.seg)}</MathText>
+          <MathText>{o.kind === 'mark' ? C.ask(o.row) : C.ask(o.seg)}</MathText>
         </h2>
         <div className="np-order__line" dir="ltr">
-          <M>{`${o.seg} =`}</M>
-          <input
-            className="di-num np-order__in"
-            dir="ltr"
-            inputMode="decimal"
-            autoFocus
-            value={text}
-            style={{ width: '7ch' }}
-            onChange={(e) => {
-              // digits and ONE comma (a point typed is read as the comma)
-              const v = e.target.value.replace('.', ',').replace(/[^0-9,]/g, '');
-              const [a, ...rest] = v.split(',');
-              setText(rest.length ? `${a},${rest.join('')}` : a);
-            }}
-            onKeyDown={(e) => e.key === 'Enter' && text && send()}
-            data-np-order-in
-          />
-          <span className="np-order__unit">{game.T.unit}</span>
+          {frac ? (
+            <>
+              <M>{'k ='}</M>
+              <span className="np-order__frac">
+                <input
+                  className="di-num"
+                  inputMode="numeric"
+                  autoFocus
+                  value={text}
+                  onChange={(e) => setText(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+                  aria-label="k"
+                  data-np-order-n
+                />
+                <i aria-hidden="true" />
+                <input
+                  className="di-num"
+                  inputMode="numeric"
+                  value={d}
+                  onChange={(e) => setD(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+                  onKeyDown={(e) => e.key === 'Enter' && text && send()}
+                  aria-label="k"
+                  data-np-order-d
+                />
+              </span>
+            </>
+          ) : (
+            <>
+              <M>{`${seg} =`}</M>
+              <input
+                className="di-num np-order__in"
+                dir="ltr"
+                inputMode="decimal"
+                autoFocus
+                value={text}
+                style={{ width: '7ch' }}
+                onChange={(e) => setText(decimal(e.target.value))}
+                onKeyDown={(e) => e.key === 'Enter' && text && send()}
+                data-np-order-in
+              />
+              <span className="np-order__unit">{game.T.unit}</span>
+            </>
+          )}
         </div>
         {o.refused && (
           <p className="np-order__refused" data-np-refused={o.refused}>
@@ -156,12 +253,82 @@ export function OrderCard({ o, game }) {
   );
 }
 
+/**
+ * THE MISSION CARD (`story.mission`) and THE BOX AT NOON (`story.box`): a written problem in the kit's `UseLines`, beside
+ * a schematic figure (GeoFigure, not to scale — and it says so, gate F4). « تحقّق » makes the world act; a line that does
+ * not hold yet is answered with a FACT.
+ */
+export function StoryCard({ kind, game }) {
+  const m = kind === 'mission' ? game.story.mission : game.story.box;
+  const C = game.T.stage.card;
+  const lines = useMemo(() => m.lines(), [m]);
+  const [vals, setVals] = useState({});
+  const [fact, setFact] = useState(null);
+  const names = lines.flatMap((l) => boxesOf(l.tokens).map((t) => t.slot ?? t.choice));
+  const filled = names.every((n) => (vals[n] ?? '') !== '');
+  const check = () => {
+    if (kind === 'mission') game.checkMission(vals);
+    else setFact(game.checkBox(vals));
+  };
+  return (
+    <Card wide>
+      <div className="np-card" {...{ [`data-np-${kind}`]: '' }}>
+        <p className="di-card__eyebrow">{m.title}</p>
+        <div className="np-card__cols">
+          {m.figure && (
+            <div className="np-card__fig">
+              <GeoFigure {...m.figure} caption={C.notToScale} maxWidth={300} />
+            </div>
+          )}
+          <div className="np-card__text">
+            {(m.lead ?? []).map((l) => (
+              <p key={l} className="np-card__lead">
+                <MathText>{l}</MathText>
+              </p>
+            ))}
+            <div className="np-card__lines">
+              <UseLines
+                lines={lines}
+                vals={vals}
+                onType={(name, value) => {
+                  setVals({ ...vals, [name]: value });
+                  setFact(null);
+                }}
+              />
+            </div>
+            {fact && (
+              <p className="np-card__fact" data-np-card-fact>
+                <MathText>{fact}</MathText>
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="np-order__go">
+          <button
+            type="button"
+            className="di-btn di-btn--primary"
+            disabled={!filled}
+            onClick={check}
+            data-np-card-check
+          >
+            {C.check}
+          </button>
+          <button type="button" className="di-btn" onClick={() => game.closeCard()} data-np-card-later>
+            {C.later}
+          </button>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 const WORLD = {
   id: 'nile-pyramids',
   Game: NilePyramidsGame,
   devHandles,
-  playing: (s) => s.phase === 'play' || s.phase === 'dialog' || s.phase === 'build' || s.phase === 'look',
-  busy: (s) => s.phase === 'build' || s.phase === 'sail',
+  playing: (s) =>
+    s.phase === 'play' || s.phase === 'dialog' || s.phase === 'build' || s.phase === 'look' || s.phase === 'fly',
+  busy: (s) => s.phase === 'build' || s.phase === 'sail' || s.phase === 'fly' || s.phase === 'climb',
   held: (s) => (s.rope ? WORLD_TEXT.held(s.rope.knots) : null),
   Hud,
   Under: ({ s }) =>
@@ -176,6 +343,18 @@ const WORLD = {
     s.run && game.runContent ? <GateRunHud run={s.run} game={game} content={game.runContent} /> : null,
   overlay(o, s, game) {
     if (o.type === 'order') return <OrderCard key={o.id} o={o} game={game} />;
+    if (o.type === 'mission' || o.type === 'box') return <StoryCard key={o.type} kind={o.type} game={game} />;
+    if (o.type === 'forge')
+      return (
+        <RuleForge
+          key={o.key}
+          forge={game.lesson.forges[o.key]}
+          parts={FORGE_PARTS}
+          game={game}
+          log={o.log}
+          onSeal={(record) => game.sealRule(o.key, record)}
+        />
+      );
     return null;
   },
 };

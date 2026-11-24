@@ -36,6 +36,12 @@ export const FACE = Object.freeze({ base: '99', edge: '90', courses: Object.free
 /** « عرض النيل »: the stake S at 72 along the bank, E 9 further, R 52 inland — the far post F across the water (416). */
 export const RIVER = Object.freeze({ AS: '72', SE: '9', ER: '52' });
 
+/** « حجر القمّة »: the capstone of the same shape as the pyramid of the workshop, k = 1/36 (base 2,75, edges 2,5). */
+export const CAPSTONE = Object.freeze({ k: '1/36' });
+
+/** « صندوق ابن الهيثم » at noon: the box 177 m from the base edge, its wall 0,5 m behind the hole, the image 0,25 m. */
+export const CAMERA_BOX = Object.freeze({ fromEdge: '177', depth: '0,5', image: '0,25' });
+
 /** « ظلّ الهرم الأكبر »: the Great Pyramid (h 146, base 230), the 2 m stick, the morning sun of tan = 2/3. */
 export const PLATEAU = Object.freeze({ h: '146', base: '230', stick: '2', tan: '2/3' });
 
@@ -140,6 +146,14 @@ export function sunVector(tan, azimuth) {
 export function typedLength(text) {
   const t = String(text ?? '').trim();
   if (!/^\d+(,\d+)?$/.test(t)) return null;
+  const v = tryRead(t);
+  return v && v.n > 0n ? write(v) : null;
+}
+
+/** A number of the capstone's card: a fraction « 1/36 » or a decimal « 0,5 » — positive; null otherwise. */
+export function typedRatio(text) {
+  const t = String(text ?? '').trim();
+  if (!/^\d+(,\d+)?(\/\d+)?$/.test(t)) return null;
   const v = tryRead(t);
   return v && v.n > 0n ? write(v) : null;
 }

@@ -174,3 +174,53 @@
   gap: 0.75rem;
   justify-content: center;
 }
+.di-root .np-order__frac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+}
+.di-root .np-order__frac i {
+  display: block;
+  width: 5rem;
+  height: 2px;
+  background: #e5e7eb;
+}
+.di-root .np-order__frac .di-num {
+  width: 5rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+.di-root .np-fact .np-fact__quarry {
+  margin-top: 0.25rem;
+  color: #6d28d9;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+/* the mission card and the box at noon: the schematic figure beside the lines */
+.di-root .np-card__cols {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+.di-root .np-card__fig {
+  flex: 0 0 18rem;
+  padding: 0.4rem;
+  border-radius: 1rem;
+  background: #fffdf6;
+  color: #334155;
+}
+.di-root .np-card__text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.di-root .np-card .np-card__lead {
+  margin: 0 0 0.4rem;
+  font-size: 1.125rem;
+}
+.di-root .np-card .np-card__fact {
+  margin: 0.5rem 0 0;
+  color: #b45309;
+  font-size: 1.125rem;
+  font-weight: 700;
+}

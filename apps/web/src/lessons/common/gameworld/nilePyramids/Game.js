@@ -1,31 +1,45 @@
 /**
  * « الأهرامات » — THE WORLD OF A UNIT ABOUT THALÈS'S PROPERTY, played with a lesson's story (it names no lesson).
- * Design: `docs/reports/PYRAMIDS_WORLD_PLAN.md` (§1 the world, §2.2 this class). PHASE 1, a grey box of the risks (§6 row 1):
+ * Design: `docs/reports/PYRAMIDS_WORLD_PLAN.md` (§1 the world, §2.2 this class, §3.3–§3.7 the stages).
  *
- *   the Nile runs away from the camera; five DOCKS stand on its east bank in the order of play, the Great Pyramid on
- *   the horizon from the first second;
- *   stage 1 « حقل النيل » is playable WITH its prediction (gate B1): he measures AM and AN with the knotted rope, TYPES
- *   the canal's length, then the rope laid along the canal reads it — as typed · longer · shorter;
- *   stage 2 « ورشة البنّائين » plays ONE course order: the rope up the edge on the built steps (BM), then he computes
- *   the course MN, the quarry cuts his number, the masons lay it — fits · gap · overhang (a fact, never « wrong »);
- *   stages 3 and 5 are the two SCALE BOXES of gate B6 (the 416 m river, the 146 m pyramid and its drawn shadow);
- *   stage 4 is a placeholder; between two docks he sails on the kit's rail AS IT IS (gate F3).
+ *   The Nile runs away from the camera; five DOCKS stand on its east bank in the order of play, the Great Pyramid on the
+ *   horizon from the first second. A stage is ONE list of steps (DATA, `stageData`) played with ONE gesture and ONE
+ *   order:
+ *     1 « حقل النيل »        six rope measures, two predictions of a canal's length (as typed · longer · shorter)
+ *     2 « ورشة البنّائين »   the rope up the edge on the built steps; two courses ordered (fits · gap · overhang); then
+ *                            the row already cut: HE types its mark, the masons build up to it and lay it there
+ *     3 « عرض النيل »        the bank AS, then SE, then inland ER until, in Zero's eye, the stake S hides the post F
+ *                            (`data-np-sight`); the ferry rope cut before crossing (ties · short · slack)
+ *     4 « حجر القمّة »       up the ramp to the summit, framed close; « كلّ طول × [k] » to the stone-cutter: the
+ *                            capstone sits · is too small · too big (a block too big is the quarry's written order)
+ *     5 « ظلّ الهرم الأكبر » the stick IN THE SUN, the shadows (DRAWN meshes from `shadowTip`, never the shadow map),
+ *                            the stick's drawn triangle slid along the axis until the tips meet (B5); the mission card;
+ *                            Zero rises to his h (apex · below · above); noon, and « صندوق ابن الهيثم »
+ *   Each of stages 1–4 ends at the masons' table, where the lesson's forge opens (`story.forges[stageId]`).
+ *   Between two docks he sails on the kit's rail (`story.legs[i]`) — without a leg the felucca simply sails.
  *
  * THE ONE GESTURE is `gestures.js › slide`, THE ONE ORDER `orders.js › order`; the law is `logic.js`; the look
- * `scenery.js`; every word `strings.js`. One unit is one metre.
+ * `scenery.js`; every word `strings.js`. One unit is one metre; Zero is drawn about 1,2 m tall (`ZERO`).
  *
- * THE STORY is the lesson's (`lesson.story`, every field optional): `text` (its sentences over the world's), `legs[i]`
- * (the content of the kit's rail from dock i to dock i + 1 — without it the felucca simply sails),
- * `recall(game, stageId)`, `onArrive(game, stageId)`.
+ * THE STORY is the lesson's (`lesson.story`, every field optional):
+ *   text                its sentences over the world's (`strings.js`)
+ *   legs[i]             the content of the kit's rail from dock i to dock i + 1
+ *   forges              { field?, workshop?, river?, summit? }: the key of the lesson's forge played at that stage's
+ *                       table (`lesson.forges[key]`); a stage without one ends at its last order
+ *   mission             { title, lead: [..], figure?, lines(), check(vals) → 'ok' | fact, height(vals) → h }
+ *   box                 { title, lead: [..], figure?, lines(), check(vals) → 'ok' | fact }  (noon, the camera obscura)
+ *   recall(game, id), onArrive(game, id), afterKey[key](game), complete (false: the story is not the whole lesson)
  */
 import * as THREE from 'three';
 import { WorldRuntime } from '../kit/WorldRuntime';
 import { GateRun } from '../kit/GateRun';
+import { riverRun } from './riverMeshes';
 import {
   FIELD,
   FACE,
   RIVER,
   PLATEAU,
+  CAPSTONE,
   canalReading,
   fieldPoints,
   courseAt,
@@ -37,9 +51,13 @@ import {
   frameDistance,
   typedLength,
   approx,
+  write,
 } from './logic';
 import { order, holds } from './orders';
 import { slide, slideStep, slideTap, knotsOf, slidePoint, tied } from './gestures';
+import { thalesCase } from './ruleForge';
+import { times } from '../kit/exact';
+import { texNum } from './inquiryParts';
 import {
   BANK_X,
   RIVER_W,
@@ -61,6 +79,13 @@ import {
   makeGreyPost,
   makeGroundShadow,
   makeStick,
+  makeForgeTable,
+  makeRamp,
+  makeCapstone,
+  makeRightAngle,
+  makeCameraBox,
+  makeFlightBeam,
+  makeGhostStick,
 } from './scenery';
 import { WORLD_TEXT, withStory } from './strings';
 
@@ -69,11 +94,14 @@ const DOCK_Z = [0, -160, -330, -560, -760];
 const STAGE_IDS = ['field', 'workshop', 'river', 'summit', 'plateau'];
 const PLAY = { x0: BANK_X, x1: 700, z0: -1150, z1: 60 };
 const JETTY = { x0: -12.3, half: 1.8 };
-const RAIL = { x: -300, y: 0.3, z: -380 };
+const RAIL = { x: -300, y: WATER_Y + 0.05, z: -380 };
 const GREAT = { x: 300, z: -800 };
-const WORKSHOP = { x: 70, z: -225, courses: 54 }; // 54 courses: the mark BM = 10 is the top of the 6th
+const WORKSHOP = { x: 70, z: -225, courses: 54 }; // 54 courses of the 90 m edge: the marks 10, 20, 40 are course tops
+const SUMMIT = { x: 70, z: -615, courses: 72, upTo: 70 }; // 70 of 72 courses: the top platform is 99 × 2/72 = 2,75
 const SUN_DAY = sunVector('4/5', 2.5);
 const SUN_PLATEAU = sunVector(PLATEAU.tan, Math.PI / 2); // from the east, square to the west face
+const SUN_NOON = sunVector('8', Math.PI / 2);
+const ZERO = 0.55; // the kit's robot is about 2,2 units tall: drawn about 1,2 m, as planned (§1.2)
 const AMBER = 0xf59e0b;
 const VIOLET = 0x8b5cf6;
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
@@ -84,8 +112,10 @@ export class NilePyramidsGame extends WorldRuntime {
   initWorld(sv) {
     this.story = this.lesson.story ?? {};
     this.T = withStory(WORLD_TEXT, this.story.text);
+    this.S = this.T.stage;
     this.done = { ...(sv?.done ?? {}) }; // step id → what it gave (the knots of a measure, the number of an order)
     this.log = [...(sv?.log ?? [])]; // every order and its fact: { stage, kind, typed, fact }
+    this.mirrorLog = { ...(sv?.mirrorLog ?? {}) }; // stage id → the cases a forge's mirror showed
     this.hold = null; // the rope in his hand: { step, s (the slide), sign, cam }
     this.cine = null;
     this.layout();
@@ -108,6 +138,7 @@ export class NilePyramidsGame extends WorldRuntime {
     const field = {};
     for (const [k, p] of Object.entries(fp))
       field[k] = { x: A.x + p.u * eu.x + p.v * ev.x, y: 0, z: A.z + p.u * eu.z + p.v * ev.z };
+    field.table = { x: A.x + 5, y: 0, z: A.z + 7 };
     // stage 2: the unfinished pyramid; its face SBC looks at the river (west)
     const half = approx(FACE.base) / 2;
     const h = pyramidHeight(FACE.base, FACE.edge);
@@ -115,25 +146,50 @@ export class NilePyramidsGame extends WorldRuntime {
       B: { x: WORKSHOP.x - half, y: 0, z: WORKSHOP.z + half },
       C: { x: WORKSHOP.x - half, y: 0, z: WORKSHOP.z - half },
       S: { x: WORKSHOP.x, y: h, z: WORKSHOP.z },
+      table: { x: WORKSHOP.x - half - 10, y: 0, z: WORKSHOP.z + half + 8 },
       h,
     };
     // stage 3: the ferry — A on this bank opposite the far post F, S along the bank, E further, R inland
-    const as = approx(RIVER.AS);
-    const se = approx(RIVER.SE);
-    const er = approx(RIVER.ER);
-    const A3 = { x: BANK_X + 1.5, z: DOCK_Z[2] - 8 };
+    const A3 = { x: BANK_X + 1.5, y: 0, z: DOCK_Z[2] - 8 };
     const river = {
       A: A3,
-      S: { x: A3.x, z: A3.z - as },
-      E: { x: A3.x, z: A3.z - as - se },
-      R: { x: A3.x + er, z: A3.z - as - se },
-      F: { x: A3.x - approx(riverWidth(RIVER)), z: A3.z },
+      S: { x: A3.x, y: 0, z: A3.z - approx(RIVER.AS) },
+      E: { x: A3.x, y: 0, z: A3.z - approx(RIVER.AS) - approx(RIVER.SE) },
+      R: { x: A3.x + approx(RIVER.ER), y: 0, z: A3.z - approx(RIVER.AS) - approx(RIVER.SE) },
+      F: { x: A3.x - approx(riverWidth(RIVER)), y: 0, z: A3.z },
+      table: { x: A3.x + 14, y: 0, z: A3.z - 6 },
     };
-    this.pts = { field, ws, river };
+    // stage 4: the twin pyramid of the workshop, finished up to its capstone; its ramp from the south
+    const sh = pyramidHeight(FACE.base, FACE.edge);
+    const top = (sh * SUMMIT.upTo) / SUMMIT.courses;
+    const summit = {
+      ramp: { x: SUMMIT.x - 10, y: 0, z: SUMMIT.z + half + 40 },
+      top: { x: SUMMIT.x, y: top, z: SUMMIT.z },
+      table: { x: SUMMIT.x - 22, y: 0, z: SUMMIT.z + half + 44 },
+      h: sh,
+      topY: top,
+    };
+    // stage 5: the Great Pyramid, its shadow's tip A, the stick in the sun beside it, the box at 177 m (§3.7)
+    const tip = shadowTip({ tan: PLATEAU.tan, azimuth: Math.PI / 2, height: PLATEAU.h, foot: GREAT });
+    const gh = approx(PLATEAU.base) / 2;
+    const foot = { x: tip.x + 14, z: GREAT.z + 45 };
+    const plateau = {
+      A: { x: tip.x, y: 0, z: tip.z },
+      H: { x: GREAT.x - gh, y: 0, z: GREAT.z },
+      D: { x: GREAT.x - gh, y: 0, z: GREAT.z + gh },
+      G: { x: GREAT.x - gh, y: 0, z: GREAT.z - gh },
+      Mst: { x: foot.x, y: 0, z: foot.z },
+      Mw: { x: foot.x - 10, y: 0, z: foot.z },
+      Gh: { x: tip.x + approx(PLATEAU.stick) * 1.5 + 45, y: 0, z: GREAT.z },
+      box: { x: GREAT.x - gh - 177, y: 0, z: GREAT.z + 6 },
+      tip,
+    };
+    this.pts = { field, ws, river, summit, plateau };
+    this.P = [field, ws, river, summit, plateau];
     this.stages = this.stageData();
   }
 
-  /** The five stages as DATA: their steps, in order. A step is a slide, a prediction, an order or a look. */
+  /** The five stages as DATA: their steps, in order. A step is a slide, a prediction, an order, a climb, a card or a forge. */
   stageData() {
     const [fresh, old] = FIELD.canals;
     const canalSteps = (c, longOf) => {
@@ -156,34 +212,143 @@ export class NilePyramidsGame extends WorldRuntime {
         },
       ];
     };
-    const course = courseAt(FACE, FACE.courses[0]);
+    const forge = (stage) => {
+      const key = this.story.forges?.[stage];
+      return key && this.lesson.forges?.[key] ? [{ id: `forge:${key}`, kind: 'forge', key, at: 'table' }] : [];
+    };
+    const [c1, c2] = FACE.courses;
+    const edge = { kind: 'slide', edge: true, from: 'B', toward: 'S', stake: 'M', seg: 'BM', view: { x: -1, z: 0.35 } };
     return [
       {
         id: STAGE_IDS[0],
         longest: FIELD.AC,
-        steps: [...canalSteps(fresh, canalReading(FIELD, fresh)), ...canalSteps(old, canalReading(FIELD, old))],
+        steps: [
+          ...canalSteps(fresh, canalReading(FIELD, fresh)),
+          ...canalSteps(old, canalReading(FIELD, old)),
+          ...forge('field'),
+        ],
       },
       {
         id: STAGE_IDS[1],
-        longest: FACE.courses[0],
+        longest: c2,
         steps: [
-          {
-            id: 'BM',
-            kind: 'slide',
-            edge: true,
-            from: 'B',
-            toward: 'S',
-            stake: 'M',
-            target: FACE.courses[0],
-            max: FACE.courses[0], // the rope walks only on what is BUILT: up to the last course laid
-            view: { x: -1, z: 0.35 },
-          },
-          { id: 'course', kind: 'order', order: 'course', seg: 'MN', at: 'B', truth: course.MN },
+          // the rope walks only on what is BUILT: up to the last course laid (`max`)
+          { ...edge, id: 'BM', target: c1, max: c1 },
+          { id: 'course', kind: 'order', order: 'course', seg: 'MN', at: 'B', truth: courseAt(FACE, c1).MN, bm: c1 },
+          { ...edge, id: 'BM2', target: c2, max: c2 },
+          { id: 'course2', kind: 'order', order: 'course', seg: 'MN', at: 'B', truth: courseAt(FACE, c2).MN, bm: c2 },
+          { id: 'mark', kind: 'order', order: 'mark', seg: 'BM', at: 'B', truth: { face: FACE, row: FACE.row } },
+          ...forge('workshop'),
         ],
       },
-      { id: STAGE_IDS[2], steps: [{ id: 'bank', kind: 'look', box: 'bank' }] },
-      { id: STAGE_IDS[3], steps: [], later: true },
-      { id: STAGE_IDS[4], steps: [{ id: 'plateau', kind: 'look', box: 'plateau' }] },
+      {
+        id: STAGE_IDS[2],
+        longest: '72',
+        steps: [
+          {
+            id: 'AS',
+            kind: 'slide',
+            from: 'A',
+            toward: 'S',
+            stake: 'S',
+            seg: 'AS',
+            target: RIVER.AS,
+            max: '90',
+            bank: true,
+          },
+          {
+            id: 'SE',
+            kind: 'slide',
+            from: 'S',
+            toward: 'E',
+            stake: 'E',
+            seg: 'SE',
+            line: '[SE]',
+            target: RIVER.SE,
+            max: '20',
+          },
+          {
+            id: 'ER',
+            kind: 'slide',
+            sight: true,
+            from: 'E',
+            toward: 'R',
+            stake: null,
+            seg: 'ER',
+            target: RIVER.ER,
+            max: '70',
+          },
+          { id: 'ferry', kind: 'order', order: 'ferry', seg: 'AF', at: 'A', truth: riverWidth(RIVER) },
+          ...forge('river'),
+        ],
+      },
+      {
+        id: STAGE_IDS[3],
+        steps: [
+          { id: 'climb', kind: 'climb', at: 'ramp' },
+          {
+            id: 'capstone',
+            kind: 'order',
+            order: 'capstone',
+            seg: 'k',
+            at: 'top',
+            truth: { k: CAPSTONE.k, base: FACE.base },
+          },
+          ...forge('summit'),
+        ],
+      },
+      {
+        id: STAGE_IDS[4],
+        longest: PLATEAU.base,
+        steps: [
+          {
+            id: 'AM',
+            kind: 'slide',
+            from: 'Mst',
+            toward: 'Mw',
+            stake: null,
+            seg: 'AM',
+            target: '3',
+            max: '8',
+            stick: true,
+          },
+          {
+            id: 'HA',
+            kind: 'slide',
+            from: 'H',
+            toward: 'A',
+            stake: 'A',
+            seg: 'HA',
+            target: '104',
+            max: '140',
+            shadow: true,
+          },
+          {
+            id: 'DG',
+            kind: 'slide',
+            from: 'D',
+            toward: 'G',
+            stake: 'G',
+            seg: 'DG',
+            target: PLATEAU.base,
+            max: '236',
+            base: true,
+          },
+          {
+            id: 'ghost',
+            kind: 'slide',
+            ghost: true,
+            from: 'Gh',
+            toward: 'A',
+            stake: null,
+            seg: null,
+            target: '45',
+            max: '60',
+          },
+          ...(this.story.mission ? [{ id: 'mission', kind: 'mission', at: 'A' }] : []),
+          ...(this.story.box ? [{ id: 'box', kind: 'box', at: 'box' }] : []),
+        ],
+      },
     ];
   }
 
@@ -197,6 +362,7 @@ export class NilePyramidsGame extends WorldRuntime {
       register: null,
       verdict: null,
       look: null,
+      sight: false,
       run: null,
       stars: { ...(sv?.stars ?? {}) },
       hasSave: Boolean(sv && (sv.dock > 0 || Object.keys(sv.done ?? {}).length)),
@@ -205,7 +371,7 @@ export class NilePyramidsGame extends WorldRuntime {
   }
   /** `dock`: where he stands — never `at`, which the kit's save keeps for its own date (defects D19). */
   worldSave() {
-    return { dock: this.state.at, done: this.done, log: this.log, stars: this.state.stars };
+    return { dock: this.state.at, done: this.done, log: this.log, mirrorLog: this.mirrorLog, stars: this.state.stars };
   }
   worldCentre() {
     return { x: 200, z: -500 };
@@ -228,42 +394,73 @@ export class NilePyramidsGame extends WorldRuntime {
   freeLook() {
     return true;
   }
-  /** While he holds the rope, ← → are the knots of his slide: they do not walk him. */
+  /** While he holds the rope, ← → are the knots of his slide; on the summit he stands still. */
   steers() {
-    return !this.hold;
+    return !this.hold && !this.onTop;
   }
   fov() {
     const ph = this.state.phase;
-    return ph === 'run' ? 60 : ph === 'look' ? 50 : 55;
+    return ph === 'run' ? 60 : ph === 'look' || ph === 'fly' ? 50 : 55;
   }
   stepPhase(ph) {
-    return ph === 'run' || ph === 'build' || ph === 'look' || ph === 'sail';
+    return ph === 'run' || ph === 'build' || ph === 'look' || ph === 'sail' || ph === 'fly' || ph === 'climb';
   }
   lanesLive(ph) {
     return ph === 'run';
   }
   busy() {
     const ph = this.state.phase;
-    return ph === 'run' || ph === 'build' || ph === 'sail';
+    return ph === 'run' || ph === 'build' || ph === 'sail' || ph === 'fly' || ph === 'climb' || ph === 'forge';
   }
   robotPose(ph) {
     if (ph === 'run') return this.gateRun.pose() ?? { lift: 0, speed: null, sad: false };
-    if (ph === 'sail') return { lift: 0.55, speed: 0, sad: false };
+    if (ph === 'sail') return { lift: 0.3, speed: 0, sad: false };
+    if (ph === 'climb') return { lift: 0, speed: 3, sad: false };
     if (this.hold) return { lift: 0, speed: Math.abs(this.hold.s.way) * 3, sad: false };
     return { lift: 0, speed: null, sad: false };
   }
   cameraShot(ph) {
     if (ph === 'run') return this.gateRun.camera();
-    if (ph === 'look' && this.cine) return { pos: this.cine.pos, look: this.cine.look, k: 1.6 };
+    if ((ph === 'look' || ph === 'build' || ph === 'fly' || ph === 'climb') && this.cine)
+      return { pos: this.cine.pos, look: this.cine.look, k: 1.8 };
     if (ph === 'sail' && this.sailing) {
       const b = this.felucca.position;
-      return { pos: new THREE.Vector3(b.x + 26, 16, b.z + 30), look: new THREE.Vector3(b.x, 1, b.z - 20), k: 3 };
+      return { pos: new THREE.Vector3(b.x + 22, 13, b.z + 26), look: new THREE.Vector3(b.x, 1, b.z - 20), k: 3 };
     }
-    if (this.hold && (ph === 'play' || ph === 'dialog'))
+    if (this.hold && (ph === 'play' || ph === 'dialog')) {
+      if (this.hold.step.sight) return this.sightShot();
       return { pos: this.hold.cam.pos, look: this.hold.cam.look, k: 3 };
-    // what the masons built is SEEN: the camera stays over the course until he walks again
-    if ((ph === 'build' || this.courseShot) && this.cine) return { pos: this.cine.pos, look: this.cine.look, k: 2 };
-    return null;
+    }
+    // what was built is SEEN: the camera stays over it until he walks again
+    if (this.cine && this.stickyCine && (ph === 'play' || ph === 'dialog'))
+      return { pos: this.cine.pos, look: this.cine.look, k: 2 };
+    if (this.onTop && (ph === 'play' || ph === 'dialog')) return this.topShot();
+    if (ph !== 'play' && ph !== 'dialog') return null;
+    // the runtime's follow, brought closer for a Zero of 1,2 m
+    const h = this.hero.pos;
+    const d = this.camDir;
+    const f = this.followCam ?? (this.followCam = { pos: new THREE.Vector3(), look: new THREE.Vector3() });
+    f.pos.set(h.x - d.x * 6.8, Math.max(0, h.y) + 4.4, h.z - d.y * 6.8);
+    f.look.set(h.x + d.x * 2, Math.max(-2, h.y) + 0.8, h.z + d.y * 2);
+    return { pos: f.pos, look: f.look, k: 4.5 };
+  }
+  /** Zero's eye, from the knot he stands on, along the line to the far post (stage 3, `cameraShot('sight')`). */
+  sightShot() {
+    const p = slidePoint(this.hold.s);
+    const F = this.pts.river.F;
+    const s = this.sightCam ?? (this.sightCam = { pos: new THREE.Vector3(), look: new THREE.Vector3() });
+    s.pos.set(p.x, 1.25, p.z);
+    s.look.set(F.x, 2.5, F.z);
+    return { pos: s.pos, look: s.look, k: 8 };
+  }
+  /** On the summit: the top eight metres framed close — the capstone about 150 px wide (§1.5). */
+  topShot() {
+    const t = this.pts.summit.top;
+    return {
+      pos: new THREE.Vector3(t.x - 8.5, t.y + 4.5, t.z + 8.5),
+      look: new THREE.Vector3(t.x, t.y + 0.6, t.z),
+      k: 3,
+    };
   }
   /** The ground: the east bank and the jetties; the bounds of the play. The water itself pushes him back (`onGround`). */
   walkable(x, z) {
@@ -292,15 +489,16 @@ export class NilePyramidsGame extends WorldRuntime {
 
   // ───────────────────────────── K-f: the sun, its shadow box, the fog ─────────────────────────────
   sunDir() {
-    const v = this.state.at === 4 ? SUN_PLATEAU : SUN_DAY;
+    const v = this.state.at === 4 ? (this.flags.noon ? SUN_NOON : SUN_PLATEAU) : SUN_DAY;
     return (this.sunVec ??= new THREE.Vector3()).set(v.x, v.y, v.z);
   }
   shadowBox() {
     const at = this.state.at;
     if (at === 4) return { half: 270, near: 10, far: 2000, distance: 900, at: { x: 200, z: GREAT.z } };
+    if (at === 3) return { half: 70, near: 1, far: 800, distance: 360, at: SUMMIT };
     if (at === 1) return { half: 75, near: 1, far: 700, distance: 320, at: WORKSHOP };
     if (at === 0) return { half: 60, near: 1, far: 460, distance: 220, at: { x: 34, z: -44 } };
-    return { half: 40, near: 1, far: 420, distance: 200, at: null };
+    return { half: 60, near: 1, far: 420, distance: 200, at: null };
   }
   fogRange() {
     return [700, 4500]; // the Great Pyramid stays in view from the first dock
@@ -317,6 +515,8 @@ export class NilePyramidsGame extends WorldRuntime {
     sc.add(this.physSky.sky);
     this.pmrem = new THREE.PMREMGenerator(this.renderer);
     this.sunStage = null;
+    this.stakes = {};
+    this.tables = {};
 
     sc.add(makeGround(PLAY));
     this.buildPalms();
@@ -331,16 +531,30 @@ export class NilePyramidsGame extends WorldRuntime {
     sc.add(this.felucca);
     this.buildField();
     this.buildWorkshop();
-    this.buildRiverBox();
+    this.buildRiver();
     this.buildSummit();
     this.buildPlateau();
+    this.buildTables();
 
     this.rope = makeKnottedRope();
     sc.add(this.rope);
     this.laid = new THREE.Group();
     sc.add(this.laid);
 
-    // the dock of the stage he stands on: look at it, or board the felucca
+    // where a step begins (a stake, the masons' table, the ramp…): E there acts — one interact per place
+    this.P.forEach((pts, i) => {
+      const keys = new Set(this.stages[i].steps.flatMap((s) => [s.from, s.at]).filter(Boolean));
+      for (const k of keys)
+        this.addInteract(
+          pts[k].x,
+          pts[k].z,
+          () => this.stepPrompt(i, k),
+          () => this.stepAct(i, k),
+          k === 'top' ? 4 : 2.6,
+          (pts[k].y ?? 0) + 3.1,
+        );
+    });
+    // the dock of the stage he stands on: board the felucca once the stage is over
     DOCK_Z.forEach((z, i) =>
       this.addInteract(
         BANK_X + 2,
@@ -356,7 +570,8 @@ export class NilePyramidsGame extends WorldRuntime {
     };
     window.addEventListener('keydown', this.onDropKey);
     this.labelsAt = -1;
-    this.gateRun = new GateRun(this, { ...RAIL, onOver: (r) => this.runOver(r) });
+    // the felucca's legs sail on the kit's run in the river's skin, crocodiles in the lanes (K-b, `riverMeshes.js`)
+    this.gateRun = new GateRun(this, { ...RAIL, ...riverRun(), onOver: (r) => this.runOver(r) });
     this.gateRun.build();
   }
 
@@ -373,13 +588,23 @@ export class NilePyramidsGame extends WorldRuntime {
     for (const [z0, z1] of [
       [50, 12],
       [-100, -140],
-      [-260, -320],
-      [-500, -545],
-      [-600, -740],
+      [-265, -320],
+      [-440, -500],
+      [-665, -740],
     ])
       for (let z = z0; z > z1; z -= 16) plant(BANK_X + 5 + ((seed * 13) % 7), z);
     // the west bank: a line of palms over the crops
     for (let z = 40; z > -1100; z -= 70) plant(BANK_X - RIVER_W - 12 - ((seed * 11) % 20), z);
+  }
+
+  /** A stake of a stage, its letter over it; its lamp lights when the next step begins there. */
+  addStake(stageIndex, k, at, letter = k) {
+    const s = makeStake(letter);
+    s.position.set(at.x, 0, at.z);
+    this.scene.add(s);
+    this.stakes[`${STAGE_IDS[stageIndex]}:${k}`] = s;
+    this.colliders.push({ x: at.x, z: at.z, r: 0.18 });
+    return s;
   }
 
   buildField() {
@@ -391,34 +616,13 @@ export class NilePyramidsGame extends WorldRuntime {
         [fresh, old].map((c) => [f[c.ends[0]], f[c.ends[1]]]),
       ),
     );
-    this.stakes = {};
-    for (const k of ['A', 'B', 'C', ...fresh.ends, ...old.ends]) {
-      const s = makeStake(k);
-      s.position.set(f[k].x, 0, f[k].z);
-      this.scene.add(s);
-      this.stakes[`field:${k}`] = s;
-      this.colliders.push({ x: f[k].x, z: f[k].z, r: 0.18 });
-    }
-    // where a step of the field begins: E there takes the rope (or opens the order)
-    for (const k of ['A', ...fresh.ends.slice(0, 1), ...old.ends.slice(0, 1)])
-      this.addInteract(
-        f[k].x,
-        f[k].z,
-        () => this.stakePrompt(0, k),
-        () => this.stakeAct(0, k),
-        2.4,
-      );
+    for (const k of ['A', 'B', 'C', ...fresh.ends, ...old.ends]) this.addStake(0, k, f[k]);
   }
 
   buildWorkshop() {
-    const { B, C, S, h } = this.pts.ws;
-    const n = WORKSHOP.courses;
-    const level = Math.round((approx(FACE.courses[0]) / approx(FACE.edge)) * n); // 6 courses built of 54
-    this.wsLevel = (h * level) / n;
-    this.wsCourse = h / n;
-    const pyr = makeStepPyramid({ base: approx(FACE.base), h, courses: n, upTo: level });
-    pyr.position.set(WORKSHOP.x, 0, WORKSHOP.z);
-    this.scene.add(pyr);
+    const { B, C, S } = this.pts.ws;
+    this.wsCourse = this.pts.ws.h / WORKSHOP.courses;
+    this.setBuilt(this.builtMark(), false);
     this.colliders.push({ x: WORKSHOP.x, z: WORKSHOP.z, r: approx(FACE.base) / 2 });
     // the four edges, faint, up to the apex not built yet — the rope never walks on them
     const half = approx(FACE.base) / 2;
@@ -429,47 +633,85 @@ export class NilePyramidsGame extends WorldRuntime {
       [-1, 1],
     ])
       this.scene.add(makeRay({ x: WORKSHOP.x + sx * half, y: 0, z: WORKSHOP.z + sz * half }, S, 0.08, 0xfff3d6));
-    const sB = makeStake('B');
-    sB.position.set(B.x - 0.6, 0, B.z + 0.6);
-    this.scene.add(sB);
-    this.stakes['workshop:B'] = sB;
+    this.addStake(1, 'B', { x: B.x - 0.6, z: B.z + 0.6 });
     const cLabel = makeLabel('C', { bg: 'rgba(29,78,216,0.92)' });
     cLabel.position.set(C.x - 0.6, 2.6, C.z - 0.6);
     const sLabel = makeLabel('S', { bg: 'rgba(29,78,216,0.92)' });
     sLabel.position.set(S.x, S.y + 4, S.z);
     this.scene.add(cLabel, sLabel);
-    this.addInteract(
-      B.x - 0.6,
-      B.z + 0.6,
-      () => this.stakePrompt(1, 'B'),
-      () => this.stakeAct(1, 'B'),
-      2.6,
-    );
     this.course = null;
   }
 
-  buildRiverBox() {
-    const r = this.pts.river;
-    for (const k of ['A', 'S', 'E', 'R']) {
-      const p = makeGreyPost(k, 2.4);
-      p.position.set(r[k].x, 0, r[k].z);
-      this.scene.add(p);
+  /** The mark the masons have built up to: 10, then 20 once course 1 fits, then his mark of the row. */
+  builtMark() {
+    const lastMark = [...this.log].reverse().find((l) => l.kind === 'mark');
+    if (lastMark) return lastMark.typed;
+    return this.done.course != null ? FACE.courses[1] : FACE.courses[0];
+  }
+  /** The height of a mark BM up the edge (the level of the course there). */
+  levelOf(bm) {
+    return (this.pts.ws.h * approx(bm)) / approx(FACE.edge);
+  }
+  /** The workshop's pyramid built up to the mark `bm`: whole courses under it. */
+  setBuilt(bm, animate) {
+    if (this.wsMesh) {
+      this.scene.remove(this.wsMesh);
+      this.wsMesh.geometry.dispose();
     }
+    const n = WORKSHOP.courses;
+    const upTo = Math.max(1, Math.min(n - 1, Math.floor((approx(bm) / approx(FACE.edge)) * n + 1e-6)));
+    this.wsMesh = makeStepPyramid({ base: approx(FACE.base), h: this.pts.ws.h, courses: n, upTo });
+    this.wsMesh.position.set(WORKSHOP.x, 0, WORKSHOP.z);
+    this.scene.add(this.wsMesh);
+    this.wsBuilt = bm;
+    if (animate) {
+      this.wsMesh.scale.y = 0.85;
+      this.tween(1.2, (t) => {
+        this.wsMesh.scale.y = 0.85 + 0.15 * t;
+      });
+    }
+  }
+  /** A point of the edge SB at BM metres from the corner B (for drawing). */
+  edgePoint(bm) {
+    const { B, S } = this.pts.ws;
+    const k = approx(bm) / approx(FACE.edge);
+    return { x: B.x + (S.x - B.x) * k, y: S.y * k, z: B.z + (S.z - B.z) * k };
+  }
+
+  buildRiver() {
+    const r = this.pts.river;
+    for (const k of ['A', 'S', 'E']) this.addStake(2, k, r[k]);
+    this.riverR = makeStake('R');
+    this.riverR.position.set(r.R.x, 0, r.R.z);
+    this.riverR.visible = false;
+    this.scene.add(this.riverR);
     const far = makeGreyPost('F', 6);
     far.position.set(r.F.x, 0, r.F.z);
     this.scene.add(far);
+    // the rope-stretchers' right angles: AF ⟂ the bank at A, the walk inland ⟂ the bank at E (3-4-5)
+    this.scene.add(makeRightAngle(r.A, { x: 0, z: -1 }, { x: -1, z: 0 }));
+    this.scene.add(makeRightAngle(r.E, { x: 0, z: 1 }, { x: 1, z: 0 }));
+    this.ferryRope = new THREE.Group();
+    this.scene.add(this.ferryRope);
   }
 
   buildSummit() {
-    // stage 4 is built later (phase 3): a plain limestone capstone waits at its dock
-    const cap = makeStepPyramid({ base: 1.5, h: 1.1, courses: 4 });
-    cap.position.set(BANK_X + 20, 0, DOCK_Z[3] - 14);
-    this.scene.add(cap);
+    const { h, topY, ramp, top } = this.pts.summit;
+    const pyr = makeStepPyramid({ base: approx(FACE.base), h, courses: SUMMIT.courses, upTo: SUMMIT.upTo });
+    pyr.position.set(SUMMIT.x, 0, SUMMIT.z);
+    this.scene.add(pyr);
+    this.colliders.push({ x: SUMMIT.x, z: SUMMIT.z, r: approx(FACE.base) / 2 });
+    this.scene.add(makeRamp({ x: ramp.x, y: 0.4, z: ramp.z }, { x: top.x - 1, y: topY - 0.5, z: top.z + 1.6 }, 3.6));
+    this.capstone = null;
+    const rl = makeLabel('↑', { bg: 'rgba(12,72,110,0.92)' });
+    rl.position.set(ramp.x, 3.2, ramp.z);
+    this.scene.add(rl);
   }
 
   buildPlateau() {
     const H = approx(PLATEAU.h);
     const base = approx(PLATEAU.base);
+    const p = this.pts.plateau;
     const great = makeStepPyramid({ base, h: H, courses: 64 });
     great.position.set(GREAT.x, 0, GREAT.z);
     this.scene.add(great);
@@ -478,46 +720,77 @@ export class NilePyramidsGame extends WorldRuntime {
       [640, -1180, 215, 136, 50],
       [930, -1480, 104, 65, 26],
     ]) {
-      const p = makeStepPyramid({ base: b, h, courses: n });
-      p.position.set(x, 0, z);
-      this.scene.add(p);
+      const m = makeStepPyramid({ base: b, h, courses: n });
+      m.position.set(x, 0, z);
+      this.scene.add(m);
     }
     // THE SHADOWS THAT CARRY MATHEMATICS ARE DRAWN (B2, B5): the apex's shadow tip A from `shadowTip`, the triangle of
     // the shadow beyond the west base edge, the stick IN THE SUN beside it, its shadow and its ray
-    const az = Math.PI / 2;
-    const tip = shadowTip({ tan: PLATEAU.tan, azimuth: az, height: PLATEAU.h, foot: GREAT });
     const half = base / 2;
-    this.scene.add(
+    this.morning = new THREE.Group();
+    this.morning.add(
       makeGroundShadow([
         { x: GREAT.x - half, z: GREAT.z - half },
         { x: GREAT.x - half, z: GREAT.z + half },
-        { x: tip.x, z: tip.z },
+        { x: p.tip.x, z: p.tip.z },
       ]),
+      makeRay({ x: GREAT.x, y: H, z: GREAT.z }, { x: p.tip.x, y: 0, z: p.tip.z }, 0.35, 0xffb21e),
     );
-    this.scene.add(makeRay({ x: GREAT.x, y: H, z: GREAT.z }, { x: tip.x, y: 0, z: tip.z }, 0.35, 0xffb21e));
-    const A = makeLabel('A', { bg: 'rgba(200,85,61,0.94)' });
-    A.position.set(tip.x, 4, tip.z);
-    this.scene.add(A);
-    const foot = { x: tip.x + 14, z: GREAT.z + 55 };
-    const stick = makeStick(approx(PLATEAU.stick));
-    stick.position.set(foot.x, 0, foot.z);
+    this.scene.add(this.morning);
+    for (const [k, at, bg] of [
+      ['A', p.A, 'rgba(200,85,61,0.94)'],
+      ['H', p.H, 'rgba(29,78,216,0.92)'],
+      ['D', p.D, 'rgba(29,78,216,0.92)'],
+      ['G', p.G, 'rgba(29,78,216,0.92)'],
+    ]) {
+      const l = makeLabel(k, { bg });
+      l.position.set(at.x, 4, at.z);
+      this.scene.add(l);
+    }
+    const stickH = approx(PLATEAU.stick);
+    const stick = makeStick(stickH);
+    stick.position.set(p.Mst.x, 0, p.Mst.z);
     this.scene.add(stick);
-    const st = shadowTip({ tan: PLATEAU.tan, azimuth: az, height: PLATEAU.stick, foot });
-    this.scene.add(
+    const st = shadowTip({ tan: PLATEAU.tan, azimuth: Math.PI / 2, height: PLATEAU.stick, foot: p.Mst });
+    this.morning.add(
       makeGroundShadow(
         [
-          { x: foot.x, z: foot.z - 0.06 },
-          { x: foot.x, z: foot.z + 0.06 },
+          { x: p.Mst.x, z: p.Mst.z - 0.07 },
+          { x: p.Mst.x, z: p.Mst.z + 0.07 },
           { x: st.x, z: st.z + 0.03 },
           { x: st.x, z: st.z - 0.03 },
         ],
-        0.6,
+        0.65,
       ),
+      makeRay({ x: p.Mst.x, y: stickH, z: p.Mst.z }, { x: st.x, y: 0, z: st.z }, 0.03, 0xffb21e),
     );
-    this.scene.add(
-      makeRay({ x: foot.x, y: approx(PLATEAU.stick), z: foot.z }, { x: st.x, y: 0, z: st.z }, 0.03, 0xffb21e),
-    );
-    this.plateau = { tip, foot, stickTip: st };
+    const ml = makeLabel('M', { bg: 'rgba(29,78,216,0.92)' });
+    ml.position.set(p.Mst.x, 3.4, p.Mst.z);
+    this.scene.add(ml);
+    // the stick's drawn triangle he slides along the axis (B5), and the column of his flight
+    this.ghost = makeGhostStick(stickH, approx(PLATEAU.stick) * 1.5);
+    this.ghost.position.set(p.Gh.x, 0, p.Gh.z);
+    this.scene.add(this.ghost);
+    this.beam = makeFlightBeam();
+    this.beam.position.set(GREAT.x, 0, GREAT.z);
+    this.scene.add(this.beam);
+    this.box = makeCameraBox();
+    this.box.position.set(p.box.x, 0, p.box.z);
+    this.box.visible = false;
+    this.scene.add(this.box);
+  }
+
+  /** The masons' table of each stage whose forge the lesson plays. */
+  buildTables() {
+    this.stages.forEach((st, i) => {
+      if (!st.steps.some((s) => s.kind === 'forge')) return;
+      const t = makeForgeTable();
+      const at = this.P[i].table;
+      t.position.set(at.x, 0, at.z);
+      this.scene.add(t);
+      this.tables[STAGE_IDS[i]] = t;
+      this.colliders.push({ x: at.x, z: at.z, r: 1.1 });
+    });
   }
 
   /** The felucca waits at the end of a dock's jetty. */
@@ -527,10 +800,19 @@ export class NilePyramidsGame extends WorldRuntime {
   }
 
   restore() {
+    this.robot.group.scale.setScalar(ZERO);
     for (const st of this.stages)
-      for (const step of st.steps) if (step.kind === 'slide' && this.done[step.id] != null) this.layRope(st, step);
-    const last = [...this.log].reverse().find((l) => l.stage === STAGE_IDS[1] && l.kind === 'course');
-    if (last) this.layCourse(last, false);
+      for (const step of st.steps)
+        if (step.kind === 'slide' && !step.ghost && this.done[step.id] != null) this.layRope(st, step);
+    const lastCourse = [...this.log].reverse().find((l) => l.kind === 'course' || l.kind === 'mark');
+    if (lastCourse && !(lastCourse.kind === 'course' && holds(lastCourse.fact))) this.layCourse(lastCourse, false);
+    const ferry = [...this.log].reverse().find((l) => l.kind === 'ferry');
+    if (ferry) this.throwRope(ferry, false);
+    const cap = [...this.log].reverse().find((l) => l.kind === 'capstone');
+    if (cap) this.setCapstone(cap, false);
+    if (this.done.ER != null) this.riverR.visible = true;
+    if (this.done.ghost != null) this.ghost.position.set(this.pts.plateau.Gh.x - 45, 0, GREAT.z);
+    if (this.flags.noon) this.toNoon(false);
     this.hero.island = this.state.at;
     this.set({ recall: this.story.recall?.(this, STAGE_IDS[this.state.at]) ?? [], register: this.registerOf() });
     this.refreshObjective();
@@ -540,129 +822,154 @@ export class NilePyramidsGame extends WorldRuntime {
   stageNow() {
     return this.stages[this.state.at];
   }
+  /** A forge step is done when its key is owned; any other when the world holds what it gave. */
+  stepDone(step) {
+    if (step.kind === 'forge') return this.state.keys.includes(step.key);
+    return this.done[step.id] != null;
+  }
   stepNow() {
-    return this.stageNow().steps.find((s) => this.done[s.id] == null) ?? null;
+    return this.stageNow().steps.find((s) => !this.stepDone(s)) ?? null;
   }
   stageDone(i = this.state.at) {
-    return this.stages[i].steps.every((s) => this.done[s.id] != null);
+    return this.stages[i].steps.every((s) => this.stepDone(s));
   }
-  /** A point of a stage, by its letter (3D: the edge's points carry their height). */
+  /** A point of a stage, by its key (3D: the edge's points carry their height). */
   point(stageIndex, k) {
-    if (stageIndex === 0) return this.pts.field[k];
-    return this.pts.ws[k];
+    return this.P[stageIndex][k];
+  }
+
+  /** The instruction of a step: whole, and it stays on screen (§3.2). */
+  objectiveOf(step) {
+    const T = this.T.objective;
+    const O = this.S.objective;
+    if (step.kind === 'slide') {
+      if (step.edge) return T.edge(step.from, step.stake);
+      if (step.canal) return T.canal(step.from, step.stake);
+      if (step.bank) return O.bankStart;
+      if (step.sight) return O.sight;
+      if (step.stick) return O.stick;
+      if (step.shadow) return O.shadow;
+      if (step.base) return O.base;
+      if (step.ghost) return O.slideStick;
+      return T.slide(step.from, step.line, step.stake);
+    }
+    if (step.kind === 'predict') return T.predict(step.seg);
+    if (step.kind === 'order')
+      return step.order === 'course'
+        ? T.course(step.seg)
+        : step.order === 'mark'
+          ? O.mark(FACE.row)
+          : step.order === 'ferry'
+            ? O.ferry
+            : O.capstone;
+    if (step.kind === 'climb') return O.climb;
+    if (step.kind === 'mission') return O.mission;
+    if (step.kind === 'box') return O.noon;
+    if (step.kind === 'forge') return O.forge;
+    return T.look;
   }
 
   refreshObjective() {
     const ph = this.state.phase;
-    if (ph === 'run' || ph === 'sail' || ph === 'build') return;
+    if (ph === 'run' || ph === 'sail' || ph === 'build' || ph === 'fly' || ph === 'climb') return;
     const T = this.T.objective;
     const i = this.state.at;
     const step = this.stepNow();
     let o;
-    if (!step) o = i === DOCK_Z.length - 1 ? T.end : this.stageNow().later ? T.later : T.board(this.T.docks[i + 1]);
-    else if (step.kind === 'slide')
-      o = step.edge
-        ? T.edge(step.from, step.stake)
-        : step.canal
-          ? T.canal(step.from, step.stake)
-          : T.slide(step.from, step.line, step.stake);
-    else if (step.kind === 'predict') o = T.predict(step.seg);
-    else if (step.kind === 'order') o = T.course(step.seg);
-    else o = T.look;
+    if (step) o = this.objectiveOf(step);
+    else if (i === DOCK_Z.length - 1) o = this.S.objective.end;
+    else o = T.board(this.T.docks[i + 1]);
     if (o !== this.state.objective) this.set({ objective: o });
     this.lightUp();
   }
 
-  /** THE NEXT PLACE IS LIT (`play.md` §1): the stake where the next step begins, or the dock when the stage is over. */
+  /** THE NEXT PLACE IS LIT (`play.md` §1): the stake where the next step begins, the table, or the dock. */
   lightUp() {
     const step = this.stepNow();
     const i = this.state.at;
     const key = step && (step.from ?? step.at) ? `${STAGE_IDS[i]}:${step.from ?? step.at}` : null;
     for (const [k, s] of Object.entries(this.stakes)) s.userData.lamp.visible = !this.hold && k === key;
+    for (const [id, t] of Object.entries(this.tables))
+      t.userData.board.visible = step?.kind === 'forge' && id === STAGE_IDS[i];
     this.docks.forEach((d, j) => {
-      d.userData.lamp.visible = j === i && (step?.kind === 'look' || (!step && j < DOCK_Z.length - 1));
+      d.userData.lamp.visible = j === i && !step && j < DOCK_Z.length - 1;
     });
   }
 
-  /** « سجلّ الحقل »: the rope-stretchers' record, then what HE measured and typed, in the order he did it. */
+  /** « سجلّ الحقل »: the record he was given, then what HE measured and typed, in the order he did it. */
   registerOf() {
     const i = this.state.at;
     const st = this.stages[i];
     const rows = [];
-    if (i === 0) {
-      for (const k of ['AB', 'AC', 'BC']) rows.push({ id: k, tex: `${k} = ${FIELD[k]}`, kind: 'record' });
-    } else if (i === 1) {
+    const T = this.T.hud;
+    if (i === 0) for (const k of ['AB', 'AC', 'BC']) rows.push({ id: k, tex: `${k} = ${FIELD[k]}`, kind: 'record' });
+    if (i === 1)
       rows.push(
         { id: 'SB', tex: `SB = SC = ${FACE.edge}`, kind: 'record' },
         { id: 'BC', tex: `BC = ${FACE.base}`, kind: 'record' },
       );
-    } else return null;
+    if (i === 4) rows.push({ id: 'stick', tex: `MN = ${PLATEAU.stick}`, kind: 'record' });
     for (const step of st.steps) {
       const v = this.done[step.id];
       if (step.kind === 'predict') {
-        const typed = this.typed?.[step.id] ?? v;
-        if (typed != null)
-          rows.push({
-            id: step.id,
-            tex: `${step.seg} = ${typed.replace(',', '{,}')}`,
-            kind: 'typed',
-            by: this.T.hud.typed,
-          });
+        if (v != null)
+          rows.push({ id: step.id, tex: `${step.seg} = ${v.replace(',', '{,}')}`, kind: 'typed', by: T.typed });
       } else if (step.kind === 'order') {
-        const last = [...this.log].reverse().find((l) => l.stage === st.id && l.kind === 'course');
+        const last = [...this.log].reverse().find((l) => l.stage === st.id && l.step === step.id);
+        if (step.order === 'mark' && (last || this.stepNow() === step))
+          rows.push({ id: 'row', tex: `MN = ${FACE.row}`, kind: 'record' });
         if (last)
           rows.push({
             id: step.id,
-            tex: `${step.seg} = ${last.typed.replace(',', '{,}')}`,
+            tex: `${step.seg} = ${texNum(String(last.typed))}`,
+            noUnit: step.order === 'capstone',
             kind: 'typed',
-            by: this.T.hud.typed,
+            by: T.typed,
             fact: last.fact,
           });
-      } else if (step.kind === 'slide' && v != null)
-        rows.push({
-          id: step.id,
-          tex: `${step.seg ?? step.id} = ${v}`,
-          kind: 'measured',
-          by: step.canal ? this.T.hud.reads : null,
-        });
+      } else if (step.kind === 'slide' && step.seg && v != null)
+        rows.push({ id: step.id, tex: `${step.seg} = ${v}`, kind: 'measured', by: step.canal ? T.reads : null });
     }
-    return { title: i === 0 ? this.T.hud.register : this.T.hud.plan, rows };
+    if (!rows.length) return null;
+    return { title: i === 0 ? T.register : T.plan, rows: rows.slice(-9) };
   }
 
-  // ───────────────────────────── the stakes and the docks ─────────────────────────────
-  stakePrompt(i, k) {
-    if (this.state.at !== i || this.hold) return null;
+  // ───────────────────────────── the places of a stage ─────────────────────────────
+  stepPrompt(i, k) {
+    if (this.state.at !== i || this.hold || this.state.phase !== 'play') return null;
     const step = this.stepNow();
-    if (!step) return null;
-    if (step.kind === 'slide' && step.from === k) return this.T.prompt.take(k);
-    if (step.kind === 'predict' && step.at === k) return this.T.prompt.predict;
-    if (step.kind === 'order' && step.at === k) return this.T.prompt.order;
-    return null;
+    if (!step || (step.from ?? step.at) !== k) return null;
+    const P = this.S.prompt;
+    if (step.kind === 'slide')
+      return step.ghost ? P.stick : step.from.length > 1 ? P.rope : this.T.prompt.take(step.from);
+    if (step.kind === 'predict') return this.T.prompt.predict;
+    if (step.kind === 'order')
+      return step.order === 'course' ? this.T.prompt.order : (P[step.order] ?? this.T.prompt.order);
+    return P[step.kind] ?? null;
   }
-  stakeAct(i, k) {
-    if (!this.stakePrompt(i, k)) return;
+  stepAct(i, k) {
+    if (!this.stepPrompt(i, k)) return;
     const step = this.stepNow();
     if (step.kind === 'slide') this.take(step);
-    else this.openOrder(step);
+    else if (step.kind === 'predict' || step.kind === 'order') this.openOrder(step);
+    else if (step.kind === 'climb') this.climb();
+    else if (step.kind === 'mission' || step.kind === 'box') this.openCard(step.kind);
+    else if (step.kind === 'forge') this.openForge(step.key);
   }
   dockPrompt(i) {
-    if (this.state.at !== i || this.hold) return null;
-    const step = this.stepNow();
-    if (step?.kind === 'look') return this.T.prompt.look;
-    if (!step && i < DOCK_Z.length - 1) return this.T.prompt.board(this.T.docks[i + 1]);
+    if (this.state.at !== i || this.hold || this.onTop) return null;
+    if (!this.stepNow() && i < DOCK_Z.length - 1) return this.T.prompt.board(this.T.docks[i + 1]);
     return null;
   }
   dockAct(i) {
-    const step = this.stepNow();
-    if (step?.kind === 'look') this.lookAt(step);
-    else if (!step && i < DOCK_Z.length - 1) this.board(i);
+    if (!this.stepNow() && i < DOCK_Z.length - 1) this.board(i);
   }
 
   // ───────────────────────────── THE ONE GESTURE: the rope ─────────────────────────────
   /** E at the stake: the rope's end in his hand, along the step's line; the camera frames the whole line. */
   take(step) {
     const i = this.state.at;
-    const from = this.point(i, step.from);
+    const from = step.edge ? this.pts.ws.B : this.point(i, step.from);
     const to = this.point(i, step.toward);
     const dir = { x: to.x - from.x, y: (to.y ?? 0) - (from.y ?? 0), z: to.z - from.z };
     const max = approx(step.max);
@@ -672,7 +979,7 @@ export class NilePyramidsGame extends WorldRuntime {
       dir,
       max,
       target: approx(step.target),
-      top: topRate(this.stageNow().longest),
+      top: topRate(this.stageNow().longest ?? step.max),
     });
     // the camera stands beside the line, on the dock's side (or where the step says); the key whose arrow points the
     // way the rope grows on the screen lengthens it
@@ -686,16 +993,22 @@ export class NilePyramidsGame extends WorldRuntime {
     const right = { x: n.z, z: -n.x };
     const sign = hx * right.x + hz * right.z >= 0 ? 1 : -1;
     const mid = slidePoint(s, max / 2);
-    const D = Math.max(13, frameDistance(max * 1.25, max * 0.7, 55));
+    const D = Math.max(9, frameDistance(max * 1.25, max * 0.7, 55));
     const cam = {
-      pos: new THREE.Vector3(mid.x + n.x * D * 0.82, mid.y + D * 0.55 + 2, mid.z + n.z * D * 0.82),
+      pos: new THREE.Vector3(mid.x + n.x * D * 0.82, mid.y + D * 0.55 + 1.5, mid.z + n.z * D * 0.82),
       look: new THREE.Vector3(mid.x, mid.y + 0.5, mid.z),
     };
-    this.hold = { step, s, sign, cam };
+    // the sight line: the eye looks along it, so the keys follow the walk inland (→ inland)
+    this.hold = { step, s, sign: step.sight ? 1 : sign, cam };
     this.audio.play('ui');
     this.input.take('left');
     this.input.take('right');
-    this.set({ rope: { knots: 0, id: step.id, seg: step.seg ?? step.id }, verdict: null });
+    this.stickyCine = false;
+    this.set({
+      rope: { knots: 0, id: step.id, seg: step.seg ?? step.id, ghost: Boolean(step.ghost) },
+      verdict: null,
+      sight: Boolean(step.sight),
+    });
     this.lightUp();
   }
 
@@ -706,13 +1019,14 @@ export class NilePyramidsGame extends WorldRuntime {
     this.hold = null;
     this.rope.visible = false;
     if (h.step.edge) this.standAtFoot(h.step);
-    this.set({ rope: null });
+    if (h.step.ghost) this.ghost.position.set(this.pts.plateau.Gh.x, 0, GREAT.z);
+    this.set({ rope: null, sight: false });
     this.refreshObjective();
   }
 
   /** Back on the ground beside the stake the slide started from (after a slide up an edge). */
-  standAtFoot(step) {
-    const p = this.point(this.state.at, step.from);
+  standAtFoot() {
+    const p = this.pts.ws.B;
     this.hero.pos.set(p.x - 1.4, 0, p.z + 1.4);
     this.hero.vel.set(0, 0, 0);
     this.hero.grounded = true;
@@ -726,30 +1040,38 @@ export class NilePyramidsGame extends WorldRuntime {
     this.rope.visible = false;
     this.done[step.id] = step.target;
     this.audio.play('success');
-    this.layRope(st, step);
+    if (!step.ghost) this.layRope(st, step);
     if (step.edge) this.standAtFoot(step);
+    if (step.sight) this.riverR.visible = true;
     let verdict = null;
     if (step.canal) {
       // the rope reads the canal AFTER he typed it: as typed · longer · shorter (no difference written — gate P1)
       const typed = this.done[step.predicted];
       const out = order('canal', typed, step.target);
-      this.log.push({ stage: st.id, kind: 'canal', seg: step.seg, typed, fact: out.fact });
+      this.log.push({ stage: st.id, step: step.id, kind: 'canal', seg: step.seg, typed, fact: out.fact });
       verdict = { kind: 'canal', fact: out.fact, typed, reading: step.target, seg: step.seg };
       if (holds(out.fact) && step.id === `${FIELD.canals[0].ends.join('')}`) this.addStar(st.id);
-    } else this.say(this.T.say.tied(step.seg ?? step.id, step.target), 4);
-    this.set({ rope: null, verdict, register: this.registerOf() });
+    } else if (step.ghost) {
+      verdict = { kind: 'meet', fact: 'meet' };
+      this.audio.play('key');
+      // the nested figure is SEEN: the stick's triangle on A, the pyramid's ray above it
+      const A = this.pts.plateau.A;
+      this.cine = { pos: new THREE.Vector3(A.x - 20, 70, A.z + 150), look: new THREE.Vector3(A.x + 90, 30, A.z) };
+      this.stickyCine = true;
+    } else if (step.seg) this.say(this.T.say.tied(step.seg, step.target), 4);
+    this.set({ rope: null, verdict, sight: false, register: this.registerOf() });
     this.save();
     this.refreshObjective();
-    // what comes next is asked at once: the canal's length, the course's order
+    // what comes next is asked at once: the canal's length, the course's order, the mission's card
     const next = this.stepNow();
     if (next && (next.kind === 'predict' || next.kind === 'order'))
-      setTimeout(() => !this.dead && this.openOrder(next), 650);
+      setTimeout(() => !this.dead && this.state.phase === 'play' && this.openOrder(next), 650);
   }
 
   /** A measured rope stays laid on the ground (or the edge), its knots read over it. */
   layRope(st, step) {
     const i = this.stages.indexOf(st);
-    const from = this.point(i, step.from);
+    const from = step.edge ? this.pts.ws.B : this.point(i, step.from);
     const to = this.point(i, step.toward);
     const L = Math.hypot(to.x - from.x, (to.y ?? 0) - (from.y ?? 0), to.z - from.z);
     const k = approx(step.target) / L;
@@ -775,91 +1097,121 @@ export class NilePyramidsGame extends WorldRuntime {
   // ───────────────────────────── THE ONE ORDER ─────────────────────────────
   openOrder(step) {
     if (this.state.phase !== 'play' && this.state.phase !== 'dialog') return;
+    const kind = step.kind === 'predict' ? 'canal' : step.order;
     this.set({
-      overlay: {
-        type: 'order',
-        kind: step.kind === 'predict' ? 'canal' : step.order,
-        seg: step.seg,
-        id: step.id,
-        refused: null,
-      },
+      overlay: { type: 'order', kind, seg: step.seg, id: step.id, refused: null, row: FACE.row },
       phase: 'dialog',
       prompt: null,
     });
   }
-  /** « لاحقًا »: the card closes; the stake where it is asked opens it again. */
+  /** « لاحقًا »: the card closes; the place where it is asked opens it again. */
   closeOrder() {
     this.closeOverlay();
     this.refreshObjective();
   }
-  /** His number: a prediction is kept for the rope to answer; a course is cut and laid — the world builds his number. */
+  /** His number: a prediction is kept for the rope to answer; any other order is carried out — the world builds it. */
   sendOrder(text) {
     const o = this.state.overlay;
-    const step = this.stageNow().steps.find((s) => s.id === o?.id);
+    const st = this.stageNow();
+    const step = st.steps.find((s) => s.id === o?.id);
     if (!step) return;
     if (step.kind === 'predict') {
       const typed = typedLength(text);
-      if (typed == null) return this.set({ overlay: { ...o, refused: 'empty' } });
+      if (typed == null) {
+        this.set({ overlay: { ...o, refused: 'empty' } });
+        return;
+      }
       this.done[step.id] = typed;
       this.closeOverlay();
       this.set({ register: this.registerOf() });
       this.save();
       this.refreshObjective();
-      return undefined;
+      return;
     }
     const out = order(step.order, text, step.truth);
-    if (out.refused) return this.set({ overlay: { ...o, refused: out.refused } });
-    const entry = { stage: this.stageNow().id, kind: step.order, seg: step.seg, typed: out.typed, fact: out.fact };
+    if (out.refused) {
+      this.set({ overlay: { ...o, refused: out.refused } });
+      return;
+    }
+    const entry = {
+      stage: st.id,
+      step: step.id,
+      kind: step.order,
+      seg: step.seg,
+      typed: out.typed,
+      fact: out.fact,
+      built: out.built,
+    };
+    const first = !this.log.some((l) => l.step === step.id);
     this.log.push(entry);
     this.closeOverlay();
     this.set({ verdict: null, register: this.registerOf() });
-    this.layCourse(entry, true).then(() => {
+    const build =
+      step.order === 'ferry'
+        ? this.throwRope(entry, true)
+        : step.order === 'capstone'
+          ? this.setCapstone(entry, true)
+          : this.layCourse(entry, true, step);
+    build.then(() => {
       if (this.dead) return;
       if (holds(out.fact)) {
         this.done[step.id] = out.typed;
-        if (this.log.filter((l) => l.stage === entry.stage && l.kind === 'course').length === 1)
-          this.addStar(entry.stage);
+        if (first) this.addStar(st.id);
       }
-      this.set({ phase: 'play', verdict: { kind: 'course', fact: out.fact, typed: out.typed, seg: step.seg } });
+      const verdict = { kind: step.order, fact: out.fact, typed: out.typed, seg: step.seg };
+      if (out.built?.quarry) verdict.quarry = out.built.base;
+      this.set({ phase: 'play', verdict, register: this.registerOf() });
       this.save();
       this.refreshObjective();
+      // course 1 fits: the masons build on, up to the next mark the rope will measure
+      if (step.id === 'course' && holds(out.fact)) this.setBuilt(FACE.courses[1], true);
+      // the capstone sits: Zero comes down the ramp to the masons' table
+      if (step.order === 'capstone' && holds(out.fact)) setTimeout(() => !this.dead && this.descend(), 1800);
     });
-    return undefined;
   }
 
-  /** The quarry cuts his course and the masons lower it onto its level; a gap or an overhang is drawn, never measured. */
+  /**
+   * The quarry cuts his course (or the row already cut) and the masons lower it onto its level — for a `mark`, they first
+   * build up to his mark. A gap is drawn amber, an overhang violet; neither is measured in the world (gate P1).
+   */
   layCourse(entry, animate) {
     if (this.course) {
       this.scene.remove(this.course);
       this.course.traverse((o) => o.geometry?.dispose());
     }
-    const side = approx(entry.typed);
-    const need = approx(courseAt(FACE, FACE.courses[0]).MN);
+    const mark = entry.kind === 'mark';
+    const bm = mark
+      ? entry.typed
+      : entry.kind === 'course' && entry.step === 'course2'
+        ? FACE.courses[1]
+        : FACE.courses[0];
+    if (mark) this.setBuilt(bm, animate);
+    const side = approx(mark ? FACE.row : entry.typed);
+    const need = approx(courseAt(FACE, bm).MN);
     const g = new THREE.Group();
-    const slab = makeSlab(side, this.wsCourse);
-    g.add(slab);
-    if (entry.fact === 'gap') {
+    g.add(makeSlab(side, this.wsCourse));
+    if (side < need) {
       const ring = makeRing(side, need, 0.12, AMBER);
       ring.position.y = -this.wsCourse / 2 + 0.06;
       g.add(ring);
-    } else if (entry.fact === 'overhang') {
+    } else if (side > need) {
       const ring = makeRing(need, side, 0.12, VIOLET);
       ring.position.y = -this.wsCourse / 2 - 0.02;
       g.add(ring);
     }
-    const y = this.wsLevel + this.wsCourse / 2;
+    const y = this.levelOf(bm) + this.wsCourse / 2;
     g.position.set(WORKSHOP.x, animate ? y + 16 : y, WORKSHOP.z);
     this.scene.add(g);
     this.course = g;
     if (!animate) return Promise.resolve();
-    const top = this.wsLevel;
+    const top = this.levelOf(bm);
     this.cine = {
-      pos: new THREE.Vector3(WORKSHOP.x - 80, top + 52, WORKSHOP.z + 62),
+      pos: new THREE.Vector3(WORKSHOP.x - 85, top + 52, WORKSHOP.z + 66),
       look: new THREE.Vector3(WORKSHOP.x, top, WORKSHOP.z),
     };
-    this.courseShot = true;
+    this.stickyCine = true;
     this.set({ phase: 'build', prompt: null });
-    this.say(this.T.say.built, 3);
+    this.say(mark ? this.S.say.built : this.T.say.built, 3);
     this.audio.play('ui');
     return this.tween(2.4, (t) => {
       g.position.y = y + 16 * (1 - t);
@@ -869,35 +1221,326 @@ export class NilePyramidsGame extends WorldRuntime {
     });
   }
 
-  // ───────────────────────────── the scale boxes: a look at the whole stage (B6) ─────────────────────────────
-  lookAt(step) {
-    const shots = {
-      // the ferry: from the bank behind A, the far post F 416 m across in view
-      bank: { pos: new THREE.Vector3(160, 120, -250), look: new THREE.Vector3(-170, 0, -420) },
-      // the plateau, about 350 m: the pyramid, its drawn shadow up to A, the stick in the sun
-      plateau: { pos: new THREE.Vector3(-60, 150, -430), look: new THREE.Vector3(190, 40, -800) },
-    };
-    this.cine = shots[step.box];
-    this.lookStep = step;
-    this.lookSince = this.time;
-    this.set({ phase: 'look', look: step.box, prompt: null });
-  }
-  endLook() {
-    if (this.state.phase !== 'look') return;
-    this.cine = null;
-    if (this.lookStep) this.done[this.lookStep.id] = '1';
-    this.lookStep = null;
-    this.input.clear();
-    this.set({ phase: 'play', look: null });
-    this.save();
-    this.refreshObjective();
+  /** The ferry rope of his number, thrown from A towards the far post F: it ties, falls short in the water, or lies slack. */
+  throwRope(entry, animate) {
+    this.ferryRope.clear();
+    const { A, F } = this.pts.river;
+    const W = approx(riverWidth(RIVER));
+    const L = approx(entry.typed);
+    const reach = Math.min(L, W);
+    const end = { x: A.x - reach, y: L >= W ? 1.6 : WATER_Y + 0.05, z: A.z };
+    const tape = makeTape({ x: A.x, y: 1, z: A.z }, end, 0.35, 0.35);
+    this.ferryRope.add(tape);
+    if (L > W) {
+      // what is left over lies slack on the water along the far bank
+      const over = Math.min(60, (L - W) / 2);
+      this.ferryRope.add(
+        makeTape(
+          { x: F.x + 2, y: WATER_Y + 0.05, z: F.z },
+          { x: F.x + 2, y: WATER_Y + 0.05, z: F.z - over },
+          0.35,
+          0.35,
+        ),
+      );
+    }
+    if (!animate) return Promise.resolve();
+    this.cine = { pos: new THREE.Vector3(160, 120, -250), look: new THREE.Vector3(-170, 0, -420) };
+    this.stickyCine = true;
+    this.set({ phase: 'build', prompt: null });
+    this.say(this.S.say.thrown, 3);
+    this.audio.play('sweep');
+    tape.scale.z = 0.01;
+    return this.tween(2.6, (t) => {
+      tape.userData.set({ x: A.x, y: 1, z: A.z }, { x: A.x - reach * t, y: end.y, z: A.z });
+    }).then(() => this.audio.play(holds(entry.fact) ? 'success' : 'hit'));
   }
 
-  // ───────────────────────────── between two docks: the felucca, on the kit's rail as it is (gate F3) ─────────────────────────────
+  /** The stone-cutter's capstone, every length × his k: lifted to the top — it sits, leaves a step, or overhangs. */
+  setCapstone(entry, animate) {
+    if (this.capstone) this.scene.remove(this.capstone);
+    this.capstone = null;
+    if (entry.built?.quarry) return Promise.resolve(); // too big for the yard: the quarry's order is written, nothing lifted
+    const k = approx(entry.typed);
+    const t = this.pts.summit.top;
+    const cap = makeCapstone(approx(FACE.base) * k, this.pts.summit.h * k);
+    const y = t.y;
+    cap.position.set(t.x, animate ? y + 10 : y, t.z);
+    this.scene.add(cap);
+    this.capstone = cap;
+    if (!animate) return Promise.resolve();
+    this.set({ phase: 'build', prompt: null });
+    this.cine = this.topShot();
+    this.say(this.S.say.carved, 3);
+    return this.tween(2, (p) => {
+      cap.position.y = y + 10 * (1 - p);
+    }).then(() => this.audio.play(holds(entry.fact) ? 'success' : 'hit'));
+  }
+
+  // ───────────────────────────── stage 4: up the ramp, and down ─────────────────────────────
+  climb() {
+    const { ramp, top } = this.pts.summit;
+    this.set({ phase: 'climb', prompt: null });
+    this.cine = {
+      pos: new THREE.Vector3(ramp.x - 70, 60, ramp.z + 40),
+      look: new THREE.Vector3(SUMMIT.x, 25, SUMMIT.z + 20),
+    };
+    const from = this.hero.pos.clone();
+    const to = new THREE.Vector3(top.x - 0.9, top.y, top.z + 0.9);
+    this.tween(3, (t) => {
+      this.hero.pos.lerpVectors(from, to, t);
+      this.hero.grounded = true;
+    }).then(() => {
+      if (this.dead) return;
+      this.onTop = true;
+      this.cine = null;
+      this.done.climb = '1';
+      this.say(this.S.say.climbed, 3);
+      this.set({ phase: 'play' });
+      this.save();
+      this.refreshObjective();
+      setTimeout(() => !this.dead && this.openOrder(this.stepNow()), 700);
+    });
+  }
+  descend() {
+    const { ramp } = this.pts.summit;
+    this.set({ phase: 'climb', prompt: null });
+    const from = this.hero.pos.clone();
+    const to = new THREE.Vector3(ramp.x + 1.5, 0, ramp.z + 1.5);
+    this.cine = this.topShot();
+    this.tween(3, (t) => {
+      this.hero.pos.lerpVectors(from, to, t);
+    }).then(() => {
+      if (this.dead) return;
+      this.onTop = false;
+      this.cine = null;
+      this.stickyCine = false;
+      this.hero.grounded = true;
+      this.set({ phase: 'play' });
+      this.refreshObjective();
+    });
+  }
+
+  // ───────────────────────────── stage 5: the mission card, the flight, noon and the box ─────────────────────────────
+  openCard(kind) {
+    if (this.busy()) return;
+    this.audio.play('ui');
+    this.set({ phase: 'dialog', overlay: { type: kind }, prompt: null });
+  }
+  closeCard() {
+    this.closeOverlay();
+    this.refreshObjective();
+  }
+  /**
+   * « تحقّق » on the mission card: Zero RISES along the axis to the h he wrote — whatever it is (the world carries out a
+   * misreading, defects D16) — and ends at the apex, below or above it. Then the card's own fact, or noon.
+   */
+  checkMission(vals) {
+    const m = this.story.mission;
+    const h = m.height?.(vals);
+    const out = m.check(vals);
+    const fly = typedLength(h) ? order('flight', h, PLATEAU.h) : null;
+    this.closeOverlay();
+    const after = () => {
+      if (this.dead) return;
+      if (out === 'ok') {
+        this.done.mission = h ?? '1';
+        this.save();
+        this.toNoon(true);
+      } else if (out) this.say(out, 7);
+      this.refreshObjective();
+    };
+    if (!fly) {
+      after();
+      return;
+    }
+    this.log.push({ stage: STAGE_IDS[4], step: 'mission', kind: 'flight', typed: fly.typed, fact: fly.fact });
+    this.fly(fly).then(after);
+  }
+  fly(out) {
+    const h = approx(out.typed);
+    const H = approx(PLATEAU.h);
+    this.set({ phase: 'fly', prompt: null, verdict: null });
+    this.say(this.S.say.rise, 3);
+    this.beam.visible = true;
+    const start = this.hero.pos.clone();
+    this.cine = {
+      pos: new THREE.Vector3(GREAT.x - 230, H * 0.75, GREAT.z + 210),
+      look: new THREE.Vector3(GREAT.x, Math.min(h, H * 1.6) * 0.8, GREAT.z),
+    };
+    return this.tween(3.2, (t) => {
+      const y = h * t;
+      this.beam.userData.set(y);
+      this.hero.pos.set(GREAT.x, y, GREAT.z);
+    })
+      .then(() => {
+        this.audio.play(holds(out.fact) ? 'success' : 'hit');
+        this.set({ verdict: { kind: 'flight', fact: out.fact, typed: out.typed, seg: 'h' } });
+        return this.wait(2.6);
+      })
+      .then(() => {
+        this.beam.visible = false;
+        this.hero.pos.copy(start);
+        this.hero.grounded = true;
+        this.cine = null;
+        this.set({ phase: 'play' });
+      });
+  }
+  /** Noon: the sun so high that no shadow leaves the base (§3.7, gate N5); the box of Ibn al-Haytham appears. */
+  toNoon(say) {
+    this.flags.noon = true;
+    this.morning.visible = false;
+    this.box.visible = true;
+    this.sunStage = null; // the sky follows
+    if (say) this.say(this.S.say.noon, 4);
+    this.save();
+  }
+  checkBox(vals) {
+    const out = this.story.box.check(vals);
+    if (out === 'ok') {
+      this.done.box = '1';
+      this.closeOverlay();
+      this.save();
+      this.refreshObjective();
+      this.finale();
+      return null;
+    }
+    return out;
+  }
+  async finale() {
+    const again = this.state.finished;
+    const whole = this.story.complete !== false;
+    this.set({ phase: 'end', prompt: null, finished: whole || again });
+    this.save();
+    await this.wait(1.2);
+    if (this.dead) return;
+    this.audio.play('finale');
+    this.robot.cheer();
+    await this.wait(again ? 0.5 : 3);
+    if (this.dead) return;
+    this.set({ overlay: { type: 'end', elapsed: Date.now() - this.startedAt } });
+  }
+
+  // ───────────────────────────── the forges (the lesson's; the kit's frame) ─────────────────────────────
+  /** The world's own evidence of a stage, as cases of `ruleForge.js` (Thalès figures), and what its mirror showed. */
+  forgeLog(stageId) {
+    const rows = [];
+    const named = (m, n) => ({ V: 'A', M: m, B: 'B', N: n, C: 'C' });
+    if (stageId === 'field')
+      for (const c of FIELD.canals) {
+        const [m, n] = c.ends;
+        if (this.done[`${m}${n}`] == null) continue;
+        const typed = this.done[`${m}${n}?`];
+        rows.push(
+          thalesCase({
+            id: `canal:${c.id}`,
+            names: named(m, n),
+            len: { VM: c.AM, VB: FIELD.AB, VN: c.AN, VC: FIELD.AC, MN: canalReading(FIELD, c), BC: FIELD.BC },
+            canal: c.id,
+            typed,
+          }),
+        );
+      }
+    if (stageId === 'workshop')
+      for (const l of this.log.filter((x) => x.stage === 'workshop' && x.kind === 'course')) {
+        const bm = l.step === 'course2' ? FACE.courses[1] : FACE.courses[0];
+        const sm = courseAt(FACE, bm).SM;
+        rows.push(
+          thalesCase({
+            names: { V: 'S', M: 'M', B: 'B', N: 'N', C: 'C' },
+            len: { VM: sm, VB: FACE.edge, VN: sm, VC: FACE.edge, MN: l.typed, BC: FACE.base },
+            held: holds(l.fact),
+            fact: l.fact,
+          }),
+        );
+      }
+    if (stageId === 'river' && this.done.ER != null) {
+      const ferry = [...this.log].reverse().find((l) => l.kind === 'ferry');
+      rows.push(
+        thalesCase({
+          kind: 'butterfly',
+          names: { V: 'S', M: 'E', B: 'A', N: 'R', C: 'F' },
+          len: { VM: RIVER.SE, VB: RIVER.AS, VN: null, VC: null, MN: RIVER.ER, BC: ferry?.typed ?? null },
+          held: ferry ? holds(ferry.fact) : false,
+        }),
+      );
+    }
+    if (stageId === 'summit')
+      for (const l of this.log.filter((x) => x.kind === 'capstone')) {
+        const side = (x) => write(times(x, l.typed));
+        rows.push(
+          thalesCase({
+            names: { V: 'S', M: 'M', B: 'B', N: 'N', C: 'C' },
+            len: {
+              VM: side(FACE.edge),
+              VB: FACE.edge,
+              VN: side(FACE.edge),
+              VC: FACE.edge,
+              MN: side(FACE.base),
+              BC: FACE.base,
+            },
+            held: holds(l.fact),
+            k: l.typed,
+          }),
+        );
+      }
+    return [...rows, ...(this.mirrorLog[stageId] ?? [])];
+  }
+  openForge(key) {
+    if (this.busy()) return;
+    this.audio.play('crystal');
+    this.flags[`forge:${key}`] = true; // a forge left unfinished opens again
+    this.save();
+    this.set({
+      phase: 'dialog',
+      overlay: { type: 'forge', key, log: this.forgeLog(this.stageNow().id) },
+      prompt: null,
+    });
+  }
+  /** A case the mirror of a forge showed him: evidence too. */
+  logMirror(c) {
+    const id = this.stageNow().id;
+    this.mirrorLog = { ...this.mirrorLog, [id]: [...(this.mirrorLog[id] ?? []), { ...c, mirror: true }].slice(-24) };
+    this.save();
+  }
+  sealRule(key, record) {
+    this.rules = { ...this.rules, [key]: record };
+    this.audio.play('key');
+    this.set({ rules: this.rules, overlay: { type: 'tablet', key } });
+    this.queue.push(() => this.story.afterKey?.[key]?.(this));
+    this.save();
+  }
+  closeTablet() {
+    const key = this.state.overlay?.key;
+    const keys = key && !this.state.keys.includes(key) ? [...this.state.keys, key] : this.state.keys;
+    if (key) this.keysEver.add(key);
+    this.set({ overlay: null, phase: 'play', keys, openKeys: [...this.keysEver] });
+    this.input.clear();
+    this.queue.shift()?.();
+    this.refreshObjective();
+    this.save();
+  }
+  /** A door of the kit whose part the lesson has not got yet (`lesson.notYet`) does not open; the launch then starts. */
+  openHub(overlay) {
+    if (this.lesson.notYet?.includes(overlay.type)) {
+      if (overlay.type === 'launch' && overlay.then === 'start') this.start();
+      return;
+    }
+    super.openHub(overlay);
+  }
+  closeMap() {
+    const from = this.mapFrom ?? 'play';
+    this.mapFrom = null;
+    this.set({ overlay: null, phase: from === 'title' ? 'title' : 'play' });
+    this.input.clear();
+  }
+
+  // ───────────────────────────── between two docks: the felucca, on the kit's rail ─────────────────────────────
   board(i) {
     if (this.busy() || !this.stageDone(i)) return; // the game holds the order (§3.2)
     this.fromDock = i;
     const leg = this.story.legs?.[i];
+    this.stickyCine = false;
+    this.cine = null;
     if (leg) {
       this.runContent = leg;
       this.runWon = false;
@@ -940,6 +1583,9 @@ export class NilePyramidsGame extends WorldRuntime {
   }
   arrive(i) {
     this.sailing = null;
+    this.onTop = false;
+    this.stickyCine = false;
+    this.cine = null;
     this.mooring(i);
     this.hero.pos.copy(this.dockSpot(i));
     this.hero.vel.set(0, 0, 0);
@@ -964,24 +1610,29 @@ export class NilePyramidsGame extends WorldRuntime {
 
   /**
    * A label keeps its size on screen, so a far one would clutter the horizon: in play only the labels near the camera
-   * show; a look at a stage shows that stage's; the rail shows none (its numbers are the page's).
+   * show; a framing of a stage shows that stage's; the rail shows none (its numbers are the page's).
    */
   showLabels(ph) {
     if (this.time - this.labelsAt < 0.25) return;
     this.labelsAt = this.time;
     const cam = this.camera.position;
     const p = this.tmpL ?? (this.tmpL = new THREE.Vector3());
+    const wide = this.cine && (ph === 'look' || ph === 'build' || ph === 'fly' || this.stickyCine);
+    // at the river's whole framing the letter of E stands higher: S and E, 9 m apart, would print on one another
+    const eLabel = this.stakes['river:E']?.userData.label;
+    if (eLabel) eLabel.position.y = wide && this.state.at === 2 ? 14 : 2.6;
     this.scene.traverse((o) => {
       if (!o.isSprite || !o.userData.set) return;
       o.getWorldPosition(p);
       if (ph === 'run') o.visible = false;
-      else if (ph === 'look') o.visible = !o.userData.dock && this.stageOf(p.z) === this.state.at;
+      else if (wide || (this.hold && this.hold.step.sight))
+        o.visible = !o.userData.dock && this.stageOf(p.z) === this.state.at && p.distanceTo(cam) < 900;
       else o.visible = p.distanceTo(cam) < (o.userData.dock ? 120 : 170);
     });
   }
   /** The stage a point of the world belongs to, by its place along the river. */
   stageOf(z) {
-    const mid = [-45, -225, -410, -575, -800];
+    const mid = [-45, -225, -400, -600, -800];
     return mid.reduce((best, m, i) => (Math.abs(z - m) < Math.abs(z - mid[best]) ? i : best), 0);
   }
 
@@ -996,9 +1647,10 @@ export class NilePyramidsGame extends WorldRuntime {
   // ───────────────────────────── each step ─────────────────────────────
   stepWorld(dt, ph) {
     if (ph === 'run') this.gateRun.step(dt);
-    // the sky's sun follows the stage (K-f): its environment is rebuilt only when the stage changes
-    if (this.sunStage !== this.state.at) {
-      this.sunStage = this.state.at;
+    // the sky's sun follows the stage (K-f): its environment is rebuilt only when the stage (or noon) changes
+    const sunKey = `${this.state.at}:${Boolean(this.flags.noon)}`;
+    if (this.sunStage !== sunKey) {
+      this.sunStage = sunKey;
       this.physSky.setSun(this.sunDir());
       this.envRT?.dispose();
       this.envRT = this.pmrem.fromScene(this.physSky.envScene, 0.04);
@@ -1006,25 +1658,30 @@ export class NilePyramidsGame extends WorldRuntime {
       this.scene.environmentIntensity = 0.2;
     }
     this.physSky.sky.position.copy(this.camera.position);
+    // the drawn morning shadows belong to the plateau's morning sun only
+    this.morning.visible = this.state.at === 4 && !this.flags.noon;
     this.felucca.position.y = WATER_Y + 0.15 + Math.sin(this.time * 1.6) * 0.08;
     if (ph === 'sail' && this.sailing) this.stepSail(dt);
-    if (ph === 'look' && this.time - this.lookSince > 0.8) {
-      const ax = this.input.axis();
-      if (Math.hypot(ax.x, ax.y) > 0.3) this.endLook();
-    }
     for (const s of Object.values(this.stakes))
       if (s.userData.lamp.visible) s.userData.lamp.scale.setScalar(1 + Math.sin(this.time * 4) * 0.15);
     for (const d of this.docks)
       if (d.userData.lamp.visible) d.userData.lamp.material.emissiveIntensity = 1.1 + Math.sin(this.time * 3) * 0.4;
-    const h = this.hold;
+    for (const t of Object.values(this.tables))
+      if (t.userData.board.visible) t.userData.board.material.emissiveIntensity = 0.9 + Math.sin(this.time * 3) * 0.4;
     this.showLabels(ph);
-    if (this.courseShot && ph === 'play') {
+    if (this.stickyCine && ph === 'play') {
       const ax = this.input.axis();
       if (Math.hypot(ax.x, ax.y) > 0.3 || this.hold) {
-        this.courseShot = false;
+        this.stickyCine = false;
         this.cine = null;
       }
     }
+    if (this.onTop && ph === 'play') {
+      const t = this.pts.summit.top;
+      this.hero.pos.set(t.x - 0.9, t.y, t.z + 0.9);
+      this.hero.vel.set(0, 0, 0);
+    }
+    const h = this.hold;
     if (!h || ph !== 'play') return;
     // HIS SLIDE IS THE LENGTH: a tap is a knot, a key held goes faster and faster
     let s = h.s;
@@ -1037,14 +1694,20 @@ export class NilePyramidsGame extends WorldRuntime {
     const hero = this.hero;
     hero.pos.set(p.x, p.y, p.z);
     if (h.step.edge) hero.pos.x -= 0.5;
+    if (h.step.ghost) {
+      this.ghost.position.set(p.x, 0, p.z);
+      hero.pos.z += 2;
+    }
     hero.vel.set(0, 0, 0);
     hero.grounded = true;
     hero.yaw = Math.atan2(s.dir.x, s.dir.z) * (s.way < 0 ? -1 : 1);
     this.view = Math.atan2(s.dir.x, s.dir.z);
     const knots = knotsOf(s);
-    this.rope.visible = true;
-    this.rope.userData.set(s.from, p, s.pos);
-    this.rope.userData.label.userData.set(String(knots));
+    if (!h.step.ghost) {
+      this.rope.visible = true;
+      this.rope.userData.set(s.from, p, s.pos);
+      this.rope.userData.label.userData.set(String(knots));
+    }
     if (knots !== this.state.rope?.knots) this.set({ rope: { ...this.state.rope, knots } });
     if (tied(s)) this.tie();
   }
@@ -1063,7 +1726,7 @@ export class NilePyramidsGame extends WorldRuntime {
   }
 }
 
-/** For the walks (`window.__np`, in development only): Zero placed at a dock, a step marked done — never an answer. */
+/** For the walks (`window.__np`, in development only): Zero placed at a dock, the step read — never an answer. */
 export const devHandles = {
   __np: {
     toDock: (i) => window.__world?.arrive(i),

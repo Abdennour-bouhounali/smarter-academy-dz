@@ -631,3 +631,110 @@ export function makeStick(h) {
   m.castShadow = true;
   return m;
 }
+
+/** The masons' table where a forge opens: a limestone block, its board glowing while it calls him. */
+export function makeForgeTable() {
+  const g = new THREE.Group();
+  const block = new THREE.Mesh(stoneBox(2.2, 1, 1.3), stoneMaterial());
+  block.position.y = 0.5;
+  block.castShadow = true;
+  const board = new THREE.Mesh(
+    new THREE.BoxGeometry(1.6, 0.06, 0.9),
+    new THREE.MeshStandardMaterial({ color: 0xffd27a, emissive: 0xffb21e, emissiveIntensity: 1.1 }),
+  );
+  board.position.y = 1.04;
+  g.add(block, board);
+  g.userData.board = board;
+  return g;
+}
+
+/** A builders' ramp of packed earth from `a` (on the ground) to `b` (high on the pyramid), `w` wide. */
+export function makeRamp(a, b, w = 6) {
+  const m = makeTape(
+    a,
+    b,
+    w,
+    0.8,
+    new THREE.MeshStandardMaterial({ map: SAND([2, 20]), color: 0xf1d6a8, roughness: 1 }),
+  );
+  m.receiveShadow = true;
+  return m;
+}
+
+/** A plain limestone capstone: a square pyramid of base `base` and height `h` (never gilded, never inscribed). */
+export function makeCapstone(base, h) {
+  const geo = new THREE.ConeGeometry(base / Math.SQRT2, h, 4, 1);
+  geo.rotateY(Math.PI / 4);
+  geo.translate(0, h / 2, 0);
+  const m = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xf3e7cf, roughness: 0.7 }));
+  m.castShadow = true;
+  return m;
+}
+
+/** The mark of a right angle on the ground at `at`, along the unit directions `u` and `v` (the 3-4-5 rope's angle). */
+export function makeRightAngle(at, u, v, size = 2.4) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshBasicMaterial({ color: 0xe11d48, toneMapped: false });
+  const p = (k, l) => ({ x: at.x + u.x * k + v.x * l, y: 0.12, z: at.z + u.z * k + v.z * l });
+  g.add(makeTape(p(size, 0), p(size, size), 0.14, 0.05, mat), makeTape(p(0, size), p(size, size), 0.14, 0.05, mat));
+  return g;
+}
+
+/** « صندوق ابن الهيثم »: a dark box, a hole O at its front, the pyramid's image upside down on its back wall. */
+export function makeCameraBox() {
+  const g = new THREE.Group();
+  const box = new THREE.Mesh(
+    new THREE.BoxGeometry(1.2, 0.9, 0.7),
+    new THREE.MeshStandardMaterial({ color: 0x2b2118, roughness: 0.9 }),
+  );
+  box.position.y = 0.45;
+  box.castShadow = true;
+  const hole = new THREE.Mesh(new THREE.CircleGeometry(0.05, 16), new THREE.MeshBasicMaterial({ color: 0xfff3c4 }));
+  hole.position.set(0.61, 0.5, 0);
+  hole.rotation.y = Math.PI / 2;
+  const image = new THREE.Mesh(
+    new THREE.ShapeGeometry(
+      new THREE.Shape([new THREE.Vector2(-0.18, 0.12), new THREE.Vector2(0.18, 0.12), new THREE.Vector2(0, -0.13)]),
+    ),
+    new THREE.MeshBasicMaterial({ color: 0xffd27a, side: THREE.DoubleSide, toneMapped: false }),
+  );
+  image.position.set(-0.61, 0.5, 0);
+  image.rotation.y = -Math.PI / 2;
+  g.add(box, hole, image);
+  return g;
+}
+
+/**
+ * Zero's flight to the height he typed: a column of light along the pyramid's axis and a ring at his height, drawn
+ * THROUGH the stone (a mark of the world, seen even inside the pyramid). `set(h)`.
+ */
+export function makeFlightBeam() {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshBasicMaterial({ color: 0x7dd3fc, transparent: true, opacity: 0.35, depthTest: false });
+  const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1, 12, 1, true), mat);
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(3.2, 0.35, 10, 40),
+    new THREE.MeshBasicMaterial({ color: 0xfacc15, depthTest: false, toneMapped: false }),
+  );
+  ring.rotation.x = Math.PI / 2;
+  beam.renderOrder = 50;
+  ring.renderOrder = 51;
+  g.add(beam, ring);
+  g.visible = false;
+  g.userData.set = (h) => {
+    beam.scale.y = Math.max(0.01, h);
+    beam.position.y = h / 2;
+    ring.position.y = h;
+  };
+  return g;
+}
+
+/** A translucent copy of the stick, its shadow and its ray: the drawn triangle he slides along the shadow's axis (B5). */
+export function makeGhostStick(h, shadow) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.75, toneMapped: false });
+  g.add(makeTape({ x: 0, y: 0, z: 0 }, { x: 0, y: h, z: 0.001 }, 0.12, 0.12, mat));
+  g.add(makeTape({ x: 0, y: 0.08, z: 0 }, { x: -shadow, y: 0.08, z: 0 }, 0.14, 0.05, mat));
+  g.add(makeRay({ x: 0, y: h, z: 0 }, { x: -shadow, y: 0, z: 0 }, 0.04, 0xffb21e));
+  return g;
+}
