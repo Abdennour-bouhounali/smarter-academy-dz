@@ -76,7 +76,7 @@ mission.**
 | # | Dock / stage | Ground | The key | Its parallels |
 |---|---|---|---|---|
 | 1 | « حقل النيل » | a triangular field of black silt and green crops after the flood, its two canals | 🔑 وضعية طالس (P1) | a canal parallel to the field's side along the river — any direction on the ground |
-| 2 | « ورشة البنّائين » | an unfinished limestone pyramid (base 57 m, edge 76 m), its ramp, the quarry across the water | 📐 حساب طول مجهول (P2) | the courses, horizontal on a slanted face |
+| 2 | « ورشة البنّائين » | an unfinished limestone pyramid (base 99 m, edge 90 m), its ramp, the quarry across the water | 📐 حساب طول مجهول (P2) | the courses, horizontal on a slanted face |
 | 3 | « عرض النيل » | the bank at the ferry, the far landing post, an old stake | 🦋 وضعية الفراشة (P1, P2) | two lines perpendicular to the bank |
 | 4 | « حجر القمّة » | the summit of the stage-2 pyramid, the capstone yard | 🔍 المعامل k (P3) | the capstone's base, parallel to the pyramid's base |
 | 5 | « ظلّ الهرم الأكبر » | the plateau, the Great Pyramid (h = 146 m), the morning sun | the final mission (P1–P3) | the stick and the pyramid's height, both vertical; the sun's rays |
@@ -154,20 +154,20 @@ the rope-stretchers' fields.
 - The final mission's box is « صندوق ابن الهيثم », the camera obscura that Ibn al-Haytham described in Cairo, beside the
   Nile.
 
-### 1.5 The scale rule — from a 2 m stick to a 504 m river (gate B6)
+### 1.5 The scale rule — from a 2 m stick to a 416 m river (gate B6)
 
 - **One unit is one metre**, everywhere.
 - Zero keeps his real size, so the world never rescales him.
 - Labels are billboards of a fixed screen size, at least 18 px at 1366×768.
 - **The rope's speed**: the knots go by faster the longer the key is held, from 3 to 30 knots per second. Its speed is
-  set per stage so that the longest rope of that stage takes 8 s at most. The longest ropes are the river bank, 135 m
-  (5 s), and the pyramid's base, 230 m (8 s). The whole lesson is about 900 knots.
+  set per stage so that the longest rope of that stage takes 8 s at most. The longest ropes are the river bank, 72 m
+  (3 s), and the Great Pyramid's base, 230 m (8 s). The whole lesson is about 900 knots.
 - **The camera** follows Zero while he holds the rope (the kit's follow camera, with `freeLook`). When the world BUILDS,
   it takes a stage shot (`cameraShot('frame', box)`) that fits the stage's box at 1366×768 with a 50° field of view:
   - the field, 50 m: about 60 m away;
   - the face of the stage-2 pyramid: about 110 m;
-  - the river: from Zero's bank, the far post at 504 m in view;
-  - the summit of stage 4: the top 8 m only, so the capstone (1,5 m) is drawn about 150 px wide;
+  - the river: from Zero's bank, the far post at 416 m in view;
+  - the summit of stage 4: the top 8 m only, so the capstone (base 2,75 m) is drawn about 250 px wide;
   - the plateau: about 350 m.
 - **Phase 1 grey-boxes the two hardest scales**: the river bank of stage 3 and the plateau of stage 5.
 
@@ -202,7 +202,7 @@ It is coded once, as `order(kind, value) → built → verdict`:
 | a canal's length, typed BEFORE the rope reads it (stage 1) | the rope is laid along the canal and reads its length | **as typed** · **longer** · **shorter** — the rope's reading is written, the difference is not |
 | a course of a length | the quarry cuts it, the boat brings it, it is laid at its level | **fits** edge to edge · **gap** at both corners (amber) · **overhang** past the edges (violet) |
 | a ferry rope of a length | thrown from the bank to the far post | **ties** · **falls short** in the water · **slack** on the water |
-| a capstone, by « كلّ طول × [k] » | cut by the quarry and lifted to the top (a block too big for the yard is written as the quarry's order: « قاعدة طولها 2166 م ») | **sits** · **too small** (a step left round it) · **too big** |
+| a capstone, by « كلّ طول × [k] » | cut by the quarry and lifted to the top (a block too big for the yard is written as the quarry's order: « قاعدة طولها 3564 م ») | **sits** · **too small** (a step left round it) · **too big** |
 | a height h | Zero rises along the pyramid's axis to h | **at the apex** · **below** it · **above** it |
 
 The sizes of a gap or a shortfall are NOT written in the world, so that one addition never gives the answer. They are
@@ -253,7 +253,7 @@ the world's log.
 | — (the world's log) | 🔑 | in the field, measures AM and AN of a canal, TYPES the canal's length, then the rope reads it (§3.3) | the rope's reading. In the mirror, **the ratio gauge**: each whole side from the vertex is stretched to ONE common length and its piece marked on it. When the three marks stand on one vertical line, the ratios are equal (gold line); otherwise the marks stand apart. **One canal per case** (gate F5) | `data-np-predict`, `data-np-rope`, `data-rf-field="AB:AC:BC:AM:AN:MN"`, `data-rf-gauge`, `data-rf-aligned` |
 | **`plan`** « خطّة الحساب » | 📐 | on a figure with ONE unknown: (1) picks two of the **three ratio cards** of the chain; (2) when a side from the vertex is given in pieces, JOINS the two ropes end to end, or cuts a piece off a side; (3) types the unknown — the cross product is his | a picked card is filled with the known lengths and « ؟ » for the others; a card with two « ؟ » is answered « نسبة فيها طولان مجهولان »; the joined pieces show the side with its sum; the course of his number is laid on the drawn face: fits · gap · overhang (sizes written here: this is the mirror) | `data-iq-stage`, `data-iq-card=<ratio>`, `data-iq-picked`, `data-iq-join="AM+MB"`, `data-iq-in="x"`, `data-iq-laid="fits\|gap\|overhang"`, `data-iq-fact` |
 | **`halfturn`** « نصف دورة » | 🦋 | BEFORE the turn, says where C will land (on line (OB) or on line (OT)) and whether its side will be parallel to the big one's; then turns the small triangle round the vertex with ← → (steps of 30°, it stops at 180°) — the gate's cut 5: his act is the prediction | the turned triangle lands INSIDE the big one: key 🔑's nested figure appears with its gauge; the chain is written twice — with the turned letters, then with the butterfly's own | `data-iq-angle`, `data-iq-predict="OB\|OT"`, `data-iq-landed`, `data-iq-parallel`, `data-iq-aligned` |
-| **`scale`** « آلة النسخ » | 🔍 | sets a number k on a dial and feeds a triangle to the copying frame fixed at the vertex; BEFORE each copy says « larger / exact / smaller », and last, which perimeter the copy will have (three choices) | the copy is drawn from the vertex, its sides × k: it covers the target triangle exactly, falls inside it, or goes beyond it; the copy's sides and perimeter are written. Round 1 (k = 1/38) is the world's capstone, entered as a fact: drawn to scale it would be 13 px (gate F1) | `data-iq-k`, `data-iq-feed="1\|2"`, `data-iq-predict`, `data-iq-image="inside\|exact\|outside"`, `data-iq-perimeter` |
+| **`scale`** « آلة النسخ » | 🔍 | sets a number k on a dial and feeds a triangle to the copying frame fixed at the vertex; BEFORE each copy says « larger / exact / smaller », and last, which perimeter the copy will have (three choices) | the copy is drawn from the vertex, its sides × k: it covers the target triangle exactly, falls inside it, or goes beyond it; the copy's sides and perimeter are written. Round 1 (k = 1/36) is the world's capstone, entered as a fact: drawn to scale it would be 13 px (gate F1) | `data-iq-k`, `data-iq-feed="1\|2"`, `data-iq-predict`, `data-iq-image="inside\|exact\|outside"`, `data-iq-perimeter` |
 
 Each kind is a pure reducer plus a pure view, in the shape of `rootCourts/calc.js`, and is played and tested without a
 browser. Its sentences say facts, never the rule (the lesson's `inquiries.test.js` forbids the rule's words in them). A
@@ -360,7 +360,7 @@ it (§4).
 | ⛵ | leg 1 → 2 | four buoys, crocodiles | 🔑 | — |
 | 2 | « ورشة البنّائين » | orders three courses from the plan and his rope; forge 📐 at the masons' table | 📐 | his three orders and what was laid |
 | ⛵ | leg 2 → 3 | | 📐 | — |
-| 3 | « عرض النيل » | the stake, the right angles, the sight line, the rope; the ferry rope cut before crossing; forge 🦋 | 🦋 | his river: 135, 15, 56 → 504 |
+| 3 | « عرض النيل » | the stake, the right angles, the sight line, the rope; the ferry rope cut before crossing; forge 🦋 | 🦋 | his river: 72, 9, 52 → 416 |
 | ⛵ | leg 3 → 4 | | 🦋 | — |
 | 4 | « حجر القمّة » | sends « كلّ طول × [k] » to the quarry; the capstone is lifted; forge 🔍 | 🔍 | his capstone order |
 | ⛵ | leg 4 → 5 | | 🔍 | — |
@@ -381,7 +381,7 @@ These rules hold on every stage:
   opens directly on ②, its tiles (`GAME_WORLD.md` §2ter-1).
 
 **The stage — a NEED and a PREDICTION (gate B1).** After the flood, only the three corner stakes survived. The
-rope-stretchers' record gives AB = 35, AC = 42, BC = 49, and the masons must order the stone lining of the field's two
+rope-stretchers' record gives AB = 63, AC = 72, BC = 81, and the masons must order the stone lining of the field's two
 canals before the water comes back. For each canal:
 
 1. He measures with the rope from A.
@@ -390,16 +390,16 @@ canals before the water comes back. For each canal:
 
 This is six rope gestures. The world never asks a number it already shows: the rope reads after he types.
 
-- **The new canal**, dug parallel to the river side (BC): AM = 15 and AN = 18. With his 3AM tool he types
-  15 × 49/35 = **21**, and the rope reads 21 (a star).
-- **The old crooked canal**: AP = 24 and AQ = 25. The same tool gives 24 × 49/35 = 33,6 from one side and
-  25 × 49/42 = 29,1(6) from the other. The rope reads **31**.
+- **The new canal**, dug parallel to the river side (BC): AM = 14 and AN = 16. With his 3AM tool he types
+  14 × 81/63 = **18** (16 × 81/72 gives the same), and the rope reads 18 (a star).
+- **The old crooked canal**: AP = 39 and AQ = 28. The same tool gives 39 × 81/63 = 50,1… from one side and
+  28 × 81/72 = 31,5 from the other. The rope reads **41**.
 
 « Why did it hold there and not here? » is the condition, found by him.
 
-The numbers are exact: cos A = 1/5, so MN² = 15² + 18² − 2·15·18/5 = 441 and PQ² = 24² + 25² − 2·24·25/5 = 961. Every
-rope reading is a whole knot. The pieces are MB = 20 and NC = 24 for the new canal, and PB = 11 and QC = 17 for the old
-one.
+The numbers are exact: cos A = 2/7, so MN² = 14² + 16² − 2·14·16·2/7 = 324 and PQ² = 39² + 28² − 2·39·28·2/7 = 1681.
+Every rope reading is a whole knot. The pieces are MB = 49 and NC = 56 for the new canal, and PB = 24 and QC = 44 for
+the old one.
 
 **The tiles** — « تُكتب النسب الثلاث متساوية عندما [شرط] ، وهي [سلسلة] ». A rule says « the chain holds exactly when the
 condition holds » and is run on each canal. This gives sixteen rules.
@@ -413,19 +413,19 @@ condition holds » and is run on each canal. This gives sixteen rules.
 
 **Each wrong rule and the case that refutes it** (computed, recomputed by gate A):
 
-- **c2 with any chain** is refuted by the old canal, which cuts both sides: s1 there gives 24/35, 25/42 and 31/49, which
+- **c2 with any chain** is refuted by the old canal, which cuts both sides: s1 there gives 39/63, 28/72 and 41/81, which
   are not equal.
-- **c3 or c4 with s1** is refuted by the new canal. M is not the midpoint (15 of 35) and AM ≠ AN (15 and 18), yet
-  15/35 = 18/42 = 21/49 = 3/7.
-- **c1 with s2** is refuted by the new canal: 15/20 = 18/24 = 0,75, but 21/49 = 3/7. The gauge shows two marks together
+- **c3 or c4 with s1** is refuted by the new canal. M is not the midpoint (14 of 63) and AM ≠ AN (14 and 16), yet
+  14/63 = 16/72 = 18/81 = 2/9.
+- **c1 with s2** is refuted by the new canal: 14/49 = 16/56 = 2/7, but 18/81 = 2/9. The gauge shows two marks together
   and the third apart — the bank's 36 signatures, seen.
-- **c1 with s3** gives 20, 24, 28 on the new canal; **c1 with s4** gives 3/7 against 42/18 = 7/3.
+- **c1 with s3** gives 49, 56, 63 on the new canal; **c1 with s4** gives 2/9 against 72/16 = 9/2.
 - **c3 or c4 with s2, s3 or s4** survive the evidence: they say « never », and those chains never hold there. **Attack
-  1** refutes them: an isosceles field KL = KP = 34, LP = 26, with its canal through the midpoints (KE = KF = 17,
-  EF = 13). There c3 and c4 hold, yet s2 gives 1, 1, 1/2; s3 gives 17, 17, 13; s4 gives 1/2 and 2. s1 gives 1/2 three
+  1** refutes them: an isosceles field KL = KP = 38, LP = 32, with its canal through the midpoints (KE = KF = 19,
+  EF = 16). There c3 and c4 hold, yet s2 gives 1, 1, 1/2; s3 gives 19, 19, 16; s4 gives 1/2 and 2. s1 gives 1/2 three
   times.
 - **The right rule is attacked twice**: by attack 1, and by **attack 2**, a field in another position with other
-  letters: RS = 66, RT = 88, ST = 99, (UV) ∥ (ST), RU = 24, RV = 32, UV = 36 (k = 4/11).
+  letters: RS = 66, RT = 77, ST = 88, (UV) ∥ (ST), RU = 48, RV = 56, UV = 64 (k = 8/11).
 
 **The last step** (`use`): a triangle DEF turned on its side, with G on [DE], H on [DF] and (GH) ∥ (EF). He picks the
 condition (a CHOICE token, K-c), then writes the three equal ratios with the segment-name choices inside fractions (K-c).
@@ -443,27 +443,28 @@ here, not before.
   the tiles are skipped. The false procedures are refused where he makes them, and the mirror then attacks his plan
   (`GAME_WORLD.md` §2sexies).
 
-**The stage — a situation that makes it necessary.** The workshop's pyramid is unfinished: a square base of 57 m and a
-lateral edge of 76 m (height ≈ 64,4 m). On a face SBC, SB = SC = 76 and BC = 57. **A course that is not built yet
+**The stage — a situation that makes it necessary.** The workshop's pyramid is unfinished: a square base of 99 m and a
+lateral edge of 90 m (height ≈ 56,6 m — a squat pyramid, as the real ones are). On a face SBC, SB = SC = 90 and
+BC = 99. **A course that is not built yet
 cannot be measured; it is computed**, and the quarry across the water cuts it in advance. The rope slides up the edge
 only on the built steps, FROM THE BASE CORNER B.
 
-- **Course 1**: the mark at BM = 8, so SM = 68 and MN = 57 × 68/76 = **51**. The errors and what the world does with
+- **Course 1**: the mark at BM = 10, so SM = 80 and MN = 99 × 80/90 = **88**. The errors and what the world does with
   them:
-  - the piece (57 × 8/76 = 6) is laid as a 6 m row on a 51 m level: gaps;
-  - the difference (57 − 8 = 49): gaps;
-  - the inverted ratio (63,7…): an overhang.
+  - the piece (99 × 10/90 = 11) is laid as an 11 m row on an 88 m level: gaps;
+  - the difference (99 − 10 = 89): an overhang;
+  - the inverted ratio (111,3…): an overhang.
 
   No size is written in the world (gate P1); the sizes are in the mirror.
-- **Course 2**: BM = 24, so SM = 52 and MN = **39**.
-- **Course 3, the other way**: the quarry has already cut a row of **12**. Where does it go? SM = 76 × 12/57 = 16, so its
-  mark is at BM = **60** from the corner. That is above what is built, so he TYPES the mark, and the masons build up to
+- **Course 2**: BM = 20, so SM = 70 and MN = **77**.
+- **Course 3, the other way**: the quarry has already cut a row of **55**. Where does it go? SM = 90 × 55/99 = 50, so its
+  mark is at BM = **40** from the corner. That is above what is built, so he TYPES the mark, and the masons build up to
   it and lay the row there.
 
-The courses' k are 17/19, 13/19 and 4/19; none is a k of the bank (gate N3).
+The courses' k are 8/9, 7/9 and 5/9; none is a number the bank writes (gate N3).
 
-**The experiment `plan`.** Round 1 is HIS course 1, drawn flat. Then comes one figure, AB = 22, AC = 33, BC = 44,
-(MN) ∥ (BC), AM = 14, AN = 21, MN = 28 (MB = 8, NC = 12; k = 7/11), with another unknown in each round:
+**The experiment `plan`.** Round 1 is HIS course 1, drawn flat. Then comes one figure, AB = 54, AC = 72, BC = 81,
+(MN) ∥ (BC), AM = 42, AN = 56, MN = 63 (MB = 12, NC = 16; k = 7/9), with another unknown in each round:
 
 - MN from AM, MB and BC (join AM + MB);
 - BC from AN, NC and MN (join AN + NC);
@@ -477,8 +478,8 @@ The courses' k are 17/19, 13/19 and 4/19; none is a k of the bank (gate N3).
 
 The mirror's **attacks**: one figure where the unknown is a piece, and one where all the data are pieces.
 
-**The last step**, in the exam's shape: (EF) ∥ (BC), E on [AB], F on [AC], AE = 32, EB = 20, AC = 65, BC = 78. He fills
-`AB = [ ] + [ ] = [52]`, `AF = [40]` and `EF = [48]` (k = 8/13).
+**The last step**, in the exam's shape: (EF) ∥ (BC), E on [AB], F on [AC], AE = 45, EB = 10, AC = 66, BC = 77. He fills
+`AB = [ ] + [ ] = [55]`, `AF = [54]` and `EF = [63]` (k = 9/11).
 
 **The tablet**: his plan, then « الرابع المتناسب » and « الجداء المتصالب » as names.
 
@@ -493,12 +494,13 @@ The mirror's **attacks**: one figure where the unknown is a piece, and one where
 
 - The far landing post F stands on the other bank, and A is on this bank opposite it: AF ⟂ the bank, using the
   rope-stretchers' right angle of the 3-4-5 rope.
-- An old stake S stands at AS = **135** along the bank.
-- He goes on to E, SE = **15**, then walks inland perpendicular to the bank (the 3-4-5 rope again) until, in Zero's eye,
-  the stake hides the post (`cameraShot('sight')`). That is R, with ER = **56**.
+- An old stake S stands at AS = **72** along the bank.
+- He goes on to E, SE = **9**, then walks inland perpendicular to the bank (the 3-4-5 rope again) until, in Zero's eye,
+  the stake hides the post (`cameraShot('sight')`). That is R, with ER = **52**.
 - Both lines are perpendicular to the bank, so they are parallel: the condition is in his feet.
-- The width is AF = 135 × 56/15 = **504** m. The ferry rope of his number ties. 56 × 15/135 = 6,2 falls short, and the
-  data's sum, 206, falls short too. The sum is far from the width now (gate B4: with 405/45/56 it was 506 for 504).
+- The width is AF = 72 × 52/9 = **416** m. The ferry rope of his number ties. 52 × 9/72 = 6,5 falls short; the data's
+  sum, 133, and the piece across S (AS + SE = 81) fall short too. No sum of the data comes near the width (gate B4: with
+  405/45/56 it was 506 for 504).
 
 The method is the surveyor's classic one, the same as the bank's l5-001. The letters (F, A, S, E, R), the numbers and
 the question (cut the ferry rope) are ours. l5-001 asks « justify that the lines are parallel » about a valley; here no
@@ -507,10 +509,10 @@ justification is asked (disclosed, §7).
 **The experiment.**
 
 1. Round 1 is HIS river, with the measured lengths only.
-2. A parallel butterfly: IK = 48, IL = 66, KL = 84 against IP = 56, IQ = 77, PQ = 98 (k = 6/7).
-3. A butterfly that is NOT parallel: IK = 48, IL = 66, KL = 84, IP = 64, IQ = 69. Then cos I = −1/16, so
-   PQ² = 64² + 69² + 2·64·69/16 = 9409 and PQ = **97** (gate N2). After the half-turn, the side lands crooked: 48/64 =
-   3/4 and 66/69 = 22/23.
+2. A parallel butterfly: IK = 35, IL = 49, KL = 63 against IP = 50, IQ = 70, PQ = 90 (k = 7/10).
+3. A butterfly that is NOT parallel: IK = 35, IL = 49, KL = 63, IP = 60, IQ = 64. Then cos I = −1/10, so
+   PQ² = 60² + 64² + 2·60·64/10 = 8464 and PQ = **92** (gate N2). After the half-turn, the side lands crooked: 35/60 =
+   7/12 and 49/64.
 
 Before each turn he says where K lands, on line (IP) or line (IQ). The turn shows the partner on the SAME line through
 the vertex.
@@ -522,16 +524,16 @@ the vertex.
 - Second slot: $\frac{SR}{SF}$ ✓ · $\frac{SR}{SA}$ · $\frac{SF}{SR}$ · $\frac{SR}{RF}$.
 
 The rules are run on the integer rounds. On the river only its measured lengths are used, because SF and SR were never
-measured. Two wrong pairs are TRUE equalities between themselves: SA/SE = SF/SR (7/6) and SE/EA = SR/RF (6/13). **Their
-refutation names the third ratio**: ER/AF = 6/7, never « your two ratios differ » (gate P4).
+measured. Two wrong pairs are TRUE equalities between themselves: SA/SE = SF/SR (10/7) and SE/EA = SR/RF (7/17). **Their
+refutation names the third ratio**: ER/AF = 7/10, never « your two ratios differ » (gate P4).
 
 **Attacks** on the right rule:
 
-- a butterfly with other letters: centre O, OU = 14, OV = 18, UV = 20 against OW = 63, OT = 81, WT = 90 (k = 2/9);
+- a butterfly with other letters: centre O, OU = 24, OV = 32, UV = 40 against OW = 54, OT = 72, WT = 90 (k = 4/9);
 - the crooked butterfly, where the rule's condition fails and so does the chain.
 
-**The last step**: (AB) ∥ (CD) cut at O, OA = 40, OC = 64, OB = 50, CD = 88. He fills `OD = [80]` and `AB = [55]`
-(k = 5/8). The trap OA + OC = 104 is not a side.
+**The last step**: (AB) ∥ (CD) cut at O, OA = 18, OC = 48, OB = 21, CD = 88. He fills `OD = [56]` and `AB = [33]`
+(k = 3/8). The trap OA + OC = 66 is not a side.
 
 **The tablet**: « وضعية الفراشة », and his own sentence « نصف دورة حول نقطة التقاطع تعيدها إلى وضعية طالس ».
 
@@ -546,38 +548,38 @@ refutation names the third ratio**: ER/AF = 6/7, never « your two ratios differ
 capstone, a small pyramid of the same shape: its face SMN is in Thalès position with the face SBC (MN ∥ BC). The
 stone-cutter takes ONE order card, « كلّ طول × [ ] » (gate P7).
 
-- The capstone's base must be MN = 1,5, so he writes **1/38** (1,5/57). The capstone comes back with edges of 2 and a
-  face perimeter of 5,5 (= 209/38), and it sits on the top.
-- Written 38: the quarry's order reads « قاعدة طولها 2166 م ».
-- Written « 55,5 less »: base 1,5, edges 20,5 — it does not sit.
+- The capstone's base must be MN = 2,75, so he writes **1/36** (2,75/99). The capstone comes back with edges of 2,5 and
+  a face perimeter of 7,75 (= 279/36), and it sits on the top.
+- Written 36: the quarry's order reads « قاعدة طولها 3564 م ».
+- Written as a difference, « every length less 87,5 »: base 11,5, edges 2,5 — it does not sit.
 
 **The experiment.**
 
 1. Round 1 is HIS capstone, entered as the world's fact (gate F1).
-2. AMN with AM = 40, AN = 56, MN = 64, and ABC with AB = 55, AC = 77, BC = 88. The frame set at 11/8 and fed AMN covers
+2. AMN with AM = 20, AN = 40, MN = 55, and ABC with AB = 24, AC = 48, BC = 66. The frame set at 6/5 and fed AMN covers
    ABC; fed ABC it goes beyond.
-3. He finds the k that brings ABC back to AMN (8/11).
-4. Last, the perimeters 160 and 220: « × k », « + k » or « × 3k ». The copy writes its own perimeter.
+3. He finds the k that brings ABC back to AMN (5/6).
+4. Last, the perimeters 115 and 138: « × k », « + k » or « × 3k ». The copy writes its own perimeter.
 
 **The tiles** — « المعامل الذي يحوّل (1) إلى (2) = [ضلع من (2) ÷ موافقه من (1) ✓ · ضلع من (1) ÷ موافقه من (2) ·
 ضلع من (2) − موافقه من (1) · أطول ضلع ÷ أقصر ضلع] ، و(2) تكبير لـ(1) عندما [k > 1 ✓ · k < 1 · دائمًا · k عدد طبيعي] ».
 
 The refutations:
 
-- (1) ÷ (2) gives 8/11 on round 2, and the copy falls inside;
-- the difference gives 15, and the copy goes far beyond;
-- longest ÷ shortest gives 88/40;
+- (1) ÷ (2) gives 5/6 on round 2, and the copy falls inside;
+- the difference gives 4, and the copy goes far beyond;
+- longest ÷ shortest gives 66/20;
 - « k < 1 enlarges » is refuted by round 2;
 - « always » is refuted by the capstone, which is a reduction;
-- « k natural » is refuted by 11/8, an enlargement that is not a whole number.
+- « k natural » is refuted by 6/5, an enlargement that is not a whole number.
 
-**The last step**: ABC with AB = 69, BC = 93, and AMN in Thalès position with AM = 57,5. He fills:
+**The last step**: ABC with AB = 68, BC = 92, and AMN in Thalès position with AM = 42,5. He fills:
 
-- `k = [5]/[6]` from ABC to AMN — any equal fraction is accepted (115/138 too), because the claim `fraction` compares
+- `k = [5]/[8]` from ABC to AMN — any equal fraction is accepted (85/136 too), because the claim `fraction` compares
   values (gate O3);
 - the choice « [تصغير] »;
-- `MN = [77,5]`, a DECIMAL box (K-c);
-- the k from AMN to ABC, `[6]/[5]` — the inverted-k error, typed against itself.
+- `MN = [57,5]`, a DECIMAL box (K-c);
+- the k from AMN to ABC, `[8]/[5]` — the inverted-k error, typed against itself.
 
 **The tablet**: « معامل التناسبية k », « تكبير », « تصغير ».
 
@@ -629,41 +631,46 @@ same triangle » is not a known error, so this is accepted and said here.
 
 Every number was recomputed exactly (scratchpad `final.py`, `pyr.py`) and checked twice:
 
-- **the repo's `scripts/lesson-bank-numbers.mjs --check`**: a number ≥ 100 found in the bank or in another lesson's
-  story;
+- **the repo's `scripts/lesson-bank-numbers.mjs --check`** (since commit cb17ffb9 it reads decimals and fractions
+  and skips the metadata), run on **EVERY pair within each group**: a pair on one line of the bank or of another
+  lesson's story, or a number ≥ 100 found there (scratchpad `allgroups.py`; the pairs of 2 … 150 cached in
+  `badpairs.json`, 2 833 of 11 026 collide);
 - **a stricter scratchpad script** (`banknums.py`): one sheet holding two of the group's lengths ≥ 10, read from every
   statement, figure label and expected answer.
 
-| Group | Numbers | Repo script | Strict script |
+| Group | Numbers | Repo script, every pair | Strict script |
 |---|---|---|---|
-| field, new canal | 35, 42, 49 · 15, 18, 21 · 20, 24 | clear | free |
-| field, old canal | 24, 25, 31 · 11, 17 | clear | free |
-| 🔑 attacks | 34, 26, 17, 13 · 66, 88, 99, 24, 32, 36 | clear | free |
-| courses, capstone | 76, 57 · 8, 68, 51 · 24, 52, 39 · 12, 16, 60 · 1,5, 2, 38, 209, 5,5 | clear | free (distractor RESULTS 6, 49 not checked) |
-| 📐 plan, last step | 22, 33, 44, 14, 21, 28, 8, 12 · 52, 32, 20, 65, 40, 78, 48 | clear | free (one false hit: l4-004 writes 14/3) |
-| river | 135, 15, 56, 504 | clear | free |
-| 🦋 rounds, attack, last step | 48, 66, 84, 56, 77, 98, 64, 69, 97 · 14, 18, 20, 63, 81, 90 · 40, 64, 50, 88, 80, 55 | clear | free |
-| 🔍 rounds, last step | 40, 56, 64, 55, 77, 88, 160, 220 · 69, 93, 57,5, 77,5 | clear | free |
-| final, box | 2, 3, 104, 115, 219, 230, 146, 73 · 177, 292, 0,5, 0,25 | 104 hits l3-001/l3-002 — a textbook PAGE number in their metadata (false hit; K-e skips metadata) | free |
+| field, new canal | 63, 72, 81 · 14, 16, 18 · 49, 56 | clear | free |
+| field, old canal | 63, 72, 81 · 39, 28, 41 · 24, 44 | clear | free |
+| 🔑 attacks | 38, 32, 19, 16 · 66, 77, 88, 48, 56, 64, 18, 21 | clear | free |
+| courses, capstone | 90, 99 · 10, 80, 88 · 20, 70, 77 · 55, 50, 40 · errors 11, 89 · 2,75, 2,5, 36, 279, 7,75, 3564 | clear | free |
+| 📐 plan, last step | 54, 72, 81, 42, 56, 63, 12, 16 · 55, 66, 77, 45, 54, 63, 10, 12 | clear | free |
+| river | 72, 9, 52, 416, 133 | clear | free |
+| 🦋 rounds, attack, last step | 35, 49, 63, 50, 70, 90 · 60, 64, 92 · 24, 32, 40, 54, 72, 90 · 18, 21, 33, 48, 56, 88 | clear (the trap result 66 meets 33 on a 4AM story line: a result, not a datum) | free |
+| 🔍 rounds, last step | 20, 40, 55, 24, 48, 66, 115, 138 · 68, 92, 42,5, 57,5, 5/8, 8/5 | clear | free |
+| final, box | 2, 3, 104, 115, 219, 230, 146, 73 · 177, 292, 0,5, 0,25, 584 | clear except « 2 ; 3 » (the stick and its shadow, the owner's mock-up numbers; single digits stand together in most sheets) | free |
 
 **What changed since gate A, and why** (§8):
 
 | Part | Was | Now | Why |
 |---|---|---|---|
-| river | 405, 45, 56 | 135, 15, 56 | the old sum was 506 for a width of 504 |
-| workshop pyramid | 130/100 | 76/57 | 130 stands in a 2AM story and 100 in four sheets; course 2's k was 4/5, the bank's |
-| 🦋 last step | 60, 96, 114 / 70, 112, 133 | 40, 64, 50, 88 | 70 with 112 is l5-006 |
-| 🦋 attack | 51, 57, 60 / 119, 133, 140 | 14, 18, 20 / 63, 81, 90 | 119 and 140 stand in other stories |
-| 🔑 attack 2 | 102, 114, 132 / 85, 95, 110 | 66, 88, 99 / 24, 32, 36 | 110 is in the bank |
-| crooked butterfly | IQ = 74 (PQ = √9130) | IQ = 69 (PQ = 97) | the third side was irrational |
+| river | 405, 45, 56, then 135, 15, 56 | 72, 9, 52 → 416 | the first sum was 506 for 504; then « 15 ; 56 » = l3-001's answer 56/15 |
+| workshop pyramid | 130/100, then 76/57 | 90/99 (courses 10 → 88, 20 → 77, row 55 → 40) | 130 in a 2AM story, 100 in four sheets, course k 4/5; then « 68 ; 51 » on a 4AM story line |
+| 🦋 last step | 60, 96, 114 / 70, 112, 133, then 40, 64, 50, 88 | 18, 48, 21, 88 → 56, 33 | 70 with 112 is l5-006; then « 64 ; 50 » |
+| 🦋 attack | 51, 57, 60 / 119, 133, 140 | 24, 32, 40 / 54, 72, 90 | 119 and 140 stand in other stories |
+| 🔑 attack 2 | 102, 114, 132 / 85, 95, 110, then 66, 88, 99 / 24, 32, 36 | 66, 77, 88 / 48, 56, 64 | 110 is in the bank; then « 24 ; 36 » (l5-005) and « 66 ; 99 » |
+| 🦋 rounds | 48, 66, 84 / 56, 77, 98; crooked IQ = 74 (PQ = √9130), then 64, 69 → 97 | 35, 49, 63 / 50, 70, 90; crooked 60, 64 → 92 | an irrational side; then « 48 ; 84 », « 56 ; 98 » |
+
+| field | 35, 42, 49 / 15, 18, 21; old canal 24, 25, 31 | 63, 72, 81 / 14, 16, 18; old canal 39, 28, 41 | « 15 ; 21 » and « 11 ; 17 » stand on 4AM story lines |
+| 🔑 attack 1, 📐 plan, 📐 last step, 🔍 rounds, capstone | 34, 26, 17, 13 · 22, 33, 44 … · 52, 32, 20, 65 … · 40, 56, 64 … · 1/38 | 38, 32, 19, 16 · 54, 72, 81 … · 55, 66, 77 … · 20, 40, 55 … · 1/36 | pairs on other stories' lines (« 34 ; 17 », « 21 ; 28 », « 40 ; 56 », « 99 ; 2 » …) |
 
 The mock-up's numbers are NOT reused. Its field (30, 40, 45, AM = 18 → 27, k = 0,6) is the bank's l5-005.
 
-**The lesson's k**: 3/7, 1/2 (attack 1, the midpoint canal, by design), 4/11, 17/19, 13/19, 4/19, 7/11, 8/13, 9, 6/7,
-2/9, 5/8, 1/38, 11/8, 5/6 and 73.
+**The lesson's k**: 2/9 (the field), 1/2 (attack 1, the midpoint canal, by design), 8/11, 8/9, 7/9, 5/9, 7/9, 9/11,
+1/8 (the river), 7/10, 4/9, 3/8, 1/36, 6/5 and 5/6, 5/8, and 73.
 
-- None is a k (coefficient) of a parallel figure of the bank. 3/7 does appear in l2-010, as the ratio AN/AC of a figure
-  that is NOT parallel; that is disclosed, and the earlier claim « no k of the bank » is withdrawn (gate N3).
+- None of them is written in the bank (`--numbers`), except 6/5 = 1,2, which l3-005 writes as a LENGTH, not as a k.
+  The earlier field k 3/7 (l2-010's ratio AN/AC) is gone (gate N3).
 - Small numbers (2 … 12) are in every sheet, so the rule applied is the headline pair, not the digit.
 
 ### 3.9 Around the story (the kit, the lesson's data)
@@ -773,7 +780,7 @@ runtime hooks, the river look of the rail). The target applies to lessons 2–4 
 ## 7. Open question for the owner
 
 **Stage 3 « عرض النيل »** uses the surveyor's classic method — two perpendiculars to the bank and a sight line — which the
-bank's l5-001 also uses (a valley, BEM 2022). Here the letters (F, A, S, E, R), the numbers (135, 15, 56 → 504), the
+bank's l5-001 also uses (a valley, BEM 2022). Here the letters (F, A, S, E, R), the numbers (72, 9, 52 → 416), the
 place (the Nile's ferry) and the question (cut the ferry rope; no « justify the parallel ») are ours. Is that enough, or
 should key 🦋 have another situation?
 
@@ -790,9 +797,9 @@ forty strings (`play.md` §3), he reads them once: الحبل المعقود، �
 | B1 | Stage 1 has no need and no prediction; thirteen rope measures | the lining must be ordered; he TYPES each canal's length before the rope reads it (21 right; 33,6 or 29,17 against 31); six rope measures (§3.3) |
 | B2 | `WorldRuntime` is not « reused as it is »: fixed sun, ±26 shadow box, fog at 300, shadows dropped on slow machines | kit work K-f: `sunDir`, `shadowBox`, `fogRange` (main session, phase 1); a shadow that carries mathematics is a drawn mesh from `shadowTip`, never the shadow map (§1.4, §2.1, §2.4) |
 | B3 | Boxes take digits only; `UseLines` has no choice token | K-c: a decimal box (« 77,5 ») in `UseLines` and the trainer, and a choice token in `UseLines` and inside a fraction (§2.4) |
-| B4 | River: 405 + 45 + 56 = 506 for a width of 504 | 135, 15, 56 → 504, sum 206; clear by the repo's script (§3.5) |
+| B4 | River: 405 + 45 + 56 = 506 for a width of 504 | 72, 9, 52 → 416, sum 133; every pair clear by the repo's script (§3.5) |
 | B5 | The stick stands inside the pyramid's shadow | the stick stands in the sun beside it, its shadow parallel and measured; its drawn triangle slides along the axis until its tip sits on A (§3.7) |
-| B6 | No scale rule from 2 m to 504 m | §1.5: one unit is a metre, the rope's speed per stage (≤ 8 s), `cameraShot('frame', box)`, fixed-size labels; stages 3 and 5 grey-boxed in phase 1 |
+| B6 | No scale rule from 2 m to the river's width | §1.5: one unit is a metre, the rope's speed per stage (≤ 8 s), `cameraShot('frame', box)`, fixed-size labels; stages 3 and 5 grey-boxed in phase 1 |
 | P1 | A written gap gives the answer by one addition | the world writes no size; sizes are in the mirror only; a missed order stays as evidence (§2.1) |
 | P2 | « [MB] لا يبدأ من الرأس A » says the criterion | sentence dropped; the fact is the course laid with its gap (§3.4) |
 | P3 | Letter ratios on the rail with no figure | every leg is numeric (§1.3) |
@@ -801,8 +808,8 @@ forty strings (`play.md` §3), he reads them once: الحبل المعقود، �
 | P6 | k = 73 = 219 − 146 | accepted, said (§3.7) |
 | P7 | « ONE number »: 40 may mean « forty times smaller » | the order card prints « كلّ طول × [ ] » (§3.6) |
 | N1 | The generator can deal a wrong buoy equal to the right one | `run.js`'s test refuses it (§1.3) |
-| N2 | The crooked butterfly's third side is irrational | IP = 64, IQ = 69 → PQ = 97 (§3.5) |
-| N3 | « no k of the bank » was false (4/5; legs 0,8 and 3/2) | the courses now give 17/19, 13/19, 4/19; the legs say 0,7 and 7/4; the claim is withdrawn and 3/7 disclosed (§3.8) |
+| N2 | The crooked butterfly's third side is irrational | IP = 60, IQ = 64 → PQ = 92 (§3.5) |
+| N3 | « no k of the bank » was false (4/5; legs 0,8 and 3/2) | the courses now give 8/9, 7/9, 5/9; the legs say 0,7 and 7/4; the claim is withdrawn and 3/7 disclosed (§3.8) |
 | N4 | The repo's check is stricter on numbers ≥ 100 and other stories | both scripts are run; OC = 70 / 112, 130, 100, 110, 119, 140 changed; 104 declared a metadata false hit, skipped by K-e (§3.8) |
 | N5 | Noon shadow « about 18 m » | « about 17 m » (§3.7) |
 | F1 | Extreme ratios cannot be drawn to scale | `scale` round 1 enters as a world fact; the mission's figures are schematic and say so (§2.3, §3.7) |
@@ -814,8 +821,18 @@ forty strings (`play.md` §3), he reads them once: الحبل المعقود، �
 | F7 | `plan`: three cards against the piece and difference cards | three ratio cards and the join/cut tool; the errors show in the typed value (§3.4) |
 | O1 | Stage 3 was l5-001 letter for letter | letters, numbers, place and question changed; the method is disclosed; the owner's question (§7) |
 | O2 | Stage 1 is l5-005's situation, undisclosed; stage 2's face is l5-008's figure | disclosed (§0.5); the canonical figure stays, with our numbers and our two-canal situation |
-| O3 | Does `[5]/[6]` accept 115/138? | yes: values are compared (§3.6) |
-| — | Capstone visible at 1366×768 | the summit is framed at its top 8 m: the 1,5 m capstone is about 150 px wide (§1.5) |
+| O3 | Does `[5]/[8]` accept 85/136? | yes: values are compared (§3.6) |
+| — | Capstone visible at 1366×768 | the summit is framed at its top 8 m: the capstone's 2,75 m base is about 250 px wide (§1.5) |
+
+**After gate A — the pair-by-pair check (2026-11-24).** The decimal-aware `lesson-bank-numbers.mjs` (commit cb17ffb9),
+run on EVERY pair within each group, found three collisions named by the coordinator — « 11 ; 17 » (the old canal's
+pieces, on a line of `ikhtizal-kasr`'s story), « 15 ; 56 » (the river: l3-001's answer AC′ = 56/15), « 24 ; 36 » (🔑 attack
+2: l5-005's « 60 − 36 = 24 ») — and fourteen more on other stories' lines. Every group was changed until every pair is
+clear (§3.8; the one pair kept, « 2 ; 3 », is the stick and its shadow). What gate A checked still holds, recomputed:
+the field's two predictions (18 right; 50,1… or 31,5 against the rope's 41); no sum of the river's data near its width
+(133 and 81 for 416); no written size in the world; every k absent from the bank; the capstone framed at about 250 px.
+**Stages 1 and 2 changed**: the field 63/72/81 with the canals 14/16/18 and 39/28/41; the pyramid's face 90/90/99 with
+the courses BM 10 → 88, BM 20 → 77 and the row 55 → BM 40; the capstone 2,75 → k = 1/36.
 
 **The gate's cheaper paths, all seven adopted.** None loses quality:
 
