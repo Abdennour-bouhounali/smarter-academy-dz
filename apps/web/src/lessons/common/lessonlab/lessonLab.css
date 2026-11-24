@@ -381,7 +381,9 @@
   overflow: visible;
   direction: ltr;
 }
-.ll-draw text {
+/* the instrument's own drawing writes light on the dark board; a GeoFigure on its white card keeps its own inks (this
+   rule painted the rope card's letters and lengths #eafcff on white: unreadable — the hub walk, 2026-11-24) */
+.ll-draw text:not([data-geo-figure] text) {
   font-family: 'Cairo', sans-serif;
   font-weight: 800;
   fill: #eafcff;
@@ -1476,7 +1478,8 @@
   min-width: 0;
   min-height: 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 20rem;
+  /* the figure's card: 20rem, or what its labels need at 12 px (RopeTriangle.jsx › --ll-rope-fig) */
+  grid-template-columns: minmax(0, 1fr) max(20rem, var(--ll-rope-fig, 0px));
   gap: 0.8rem;
   align-items: center;
 }

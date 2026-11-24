@@ -184,7 +184,7 @@
   border-radius: 0.3rem;
   background: #1e293b;
   color: #fff;
-  font-size: 0.9rem;
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
 }
 .di-sheet__statement {
   margin: 0;
@@ -415,13 +415,14 @@
 }
 .di-tr-q[data-di-tr-q='figure'] > .di-tr-figure {
   order: 2;
-  width: max(min(var(--tr-fig-w), 44%), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0)));
+  width: max(min(var(--tr-fig-w), 44%), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0) + 0.8rem));
 }
 /* a question's figure (`q.figure`, Trainer.jsx › QuestionFigure): above the question, centred; never narrower than its
-   12 px floor — k × --di-min-font, the floor in the units of every zoom above it (trainerFigure.js) */
+   12 px floor — k × --di-min-font, the floor in the units of every zoom above it (trainerFigure.js), PLUS its padding
+   (0.8rem): the drawing is the box less its padding, and was drawn 4 % under its floor (labels of 11.5 px, the walk) */
 .di-tr-figure {
   align-self: center;
-  width: max(var(--tr-fig-w), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0)));
+  width: max(var(--tr-fig-w), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0) + 0.8rem));
   max-width: none;
   flex: none;
   padding: 0.2rem 0.4rem;

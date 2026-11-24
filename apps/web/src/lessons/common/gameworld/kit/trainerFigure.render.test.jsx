@@ -22,9 +22,9 @@ import {
 
 globalThis.window = globalThis.window ?? {};
 
-/** A Thalès figure as a lesson writes it: a triangle, a parallel cut, its lengths and the one asked. */
+/** A Thalès figure as a lesson writes it: a triangle, a parallel cut, its lengths and the one asked — upright (a column). */
 const NESTED = {
-  points: { A: [0, 4.2], B: [-3, 0], C: [4, 0], M: [-1.2, 2.52], N: [1.6, 2.52] },
+  points: { A: [4.2, 0], B: [0, 3], C: [0, -4], M: [2.52, 1.2], N: [2.52, -1.6] },
   segments: [
     { from: 'A', to: 'M', label: '6' },
     { from: 'M', to: 'B', label: '9' },
@@ -91,15 +91,18 @@ describe('the size of a question’s figure', () => {
   });
 
   it('a figure whose labels need more than the room is said not to fit (the lesson redraws it, never below its floor)', () => {
-    // GeoFigure draws in 300 units on its longest side: a TALL figure at its floor is taller than the room
-    const tall = {
-      points: { A: [0, 0], B: [1, 0], C: [0, 6] },
-      segments: [{ from: 'A', to: 'C', label: '6' }, ['A', 'B'], ['B', 'C']],
+    // GeoFigure draws a fixed number of units on its longest side: a WIDE figure at its floor is wider than the room (a
+    // column beside the question); turned upright, the same figure fits
+    const wide = {
+      points: { A: [0, 0], B: [6, 0], C: [0, 1] },
+      segments: [{ from: 'A', to: 'B', label: '6' }, ['A', 'C'], ['B', 'C']],
       ariaLabel: 'x',
     };
-    const f = trainerFigure(tall);
+    const f = trainerFigure(wide);
     expect(f.label).toBeGreaterThanOrEqual(12);
     expect(f.fits).toBe(false);
+    const upright = { ...wide, points: { A: [0, 0], B: [0, 6], C: [1, 0] } };
+    expect(trainerFigure(upright).fits).toBe(true);
     // an angle's label (12 units) asks a wider floor than a length's (13)
     const angled = { ...NESTED, angles: [{ at: 'A', from: 'B', to: 'C', label: '40°' }] };
     expect(trainerFigure(angled).k).toBeGreaterThan(trainerFigure(NESTED).k);

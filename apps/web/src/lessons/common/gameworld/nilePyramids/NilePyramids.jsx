@@ -20,6 +20,7 @@ import GateRunHud from '../kit/GateRunHud';
 import LessonWorld from '../kit/LessonWorld';
 import MathText from '../../components/MathText';
 import { Card, M } from '../kit/parts';
+import { sheetFigure } from '../kit/sheetFigure';
 import { Instruction, Recall } from '../kit/Instruction';
 import { NilePyramidsGame, devHandles } from './Game';
 import { WORLD_TEXT, withStory } from './strings';
@@ -296,8 +297,9 @@ export function StoryCard({ kind, game }) {
         <p className="di-card__eyebrow">{m.title}</p>
         <div className="np-card__cols">
           {m.figure && (
-            <div className="np-card__fig">
-              <GeoFigure {...m.figure} caption={C.notToScale} maxWidth={300} />
+            // never narrower than its 12 px floor when the card shrinks to fit (`sheetFigure` k × --di-min-font)
+            <div className="np-card__fig" style={{ '--np-fig-k': sheetFigure(m.figure)?.k ?? 0 }}>
+              <GeoFigure {...m.figure} caption={C.notToScale} maxWidth="100%" />
             </div>
           )}
           <div className="np-card__text">
@@ -349,6 +351,8 @@ const WORLD = {
   playing: (s) =>
     s.phase === 'play' || s.phase === 'dialog' || s.phase === 'build' || s.phase === 'look' || s.phase === 'fly',
   busy: (s) => s.phase === 'build' || s.phase === 'sail' || s.phase === 'fly' || s.phase === 'climb',
+  /** Zero's bubble is not drawn while the top view is open: it printed over the plateau's lengths (the walk, 2026-11-24). */
+  quiet: (s) => Boolean(s.top),
   held: (s) => (s.rope ? WORLD_TEXT.held(s.rope.knots) : null),
   Hud,
   Under: ({ s, game }) =>

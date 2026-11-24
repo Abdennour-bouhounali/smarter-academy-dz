@@ -137,7 +137,9 @@ describe('« تدرّب » of « خاصية طالس وحساب الأطوال �
       expect(validateGeoFigure(q.figure), q.prompt).toEqual([]);
       const t = trainerFigure(q.figure);
       expect(t.kind).toBe('plane');
-      expect(t.fits, `${q.kind} ${t.width}×${t.height} k=${t.k}`).toBe(true);
+      // beside its question (a column), or above a form of three fractions (the whole width, low)
+      const above = q.kind === 'nisab' || q.kind === 'farashaNisab';
+      expect(above ? t.fitsAbove : t.fits, `${q.kind} ${t.width}×${t.height} k=${t.k}`).toBe(true);
       expect(t.label).toBeGreaterThanOrEqual(12);
       // the words no longer describe the configuration: the parallel and the lengths only
       expect(q.prompt).not.toMatch(/نقطة من|متقاطعان/);

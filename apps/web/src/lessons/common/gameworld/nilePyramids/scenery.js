@@ -165,6 +165,7 @@ export function makeLabel(text, { bg = 'rgba(16,20,36,0.84)', fg = '#ffffff', px
   const h = labelScale(px);
   const set = (t) => {
     const str = String(t);
+    s.userData.text = str;
     g.font = font;
     // a label whose text changes keeps ONE canvas width (a texture is not resized once uploaded)
     c.width = width || Math.ceil(g.measureText(str).width + 56);
@@ -180,10 +181,18 @@ export function makeLabel(text, { bg = 'rgba(16,20,36,0.84)', fg = '#ffffff', px
     g.direction = /[؀-ۿ]/.test(str) ? 'rtl' : 'ltr';
     g.fillText(str, c.width / 2, 52);
     tex.needsUpdate = true;
-    s.scale.set((h * c.width) / c.height, h, 1);
+    const r = s.userData.r ?? 1;
+    s.scale.set((r * h * c.width) / c.height, r * h, 1);
   };
   set(text);
   s.userData.set = set;
+  // a sprite of a fixed size is drawn in the units of the lens: `zoom(r)` keeps it the same on screen when the lens
+  // narrows (r = tan(fov/2) / tan(55°/2) — Game.js › updateCamera)
+  s.userData.zoom = (r) => {
+    const k = r / (s.userData.r ?? 1);
+    s.userData.r = r;
+    s.scale.set(s.scale.x * k, s.scale.y * k, 1);
+  };
   return s;
 }
 
@@ -339,6 +348,7 @@ export function makeStepPyramid({ base, h, courses, upTo = courses, tint = 0xfff
   const m = new THREE.Mesh(mergeGeometries(parts), stoneMaterial(tint));
   m.castShadow = true;
   m.receiveShadow = true;
+  m.userData.tall = 'pyramid'; // a ghost in the top view (Game.js › ghostTall)
   return m;
 }
 

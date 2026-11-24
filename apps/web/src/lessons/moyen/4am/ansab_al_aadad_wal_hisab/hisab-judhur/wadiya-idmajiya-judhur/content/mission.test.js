@@ -229,7 +229,10 @@ describe('the synthesis — config, peer sheet, ladder', () => {
   it('the classmate رقيّة is in hijab and her first name is on no other peer sheet of the platform', () => {
     expect(PEER_KID.figure.hairStyle).toBe('hijab');
     const names = Object.values(peerSheets).map((m) => m.PEER_KID?.name).filter(Boolean);
-    expect(names.length).toBeGreaterThan(20);
+    // every peer sheet of the platform is read (a count written here fell each time a lesson rebuilt in v2 deleted its
+    // old sheet: 21 → 20 when talis-hisab-atwal's went, 2026-11-24)
+    expect(names.length).toBeGreaterThan(1);
+    expect(names).toHaveLength(Object.values(peerSheets).filter((m) => m.PEER_KID).length);
     expect(names.filter((n) => n === PEER_KID.name)).toHaveLength(1);
   });
   it('« أستعدّ » never shows the signatures', () => {

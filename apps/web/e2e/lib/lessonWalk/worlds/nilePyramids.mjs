@@ -345,6 +345,35 @@ export async function npStoryWalk(L, D, opts) {
         rects.length >= 3 && over.length === 0,
         `${label}: ${rects.length} labels written over the figure, none over another${over.length ? ` (${over.length} pairs meet)` : ''}`,
       );
+      // a TRUE view from above: the lens looks straight down, narrow (the plateau's was oblique, the pyramid over the figure)
+      const lens = await page.evaluate(() => {
+        const c = window.__world.camera;
+        const d = c.getWorldDirection(new c.position.constructor());
+        return { down: -d.y, fov: c.fov };
+      });
+      check(
+        lens.down > 0.999 && lens.fov <= 20.5,
+        `${label}: the lens looks straight down (${lens.down.toFixed(4)}), narrow (${lens.fov.toFixed(1)}°)`,
+      );
+      // nothing of the page over a label: Zero's bubble is not drawn, the cards and the instruction leave them free
+      const hud = await page.evaluate(() => {
+        const box = document.querySelector('canvas').getBoundingClientRect();
+        return {
+          say: document.querySelectorAll('.di-say').length,
+          rects: [...document.querySelectorAll('.np-register, .di-recall, .di-instruction, .np-top')]
+            .map((e) => e.getBoundingClientRect())
+            .filter((r) => r.width > 0)
+            .map((r) => ({
+              x: r.left - box.left + r.width / 2,
+              y: r.top - box.top + r.height / 2,
+              w: r.width,
+              h: r.height,
+            })),
+        };
+      });
+      check(hud.say === 0, `${label}: Zero's bubble is not drawn while the top view is open`);
+      const under = rects.filter((r) => hud.rects.some((h) => meet(r, h)));
+      check(under.length === 0, `${label}: no label under a card, the instruction or the button (${under.length})`);
       // a label's glyphs: 64 of its 96 canvas rows (scenery.js › makeLabel)
       const small = rects.filter((r) => (r.h * 64) / 96 < 17.5);
       check(

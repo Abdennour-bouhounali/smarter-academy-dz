@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState } from 'react';
 import GeoFigure from '../../components/GeoFigure';
 import { figureSpec } from '../../gameworld/nilePyramids/figure';
+import { sheetFigure } from '../../gameworld/kit/sheetFigure';
 import { useDrag, useChime, svgPoint, Tool, M } from '../kit';
 import { ropeOf } from '../logic';
 
@@ -48,6 +49,7 @@ export default function RopeTriangle({ a, b, play, report, start = null }) {
   const m = clamp(cur.m, 1, a - 1);
   const n = clamp(cur.n, 1, b - 1);
   const R = ropeOf(a, b, m, n);
+  const fig = ropeFigure(a, b, m, n, R.aligned);
 
   useEffect(() => {
     if (moved) report({ key, m, n, moved, found: cur.found });
@@ -170,7 +172,12 @@ export default function RopeTriangle({ a, b, play, report, start = null }) {
         </>
       }
     >
-      <div className="ll-rope">
+      {/* the card's column: never narrower than the width at which the figure's smallest label reads 12 px (sheetFigure ›
+          k), plus its padding and border — a flat triangle of 30 and 5 drew its lengths at 11.2 px (the hub walk) */}
+      <div
+        className="ll-rope"
+        style={{ '--ll-rope-fig': `calc(${sheetFigure(fig)?.k ?? 0} * var(--di-min-font, 12px) + 1.2rem + 4px)` }}
+      >
         <svg
           ref={svg}
           viewBox={`0 0 ${ROPE_VW} ${ROPE_VH}`}
@@ -198,7 +205,7 @@ export default function RopeTriangle({ a, b, play, report, start = null }) {
         </svg>
         <div className="ll-rope__card" data-ll-rope-figure={R.aligned ? 'parallel' : 'crossing'}>
           {/* the figure stays inside its card, whatever the ropes drawn (30 and 5 made it wider than the card) */}
-          <GeoFigure {...ropeFigure(a, b, m, n, R.aligned)} maxWidth="100%" />
+          <GeoFigure {...fig} maxWidth="100%" />
         </div>
       </div>
     </Tool>

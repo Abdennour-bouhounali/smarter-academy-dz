@@ -83,12 +83,16 @@ function describe(names) {
   const s = (k) => seg(names, k);
   return `في الشكل: $(${s('MN')}) \\parallel (${s('BC')})$.`;
 }
+/** The widest figure drawn as it is, unturned (trainerFigure's px): the question beside it keeps about 300 px. */
+const UPRIGHT = 250;
 /**
  * THE FIGURE of a question (`q.figure`): the world's Thalès figure with its letters, the lengths `show` written and
  * those `ask` written « ? ». Drawn as it is when it fits the trainer's room at its 12 px floor, else turned by 15°
- * steps to the turn that stands lowest. `f` holds the lengths (`draw`: other lengths for its shape only).
+ * steps to the NARROWEST turn that fits: it stands beside the question, which keeps the panel's width (a landscape turn,
+ * the lowest, left the question 220 px and zoomed the panel's words under 12 px — the walk, 2026-11-24). `f` holds the
+ * lengths (`draw`: other lengths for its shape only; `above`: a question of three fractions, its figure above it).
  */
-function figureOf(f, names, butterfly, { show = [], ask = [], draw = null } = {}) {
+function figureOf(f, names, butterfly, { show = [], ask = [], draw = null, above = false } = {}) {
   const fig = {
     kind: butterfly ? 'butterfly' : 'nested',
     names,
@@ -100,9 +104,15 @@ function figureOf(f, names, butterfly, { show = [], ask = [], draw = null } = {}
     return { spec, t: trainerFigure(spec) };
   };
   const flat = at(0);
-  if (flat.t.fits) return flat.spec;
-  const turns = Array.from({ length: 23 }, (_, i) => at((i + 1) * 15)).filter((x) => x.t.fits);
-  return (turns.sort((a, b) => a.t.height - b.t.height)[0] ?? flat).spec;
+  // a form of three fractions keeps the panel's width: its figure stands ABOVE it, the lowest turn that fits there
+  if (above) {
+    const low = Array.from({ length: 24 }, (_, i) => at(i * 15)).filter((x) => x.t.fitsAbove);
+    return (low.sort((a, b) => a.t.height - b.t.height)[0] ?? flat).spec;
+  }
+  // drawn as it is when the question keeps 300 px beside it
+  if (flat.t.fits && flat.t.width <= UPRIGHT) return flat.spec;
+  const turns = Array.from({ length: 24 }, (_, i) => at(i * 15)).filter((x) => x.t.fits);
+  return (turns.sort((a, b) => a.t.width - b.t.width || a.t.height - b.t.height)[0] ?? flat).spec;
 }
 /** A scale figure (only AB, BC, AM, MN given): its AC for the drawing only — 3/5 of AB + BC, AN at the same k. */
 function scaleDraw(f) {
@@ -304,7 +314,7 @@ const Q = {
       kind: butterfly ? 'farashaNisab' : 'nisab',
       key: butterfly ? K3 : K1,
       names,
-      figure: figureOf(f, names, butterfly),
+      figure: figureOf(f, names, butterfly, { above: true }),
       prompt: `${describe(names)} اكتب النسب الثلاث المتساوية.`,
       form: {
         tip: 'tipWrite',

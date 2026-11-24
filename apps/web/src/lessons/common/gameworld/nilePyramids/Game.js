@@ -93,7 +93,7 @@ import {
   makeGhostStick,
 } from './scenery';
 import { WORLD_TEXT, withStory } from './strings';
-import { topFrame, declutter } from './topView';
+import { topFrame, declutter, TOP_FOV } from './topView';
 
 const SKY = [0xa9c4dd, 0xe6cfa2, 0xfff0d6, 4.4, 0.35, 0];
 const DOCK_Z = [0, -160, -330, -560, -760];
@@ -439,7 +439,26 @@ export class NilePyramidsGame extends WorldRuntime {
   }
   fov() {
     const ph = this.state.phase;
+    if (this.topView && (ph === 'play' || ph === 'dialog')) return TOP_FOV;
     return ph === 'run' ? 60 : ph === 'look' || ph === 'fly' ? 50 : 55;
+  }
+  /**
+   * The top view's lens (TOP_FOV) stands kilometres up: its near plane follows it (the ropes lie a hand over the sand
+   * and would flicker in a depth buffer from 0,1 m to 9 km), and the labels — sprites of a fixed size, drawn in the units
+   * of the lens — keep their size on screen while the lens narrows (`scenery.js › makeLabel › zoom`).
+   */
+  updateCamera(dt) {
+    super.updateCamera(dt);
+    const near = this.topView ? Math.max(0.1, this.camera.position.y * 0.25) : 0.1;
+    if (Math.abs(this.camera.near - near) > 0.05) {
+      this.camera.near = near;
+      this.camera.updateProjectionMatrix();
+    }
+    const r = Math.tan((this.camera.fov * Math.PI) / 360) / Math.tan((55 * Math.PI) / 360);
+    if (Math.abs((this.labelR ?? 1) - r) > 1e-3) {
+      this.labelR = r;
+      this.scene.traverse((o) => o.isSprite && o.userData.zoom?.(r));
+    }
   }
   stepPhase(ph) {
     return ph === 'run' || ph === 'build' || ph === 'look' || ph === 'sail' || ph === 'fly' || ph === 'climb';
@@ -541,6 +560,8 @@ export class NilePyramidsGame extends WorldRuntime {
     return { half: 60, near: 1, far: 420, distance: 200, at: null };
   }
   fogRange() {
+    // the top view looks from far above: the fog begins beyond the ground it frames
+    if (this.topView) return [this.topView.height + 600, this.topView.height + 8000];
     return [700, 4500]; // the Great Pyramid stays in view from the first dock
   }
 
@@ -665,11 +686,11 @@ export class NilePyramidsGame extends WorldRuntime {
       ? topFrame({
           points: [...Object.values(this.P[this.state.at]), ...this.topExtra(this.state.at)],
           dir: { x: this.camDir.x, z: this.camDir.y },
-          fov: 55,
           aspect: this.camera.aspect || 16 / 9,
         })
       : null;
     if (!on) this.restoreLabels();
+    this.ghostTall(Boolean(on));
     this.stickyCine = false;
     this.audio.play('ui');
     this.labelsAt = -1;
@@ -686,6 +707,30 @@ export class NilePyramidsGame extends WorldRuntime {
       ];
     }
     return [];
+  }
+  /**
+   * What stands tall (the pyramids, the palms — `userData.tall`) would cover a segment or a label seen from above: in the
+   * top view a pyramid is a ghost (its stones at a quarter, its footprint still read) and a palm is not drawn.
+   */
+  ghostTall(on) {
+    this.scene.traverse((o) => {
+      if (o.userData.tall === 'palm') o.visible = !on;
+      else if (o.userData.tall === 'pyramid' && o.material) {
+        o.material.transparent = on;
+        o.material.opacity = on ? 0.25 : 1;
+        o.material.depthWrite = !on;
+        o.castShadow = !on;
+        o.material.needsUpdate = true;
+      }
+    });
+  }
+  /** The screen rectangles (centres, canvas px) of what the page draws over the world: no top-view label goes under. */
+  hudRects() {
+    const box = this.renderer.domElement.getBoundingClientRect();
+    return [...document.querySelectorAll('.di-say, .np-register, .di-recall, .di-instruction, .np-top')]
+      .map((e) => e.getBoundingClientRect())
+      .filter((r) => r.width > 0 && r.height > 0)
+      .map((r) => ({ x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2, w: r.width, h: r.height }));
   }
   restoreLabels() {
     for (const o of this.moved ?? []) if (o.userData.home) o.position.copy(o.userData.home);
@@ -712,6 +757,7 @@ export class NilePyramidsGame extends WorldRuntime {
     let seed = 3;
     const plant = (x, z) => {
       const p = makePalm(seed, 8 + ((seed * 37) % 50) / 10);
+      p.userData.tall = 'palm';
       p.position.set(x, 0, z);
       p.rotation.y = seed * 1.7;
       this.scene.add(p);
@@ -1866,7 +1912,7 @@ export class NilePyramidsGame extends WorldRuntime {
       if (o.userData.topOnly) o.visible = top && this.stageOf(p.z) === this.state.at;
       else if (ph === 'run') o.visible = false;
       else if (wide || (this.hold && this.hold.step.sight))
-        o.visible = !o.userData.dock && this.stageOf(p.z) === this.state.at && p.distanceTo(cam) < 900;
+        o.visible = !o.userData.dock && this.stageOf(p.z) === this.state.at && (top || p.distanceTo(cam) < 900);
       else o.visible = p.distanceTo(cam) < (o.userData.dock ? 120 : 170);
       if (top && o.visible) shown.push(o);
     });
@@ -1875,11 +1921,14 @@ export class NilePyramidsGame extends WorldRuntime {
       this.moved = declutter(shown, this.topView, {
         viewH: this.renderer.domElement.clientHeight || 768,
         aspect: this.camera.aspect || 16 / 9,
+        labelK: (this.renderer.domElement.clientHeight || 768) / 2 / Math.tan((this.camera.fov * Math.PI) / 360),
+        keepOut: this.hudRects(),
       });
   }
   /** The stage a point of the world belongs to, by its place along the river. */
   stageOf(z) {
-    const mid = [-45, -225, -400, -600, -800];
+    // the plateau's centre stands nearer the summit than its pyramid (−800): its corner D (z −685) was the summit's
+    const mid = [-45, -225, -400, -600, -750];
     return mid.reduce((best, m, i) => (Math.abs(z - m) < Math.abs(z - mid[best]) ? i : best), 0);
   }
 

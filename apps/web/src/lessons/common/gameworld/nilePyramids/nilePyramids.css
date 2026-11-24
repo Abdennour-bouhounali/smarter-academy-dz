@@ -216,7 +216,9 @@
   align-items: flex-start;
 }
 .di-root .np-card__fig {
-  flex: 0 0 18rem;
+  /* its labels at 12 px however far the card is zoomed to fit (k × the floor, plus the padding): at 18rem they read
+     9.7 px on the plateau's mission card (the walk, 2026-11-24) */
+  flex: 0 0 max(18rem, calc(var(--di-min-font, 12px) * var(--np-fig-k, 0) + 0.8rem));
   padding: 0.4rem;
   border-radius: 1rem;
   background: #fffdf6;

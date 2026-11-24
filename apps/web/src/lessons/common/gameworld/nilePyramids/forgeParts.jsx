@@ -13,6 +13,7 @@
 import GeoFigure from '../../components/GeoFigure';
 import MathText from '../../components/MathText';
 import { figureSpec, lastStepFigure, mirrorFigure } from './figure';
+import { sheetFigure } from '../kit/sheetFigure';
 import { caseId, runCase, THALES_TEXT } from './ruleForge';
 import { Gauge } from './Gauge';
 import Inquiry from './Inquiry';
@@ -22,6 +23,9 @@ import './forge.css';
 export function Mirror({ c, stage, tight = false }) {
   const done = stage === 'done';
   const lie = mirrorFigure(c);
+  const spec = figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null, turn: lie.turn });
+  // the figure is never narrower than its 12 px label floor (forge.css › --np-fig-k); its frame's padding is outside it
+  const k = sheetFigure(spec)?.k ?? 0;
   return (
     <div
       className={`np-mirror ${tight ? 'is-tight' : ''}`}
@@ -29,11 +33,11 @@ export function Mirror({ c, stage, tight = false }) {
       data-rf-case={caseId(c)}
       data-rf-kind={done ? (runCase(c).aligned ? 'aligned' : 'apart') : undefined}
     >
-      <div className="np-mirror__fig" style={lie.width && !tight ? { flexBasis: `${lie.width}px` } : undefined}>
-        <GeoFigure
-          {...figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null, turn: lie.turn })}
-          maxWidth={tight ? 260 : (lie.width ?? 300)}
-        />
+      <div
+        className="np-mirror__fig"
+        style={{ '--np-fig-k': k, ...(lie.width && !tight ? { flexBasis: `calc(${lie.width}px + 0.6rem)` } : {}) }}
+      >
+        <GeoFigure {...spec} maxWidth={tight ? '100%' : (lie.width ?? 300)} />
       </div>
       {done && <Gauge c={c} />}
     </div>

@@ -65,3 +65,18 @@ lesson only); a gap of 0 cells (one lesson only); the lab's instruments.
 | The experiment `chase` | the court of 2, five fractions up to 99/70, the ×1000 lens | `rootCourts/chase.test.js`, `inquiryChase.render.test.jsx` |
 | The board's `court` station with FRACTION rod cards and a gate given as a fraction | up to 5 cards; 529/49 with 23/7 | `features/classSession/courtStation.render.test.jsx` |
 | The instrument « منصّة الكسر » (`lessonlab/tools/FractionPlatform.jsx`) | area 2 with fifths and twelfths; 12/3 on 16 | `lessonlab/piece.render.test.jsx` |
+
+## Added by `talis-hisab-atwal` (2026-11-24 — the first lesson of the world « الأهرامات », `nile-pyramids`; passed at 1366×768)
+
+Walked with the SVG text measured on screen (defects C22): story 1480 ok, hub 273, trainer 710, board 283, launch PASSED,
+sitting 2101 — all 0 FAIL. The commit is the one that carries this section.
+
+| Screen | Proven for | Data test |
+|---|---|---|
+| The story of « الأهرامات » (`gameworld/nilePyramids/*`): five stages (field, workshop, river, summit, plateau), the rope laid knot by knot, the orders and the register, the felucca's legs (the kit's rail), a reload, ← → turning Zero 5° a tap | the lesson's five stages as written; one reload | the lesson's `world/*.test.js`, `nilePyramids/*.test.js`; walked by `e2e/lessons/talis-hisab-atwal.walk.mjs` |
+| The top view « منظر من الأعلى » (`nilePyramids/topView.js`, `Game.js › toggleTop`): a lens of 15° straight down, the pyramids as ghosts, palms not drawn, Zero's bubble quiet, labels kept off one another, off the letters and off the HUD | the five stages of the lesson; up to 17 labels | `nilePyramids/topView.test.js`; the walk's `topView` at every stage |
+| A bank figure on the sitting's paper (`ExamSitting.jsx › SheetFigure`, `examSitting.css`) — one sheet: the whole paper; two sheets: each figure beside its text | the 38 plane figures of `talis-hisab-atwal`'s bank (labels of 12, 13, 14 units; viewBoxes up to 382 wide) | `kit/bankDisplay.test.js` |
+| A trainer question with its figure (`kit/Trainer.jsx › QuestionFigure`, `kit/trainerFigure.js`): beside the question in a column of 315 × 350, or above a form of three fractions (560 × 260) | the lesson's six nested, three butterfly and five scale figures, every kind, 60 seeds | `talis-hisab-atwal/world/trainer.test.js` (`fits` / `fitsAbove`), `kit/trainerFigure.render.test.jsx` |
+| The forge of « الأهرامات » (`nilePyramids/forgeParts.jsx`): the mirror (its figure floored, under attack too), the gauge, the evidence's thumbnails (shape only) | four keys; lengths up to two digits | the lesson's `world/forges.test.js` |
+| The mission and the box cards (`NilePyramids.jsx › StoryCard`) with a figure floored at 12 px | the plateau's mission (eight labels) and box | the lesson's `world/story.test.js` |
+| The instrument « الحبل والمثلّث » (`lessonlab/tools/RopeTriangle.jsx`): its card's column floored for the figure's labels, the figure in its own inks | ropes 30 and 5 (the flattest the walk set) | `lessonlab/*.test.jsx` |

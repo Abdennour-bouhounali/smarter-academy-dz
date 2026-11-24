@@ -145,6 +145,8 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
     polygons: [{ points: [V, M, N], tone: 'indigo' }],
     ariaLabel: butterfly ? `فراشة رأسها ${V}` : `مثلث ${V}${B}${C} والقطعة [${M}${N}]`,
     maxWidth: small ? 120 : 360,
+    // a thumbnail (the evidence's lines) draws the shape only: its letters would be 3 px (the walk, 2026-11-24)
+    ...(small ? { hidden: Object.keys(P) } : {}),
     ...extra,
   };
 }

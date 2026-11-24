@@ -163,8 +163,12 @@ shapes (tap, tf, form) and either format. `Trainer.jsx › QuestionFigure` draws
 of a final exam answer) by `components/StatementFigure.jsx` — never a second renderer — in a white box
 (`data-di-tr-figure=<kind>`). Its width (`kit/trainerFigure.js`, the sitting's rule of `sheetFigure.js`): never narrower
 than `k × --di-min-font` (its smallest label ≥ 12 px whatever the panel's `Fit` zoom), else its natural width, no
-taller than 220 px; `trainerFigure(fig).fits` says it stays within the room the trainer has at 1366 × 768 (560 × 260 px
-at its floor) — a lesson's trainer test asserts it for every figure it gives. A question without `figure` draws exactly
+taller than 220 px; the CSS floor adds the box's padding (0.8rem) outside the drawing. `trainerFigure(fig).fits` says it
+stays within the room of a figure BESIDE its question (a column of 315 × 350 px at its floor: the question keeps about
+250 px of the ~570 px panel), `fitsAbove` within the room ABOVE a question whose form writes three fractions
+(560 × 260) — a lesson's trainer test asserts the one its question uses (2026-11-24: a landscape figure of 340 px beside
+its question squeezed it into 220 px, the panel zoomed and its words fell under 12 px; a lesson turns its figure to the
+NARROWEST turn that fits beside, the LOWEST above). A question without `figure` draws exactly
 as before (`kit/trainerFigure.render.test.jsx`: jidhr-tarbii's and bahth-pgcd's sessions carry none and draw none).
 Not yet measured in a browser. First user: `talis-hisab-atwal/world/trainer.js › figureOf` — every kind that is about a
 configuration (tf, nisba, nisab, tul, tulJuz, farasha, farashaNisab, muamil) carries the world's Thalès figure
@@ -579,8 +583,14 @@ one experiment (or a case in the forge's mirror) alone in the forge's experiment
   screen the way the lens looked). Every length he was GIVEN (the field's record, the workshop's SB, SC, BC, the summit's
   base and top platform, the stick) is written on its segment for this view only (`Game.js › buildGivenLabels`), every
   length he MEASURED by the rope he laid, with the stakes' letters; a length the stage asks him to find is never written.
-  No label prints over another (`topView.js › declutter` moves one up the screen from its home; the walk measures the
-  rectangles, `window.__np.labelRects()`). Zero stays where he is: his keys walk nothing while it is open (`steers()`),
+  A TRUE view from above (2026-11-24, after the plateau's oblique view hid its figure): a lens of `TOP_FOV` = 15° from
+  high up (`Game.js › fov`, the fog pushed beyond the ground, the near plane following the height), a hair off the
+  vertical; what stands tall (`userData.tall`: the pyramids are ghosts at a quarter, the palms are not drawn —
+  `ghostTall`); the labels — sprites of a fixed size, drawn in the units of the lens — re-scaled while the lens narrows
+  (`scenery.js › makeLabel › zoom`); Zero's bubble quiet (`WORLD.quiet`). No label prints over another, over a point's
+  letter or under the page's cards (`topView.js › declutter`: the letters placed first, a length moved to the nearest free
+  place up, sideways or down, `keepOut` = the HUD's rectangles; the walk measures the rectangles,
+  `window.__np.labelRects()`, the lens and the HUD). A stage's labels are those of its bounds (`Game.js › stageOf`). Zero stays where he is: his keys walk nothing while it is open (`steers()`),
   the rope in his hand still answers ← →. Pressed again — or any phase other than play or a card — it closes.
 - **The experiment `halfturn` shows FACTS only** (review gate A, 2026-11-24): where M′ and N′ landed and the gauge
   WITHOUT its ratios' names (`Gauge names={false}`) — never the chain of ratios, in any letters (it used to write it in
@@ -725,7 +735,8 @@ subject, blue for what the student writes, RED for the corrector and never befor
 - **A sheet's figure is drawn** (2026-11-24, kit K-a): `statement.figure` is drawn by the practice space's own renderer,
   `components/StatementFigure.jsx` (the switch on `kind` that `ExerciseStatement` and `ExamSheet` use — never a second
   drawing), on the paper of `read` and `sit` (`ExamSitting.jsx › SheetFigure`): at the paper's inline end with the statement
-  and its steps beside it (above them when two sheets share the reading time). Its width is its practice width
+  and its steps beside it — at reading time too, two sheets side by side; ONE sheet with a figure takes the whole paper
+  (its column of 46rem, capped in CSS px, lost to the figure floored in screen px as the paper zoomed: cut, 2026-11-24). Its width is its practice width
   (`maxWidth`), never less than the width at which its smallest label reads 12 px however far the paper is zoomed to fit
   (`kit/sheetFigure.js`: a plane figure's viewBox width ÷ its smallest label size, × the 12 px floor `--di-min-font`; the
   other kinds keep their practice width). `kit/bankDisplay.test.js` draws the 38 figures of the 50 sheets of
