@@ -179,6 +179,8 @@ function fromBank(ex, i, keyOf = {}) {
     minutes: ex.metadata?.estimatedMinutes ?? 5,
     statement: shown(ex.statement?.content ?? ''),
     formulas: (ex.statement?.formulas ?? []).map(shown),
+    // the figure as the bank draws it (the practice space's StatementFigure): its letters and lengths are never rewritten
+    figure: ex.statement?.figure ?? null,
     table: ex.statement?.table
       ? {
           ...ex.statement.table,

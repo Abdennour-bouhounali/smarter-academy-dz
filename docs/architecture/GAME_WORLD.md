@@ -524,7 +524,7 @@ subject, blue for what the student writes, RED for the corrector and never befor
 
 | Phase | What the student has | What he does NOT have |
 |---|---|---|
-| `read` — reading time | the whole subject (the bank's sheets, each with its statement, formulas, table and numbered steps « 2) ب) »); a tap underlines a word or a number in pencil | any answer box |
+| `read` — reading time | the whole subject (the bank's sheets, each with its statement, formulas, table, FIGURE and numbered steps « 2) ب) »); a tap underlines a word or a number in pencil | any answer box |
 | `sit` — the sitting | the subject on one side, the answer sheet on the other (one sheet per page, never a screen back; every page stays mounted, hidden when not on screen, so a box keeps what he typed); each step answered in the practice space's OWN widget for its `answerType` — `choice` → `ChoiceInput`, `rational` → `TemplateInput` (« قوالب الإجابة », `templateFor`), `integerSet` → `IntegerSetInput`; a `selfCheck` step (« بيّن أن ») has no box: « تُحرَّر على ورقتك فقط »; a flag « أعود إليه »; a quiet pace line; one notice at the last minute; « أسلّم ورقتي » asks once; **« خروج »** in the header (reading time and sitting; owner, 2026-11-17) leaves after ONE confirmation (« تخرج من الامتحان؟ » — « أواصل » / « نعم، أخرج »): nothing is marked, no evidence is sent, the ladder does not move, and the same level opens again on a new sheet (`Game.js › quitSitting`); **a forgotten exercise is shown first** (owner, 2026-11-16): if an exercise that is not on screen has NO box filled at all, the first « أسلّم ورقتي » turns the answer sheet to it and names it (« انتبه: لم تكتب شيئًا في التمرين الثاني. ها هو أمامك. » + « أواصل ») — once per sitting; the next « أسلّم ورقتي » is accepted, exercises empty or not (`sitting.js › forgotten`, `answered`). It says only « empty », never right or wrong; the time-out hand-in is not delayed by it | any verdict: no tick, no mark, no red, no hint, no sound |
 | `back` — the copy handed back | the total in a red circle and an appreciation; a red mark per question (✓ ½ ✗, « لم تُجب », ✎ for a step written on paper); for a question: the scheme to tick against his own paper, then « أرشدني » (the bank's HINTS — never the answer — and back to the paper) or « اشرح لي » (the bank's model solution, its lines and its boxed result); « دفتر أخطائي »: one line to write by hand per rule that lost points | — |
 
@@ -562,6 +562,14 @@ subject, blue for what the student writes, RED for the corrector and never befor
   count evidence whatever happen »): a sheet sat again — after a blank copy, after reading its model solution — is drawn and
   sent like the first time (the draw only leaves out the sheets of the last miss while the level has others, as before);
   opening a sitting and quitting costs nothing (nothing is recorded, marked or sent). `kit/sittingSat.test.js` checks both.
+- **A sheet's figure is drawn** (2026-11-24, kit K-a): `statement.figure` is drawn by the practice space's own renderer,
+  `components/StatementFigure.jsx` (the switch on `kind` that `ExerciseStatement` and `ExamSheet` use — never a second
+  drawing), on the paper of `read` and `sit` (`ExamSitting.jsx › SheetFigure`): at the paper's inline end with the statement
+  and its steps beside it (above them when two sheets share the reading time). Its width is its practice width
+  (`maxWidth`), never less than the width at which its smallest label reads 12 px however far the paper is zoomed to fit
+  (`kit/sheetFigure.js`: a plane figure's viewBox width ÷ its smallest label size, × the 12 px floor `--di-min-font`; the
+  other kinds keep their practice width). `kit/bankDisplay.test.js` draws the 38 figures of the 50 sheets of
+  `talis-hisab-atwal` (all plane, GeoFigure) and checks each against `validateStatementFigure` and the 12 px floor.
 - **An answer sheet too long for its box is shown in LEAVES, never cut, never scrolled** (2026-11-20; `kit/ExamSittingLeaves.jsx`,
   logic `kit/sheetLeaves.js`). The answer sheet is a `Fit` with the 12 px floor; when it reaches Fit's smallest scale
   (`min`) and is STILL taller than its box, Fit says so (`onShort`) and the answers are measured and split into leaves at a

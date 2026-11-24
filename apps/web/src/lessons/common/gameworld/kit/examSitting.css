@@ -309,6 +309,29 @@
   font-size: max(var(--di-min-font, 12px), 1.1rem);
   white-space: nowrap;
 }
+/* The FIGURE of a sheet (`statement.figure`, drawn by the practice space's StatementFigure): beside the statement and its
+   steps, at the paper's inline end. Its width is its practice width, and never less than the width at which its smallest
+   label reads 12 px however far the paper is zoomed (`--xs-fig-k` × the 12 px floor — sheetFigure.js). */
+.xs-ex:has(> .xs-figure) {
+  display: flow-root;
+}
+.xs-figure {
+  float: inline-end;
+  width: max(var(--xs-fig-natural), calc(var(--di-min-font, 12px) * var(--xs-fig-k, 0)));
+  margin: 0 0 0.4rem;
+  margin-inline-start: 1.1rem;
+}
+/* reading time, two sheets side by side: a column is too narrow for text beside a figure — the figure stands above it */
+.xs-paper--read > .xs-cols--2 .xs-figure {
+  float: none;
+  margin-inline: auto;
+}
+.xs-figure figure {
+  margin: 0;
+}
+.xs-figure figcaption {
+  font-size: max(var(--di-min-font, 12px), 0.85rem);
+}
 .xs-lead {
   font-weight: 700;
 }
