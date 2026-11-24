@@ -47,6 +47,13 @@ export default function HomeRedirect() {
     return <Navigate to="/admin" replace />;
   }
 
+  // « مسيّر المكتبة » : l'application installée sur son téléphone s'ouvre sur « / »
+  // (start_url du manifeste) — sans cette ligne il y voyait la page publique et se
+  // croyait déconnecté.
+  if (!loading && user?.role === 'book_manager') {
+    return <Navigate to="/admin/livres/commandes" replace />;
+  }
+
   if (!loading && user?.role === 'teacher') {
     return <Navigate to="/enseignant" replace />;
   }

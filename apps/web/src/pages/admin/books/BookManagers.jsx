@@ -9,7 +9,7 @@ import { useAdminResource } from '../../../hooks/useAdminResource';
 import { useDocumentMeta } from '../../../hooks/useDocumentMeta';
 import { fetchBookManagers, createBookManager, setBookManagerStatus, resetBookManagerPassword } from '../../../features/books/bookService';
 import { S } from '../../../features/books/strings';
-import { Pill } from './BookOrders';
+import { Pill } from './orderUi';
 
 const A = S.admin;
 const M = S.admin.managers;

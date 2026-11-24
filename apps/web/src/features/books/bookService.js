@@ -41,7 +41,8 @@ export const fetchBookOrders = (token, filters) => call(`/admin/book-orders${que
 export const fetchBookOrderStats = (token, filters) => call(`/admin/book-orders/stats${query(filters)}`, get(token), 'Impossible de charger les statistiques.');
 export const fetchBookOrder = (token, id) => call(`/admin/book-orders/${id}`, get(token), 'Commande introuvable.');
 export const updateBookOrder = (token, id, body) => call(`/admin/book-orders/${id}`, send('PATCH', token, body), 'Mise à jour impossible.');
-export const updateBookOrderStatus = (token, id, status) => call(`/admin/book-orders/${id}/status`, send('PATCH', token, { status }), 'Changement d’état impossible.');
+// `patch` : { callStatus } et/ou { deliveryStatus } (null = pas encore expédiée) — libres, sans transition imposée.
+export const updateBookOrderStatus = (token, id, patch) => call(`/admin/book-orders/${id}/status`, send('PATCH', token, patch), 'Changement d’état impossible.');
 export const addBookOrderPayment = (token, id, body) => call(`/admin/book-orders/${id}/payments`, send('POST', token, body), 'Enregistrement impossible.');
 export const removeBookOrderPayment = (token, paymentId) => call(`/admin/book-order-payments/${paymentId}`, send('DELETE', token), 'Suppression impossible.');
 export const deleteBookOrder = (token, id) => call(`/admin/book-orders/${id}`, send('DELETE', token), 'Suppression impossible.');

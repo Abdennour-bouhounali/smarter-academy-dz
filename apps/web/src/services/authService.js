@@ -92,6 +92,23 @@ export async function fetchCurrentUser(token) {
 }
 
 /**
+ * Same call as `fetchCurrentUser`, keeping the renewed token the server may
+ * send (dashboard accounts, AuthController::me): `{ user, token | null }`.
+ * @throws {ApiError} On network failure or a non-2xx response.
+ */
+export async function fetchCurrentSession(token) {
+  const { ok, status, data } = await apiRequest('/auth/me', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  if (!ok || !data?.success) {
+    throw new ApiError(apiMessage('session', data, status), classifyStatus(status), status);
+  }
+
+  return { user: data.user, token: typeof data.token === 'string' ? data.token : null };
+}
+
+/**
  * Revokes the given token server-side. Best-effort from the caller's point
  * of view — see AuthContext, which always clears local session state
  * regardless of whether this call succeeds.
