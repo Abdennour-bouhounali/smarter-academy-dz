@@ -728,7 +728,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
  * denominator, each printed, typed or chosen (forgeBlocks.js › fractionBox / givenFraction / ratioChoice; the look
  * `di-frac`, styles/trainer.css). `onType(name, value)` receives what a box now holds, or the id a choice picked.
  */
-export function UseLines({ lines, vals, onType }) {
+export function UseLines({ lines, vals, onType, column = false }) {
   const named = lines.length === 1;
   const input = (t) =>
     t.choice != null ? (
@@ -769,7 +769,7 @@ export function UseLines({ lines, vals, onType }) {
       </label>
     );
   return (
-    <div className="rf-uselines" data-rf-lines={lines.length}>
+    <div className="rf-uselines" data-rf-lines={lines.length} {...(column ? { 'data-rf-column': '' } : {})}>
       {lines.map((line, i) => (
         <div key={i} className="rf-use" dir={line.dir ?? 'ltr'}>
           {line.tokens.map((t, k) =>
