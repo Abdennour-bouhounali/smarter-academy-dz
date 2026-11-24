@@ -563,6 +563,37 @@ one experiment (or a case in the forge's mirror) alone in the forge's experiment
 - **One unit is one metre.** Zero (the kit's robot) is scaled to about 1,2 m (`Game.js › ZERO`) and the follow camera is
   brought closer for him. Labels are sprites of a fixed screen size (≥ 18 px at 1366×768, `logic.js › labelScale`);
   far ones are hidden, a stage's framing shows that stage's only.
+- **Zero's keys are HIS (owner, 2026-11-24 — « when I press right he goes left »; « one click turns him by 5° »).**
+  ← → TURN him: one press (a key, or the on-screen stick pushed aside) turns him by exactly `TURN.step` = 5°
+  (`logic.js › TURN`), a key held keeps turning at 90°/s after 0,3 s and, let go, he rests on the nearest 5° step (a tap
+  never overshoots); ↑ walks him forward along where he faces, ↓ back. The lens stands behind him and turns with him, so
+  right on screen is always his right — every stage, after every framing. It is the kit's world hook
+  `WorldRuntime.turnKeys()` → `{ step, rate, delay }` (pure: `kit/steer.js › turnStep`, tested in `kit/steer.test.js`);
+  its default `null` keeps the world's clock of « قصر الساحات » (the keys are the hours of `heading()`), unchanged.
+  Why it was mirrored: that clock's twelve was the WORLD's heading — once the lens had swung round behind him (he had
+  walked back, or a stage's framing turned it), → still meant the world's three o'clock, which was then his left.
+- **The top view « منظر من الأعلى »** (owner, 2026-11-24 — « to see all the distances and the shape »): a button bottom
+  left (`NilePyramids.jsx › TopButton`, `data-np-top=<on|off>`, `aria-pressed`, `data-np-top-back` while on; in the
+  shell's `Under` slot, so it is never shown on the river run, in a forge or over a card) raises the camera over the
+  stage he stands on, looking straight down (`topView.js › topFrame`: every point of the stage framed, the top of the
+  screen the way the lens looked). Every length he was GIVEN (the field's record, the workshop's SB, SC, BC, the summit's
+  base and top platform, the stick) is written on its segment for this view only (`Game.js › buildGivenLabels`), every
+  length he MEASURED by the rope he laid, with the stakes' letters; a length the stage asks him to find is never written.
+  No label prints over another (`topView.js › declutter` moves one up the screen from its home; the walk measures the
+  rectangles, `window.__np.labelRects()`). Zero stays where he is: his keys walk nothing while it is open (`steers()`),
+  the rope in his hand still answers ← →. Pressed again — or any phase other than play or a card — it closes.
+- **The experiment `halfturn` shows FACTS only** (review gate A, 2026-11-24): where M′ and N′ landed and the gauge
+  WITHOUT its ratios' names (`Gauge names={false}`) — never the chain of ratios, in any letters (it used to write it in
+  the butterfly's own letters after each turn: on the river, the right tiles of 🦋's forge before the tiles; ledger A1).
+  The lesson's `inquiries.test.js` renders every landed round and refuses a ratio of two segment names.
+- **The mirror lays a tall case low** (`figure.js › mirrorFigure`): a figure taller than 1,05 × its width is turned (by
+  15°) to lie lowest at the width its 12 px labels need (≤ 360 px) — a tall right triangle pushed the attack's question
+  and its button out of the window. The line under the mirror (`text.eq`) is a MathText formula at text size (`\tfrac`).
+- **A step's id is unique in the whole story** (`done` is ONE map): the plateau's stick shadow is `shadowAM` — as `AM`
+  it read the field's 14 and was skipped (tested in `nilePyramids.render.test.jsx`). A forge left unfinished opens again
+  when the story resumes (`Game.onStart`).
+- **The summit's record** (2026-11-24): the register of stage 4 gives `BC = 99` and `MN = 2,75` (the platform left at
+  the top) — the stone-cutter's k is computed from them; before, no screen gave the 2,75.
 - **ONE gesture, ONE order.** Every measure is `gestures.js › slide` (E at a stake, ← → move the knot: a tap is a knot,
   held it goes faster; the rope ties when he lets go on the stake's knot; E or the HUD button puts it down). Every
   computed thing is `orders.js › order(kind, typed, truth)` → one of three FACTS, never « wrong », never a size in the
@@ -599,11 +630,11 @@ A card's figure is the lesson's `GeoFigure` spec; the card prints « الشكل 
 
 **The forge in this world** (`ruleForge.js`, `forgeParts.jsx`, `Gauge.jsx`, `figure.js`, `surd.js`): a CASE is a Thalès
 figure `thalesCase({ kind: 'nested' | 'butterfly', names: { V, M, B, N, C }, len: { VM, VB, VN, VC, MN, BC }, held?, head?,
-tag?, show?, parallel?, tested?, draw? })` — `held` defaults to « the three ratios are equal » (exact); `evidenceOf`,
-`caseId`, `ratioOf`, `segName`, `THALES_TEXT`.
+tag?, show?, parallel?, tested?, draw? })` — `held` defaults to « the three ratios are equal » (exact); 
+`caseId`, `segName`, `THALES_TEXT`.
 - **A length may be a root** (`surd.js`, 2026-11-24): « √2785 », « 8√2785 » — a rational times the root of a whole number
   with no square factor; `lenOver`, `lenTimes`, `lenPlus` (same root), `lenCompare` (by the squares), `lenTex`,
-  `lenRoot`. `figure.js` (ratios, chain, gauge, drawing) and `ratioOf` read it; nothing compares floats.
+  `lenRoot`. `figure.js` (ratios, chain, gauge, drawing) reads it; nothing compares floats.
 - **The river is whole** (`logic.js › riverFigure(RIVER)`): S the vertex, E and R on this bank, A and F across;
   SE 9, SA 72, ER 52, AF 416 and, both lines square to the bank, SR = √2785, SF = 8√2785 — SR/SF = SE/SA = ER/AF = 1/8.
   `show` writes the measured lengths and the width only; `draw` (lengths for the DRAWING only, a schematic: the same

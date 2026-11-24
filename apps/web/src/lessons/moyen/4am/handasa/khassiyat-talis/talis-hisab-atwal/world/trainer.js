@@ -440,14 +440,17 @@ const Q = {
         ask: [two[1]],
         draw: scaleDraw(f),
       }),
-      prompt: `في الشكل: $(MN) \\parallel (BC)$. ${UNIT_NOTE} ${lengths(names, f, [one[0], one[1], two[0]])}. أعط معامل التناسبية $k$ من المثلث الأوّل $${t1}$ إلى المثلث الثاني $${t2}$ ، ثمّ احسب $${s(two[1])}$ ، ثمّ المعامل $k'$ من الثاني إلى الأوّل.`,
+      // short: the sheet stands beside the figure (the walk, 2026-11-24) — its lines name k, the kind, the length, k'
+      prompt: `في الشكل: $(MN) \\parallel (BC)$. ${UNIT_NOTE} ${lengths(names, f, [one[0], one[1], two[0]])}. من $${t1}$ إلى $${t2}$: المعامل $k$ ونوع التحويل و $${s(two[1])}$ ، ثمّ $k'$ من $${t2}$ إلى $${t1}$.`,
       form: {
         tip: 'tipCompute',
         lines: [
-          { ltr: true, tokens: ['k', '=', fracBox('kn', 'kd')] },
+          // k and k' on ONE line (two fractions, two answers): four lines with two fractions did not fit the trainer's
+          // panel beside the figure at 1366 × 768 (the walk, 2026-11-24)
+          { ltr: true, tokens: ['k', '=', fracBox('kn', 'kd'), '\u2003\u2003', "k'", '=', fracBox('bn', 'bd')] },
           {
             tokens: [
-              'المثلث الثاني',
+              'التحويل:',
               {
                 choice: 'kind',
                 label: 'تكبير أم تصغير',
@@ -457,11 +460,9 @@ const Q = {
                   { value: 'enlargement', text: 'تكبير' },
                 ],
               },
-              'للمثلث الأوّل',
             ],
           },
           { ltr: true, tokens: [s(two[1]), '=', lengthBox('mn', s(two[1])), UNIT] },
-          { ltr: true, tokens: ["k'", '=', fracBox('bn', 'bd')] },
         ],
       },
     };

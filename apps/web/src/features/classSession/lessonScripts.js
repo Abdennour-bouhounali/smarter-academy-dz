@@ -118,7 +118,7 @@ export const askWords = (step) => ({ ...ASK_WORDS, ...step.words });
  * `'none'` (the verdict word only). The lesson's world content says it (`world/` › `boardAsk`, handed to the board by
  * `ClassSessionPage`); a station that carries its own `figure` draws nothing under its cards, whatever the world.
  */
-export const ASK_PROOFS = Object.freeze(['bridge', 'none']);
+const ASK_PROOFS = Object.freeze(['bridge', 'none']);
 export const askProof = (step, world) => (step.figure ? 'none' : ASK_PROOFS.includes(world) ? world : 'bridge');
 /** Does a card agree? Over a bridge: its plank fills the gap `a` (`ruleForge.js › outcome`); otherwise: it is in `answer`. */
 export const askHeld = (step, option, proof = askProof(step)) =>

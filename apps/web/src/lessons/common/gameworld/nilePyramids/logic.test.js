@@ -6,10 +6,8 @@ import {
   RIVER,
   PLATEAU,
   canalReading,
-  canalPieces,
   fieldPoints,
   courseAt,
-  markOfRow,
   pyramidHeight,
   riverWidth,
   riverFigure,
@@ -19,15 +17,25 @@ import {
   typedLength,
   exactRoot,
   thirdSideSquared,
-  knotsAfter,
   topRate,
   frameDistance,
   labelScale,
-  labelPx,
   ROPE,
   write,
 } from './logic';
-import { fourth, over, times, chainHolds } from '../kit/exact';
+import { fourth, minus, over, times } from '../kit/exact';
+import { chainHolds } from '../kit/authoring/test/ratios';
+
+/** The knots a rope has gone after holding the key `t` seconds (the first tap's knot included) — `gestures.js` played. */
+function knotsAfter(t, top) {
+  const s = Math.max(0, t - ROPE.DELAY);
+  const r = ROPE.RAMP;
+  const ramp = s <= r ? ROPE.MIN * s + ((top - ROPE.MIN) * s * s) / (2 * r) : ROPE.MIN * r + ((top - ROPE.MIN) * r) / 2;
+  return 1 + ramp + (s > r ? top * (s - r) : 0);
+}
+/** The height in pixels of a label's glyphs on screen, for a sprite of `scale` (the inverse of `labelScale`). */
+const labelPx = (scale, fov, viewH = 768) =>
+  (scale * (viewH / 2) * (1 / Math.tan(((fov / 2) * Math.PI) / 180))) / (96 / 64);
 
 describe('stage 1 « حقل النيل » — the field and its two canals (plan §3.3)', () => {
   const [fresh, old] = FIELD.canals;
@@ -50,8 +58,13 @@ describe('stage 1 « حقل النيل » — the field and its two canals (plan
   });
 
   it('the pieces: MB = 49, NC = 56; PB = 24, QC = 44', () => {
-    expect(canalPieces(FIELD, fresh)).toEqual({ MB: '49', NC: '56' });
-    expect(canalPieces(FIELD, old)).toEqual({ MB: '24', NC: '44' });
+    for (const [c, mb, nc] of [
+      [fresh, '49', '56'],
+      [old, '24', '44'],
+    ]) {
+      expect(write(minus(FIELD.AB, c.AM))).toBe(mb);
+      expect(write(minus(FIELD.AC, c.AN))).toBe(nc);
+    }
   });
 
   it('the drawing puts every point where its lengths say', () => {
@@ -71,7 +84,8 @@ describe('stage 2 « ورشة البنّائين » — the courses of the face 
     expect(courseAt(FACE, '20')).toEqual({ SM: '70', MN: '77' });
   });
   it('the row of 55 already cut belongs at BM = 40', () => {
-    expect(markOfRow(FACE, FACE.row)).toBe('40');
+    // SM = SB × row / BC, so BM = SB − SM
+    expect(write(minus(FACE.edge, over(times(FACE.edge, FACE.row), FACE.base)))).toBe('40');
     expect(courseAt(FACE, '40').MN).toBe('55');
   });
   it('the errors give other numbers: the piece 11, the difference 89, the inverted ratio 111,375', () => {

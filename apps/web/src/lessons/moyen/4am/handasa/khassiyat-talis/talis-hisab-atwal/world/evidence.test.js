@@ -8,17 +8,18 @@ import { KEYS } from './journey';
 import { KNOWLEDGE } from './knowledge';
 import { check, solution, trainer } from './trainer';
 import { K1, K2, K3, K4 } from './math';
+import { LESSON_CONFIG } from '../lesson.config';
 
 const ID = 'talis-hisab-atwal';
 const FIRST = { firstTry: true, helped: false };
 const CARDS = KNOWLEDGE.graph.nodes.map((n) => n.id);
 /**
  * The lesson's الكفاءات as the CATALOGUE counts them (`packages/core/curriculum/dz`): P1 … P3, in the order of its
- * `pointsToLearn`. Wave 2's new `lesson.config.js` teaches them (the old one is never read): until then the suite reads
- * them here — at wave 2, pass `config: LESSON_CONFIG`.
+ * `pointsToLearn` — and the lesson's own `lesson.config.js` teaches exactly those (the suite reads the config).
  */
 const entry = CATALOGUE.lessons.find((l) => l.code === ID);
-const CONFIG = { modules: [{ teachesLearningPointIds: entry.pointsToLearn.map((_, i) => `4am_${ID}_P${i + 1}`) }] };
+const POINT_IDS = entry.pointsToLearn.map((_, i) => `4am_${ID}_P${i + 1}`);
+const taught = (config) => [...new Set(config.modules.flatMap((m) => m.teachesLearningPointIds ?? []))].sort();
 
 /** The boxes of each kind of exam question that claims. */
 const BOXES = {
@@ -79,7 +80,7 @@ describeEvidence({
   trainer,
   check,
   solution,
-  config: CONFIG,
+  config: LESSON_CONFIG,
   cards: CARDS,
   boxes: (q) => BOXES[q.kind] ?? null,
   kinds: Object.keys(BOXES),
@@ -97,7 +98,7 @@ describe('the evidence of « خاصية طالس وحساب الأطوال » �
       `4am_${ID}_P3`,
     ]);
     expect(POINTS[K3]).toBe(POINTS[K2]);
-    expect(CONFIG.modules[0].teachesLearningPointIds).toHaveLength(3);
+    expect(taught(LESSON_CONFIG)).toEqual(POINT_IDS);
     expect(evidence.caseEvidence()).toBe(null);
   });
 

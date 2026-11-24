@@ -88,6 +88,16 @@ export const LESSON_CONFIG = {
       learningPointIds: ['4am_talis-hisab-atwal_P1', '4am_talis-hisab-atwal_P2'],
       sourceElementIds: ['act-1'],
     },
+    // The property itself (the textbook's « know-1 »), taught by the key 🔑 « وضعية طالس »: forged on the field's two
+    // canals, named on its tablet (world/tablets.js) — data, read by scripts/check-textbook-coverage.mjs
+    {
+      kind: 'method',
+      code: 'khassiyat-talis',
+      module: 2,
+      title: 'خاصية طالس',
+      learningPointIds: ['4am_talis-hisab-atwal_P1'],
+      sourceElementIds: ['know-1'],
+    },
     // Modules 5–7 — the « مسائل »: platform additions (their pages and content/problems.js are deleted since the v2 —
     // data here), never evidence of mastery.
     {

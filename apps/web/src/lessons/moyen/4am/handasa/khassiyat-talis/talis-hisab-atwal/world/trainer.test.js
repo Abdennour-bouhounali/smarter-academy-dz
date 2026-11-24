@@ -7,7 +7,8 @@ import { validateGeoFigure } from '../../../../../../common/components/geoFigure
 import { answerLabel, check, PLAN_OF, solution, trainer } from './trainer';
 import { trainerEvidence } from './evidence';
 import { KNOWLEDGE } from './knowledge';
-import { FIGURES, FIELD, NUMBERS, chainHolds, equal, minus, over, plus, read, sameRatio, times, write } from './math';
+import { FIGURES, FIELD, NUMBERS, equal, minus, over, plus, read, times, write } from './math';
+import { chainHolds, sameRatio } from '../../../../../../common/gameworld/kit/authoring/test/ratios';
 
 const CARDS = KNOWLEDGE.graph.nodes.map((n) => n.id);
 const EXAM = ['nisba', 'nisab', 'tul', 'tulJuz', 'farasha', 'farashaNisab', 'muamil'];

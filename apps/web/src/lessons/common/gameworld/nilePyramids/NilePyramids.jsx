@@ -7,7 +7,7 @@
  * stage 3), `data-np-register` (rows: `data-np-row=<id>`), `data-np-order=<canal|course|mark|ferry|capstone>` (+
  * `data-np-predict` on the canal's card), `data-np-order-in` (or `data-np-order-n` / `data-np-order-d` for the
  * capstone's k), `data-np-order-send`, `data-np-order-later`, `data-np-refused=<why>`, `data-np-fact=<fact>`,
- * `data-np-quarry`, `data-np-mission` / `data-np-box` (the cards: `data-np-card-check`, `data-np-card-later`,
+ * `data-np-quarry`, `data-np-top=<on|off>` (the top view's toggle; `data-np-top-back` while it is on), `data-np-mission` / `data-np-box` (the cards: `data-np-card-check`, `data-np-card-later`,
  * `data-np-card-fact`), `data-np-look`, `data-np-look-back`; the forge's are the kit's (`data-rf-*`, `data-iq-*`), the
  * rail's too (`data-gr-*`).
  */
@@ -126,10 +126,10 @@ function Hud({ s, game }) {
       {...(s.sight ? { 'data-np-sight': '' } : {})}
     >
       {s.objective && !s.look && (
-        <Instruction key={s.objective} text={s.objective} compact={Boolean(s.rope || s.verdict)} />
+        <Instruction key={s.objective} text={s.objective} compact={Boolean(s.rope || s.verdict || s.top)} />
       )}
       {s.rope && <RopeChip rope={s.rope} game={game} />}
-      {!s.rope && s.verdict && <Fact verdict={s.verdict} game={game} />}
+      {!s.rope && !s.top && s.verdict && <Fact verdict={s.verdict} game={game} />}
       {s.look && (
         <button
           type="button"
@@ -141,6 +141,26 @@ function Hud({ s, game }) {
         </button>
       )}
     </div>
+  );
+}
+
+/**
+ * « منظر من الأعلى »: the camera over the whole stage, looking down; pressed again, back behind Zero (`Game.toggleTop`).
+ * Shown in play (never on the river run nor inside a forge or a card — the shell's `Under` slot).
+ */
+export function TopButton({ on, game }) {
+  const T = game.T.hud;
+  return (
+    <button
+      type="button"
+      className={`di-btn np-top ${on ? 'is-on' : ''}`}
+      aria-pressed={on}
+      onClick={() => game.toggleTop()}
+      data-np-top={on ? 'on' : 'off'}
+      {...(on ? { 'data-np-top-back': '' } : {})}
+    >
+      {on ? T.topBack : T.top}
+    </button>
   );
 }
 
@@ -331,10 +351,11 @@ const WORLD = {
   busy: (s) => s.phase === 'build' || s.phase === 'sail' || s.phase === 'fly' || s.phase === 'climb',
   held: (s) => (s.rope ? WORLD_TEXT.held(s.rope.knots) : null),
   Hud,
-  Under: ({ s }) =>
+  Under: ({ s, game }) =>
     !s.overlay && (s.phase === 'play' || s.phase === 'build') ? (
       <>
         {s.register && <Register reg={s.register} />}
+        {!s.run && <TopButton on={Boolean(s.top)} game={game} />}
         <Recall lines={s.recall} title={WORLD_TEXT.recall.title} />
       </>
     ) : null,

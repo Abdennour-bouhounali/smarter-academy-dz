@@ -5,10 +5,9 @@
  * the size of a gap (gate P1). A point or a segment inside an Arabic sentence is a formula (`$AB$`, read by MathText)
  * or an isolated run (`iso`) in the 3D prompts, so that the bidi algorithm never scrambles it (defects B7, B16).
  */
-export const DIR = 'rtl';
 
 /** A Latin run (a point, a segment) isolated left-to-right inside an Arabic sentence that is not read by MathText. */
-export const iso = (t) => `⁦${t}⁩`;
+const iso = (t) => `⁦${t}⁩`;
 
 export const WORLD_TEXT = {
   title: 'الأهرامات',
@@ -32,6 +31,8 @@ export const WORLD_TEXT = {
     reads: 'الحبل يقرأ',
     typed: 'كتبتَ',
     back: 'عُد إلى زيرو',
+    top: 'منظر من الأعلى',
+    topBack: 'عُد إلى زيرو',
   },
   held: (n) => `الحبل ${n} م`,
   prompt: {
@@ -226,8 +227,6 @@ export const KIND_TEXT = {
     landed: (m, v, b) => `وقعت $${m}$ على المستقيم $(${v}${b})$.`,
     miss: 'توقّعك لم يصب هذه المرّة.',
     hit: 'كما قلتَ.',
-    chainTurned: 'بعد نصف الدورة:',
-    chainOwn: 'بحروف الشكل الأوّل:',
     next: 'التالي',
   },
   scale: {

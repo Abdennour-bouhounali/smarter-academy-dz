@@ -21,6 +21,9 @@
  *   lanesLive(phase)       does this phase read « left » / « right » as gestures?
  *   freeLook(), steers()   a view that follows him in EVERY direction: his keys are the hours of a clock (12 = `heading()`);
  *                          `steers()` false while the world reads ← → itself; `lookTo(angle)` turns him at once
+ *   turnKeys()             in a free view: null (the keys are the hours of the world's clock), or { step, rate, delay }:
+ *                          ← → TURN him (one press = `step` degrees) and ↑ ↓ walk along his facing (`kit/steer.js`)
+ *                          (`kit/steer.js`; default false — « قصر الساحات » keeps the world's clock)
  *   stepWorld(dt, phase)   its animations of each step
  *   robotPose(phase)       { lift, speed, sad }: how the robot holds itself now
  *   heading()              the angle the camera should look along — it reads `this.facing` (1 forward, -1 when the
@@ -42,6 +45,7 @@ import { makeRobot } from '../engine/robot';
 import { GameAudio } from '../engine/audio';
 import { GameInput } from '../engine/input';
 import { examLevelOpen, emptyExam } from './journey';
+import { steerAngle, turnStep } from './steer';
 
 const SPEED = 6.2;
 const JUMP = 7.4;
@@ -157,6 +161,13 @@ export class WorldRuntime {
   /** In a free view: do his keys walk him now? (a world that reads them for a gesture of its own says no) */
   steers() {
     return true;
+  }
+  /**
+   * In a free view: null — his keys are the hours of the world's clock (twelve = `heading()`) — or { step, rate, delay }:
+   * ← → turn him by `step` degrees a press (`rate` °/s held past `delay` s), ↑ ↓ walk along his facing (`kit/steer.js`).
+   */
+  turnKeys() {
+    return null;
   }
   /** In a free view: turn him (and the lens) to this angle — on arriving somewhere, after a fall. */
   lookTo(angle) {
@@ -535,12 +546,23 @@ export class WorldRuntime {
       // keys together the hour between them (forward + right: half past one). He walks that way and the lens swings
       // to look along it. The clock does not turn with the lens: a key held keeps ONE direction.
       if (this.view == null) this.view = this.heading();
-      const mag = Math.hypot(ax.x, ax.y);
-      const live = mag > 0.3 && this.steers();
-      if (live) this.view = this.heading() - Math.atan2(ax.x, ax.y);
-      const along = live ? Math.min(1, mag) : 0;
-      mx = Math.sin(this.view) * along;
-      mz = Math.cos(this.view) * along;
+      const turn = this.turnKeys();
+      if (turn) {
+        // HIS OWN FACING (« الأهرامات », owner 2026-11-24): ← → turn him step by step, ↑ ↓ walk along where he faces
+        const live = this.steers();
+        this.keyTurn = turnStep({ way: 0, held: 0, ...this.keyTurn, view: this.view }, live ? ax.x : 0, dt, turn);
+        this.view = this.keyTurn.view;
+        const along = live ? Math.max(-1, Math.min(1, ax.y)) * (ax.y < 0 ? 0.6 : 1) : 0;
+        mx = Math.sin(this.view) * along;
+        mz = Math.cos(this.view) * along;
+      } else {
+        const mag = Math.hypot(ax.x, ax.y);
+        const live = mag > 0.3 && this.steers();
+        if (live) this.view = steerAngle(this.heading(), ax);
+        const along = live ? Math.min(1, mag) : 0;
+        mx = Math.sin(this.view) * along;
+        mz = Math.cos(this.view) * along;
+      }
     } else {
       // each PRESS of « back » (a key, or the stick pulled down) turns him round; it is read once, on its way down
       const back = ax.y < -0.5;

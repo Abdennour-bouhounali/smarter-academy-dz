@@ -19,14 +19,18 @@ const texRatio = (c, k, name) => {
   return `\\dfrac{${segName(c, a)}}{${segName(c, b)}}`;
 };
 
-/** THE RATIO GAUGE: three bars of one length, each with its piece marked; a gold line when the marks stand together. */
-export function Gauge({ c, small = false }) {
+/**
+ * THE RATIO GAUGE: three bars of one length, each with its piece marked; a gold line when the marks stand together.
+ * `names: false` draws the bars without the ratios' names — the experiment `halfturn` shows facts, never the chain
+ * (review gate A, 2026-11-24: its names were the right tiles of 🦋's forge, before the tiles).
+ */
+export function Gauge({ c, small = false, names = true }) {
   const g = gauge(c);
   const h = small ? 34 : 120;
   const row = h / 3;
   return (
     <div className={`np-gauge ${small ? 'is-small' : ''}`} data-rf-gauge data-rf-aligned={g.aligned ? 'yes' : 'no'}>
-      {!small && (
+      {!small && names && (
         <div className="np-gauge__names" dir="ltr">
           {g.marks.map((m) => (
             <span key={m.k}>

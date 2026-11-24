@@ -14,7 +14,7 @@
  * Every length is exact text: 50,1 is never taken for 351/7; a root is written « 8√2785 » (`surd.js`).
  */
 import { chain, gauge, ratios, withPieces } from './figure';
-import { lenOver, lenWrite as write } from './surd';
+import { lenWrite as write } from './surd';
 
 /** A case of this world. Lengths are written once (« 14.0 » becomes « 14 »). */
 export function thalesCase({ kind = 'nested', names, len, ...extra }) {
@@ -31,31 +31,6 @@ export const caseId = (c) =>
 
 /** What the world shows of a case: the three ratios (exact text) and whether the gauge's marks stand on one line. */
 export const runCase = (c) => ({ ratios: ratios(c), aligned: gauge(c).aligned });
-
-/**
- * The lines of evidence from the world's log — rows `{ …case, mirror? }` — one per identity, oldest first; when a case
- * comes again its NEWEST row is kept. A case he made himself stays his own (`mirror: false`).
- */
-export function evidenceOf(log = [], { max } = {}) {
-  const out = [];
-  for (const row of log) {
-    const { mirror, ...rest } = row;
-    const c = rest.names && rest.len ? thalesCase(rest) : rest;
-    const id = caseId(c);
-    const i = out.findIndex((x) => caseId(x) === id);
-    const was = i >= 0 ? out.splice(i, 1)[0] : null;
-    out.push({ ...c, mirror: Boolean(mirror) && (was ? was.mirror : true) });
-  }
-  return max ? out.slice(-max) : out;
-}
-
-/** A ratio of two of a case's segments, by their keys in `len` (« VM/VB »), exact, or null when one is unknown. */
-export function ratioOf(c, top, bottom) {
-  const a = c.len[top];
-  const b = c.len[bottom];
-  if (a == null || b == null) return null;
-  return lenOver(a, b);
-}
 
 /** The segment of `len` named with the case's letters: « VM » → « AM » (for a sentence or a card). */
 export const segName = (c, key) =>

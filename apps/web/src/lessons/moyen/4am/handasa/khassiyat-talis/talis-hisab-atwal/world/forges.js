@@ -293,6 +293,11 @@ function condWords(id, c) {
 }
 /** The three values of a chain on a case, as formulas. */
 const valuesTex = (id, c) => chainValues(id, c).map(rt).join(' \\;;\\; ');
+/**
+ * The line the mirror writes under a case (`text.eq`, a MathText line): its formula between dollars, its fractions at
+ * text size (`\\tfrac`: MathText draws in display style) — a tall mirror figure leaves one line of room (the walk).
+ */
+const eqLine = (t) => `$${t.replace(/\\dfrac/g, '\\tfrac')}$`;
 
 const forge1 = {
   key: K1,
@@ -389,7 +394,8 @@ const forge1 = {
     broken: (yes) => `قاعدتك انكسرت هنا: قالت « ${eqWord(yes)} »، والقيم الثلاث ${eqWord(!yes)}.`,
     wordsHint: 'مثال: النسب الثلاث متساوية عندما…',
     experiment: 'انظر جيّدًا: حقلان تبنيهما المرآة. في أيّهما تقف العلامات الثلاث على خطّ واحد؟',
-    eq: (c) => valuesTex(c.chainId ?? 'whole', c),
+    // the line under the mirror is a MathText line: its formula between dollars (the walk caught it raw, 2026-11-24)
+    eq: (c) => eqLine(valuesTex(c.chainId ?? 'whole', c)),
     tryKey: (c) => {
       const s = (k) => segName(c, k);
       const { M, N } = c.names;
@@ -605,7 +611,7 @@ const forge2 = {
     broken: (yes) => `خطّتك انكسرت هنا: قالت « ${yes ? 'يطابق' : 'لا يطابق'} »، والمدماك ${yes ? 'لم يطابق' : 'طابق'}.`,
     wordsHint: 'مثال: أعيد الضلع كلّه، ثمّ…',
     experiment: 'انظر جيّدًا: مدماكان تضعهما المرآة. أيّهما يطابق الحافّتين؟',
-    eq: (c) => `${segName(c, c.unknown)} = ${num(c.len[c.unknown])}`,
+    eq: (c) => eqLine(`${segName(c, c.unknown)} = ${num(c.len[c.unknown])}`),
     tryKey: () =>
       '$(EF) \\parallel (BC)$، $E$ على $[AB]$ و $F$ على $[AC]$: $AE = 45$ و $EB = 10$ و $AC = 66$ و $BC = 77$. احسب $AB$ ثمّ $AF$ و $EF$.',
     use: {
@@ -790,7 +796,7 @@ const forge3 = {
     says: (yes) => `قاعدتك: ${eqWord(yes)}`,
     refuted: (m) =>
       m.held
-        ? `قاعدتك تقول إنّ نسبتيك لا تساويان ${L(`${seg3(m, 'MN')}/${seg3(m, 'BC')} = ${frL(third3(m))}`)} — لكنّ الضلعين متوازيان هنا: بعد نصف الدورة وقفت العلامات الثلاث على خطّ واحد.`
+        ? `قاعدتك تقول إنّ نسبتيك لا تساويان النسبة الثالثة ${L(`${seg3(m, 'MN')}/${seg3(m, 'BC')}`)} — لكنّ الضلعين متوازيان هنا: بعد نصف الدورة وقفت العلامات الثلاث على خطّ واحد.`
         : `قاعدتك تقول إنّ النسب الثلاث متساوية في ${m.head} — لكنّ الضلعين غير متوازيين: بعد نصف الدورة لم تقف العلامات على خطّ واحد.`,
     attack: (c) =>
       `المرآة تتحدّى قاعدتك: المثلّثان $${tri(c, 'M', 'N')}$ و $${tri(c, 'B', 'C')}$ حول $${c.names.V}$، أطوالهما على الشكل. هل النسب الثلاث متساوية؟ ماذا تقول قاعدتك؟`,
@@ -799,7 +805,9 @@ const forge3 = {
     wordsHint: 'مثال: حول نقطة التقاطع…',
     experiment: 'انظر جيّدًا: شكلان تبنيهما المرآة. في أيّهما تقف العلامات الثلاث على خطّ واحد؟',
     eq: (c) =>
-      `${frac(seg3(c, 'VM'), seg3(c, 'VB'))} = ${rtL(lenOver(c.len.VM, c.len.VB))} \\;;\\; ${frac(seg3(c, 'VN'), seg3(c, 'VC'))} = ${rtL(lenOver(c.len.VN, c.len.VC))} \\;;\\; ${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rtL(third3(c))}`,
+      eqLine(
+        `${frac(seg3(c, 'VM'), seg3(c, 'VB'))} = ${rtL(lenOver(c.len.VM, c.len.VB))} \\;;\\; ${frac(seg3(c, 'VN'), seg3(c, 'VC'))} = ${rtL(lenOver(c.len.VN, c.len.VC))} \\;;\\; ${frac(seg3(c, 'MN'), seg3(c, 'BC'))} = ${rtL(third3(c))}`,
+      ),
     tryKey: () =>
       '$[AC]$ و $[BD]$ يتقاطعان في $O$، و $(AB) \\parallel (CD)$: $OA = 18$ و $OC = 48$ و $OB = 21$ و $CD = 88$. احسب $OD$ و $AB$.',
     use: {
@@ -889,7 +897,8 @@ export function frameCase(f, one, x, extra = {}) {
       ),
     },
     head: `من ${L(triOf(c, one))} إلى ${L(triOf(c, otherOf(one)))}`,
-    tag: `القرص ${fr(x)}`,
+    // a fraction over a real bar (a MathText tag, `forgeParts.jsx › Line`), never « 6/5 » as text
+    tag: `القرص $${rt(x).replace('\\dfrac', '\\tfrac')}$`,
   };
 }
 const FRAME_FIG = fig(
@@ -1013,7 +1022,7 @@ const forge4 = {
     says: (yes) => `قاعدتك: ${isTwo(yes)}`,
     refuted: (m) => {
       const [one, two] = [L(triOf(m, m.one)), L(triOf(m, otherOf(m.one)))];
-      return `قاعدتك تقول إنّ نسخة ${one} بالقرص ${L(m.x)} ${m.says ? 'هي' : 'ليست'} ${two} كما تصفها — لكنّ النسخة ${m.held ? 'غطّت' : 'لم تغطِّ'} ${two} بالضبط، و${two} ${m.one === 'small' ? 'أكبر' : 'أصغر'} من ${one}.`;
+      return `قاعدتك تقول إنّ نسخة ${one} بهذا القرص ${m.says ? 'هي' : 'ليست'} ${two} كما تصفها — لكنّ النسخة ${m.held ? 'غطّت' : 'لم تغطِّ'} ${two} بالضبط، و${two} ${m.one === 'small' ? 'أكبر' : 'أصغر'} من ${one}.`;
     },
     attack: (c) =>
       `المرآة تضبط القرص على $${rt(c.x)}$ وتغذّيه $(1) = ${triOf(c, c.one)}$. هل النسخة هي $(2) = ${triOf(c, otherOf(c.one))}$ بالضبط، كما تصفها قاعدتك؟`,
@@ -1023,7 +1032,7 @@ const forge4 = {
     experiment: 'انظر جيّدًا: نسختان تصنعهما المرآة. أيّهما تغطّي المثلّث الآخر بالضبط؟',
     eq: (c) => {
       const o = sidesOf(c, c.one);
-      return o.map((s) => `${num(s)} \\times ${rt(c.x)} = ${num(times(s, c.x))}`).join(' \\;;\\; ');
+      return eqLine(o.map((s) => `${num(s)} \\times ${rt(c.x)} = ${num(times(s, c.x))}`).join(' \\;;\\; '));
     },
     tryKey: () =>
       '$(MN) \\parallel (BC)$، $M$ على $[AB]$: $AB = 68$ و $BC = 92$ و $AM = 42{,}5$. اكتب $k$ ونوع التحويل و $MN$، ثمّ العدد من $AMN$ إلى $ABC$.',

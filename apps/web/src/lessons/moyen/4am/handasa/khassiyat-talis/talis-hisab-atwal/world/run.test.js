@@ -4,7 +4,8 @@ import { plain, trueEqualities } from '../../../../../../common/gameworld/kit/au
 import { bankNumbers, linesWithBoth, readBank } from '../../../../../../common/gameworld/kit/authoring/test/bank.js';
 import { ENLARGE, GENERATORS, LEG_MIX, LEGS, REDUCE, fairWave, gateOption, isRight, roundOf } from './run';
 import { KEYS } from './journey';
-import { chainHolds, compare, equal, over, read, sameRatio, times, write } from './math';
+import { compare, equal, over, read, times, write } from './math';
+import { chainHolds, sameRatio } from '../../../../../../common/gameworld/kit/authoring/test/ratios';
 
 const KINDS = Object.keys(GENERATORS);
 const PARAMS = { nested: [{ find: 'VC' }, { find: 'MN' }] };

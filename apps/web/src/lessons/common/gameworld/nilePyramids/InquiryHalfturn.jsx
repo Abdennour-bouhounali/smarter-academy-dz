@@ -6,10 +6,9 @@
 import { useEffect, useReducer } from 'react';
 import GeoFigure from '../../components/GeoFigure';
 import MathText from '../../components/MathText';
-import { M } from '../kit/parts';
 import { points, gauge } from './figure';
 import { Gauge } from './Gauge';
-import { initHalfturn, halfturnReducer, halfturnResult, rotate, turned, HALF } from './halfturn';
+import { initHalfturn, halfturnReducer, halfturnResult, rotate, turned } from './halfturn';
 import { expose, textOf } from './inquiryParts';
 
 /** The butterfly with its small triangle turned by `angle`; four hidden corners keep the drawing's frame still. */
@@ -39,8 +38,6 @@ function turnedSpec(fig, angle) {
     maxWidth: 380,
   };
 }
-
-const ratioTex = (a, b) => `\\dfrac{${a}}{${b}}`;
 
 export function HalfturnView({ spec, state: s, act }) {
   const T = textOf('halfturn', spec);
@@ -105,15 +102,12 @@ export function HalfturnView({ spec, state: s, act }) {
               >
                 <MathText>{`${row.right ? T.hit : T.miss} ${T.landed(`${m}'`, V, B)}`}</MathText>
               </p>
-              <Gauge c={turned(fig)} />
+              {/* FACTS only (review gate A, 2026-11-24): where each turned point lies — never the chain of ratios, in
+                  any letters: he writes it himself in the forge (ledger A1) */}
               <p className="np-iq__chain" dir="rtl">
-                {T.chainTurned}{' '}
-                <M>{`${ratioTex(`${V}${m}'`, `${V}${B}`)} \\; ${ratioTex(`${V}${N}'`, `${V}${C}`)} \\; ${ratioTex(`${m}'${N}'`, `${B}${C}`)}`}</M>
+                <MathText>{T.landed(`${N}'`, V, C)}</MathText>
               </p>
-              <p className="np-iq__chain" dir="rtl">
-                {T.chainOwn}{' '}
-                <M>{`${ratioTex(`${V}${m}`, `${V}${B}`)} \\; ${ratioTex(`${V}${N}`, `${V}${C}`)} \\; ${ratioTex(`${m}${N}`, `${B}${C}`)}`}</M>
-              </p>
+              <Gauge c={turned(fig)} names={false} />
               <button type="button" className="rf-btn rf-btn--main" onClick={act.next} data-iq-next>
                 {T.next}
               </button>
@@ -163,5 +157,3 @@ export function Halfturn({ spec, play, onDone }) {
   };
   return <HalfturnView spec={spec} state={state} act={act} />;
 }
-
-export { HALF };

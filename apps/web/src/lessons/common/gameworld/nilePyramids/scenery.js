@@ -76,7 +76,7 @@ function canvasTexture(key, size, paint, repeat = [1, 1]) {
   t.repeat.set(...repeat);
   return t;
 }
-export const SAND = (repeat) =>
+const SAND = (repeat) =>
   canvasTexture(
     'sand',
     256,
@@ -87,7 +87,7 @@ export const SAND = (repeat) =>
     repeat,
   );
 /** Limestone blocks: 64 × 32 px, every other row offset; dark joints; weathered noise. */
-export const LIMESTONE = (repeat) =>
+const LIMESTONE = (repeat) =>
   canvasTexture(
     'limestone',
     256,
@@ -102,7 +102,7 @@ export const LIMESTONE = (repeat) =>
     },
     repeat,
   );
-export const SILT = (repeat) =>
+const SILT = (repeat) =>
   canvasTexture(
     'silt',
     256,
@@ -112,7 +112,7 @@ export const SILT = (repeat) =>
     },
     repeat,
   );
-export const CROPS = (repeat) =>
+const CROPS = (repeat) =>
   canvasTexture(
     'crops',
     256,
@@ -296,7 +296,7 @@ export function makePalm(seed, h) {
 const TILE_W = 6;
 const TILE_H = 3;
 /** A BoxGeometry whose UVs repeat the limestone image every 6 m × 3 m on every face. */
-export function stoneBox(w, h, d) {
+function stoneBox(w, h, d) {
   const geo = new THREE.BoxGeometry(w, h, d);
   const uv = geo.attributes.uv;
   // faces: +x, −x, +y, −y, +z, −z — four vertices each
@@ -315,7 +315,7 @@ export function stoneBox(w, h, d) {
     }
   return geo;
 }
-export const stoneMaterial = (tint = 0xffffff) =>
+const stoneMaterial = (tint = 0xffffff) =>
   new THREE.MeshStandardMaterial({ map: LIMESTONE(), roughness: 0.9, color: tint });
 
 /**

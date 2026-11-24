@@ -11,17 +11,17 @@
  * The world's investigations (`Inquiry`) are another file: the parts object is `{ Mirror, Line, beats, Inquiry, UseFigure }`.
  */
 import GeoFigure from '../../components/GeoFigure';
-import { figureSpec, lastStepFigure } from './figure';
+import MathText from '../../components/MathText';
+import { figureSpec, lastStepFigure, mirrorFigure } from './figure';
 import { caseId, runCase, THALES_TEXT } from './ruleForge';
 import { Gauge } from './Gauge';
 import Inquiry from './Inquiry';
 import './forge.css';
 
-export { Gauge };
-
 /** The case in the mirror: its figure, then (built) the gauge beside it. */
 export function Mirror({ c, stage, tight = false }) {
   const done = stage === 'done';
+  const lie = mirrorFigure(c);
   return (
     <div
       className={`np-mirror ${tight ? 'is-tight' : ''}`}
@@ -29,10 +29,10 @@ export function Mirror({ c, stage, tight = false }) {
       data-rf-case={caseId(c)}
       data-rf-kind={done ? (runCase(c).aligned ? 'aligned' : 'apart') : undefined}
     >
-      <div className="np-mirror__fig">
+      <div className="np-mirror__fig" style={lie.width && !tight ? { flexBasis: `${lie.width}px` } : undefined}>
         <GeoFigure
-          {...figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null })}
-          maxWidth={tight ? 260 : 340}
+          {...figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null, turn: lie.turn })}
+          maxWidth={tight ? 260 : (lie.width ?? 300)}
         />
       </div>
       {done && <Gauge c={c} />}
@@ -59,7 +59,11 @@ export function Line({ c, children }) {
         </div>
         <div className="np-line__foot">
           <Gauge c={c} small />
-          {c.tag && <small className="np-line__tag">{c.tag}</small>}
+          {c.tag && (
+            <small className="np-line__tag">
+              <MathText>{c.tag}</MathText>
+            </small>
+          )}
           {children}
         </div>
       </div>

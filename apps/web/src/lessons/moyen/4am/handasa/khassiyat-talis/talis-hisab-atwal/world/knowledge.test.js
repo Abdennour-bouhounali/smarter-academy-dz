@@ -9,7 +9,8 @@ import { KNOWLEDGE } from './knowledge';
 import { KEYS } from './journey';
 import { lesson } from './index';
 import { PRACTICE_MAP } from './practice';
-import { FIGURES, chainHolds, equal, over, read, times, write } from './math';
+import { FIGURES, equal, over, read, times, write } from './math';
+import { chainHolds } from '../../../../../../common/gameworld/kit/authoring/test/ratios';
 
 describeKnowledge({ knowledge: KNOWLEDGE, keys: KEYS, cards: lesson.cards });
 // the map and the practice hub against the limits the walks proved (the tablets and the forges: wave 2)

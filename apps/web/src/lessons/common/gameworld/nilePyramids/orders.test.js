@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { order, holds, FACTS } from './orders';
-import { slide, slideStep, slideTap, knotsOf, tied, atEnd, slidePoint } from './gestures';
+import { slide, slideStep, slideTap, knotsOf, tied, slidePoint } from './gestures';
 import { FACE, topRate } from './logic';
 
 describe('THE ONE ORDER — one number, one thing built, three facts (plan §2.1)', () => {
@@ -62,7 +62,7 @@ describe('THE ONE GESTURE — the rope slides knot by knot (plan §2.1)', () => 
     s = slideTap(s, -1);
     expect(knotsOf(s)).toBe(0);
     s = { ...s, pos: 63 };
-    expect(atEnd(slideTap(s, 1))).toBe(true);
+    expect(knotsOf(slideTap(s, 1))).toBe(s.max); // it cannot go further than what is built
   });
   it('a key held goes faster and faster; let go, the rope settles on a knot', () => {
     let s = rope();

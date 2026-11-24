@@ -4,7 +4,8 @@
  */
 import { describe, it, expect } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import NilePyramids, { Fact, Register, OrderCard, RopeChip, StoryCard } from './NilePyramids';
+import NilePyramids, { Fact, Register, OrderCard, RopeChip, StoryCard, TopButton } from './NilePyramids';
+import { NilePyramidsGame } from './Game';
 import { slot } from '../kit/forge';
 import { WORLDS } from '../worlds';
 import { WORLD_TEXT } from './strings';
@@ -44,6 +45,28 @@ describe('« الأهرامات » on screen', () => {
     );
     expect(canal).toContain('data-np-fact="longer"');
     expect(plain(canal)).toContain(WORLD_TEXT.fact.longer);
+  });
+
+  it("every step of the story has its own id — `done` is ONE map (the plateau's « AM » once read the field's 14)", () => {
+    const stages = NilePyramidsGame.prototype.stageData.call({
+      story: { forges: { field: 'k1' }, mission: {}, box: {} },
+      lesson: { forges: { k1: {} } },
+    });
+    const ids = stages.flatMap((st) => st.steps.map((x) => x.id));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('the top view has ONE toggle: « منظر من الأعلى », then back to Zero (aria-pressed)', () => {
+    const off = renderToString(<TopButton on={false} game={game} />);
+    expect(off).toContain('data-np-top="off"');
+    expect(off).toContain('aria-pressed="false"');
+    expect(plain(off)).toContain(WORLD_TEXT.hud.top);
+    expect(off).not.toContain('data-np-top-back');
+    const on = renderToString(<TopButton on game={game} />);
+    expect(on).toContain('data-np-top="on"');
+    expect(on).toContain('aria-pressed="true"');
+    expect(on).toContain('data-np-top-back');
+    expect(plain(on)).toContain(WORLD_TEXT.hud.topBack);
   });
 
   it('the register lists its rows, each with its hook', () => {

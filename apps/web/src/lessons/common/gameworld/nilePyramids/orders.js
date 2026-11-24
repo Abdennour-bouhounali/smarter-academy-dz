@@ -28,7 +28,7 @@ export const holds = (fact) =>
   fact === 'as' || fact === 'fits' || fact === 'ties' || fact === 'apex' || fact === 'sits';
 
 /** The largest capstone base the yard can hold (m): a bigger block is written as the quarry's order, never lifted. */
-export const YARD = '20';
+const YARD = '20';
 
 /**
  * The world carries out his number. `truth` is what the world holds: the rope's reading (canal), the level's length

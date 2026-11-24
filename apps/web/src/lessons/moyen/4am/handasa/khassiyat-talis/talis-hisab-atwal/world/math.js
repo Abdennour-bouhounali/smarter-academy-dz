@@ -7,30 +7,19 @@
 import { tryRead, write } from '../../../../../../common/gameworld/kit/exact';
 
 export {
-  chainHolds,
   compare,
   equal,
-  fourth,
   isInteger,
   minus,
   over,
   plus,
   read,
-  sameRatio,
   tex,
   times,
-  tryRead,
   write,
 } from '../../../../../../common/gameworld/kit/exact';
-export { ltr, listAr } from '../../../../../../common/gameworld/kit/authoring/numbers';
-export {
-  FIELD,
-  FACE,
-  RIVER,
-  CAPSTONE,
-  CAMERA_BOX,
-  PLATEAU,
-} from '../../../../../../common/gameworld/nilePyramids/logic';
+export { ltr } from '../../../../../../common/gameworld/kit/authoring/numbers';
+export { FIELD, RIVER, CAMERA_BOX, PLATEAU } from '../../../../../../common/gameworld/nilePyramids/logic';
 
 /**
  * The four keys, in the order the story gives them (plan §3.3–§3.6). `journey.js › KEYS` writes the same ids as

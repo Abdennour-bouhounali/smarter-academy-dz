@@ -56,6 +56,7 @@ import {
   typedLength,
   approx,
   write,
+  TURN,
 } from './logic';
 import { order, holds } from './orders';
 import { slide, slideStep, slideTap, knotsOf, slidePoint, tied } from './gestures';
@@ -92,6 +93,7 @@ import {
   makeGhostStick,
 } from './scenery';
 import { WORLD_TEXT, withStory } from './strings';
+import { topFrame, declutter } from './topView';
 
 const SKY = [0xa9c4dd, 0xe6cfa2, 0xfff0d6, 4.4, 0.35, 0];
 const DOCK_Z = [0, -160, -330, -560, -760];
@@ -105,6 +107,8 @@ const SUMMIT = { x: 70, z: -615, courses: 72, upTo: 70 }; // 70 of 72 courses: t
 const SUN_DAY = sunVector('4/5', 2.5);
 const SUN_PLATEAU = sunVector(PLATEAU.tan, Math.PI / 2); // from the east, square to the west face
 const SUN_NOON = sunVector('8', Math.PI / 2);
+/** The summit's top platform: the pyramid's base × the capstone's k (99 × 1/36 = 2,75) — given on the summit's record. */
+const SUMMIT_TOP = write(times(FACE.base, CAPSTONE.k));
 const ZERO = 0.55; // the kit's robot is about 2,2 units tall: drawn about 1,2 m, as planned (§1.2)
 const AMBER = 0xf59e0b;
 const VIOLET = 0x8b5cf6;
@@ -199,8 +203,30 @@ export class NilePyramidsGame extends WorldRuntime {
     const canalSteps = (c, longOf) => {
       const [m, n] = c.ends;
       return [
-        { id: `A${m}`, kind: 'slide', from: 'A', toward: 'B', stake: m, line: '[AB]', target: c.AM, max: FIELD.AB },
-        { id: `A${n}`, kind: 'slide', from: 'A', toward: 'C', stake: n, line: '[AC]', target: c.AN, max: FIELD.AC },
+        // the two sides from the vertex are written in the register as he measures them (`seg`): the canal's
+        // prediction is made from them
+        {
+          id: `A${m}`,
+          kind: 'slide',
+          from: 'A',
+          toward: 'B',
+          stake: m,
+          seg: `A${m}`,
+          line: '[AB]',
+          target: c.AM,
+          max: FIELD.AB,
+        },
+        {
+          id: `A${n}`,
+          kind: 'slide',
+          from: 'A',
+          toward: 'C',
+          stake: n,
+          seg: `A${n}`,
+          line: '[AC]',
+          target: c.AN,
+          max: FIELD.AC,
+        },
         { id: `${m}${n}?`, kind: 'predict', seg: `${m}${n}`, at: m },
         {
           id: `${m}${n}`,
@@ -306,7 +332,8 @@ export class NilePyramidsGame extends WorldRuntime {
         longest: PLATEAU.base,
         steps: [
           {
-            id: 'AM',
+            // a step's id is unique in the WHOLE story (`done` is one map): the field already has its « AM »
+            id: 'shadowAM',
             kind: 'slide',
             from: 'Mst',
             toward: 'Mw',
@@ -398,9 +425,17 @@ export class NilePyramidsGame extends WorldRuntime {
   freeLook() {
     return true;
   }
-  /** While he holds the rope, ← → are the knots of his slide; on the summit he stands still. */
+  /**
+   * His keys are referred to HIM (owner, 2026-11-24 — « right went left »; « one click turns him by 5° »): ← → turn him
+   * by `TURN.step` degrees a press, ↑ ↓ walk along his facing, the lens behind him turns with him — every stage alike
+   * (`kit/steer.js › turnStep`).
+   */
+  turnKeys() {
+    return TURN;
+  }
+  /** While he holds the rope, ← → are the knots of his slide; on the summit he stands still; the top view pauses him. */
   steers() {
-    return !this.hold && !this.onTop;
+    return !this.hold && !this.onTop && !this.topView;
   }
   fov() {
     const ph = this.state.phase;
@@ -425,6 +460,7 @@ export class NilePyramidsGame extends WorldRuntime {
   }
   cameraShot(ph) {
     if (ph === 'run') return this.gateRun.camera();
+    if (this.topView && (ph === 'play' || ph === 'dialog')) return this.topView;
     if ((ph === 'look' || ph === 'build' || ph === 'fly' || ph === 'climb') && this.cine)
       return { pos: this.cine.pos, look: this.cine.look, k: 1.8 };
     if (ph === 'sail' && this.sailing) {
@@ -574,6 +610,7 @@ export class NilePyramidsGame extends WorldRuntime {
     };
     window.addEventListener('keydown', this.onDropKey);
     this.labelsAt = -1;
+    this.buildGivenLabels();
     // the felucca's legs sail on the kit's run in the river's skin, crocodiles in the lanes (K-b, `riverMeshes.js`)
     // a practice level sails at its own pace (`levels[l].speed`), a leg at the rail's
     this.gateRun = new GateRun(this, {
@@ -583,6 +620,92 @@ export class NilePyramidsGame extends WorldRuntime {
       onOver: (r) => this.runOver(r),
     });
     this.gateRun.build();
+  }
+
+  /**
+   * The lengths he was GIVEN (the records of the field and the workshop, the summit's platform and base, the stick),
+   * written on their segments for the TOP VIEW only (`toggleTop`); what he measures is written by the rope he lays.
+   */
+  buildGivenLabels() {
+    this.givenLabels = [];
+    const at = (a, b, text, y = 2.2) => {
+      const l = makeLabel(text, { bg: 'rgba(120,72,12,0.9)', px: 18 });
+      l.position.set((a.x + b.x) / 2, ((a.y ?? 0) + (b.y ?? 0)) / 2 + y, (a.z + b.z) / 2);
+      l.userData.topOnly = true;
+      l.visible = false;
+      this.scene.add(l);
+      this.givenLabels.push(l);
+    };
+    const f = this.pts.field;
+    at(f.A, f.B, FIELD.AB);
+    at(f.A, f.C, FIELD.AC);
+    at(f.B, f.C, FIELD.BC);
+    const w = this.pts.ws;
+    at(w.S, w.B, FACE.edge);
+    at(w.S, w.C, FACE.edge);
+    at(w.B, w.C, FACE.base);
+    const t = this.pts.summit.top;
+    at({ x: t.x, z: t.z - 4 }, { x: t.x, z: t.z - 4 }, SUMMIT_TOP, t.y + 1.5);
+    const half = approx(FACE.base) / 2;
+    at({ x: SUMMIT.x - half, z: SUMMIT.z + half }, { x: SUMMIT.x - half, z: SUMMIT.z - half }, FACE.base);
+    const p = this.pts.plateau;
+    at(p.Mst, p.Mst, PLATEAU.stick, 4.5);
+  }
+
+  /**
+   * THE TOP VIEW (owner, 2026-11-24 — « to see all the distances and the shape »): the camera rises over the stage he
+   * stands on and looks straight down, framing the whole figure of the stage, its letters and every length he was given
+   * or has measured written on its segment, none over another (`topView.js › declutter`). Zero stays where he is and his
+   * keys walk nothing while it is open (`steers`); the rope in his hand still answers ← →. Hidden on the river run and
+   * inside a forge; any other phase than play or a card closes it.
+   */
+  toggleTop(on = !this.topView) {
+    if (on && (this.state.phase !== 'play' || this.state.run || this.state.overlay)) return;
+    this.topView = on
+      ? topFrame({
+          points: [...Object.values(this.P[this.state.at]), ...this.topExtra(this.state.at)],
+          dir: { x: this.camDir.x, z: this.camDir.y },
+          fov: 55,
+          aspect: this.camera.aspect || 16 / 9,
+        })
+      : null;
+    if (!on) this.restoreLabels();
+    this.stickyCine = false;
+    this.audio.play('ui');
+    this.labelsAt = -1;
+    this.set({ top: Boolean(on) });
+  }
+  /** What a stage's top view frames beyond its stakes: the summit's whole pyramid, the far bank. */
+  topExtra(i) {
+    const half = approx(FACE.base) / 2;
+    if (i === 1 || i === 3) {
+      const c = i === 1 ? WORKSHOP : SUMMIT;
+      return [
+        { x: c.x - half, y: 0, z: c.z - half },
+        { x: c.x + half, y: 0, z: c.z + half },
+      ];
+    }
+    return [];
+  }
+  restoreLabels() {
+    for (const o of this.moved ?? []) if (o.userData.home) o.position.copy(o.userData.home);
+    this.moved = [];
+  }
+  /** The labels on screen as rectangles (for the walks: none over another in the top view). */
+  labelRects() {
+    const W = this.renderer.domElement.clientWidth;
+    const H = this.renderer.domElement.clientHeight;
+    const out = [];
+    const p = new THREE.Vector3();
+    const k = H / 2 / Math.tan(((this.camera.fov / 2) * Math.PI) / 180);
+    this.scene.traverse((o) => {
+      if (!o.isSprite || !o.userData.set || !o.visible) return;
+      o.getWorldPosition(p);
+      p.project(this.camera);
+      if (p.z > 1 || Math.abs(p.x) > 1 || Math.abs(p.y) > 1) return;
+      out.push({ x: ((p.x + 1) / 2) * W, y: ((1 - p.y) / 2) * H, w: o.scale.x * k, h: o.scale.y * k });
+    });
+    return out;
   }
 
   buildPalms() {
@@ -828,6 +951,15 @@ export class NilePyramidsGame extends WorldRuntime {
     this.refreshObjective();
   }
 
+  /** The story resumes: a forge he left unfinished (its flag, `openForge`) opens again — no key is skipped. */
+  onStart() {
+    const step = this.stepNow();
+    if (step?.kind === 'forge' && this.flags[`forge:${step.key}`])
+      this.wait(0.9).then(
+        () => !this.dead && this.state.phase === 'play' && !this.state.overlay && this.openForge(step.key),
+      );
+  }
+
   // ───────────────────────────── where he is in the stage ─────────────────────────────
   stageNow() {
     return this.stages[this.state.at];
@@ -918,6 +1050,12 @@ export class NilePyramidsGame extends WorldRuntime {
         { id: 'SB', tex: `SB = SC = ${FACE.edge}`, kind: 'record' },
         { id: 'BC', tex: `BC = ${FACE.base}`, kind: 'record' },
       );
+    // the summit: what the stone-cutter's order is made from — the pyramid's base and the platform left at its top
+    if (i === 3)
+      rows.push(
+        { id: 'BC', tex: `BC = ${FACE.base}`, kind: 'record' },
+        { id: 'top', tex: `MN = ${texNum(SUMMIT_TOP)}`, kind: 'record' },
+      );
     if (i === 4) rows.push({ id: 'stick', tex: `MN = ${PLATEAU.stick}`, kind: 'record' });
     for (const step of st.steps) {
       const v = this.done[step.id];
@@ -941,12 +1079,16 @@ export class NilePyramidsGame extends WorldRuntime {
         rows.push({ id: step.id, tex: `${step.seg} = ${v}`, kind: 'measured', by: step.canal ? T.reads : null });
     }
     if (!rows.length) return null;
-    return { title: i === 0 ? T.register : T.plan, rows: rows.slice(-9) };
+    // nine rows at most: the record he was given always stays, his oldest measures leave first
+    const kept = rows.filter((r) => r.kind === 'record');
+    const his = rows.filter((r) => r.kind !== 'record').slice(-(9 - kept.length));
+    return { title: i === 0 ? T.register : T.plan, rows: [...kept, ...his] };
   }
 
   // ───────────────────────────── the places of a stage ─────────────────────────────
   stepPrompt(i, k) {
-    if (this.state.at !== i || this.hold || this.state.phase !== 'play') return null;
+    // the top view is for looking: no place acts while it is open
+    if (this.state.at !== i || this.hold || this.topView || this.state.phase !== 'play') return null;
     const step = this.stepNow();
     if (!step || (step.from ?? step.at) !== k) return null;
     const P = this.S.prompt;
@@ -967,7 +1109,7 @@ export class NilePyramidsGame extends WorldRuntime {
     else if (step.kind === 'forge') this.openForge(step.key);
   }
   dockPrompt(i) {
-    if (this.state.at !== i || this.hold || this.onTop) return null;
+    if (this.state.at !== i || this.hold || this.onTop || this.topView) return null;
     if (!this.stepNow() && i < DOCK_Z.length - 1) return this.T.prompt.board(this.T.docks[i + 1]);
     return null;
   }
@@ -1676,6 +1818,7 @@ export class NilePyramidsGame extends WorldRuntime {
     this.set({ phase: 'sail', prompt: null, objective: '', verdict: null });
   }
   arrive(i) {
+    if (this.topView) this.toggleTop(false);
     this.sailing = null;
     this.onTop = false;
     this.stickyCine = false;
@@ -1711,18 +1854,28 @@ export class NilePyramidsGame extends WorldRuntime {
     this.labelsAt = this.time;
     const cam = this.camera.position;
     const p = this.tmpL ?? (this.tmpL = new THREE.Vector3());
-    const wide = this.cine && (ph === 'look' || ph === 'build' || ph === 'fly' || this.stickyCine);
+    const top = Boolean(this.topView);
+    const wide = top || (this.cine && (ph === 'look' || ph === 'build' || ph === 'fly' || this.stickyCine));
     // at the river's whole framing the letter of E stands higher: S and E, 9 m apart, would print on one another
     const eLabel = this.stakes['river:E']?.userData.label;
-    if (eLabel) eLabel.position.y = wide && this.state.at === 2 ? 14 : 2.6;
+    if (eLabel && !top) eLabel.position.y = wide && this.state.at === 2 ? 14 : 2.6;
+    const shown = [];
     this.scene.traverse((o) => {
       if (!o.isSprite || !o.userData.set) return;
       o.getWorldPosition(p);
-      if (ph === 'run') o.visible = false;
+      if (o.userData.topOnly) o.visible = top && this.stageOf(p.z) === this.state.at;
+      else if (ph === 'run') o.visible = false;
       else if (wide || (this.hold && this.hold.step.sight))
         o.visible = !o.userData.dock && this.stageOf(p.z) === this.state.at && p.distanceTo(cam) < 900;
       else o.visible = p.distanceTo(cam) < (o.userData.dock ? 120 : 170);
+      if (top && o.visible) shown.push(o);
     });
+    // in the top view no label prints over another: each is moved up the screen, from where it belongs, as needed
+    if (top)
+      this.moved = declutter(shown, this.topView, {
+        viewH: this.renderer.domElement.clientHeight || 768,
+        aspect: this.camera.aspect || 16 / 9,
+      });
   }
   /** The stage a point of the world belongs to, by its place along the river. */
   stageOf(z) {
@@ -1741,6 +1894,7 @@ export class NilePyramidsGame extends WorldRuntime {
   // ───────────────────────────── each step ─────────────────────────────
   stepWorld(dt, ph) {
     if (ph === 'run') this.gateRun.step(dt);
+    if (this.topView && ph !== 'play' && ph !== 'dialog') this.toggleTop(false);
     // the sky's sun follows the stage (K-f): its environment is rebuilt only when the stage (or noon) changes
     const sunKey = `${this.state.at}:${Boolean(this.flags.noon)}`;
     if (this.sunStage !== sunKey) {
@@ -1826,6 +1980,7 @@ export const devHandles = {
     toDock: (i) => window.__world?.arrive(i),
     stepNow: () => window.__world?.stepNow()?.id ?? null,
     points: () => window.__world?.pts,
+    labelRects: () => window.__world?.labelRects() ?? [],
     v3,
   },
 };

@@ -14,12 +14,9 @@
  * nested: M on [VB], N on [VC]; butterfly: M and N on the OTHER side of V. (MN) ∥ (BC) exactly when the three ratios
  * VM/VB, VN/VC, MN/BC are equal (`chain`). Floats are for DRAWING only.
  */
-import { tex } from '../kit/exact';
 import { sheetFigure } from '../kit/sheetFigure';
 import { layoutGeoFigure } from '../../components/geoFigure';
 import { lenApprox as approx, lenCompare as compare, lenOver, lenPlus, lenTimes, lenWrite as write } from './surd';
-
-export { tex };
 
 const sq = (x) => approx(x) ** 2;
 
@@ -139,9 +136,9 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
       ...whole(V, B, 'VB', -1),
       ...whole(V, C, 'VC', 1),
       seg(V, M, 'VM', { tone: 'indigo' }),
-      butterfly ? seg(V, B, 'VB') : seg(M, B, 'MB'),
+      butterfly ? seg(V, B, 'VB') : seg(M, B, 'MB', shortPiece(P, M, B, V) ? { labelSide: -1 } : {}),
       seg(V, N, 'VN', { tone: 'indigo' }),
-      butterfly ? seg(V, C, 'VC') : seg(N, C, 'NC'),
+      butterfly ? seg(V, C, 'VC') : seg(N, C, 'NC', shortPiece(P, N, C, V) ? { labelSide: 1 } : {}),
       seg(M, N, 'MN', { tone: 'rose', bold: true, ...(arrows ? { arrows: 1 } : {}) }),
       seg(B, C, 'BC', { tone: 'rose', bold: true, ...(arrows ? { arrows: 1 } : {}) }),
     ],
@@ -151,6 +148,14 @@ export function figureSpec(fig, { show = 'all', ask = [], parallel = null, small
     ...extra,
   };
 }
+/**
+ * A piece of a side short beside its side (under a quarter, as drawn): its length is written on the INNER side of its
+ * line, as a whole side is — outside it met the point's letter (« 10 » over « M » on the workshop's course, the walk).
+ */
+const shortPiece = (P, a, b, v) => {
+  const d = (p, q) => Math.hypot(P[p][0] - P[q][0], P[p][1] - P[q][1]);
+  return d(a, b) < 0.25 * d(v, b);
+};
 const chainSafe = (fig) => {
   try {
     return chain(fig);
@@ -186,6 +191,30 @@ export function lastStepFigure(c) {
   return all.filter((f) => f.width <= LAST_STEP_FIGURE.room.width).sort((x, y) => x.height - y.height)[0] ?? flat;
 }
 
+/**
+ * THE MIRROR'S FIGURE turned to lie low (forgeParts.jsx › Mirror): a tall case (a right triangle standing on its short
+ * side, a long butterfly) pushed the attack's question and its button out of the window at 1366 × 768 (the walk,
+ * 2026-11-24). Drawn as it is when its height is at most MIRROR.ratio × its width; else the turn (by 15°) that lays it
+ * lowest, drawn at the width its smallest label needs to stay 12 px (`kit/sheetFigure.js › k`; at most MIRROR.widest,
+ * which a figure lying flat leaves room for). → { turn, width } (width null: the mirror's own).
+ */
+const MIRROR = { width: 300, widest: 360, ratio: 1.05 };
+export function mirrorFigure(c) {
+  if (!c?.names || !c?.len) return { turn: 0, width: null };
+  const at = (turn) => {
+    const spec = figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null, turn });
+    const [, , vw, vh] = layoutGeoFigure(spec).viewBox;
+    const width = Math.max(MIRROR.width, Math.ceil(sheetFigure(spec).k * LAST_STEP_FIGURE.label));
+    return { turn, width, ratio: vh / vw, height: (width * vh) / vw };
+  };
+  const flat = at(0);
+  if (flat.ratio <= MIRROR.ratio) return { turn: 0, width: null };
+  const best = Array.from({ length: 24 }, (_, i) => at(i * 15))
+    .filter((f) => f.width <= MIRROR.widest)
+    .sort((x, y) => x.height - y.height)[0];
+  return best && best.height < flat.height ? { turn: best.turn, width: best.width } : { turn: 0, width: null };
+}
+
 /** The lengths of a figure with its pieces added (MB = VB − VM, NC = VC − VN) for a nested one. */
 export function withPieces(fig) {
   if (fig.kind !== 'nested') return fig;
@@ -193,6 +222,3 @@ export function withPieces(fig) {
   const piece = (a, b) => (a != null && b != null ? lenPlus(b, lenTimes(a, '-1')) : null);
   return { ...fig, len: { ...fig.len, MB: fig.len.MB ?? piece(VM, VB), NC: fig.len.NC ?? piece(VN, VC) } };
 }
-
-/** The value of a length written as text, or null. */
-export const lengthText = (x) => (x == null ? null : write(x));

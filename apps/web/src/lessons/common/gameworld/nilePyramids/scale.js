@@ -37,7 +37,7 @@ export function initScale(spec) {
 const stageOf = (r) => (r.fact ? 'fact' : r.k == null ? 'set' : r.perimeter ? 'perimeter' : 'predict');
 
 const sum = (sides) => write(sides.reduce((acc, x) => plus(acc, x), read('0')));
-export const perimeterOf = (t) => sum(t.sides);
+const perimeterOf = (t) => sum(t.sides);
 
 /** The copy of a triangle by k: its sides × k, and how it stands against the target (exact). */
 export function copyOf(spec, feed, k) {

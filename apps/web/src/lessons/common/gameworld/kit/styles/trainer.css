@@ -40,7 +40,8 @@
   gap: 0.35rem;
   padding: 0.15rem 0.8rem;
   border-radius: 999px;
-  font-size: 0.9rem; /* 12 px or more also when a full sheet is fitted ×0.96 at 1024×768 (2026-11-19) */
+  /* the 12 px floor of a fitted panel (Fit › --di-min-font: « تدرّب » with a figure, 2026-11-24) */
+  font-size: max(var(--di-min-font, 12px), 0.9rem);
   font-weight: 800;
 }
 .di-trainer__badge.is-game {
@@ -395,6 +396,26 @@
 }
 .di-trainer--done p {
   margin: 0;
+}
+/* a question and its figure (Trainer.jsx › `di-tr-q`): the figure BESIDE the question (on its left), so the panel's
+   height holds both at 1366 × 768 — never narrower than its floor, at most 44 % of the panel otherwise */
+.di-tr-q {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-width: 0;
+}
+.di-tr-q[data-di-tr-q='figure'] {
+  flex-direction: row;
+  align-items: center;
+}
+.di-tr-q[data-di-tr-q='figure'] > :not(.di-tr-figure) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+.di-tr-q[data-di-tr-q='figure'] > .di-tr-figure {
+  order: 2;
+  width: max(min(var(--tr-fig-w), 44%), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0)));
 }
 /* a question's figure (`q.figure`, Trainer.jsx › QuestionFigure): above the question, centred; never narrower than its
    12 px floor — k × --di-min-font, the floor in the units of every zoom above it (trainerFigure.js) */

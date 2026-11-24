@@ -33,6 +33,7 @@ import {
   perimeterChoices,
 } from '../../../../../../common/gameworld/nilePyramids/scale';
 import { chain } from '../../../../../../common/gameworld/nilePyramids/figure';
+import { HalfturnView } from '../../../../../../common/gameworld/nilePyramids/InquiryHalfturn';
 import { HALFTURN_INQUIRY, PLAN_INQUIRY, SCALE_INQUIRY } from './inquiries';
 import { FORGES } from './forges';
 import { K2, K3, K4, over, times, write } from './math';
@@ -151,6 +152,24 @@ describe('🦋 `halfturn` — the turned side lands straight on the parallel pai
     const rows = FORGES[K3].fromInquiry(halfturnResult(s)).rows;
     expect(rows.map((c) => c.held)).toEqual([true, true, false]);
     expect(rows[0].head).toBe('النهر');
+  });
+});
+
+describe('🦋 `halfturn` shows FACTS, never the chain (review gate A, 2026-11-24 — ledger A1)', () => {
+  // after each turn the screen once wrote the three ratios in the butterfly's own letters: on round 1 (the river) those
+  // were the right tiles of 🦋's forge, shown before the tiles. A ratio of two segment names never appears now.
+  const RATIO_OF_SEGMENTS = /\\dfrac\{[A-Z]'?[A-Z]'?\}\{[A-Z]'?[A-Z]'?\}/;
+  it.each(HALFTURN_INQUIRY.rounds.map((r, i) => [i, r.fig.head ?? i + 1]))('round %s (%s), landed', (i) => {
+    let s = initHalfturn(HALFTURN_INQUIRY);
+    for (let k = 0; k <= i; k += 1) {
+      if (k > 0) s = halfturnReducer(HALFTURN_INQUIRY, s, { type: 'next' });
+      s = halfturnReducer(HALFTURN_INQUIRY, s, { type: 'predict', line: 'B' });
+      for (let t = 0; t < 6; t += 1) s = halfturnReducer(HALFTURN_INQUIRY, s, { type: 'turn', d: 1 });
+    }
+    expect(s.stage).toBe('landed');
+    const html = renderToString(createElement(HalfturnView, { spec: HALFTURN_INQUIRY, state: s, act: {} }));
+    expect(html).toContain('data-iq-landed="B"');
+    expect(html).not.toMatch(RATIO_OF_SEGMENTS);
   });
 });
 

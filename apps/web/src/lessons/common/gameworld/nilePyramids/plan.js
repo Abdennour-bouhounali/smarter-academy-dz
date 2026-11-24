@@ -25,7 +25,7 @@ const SIDES = [
   ['VC', 'VN', 'NC'],
 ];
 /** After this many courses that do not fit, the cards holding the unknown are lit (a fact: where the « ؟ » is). */
-export const HINT_AFTER = 2;
+const HINT_AFTER = 2;
 
 const roundOf = (spec, i) => {
   const r = spec.rounds[i];

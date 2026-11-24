@@ -11,18 +11,7 @@ import { M } from '../kit/parts';
 import { typedDecimal } from '../kit/forge';
 import { figureSpec } from './figure';
 import { segName } from './ruleForge';
-import {
-  CARDS,
-  initPlan,
-  planReducer,
-  planResult,
-  toolsOf,
-  unknownsOf,
-  valueOf,
-  hintCards,
-  roundFig,
-  joinText,
-} from './plan';
+import { CARDS, initPlan, planReducer, planResult, toolsOf, valueOf, hintCards, roundFig, joinText } from './plan';
 import { expose, textOf, texNum } from './inquiryParts';
 
 /** The course laid: the level's length (the bar) and his course centred on it — a gap amber, an overhang violet. */
@@ -194,5 +183,3 @@ export function Plan({ spec, play, onDone }) {
   };
   return <PlanView spec={spec} state={state} act={act} />;
 }
-
-export { unknownsOf };

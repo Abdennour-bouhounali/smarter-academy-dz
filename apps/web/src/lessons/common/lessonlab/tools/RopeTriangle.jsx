@@ -159,7 +159,8 @@ export default function RopeTriangle({ a, b, play, report, start = null }) {
       }
       reading={
         <>
-          <M>{`AM = ${m} \\quad MB = ${R.mb} \\quad AN = ${n} \\quad NC = ${R.nc}`}</M>
+          {/* four lengths, the verdict and four buttons share one row: a thin space between the lengths (the walk) */}
+          <M>{`\\small AM = ${m} \\;\\; MB = ${R.mb} \\;\\; AN = ${n} \\;\\; NC = ${R.nc}`}</M>
           <span
             className={`ll-chip ${R.aligned ? 'll-chip--good' : 'll-chip--dim'}`}
             data-ll-rope-verdict={R.aligned ? 'parallel' : 'crossing'}
@@ -196,7 +197,8 @@ export default function RopeTriangle({ a, b, play, report, start = null }) {
           <title>{`AM = ${m} · AN = ${n}`}</title>
         </svg>
         <div className="ll-rope__card" data-ll-rope-figure={R.aligned ? 'parallel' : 'crossing'}>
-          <GeoFigure {...ropeFigure(a, b, m, n, R.aligned)} />
+          {/* the figure stays inside its card, whatever the ropes drawn (30 and 5 made it wider than the card) */}
+          <GeoFigure {...ropeFigure(a, b, m, n, R.aligned)} maxWidth="100%" />
         </div>
       </div>
     </Tool>

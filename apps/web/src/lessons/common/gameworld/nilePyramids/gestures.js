@@ -51,6 +51,3 @@ export function slidePoint(s, knots = s.pos) {
 
 /** The keys are let go on the stake's knot: the rope ties there. */
 export const tied = (s) => s.target != null && !s.way && knotsOf(s) === s.target;
-
-/** It cannot go further: the end of the ground, or of what is built. */
-export const atEnd = (s) => knotsOf(s) >= s.max;

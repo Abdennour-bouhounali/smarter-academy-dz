@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest';
 import { initPlan, planReducer, planResult, toolsOf, unknownsOf, CARDS, hintCards } from './plan';
 import { initHalfturn, halfturnReducer, rotate } from './halfturn';
 import { initScale, scaleReducer, perimeterChoices } from './scale';
-import { thalesCase, evidenceOf, caseId, runCase, segName } from './ruleForge';
+import { thalesCase, caseId, runCase, segName } from './ruleForge';
 import { gauge, points, chain } from './figure';
 
 import { NESTED, PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC } from './test/specs';
@@ -145,9 +145,8 @@ describe('a case of the forge is a Thalès figure (plan §2.3)', () => {
     expect(gauge(fresh).aligned).toBe(true);
     expect(gauge(old).aligned).toBe(false);
   });
-  it('the evidence keeps one row per case, his own before the mirror', () => {
-    const rows = evidenceOf([fresh, { ...old, mirror: true }, fresh]);
-    expect(rows.map((r) => caseId(r))).toEqual([caseId(old), caseId(fresh)]);
+  it('a case has its identity and names its segments with its own letters', () => {
+    expect(caseId(old)).not.toBe(caseId(fresh));
     expect(segName(old, 'VM')).toBe('AP');
   });
   it('the drawing puts every point at its lengths', () => {

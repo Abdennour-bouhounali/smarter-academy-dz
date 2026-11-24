@@ -483,6 +483,12 @@ export function describeStory(opts) {
  *   draw        { max: 90, laid: 40, tag: 12 } — what a mirror can draw: the longer gap, planks on one bridge, a log tag
  *   pairOf      (case) => [x, y] | null — the pair a case names (default [c.A, c.B])
  */
+/** The length of a short text as it is SEEN (a MathText tag: « القرص $\\tfrac{6}{5}$ » reads « القرص 6 »). */
+const seenLength = (t) =>
+  String(t)
+    .replace(/\\[dt]?frac\{([^}]*)\}\{([^}]*)\}/g, (_, a, b) => (a.length >= b.length ? a : b))
+    .replace(/\$/g, '').length;
+
 export function describeForges(opts) {
   const { forges, keys, roads, before = {}, inquiry = {}, solve, forbidden = {} } = opts;
   const draw = { max: 90, laid: 40, tag: 12, ...opts.draw };
@@ -593,7 +599,8 @@ export function describeForges(opts) {
             expect([c.pair.a, c.pair.b, c.pair.d], idc).toEqual([c.A, c.B, c.d]);
             expect(c.fits, idc).toBe(c.A % c.d === 0 && c.B % c.d === 0);
           }
-          if (c.tag != null) expect(String(c.tag).length, c.tag).toBeLessThanOrEqual(draw.tag);
+          // a tag's length as SEEN: a formula's dollars are not drawn, a fraction is as wide as its wider term
+          if (c.tag != null) expect(seenLength(c.tag), c.tag).toBeLessThanOrEqual(draw.tag);
           const p = pairOf(c);
           if (p) expect(bankSet.has(pairKey(...p)), `${key} ${idc}: a pair of the bank`).toBe(false);
         }

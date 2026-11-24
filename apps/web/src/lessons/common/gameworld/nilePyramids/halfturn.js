@@ -10,8 +10,8 @@
  */
 import { chain } from './figure';
 
-export const STEP = 30;
-export const HALF = 180;
+const STEP = 30;
+const HALF = 180;
 
 export function initHalfturn(spec) {
   if (!spec.rounds?.length) throw new Error('halfturn: no round');

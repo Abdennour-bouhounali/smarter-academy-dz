@@ -12,12 +12,10 @@ import {
   over,
   isDecimal,
   isInteger,
-  ratio,
-  sameRatio,
-  chainHolds,
   fourth,
   approx,
 } from './exact';
+import { chainHolds, sameRatio } from './authoring/test/ratios';
 
 describe('a number is read as a student types it and written as he writes it', () => {
   it('reads a comma or a point, a true minus, LaTeX, a fraction', () => {
@@ -70,7 +68,7 @@ describe('ratios and the fourth proportional', () => {
     expect(sameRatio([1, 3], ['0,3333333333333333', 1])).toBe(false);
     expect(sameRatio(['57,5', 69], ['77,5', 93])).toBe(true);
     expect(() => sameRatio([1, 0], [2, 3])).toThrow();
-    expect(write(ratio(24, 56))).toBe('3/7');
+    expect(write(over(24, 56))).toBe('3/7');
   });
   it('holds a chain of three ratios only when all three are equal', () => {
     expect(chainHolds([15, 35], [18, 42], [21, 49])).toBe(true);

@@ -14,7 +14,13 @@ import { collisions, readBank, storiesOf } from '../../../../../../common/gamewo
 import { Mirror, Line, UseFigure } from '../../../../../../common/gameworld/nilePyramids/forgeParts';
 import { thalesCase, caseId, segName } from '../../../../../../common/gameworld/nilePyramids/ruleForge';
 import { canalReading, riverFigure } from '../../../../../../common/gameworld/nilePyramids/logic';
-import { gauge, lastStepFigure } from '../../../../../../common/gameworld/nilePyramids/figure';
+import {
+  figureSpec,
+  gauge,
+  lastStepFigure,
+  mirrorFigure,
+} from '../../../../../../common/gameworld/nilePyramids/figure';
+import { layoutGeoFigure } from '../../../../../../common/components/geoFigure';
 import { laidFact } from '../../../../../../common/gameworld/nilePyramids/plan';
 import { copyOf } from '../../../../../../common/gameworld/nilePyramids/scale';
 import {
@@ -41,7 +47,8 @@ import {
 } from './forges';
 import { PLAN_INQUIRY, SCALE_INQUIRY } from './inquiries';
 import { KEYS } from './journey';
-import { FACE, FIELD, K1, K2, K3, K4, RIVER, equal, over, read, times, write } from './math';
+import { FIELD, K1, K2, K3, K4, RIVER, equal, over, read, times, write } from './math';
+import { FACE } from '../../../../../../common/gameworld/nilePyramids/logic';
 
 // the experiments' screens expose their state to the walks on `window` (dev only)
 globalThis.window = globalThis.window ?? {};
@@ -323,14 +330,35 @@ describe('🦋 the pairs students write fall on HIS river — the third ratio is
       const f = fallOf(K3, r);
       expect(f.on).toBe('evidence');
       expect(caseId(f.c)).toBe(caseId(river));
-      expect(F[K3].text.refuted({ ...f.c, says: false, held: true })).toContain('ER/AF = 1/8');
+      expect(F[K3].text.refuted({ ...f.c, says: false, held: true })).toContain('ER/AF');
       // without his river, the parallel round refutes it, naming 7/10
       expect(runOn(F[K3], rule(K3, r), rows.slice(1)).bad, JSON.stringify(r)).toBe(0);
-      expect(F[K3].text.refuted({ ...parallel, says: false, held: true })).toContain('7/10');
+      expect(F[K3].text.refuted({ ...parallel, says: false, held: true })).toContain('KL/PQ');
     }
     // a root is written as a root in a formula, never as a float
     expect(F[K3].explain(rule(K3, { one: 'se_sf', two: 'sr_sa' }), river)).toContain('\\sqrt{2785}');
-    expect(F[K3].text.eq(river)).toContain('\\dfrac{1}{8}');
+    expect(F[K3].text.eq(river)).toContain('\\tfrac{1}{8}');
+  });
+
+  it('every case the mirror draws lies low enough to leave the question and its button in the window (the walk)', () => {
+    for (const key of [K1, K2, K3, K4])
+      for (const c of suite.rowsOf(key, ROADS.AT_ONCE)) {
+        if (!c.names || !c.len) continue;
+        const spec = figureSpec(c, { show: c.show ?? 'all', parallel: c.parallel ?? null, turn: mirrorFigure(c).turn });
+        const [, , vw, vh] = layoutGeoFigure(spec).viewBox;
+        // drawn at its width (the mirror's 300 px, or wider when it lies flat): at most 380 px tall
+        expect(((mirrorFigure(c).width ?? 300) * vh) / vw, `${key} ${caseId(c)}`).toBeLessThanOrEqual(380);
+      }
+  });
+
+  it('the line under the mirror is a formula between dollars, its fractions at text size (MathText; the walk saw it raw)', () => {
+    for (const key of [K1, K2, K3, K4])
+      for (const c of suite.rowsOf(key, ROADS.AT_ONCE)) {
+        const eq = F[key].text.eq?.(c);
+        if (eq == null) continue;
+        expect(eq, key).toMatch(/^\$[^$]+\$$/);
+        expect(eq, key).not.toContain('\\dfrac');
+      }
   });
 
   it('the crooked round is exact (PQ = 92) and refuses the chain; the attacks: other letters, then a crooked pair', () => {

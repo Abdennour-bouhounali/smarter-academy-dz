@@ -16,6 +16,10 @@
 .np-mirror.is-tight .np-mirror__fig {
   flex-basis: 16rem;
 }
+/* a mirror under attack shares its height with the question and the answer: a little narrower (the walk, 2026-11-24) */
+.np-mirror:not(.is-tight) .np-mirror__fig {
+  flex-basis: 19.5rem;
+}
 .np-gauge {
   flex: 0 1 18rem;
 }

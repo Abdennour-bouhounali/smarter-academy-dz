@@ -9,7 +9,7 @@
  * Every length that decides what the world does is EXACT (the kit's `kit/exact.js`: « 77,5 », « 5/6 »; never a float).
  * Floats exist here for DRAWING only (positions, the camera, the size of a label).
  */
-import { read, write, compare, equal, times, over, minus, plus, fourth, tryRead, approx } from '../kit/exact';
+import { read, write, compare, times, over, minus, plus, fourth, tryRead, approx } from '../kit/exact';
 import { lenRoot } from './surd';
 
 export { write, approx };
@@ -46,6 +46,13 @@ export const CAMERA_BOX = Object.freeze({ fromEdge: '177', depth: '0,5', image: 
 /** « ظلّ الهرم الأكبر »: the Great Pyramid (h 146, base 230), the 2 m stick, the morning sun of tan = 2/3. */
 export const PLATEAU = Object.freeze({ h: '146', base: '230', stick: '2', tan: '2/3' });
 
+/**
+ * HOW ZERO TURNS (owner, 2026-11-24): ← → turn him by `step` degrees a press (`TURN_STEP_DEG`), held past `delay`
+ * seconds at `rate` degrees a second; ↑ ↓ walk along his facing (`kit/steer.js › turnStep`, `Game.js › turnKeys`).
+ */
+const TURN_STEP_DEG = 5;
+export const TURN = Object.freeze({ step: TURN_STEP_DEG, rate: 90, delay: 0.3 });
+
 // ───────────────────────────── exact helpers of the world ─────────────────────────────
 
 /** The exact square root of a rational, or null when it has none among the rationals. */
@@ -77,12 +84,6 @@ export function canalReading(field, canal) {
   return root;
 }
 
-/** The pieces of the sides the canal leaves: MB = AB − AM, NC = AC − AN. */
-export const canalPieces = (field, canal) => ({
-  MB: write(minus(field.AB, canal.AM)),
-  NC: write(minus(field.AC, canal.AN)),
-});
-
 /** The positions of the field's points for DRAWING, in the field's own plane: A at 0, [AB] along +u, C at angle A. */
 export function fieldPoints(field) {
   const cos = approx(field.cosA);
@@ -106,9 +107,6 @@ export function courseAt(face, BM) {
   const SM = minus(face.edge, BM);
   return { SM: write(SM), MN: write(over(times(face.base, SM), face.edge)) };
 }
-
-/** Where a row of a given length belongs: SM = SB × row / BC, so its mark is BM = SB − SM. */
-export const markOfRow = (face, row) => write(minus(face.edge, over(times(face.edge, row), face.base)));
 
 /** For drawing: the pyramid's height from its square base and its lateral edge (h² = edge² − base² / 2). */
 export const pyramidHeight = (base, edge) => Math.sqrt(approx(edge) ** 2 - approx(base) ** 2 / 2);
@@ -182,9 +180,6 @@ export function typedRatio(text) {
 /** A thing built at `typed` against what the world holds `truth`: -1 shorter, 0 the same, 1 longer — exact. */
 export const against = (typed, truth) => compare(typed, truth);
 
-/** Both lengths the same, exactly. */
-export const same = (a, b) => equal(a, b);
-
 // ───────────────────────────── the scale rule (§1.5, gate B6) ─────────────────────────────
 
 /** The rope: a tap is one knot; held, it waits `DELAY`, then rises from `MIN` to the stage's top speed in `RAMP` s. */
@@ -194,14 +189,6 @@ export const ROPE = Object.freeze({ MIN: 3, MAX: 30, DELAY: 0.15, RAMP: 0.35, LI
 export function knotRate(held, top) {
   if (held < ROPE.DELAY) return 0;
   return ROPE.MIN + (top - ROPE.MIN) * Math.min(1, (held - ROPE.DELAY) / ROPE.RAMP);
-}
-
-/** The knots a rope has gone after holding the key `t` seconds (the first tap's knot included). */
-export function knotsAfter(t, top) {
-  const s = Math.max(0, t - ROPE.DELAY);
-  const r = ROPE.RAMP;
-  const ramp = s <= r ? ROPE.MIN * s + ((top - ROPE.MIN) * s * s) / (2 * r) : ROPE.MIN * r + ((top - ROPE.MIN) * r) / 2;
-  return 1 + ramp + (s > r ? top * (s - r) : 0);
 }
 
 /** The slowest top speed (3 to 30 knots a second) that carries the stage's LONGEST rope in 8 s at most. */
@@ -225,7 +212,3 @@ export function frameDistance(w, h, fov = 50, aspect = 1366 / 768, margin = 1.12
  */
 export const labelScale = (px, fov = 60, viewH = 768) =>
   (px * (96 / 64)) / ((viewH / 2) * (1 / Math.tan(((fov / 2) * Math.PI) / 180)));
-
-/** The height in pixels of a label's glyphs on screen, for a sprite of `scale` (the inverse of `labelScale`). */
-export const labelPx = (scale, fov, viewH = 768) =>
-  (scale * (viewH / 2) * (1 / Math.tan(((fov / 2) * Math.PI) / 180))) / (96 / 64);

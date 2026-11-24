@@ -248,29 +248,33 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
       <div hidden={rev !== null} className="di-trainer__live">
         {paper && !fb?.final && <PaperChip />}
         {/* once the answer is final, the sheet gives way to ONE line — the question and what was answered — so the correction has the room */}
-        <QuestionFigure fig={q.figure} />
-        {fb?.final && q.format === 'exam' ? (
-          <div className="di-sheet di-sheet--done" data-di-tr-recap>
-            <p className="di-sheet__q">
-              <b>{L.question(i + 1)}</b> <MathText>{q.kind === 'tf' ? `«${q.statement}»` : q.prompt}</MathText>
-            </p>
-            <p className="di-sheet__mine">
-              <small>{L.mine}</small> <MathText>{log.current[i]?.attempts.at(-1)?.label ?? ''}</MathText>
-            </p>
-          </div>
-        ) : (
-          <Question
-            key={`${run}-${i}`}
-            q={q}
-            index={i}
-            locked={Boolean(fb?.final)}
-            onSubmit={submit}
-            onModel={() => {
-              helped.current = true;
-              setModel({ ...twin(q.form.model.a, q.form.model.b), own: false });
-            }}
-          />
-        )}
+        {/* a question with a figure that is not flat lays it BESIDE the question: above it, the two did not fit the
+            panel's height at 1366 × 768 without zooming its text under 12 px (the walk of talis-hisab-atwal, 2026-11-24) */}
+        <div className="di-tr-q" data-di-tr-q={besideIt(q) ? 'figure' : 'plain'}>
+          <QuestionFigure fig={q.figure} />
+          {fb?.final && q.format === 'exam' ? (
+            <div className="di-sheet di-sheet--done" data-di-tr-recap>
+              <p className="di-sheet__q">
+                <b>{L.question(i + 1)}</b> <MathText>{q.kind === 'tf' ? `«${q.statement}»` : q.prompt}</MathText>
+              </p>
+              <p className="di-sheet__mine">
+                <small>{L.mine}</small> <MathText>{log.current[i]?.attempts.at(-1)?.label ?? ''}</MathText>
+              </p>
+            </div>
+          ) : (
+            <Question
+              key={`${run}-${i}`}
+              q={q}
+              index={i}
+              locked={Boolean(fb?.final)}
+              onSubmit={submit}
+              onModel={() => {
+                helped.current = true;
+                setModel({ ...twin(q.form.model.a, q.form.model.b), own: false });
+              }}
+            />
+          )}
+        </div>
         {fb && (
           <p
             className={`di-trainer__fb ${fb.ok ? 'is-ok' : fb.final ? 'is-fix' : 'is-hint'}`}
@@ -331,6 +335,17 @@ export function QuestionFigure({ fig }) {
     </div>
   );
 }
+
+/**
+ * A figure stands BESIDE its question when it is not flat (a flat one above takes little height and leaves the width),
+ * and when no line of the question's form writes three fractions (a chain of three ratios needs the panel's width: a
+ * formula never breaks across two lines).
+ */
+const besideIt = (q) => {
+  const f = q.figure ? trainerFigure(q.figure) : null;
+  const wide = (q.form?.lines ?? []).some((l) => (l.tokens ?? []).filter((t) => isFrac(t)).length >= 3);
+  return Boolean(f?.height && f.height / f.width > 0.45 && !wide);
+};
 
 /** A token of a form line that is answered: a box `{ num }` or a choice `{ choice }`. */
 const isBox = (t) => Boolean(t && typeof t === 'object' && (t.num || t.choice));
