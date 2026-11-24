@@ -31,6 +31,15 @@ const MONEY_DA = /(?:\d\$?|\\,|\\text\{)\s*DA(?![A-Za-z])|\(\s*DA\s*\)|بال(?:
 describe('the sitting of qisma-iqlidiya-baqi — the bank as it is', () => {
   beforeAll(() => sittings.prepare());
 
+  it('two keys prove P1 and two prove P2: a missed sheet’s card is the FIRST key’s, the one that forges it', () => {
+    expect(keyOf).toEqual({
+      '1am_qisma-iqlidiya-baqi_P1': 'majmuaat-kamila',
+      '1am_qisma-iqlidiya-baqi_P2': 'baqi-asghar',
+      '1am_qisma-iqlidiya-baqi_P3': 'baqi-fi-masala',
+    });
+    for (const key of Object.values(keyOf)) expect(lesson.cards.ofKey[key], key).toBeTruthy();
+  });
+
   it('loads the five levels of the bank: ten exam sheets each, with their minutes and points on the ladder', () => {
     expect(sittings.ready()).toBe(true);
     expect(LEVELS.map((l) => l.n)).toEqual([1, 2, 3, 4, 5]);

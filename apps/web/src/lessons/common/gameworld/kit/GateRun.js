@@ -56,13 +56,18 @@ export function hazardPlan({ gap, speed, random, react = 0.9 }) {
   if (!(speed > 0) || before / speed < react) return null;
   return { lane: Math.min(2, Math.floor(random() * 3)), before };
 }
+/**
+ * The pace of the rail when a world sets none (metres a second): faster than the first lesson's run from the first gate
+ * (owner, 2026-11-20: « the game is too slow »), and it keeps rising. Exported for a world that sets its own pace for one
+ * kind of run only (`nilePyramids/Game.js`: a practice level sails at its level's speed, a leg at this one).
+ */
+export const railSpeed = (level, score) => Math.min(17, 10.5 + 0.7 * (level - 1) + 0.05 * score);
 const DEFAULTS = {
   y: 0.3,
   gap: 34,
   hearts: 3,
   pause: 2.4,
-  // faster than the first lesson's run from the first gate (owner, 2026-11-20: « the game is too slow »), and it keeps rising
-  speedOf: (level, score) => Math.min(17, 10.5 + 0.7 * (level - 1) + 0.05 * score),
+  speedOf: railSpeed,
   onOver: () => ({}),
 };
 

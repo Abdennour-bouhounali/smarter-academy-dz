@@ -17,6 +17,8 @@
  *                            Zero rises to his h (apex · below · above); noon, and « صندوق ابن الهيثم »
  *   Each of stages 1–4 ends at the masons' table, where the lesson's forge opens (`story.forges[stageId]`).
  *   Between two docks he sails on the kit's rail (`story.legs[i]`) — without a leg the felucca simply sails.
+ *   A level of the practice ladder (`lesson.ladder`, « فضاء التدريب ») is sailed on the same river (`startPractice`,
+ *   `practice.js`): the level's waves as buoys, its pace, crocodiles, three hearts; its stars are the hearts left.
  *
  * THE ONE GESTURE is `gestures.js › slide`, THE ONE ORDER `orders.js › order`; the law is `logic.js`; the look
  * `scenery.js`; every word `strings.js`. One unit is one metre; Zero is drawn about 1,2 m tall (`ZERO`).
@@ -32,8 +34,9 @@
  */
 import * as THREE from 'three';
 import { WorldRuntime } from '../kit/WorldRuntime';
-import { GateRun } from '../kit/GateRun';
+import { GateRun, railSpeed } from '../kit/GateRun';
 import { riverRun } from './riverMeshes';
+import { practiceRun, practiceEnd, practiceSpeed } from './practice';
 import {
   FIELD,
   FACE,
@@ -571,7 +574,13 @@ export class NilePyramidsGame extends WorldRuntime {
     window.addEventListener('keydown', this.onDropKey);
     this.labelsAt = -1;
     // the felucca's legs sail on the kit's run in the river's skin, crocodiles in the lanes (K-b, `riverMeshes.js`)
-    this.gateRun = new GateRun(this, { ...RAIL, ...riverRun(), onOver: (r) => this.runOver(r) });
+    // a practice level sails at its own pace (`levels[l].speed`), a leg at the rail's
+    this.gateRun = new GateRun(this, {
+      ...RAIL,
+      ...riverRun(),
+      speedOf: (level, score) => (this.drill ? practiceSpeed(this.drill, score) : railSpeed(level, score)),
+      onOver: (r) => this.runOver(r),
+    });
     this.gateRun.build();
   }
 
@@ -1538,6 +1547,7 @@ export class NilePyramidsGame extends WorldRuntime {
   board(i) {
     if (this.busy() || !this.stageDone(i)) return; // the game holds the order (§3.2)
     this.fromDock = i;
+    this.drill = null;
     const leg = this.story.legs?.[i];
     this.stickyCine = false;
     this.cine = null;
@@ -1549,6 +1559,7 @@ export class NilePyramidsGame extends WorldRuntime {
     } else this.sail(i);
   }
   startRun() {
+    if (this.drill) return this.startPractice(this.drill.node, this.drill.level, true);
     this.gateRun.start();
     return true;
   }
@@ -1559,10 +1570,15 @@ export class NilePyramidsGame extends WorldRuntime {
     this.gateRun.pause(on);
   }
   runOver(result) {
+    if (this.drill) {
+      setTimeout(() => !this.dead && this.endPractice(result), 0); // after the rail has published its own end
+      return {};
+    }
     this.runWon = result.won;
     return {};
   }
   leaveRun() {
+    if (this.drill) return this.quitPractice();
     this.gateRun.hide();
     this.set({ run: null });
     if (this.runWon) this.arrive(this.fromDock + 1);
@@ -1575,6 +1591,88 @@ export class NilePyramidsGame extends WorldRuntime {
       this.refreshObjective();
     }
   }
+
+  // ───────────────────────────── « فضاء التدريب »: a level of the practice ladder, sailed on the river ─────────────────────────────
+  /**
+   * A level of the lesson's ladder (`lesson.ladder`, the kit's) is a trip of the felucca on the kit's run in the river's
+   * skin (plan §1.3 « the same rail is the practice ladder », §3.9): its waves are the buoys, crocodiles in the lanes,
+   * three hearts. `again` replays it from the run's own end card. A level that is a real-world case (`isCase`) is not
+   * played here (this world has none).
+   */
+  startPractice(node, level, again = false) {
+    const ladder = this.lesson.ladder;
+    if (!ladder || ladder.isCase(node, level)) return false;
+    if (again ? !this.drill : this.busy() || this.state.run) return false;
+    if (!ladder.levelOpen(node, level, [...this.keysEver], this.practice)) return false;
+    this.audio.unlock();
+    if (!this.mapFrom) this.mapFrom = this.state.phase === 'title' ? 'title' : 'play';
+    if (!this.drill) this.runFrom = this.hero.pos.clone();
+    this.drop();
+    this.sailing = null;
+    const names = this.lesson.text?.levels?.[ladder.nodes[node].id] ?? [];
+    const { drill, content } = practiceRun({ ladder, node, level, random: Math.random, names, text: this.T.practice });
+    this.drill = drill;
+    this.runContent = content;
+    this.set({ objective: '', verdict: null });
+    this.gateRun.open(content);
+    this.gateRun.start();
+    return true;
+  }
+  /** The level is over: its stars are his hearts left (a level lost gives none), kept as the kit keeps them. */
+  endPractice(result) {
+    const d = this.drill;
+    if (!d) return;
+    const end = practiceEnd({
+      ladder: this.lesson.ladder,
+      drill: d,
+      result,
+      practice: this.practice,
+      keys: [...this.keysEver],
+    });
+    this.practice = end.practice;
+    if (end.win) this.audio.play(end.stars === 3 ? 'finale' : 'success');
+    else this.audio.play('fail');
+    this.drill = null;
+    this.leaveRail();
+    this.set({
+      phase: this.mapFrom === 'title' ? 'title' : 'dialog',
+      run: null,
+      practice: this.practice,
+      overlay: end.overlay,
+    });
+    this.save();
+  }
+  /** « خروج » or « الرجوع إلى الخريطة » during a level: nothing is kept, back to the hub on that node. */
+  quitPractice() {
+    const d = this.drill;
+    if (!d) return;
+    this.drill = null;
+    this.leaveRail();
+    this.set({ run: null, phase: this.mapFrom === 'title' ? 'title' : 'dialog' });
+    this.openMap(d.node);
+  }
+  /** The river goes away and Zero stands again where the story left him (on the summit, `stepWorld` holds him there). */
+  leaveRail() {
+    this.gateRun.hide();
+    this.hero.pos.copy(this.runFrom ?? this.dockSpot(this.state.at));
+    this.runFrom = null;
+    this.hero.vel.set(0, 0, 0);
+    this.hero.grounded = true;
+    this.lookTo(Math.PI);
+  }
+  /** « ذكّرني بالقاعدة » from the hub or a result: the tablet of a rule; closing it comes back where he was. */
+  showRule(key, from) {
+    if (!key) return;
+    this.audio.play('ui');
+    const o = this.state.overlay;
+    this.set({ overlay: { type: 'rule', key, back: from && o ? { ...o, ...from } : o } });
+  }
+  closeRule() {
+    const back = this.state.overlay?.back;
+    if (back) this.set({ overlay: back });
+    else this.closeMap();
+  }
+
   /** Without a course of gates the felucca simply sails, Zero aboard. */
   sail(i) {
     this.sailing = { from: i, to: i + 1, t: 0 };

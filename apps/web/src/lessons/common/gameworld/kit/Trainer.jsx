@@ -9,10 +9,16 @@
  *   tf    { statement, truth, reasons? }              — true / false; with `reasons` on the exam sheet;
  *   form  { tip, model?, single?, review?, lines }    — an exam answer in its own shape (see trainer.js › « a form »);
  *                                                       its tokens, a fraction template among them: `FormLines` below.
+ * Any of the three may carry `figure` — the data of a bank sheet's `statement.figure` (a plane figure: points, segments,
+ * parallels, lengths; or `space` / `chart` / `tape`): it is drawn ABOVE the question by the practice space's own
+ * `components/StatementFigure.jsx`, never narrower than its 12 px floor (`trainerFigure.js`). Without it the question is
+ * drawn exactly as before.
  */
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Star, RotateCcw, Gamepad2, FileText, ArrowLeft } from 'lucide-react';
 import MathText from '../../components/MathText';
+import StatementFigure from '../../components/StatementFigure';
+import { trainerFigure } from './trainerFigure';
 import { useLesson } from './LessonContext';
 import { sessionStars, SESSION } from './trainer';
 import { typedDecimal } from './forge';
@@ -242,6 +248,7 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
       <div hidden={rev !== null} className="di-trainer__live">
         {paper && !fb?.final && <PaperChip />}
         {/* once the answer is final, the sheet gives way to ONE line — the question and what was answered — so the correction has the room */}
+        <QuestionFigure fig={q.figure} />
         {fb?.final && q.format === 'exam' ? (
           <div className="di-sheet di-sheet--done" data-di-tr-recap>
             <p className="di-sheet__q">
@@ -302,6 +309,25 @@ export default function Trainer({ nodeId, best = 0, onDone, onPaper, onEvidence 
           </div>
         )}
       </div>
+    </div>
+  );
+}
+
+/**
+ * The figure of a question (`q.figure`), above it, drawn by StatementFigure — the one renderer of a statement's figure.
+ * Its width: `k × --di-min-font` at least (its smallest label at 12 px whatever the panel's zoom), else the width
+ * `trainerFigure` gives (its natural width, no taller than the room allows). Nothing when the question has none.
+ */
+export function QuestionFigure({ fig }) {
+  const f = trainerFigure(fig);
+  if (!f) return null;
+  return (
+    <div
+      className="di-tr-figure"
+      data-di-tr-figure={f.kind}
+      style={{ '--tr-fig-w': `${f.width}px`, '--tr-fig-k': f.k }}
+    >
+      <StatementFigure {...fig} maxWidth="100%" />
     </div>
   );
 }

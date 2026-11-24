@@ -442,8 +442,18 @@ export function createBankSittings({ lesson, levels = BANK_LEVELS, load = loadFr
   };
 }
 
-/** The rule key of each الكفاءة code of a lesson, from its pack (`keys` and `evidence.learningPointOf`). */
-export const keysOfPoints = (lessonCode, { keys = [], evidence } = {}) =>
-  Object.fromEntries(
-    keys.map((k) => [evidence?.learningPointOf?.(lessonCode, k), k]).filter(([code]) => Boolean(code)),
-  );
+/**
+ * The rule key of each الكفاءة code of a lesson, from its pack (`keys` and `evidence.learningPointOf`). When several keys
+ * prove the same الكفاءة, the code names the FIRST of them in the order of the story — the key that forges it (2026-11-24,
+ * `talis-hisab-atwal`: 📐 and 🦋 both prove P2, a P2 sheet's review card is 📐's); until then the last one won
+ * (`qisma-iqlidiya-baqi`, the only other lesson with two keys on one الكفاءة, now reviews P1 on `majmuaat-kamila` and P2
+ * on `baqi-asghar`). The question's key decides the card a missed sheet opens (`weakKinds` → `lesson.cards.ofKey`).
+ */
+export function keysOfPoints(lessonCode, { keys = [], evidence } = {}) {
+  const out = {};
+  for (const k of keys) {
+    const code = evidence?.learningPointOf?.(lessonCode, k);
+    if (code && !(code in out)) out[code] = k;
+  }
+  return out;
+}

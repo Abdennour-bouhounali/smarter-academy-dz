@@ -156,6 +156,18 @@ questions on the point of that card, in TWO FORMATS that alternate and drift tow
   « بيّن أنّ b قاسم للعدد a، ثمّ استنتج قاسمًا آخر », « أكمل بالعبارة المناسبة », « صحيح أم خطأ؟ علّل », « دون أيّ حساب، اذكر قاسمين » —
   paper numbers, the answer typed in its own shape (`a = b × [ ] + [ ]`, then « إذن b [قاسم / ليس قاسمًا] للعدد a »).
 
+**A question may carry a FIGURE** (2026-11-24, for `talis-hisab-atwal`): a kind of the lesson's `trainer.js` sets
+`q.figure` on the question it returns — the SAME data as a bank sheet's `statement.figure` (a plane figure: `points`,
+`segments` with `label` / `arrows` / `tone`, `ariaLabel`…; or `kind: 'space' | 'chart' | 'tape'`), on any of the three
+shapes (tap, tf, form) and either format. `Trainer.jsx › QuestionFigure` draws it ABOVE the question (and above the recap
+of a final exam answer) by `components/StatementFigure.jsx` — never a second renderer — in a white box
+(`data-di-tr-figure=<kind>`). Its width (`kit/trainerFigure.js`, the sitting's rule of `sheetFigure.js`): never narrower
+than `k × --di-min-font` (its smallest label ≥ 12 px whatever the panel's `Fit` zoom), else its natural width, no
+taller than 220 px; `trainerFigure(fig).fits` says it stays within the room the trainer has at 1366 × 768 (560 × 260 px
+at its floor) — a lesson's trainer test asserts it for every figure it gives. A question without `figure` draws exactly
+as before (`kit/trainerFigure.render.test.jsx`: jidhr-tarbii's and bahth-pgcd's sessions carry none and draw none).
+Not yet measured in a browser.
+
 A wrong answer gets a HINT first — what the answer gives, never the answer — then, after a second one, the written correction
 « التصحيح » (`check` → `hint`, `fix`). Stars = questions right at the first try, kept per card (`know.trained`). The 13 cards map
 to five plans (`PLAN_OF`): by remainder, by product, the four sentences, 1 and the number itself, and a mix for the idea and the summary.
@@ -562,6 +574,18 @@ one experiment (or a case in the forge's mirror) alone in the forge's experiment
   shadow box and the fog come from the runtime's K-f hooks (`sunDir`, `shadowBox`, `fogRange`).
 - **Between two docks** the felucca sails on the kit's run with the river skin and crocodiles (`riverMeshes.js ›
   riverRun()`, K-b); without a leg in the story it simply sails.
+- **A level of « فضاء التدريب » is a trip on the same river** (`Game.startPractice(node, level)`, pure part
+  `nilePyramids/practice.js`; plan §1.3, §3.9): the lesson's ladder (`lesson.ladder`, `kit/ladder.js`) makes the waves —
+  the felucca legs' shape, `say`, `tex?`, `gates` × 3 (« p/q » over a real bar), `good`, `why: { right, wrong }` — one
+  buoy each (`total` = the waves, never a level up), at the level's own `speed` (rising 0,05 m/s a buoy; a level without
+  one sails at the legs' pace, `kit/GateRun.js › railSpeed`), crocodiles in the lanes, three hearts. The stars are the
+  hearts left, a level lost gives none and never lowers a best; the result is the kit's `result` card (`endPractice`),
+  « أعيد الرحلة » replays the level with new waves (`startRun`), « خروج » / « الرجوع إلى الخريطة » goes back to the hub on
+  that node (`quitPractice`), Zero stands again where he was. « ذكّرني بالقاعدة » is the kit's `rule` overlay
+  (`showRule` / `closeRule`). The words are `strings.js › practice` (overridable by `story.text.practice`). A level that is
+  a real-world case (`levels[l].game`) is refused: this world has none. A won leg does NOT credit level 1 of its node
+  (the plan's « the trip is the first level » is read as the same waves, `practice.test.js` of the lesson). Tests:
+  `nilePyramids/practice.test.js` (the pure part, and the hooks played on a stand-in of the runtime). Not walked.
 
 **What the lesson's story gives** (`lesson.story`, every field optional): `text`; `legs[i]` (the run from dock i);
 `forges: { field?, workshop?, river?, summit? }` → a key of `lesson.forges`, played at that stage's table;
@@ -587,7 +611,10 @@ parallel }] }`;
 `{ kind: 'scale', tri: { small: { V, P, Q, sides }, big: { … } }, rounds: [{ fact: { k, lines } } | { k, feed } |
 { k: null, feed } | { k, feed, perimeter: true }] }` → `{ rows: [{ feed, k, image, said, right, perimeter }] }`.
 
-**Hooks for walks:** `data-np-stage`, `-rope`, `-drop`, `-sight`, `-register`, `-row`, `-order=<canal|course|mark|ferry|
+**Hooks for walks:** in practice, the kit's — the hub (`PracticeHub.jsx`: `data-di-node`, `data-di-level`, `data-di-next`), the run's `data-gr-*`
+(`data-gr-start`, `data-gr-skin="river"`, `data-gr-round`, `data-gr-lane`, `data-gr-hazard`, `data-gr-bumps`,
+`data-gr-hearts`, `data-gr-why`, `data-gr-leave`), `window.__gateRun`, then `data-di-result="win|lose"`;
+in the story `data-np-stage`, `-rope`, `-drop`, `-sight`, `-register`, `-row`, `-order=<canal|course|mark|ferry|
 capstone>`, `-predict`, `-order-in` (`-order-n` / `-order-d` for k), `-order-send`, `-order-later`, `-refused`, `-fact`,
 `-quarry`, `-mission`, `-box`, `-card-check`, `-card-later`, `-card-fact`; the kinds' `data-iq-*` (listed at the top of
 each `Inquiry*.jsx`) and `window.__inquiry`; `window.__world` and `window.__np` (development).
@@ -741,7 +768,9 @@ felt BETWEEN two levels of the exam, never inside a sitting.
   A level is passed at **80 %** of its points (`PASS`); stars: 1 from 80 %, 2 from 90 %, 3 for a full paper. A passed level
   opens the next. Each sitting draws its sheets at random from the bank's level (ten sheets each).
 - **Adapted to the student** (`applySitting`, `weakKinds`): after a sheet under 80 %, what lost points is remembered for that
-  level — the rule KEYS of the lost steps (a step's الكفاءة → the key, `keysOfPoints`) and the sheets themselves (`ex:<id>`);
+  level — the rule KEYS of the lost steps (a step's الكفاءة → the key, `keysOfPoints`; when several keys prove one الكفاءة
+  it names the FIRST in the story's order, the key that forges it — 2026-11-24: `talis-hisab-atwal` 📐 before 🦋 on P2,
+  `qisma-iqlidiya-baqi` `majmuaat-kamila` on P1 and `baqi-asghar` on P2) and the sheets themselves (`ex:<id>`);
   the next sheet of the level leaves out the sheets already missed while the level has others, and puts the sheets that ask
   the missed keys FIRST (`focus`). After two fails in a row the student is sent to train on the rule first (« أتدرّب أوّلًا »
   opens the card of the first missed key: `cards.ofExercise[w] ?? cards.ofKey[w]`).
@@ -2051,7 +2080,8 @@ state line under the tables):
 | `Paper.jsx` | the paper mode: the gate, the sign, the long-division model sheet | — |
 | `Spaces.jsx` | `ExamLadder`, `Promotion`, `ProgressPage` (« تقدّمي ») | `journey`, `sittings`, `rules`, `cards`, `evidence` |
 | `ExamSitting.jsx`, `examSitting.css` | the screen of « الامتحان الأبيض » (§2quater): the bank's sheets, the practice widgets | `sittings` (from `createBankSittings`), `rules`, `keys`, `evidence` |
-| `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes | `trainer` |
+| `Trainer.jsx` | the screen of « تدرّب »: it draws a tap, a true / false, or a FORM the lesson describes — and a question's `figure` above it (`QuestionFigure`) | `trainer` |
+| `trainerFigure.js` (+ `trainerFigure.render.test.jsx`) | the width of a trainer question's figure: its 12 px floor, its natural width, the room at 1366 × 768 (`fits`) | `q.figure` |
 | `KnowledgePage.jsx` | the full-page « خريطة المعارف » | `knowledge`: `{ graph, modules, positions }` |
 | `LessonWorld.jsx` | **the shell**: the canvas, the top bar, the controls, the overlay switch; it mounts `<LessonProvider>` and creates the world's game | `world` (below) and the pack |
 | `Title.jsx`, `PracticeHub.jsx`, `Tablet.jsx`, `Result.jsx`, `End.jsx` | the title screen, the practice hub (the lesson's mind map as a level select), a rule tablet, the result of a level, the end | `ladder`, `journey`, `rules`, `keys`, `text`, `practiceMap` |

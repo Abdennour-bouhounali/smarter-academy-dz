@@ -98,6 +98,31 @@ export const WORLD_TEXT = {
     sail: 'الفلوكة تُبحر إلى المرسى التالي.',
   },
   recall: { title: 'من المرسى السابق' },
+  /**
+   * A level of « فضاء التدريب », sailed on the river (`practice.js`): the run's cards (`kit/GateRunHud.jsx ›
+   * content.text`); the level's name is its title. Never a rule, never « wrong »: a buoy that was not the one shows a fact.
+   */
+  practice: {
+    title: 'رحلة تدريب على النيل',
+    say: 'على كلّ عوّامة عدد: مرّ بالعوّامة التي تحمل الجواب.',
+    rule: 'اختر عوّامتك بالسهمين ← →، واحذر التمساح. لك ثلاثة قلوب.',
+    start: 'أبحر',
+    again: 'أعيد الرحلة',
+    leave: 'الرجوع إلى الخريطة',
+    order: 'مرّ بالعوّامة التي تحمل الجواب',
+    gate: 'العوّامة',
+    of: 'من',
+    pause: 'توقّف',
+    resume: 'متابعة',
+    quit: 'خروج',
+    pausedTitle: 'الفلوكة متوقّفة',
+    pausedText: 'العوّامات تنتظرك حيث تركتها. اضغط « متابعة » أو مفتاح المسافة.',
+    left: 'يسار',
+    right: 'يمين',
+    bump: 'التمساح! خسرت قلبًا.',
+    won: { title: 'انتهت الرحلة', text: 'عُد إلى الخريطة لترى نجومك.' },
+    lost: { title: 'انتهت القلوب', text: 'أعد الرحلة من أوّلها.' },
+  },
   /** Stages 2–5 (phase 3): their instructions, prompts, orders and facts. */
   stage: {
     objective: {

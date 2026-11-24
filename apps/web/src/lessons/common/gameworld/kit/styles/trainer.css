@@ -396,3 +396,18 @@
 .di-trainer--done p {
   margin: 0;
 }
+/* a question's figure (`q.figure`, Trainer.jsx › QuestionFigure): above the question, centred; never narrower than its
+   12 px floor — k × --di-min-font, the floor in the units of every zoom above it (trainerFigure.js) */
+.di-tr-figure {
+  align-self: center;
+  width: max(var(--tr-fig-w), calc(var(--di-min-font, 12px) * var(--tr-fig-k, 0)));
+  max-width: none;
+  flex: none;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.9rem;
+  background: #fff;
+}
+.di-tr-figure figure,
+.di-tr-figure svg {
+  margin: 0;
+}
