@@ -421,6 +421,30 @@ is a kit part since 2026-11-21: it names no world and no lesson. A world owns on
 content: `{ levels, gates, round(level, random, n) → { ask, tex?, options × 3, right, why × 3 }, total?, text }`.
 Without `total` the run ends with the last heart; with `total` it is a COURSE that ends after that many gates
 (`won`). A gate that was not the right one shows a FACT (`why`), never « wrong ».
+
+**Two options of the run (K-b, 2026-11-24; `PYRAMIDS_WORLD_PLAN.md` §1.3).** A world that passes neither keeps the rail
+of light and its rules unchanged (`kit/gateRun.test.js` pins the scene and two scripted runs by fingerprints taken before
+the options; root-courts passes none, divisor-isles has its own rail):
+
+- `skin: { name, track(), rider(), gate(lane), lanes?, labelY?, bob?, lead?, camera?: { back, up, ahead, look } }` — the
+  WORLD's meshes in place of the rail, the hoverboard and the arches. `track().userData.flow(step, dt)` scrolls what
+  passes by and `tick(dt, t)` animates; `rider()` is built along +z, its origin where the hero stands, `userData.deck`
+  the height of his feet; `gate(lane).userData.dress(state)` gets `'idle' | 'taken' | 'picked' | 'right' | 'other'`.
+  `lanes` is the spacing (2.5 on the rail), `labelY` the height of the page numbers (4.3), `lead` how far ahead a gate
+  and an obstacle are DRAWN when they reach him (a prow meets its buoy; the judging does not move). The HUD gets
+  `gr-run--<name>` and `data-gr-skin`; on `river` the numbers are navy tags, ≥ 25 px at 1366×768.
+- `hazards: { mesh(), every?: 1, cost?: 1, react?: 0.9 }` — one obstacle in one lane, HALFWAY between two gates
+  (`hazardPlan`): any lane, the right one included (where it sits says nothing of the answer), never closer than `react`
+  seconds to a gate, none if the speed forbids it. In his lane it costs `cost` hearts and shakes the rider
+  (`game.shake`, a jolt, a sad pose); the gate and its question never change; the last heart ends the run as lost, and
+  « again » restarts the leg. `state.run` carries `hazard` (its lane, null once passed) and `bumps`; the HUD shows them as
+  `data-gr-hazard` / `data-gr-bumps`, shakes the hearts and shows `text.bump` if the lesson gives it.
+- For a walk, in development: `window.__gateRun` → `{ skin, lane, hearts, bumps, speed, gate: { n, dx, s }, hazard:
+  { lane, dx, s } }` (metres and seconds ahead of him — never the right gate).
+
+The felucca of « الأهرامات » is `nilePyramids/riverMeshes.js › riverRun()` (`riverTrack`, `felucca`, `crocodile`, `buoy`,
+ported from the owner's mock-up, built without a renderer in `riverMeshes.test.js`); it can be looked at alone on
+`/__qa/gate-river` (development only).
 **Not yet migrated:** « سباق الأعداد » in `missionIsle/Game.js` still carries its own copy of this engine (the kit's was
 extracted from it, line for line); it moves to the kit when the owner says so. `divisorIsles/Game.js` has the first run.
 

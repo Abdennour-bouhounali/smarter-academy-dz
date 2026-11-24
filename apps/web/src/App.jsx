@@ -239,6 +239,8 @@ const MissionPrototype = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/missionPr
 const NilePyramidsPreview = QA_FIXTURES_ENABLED
   ? lazy(() => import('./qa/nilePyramids/NilePyramidsPreview.jsx'))
   : null;
+// the kit's gate run with the felucca's river and its crocodiles, alone (PYRAMIDS_WORLD_PLAN §2.4 K-b) — development only
+const GateRiverPreview = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/gateRiver/GateRiverPreview.jsx')) : null;
 const MissionsHome = QA_FIXTURES_ENABLED
   ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx').then((m) => ({ default: m.MissionsHome })))
   : null;
@@ -680,6 +682,7 @@ function AppRoutes() {
         {QA_FIXTURES_ENABLED && <Route path="/__qa/mission-2" element={<MissionPrototype n={2} />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/missions" element={<MissionsHome />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/nile-pyramids" element={<NilePyramidsPreview />} />}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/gate-river" element={<GateRiverPreview />} />}
       </Route>
     </Routes>
   );
