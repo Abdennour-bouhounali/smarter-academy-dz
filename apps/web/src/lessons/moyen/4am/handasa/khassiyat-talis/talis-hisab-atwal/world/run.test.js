@@ -18,6 +18,7 @@ import {
 import { KEYS } from './journey';
 import { compare, equal, over, read, times, write } from './math';
 import { chainHolds, sameRatio } from '../../../../../../common/gameworld/kit/authoring/test/ratios';
+import { runFigure } from '../../../../../../common/gameworld/kit/trainerFigure';
 
 const KINDS = Object.keys(GENERATORS);
 const PARAMS = { nested: [{ find: 'VC' }, { find: 'MN' }] };
@@ -169,6 +170,60 @@ describe('the felucca’s legs of « خاصية طالس وحساب الأطوا
     expect(gateOption('4/7')).toEqual({ tex: '\\dfrac{4}{7}' });
     expect(gateOption(21)).toEqual({ t: '21' });
     expect(gateOption('13,75')).toEqual({ t: '13,75' });
+  });
+});
+
+describe('a buoy that names points carries its FIGURE (owner, 2026-11-25: « a schema that show A B C »)', () => {
+  /** The kinds of k: a coefficient and two triangles (1), (2) — no point named, no figure. */
+  const K_ONLY = ['direction', 'image', 'back'];
+  /** The two letters of a segment, in order: « AC » for { from: 'C', to: 'A' }. */
+  const ends = (s) => [s.from, s.to].sort().join('');
+  const sorted = (name) => name.split('').sort().join('');
+  it('every kind of configuration: its letters, its lengths given, « ? » on the asked one, the chevrons, at 12 px in the panel', () => {
+    const seen = new Set();
+    // many seeds: a fat butterfly fits at no turn of its first angle (`buoyFigure` narrows it — found at seed 200)
+    for (const w of waves(300)) {
+      const r = roundOf(w);
+      const tag = `${w.type} ${w.say} ${w.tex}`;
+      if (K_ONLY.includes(w.type)) {
+        expect(r.figure, tag).toBeUndefined();
+        expect(`${w.say} ${w.tex}`.replace(/\\[a-z]+/g, ''), tag).not.toMatch(/[A-Z]/);
+        continue;
+      }
+      seen.add(w.type);
+      const f = r.figure;
+      expect(f, tag).toBeTruthy();
+      // every letter the order names is a point of the figure
+      const letters = new Set(`${w.say} ${w.tex}`.replace(/\\[a-z]+/g, '').match(/[A-Z]/g));
+      for (const l of letters) expect(Object.keys(f.points), tag).toContain(l);
+      // « ? » on the length asked, and on it alone
+      const asked = w.say.match(/[A-Z]{2}/g).at(-1);
+      const unknown = f.segments.filter((s) => s.label === '?' || /= \?$/.test(s.label ?? ''));
+      expect(unknown.map(ends), tag).toEqual([sorted(asked)]);
+      // every length the order gives is written on its segment; a ratio given (« AM / AB = p / q ») stays in the order
+      for (const [, seg, n] of w.tex.matchAll(/([A-Z]{2}) = (\d+)/g)) {
+        const on = f.segments.filter((s) => ends(s) === sorted(seg) && (s.label === n || s.label === `${seg} = ${n}`));
+        expect(on, `${tag} — ${seg}`).toHaveLength(1);
+      }
+      // nothing else written: the lengths given and the one asked
+      expect(
+        f.segments.filter((s) => s.label != null),
+        tag,
+      ).toHaveLength([...w.tex.matchAll(/[A-Z]{2} = \d/g)].length + 1);
+      expect(
+        f.segments.filter((s) => s.arrows),
+        tag,
+      ).toHaveLength(2);
+      const t = runFigure(f);
+      expect(t.fits, tag).toBe(true);
+      expect(t.label, tag).toBeGreaterThanOrEqual(12);
+    }
+    expect([...seen].sort()).toEqual(KINDS.filter((k) => !K_ONLY.includes(k)).sort());
+  });
+  it('the legs and the practice ladder hand it to the rail (`roundOf`)', () => {
+    const r = LEGS[0].round(1, rng(3), 0);
+    expect(r.figure.points.A).toBeTruthy();
+    expect(LEGS[3].round(1, rng(3), 0).figure).toBeUndefined();
   });
 });
 

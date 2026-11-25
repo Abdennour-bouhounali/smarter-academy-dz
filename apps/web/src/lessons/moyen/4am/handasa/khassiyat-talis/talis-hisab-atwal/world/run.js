@@ -2,8 +2,12 @@
  * THE FELUCCA'S LEGS of lesson `talis-hisab-atwal` — the content of the kit's rail (`kit/GateRun.js`) between two docks
  * of « الأهرامات », in the river's skin with its crocodiles (`nilePyramids/riverMeshes.js`; plan §1.3). PURE.
  *
- * Four right buoys reach the next dock (`total: 4`). Every leg is NUMERIC (the rail draws no figure: the order names
- * the segments), each buoy row placed its kind's thinking time plus five seconds ahead (`THINK`, `SPARE`) — MENTAL numbers: k = p/q with q ≤ 9, a side q × m with m ≤ 9.
+ * Four right buoys reach the next dock (`total: 4`). Every leg is NUMERIC, each buoy row placed its kind's thinking time
+ * plus five seconds ahead (`THINK`, `SPARE`) — MENTAL numbers: k = p/q with q ≤ 9, a side q × m with m ≤ 9. A buoy that
+ * names points carries its FIGURE (owner, 2026-11-25: « the questions in the river need a schema that show A B C »): the
+ * world's Thalès figure with the order's letters, the lengths it gives written, « ? » on the one asked and the chevrons
+ * of the parallel (`figureOf`; drawn by the HUD beside the order, `kit/GateRunHud.jsx`). The k-only kinds (`direction`,
+ * `image`, `back`) name no point and have none.
  * Each leg trains only what he has just sealed:
  *   leg 0 (dock 1 → 2) 🔑  « AM = 6 ، AB = 14 ، AN = 9 — AC ؟ »          its wrong buoys: the piece, the inverted ratio
  *   leg 1 (dock 2 → 3) 📐  « AM / AB = p / q ، AB = q × m — AM ؟ »        AB − p ; AB × q / p
@@ -20,7 +24,29 @@
  * buoy equals the right one (AB − p = AM when m(q − p) = p; side × k = side + k).
  */
 import { pick, shuffle } from '../../../../../../common/gameworld/kit/random';
-import { compare, equal, isInteger, K1, K2, K3, K4, ltr, minus, over, plus, tex, times, write } from './math';
+import { buoyFigure } from '../../../../../../common/gameworld/nilePyramids/figure';
+import {
+  compare,
+  equal,
+  isInteger,
+  K1,
+  K2,
+  K3,
+  K4,
+  ltr as isolate,
+  minus,
+  over,
+  plus,
+  tex,
+  times,
+  write,
+} from './math';
+
+/**
+ * An equality of a buoy's sentence, isolated left to right AND unbreakable (no-break spaces): a fact read on the river
+ * broke « 25 × 36 = 900 » over two lines, its pieces in the wrong order (owner's screen, 2026-11-25).
+ */
+const ltr = (s) => isolate(String(s).replace(/ /g, ' '));
 
 /** k < 1, q ≤ 9, none written by the bank (run.test.js reads the bank). */
 export const REDUCE = ['5/6', '2/7', '6/7', '5/8', '7/8', '2/9', '4/9', '5/9', '7/9', '8/9'];
@@ -53,6 +79,27 @@ const gate = (x) => {
   const t = write(x);
   return /^\d+$/.test(t) ? Number(t) : t;
 };
+/**
+ * THE FIGURE of a buoy that names points (`nilePyramids/figure.js › buoyFigure`): `names` the order's letters, `len`
+ * the lengths (as text), `show` those written, `ask` the one written « ? ». `draw`: lengths for the SHAPE only, when the
+ * order gives too few to draw it (a ratio, one side) — taken from the wave's own numbers at the same k; never written.
+ */
+const figureOf =
+  (kind, names, len, show, ask, draw = null) =>
+  () =>
+    buoyFigure(
+      {
+        kind,
+        names,
+        len: Object.fromEntries(Object.entries(len).map(([k, v]) => [k, v == null ? v : String(v)])),
+        ...(draw ? { draw } : {}),
+      },
+      { show, ask },
+    );
+const NESTED = { V: 'A', M: 'M', B: 'B', N: 'N', C: 'C' };
+/** A side for the drawing only: `x` times `f`, written exactly. */
+const drawn = (x, f) => write(times(String(x), f));
+
 /** The product « a × b = c » isolated left to right (true: `run.test.js` checks every one). */
 const prod = (a, b) => ltr(`${write(a)} × ${write(b)} = ${write(times(a, b))}`);
 /** The two cross products « a × d » and « b × c » of a / b = c / d, written as two facts. */
@@ -115,7 +162,9 @@ export const SPARE = 5;
  * A wave: the right gate, two others drawn from `pool` (never one the wave would count right, never twice the same, at
  * most 6 characters, positive), each with its fact. null (« ask again ») when the pool has fewer than two.
  */
-function waveOf(rand, base, pool, fact, rightFact) {
+function waveOf(rand, wave, pool, fact, rightFact) {
+  // `drawing`: the buoy's figure, drawn only once the wave is made (`figureOf`)
+  const { drawing, ...base } = wave;
   const right = truthOf(base);
   if (!right || right.length > 6) return null;
   const seen = new Set([right]);
@@ -140,6 +189,7 @@ function waveOf(rand, base, pool, fact, rightFact) {
   return {
     ...base,
     seconds: THINK[base.type] + SPARE,
+    ...(drawing ? { figure: drawing() } : {}),
     // the ladder never draws the same numbers twice in a row: its `a` / `b` are the order's formula
     a: base.tex,
     b: base.say,
@@ -185,6 +235,17 @@ export const GENERATORS = {
       tex: `AM = ${AM} \\quad AB = ${AB} \\quad ${given} = ${g}`,
       data,
       pairs,
+      // AC asked: the four lengths from A; MN asked: AM, AB, BC and MN, its AC for the shape only (3/4 of AB + BC)
+      drawing: side
+        ? figureOf('nested', NESTED, { VM: AM, VB: AB, VN: g, VC: q * n }, ['VM', 'VB', 'VN', 'VC'], ['VC'])
+        : figureOf('nested', NESTED, { VM: AM, VB: AB, MN: p * n, BC: g }, ['VM', 'VB', 'MN', 'BC'], ['MN'], {
+            VM: String(AM),
+            VB: String(AB),
+            VN: drawn(AB + g, `${3 * p}/${4 * q}`),
+            VC: drawn(AB + g, '3/4'),
+            MN: String(p * n),
+            BC: String(g),
+          }),
     };
     const right = truthOf(base);
     // the piece: NC (= AN × MB / AM) for AC, MB × BC / AB for MN; the inverted ratio; a difference added
@@ -216,6 +277,15 @@ export const GENERATORS = {
       tex: `\\dfrac{AM}{AB} = ${kTex(k)} \\quad AB = ${AB}`,
       data: { k, side: String(AB) },
       pairs,
+      // the ratio stays in the order: AB written, AM « ? »; AC for the shape only (5/6 of AB), AN at the same k
+      drawing: figureOf('nested', NESTED, { VM: p * m, VB: AB }, ['VM', 'VB'], ['VM'], {
+        VM: String(p * m),
+        VB: String(AB),
+        VN: drawn(AB, `${5 * p}/${6 * q}`),
+        VC: drawn(AB, '5/6'),
+        MN: null,
+        BC: null,
+      }),
     };
     const right = truthOf(base);
     const fact = (x) => `مع ${ltr(`AM = ${write(x)}`)}: ${cross(x, AB, p, q)}، والجداءان مختلفان.`;
@@ -241,6 +311,7 @@ export const GENERATORS = {
       tex: `AM = ${AM} \\quad MB = ${MB} \\quad AN = ${AN}`,
       data: { small: AM, big: AB, other: AN },
       pairs,
+      drawing: figureOf('nested', NESTED, { VM: AM, VB: AB, VN: AN, VC: q * n, MB }, ['VM', 'MB', 'VN', 'VC'], ['VC']),
     };
     const right = truthOf(base);
     const piece = (q - p) * n; // AN × MB / AM: NC, the piece
@@ -276,6 +347,23 @@ export const GENERATORS = {
       tex: `\\dfrac{OC}{OB} = ${kTex(k)} \\quad OT = ${OT}`,
       data: { k, side: String(OT) },
       pairs,
+      // OC / OB = OD / OT: C on line (OB) and D on line (OT), across O — the small triangle OCD, the big OBT. The ratio
+      // stays in the order: OT written, OD « ? »; OB for the shape only (4/5 of OT), OC at the same k
+      drawing: figureOf(
+        'butterfly',
+        { V: 'O', M: 'C', B: 'B', N: 'D', C: 'T' },
+        { VN: p * m, VC: OT },
+        ['VN', 'VC'],
+        ['VN'],
+        {
+          VM: drawn(OT, `${4 * p}/${5 * q}`),
+          VB: drawn(OT, '4/5'),
+          VN: String(p * m),
+          VC: String(OT),
+          MN: null,
+          BC: null,
+        },
+      ),
     };
     const right = truthOf(base);
     const fact = (x) => `مع ${ltr(`OD = ${write(x)}`)}: ${cross(x, OT, p, q)}، والجداءان مختلفان.`;
@@ -300,6 +388,14 @@ export const GENERATORS = {
       tex: `OA = ${OA} \\quad OC = ${OC} \\quad OB = ${OB}`,
       data: { OA: String(OA), OC: String(OC), OB: String(OB) },
       pairs,
+      // (AB) ∥ (CD): A and C on one line through O, B and D on the other
+      drawing: figureOf(
+        'butterfly',
+        { V: 'O', M: 'A', B: 'C', N: 'B', C: 'D' },
+        { VM: OA, VB: OC, VN: OB, VC: q * n },
+        ['VM', 'VB', 'VN', 'VC'],
+        ['VC'],
+      ),
     };
     const right = truthOf(base);
     const fact = (x) =>
@@ -309,6 +405,8 @@ export const GENERATORS = {
     const rightFact = `${ltr(`OD = ${right}`)}: ${cross(OA, OC, OB, right)} — جداءان متساويان.`;
     return waveOf(rand, base, [whole(over(OB * OA, OC)), String(OA + OC), String(OB + (OC - OA))], fact, rightFact);
   },
+
+  // 🔍 the three kinds of k (`direction`, `image`, `back`) name no point: no figure (a coefficient, two triangles (1), (2))
 
   /** 🔍 one number k, from (1) to (2): an enlargement or a reduction? */
   direction(rand) {
@@ -410,7 +508,7 @@ export const gateOption = (g) => {
   const m = /^(\d+)\/(\d+)$/.exec(String(g));
   return m ? { tex: `\\dfrac{${m[1]}}{${m[2]}}` } : { t: String(g) };
 };
-/** A wave as the rail plays it: { ask, tex, options × 3, right, why × 3 }. */
+/** A wave as the rail plays it: { ask, tex, options × 3, right, why × 3, seconds, figure? }. */
 export const roundOf = (w) => ({
   ask: w.say,
   tex: w.tex ?? null,
@@ -418,6 +516,7 @@ export const roundOf = (w) => ({
   right: w.good,
   why: w.gates.map((g, i) => (i === w.good ? w.why.right : (w.why.wrong?.[g] ?? w.why.right))),
   seconds: w.seconds,
+  ...(w.figure ? { figure: w.figure } : {}),
 });
 
 /** The words of the rail's cards (`kit/GateRunHud.jsx › content.text`): never a rule, never « wrong ». */

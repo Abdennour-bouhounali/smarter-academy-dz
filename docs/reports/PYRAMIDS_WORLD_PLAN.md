@@ -107,8 +107,9 @@ the skin of the river (kit work K-b):
 - the three arches become three NUMBER BUOYS;
 - a CROCODILE surfaces in one lane between two buoys and costs a heart if the boat is in that lane.
 
-Four right buoys reach the dock (`total: 4`). **Every leg is numeric**: the rail draws no figure, and a gate passes in
-about 3 s. Each leg trains only what he has just sealed:
+Four right buoys reach the dock (`total: 4`). **Every leg is numeric**, and a gate passes in about 3 s. Since
+2026-11-25 (owner) a buoy that names points carries its FIGURE beside the order (`run.js` → `figure.js › buoyFigure`,
+drawn by `kit/GateRunHud.jsx`; `GAME_WORLD.md` « The kit's gate run »); the buoys of k only have none. Each leg trains only what he has just sealed:
 
 | Leg | After | What a buoy asks (mental numbers) | The error its wrong buoys hold |
 |---|---|---|---|
