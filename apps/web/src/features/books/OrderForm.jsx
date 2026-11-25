@@ -79,6 +79,18 @@ export default function OrderForm({ book }) {
 
   useEffect(() => { if (!done) writeDraft(book.slug, form); }, [book.slug, form, done]);
 
+  // Le formulaire (long) est remplacé par le court message de succès : sans ce défilement, le
+  // client se retrouve plus bas, sur la FAQ, et ne voit pas la confirmation (2026-11-25).
+  // Centré (sous l'en-tête fixe), focus pour les lecteurs d'écran, sans animation si demandé.
+  const successRef = useRef(null);
+  useEffect(() => {
+    const el = successRef.current;
+    if (!done || !el) return;
+    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    el.scrollIntoView?.({ block: 'center', behavior: reduce ? 'auto' : 'smooth' });
+    el.focus?.({ preventScroll: true });
+  }, [done]);
+
   const localErrors = useMemo(() => validateOrder(form), [form]);
   const errors = { ...localErrors, ...serverErrors };
   const ready = Object.keys(localErrors).length === 0;
@@ -197,7 +209,7 @@ export default function OrderForm({ book }) {
   if (done) {
     const feeKnown = done.deliveryFee !== null && done.total !== null;
     return (
-      <div role="status" className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 text-center sm:p-8">
+      <div ref={successRef} tabIndex={-1} role="status" className="scroll-mt-24 rounded-3xl border border-emerald-200 bg-emerald-50 p-6 text-center outline-none sm:p-8">
         <CheckCircle2 className="mx-auto mb-3 text-emerald-600" size={44} />
         <h3 className="font-space text-2xl font-bold text-slate-900">{S.order.successTitle}</h3>
         <p className="mx-auto mt-2 max-w-md font-inter text-slate-600">{feeKnown ? S.order.successBody : S.order.successBodyLater}</p>
