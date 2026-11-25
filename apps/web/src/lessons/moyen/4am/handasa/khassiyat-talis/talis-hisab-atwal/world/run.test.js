@@ -2,7 +2,19 @@ import { describe, it, expect } from 'vitest';
 import { rng } from '../../../../../../common/gameworld/kit/random';
 import { plain, trueEqualities } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
 import { bankNumbers, linesWithBoth, readBank } from '../../../../../../common/gameworld/kit/authoring/test/bank.js';
-import { ENLARGE, GENERATORS, LEG_MIX, LEGS, REDUCE, fairWave, gateOption, isRight, roundOf } from './run';
+import {
+  ENLARGE,
+  GENERATORS,
+  LEG_MIX,
+  LEGS,
+  REDUCE,
+  SPARE,
+  THINK,
+  fairWave,
+  gateOption,
+  isRight,
+  roundOf,
+} from './run';
 import { KEYS } from './journey';
 import { compare, equal, over, read, times, write } from './math';
 import { chainHolds, sameRatio } from '../../../../../../common/gameworld/kit/authoring/test/ratios';
@@ -89,6 +101,11 @@ describe('the felucca’s legs of « خاصية طالس وحساب الأطوا
         expect(r.right).toBeGreaterThanOrEqual(0);
       }
       for (const [kind, params] of LEG_MIX[i]) expect(fairWave(rng(5), kind, params).key).toBe(KEYS[i]);
+      // every buoy row is its kind's thinking time plus the owner's five seconds ahead (2026-11-25)
+      for (let n = 0; n < 4; n += 1) {
+        const [kind] = LEG_MIX[i][n % LEG_MIX[i].length];
+        expect(leg.round(1, rng(n + 1), n).seconds).toBe(THINK[kind] + SPARE);
+      }
     });
     expect(JSON.stringify(LEGS.map((l) => l.text))).not.toMatch(/خطأ|خاطئ|غلط/);
   });

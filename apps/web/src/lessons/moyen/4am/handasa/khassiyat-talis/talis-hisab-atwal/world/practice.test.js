@@ -3,7 +3,7 @@ import { rng } from '../../../../../../common/gameworld/kit/random';
 import { SUMMARY } from '../../../../../../common/gameworld/kit/ladder';
 import { plain } from '../../../../../../common/gameworld/kit/authoring/test/suites.js';
 import { ladder, PRACTICE_MAP, PRACTICE_NODES } from './practice';
-import { isRight, LEG_MIX } from './run';
+import { isRight, LEG_MIX, SPARE, THINK } from './run';
 import { KEYS } from './journey';
 import { KNOWLEDGE } from './knowledge';
 import { TEXT } from './text';
@@ -46,6 +46,14 @@ describe('« فضاء التدريب » — the practice ladder of « خاصية
         .map(({ w }) => w.key),
     );
     expect([...summaryKeys].sort()).toEqual([...KEYS].sort());
+  });
+
+  it('every buoy of every level carries its kind’s thinking time plus five seconds (the rail spaces the rows by it)', () => {
+    ladder.nodes.forEach((node, n) =>
+      node.levels.forEach((_, l) => {
+        for (const w of ladder.makeRun(rng(n * 7 + l + 1), n, l)) expect(w.seconds).toBe(THINK[w.type] + SPARE);
+      }),
+    );
   });
 
   it('the hub names no key and no rule before its forge', () => {

@@ -3,7 +3,7 @@
  * of « الأهرامات », in the river's skin with its crocodiles (`nilePyramids/riverMeshes.js`; plan §1.3). PURE.
  *
  * Four right buoys reach the next dock (`total: 4`). Every leg is NUMERIC (the rail draws no figure: the order names
- * the segments), a buoy passes in about three seconds — MENTAL numbers: k = p/q with q ≤ 9, a side q × m with m ≤ 9.
+ * the segments), each buoy row placed its kind's thinking time plus five seconds ahead (`THINK`, `SPARE`) — MENTAL numbers: k = p/q with q ≤ 9, a side q × m with m ≤ 9.
  * Each leg trains only what he has just sealed:
  *   leg 0 (dock 1 → 2) 🔑  « AM = 6 ، AB = 14 ، AN = 9 — AC ؟ »          its wrong buoys: the piece, the inverted ratio
  *   leg 1 (dock 2 → 3) 📐  « AM / AB = p / q ، AB = q × m — AM ؟ »        AB − p ; AB × q / p
@@ -94,6 +94,24 @@ export function isRight(w, n) {
 }
 
 /**
+ * How long each kind of buoy takes a 4AM student, in seconds, computing in his head while he steers (owner, 2026-11-25:
+ * « estimate the time of each question and then five seconds »): reading the order, the steps of the computation, the
+ * choice of a buoy. `SPARE` is the owner's five seconds; the rail places the buoy row `seconds` of travel ahead
+ * (`kit/GateRun.js › next`).
+ */
+export const THINK = {
+  direction: 5, // compare k with 1
+  back: 8, // invert a fraction
+  fourth: 12, // AB ÷ q × p
+  butterfly: 12, // OT ÷ q × p
+  image: 12, // side ÷ q × p
+  nested: 20, // simplify AM / AB, then AN ÷ p × q
+  butterflyLen: 20, // simplify OA / OC, then OB ÷ p × q
+  whole: 25, // AB = AM + MB first, then the nested computation
+};
+export const SPARE = 5;
+
+/**
  * A wave: the right gate, two others drawn from `pool` (never one the wave would count right, never twice the same, at
  * most 6 characters, positive), each with its fact. null (« ask again ») when the pool has fewer than two.
  */
@@ -121,6 +139,7 @@ function waveOf(rand, base, pool, fact, rightFact) {
   const gates = shuffle(rand, [shown(right), ...others.map(shown)]);
   return {
     ...base,
+    seconds: THINK[base.type] + SPARE,
     // the ladder never draws the same numbers twice in a row: its `a` / `b` are the order's formula
     a: base.tex,
     b: base.say,
@@ -398,6 +417,7 @@ export const roundOf = (w) => ({
   options: w.gates.map(gateOption),
   right: w.good,
   why: w.gates.map((g, i) => (i === w.good ? w.why.right : (w.why.wrong?.[g] ?? w.why.right))),
+  seconds: w.seconds,
 });
 
 /** The words of the rail's cards (`kit/GateRunHud.jsx › content.text`): never a rule, never « wrong ». */
