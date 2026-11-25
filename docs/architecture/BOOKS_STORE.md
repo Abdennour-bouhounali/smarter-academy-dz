@@ -170,8 +170,12 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
   UNIQUEMENT par `BookDetailPage` / `OrderForm` (lot paresseux de la fiche) : jamais dans l'espace
   élève, l'espace parent ni l'administration (promesse « jardin clos » faite aux parents,
   `PARENT_SPACE.md`) ; ne pas l'importer ailleurs. Événements : `PageView` + `ViewContent` (arrivée
-  sur la fiche), `InitiateCheckout` (premier champ touché, une fois), `Lead` (commande envoyée —
-  pas `Purchase` : la vente n'est définitive qu'après l'appel et la livraison), valeur en `DZD`.
+  sur la fiche), `InitiateCheckout` (premier champ touché, une fois), `Lead` (commande envoyée) et,
+  depuis le 2026-11-25, `Purchase` (`trackPurchase`, au moment où l'écran « تم استلام طلبك »
+  s'affiche : la commande reste sur la même page, pas d'URL de remerciement). `Purchase` : valeur =
+  total à payer à la réception (livre + livraison, sinon prix des exemplaires), `DZD`, et
+  `eventID` = numéro de commande (déduplication si le serveur envoie le même événement). Il
+  mesure « commande acceptée » : annulations et retours ne sont pas renvoyés à Meta. Valeur en `DZD`.
   AUCUNE donnée personnelle envoyée (ni nom, ni téléphone, ni commune). Rien n'est envoyé depuis
   `localhost`, sauf avec `?pixel=1` (test). La politique de confidentialité (§4) le dit.
   En développement, React.StrictMode rejoue les effets : `PageView` y apparaît deux fois, pas en
@@ -211,8 +215,8 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
   - récapitulatif juste AU-DESSUS du bouton « أرسل الطلب / الدفع عند الاستلام » : prix, frais de
     livraison, **« المجموع عند الاستلام » (frais compris)** ; pour une wilaya sans tarif, « تُحدَّد
     لاحقًا » et « المجموع دون التوصيل » — jamais un total qui tait un frais connu. L'écran de
-    succès redit le montant à payer à la réception. La valeur envoyée au Pixel reste celle du
-    livre, sans la livraison ;
+    succès redit le montant à payer à la réception. La valeur du `Lead` reste celle du
+    livre, sans la livraison (celle de `Purchase` inclut la livraison) ;
   - **le bouton bat 3 fois (≈ 3,6 s, `animate-cta-ready`) quand le formulaire DEVIENT complet**,
     jamais sur un formulaire vide ni sous `prefers-reduced-motion` (`motion-safe:`) : le
     « clignotement » demandé par le propriétaire, conforme WCAG 2.2.2 ;

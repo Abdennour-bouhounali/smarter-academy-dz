@@ -5,7 +5,7 @@ import { S, formatDa } from './strings';
 import SearchSelect from './SearchSelect';
 import { filterOptions } from './dzSearch';
 import { normalizePhone, validateOrder } from './orderValidation';
-import { trackPixel } from './metaPixel';
+import { trackPixel, trackPurchase } from './metaPixel';
 import { DELIVERY_MODES, deliveryFeeFor, orderTotal } from './delivery';
 
 const field = 'h-14 w-full rounded-xl border bg-white px-3.5 font-inter text-base text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200';
@@ -176,6 +176,7 @@ export default function OrderForm({ book }) {
         customerNote: form.customerNote || null,
       });
       trackPixel('Lead', { content_name: book.title, content_ids: [book.slug], content_type: 'product', value: book.price * (Number(form.quantity) || 1), currency: 'DZD', num_items: Number(form.quantity) || 1 });
+      trackPurchase(book, form.quantity, result);
       clearDraft(book.slug);
       setDone({ reference: result.reference, total: result.total ?? null, deliveryFee: result.deliveryFee ?? null });
       setForm(EMPTY);
