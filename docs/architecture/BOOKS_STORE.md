@@ -185,8 +185,20 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
   Vérifié en production le 2026-11-13 : `PageView` et `ViewContent` reçus par le Pixel.
 - **Formulaire de commande (refonte du 2026-11-13, après un relevé de 7 pages COD algériennes
   + 2 internationales et un conseil à 5 voix)** — `OrderForm.jsx` :
+  - **le formulaire ENTIER tient sur un écran de téléphone, sans défiler (2026-11-26)** : mesuré
+    à 360 × 600 (en-tête du site compris), formulaire vide 513 px, rempli 517 px, du haut de la
+    carte au lien « + ملاحظة أو بريد » ; « اطلب الآن » (`#order`, `scroll-mt-[66px]`) l'amène en
+    entier, bouton compris. Comment : sous `sm`, la section cache son titre et ses trois cartes
+    d'étapes — la carte du formulaire porte une ligne « نموذج الطلب » + pastille « الدفع عند
+    الاستلام » et une ligne d'étapes courtes (`S.detail.stepsShort`) ; chaque libellé est DANS
+    son champ (petit, en haut — `lbl` d'`OrderForm`, et `SearchSelect` écrit son `label` dans le
+    déclencheur), champs de 50 px ; wilaya et commune côte à côte ; le mode de livraison est un
+    sélecteur à deux segments d'une ligne ; quantité et total partagent UNE ligne au-dessus du
+    bouton. Un message d'erreur ajoute une ligne (≈ 24 px) : le bouton reste visible. Ordinateur
+    et tablette gardent le titre et les trois cartes au-dessus du formulaire ;
   - champs : nom → téléphone → wilaya → commune → **mode de livraison** → nombre de copies ; courriel et note repliés
-    (« + بريد إلكتروني أو ملاحظة ») ; **plus d'adresse** (« العنوان الدقيق نطلبه منك عند الاتصال ») ;
+    derrière le lien « + ملاحظة أو بريد » de la dernière ligne ; **plus d'adresse** (la dernière ligne :
+    « نتصل بك لتأكيد الطلب والعنوان ») ;
   - **wilaya** : `SearchSelect.jsx`, numérotée (« 16 الجزائر », arabe seul affiché), cherchée par
     numéro (16, ١٦), par nom (avec/sans « ال », variantes d'écriture) ou en latin ; un nom de
     **commune** la trouve aussi (« بوسعادة » → 28 المسيلة) et remplit les deux champs — un client
@@ -199,7 +211,7 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
     pas), menu sous le champ au-delà ; ↑ ↓ Entrée Échap ; le « retour » d'Android FERME la liste
     (entrée d'historique sur la même URL) — une liste qui s'ouvre attend le `history.back()` de
     la précédente ;
-  - téléphone : gabarit « xx xx xx xx xx » (jamais un vrai numéro), `type=tel`, chiffres
+  - téléphone : gabarit « 05 / 06 / 07 … » (jamais un vrai numéro), `type=tel`, chiffres
     arabo-hindis / +213 / 00213 ramenés à « 0XXXXXXXXX » (`orderValidation.js`, même règle que
     `BookStoreController::PHONE`) ;
   - nombre de copies : − / + ET saisie directe (chiffres arabes ou latins), borné à 1–10 ;
@@ -207,20 +219,21 @@ Le même groupe `can:books` porte « حسابي » (`/admin/account*`). Les gest
     premier) ; un 422 du serveur revient sous le champ concerné (`error.fields`) ;
   - brouillon gardé en `sessionStorage` (rechargement, navigateur intégré de WhatsApp), effacé
     après une commande ;
-  - **mode de livraison (2026-11-22)** : deux cartes radio côte à côte, « التوصيل إلى المنزل »
-    (présélectionnée) et « الاستلام من مكتب التوصيل », chacune avec SON prix dès la wilaya
-    choisie (`delivery.js` : `deliveryFeeFor`, `orderTotal` — affichage seul, le serveur
-    recalcule) ; « أقلّ تكلفة » seulement si le bureau est vraiment moins cher ; sans wilaya ou
-    sans tarif, une phrase sous les cartes ;
-  - récapitulatif juste AU-DESSUS du bouton « أرسل الطلب / الدفع عند الاستلام » : prix, frais de
-    livraison, **« المجموع عند الاستلام » (frais compris)** ; pour une wilaya sans tarif, « تُحدَّد
-    لاحقًا » et « المجموع دون التوصيل » — jamais un total qui tait un frais connu. L'écran de
+  - **mode de livraison (2026-11-22 ; segments le 2026-11-26)** : deux segments radio sur une
+    ligne, « إلى المنزل » (présélectionné) et « مكتب التوصيل », chacun avec SON prix dès la
+    wilaya choisie (`delivery.js` : `deliveryFeeFor`, `orderTotal` — affichage seul, le serveur
+    recalcule) ; les deux prix côte à côte disent lequel coûte moins (plus de « أقلّ تكلفة ») ;
+  - quantité et total sur une ligne juste AU-DESSUS du bouton « أرسل الطلب » : **« المجموع عند
+    الاستلام » (frais compris)** avec son détail en petit (« 2 × 1000 + 300 ») ; sans wilaya,
+    « المجموع دون التوصيل » et « + التوصيل حسب الولاية » ; pour une wilaya sans tarif, « + التوصيل
+    يُحدَّد بالهاتف » — jamais un total qui tait un frais connu. L'écran de
     succès redit le montant à payer à la réception. La valeur du `Lead` reste celle du
     livre, sans la livraison (celle de `Purchase` inclut la livraison) ;
   - **le bouton bat 3 fois (≈ 3,6 s, `animate-cta-ready`) quand le formulaire DEVIENT complet**,
     jamais sur un formulaire vide ni sous `prefers-reduced-motion` (`motion-safe:`) : le
     « clignotement » demandé par le propriétaire, conforme WCAG 2.2.2 ;
-  - garanties : « التوصيل إلى كل ولايات الوطن » (et non « 58 ») ; « تدفع نقدًا عند استلام الكتاب ».
+  - garanties : « التوصيل إلى كل ولايات الوطن » (et non « 58 ») ; le paiement à la réception est
+    la pastille verte de l'en-tête du formulaire (téléphone) et la troisième carte d'étape (ordinateur).
 - **Aucun saut de mise en page** : squelettes à la forme des cartes / de la présentation pendant le
   chargement ; l'image de présentation est dans une boîte de hauteur fixe (`h-[420px] lg:h-[540px]`,
   `fetchpriority="high"`). CLS de la fiche mesuré 0,44 avant ce changement.

@@ -143,17 +143,24 @@ const SearchSelect = forwardRef(function SearchSelect(
         aria-invalid={invalid || undefined}
         aria-describedby={describedBy}
         onClick={() => setOpen((o) => !o)}
-        className={`flex h-14 w-full items-center gap-3 rounded-xl border bg-white px-3.5 text-start font-inter text-base transition focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:cursor-not-allowed disabled:border-dashed disabled:bg-slate-50 ${invalid ? 'border-rose-400' : open ? 'border-blue-500' : 'border-slate-300'}`}
+        className={`flex h-[50px] w-full items-center gap-2 rounded-xl border bg-white px-3 text-start font-inter text-base transition focus:outline-none focus:ring-2 focus:ring-blue-200 disabled:cursor-not-allowed disabled:border-dashed disabled:bg-slate-50 ${invalid ? 'border-rose-400' : open ? 'border-blue-500' : 'border-slate-300'}`}
       >
-        {selected?.code != null && (
-          <span dir="ltr" className="flex h-8 min-w-8 flex-none items-center justify-center rounded-lg bg-blue-50 px-1.5 font-space text-sm font-bold tabular-nums text-blue-700">
-            {String(selected.code).padStart(2, '0')}
+        {/* Le libellé est DANS le champ, en petit au-dessus de la valeur : le formulaire
+            de commande tient sur un écran de téléphone (2026-11-26). */}
+        <span className="flex min-w-0 flex-1 flex-col leading-tight">
+          <span className="font-inter text-xs font-semibold text-slate-500">{label}</span>
+          <span className="flex min-w-0 items-center gap-1.5">
+            {selected?.code != null && (
+              <span dir="ltr" className="flex-none rounded bg-blue-50 px-1 font-space text-xs font-bold tabular-nums text-blue-700">
+                {String(selected.code).padStart(2, '0')}
+              </span>
+            )}
+            <span className={`min-w-0 flex-1 truncate ${selected ? 'font-semibold text-slate-900' : 'text-sm text-slate-400'}`}>
+              {selected ? selected.label : disabled ? disabledHint : loading ? '…' : placeholder}
+            </span>
           </span>
-        )}
-        <span className={`min-w-0 flex-1 truncate ${selected ? 'font-semibold text-slate-900' : 'text-slate-400'}`}>
-          {selected ? selected.label : disabled ? disabledHint : loading ? '…' : placeholder}
         </span>
-        <ChevronDown size={18} className={`flex-none text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+        <ChevronDown size={16} className={`flex-none text-slate-400 transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
       </button>
 
       {open && wrap(

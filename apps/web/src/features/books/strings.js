@@ -35,6 +35,8 @@ export const S = {
       'نتصل بك هاتفيًا لتأكيد الطلب والعنوان.',
       'تستلم الكتاب وتدفع ثمنه نقدًا عند الاستلام.',
     ],
+    // Les mêmes trois étapes en une ligne, dans l'en-tête du formulaire sur téléphone.
+    stepsShort: ['تطلب', 'نتصل بك للتأكيد', 'تدفع عند الاستلام'],
     stepsTitle: 'مراحل البروتوكول',
     highlightsTitle: 'لماذا هذا الكتاب؟',
     galleryTitle: 'تصفّح الكتاب من الداخل',
@@ -57,7 +59,6 @@ export const S = {
   order: {
     name: 'الاسم الكامل',
     phone: 'رقم الهاتف',
-    phoneHint: 'نتصل بك على هذا الرقم لتأكيد الطلب',
     email: 'البريد الإلكتروني (اختياري)',
     wilaya: 'الولاية',
     wilayaPlaceholder: 'اختر الولاية',
@@ -71,9 +72,9 @@ export const S = {
     communeDisabled: 'اختر الولاية أولًا',
     communeSearch: 'ابحث باسم البلدية',
     communeEmpty: 'لا توجد بلدية بهذا الاسم في هذه الولاية',
-    // L'adresse n'est plus demandée (2026-11-13) : on rassure sur la façon dont le livre arrive.
-    addressByPhone: 'العنوان الدقيق نطلبه منك عند الاتصال',
-    phonePlaceholder: 'xx xx xx xx xx',
+    // L'adresse n'est plus demandée (2026-11-13) : la dernière ligne du formulaire dit qu'on appelle pour elle.
+    callNote: 'نتصل بك لتأكيد الطلب والعنوان',
+    phonePlaceholder: '05 / 06 / 07 …',
     errors: {
       name: 'اكتب اسمك الكامل (3 أحرف على الأقل)',
       phoneEmpty: 'اكتب رقم هاتفك لنتصل بك',
@@ -86,21 +87,19 @@ export const S = {
     total: 'المجموع دون التوصيل',
     totalOnDelivery: 'المجموع عند الاستلام',
     note: 'ملاحظة (اختياري)',
-    optionalMore: '+ بريد إلكتروني أو ملاحظة (اختياري)',
+    optionalMore: '+ ملاحظة أو بريد',
     quantity: 'عدد النسخ',
-    price: 'سعر النسخة',
-    delivery: 'التوصيل',
-    deliveryLater: 'تُحدَّد تكلفته لاحقًا عند الاتصال بك',
+    delivery: 'التوصيل', // la fiche d'une commande (admin)
+    // Sous le total : une wilaya sans tarif.
+    deliveryLater: '+ التوصيل يُحدَّد بالهاتف',
     deliveryMode: 'طريقة الاستلام',
-    deliveryModes: { home: 'التوصيل إلى المنزل', desk: 'الاستلام من مكتب التوصيل' },
-    // Affiché sous le stop-desk SEULEMENT quand il coûte vraiment moins dans cette wilaya.
-    deliveryCheaper: 'أقلّ تكلفة',
-    deliveryChooseWilaya: 'اختر الولاية لترى تكلفة التوصيل',
-    deliveryNoTariff: 'تكلفة التوصيل إلى هذه الولاية نحدّدها عند الاتصال بك',
+    // Courts : les deux tiennent côte à côte, avec leur frais, sur 360 px.
+    deliveryModes: { home: 'إلى المنزل', desk: 'مكتب التوصيل' },
+    // Sous le total, une ligne : sans wilaya, le frais n'est pas encore connu.
+    deliveryChooseWilaya: '+ التوصيل حسب الولاية',
     submit: 'أرسل الطلب',
     submitCod: 'الدفع عند الاستلام',
     sending: 'جارٍ الإرسال…',
-    noPayment: 'لا دفع إلكتروني: تدفع نقدًا عند استلام الكتاب.',
     failed: 'تعذّر إرسال الطلب. تحقق من البيانات وحاول مجددًا.',
     successTitle: 'تم استلام طلبك',
     // Deux versions : le frais est déjà connu (tarif de la wilaya), ou il se fixe à l'appel.
