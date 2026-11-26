@@ -244,10 +244,12 @@ export default function BookDetailPage() {
       )}
 
       {/* Commande */}
-      <section id="order" className="scroll-mt-20 bg-slate-50 px-4 py-10 sm:py-16">
+      {/* Téléphone : ni titre ni étapes au-dessus du formulaire (il les porte lui-même en deux
+          lignes) — « اطلب الآن » amène sur le formulaire ENTIER, bouton compris, sans défiler. */}
+      <section id="order" className="scroll-mt-[66px] bg-slate-50 px-2 py-2 sm:scroll-mt-20 sm:px-4 sm:py-16">
         <div className="mx-auto max-w-3xl">
-          <H2>{S.detail.orderTitle}</H2>
-          <ol className="mb-6 grid gap-3 sm:mb-8 md:grid-cols-3">
+          <div className="hidden sm:block"><H2>{S.detail.orderTitle}</H2></div>
+          <ol className="mb-8 hidden gap-3 sm:grid md:grid-cols-3">
             {S.detail.steps.map((step, i) => (
               <li key={step} className="flex items-start gap-3 rounded-2xl bg-white p-4 ring-1 ring-slate-200">
                 <span className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-blue-600 font-space text-sm font-bold text-white">{i + 1}</span>
