@@ -13,9 +13,19 @@
  * first on his own evidence, then on a new case chosen to break it. A rule that survives becomes his key. The verdict is
  * always what the world does in front of him, never « wrong ».
  * One screen, nothing scrolls (designed 1280 × 720, zoomed to the window).
+ *
+ * THE ARCHITECTURE (owner, 2026-11-27 — studied and prototyped on the French platform, then ported here):
+ *   - a SHEET on the world's table, the world in sight behind it; its colours are the world's (`parts.skin`:
+ *     'nile' | 'isles' | 'courts' → `data-rf-skin`, ruleForge.css « THE SHEET »);
+ *   - THREE BEATS, shown as the key being made: « جرّب » (his experiment or his predictions), « انقش قاعدتك » (the
+ *     tiles, the mirror on his own lines, then the mirror's attacks — he says what his rule announces and the mirror
+ *     computes at once: no « ليكن! », no « fire », at most ATTACKS_MAX attacks on the rule that holds), « اختم مفتاحك »
+ *     (the last step — no screen in between);
+ *   - THE LAST STEP IS WRITTEN ONE LINE AT A TIME (`UseLines step`): the line being written is whole, the next ones
+ *     wait folded, the written ones fold to what he chose; after a first « تحقّق » every line is open.
  */
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { Check, Hammer, Sparkles, Bot } from 'lucide-react';
+import { Hammer, Sparkles, Bot } from 'lucide-react';
 import MathText from '../../components/MathText';
 import { isShortScreen } from '../engine/phoneScreen';
 import { ExitLink, SoundToggle } from './parts';
@@ -39,7 +49,10 @@ import './ruleForge.css';
 
 /** The words of the forge itself — the same in every lesson. What speaks of a case is the forge's own `text`. */
 const L = {
-  steps: { inquiry: 'استكشف', predict: 'تنبّأ', build: 'اكتب قاعدتك', test: 'المرآة تختبرها', seal: 'اختم مفتاحك' },
+  /** The three beats of a forge — the key being made. */
+  beats: { try: 'جرّب', write: 'انقش قاعدتك', seal: 'اختم مفتاحك' },
+  /** One short line over the mirror's first attack: his rule agreed with all he did. */
+  agreedThenAttack: 'قاعدتك توافق كلّ تجاربك. المرآة تردّ.',
   right: 'توقّعك صحيح!',
   miss: 'توقّعك لم يصب هذه المرّة.',
   toBuild: 'أكتب قاعدتي',
@@ -47,13 +60,10 @@ const L = {
   timeToWrite: 'حان وقت كتابة قاعدتك: المرآة ستختبرها.',
   test: 'اختبر قاعدتي',
   fix: 'أصلح قاعدتي',
-  dare: 'ليكن!',
   notThat: 'قاعدتك تقول غير ذلك.',
   another: 'تحدٍّ آخر',
   toSeal: 'قاعدتي صمدت!',
   sealed: 'قاعدتك صمدت أمام المرآة: صارت مفتاحك.',
-  words: 'قلها بكلماتك (اختياري)',
-  sealIt: 'أختم مفتاحي',
   check: 'تحقّق',
   help: 'ساعدني يا زيرو',
   choice: 'إحدى هاتين القاعدتين تصمد أمام المرآة. اختبرهما:',
@@ -61,8 +71,12 @@ const L = {
   ruleB: 'القاعدة الثانية',
 };
 const FAST = () => import.meta.env.DEV && typeof window !== 'undefined' && window.__forgeFast;
-const PHASES = ['predict', 'build', 'test', 'seal'];
-const stepOf = (phase) => (phase === 'attack' ? 'test' : phase === 'use' ? 'seal' : phase);
+/** The three beats of a forge, and the beat a phase belongs to. */
+const BEATS = ['try', 'write', 'seal'];
+const beatOf = (phase) =>
+  phase === 'inquiry' || phase === 'predict' ? 'try' : phase === 'use' || phase === 'seal' ? 'seal' : 'write';
+/** The mirror throws at most this many new cases at the rule that holds (a rule that does not hold meets them all). */
+const ATTACKS_MAX = 2;
 const digits = (v, w) => v.replace(/[^0-9]/g, '').slice(0, w);
 
 export default function RuleForge({ forge, parts, game, log, onSeal }) {
@@ -77,11 +91,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   // student claimed and the world accepted is his rule), no tile is offered either: the mirror attacks that rule at once
   // …and a forge with no investigation and no case to predict (its evidence is what he did in the WORLD, which held the
   // predictions) opens directly on its tiles: no « تنبّأ » step is shown, since none is played
-  const phases = inquiry
-    ? ['inquiry', ...(inquiry.writes ? [] : ['build']), 'test', 'seal']
-    : cases.length
-      ? PHASES
-      : PHASES.filter((p) => p !== 'predict');
+  const beats = inquiry || cases.length ? BEATS : BEATS.slice(1);
   const [phase, setPhase] = useState(inquiry ? 'inquiry' : cases.length ? 'predict' : 'build');
   const [pi, setPi] = useState(0);
   const [results, setResults] = useState([]);
@@ -92,7 +102,6 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const [atk, setAtk] = useState(null); // attack: { list, i, said }
   const [nudges, setNudges] = useState(0);
   const [help, setHelp] = useState(null);
-  const [words, setWords] = useState('');
   const [use, setUse] = useState(null); // the last step: { c, vals, verdict, fb }
   const [z, setZ] = useState(1);
   const [win, setWin] = useState('');
@@ -185,6 +194,8 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
         },
         420 * (i + 1),
       );
+    // it agrees with all he did: the mirror attacks at once (no « ليكن! » to press)
+    if (res.bad < 0) later(() => attackWith(rule, rows, true), 420 * (last + 1) + 1300);
   };
   const backToBuild = () => {
     play('ui');
@@ -194,32 +205,35 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   };
 
   // ── 4. attack ──
-  const startAttack = () => attackWith(rule, rows);
-  const attackWith = (r, rs) => {
-    const list = forge.attacks(r, rs);
+  const attackWith = (r, rs, fromTest = false) => {
+    const every = forge.attacks(r, rs);
+    const list = forge.isTheRule(r) ? every.slice(0, ATTACKS_MAX) : every;
     if (!list.length) {
-      if (forge.isTheRule(r)) setPhase('seal');
+      if (forge.isTheRule(r)) toUse();
       else backToBuild();
       return;
     }
     play('wind');
-    setAtk({ list, i: 0, said: null });
+    setAtk({ list, i: 0, said: null, fromTest });
     setShow({ c: list[0], stage: 'ask' });
     setPhase('attack');
   };
+  /** He says what his rule announces — and the mirror computes at once (the parry: no second button). */
   const sayRule = (v) => {
     play('ui');
+    const target = atk.list[atk.i];
     setAtk((s) => ({ ...s, said: v }));
+    // (never instantaneous, even in a walk's fast mode: the reply is heard after the answer, not with it)
+    timers.current.push(setTimeout(() => buildIt(target, {}), FAST() ? 350 : 1100));
   };
-  const fireAttack = () => buildIt(atk.list[atk.i], {});
   const nextAttack = () => {
     play('ui');
     if (atk.i + 1 < atk.list.length) {
-      setAtk({ ...atk, i: atk.i + 1, said: null });
+      setAtk({ ...atk, i: atk.i + 1, said: null, fromTest: false });
       setShow({ c: atk.list[atk.i + 1], stage: 'ask' });
     } else {
       play('key');
-      setPhase('seal');
+      toUse();
     }
   };
 
@@ -237,11 +251,10 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   };
 
   // ── 5. seal, 6. use ──
-  const toUse = () => {
-    play('ui');
-    setUse({ c: forge.use.make(), vals: {}, verdict: null, fb: null });
+  function toUse() {
+    setUse({ c: forge.use.make(), vals: {}, verdict: null, fb: null, tried: false });
     setPhase('use');
-  };
+  }
   const useLines = use ? forge.use.lines(use.c) : [];
   const useSlots = useLines.flatMap((line) => boxesOf(line.tokens));
   const useFilled =
@@ -251,11 +264,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
     if (fb === 'ok') {
       play('success');
       setUse({ ...use, fb });
-      later(() => onSeal(sealRecord(forge, { rule, words, tries, nudges, results })), 1100);
+      later(() => onSeal(sealRecord(forge, { rule, words: '', tries, nudges, results })), 1100);
       return;
     }
     play('ui');
-    setUse({ ...use, fb });
+    setUse({ ...use, fb, tried: true });
   };
   /** The last step's question, lines, buttons and feedback (one column beside the world's figure when it draws one). */
   const useBody = use && (
@@ -265,6 +278,9 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
       </p>
       <UseLines
         lines={useLines}
+        step={!use.tried}
+        open={use.open ?? null}
+        onOpen={(i) => setUse({ ...use, open: i })}
         vals={use.vals}
         onType={(name, value) => setUse({ ...use, vals: { ...use.vals, [name]: value }, fb: null })}
       />
@@ -331,7 +347,10 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
   const a = atk ? atk.list[atk.i] : null;
   const says = a ? forge.says(rule, a) : null;
   const brokeIt = a && done && says !== a.held;
-  const testing = phase === 'test' && run;
+  // …and the marks stay on his lines while the mirror opens its FIRST attack (the rule has just agreed with them all:
+  // the attack comes at once, the proof of the agreement is still there to read)
+  const opening = phase === 'attack' && atk?.fromTest && atk.i === 0 && atk.said === null && show?.stage === 'ask';
+  const testing = (phase === 'test' || opening) && run;
   // the lines on the left: his evidence — or, while a rule that builds its own cases is tested, those cases. While the
   // mirror tests his rule it runs on EVERY line he made (`startTest`), so every line is offered to the window below: the
   // line it is marking, or the one that refuted his rule, stays on screen even when it is older than the last
@@ -363,6 +382,7 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
       data-rf={phase}
       data-rf-key={forge.key}
       data-rf-tries={tries}
+      data-rf-skin={parts.skin ?? 'paper'}
       data-rf-nudges={nudges}
     >
       {/* --di-min-font: the 12 px floor in the units of this zoom (GAME_WORLD.md « 12 px floor »): 15 px drawn at 0.8 */}
@@ -375,13 +395,13 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
               <p>{T.sub}</p>
             </div>
           </div>
-          <ol className="rf-steps">
-            {phases.map((p, i) => {
-              const at = phases.indexOf(stepOf(phase));
+          <ol className="rf-steps" data-rf-beat={beatOf(phase)}>
+            {beats.map((b, i) => {
+              const at = beats.indexOf(beatOf(phase));
               return (
-                <li key={p} className={i === at ? 'is-now' : i < at ? 'is-done' : ''}>
+                <li key={b} className={i === at ? 'is-now' : i < at ? 'is-done' : ''}>
                   <b>{i < at ? '✓' : i + 1}</b>
-                  <span>{L.steps[p]}</span>
+                  <span>{L.beats[b]}</span>
                 </li>
               );
             })}
@@ -457,7 +477,12 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                     </b>
                   );
                 })}
-                {(phase === 'seal' || phase === 'use') && <i className="rf-keymark">🔑</i>}
+                {phase === 'use' && <i className="rf-keymark">🔑</i>}
+                {phase === 'use' && (
+                  <small className="rf-sealedline" data-rf-sealed>
+                    {L.sealed}
+                  </small>
+                )}
               </div>
             )}
           </section>
@@ -603,9 +628,6 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                     <p className="rf-fb is-right" data-rf-agreed>
                       {T.agreed}
                     </p>
-                    <button type="button" className="rf-btn rf-btn--main" onClick={startAttack} autoFocus data-rf-dare>
-                      {L.dare}
-                    </button>
                   </>
                 )}
               </>
@@ -613,6 +635,11 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
 
             {phase === 'attack' && a && (
               <>
+                {atk.fromTest && atk.i === 0 && show.stage === 'ask' && atk.said === null && (
+                  <p className="rf-agreedline" data-rf-agreed>
+                    {L.agreedThenAttack}
+                  </p>
+                )}
                 <p className="rf-q">
                   <MathText>{T.attack(a)}</MathText>
                 </p>
@@ -636,18 +663,12 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                     </button>
                   </div>
                 )}
-                {show.stage === 'ask' && atk.said !== null && (
-                  <>
-                    <p className="rf-note" data-rf-rule-says={says ? 'yes' : 'no'}>
-                      {atk.said !== says && <b>{L.notThat} </b>}
-                      <MathText>{forge.explain(rule, a)}</MathText>
-                    </p>
-                    <button type="button" className="rf-btn rf-btn--main" onClick={fireAttack} autoFocus data-rf-fire>
-                      <Hammer size={18} /> {T.fire}
-                    </button>
-                  </>
+                {(show.stage === 'ask' || building) && atk.said !== null && (
+                  <p className="rf-note" data-rf-rule-says={says ? 'yes' : 'no'}>
+                    {atk.said !== says && <b>{L.notThat} </b>}
+                    <MathText>{forge.explain(rule, a)}</MathText>
+                  </p>
                 )}
-                {building && <p className="rf-note">{T.says(says)}</p>}
                 {done && !brokeIt && (
                   <>
                     <p className="rf-fb is-right" data-rf-survived>
@@ -674,26 +695,6 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
                     </button>
                   </>
                 )}
-              </>
-            )}
-
-            {phase === 'seal' && (
-              <>
-                <p className="rf-fb is-right" data-rf-sealed>
-                  🔑 {L.sealed}
-                </p>
-                <label className="rf-words">
-                  <span>{L.words}</span>
-                  <input
-                    value={words}
-                    onChange={(e) => setWords(e.target.value.slice(0, 140))}
-                    placeholder={T.wordsHint}
-                    data-rf-words
-                  />
-                </label>
-                <button type="button" className="rf-btn rf-btn--main" onClick={toUse} data-rf-seal>
-                  <Check size={18} strokeWidth={3} /> {L.sealIt}
-                </button>
               </>
             )}
 
@@ -728,8 +729,15 @@ export default function RuleForge({ forge, parts, game, log, onSeal }) {
  * denominator, each printed, typed or chosen (forgeBlocks.js › fractionBox / givenFraction / ratioChoice; the look
  * `di-frac`, styles/trainer.css). `onType(name, value)` receives what a box now holds, or the id a choice picked.
  */
-export function UseLines({ lines, vals, onType, column = false }) {
+export function UseLines({ lines, vals, onType, column = false, step = false, open = null, onOpen }) {
   const named = lines.length === 1;
+  // ONE LINE AT A TIME (`step`): the first line with an empty box is the one being written; the lines after it wait
+  // (their boxes closed), the lines before it are written — a click on one opens it again (`open`, `onOpen`: the
+  // caller keeps which one; this function holds no state)
+  const filled = (line) => boxesOf(line.tokens).every((t) => (vals[boxName(t)] ?? '') !== '');
+  const firstOpen = lines.findIndex((line) => !filled(line));
+  const live = step && lines.length > 1 ? (firstOpen < 0 ? lines.length : firstOpen) : null;
+  const stateOf = (i) => (live == null || i === live || i === open ? '' : i > live ? 'is-later' : 'is-written');
   const input = (t) =>
     t.choice != null ? (
       <ChoiceToken
@@ -769,9 +777,19 @@ export function UseLines({ lines, vals, onType, column = false }) {
       </label>
     );
   return (
-    <div className="rf-uselines" data-rf-lines={lines.length} {...(column ? { 'data-rf-column': '' } : {})}>
+    <div
+      className="rf-uselines"
+      data-rf-lines={lines.length}
+      {...(column ? { 'data-rf-column': '' } : {})}
+      {...(live != null ? { 'data-rf-step': live } : {})}
+    >
       {lines.map((line, i) => (
-        <div key={i} className="rf-use" dir={line.dir ?? 'ltr'}>
+        <div
+          key={i}
+          className={`rf-use ${stateOf(i)}`}
+          dir={line.dir ?? 'ltr'}
+          onClick={stateOf(i) === 'is-written' ? () => onOpen?.(i) : undefined}
+        >
           {line.tokens.map((t, k) =>
             t?.frac ? (
               <span

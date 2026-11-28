@@ -172,7 +172,6 @@ await w.run(async () => {
       const a = (await fg()).atk;
       const c = a.list[a.i];
       await page.click(`[data-rf-say="${c.held ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-survived]');
       const end = a.i + 1 >= a.list.length;
       await page.click('[data-rf-attack-next]');
@@ -182,7 +181,6 @@ await w.run(async () => {
     }
     await page.waitForSelector('[data-rf-sealed]');
     await shot(`${name}-sealed`);
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(80);
     await last((await fg()).use.c);
@@ -205,7 +203,7 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await attackToTablet(name, last);
   };
   /** The forge covers the top bar: its OWN ✕ and sound button are on screen, uncovered, and its header keeps one row. */
@@ -564,6 +562,7 @@ await w.run(async () => {
   }
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 1, 'one key earned');
   // the ✕ of the top bar is CLICKED inside the world: he leaves, comes back, and plays on with his key
   {
@@ -739,6 +738,7 @@ await w.run(async () => {
   }
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 2, 'two keys earned');
 
   // ── 52: the plank 5 leaves 2, the plank 4 fills it ──
@@ -857,6 +857,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 3, 'three keys earned');
 
   // ── 63: the plank 8 leaves 7 (the biggest leftover of 8, as his second key says), the plank 7 fills it; then the dash ──
@@ -1014,6 +1015,7 @@ await w.run(async () => {
   expect((await page.textContent('.di-card')).includes('تقدير الحاصل'), 'the tablet: « تقدير الحاصل »');
   await page.click('[data-di-tablet]');
   await ff(0.5);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 4, 'four keys earned');
 
   // ── 78 with a plank of two digits, then the stone of island H ──
@@ -1138,7 +1140,7 @@ await w.run(async () => {
       for (const t of ['full:q', 'need:cond', 'left:q']) await page.click(`[data-rf-tile="${t}"]`);
       await page.click('[data-rf-test]');
       await page.waitForSelector('[data-rf-agreed]');
-      await page.click('[data-rf-dare]');
+      await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
       await page.waitForSelector('[data-rf="attack"]');
       const c = (await fg()).atk.list[0];
       const { q, r } = div(c.a, c.b);
@@ -1153,7 +1155,6 @@ await w.run(async () => {
         'his rule says « true » — he has it carried out',
       );
       const heard = await hear(async () => {
-        await page.click('[data-rf-fire]');
         await page.waitForSelector('[data-rf-broken]');
       });
       expect(
@@ -1183,6 +1184,7 @@ await w.run(async () => {
   expect((await page.textContent('.di-card')).includes('الباقي في مسألة'), 'the tablet: « الباقي في مسألة »');
   await page.click('[data-di-tablet]');
   await ff(0.5);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 5, 'five keys earned, all forged');
   expect(Boolean(await page.evaluate(() => window.__world.flags.key4)), 'the fifth key opens the store of the harbour');
 

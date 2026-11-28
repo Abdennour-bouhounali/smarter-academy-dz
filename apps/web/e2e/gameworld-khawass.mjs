@@ -160,7 +160,6 @@ await w.run(async () => {
       const a = (await fg()).atk;
       const c = a.list[a.i];
       await page.click(`[data-rf-say="${c.held ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-survived]');
       const end = a.i + 1 >= a.list.length;
       await page.click('[data-rf-attack-next]');
@@ -170,7 +169,6 @@ await w.run(async () => {
     }
     await page.waitForSelector('[data-rf-sealed]');
     await shot(`${name}-sealed`);
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(80);
     await last((await fg()).use.c);
@@ -181,7 +179,7 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await attackToTablet(name, last);
   };
   /** The forge covers the top bar: its OWN ✕ and sound button are on screen, uncovered, and its header keeps one row. */
@@ -525,7 +523,7 @@ await w.run(async () => {
       (await page.locator('[data-rf-refuted]').count()) === 0,
       'the « neither gap » rule agrees with every gap he made: the mirror cannot refute it with HIS evidence',
     );
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await page.waitForSelector('[data-rf="attack"]');
     {
       const a = (await fg()).atk;
@@ -543,16 +541,15 @@ await w.run(async () => {
       );
       await shot('forge1-attack-false-rule');
       // he answers what the ARITHMETIC says (« not filled ») — his rule says the opposite, and the screen tells him so
-      await page.click('[data-rf-say="no"]');
-      await page.waitForSelector('[data-rf-rule-says]');
-      expect(
-        (await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says')) === 'yes' &&
-          (await page.textContent('[data-rf-rule-says]')).includes('قاعدتك تقول غير ذلك'),
-        'he said « لا يملؤها »: « قاعدتك تقول غير ذلك » — HIS rule says the plank fills it, in its own words',
-      );
-      await shot('forge1-attack-not-his-rule');
       const heard = await hear(async () => {
-        await page.click('[data-rf-fire]');
+        await page.click('[data-rf-say="no"]');
+        await page.waitForSelector('[data-rf-rule-says]');
+        expect(
+          (await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says')) === 'yes' &&
+            (await page.textContent('[data-rf-rule-says]')).includes('قاعدتك تقول غير ذلك'),
+          'he said « لا يملؤها »: « قاعدتك تقول غير ذلك » — HIS rule says the plank fills it, in its own words',
+        );
+        await shot('forge1-attack-not-his-rule');
         await page.waitForSelector('[data-rf-broken]');
       });
       const broken = (await page.textContent('[data-rf-broken]')) ?? '';
@@ -603,6 +600,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 1, 'one key earned');
 
   // ── 56 (21 and 35 glued) with the plank 7, then 18 ──
@@ -703,6 +701,7 @@ await w.run(async () => {
   expect((await page.textContent('.di-card')).includes('المضاعفات'), 'the tablet: « المضاعفات »');
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 2, 'two keys earned');
 
   // ── 54 (18 three times), then the dash of island F ──
@@ -1051,6 +1050,7 @@ await w.run(async () => {
   }
   await page.click('[data-di-tablet]');
   await ff(0.5);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 4, 'four keys earned, all forged');
 
   // ══════════════════════════ the last bridge: 1015 = 735 + 280, planks of 30 or 35 ══════════════════════════

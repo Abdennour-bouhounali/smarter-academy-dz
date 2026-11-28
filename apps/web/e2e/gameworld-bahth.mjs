@@ -423,12 +423,11 @@ await w.run(async () => {
       );
       await shot(`${name}-refuted`);
     } else {
-      await page.click('[data-rf-dare]');
+      await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
       await page.waitForSelector('[data-rf-say]');
       const c = (await fg()).atk.list[0];
       const yes = truth(c);
       await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-broken]', { timeout: 20000 });
       const fb = (await page.textContent('[data-rf-broken]')) ?? '';
       check(
@@ -446,14 +445,13 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]', { timeout: 20000 });
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await page.waitForSelector('[data-rf="attack"]');
     for (let i = 0; i < 6; i += 1) {
       const a = (await fg()).atk;
       const c = a.list[a.i];
       const yes = truth(c);
       await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-survived]', { timeout: 20000 });
       check(
         true,
@@ -467,7 +465,6 @@ await w.run(async () => {
       await page.waitForTimeout(80);
     }
     await page.waitForSelector('[data-rf-sealed]');
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(120);
     await last((await fg()).use.c);
@@ -478,6 +475,7 @@ await w.run(async () => {
     check((await page.textContent('.di-card')).includes(TITLES[key]), `the tablet: « ${TITLES[key]} »`);
     await page.click('[data-di-tablet]');
     await ff(0.4);
+    await page.waitForTimeout(500);
     expect((await st()).keys.includes(key), `the key « ${key} » earned`);
   };
   /** The world's verdicts on a case, computed HERE. */

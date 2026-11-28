@@ -963,7 +963,7 @@ await w.run(async () => {
       `the forge of « ${key} » opens on its TILES — no experiment screen, no prediction (${f.phase})`,
     );
     expect(
-      steps.length === 3 && !steps.some((t) => t.includes('تنبّأ')) && steps[0].includes('اكتب قاعدتك'),
+      steps.length === 2 && !steps.some((t) => t.includes('جرّب')) && steps[0].includes('انقش قاعدتك'),
       `the steps shown are the steps played: ${steps.map((t) => t.trim()).join(' → ')}`,
     );
     const ids = f.rows.map((r) => `${r.A}:${r.B}:${r.d}`);
@@ -1073,7 +1073,6 @@ await w.run(async () => {
       const yes = truth(c);
       await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
       const heard = await hear(async () => {
-        await page.click('[data-rf-fire]');
         await page.waitForSelector('[data-rf-survived]');
       });
       check(
@@ -1089,7 +1088,6 @@ await w.run(async () => {
     }
     await page.waitForSelector('[data-rf-sealed]');
     await shot(`${name}-sealed`);
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(80);
     await last((await fg()).use.c);
@@ -1124,7 +1122,7 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await attackToTablet(name, truth, last, onMirror);
   };
   /**
@@ -1136,7 +1134,7 @@ await w.run(async () => {
     await shot(`${name}-build`);
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await page.waitForSelector('[data-rf-say]');
     const c = (await fg()).atk.list[0];
     expect(
@@ -1144,15 +1142,14 @@ await w.run(async () => {
       `${name}: the mirror attacks « ${falseTiles.join(' + ')} » with a NEW pair, ${expectId} (${c.A}:${c.B}:${c.d})`,
     );
     const yes = truth(c);
-    await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
-    await page.waitForSelector('[data-rf-rule-says]');
-    expect(
-      (await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says')) === (yes ? 'no' : 'yes'),
-      `${name}: he said what the world will do (${yes ? 'it builds them' : 'it does not'}): his rule says the opposite, on screen`,
-    );
-    await shot(`${name}-attack-not-his-rule`);
     const heard = await hear(async () => {
-      await page.click('[data-rf-fire]');
+      await page.click(`[data-rf-say="${yes ? 'yes' : 'no'}"]`);
+      await page.waitForSelector('[data-rf-rule-says]');
+      expect(
+        (await page.getAttribute('[data-rf-rule-says]', 'data-rf-rule-says')) === (yes ? 'no' : 'yes'),
+        `${name}: he said what the world will do (${yes ? 'it builds them' : 'it does not'}): his rule says the opposite, on screen`,
+      );
+      await shot(`${name}-attack-not-his-rule`);
       await page.waitForSelector('[data-rf-broken]');
     });
     const broken = (await page.textContent('[data-rf-broken]')) ?? '';
@@ -1178,7 +1175,7 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await attackToTablet(name, truth, last, onMirror);
   };
   /** The world's verdict on a case: the plank builds both gaps with the purse — it is their longest common plank. */
@@ -1250,6 +1247,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 1, 'one key earned');
   forbid = /مباشرة|يقسم/;
 
@@ -1430,6 +1428,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 2, 'two keys earned');
   forbid = /يقسم/;
 
@@ -1516,6 +1515,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.5);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 3, 'three keys earned, all forged');
 
   // ══════════════════════════ the gate dash: island I → J ══════════════════════════

@@ -206,7 +206,6 @@ await w.run(async () => {
       const a = (await fg()).atk;
       const c = a.list[a.i];
       await page.click(`[data-rf-say="${truth(c) ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-survived]');
       const end = a.i + 1 >= a.list.length;
       await page.click('[data-rf-attack-next]');
@@ -216,7 +215,6 @@ await w.run(async () => {
     }
     await page.waitForSelector('[data-rf-sealed]');
     await shot(`${name}-sealed`);
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(80);
     await last((await fg()).use.c);
@@ -261,7 +259,7 @@ await w.run(async () => {
     const seen = (await fg()).rows.map((r) => `${r.a}:${r.b}`);
     await tiles(list);
     await page.waitForSelector('[data-rf-agreed]');
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await page.waitForSelector('[data-rf="attack"]');
     const a = (await fg()).atk;
     const c = a.list[a.i];
@@ -279,7 +277,6 @@ await w.run(async () => {
       `${name}: he answers the attack WRONGLY (not what his rule predicts) — the mirror reads his own rule back to him (« ${note.trim().slice(0, 80)} »)`,
     );
     await shot(`${name}-attack-misread`);
-    await page.click('[data-rf-fire]');
     await page.waitForSelector('[data-rf-broken]');
     expect(
       (await page.getAttribute('[data-rf-broken]', 'data-rf-broken')) === `${c.a}:${c.b}` &&
@@ -323,7 +320,7 @@ await w.run(async () => {
     await tiles(list);
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
   };
   /** The forge covers the top bar: its OWN ✕ and sound button are on screen, uncovered, and its header keeps one row. */
   const forgeTools = async (where) => {
@@ -709,6 +706,7 @@ await w.run(async () => {
   );
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 1, 'one key earned');
 
   // ── the ✕ of the world, CLICKED: he leaves on island C with his first key, and comes back to it ──
@@ -781,6 +779,7 @@ await w.run(async () => {
   expect((await page.textContent('.di-card')).includes('مجموع الأرقام'), 'the tablet: « مجموع الأرقام »');
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 2, 'two keys earned');
 
   // ── 111 with 2, 9, 3: 9 crumbles (its digits sum to 3), 3 holds; then the dash of island F ──
@@ -1118,6 +1117,7 @@ await w.run(async () => {
   }
   await page.click('[data-di-tablet]');
   await ff(0.3);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 3, 'three keys earned');
 
   // ── 136 with 3, 4, 5: 3 crumbles, 4 holds; then the stone of island H ──
@@ -1248,6 +1248,7 @@ await w.run(async () => {
   expect((await page.textContent('.di-card')).includes('الباقي معدوم'), 'the tablet: « يقبل القسمة ⇔ الباقي معدوم »');
   await page.click('[data-di-tablet]');
   await ff(0.5);
+  await page.waitForTimeout(500);
   expect((await st()).keys.length === 4, 'four keys earned, all forged');
 
   // ══════════════════════════ the last bridge: 1575 cells, planks of 45 or 50 ══════════════════════════

@@ -225,7 +225,6 @@ await w.run(async () => {
       const a = (await fg()).atk;
       const c = a.list[a.i];
       await page.click(`[data-rf-say="${truthOf(c) ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-survived]');
       const end = a.i + 1 >= a.list.length;
       await page.click('[data-rf-attack-next]');
@@ -235,7 +234,6 @@ await w.run(async () => {
     }
     await page.waitForSelector('[data-rf-sealed]');
     await shot(`${name}-sealed`);
-    await page.click('[data-rf-seal]');
     await page.waitForSelector('[data-rf="use"]');
     await page.waitForTimeout(80);
     await last((await fg()).use.c);
@@ -246,7 +244,7 @@ await w.run(async () => {
     await page.click('[data-rf-test]');
     await page.waitForSelector('[data-rf-agreed]');
     await shot(`${name}-agreed`);
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await attackToTablet(name, last);
   };
   /** The forge covers the top bar: its OWN ✕ and sound button are on screen, uncovered, and its header keeps one row. */
@@ -356,6 +354,7 @@ await w.run(async () => {
     if (also) await also();
     await page.click('[data-di-tablet]');
     await ff(0.3);
+    await page.waitForTimeout(500);
     expect((await st()).keys.length === n, `${n} key(s) earned`);
   };
 
@@ -733,7 +732,7 @@ await w.run(async () => {
       (await fg()).rows.every((r) => overSays(r) === truthOf(r)),
       'sanity: « too small only when MORE than a plank is left » agrees with every count he tried',
     );
-    await page.click('[data-rf-dare]');
+    await page.waitForSelector('[data-rf="attack"], [data-rf="use"]', { timeout: 20000 });
     await page.waitForSelector('[data-rf="attack"]');
     {
       const a = (await fg()).atk;
@@ -744,7 +743,6 @@ await w.run(async () => {
       );
       // he says what HIS rule says (it accepts the count); the planks then do otherwise
       await page.click(`[data-rf-say="${overSays(c) ? 'yes' : 'no'}"]`);
-      await page.click('[data-rf-fire]');
       await page.waitForSelector('[data-rf-broken]', { timeout: 20000 });
       expect(
         (await page.getAttribute('[data-rf-broken]', 'data-rf-broken')) === `${c.a}:${c.b}:${c.q}` &&

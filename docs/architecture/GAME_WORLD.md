@@ -1013,6 +1013,31 @@ Nothing in the game world scrolls — not the page, not a card, not a panel — 
 
 ## 2sexies. « مصهر القاعدة » — the rule forge (2026-11-18; all four rules since 2026-11-17 of the rollout; NOT validated)
 
+> **THE ARCHITECTURE SINCE 2026-11-27 (owner: the navy mirror « gives the feeling of leaving the game world… a lot of
+> questions, especially the last one »; study by four specialists and a played prototype,
+> `docs/reports/mockups/forge-new-version.html` of the French platform `smarter-academy-fr-next`, where it was built first, then ported here). What this section says of the screens below is read with these changes
+> (`kit/RuleForge.jsx` header, `kit/ruleForge.css` « THE SHEET »):**
+>
+> - **A sheet on the world's table.** The forge is a sheet laid over the world, which stays in sight, blurred. Its colours
+>   are tokens; a world gives its values with `parts.skin` (`'nile'`: papyrus and sandstone, `'isles'`: wood and sky,
+>   `'courts'`: stone). The MIRROR (and an experiment a world frames in dark, `.iq` / `.rq-iq`) is dark glass in a bronze
+>   frame: what a world draws in it keeps its colours. A world part drawn on the sheet (its `Line`) uses ink colours.
+> - **Three beats, shown as the key being made:** « جرّب » (the experiment or the predictions), « انقش قاعدتك »
+>   (tiles, the mirror on his own lines, then its attacks), « اختم مفتاحك » (the last step). A forge with no experiment
+>   and no prediction shows two.
+> - **Fewer presses.** A rule that agrees with all his lines is attacked at once (no « ليكن! »). He says what his rule
+>   announces and the mirror computes at once (no second button). The rule that holds meets at most `ATTACKS_MAX` (2)
+>   attacks; a rule that does not hold still meets them all. The screen « قلها بكلماتك / أختم مفتاحي » is
+>   gone: a rule that held is his key and the last step opens (`data-rf-sealed` on the rule's ribbon).
+> - **The last step is written ONE LINE AT A TIME** (`UseLines step`): the line being written is whole; the lines after it
+>   wait, dimmed, their choices folded to « … »; a written line folds each choice to what he picked (a click opens it
+>   again). After a first « تحقّق » every line is open. It takes the whole sheet: the evidence column leaves.
+> - **Not done yet (content, lesson by lesson):** the rule's CONDITION as a tile (« إذا … فإنّ … »), the last step
+>   filled by pointing at the figure, the trap « هل يفتح مفتاحك هنا؟ ». The prototype shows them on one key.
+> - Walk hooks removed: `data-rf-dare`, `data-rf-fire`, `data-rf-seal`, `data-rf-words`; added: `data-rf-skin`,
+>   `data-rf-beat`, `data-rf-step`.
+
+
 Owner, 2026-11-18: the method says the student discovers, touches, observes « until concluding the maths rule » — « how are we
 giving him the chance to do that? »; the earlier answer (a space where he writes the rule after the manipulation) cannot tell
 him whether his rule is right, and « it must be integrated in the game of the lesson, inside, not as a separate lab or game ».
