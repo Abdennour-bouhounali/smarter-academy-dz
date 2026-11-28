@@ -161,6 +161,9 @@ const DiagnosticResult = lazy(() => import('./pages/student/diagnostic/Diagnosti
 // Moteur d'exercices. Trois routes paramétrées, pas une par leçon : la
 // pratique est indépendante de l'arbre des leçons, et `lessonCode` suffit
 // puisque les codes de leçon sont globalement uniques.
+// « صفحة المراجعة » (REVISION_PAGE.md): one lazy page for both spaces.
+const RevisionPage = lazy(() => import('./features/revision/RevisionPage'));
+const UnitSummaryPage = lazy(() => import('./features/revision/UnitSummaryPage'));
 const PracticeHub = lazy(() => import('./pages/student/practice/PracticeHub'));
 const PracticeSession = lazy(() => import('./pages/student/practice/PracticeSession'));
 const PracticeSummary = lazy(() => import('./pages/student/practice/PracticeSummary'));
@@ -437,6 +440,8 @@ function AppRoutes() {
               directement. */}
           {/* Exercices : tablette et ordinateur seulement (RequireLargeScreen). */}
           <Route element={<RequireLargeScreen />}>
+            <Route path="muraja/:lessonId" element={<RevisionPage />} />
+            <Route path="muraja/wahda/:unitId" element={<UnitSummaryPage />} />
             <Route path="pratique/:lessonCode" element={<PracticeHub />} />
             <Route path="pratique/:lessonCode/session/:sessionId" element={<PracticeSession />} />
             <Route path="pratique/:lessonCode/bilan/:sessionId" element={<PracticeSummary />} />
@@ -537,6 +542,8 @@ function AppRoutes() {
             {/* « متابعة القسم » et « بطاقة المعارف » d'une leçon : dans l'espace enseignant, sous l'en-tête commun des outils */}
             <Route path="mutabaa/:lessonId" element={<TeacherLessonTracking />} />
             <Route path="bitaqa/:lessonId" element={<TeacherLessonCard />} />
+            <Route path="muraja/:lessonId" element={<RevisionPage teacher />} />
+            <Route path="muraja/wahda/:unitId" element={<UnitSummaryPage teacher />} />
             <Route path="pratique/:lessonCode" element={<TeacherBankGate />} />
             <Route path="pratique/:lessonCode/:level/:exerciseId" element={<TeacherBankGate player />} />
           </Route>

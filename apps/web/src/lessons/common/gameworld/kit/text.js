@@ -38,6 +38,7 @@ export const TX = {
     mark: 'العلامة',
   },
   lab: { open: 'مختبري' },
+  revision: { open: 'صفحة المراجعة' },
   launch: { open: 'عُدّتي' },
   progress: {
     open: 'تقدّمي',

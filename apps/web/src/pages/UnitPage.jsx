@@ -20,6 +20,7 @@ import PrerequisiteLessonChips from '../lessons/common/components/PrerequisiteLe
 import UnitOpenerFigure from './unit/UnitOpenerFigure';
 import { useCatalogueHref } from '../components/student/catalogueLink';
 import UnitMissionView from './unit/UnitMissionView';
+import { summaryLessons, unitSummaryPath } from '../features/revision/unitSummary';
 import { unitMissionOf } from './unit/unitMissions';
 import { StatusDot, ProgressLine, minutesOf, tileKind } from '../components/student/lessonTileParts';
 
@@ -274,7 +275,7 @@ export default function UnitPage() {
   // Même contrat de décalage haut que le sommaire et les modules de leçon.
   const chrome = useLessonChromeLayout();
   const mastery = useMemo(() => masteryIndex(profile), [profile]);
-  const { isTeacher } = useLearningViewer();
+  const { isTeacher, usesWorkspaceShell } = useLearningViewer();
 
   if (!unit || unit.levelId !== levelId || unit.gradeId !== gradeId || unit.chapterId !== chapterId)
     return <Navigate to="/courses" replace />;
@@ -340,6 +341,15 @@ export default function UnitPage() {
               <h1 className="font-space text-2xl font-extrabold leading-tight text-nav-ink sm:text-3xl">
                 <MathLabel>{unit.title}</MathLabel>
               </h1>
+              {usesWorkspaceShell && summaryLessons(unit).length > 0 && (
+                <Link
+                  to={unitSummaryPath(unit.id, isTeacher ? 'enseignant' : 'espace')}
+                  className="mt-2 inline-flex min-h-[44px] items-center rounded-xl border border-nav-accent bg-white px-4 font-inter text-sm font-bold text-nav-accent hover:bg-nav-accent-soft"
+                  data-unit-summary-link
+                >
+                  {t('unit.mission.summary')}
+                </Link>
+              )}
             </div>
             <div className={`w-full sm:w-56 ${isTeacher ? 'hidden' : ''}`} data-tour="unit.progress">
               <div className="flex items-baseline justify-between font-inter text-sm font-bold text-nav-ink">

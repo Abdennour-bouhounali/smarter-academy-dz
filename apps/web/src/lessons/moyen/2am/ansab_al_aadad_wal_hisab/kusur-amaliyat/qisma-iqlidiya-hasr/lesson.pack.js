@@ -19,4 +19,5 @@ export const LESSON_PACK = {
     script: () => import('./board/script.js').then((m) => m.SCRIPT),
     memo: () => import('./board/memo.js').then((m) => m.MEMO),
   },
+  revision: () => import('./revision.js').then((m) => m.REVISION),
 };

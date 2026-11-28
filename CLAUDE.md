@@ -42,6 +42,8 @@ Every lesson is being rebuilt like the pilot `qasim-adad-tabii` — FROM SCRATCH
   (`world/`, `board/`, `knowledge.jsx`) and is declared in ITS **`lesson.pack.js`** — no list anywhere else names a
   lesson. After writing or changing a pack: `npm run generate:lesson-index`. Shared code reads a part with
   `lessons/lessonPack.js › loadPackPart` / `usePackPart`, never by the lesson's path (a test fails otherwise).
+- **Every v2 lesson with a world also has its revision page** (`revision.js`, owner 2026-11-26): `docs/architecture/REVISION_PAGE.md` §2.
+  A unit gets its summary by itself once all its lessons are complete. « No rule is told » does NOT apply to these two.
 - **No rule is told**: each key of a lesson is FORGED by the student (predict → write his rule with tiles → the mirror
   tests it on his own evidence → attacks it → seal → use → only then its name). Exactly one rule holds; every other is
   refuted in front of him. The verdict is what the world does, never « wrong ».
@@ -78,6 +80,7 @@ onboarding `LabCoach`, the questions over the lab after each step, one screen, a
 | Parents: « رابط الوليّ », no account | `PARENT_SPACE.md` |
 | A school and its director « فضاء الإدارة » | `SCHOOL_ADMIN_SPACE.md` |
 | The printed-books store | `BOOKS_STORE.md` |
+| « صفحة المراجعة », a lesson on one scrolling page (the exception to « nothing scrolls ») | `REVISION_PAGE.md` |
 | The Math Lab `/espace/atelier` (NOT « مختبري ») | `MATH_LAB.md` |
 | The entry bundle and lazy boundaries | `BUNDLE_BOUNDARIES.md` |
 | Lint, unused code, dead files, formatting | `CODE_HEALTH.md` |

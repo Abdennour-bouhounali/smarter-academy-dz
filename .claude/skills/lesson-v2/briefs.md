@@ -99,6 +99,14 @@ untracked folders). When a lesson teaches something a template did not foresee, 
 >   EARLIER lesson, or null). Its lists are built with the family's `listText`.
 > Report also what a walk of the board must click, and what differs from `<REF>`'s board walk.
 
+## §S. The revision page (`revision.js`) — every lesson with rules
+
+> Blocks of §0 first. Read `docs/architecture/REVISION_PAGE.md` §2 (the shape, the sources, the writing rules) and the
+> model `apps/web/src/lessons/moyen/4am/ansab_al_aadad_wal_hisab/aadad-tabiiya-natiqa/qasim-adad-tabii/revision.js`.
+> Write `<L>/revision.js` and add `revision: () => import('./revision.js').then((m) => m.REVISION),` to
+> `<L>/lesson.pack.js` (do not run the index generator). Check: `cd apps/web && npx vitest run src/features/revision -t
+> "<id>" --maxWorkers=2`. « No rule is told » does not apply to this page. Report every number you are unsure of.
+
 ## §F. The forges and their experiments (wave 2)
 
 > **Assemble each forge from `authoring/forgeBlocks.js`** (the README's skeleton; `proof.bahth.test.js` rebuilds lesson

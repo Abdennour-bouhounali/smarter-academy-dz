@@ -2,7 +2,7 @@
 //
 // Lancement (Vite sur 5173 ; l'API n'est PAS nécessaire — la session est simulée dans la page) :
 //   node apps/web/e2e/unit-mission-view.mjs
-// Pour CHAQUE unité de UNIT_MISSIONS (2026-11-10 : unités 1 et 2), à 1366×768, 1024×768 et 1920×1080 : la page ne défile pas et s'agrandit à 1920 ; CHAQUE station et chaque pastille ouvre
+// Pour CHAQUE unité de UNIT_MISSIONS (2026-11-10 : unités 1 et 2), à 1366×768, 1024×768 et 1920×1080 : la page ne défile pas de côté ; CHAQUE ligne et chaque pastille ouvre
 // une fenêtre qui ne défile pas — repliée ET avec « المزيد » ouvert ; « واصل الدرس » mène à la leçon en cours ; l'enseignant garde l'ancienne
 // page (aucun `[data-unit-mission-view]`). Échec = code de sortie 1. Captures dans /tmp/unit-mission-view-qa.
 import { chromium } from 'playwright';
@@ -75,18 +75,19 @@ for (const [w, h, collapsed] of [[1366, 768, false], [1024, 768, false], [1024, 
   const { ctx, page, errors } = await open(unitId, lessons, { width: w, height: h }, 'student', collapsed);
   const m = await page.evaluate(() => ({
     view: !!document.querySelector('[data-unit-mission-view]'),
-    scroll: document.scrollingElement.scrollHeight - document.scrollingElement.clientHeight,
-    cut: (() => { const v = document.querySelector('[data-unit-mission-view]').getBoundingClientRect(); const r = document.querySelector('[data-unit-fit]').getBoundingClientRect(); return Math.round(Math.max(0, v.left - r.left, r.right - v.right)); })(),
-    zoom: Number(document.querySelector('[data-unit-fit]')?.style.zoom || 1),
+    sideways: document.scrollingElement.scrollWidth - document.scrollingElement.clientWidth,
     now: document.querySelector('[data-unit-now]')?.getAttribute('data-unit-now'),
     done: document.querySelector('[data-unit-done]')?.getAttribute('data-unit-done'),
+    revisions: [...document.querySelectorAll('[data-unit-revision]')].map((e) => e.getAttribute('data-unit-revision')),
   }));
   check(m.view, `${tag} ${w}: the student sees the unit mission view`);
-  check(m.scroll <= 1, `${tag} ${w}: the page does not scroll (${m.scroll}px)`);
-  check(m.cut <= 1, `${tag} ${w}: nothing is cut on the sides (${m.cut}px)`);
+  check(m.sideways <= 1, `${tag} ${w}: no sideways scroll (${m.sideways}px)`);
   check(m.now === lessons[3] && m.done === '3', `${tag} ${w}: 3 lessons done, « درسك الآن » is lesson 4 (${m.now}, ${m.done})`);
-  if (w === 1920) check(m.zoom > 1.2, `${tag} 1920: the page grows to fill the screen (×${m.zoom})`);
-  await page.screenshot({ path: `${OUT}/${tag}-${w}${collapsed ? '-collapsed' : ''}.png` });
+  check(
+    unitId !== 'aadad-tabiiya-natiqa' || m.revisions.includes('qasim-adad-tabii'),
+    `${tag} ${w}: the lesson that has a revision page offers it (${m.revisions.join(',')})`,
+  );
+  await page.screenshot({ path: `${OUT}/${tag}-${w}${collapsed ? '-collapsed' : ''}.png`, fullPage: true });
   const stations = await page.$$eval('[data-unit-station]', (els) => els.map((e) => e.getAttribute('data-unit-station')).filter((x) => x !== 'challenge'));
   check(stations.length === lessons.length, `${tag} ${w}: ${lessons.length} stations on the path (${stations.length})`);
   for (const id of stations) {

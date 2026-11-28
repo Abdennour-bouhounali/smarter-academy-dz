@@ -11,6 +11,7 @@ export const LESSON_PACK = {
   phone: false,
   // the student's game world: the unit's world, played with this lesson's story and content
   world: { id: 'divisor-isles', content: () => import('./world').then((m) => m.lesson) },
+  revision: () => import('./revision.js').then((m) => m.REVISION),
   // the lesson's knowledge sheets — « بطاقة المعارف » on the board, the rule the exam coach reminds
   knowledge: () => import('./knowledge.jsx').then((m) => m.LESSON_KNOWLEDGE),
   // « مدرّب الامتحان »: the knowledge sheet behind each الكفاءة of the lesson

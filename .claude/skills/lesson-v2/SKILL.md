@@ -79,6 +79,7 @@ student must learn in math, but we build for them what we see as appropriate ».
 | 2 | Kit work, only if a kind or a mode is missing — brief `briefs.md` §K | agent(s) | new files in the world's folder, registered LAST |
 | 3 | **Wave 1, in parallel**: the written world (§W) ∥ the board, the class test, the launch-kit family (§B) | 2 agents | `world/` without forges, `board/`, `content/class-tests/…`, the family |
 | 4 | **Wave 2, in parallel**: the forges and their experiments (§F) ∥ the pack, the satellites, the old version deleted (§P) | 2 agents | `world/forges.js`, `inquiries.js`, `lesson.pack.js`, the generated index |
+| 4bis | **The revision page** (owner, 2026-11-26) — brief `briefs.md` §S, after the knowledge sheets and the memo exist; alone in its files, so it runs beside wave 2 or after it | 1 agent | `revision.js`, its line in the pack |
 | 5 | **The walks**, written and run at 1366×768 (the ONE size — owner, 2026-11-19) by ONE agent that is alone in the tree (§X) | 1 agent | six walks, the defects they find fixed |
 | 6 | **Review**: a frozen copy; the walks at 1366×768 only; EVERY new screen looked at with the eyes (`review.md` §B) | main | a list of defects |
 | 7 | **Fix batches** by agents that do not run walks (§R), then step 6 again on a new frozen copy, until nothing is left | agents, main | — |

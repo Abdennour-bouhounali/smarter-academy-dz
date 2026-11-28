@@ -49,19 +49,20 @@ export const LESSON_PACK = {
 | `knowledge` | the lesson's knowledge sheets (`LESSON_KNOWLEDGE`) and its map (`KNOWLEDGE_GRAPH`, same file) — the lesson's ONLY knowledge source (§2). A rebuilt lesson writes it in `world/knowledge.js`; the two pilots keep it in their root `knowledge.jsx` (imported by their `world/knowledge.js`) | « بطاقة المعارف » on the board, the exam coach, the world's « خريطة المعارف » (through `world.content`) |
 | `coach` | `{ <الكفاءة>: <knowledge item id> }` — the sheet « مدرّب الامتحان » reminds; needs `knowledge` | `features/practice/exam/examCoach.js` |
 | `board` | « حصّة القسم »: the lesson on the board (`script`) and its written memo (`memo`) — both or none. The teacher's card shows « في القسم » only for a lesson that has it; a class session with the tests alone, without a script, cannot be declared (the old `classSession: true` of the config is gone) | `boardLessons.js`, `ClassSessionPage`, `LessonMemoPage`, the teacher's card |
+| `revision` | « صفحة المراجعة », the lesson on one scrolling page (`REVISION_PAGE.md`) | `features/revision`, the world's title screen, the teacher's tools |
 
 Rules:
 
 - **A data module without a static import** — Node reads it. Everything heavy is behind `() => import()` that resolves to
   the thing itself (the script, not its module).
 - **The flags are generated.** `node scripts/generate-lesson-index.mjs` (`npm run generate:lesson-index`) reads every
-  pack and writes `pack: { phone?, world?, knowledge?, coach?, board? }` on the lesson's line of
+  pack and writes `pack: { phone?, world?, knowledge?, coach?, board?, revision? }` on the lesson's line of
   `lessons/lessonIndex.generated.json`. The entry bundle asks the flags (`registry.js › lessonPackFlags(id)`,
   `lessonsWithPack(flag)`) and loads nothing. `check:lesson-index` (in `check:lessons` and CI) fails when a pack changed
   and the index did not; the generator refuses an unknown key, a wrong shape, an id that is not the folder's.
 - **A page asks for ONE part**: `lessons/lessonPack.js › loadPackPart(lessonId, part)` or, in a component,
   `usePackPart(lessonId, part)` — `undefined` while it loads, `null` when the lesson has none. Parts: `world`,
-  `knowledge`, `coach`, `script`, `memo`. Never import a lesson's file by its path from shared code.
+  `knowledge`, `coach`, `script`, `memo`, `revision`. Never import a lesson's file by its path from shared code.
 - **Tests**: `lessons/lessonPack.test.js` loads every pack of the index and every part it names, and FAILS when shared
   code (`lessons/common`, `features`, `components`, `services`, `utils`, `hooks`, `contexts`) names a lesson that has a
   pack — the one exception is the instrument tags of `lessonlab/registry.js`. A lesson's own tests import its files
@@ -290,6 +291,7 @@ teacher's own bank; `toolHasContent` keeps in the common header only the tools t
 | T1–T3 the board | `pack.board`, `board/script.js`, `board/memo.js`; a board test that computes every number (`board/board.test.js`) and a board walk (reference: `qawasim-adad-tabii`, CLASS_SESSION.md §5ter) |
 | T2 the class test | `content/class-tests/<grade>/<id>.json` |
 | the phone | **PAUSED (owner, 2026-11-18)**: `pack.phone` stays `false`; not part of « done ». Set only after its home was designed and walked on a phone, when phones resume |
+| the revision page (owner, 2026-11-26) | `pack.revision` and `revision.js`, checked by `features/revision/revision.test.js` (`REVISION_PAGE.md` §2); not asked of a unit's last lesson |
 | a walk | a walk of `apps/web/e2e/` that names the lesson and plays its world |
 | published | status `available` in the catalogue |
 | the old version is deleted | no `modules/`, `retiredModules: true` in `routes.jsx`, no `studentView: 'mission'` / `mission` in the config (§2) |

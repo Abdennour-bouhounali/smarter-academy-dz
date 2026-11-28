@@ -23,7 +23,7 @@ export const studentDoors = [
     labelKey: 'doors.lessons',
     icon: BookOpen,
     path: '/espace/cours',
-    match: ['/courses'],
+    match: ['/courses', '/espace/muraja'],
     pages: [
       { labelKey: 'myCourses', path: '/espace/cours' },
       { labelKey: 'explore', path: '/espace/explorer' },

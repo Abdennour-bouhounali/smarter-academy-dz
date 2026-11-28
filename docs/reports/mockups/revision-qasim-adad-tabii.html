@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مراجعة: قاسم عدد طبيعي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Cairo:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<!--
+  REVISION PAGE — prototype for 4AM · unit 1 · lesson 1 « التعرّف على قاسم لعدد طبيعي » (qasim-adad-tabii).
+  Content: the lesson's learning points P1–P4 and its knowledge sheets; every number checked by hand.
+  Own wording: nothing is copied from the exercise bank (content/practice/4am/qasim-adad-tabii).
+  Design: plain, one column, the platform's blue (#3B5BDB). In the app this becomes ONE template fed by the lesson's data.
+-->
+<style>
+  :root{
+    --bg:#f6f7fb; --card:#ffffff; --ink:#1f2937; --muted:#6b7280; --line:#e5e7eb;
+    --accent:#3B5BDB; --accent-soft:#eef2ff; --ok:#15803d; --ok-soft:#ecfdf3;
+    --bad:#b91c1c; --bad-soft:#fef2f2; --warn:#b45309; --warn-soft:#fffbeb; --hl:#e11d48;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0f1220; --card:#181c2e; --ink:#e5e7eb; --muted:#9ca3af; --line:#2a3048;
+      --accent:#7c93ff; --accent-soft:#1f2747; --ok:#4ade80; --ok-soft:#10291c;
+      --bad:#f87171; --bad-soft:#2e1517; --warn:#fbbf24; --warn-soft:#2b2210; --hl:#fb7185;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1220; --card:#181c2e; --ink:#e5e7eb; --muted:#9ca3af; --line:#2a3048;
+    --accent:#7c93ff; --accent-soft:#1f2747; --ok:#4ade80; --ok-soft:#10291c;
+    --bad:#f87171; --bad-soft:#2e1517; --warn:#fbbf24; --warn-soft:#2b2210; --hl:#fb7185;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth; scroll-padding-top:72px}
+  body{margin:0; background:var(--bg); color:var(--ink); font:17px/1.9 "Noto Naskh Arabic", serif}
+  h1,h2,h3{font-family:"Cairo", sans-serif; line-height:1.4; margin:0 0 .5em}
+  h1{font-size:1.6rem} h2{font-size:1.3rem} h3{font-size:1.05rem}
+  p{margin:.4em 0}
+  .katex{direction:ltr; unicode-bidi:isolate; font-size:1.05em; white-space:nowrap}
+  .hl{color:var(--hl); font-weight:700}
+
+  .bar{position:sticky; top:0; z-index:10; background:var(--card); border-bottom:1px solid var(--line)}
+  .bar-in{max-width:1240px; margin:0 auto; padding:10px 16px; display:flex; gap:12px; align-items:center}
+  .bar-title{font-family:Cairo,sans-serif; font-weight:700; font-size:.95rem; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .bar-count{font-size:.85rem; color:var(--muted); white-space:nowrap}
+  .progress{height:4px; background:var(--line)}
+  .progress i{display:block; height:100%; width:0; background:var(--accent); transition:width .3s}
+  .btn{font:inherit; font-family:Cairo,sans-serif; font-size:.9rem; border:1px solid var(--accent); color:var(--accent); background:transparent; border-radius:8px; padding:4px 12px; cursor:pointer}
+  .btn:focus-visible,.opt:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+
+  main{max-width:1240px; margin:0 auto; padding:20px 16px 80px}
+  .head{padding:8px 0 16px}
+  .crumb{color:var(--muted); font-size:.9rem}
+  .note{background:var(--accent-soft); border-radius:10px; padding:10px 14px; font-size:.95rem}
+
+  .steps{display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:16px 0 0}
+  .steps a{display:inline-flex; gap:6px; align-items:center; text-decoration:none; color:var(--ink); background:var(--card); border:1px solid var(--line); border-radius:999px; padding:2px 12px; font-size:.88rem}
+  .steps a.done{border-color:var(--ok); color:var(--ok)}
+  .steps b{font-family:Cairo,sans-serif}
+
+  section.step{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; margin:20px 0}
+  .step-h{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+  .num{flex:none; width:34px; height:34px; border-radius:50%; background:var(--accent); color:#fff; display:grid; place-items:center; font-family:Cairo,sans-serif; font-weight:700}
+  .step-h h2{margin:0}
+  .step-foot{display:flex; justify-content:flex-end; margin-top:14px; border-top:1px dashed var(--line); padding-top:12px}
+  .check{display:inline-flex; gap:8px; align-items:center; cursor:pointer; font-size:.92rem; color:var(--muted)}
+  .check input{width:18px; height:18px; accent-color:var(--ok)}
+
+  .rule{border-inline-start:4px solid var(--accent); background:var(--accent-soft); border-radius:8px; padding:12px 14px; margin:12px 0}
+  .rule .tag{font-family:Cairo,sans-serif; font-size:.8rem; color:var(--accent); font-weight:700}
+  .formula{text-align:center; margin:8px 0; font-size:1.1rem}
+  .ex{border:1px solid var(--line); border-radius:8px; padding:10px 14px; margin:10px 0}
+  .ex .tag{font-family:Cairo,sans-serif; font-size:.8rem; color:var(--muted); font-weight:700}
+  .trap{background:var(--warn-soft); border-inline-start:4px solid var(--warn); border-radius:8px; padding:10px 14px; margin:10px 0}
+  .trap .tag{color:var(--warn); font-family:Cairo,sans-serif; font-size:.8rem; font-weight:700}
+
+  ol.solve{margin:.3em 0; padding-inline-start:1.4em}
+  ol.solve li{margin:.2em 0}
+  .concl{font-weight:700}
+
+  .task{border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:12px 0}
+  .task-h{display:flex; justify-content:space-between; gap:8px; align-items:baseline}
+  .lvl{font-size:.78rem; font-family:Cairo,sans-serif; color:var(--muted); white-space:nowrap}
+  details{margin-top:8px}
+  summary{cursor:pointer; color:var(--accent); font-family:Cairo,sans-serif; font-size:.9rem; font-weight:700}
+  details .sol{background:var(--ok-soft); border-radius:8px; padding:8px 12px; margin-top:6px}
+
+  .tablewrap{overflow-x:auto; margin:8px 0; position:relative}
+  table{border-collapse:collapse; width:100%; min-width:560px; font-size:.95rem}
+  th,td{border:1px solid var(--line); padding:8px 10px; text-align:start; vertical-align:top}
+  th{background:var(--accent-soft); font-family:Cairo,sans-serif; font-size:.88rem}
+  td.f{text-align:center; white-space:nowrap}
+
+  .q{border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin:12px 0}
+  .q p.qt{font-weight:600}
+  .opts{display:grid; gap:8px; margin-top:6px}
+  .opt{font:inherit; text-align:start; background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer}
+  .opt:hover:not(:disabled){border-color:var(--accent)}
+  .opt:disabled{cursor:default}
+  .opt.right{background:var(--ok-soft); border-color:var(--ok)}
+  .opt.wrong{background:var(--bad-soft); border-color:var(--bad)}
+  .why{display:none; font-size:.92rem; margin-top:8px; color:var(--muted)}
+  .q.answered .why{display:block}
+  .score{font-family:Cairo,sans-serif; font-weight:700; padding:12px 14px; border-radius:10px; background:var(--accent-soft); margin-top:12px}
+
+  .next{text-align:center; color:var(--muted)}
+  footer{max-width:1240px; margin:0 auto; padding:0 16px 40px; color:var(--muted); font-size:.85rem; text-align:center}
+
+  @media (max-width:560px){
+    body{font-size:16px}
+    section.step{padding:16px 14px}
+    h1{font-size:1.35rem}
+  }
+  @page{size:A4; margin:9mm}
+  @media print{
+    :root,:root[data-theme="dark"]{--bg:#fff; --card:#fff; --ink:#000; --muted:#444; --line:#bbb; --accent:#3B5BDB; --accent-soft:#eef2ff; --warn:#92400e; --warn-soft:#fffbeb}
+    html{font-size:11px}
+    .bar,.steps,.step-foot,.btn,.next,.head .note,footer,.task,#s5,#s7,#s2 .ex{display:none !important}
+    body{background:#fff; color:#000; font-size:9.5pt; line-height:1.4}
+    main{max-width:none; padding:0; columns:2; column-gap:7mm}
+    .head{column-span:all; padding:0; border-bottom:1px solid #000; margin-bottom:4px}
+    .crumb{font-size:8pt}
+    h1{font-size:12.5pt; margin:0 0 2px} h2{font-size:10.5pt; margin:0; break-after:avoid} p{margin:0}
+    .num{display:none}
+    section.step{margin:0 0 6px; border:0; border-radius:0; padding:0; background:none}
+    .step-h{margin:0 0 2px; break-after:avoid}
+    .rule,.ex,.trap{margin:3px 0; padding:2px 7px; border-radius:3px; break-inside:avoid}
+    .formula{font-size:10pt; margin:1px 0}
+    ul,ol.solve{margin:0; padding-inline-start:1.3em} li{margin:0}
+    #s6{column-span:all}
+    .tablewrap{margin:2px 0; break-inside:avoid} table{min-width:0; font-size:8.5pt} th,td{padding:1px 5px}
+    #s6 .note{margin-top:3px !important; padding:2px 7px}
+    #s3 .ex:nth-of-type(n+4){display:none}
+    *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="bar-title">مراجعة · التعرّف على قاسم لعدد طبيعي</span>
+    <span class="bar-count" id="count">0 / 7</span>
+    <button class="btn" id="printBtn" type="button">طباعة</button>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</div>
+
+<main>
+  <div class="head">
+    <div class="crumb">السنة الرابعة متوسّط · الوحدة 1: الأعداد الطبيعيّة والأعداد النّاطقة · الدرس 1</div>
+    <h1>التعرّف على قاسم لعدد طبيعي</h1>
+    <p class="note">هذه الصفحة للمراجعة، اقرأها خطوة بخطوة. حُلّ كلّ تمرين على ورقتك قبل أن تفتح الحلّ.</p>
+    <ul class="steps" id="steps">
+      <li><a href="#s1"><b>1</b> أتذكّر</a></li>
+      <li><a href="#s2"><b>2</b> الدرس</a></li>
+      <li><a href="#s3"><b>3</b> أمثلة محلولة</a></li>
+      <li><a href="#s4"><b>4</b> أخطاء شائعة</a></li>
+      <li><a href="#s5"><b>5</b> تمارين</a></li>
+      <li><a href="#s6"><b>6</b> ملخّص القواعد</a></li>
+      <li><a href="#s7"><b>7</b> اختبار سريع</a></li>
+    </ul>
+  </div>
+
+  <!-- 1 ─ prerequisite -->
+  <section class="step" id="s1">
+    <div class="step-h"><span class="num">1</span><h2>أتذكّر: القسمة الإقليدية</h2></div>
+    <p>نقسم عددًا طبيعيًّا $a$ على عدد طبيعي غير معدوم $b$، فنحصل على حاصل $q$ وباقٍ $r$ حيث:</p>
+    <div class="rule">
+      <div class="formula">$a = b \times q + r \quad\text{و}\quad r &lt; b$</div>
+    </div>
+    <div class="ex">
+      <div class="tag">مثال</div>
+      <p>$47 = 6 \times 7 + 5$: حاصل قسمة 47 على 6 هو 7، والباقي 5 (و $5 &lt; 6$).</p>
+    </div>
+    <div class="task">
+      <div class="task-h"><b>تحقّق</b></div>
+      <p>هل المساواة $100 = 7 \times 13 + 9$ تعبّر عن القسمة الإقليدية للعدد 100 على 7؟</p>
+      <details><summary>الحلّ</summary><div class="sol">
+        لا. المساواة صحيحة ($91 + 9 = 100$) لكنّ الباقي 9 ليس أصغر من 7.
+        القسمة الإقليدية هي $100 = 7 \times 14 + 2$.
+      </div></details>
+    </div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="1"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 2 ─ the lesson -->
+  <section class="step" id="s2">
+    <div class="step-h"><span class="num">2</span><h2>الدرس</h2></div>
+    <p>في كلّ ما يلي: $a$ و $b$ عددان طبيعيان و $b \neq 0$.</p>
+
+    <div class="rule">
+      <div class="tag">تعريف 1: بالباقي</div>
+      <p>القول إنّ $b$ <b>قاسم</b> للعدد $a$ معناه أنّ باقي القسمة الإقليدية للعدد $a$ على $b$ يساوي <span class="hl">0</span>.</p>
+      <div class="formula">$a = b \times q + \textcolor{#e11d48}{0}$</div>
+    </div>
+    <div class="ex">
+      <div class="tag">مثال</div>
+      <p>$154 = 11 \times 14 + 0$: الباقي معدوم، إذن 11 قاسم للعدد 154.</p>
+      <p>$42 = 5 \times 8 + 2$: الباقي 2 غير معدوم، إذن 5 ليس قاسمًا للعدد 42.</p>
+    </div>
+
+    <div class="rule">
+      <div class="tag">تعريف 2: بالجداء</div>
+      <p>القول إنّ $b$ قاسم للعدد $a$ معناه أنّه يوجد عدد طبيعي $q$ حيث:</p>
+      <div class="formula">$a = b \times q$</div>
+    </div>
+    <div class="ex">
+      <div class="tag">مثال</div>
+      <p>$108 = 9 \times 12$، إذن 9 قاسم للعدد 108. وبما أنّ $108 = 12 \times 9$ فإنّ 12 أيضًا قاسم للعدد 108.</p>
+      <p>جداء واحد يعطينا <b>قاسمين</b> دون أيّ قسمة.</p>
+    </div>
+
+    <div class="rule">
+      <div class="tag">أربع جمل لها المعنى نفسه</div>
+      <p>إذا كان $a = b \times q$ نقول:</p>
+      <ul>
+        <li>$b$ قاسم للعدد $a$.</li>
+        <li>$b$ يقسم $a$، ونكتب $b \mid a$.</li>
+        <li>$a$ يقبل القسمة على $b$.</li>
+        <li>$a$ مضاعف للعدد $b$.</li>
+      </ul>
+    </div>
+    <div class="ex">
+      <div class="tag">مثال: $108 = 9 \times 12$</div>
+      <p>9 قاسم للعدد 108 · 9 يقسم 108 · 108 يقبل القسمة على 9 · 108 مضاعف للعدد 9.</p>
+    </div>
+
+    <div class="rule">
+      <div class="tag">أحفظ</div>
+      <p>• العدد <b>1</b> قاسم لكلّ عدد طبيعي $a$، لأنّ $a = 1 \times a$.</p>
+      <p>• كلّ عدد طبيعي غير معدوم $a$ قاسم <b>لنفسه</b>، لأنّ $a = a \times 1$.</p>
+    </div>
+    <div class="ex">
+      <div class="tag">مثال</div>
+      <p>دون أيّ حساب: 1 و 154 قاسمان للعدد 154.</p>
+    </div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="2"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 3 ─ worked examples -->
+  <section class="step" id="s3">
+    <div class="step-h"><span class="num">3</span><h2>أمثلة محلولة</h2></div>
+
+    <div class="ex">
+      <div class="tag">مثال 1: هل 7 قاسم للعدد 91؟</div>
+      <ol class="solve">
+        <li>أُجري القسمة الإقليدية للعدد 91 على 7: الحاصل 13.</li>
+        <li>أتحقّق: $7 \times 13 = 91$، إذن $91 = 7 \times 13 + 0$.</li>
+        <li>الباقي معدوم.</li>
+      </ol>
+      <p class="concl">إذن 7 قاسم للعدد 91 (ونقول أيضًا: 91 مضاعف للعدد 7).</p>
+    </div>
+
+    <div class="ex">
+      <div class="tag">مثال 2: هل 5 قاسم للعدد 42؟</div>
+      <ol class="solve">
+        <li>القسمة الإقليدية: $42 = 5 \times 8 + 2$.</li>
+        <li>الباقي 2، و $2 \neq 0$.</li>
+      </ol>
+      <p class="concl">إذن 5 ليس قاسمًا للعدد 42.</p>
+    </div>
+
+    <div class="ex">
+      <div class="tag">مثال 3: ماذا تقول المساواة $56 = 8 \times 7$؟</div>
+      <ol class="solve">
+        <li>56 مكتوب جداءً لعددين طبيعيين.</li>
+        <li>إذن 8 قاسم للعدد 56، و 7 قاسم للعدد 56.</li>
+        <li>ونستطيع أن نقول: 56 مضاعف للعدد 8، و 56 يقبل القسمة على 7.</li>
+      </ol>
+      <p class="concl">لم نقسم شيئًا: الجداء وحده يكفي.</p>
+    </div>
+
+    <div class="ex">
+      <div class="tag">مثال 4: وضعية</div>
+      <p>تلقّت مكتبة 756 كتابًا وتريد ترتيبها في رفوف مملوءة تمامًا، دون أن يبقى أيّ كتاب. هل تختار رفوفًا تسع 32 كتابًا أم رفوفًا تسع 36 كتابًا؟</p>
+      <ol class="solve">
+        <li>رفوف 32: $756 = 32 \times 23 + 20$، يبقى 20 كتابًا دون رفّ.</li>
+        <li>رفوف 36: $756 = 36 \times 21 + 0$، لا يبقى أيّ كتاب.</li>
+      </ol>
+      <p class="concl">نختار رفوف 36، لأنّ 36 قاسم للعدد 756 (21 رفًّا)، أمّا 32 فليس قاسمًا له.</p>
+    </div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="3"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 4 ─ traps -->
+  <section class="step" id="s4">
+    <div class="step-h"><span class="num">4</span><h2>أخطاء شائعة</h2></div>
+    <div class="trap"><div class="tag">خطأ 1: قلب القاسم والمضاعف</div>
+      <p>«108 قاسم للعدد 9» خطأ. الصحيح: 9 قاسم للعدد 108، و 108 مضاعف للعدد 9. القاسم لا يتجاوز العدد (غير المعدوم)، والمضاعف لا يصغر عنه.</p></div>
+    <div class="trap"><div class="tag">خطأ 2: «الباقي صغير، إذن هو قاسم»</div>
+      <p>في $42 = 5 \times 8 + 2$ الباقي صغير لكنّه غير معدوم. الباقي الوحيد الذي يجعل $b$ قاسمًا هو 0.</p></div>
+    <div class="trap"><div class="tag">خطأ 3: الخلط بين الحاصل والباقي</div>
+      <p>في $47 = 6 \times 7 + 5$: الحاصل 7 والباقي 5. نحكم على القاسم بالباقي، لا بالحاصل.</p></div>
+    <div class="trap"><div class="tag">خطأ 4: نسيان 1 والعدد نفسه</div>
+      <p>عند سرد قواسم عدد، نبدأ دائمًا بالعدد 1 وننتهي بالعدد نفسه.</p></div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="4"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 5 ─ exercises -->
+  <section class="step" id="s5">
+    <div class="step-h"><span class="num">5</span><h2>تمارين</h2></div>
+    <p>حُلّ على ورقتك ثمّ افتح الحلّ وقارن. التمارين مرتّبة من الأسهل إلى الأصعب.</p>
+
+    <div class="task"><div class="task-h"><b>تمرين 1</b><span class="lvl">سهل</span></div>
+      <p>هل 9 قاسم للعدد 117؟ برّر.</p>
+      <details><summary>الحلّ</summary><div class="sol">$117 = 9 \times 13 + 0$، الباقي معدوم، إذن 9 قاسم للعدد 117.</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 2</b><span class="lvl">سهل</span></div>
+      <p>هل 8 قاسم للعدد 100؟ برّر.</p>
+      <details><summary>الحلّ</summary><div class="sol">$100 = 8 \times 12 + 4$، الباقي 4 غير معدوم، إذن 8 ليس قاسمًا للعدد 100.</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 3</b><span class="lvl">متوسّط</span></div>
+      <p>انطلاقًا من المساواة $84 = 12 \times 7$، اكتب أربع جمل صحيحة تستعمل فيها الكلمات: قاسم، يقسم، يقبل القسمة على، مضاعف.</p>
+      <details><summary>الحلّ</summary><div class="sol">12 قاسم للعدد 84 · 7 يقسم 84 · 84 يقبل القسمة على 12 · 84 مضاعف للعدد 7. (وكلّ جملة صحيحة أخرى من الجداء نفسه مقبولة.)</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 4</b><span class="lvl">متوسّط</span></div>
+      <p>أكمل: $135 = 15 \times \dots$، ثمّ استنتج قاسمين للعدد 135.</p>
+      <details><summary>الحلّ</summary><div class="sol">$135 = 15 \times 9$، إذن 15 و 9 قاسمان للعدد 135.</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 5</b><span class="lvl">متوسّط</span></div>
+      <p>هل 60 قاسم للعدد 12؟ برّر.</p>
+      <details><summary>الحلّ</summary><div class="sol">لا: $12 = 60 \times 0 + 12$، الباقي 12 غير معدوم. العكس هو الصحيح: 12 قاسم للعدد 60 لأنّ $60 = 12 \times 5$.</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 6</b><span class="lvl">متوسّط</span></div>
+      <p>أعطِ، دون أيّ حساب، قاسمين للعدد 257. علّل.</p>
+      <details><summary>الحلّ</summary><div class="sol">1 و 257، لأنّ $257 = 1 \times 257$: العدد 1 قاسم لكلّ عدد طبيعي، وكلّ عدد غير معدوم قاسم لنفسه.</div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 7</b><span class="lvl">وضعية</span></div>
+      <p>تنظّم متوسّطة رحلة لـ 360 تلميذًا. تريد استئجار حافلات من النوع نفسه، تُملأ كلّها تمامًا. يقترح الناقل حافلات من 45 مقعدًا أو حافلات من 50 مقعدًا.</p>
+      <p>1) أيّ نوع يناسب؟ برّر بالقسمة الإقليدية. &nbsp; 2) كم حافلة يلزم؟</p>
+      <details><summary>الحلّ</summary><div class="sol">
+        1) $360 = 45 \times 8 + 0$: الباقي معدوم، 45 قاسم للعدد 360.
+        $360 = 50 \times 7 + 10$: يبقى 10 تلاميذ، 50 ليس قاسمًا للعدد 360. إذن نختار حافلات 45 مقعدًا.<br>
+        2) يلزم 8 حافلات.
+      </div></details></div>
+
+    <div class="task"><div class="task-h"><b>تمرين 8</b><span class="lvl">نحو الامتحان</span></div>
+      <p>نعتبر العدد 1350.</p>
+      <p>1) احسب باقي القسمة الإقليدية للعدد 1350 على 25، ثمّ على 28.<br>
+         2) استنتج أيّ العددين 25 و 28 قاسم للعدد 1350.<br>
+         3) اكتب العدد 1350 جداءً لعددين طبيعيين أحدهما 25، واستنتج قاسمًا آخر للعدد 1350.</p>
+      <details><summary>الحلّ</summary><div class="sol">
+        1) $1350 = 25 \times 54 + 0$، الباقي 0. &nbsp; $1350 = 28 \times 48 + 6$، الباقي 6.<br>
+        2) 25 قاسم للعدد 1350، و 28 ليس قاسمًا له.<br>
+        3) $1350 = 25 \times 54$، إذن 54 أيضًا قاسم للعدد 1350.
+      </div></details></div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="5"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 6 ─ summary table -->
+  <section class="step" id="s6">
+    <div class="step-h"><span class="num">6</span><h2>ملخّص القواعد</h2></div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>القاعدة</th><th>بالرموز</th><th>مثال</th><th>انتبه</th></tr></thead>
+        <tbody>
+          <tr><td>$b$ قاسم لـ $a$ إذا كان باقي القسمة الإقليدية يساوي 0</td><td class="f">$a = b \times q + 0$</td><td>$91 = 7 \times 13 + 0$</td><td>باقٍ غير معدوم، ولو كان صغيرًا: ليس قاسمًا</td></tr>
+          <tr><td>$b$ قاسم لـ $a$ إذا وُجد عدد طبيعي $q$ حيث</td><td class="f">$a = b \times q$</td><td>$56 = 8 \times 7$: 8 و 7 قاسمان</td><td>الجداء يعطي قاسمين معًا</td></tr>
+          <tr><td>أربع جمل، معنى واحد</td><td class="f">$b \mid a$</td><td>9 يقسم 108 · 108 مضاعف لـ 9</td><td>لا تقلب: القاسم هو الأصغر، والمضاعف هو الأكبر</td></tr>
+          <tr><td>1 قاسم لكلّ عدد طبيعي</td><td class="f">$a = 1 \times a$</td><td>$1 \mid 154$</td><td>أوّل قاسم في القائمة</td></tr>
+          <tr><td>كلّ عدد غير معدوم قاسم لنفسه</td><td class="f">$a = a \times 1$</td><td>$154 \mid 154$</td><td>آخر قاسم في القائمة</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:12px"><b>في الامتحان:</b> لتبرير أنّ $b$ قاسم لـ $a$، اكتب القسمة الإقليدية واذكر أنّ الباقي معدوم، أو اكتب $a$ على شكل $b \times q$.</div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="6"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <!-- 7 ─ quiz -->
+  <section class="step" id="s7">
+    <div class="step-h"><span class="num">7</span><h2>اختبار سريع</h2></div>
+    <p>اختر الإجابة الصحيحة. تظهر النتيجة فورًا.</p>
+    <div id="quiz"></div>
+    <div class="score" id="score" hidden></div>
+    <div style="margin-top:10px"><button class="btn" type="button" id="retry" hidden>أعد الاختبار</button></div>
+    <div class="step-foot"><label class="check"><input type="checkbox" data-step="7"> أنهيت هذه الخطوة</label></div>
+  </section>
+
+  <p class="next">الدرس القادم: <b>قواسم عدد طبيعي</b>، نبحث عن كلّ قواسم عدد، مثنى مثنى.</p>
+</main>
+
+<footer>Smarter Academy · مراجعة الدرس 1 من الوحدة 1 · السنة الرابعة متوسّط</footer>
+
+<script>
+  // ── the quiz (own wording; every number checked) ──
+  const QUIZ = [
+    { q: '$63 = 7 \\times 9 + 0$. إذن:', o: ['$7$ قاسم للعدد $63$', '$63$ قاسم للعدد $7$', '$7$ ليس قاسمًا للعدد $63$'], c: 0,
+      why: 'الباقي معدوم، إذن 7 قاسم للعدد 63.' },
+    { q: '$50 = 6 \\times 8 + 2$. هل $6$ قاسم للعدد $50$؟', o: ['نعم، لأنّ $50$ زوجي', 'لا، لأنّ الباقي $2$ غير معدوم', 'نعم، لأنّ الحاصل $8$'], c: 1,
+      why: 'نحكم بالباقي، والباقي 2 غير معدوم.' },
+    { q: 'أيّ جملة <b>لا</b> تعني أنّ $4$ قاسم للعدد $28$؟', o: ['$4$ يقسم $28$', '$28$ يقبل القسمة على $4$', '$4$ مضاعف للعدد $28$'], c: 2,
+      why: 'الصحيح: 28 مضاعف للعدد 4، وليس العكس.' },
+    { q: 'أيّ عدد قاسم لكلّ عدد طبيعي؟', o: ['$0$', '$1$', '$2$'], c: 1,
+      why: 'لأنّ $a = 1 \\times a$ لكلّ عدد طبيعي $a$.' },
+    { q: 'من المساواة $72 = 8 \\times 9$ نقرأ أنّ:', o: ['$8$ فقط قاسم للعدد $72$', '$8$ و $9$ قاسمان للعدد $72$', '$72$ قاسم للعدد $8$'], c: 1,
+      why: 'جداء واحد يعطي قاسمين.' },
+    { q: '$45$ مضاعف للعدد:', o: ['$90$', '$9$', '$450$'], c: 1,
+      why: '$45 = 9 \\times 5$.' },
+    { q: 'هل $7$ قاسم للعدد $100$؟', o: ['نعم، لأنّ الحاصل $14$', 'لا، لأنّ $100 = 7 \\times 14 + 2$', 'نعم، لأنّ $100$ زوجي'], c: 1,
+      why: 'الباقي 2 غير معدوم.' },
+    { q: '«$13$ قاسم للعدد $91$» يعني:', o: ['$13 = 91 \\times q$', '$91 = 13 + 78$', '$91 = 13 \\times 7$'], c: 2,
+      why: '$13 \\times 7 = 91$.' },
+  ];
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const store = {
+    get(k){ try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+    set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch {} },
+  };
+  const KEY = 'revision:qasim-adad-tabii:steps';
+  const math = (el) => { if (window.renderMathInElement) renderMathInElement(el, { delimiters: [{ left: '$', right: '$', display: false }], throwOnError: false }); };
+
+  let correct = 0, answered = 0;
+  function buildQuiz(){
+    correct = 0; answered = 0;
+    const box = $('#quiz'); box.innerHTML = '';
+    QUIZ.forEach((it, i) => {
+      const d = document.createElement('div'); d.className = 'q';
+      d.innerHTML = `<p class="qt">${i + 1}) ${it.q}</p><div class="opts"></div><p class="why">${it.why}</p>`;
+      it.o.forEach((t, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'opt'; b.innerHTML = t;
+        b.addEventListener('click', () => {
+          d.querySelectorAll('.opt').forEach((x, k) => { x.disabled = true; if (k === it.c) x.classList.add('right'); });
+          if (j === it.c) correct++; else b.classList.add('wrong');
+          d.classList.add('answered'); answered++;
+          if (answered === QUIZ.length) showScore();
+        });
+        d.querySelector('.opts').appendChild(b);
+      });
+      box.appendChild(d);
+    });
+    $('#score').hidden = true; $('#retry').hidden = true;
+    math(box);
+  }
+  function showScore(){
+    const s = $('#score');
+    const msg = correct === QUIZ.length ? 'ممتاز! أنت جاهز للدرس القادم.'
+      : correct >= 6 ? 'جيّد. راجع في الملخّص الأسئلة التي أخطأت فيها.'
+      : 'أعد قراءة الدرس (الخطوة 2) والأخطاء الشائعة (الخطوة 4) ثمّ أعد الاختبار.';
+    s.textContent = `نتيجتك: ${correct} / ${QUIZ.length} · ${msg}`;
+    s.hidden = false; $('#retry').hidden = false;
+  }
+  $('#retry').addEventListener('click', buildQuiz);
+
+  const done = new Set(store.get(KEY) || []);
+  function paint(){
+    document.querySelectorAll('[data-step]').forEach((c) => { c.checked = done.has(c.dataset.step); });
+    document.querySelectorAll('#steps a').forEach((a, i) => a.classList.toggle('done', done.has(String(i + 1))));
+    $('#count').textContent = `${done.size} / 7`;
+    $('#prog').style.width = `${(done.size / 7) * 100}%`;
+  }
+  document.querySelectorAll('[data-step]').forEach((c) => c.addEventListener('change', () => {
+    c.checked ? done.add(c.dataset.step) : done.delete(c.dataset.step);
+    store.set(KEY, [...done]); paint();
+  }));
+  $('#printBtn').addEventListener('click', () => {
+    window.print();
+  });
+
+  window.addEventListener('DOMContentLoaded', () => { math(document.body); buildQuiz(); paint(); });
+</script>
+</body>
+</html>

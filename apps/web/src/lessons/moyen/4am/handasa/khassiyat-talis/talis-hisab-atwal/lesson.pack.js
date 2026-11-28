@@ -10,6 +10,7 @@ export const LESSON_PACK = {
   phone: false,
   // the student's game world « الأهرامات »: the unit's world, played with this lesson's story and content
   world: { id: 'nile-pyramids', content: () => import('./world').then((m) => m.lesson) },
+  revision: () => import('./revision.js').then((m) => m.REVISION),
   // the lesson's knowledge sheets — « بطاقة المعارف » on the board, the rule the exam coach reminds.
   // They live in the world's folder and are the lesson's ONLY knowledge (the world's « خريطة المعارف » too): the old root
   // `knowledge.jsx` / `knowledgeGraph.js` were deleted with the old version (LESSON_V2.md §2).

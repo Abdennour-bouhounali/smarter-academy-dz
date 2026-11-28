@@ -8,11 +8,11 @@
 import { Link } from 'react-router-dom';
 import { useIsPhoneScreen } from '../../components/auth/RequireLargeScreen';
 import { PHONE_TOOL_IDS } from '../../components/auth/phoneLessons';
-import { Brain, ClipboardList, FileText, Home, NotebookPen, Presentation, Users } from 'lucide-react';
+import { BookOpenCheck, Brain, ClipboardList, FileText, Home, NotebookPen, Presentation, Users } from 'lucide-react';
 import { getLessonById, getLessonPath } from '@smarter-academy/core';
 import MathLabel from '../../lessons/common/components/MathLabel';
 import { teacherBankPath } from '../practice/teacherBank';
-import { classCardPath, classSessionPath, classTrackingPath, toolHasContent } from './boardLessons';
+import { classCardPath, classSessionPath, classTrackingPath, revisionPath, toolHasContent } from './boardLessons';
 import { lessonFilePagePath } from './lessonFileDoc';
 import './teacherPanel.css';
 
@@ -24,6 +24,7 @@ const ALL_TOOLS = (lessonId) => [
   { id: 'session', label: 'حصّة القسم', icon: Presentation, to: classSessionPath(lessonId), main: true },
   { id: 'memo', label: 'المذكّرة', icon: FileText, to: `/enseignant/cours/${encodeURIComponent(lessonId)}/memoire` },
   { id: 'file', label: 'ملفّ الدرس', icon: NotebookPen, to: lessonFilePagePath(lessonId) },
+  { id: 'revision', label: 'صفحة المراجعة', icon: BookOpenCheck, to: revisionPath(lessonId, 'enseignant') },
   { id: 'bank', label: 'بنك التمارين', icon: ClipboardList, to: teacherBankPath(lessonId) },
   { id: 'track', label: 'متابعة القسم', icon: Users, to: classTrackingPath(lessonId) },
   { id: 'card', label: 'بطاقة المعارف', icon: Brain, to: classCardPath(lessonId) },
