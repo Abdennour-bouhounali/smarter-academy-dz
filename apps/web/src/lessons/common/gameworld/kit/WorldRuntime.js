@@ -2,8 +2,10 @@
  * THE WORLD RUNTIME — everything a lesson's game world has whatever its mechanic is (it names no lesson and no world).
  *
  * It owns the three.js scene, the loop, the robot the student steers, the camera, the sky, the things he can use (`addInteract`),
- * the gems, the game state React reads (`subscribe` / `getState`) and the flows every lesson has around its story: the hub,
- * « خريطة المعارف », « الامتحان الأبيض », the paper mode, the evidence, the save.
+ * the gems, the game state React reads (`subscribe` / `getState`) and the save. The flows every lesson has around its
+ * story that touch no 3D — the hub, « خريطة المعارف », « الامتحان الأبيض », the paper mode, the evidence — are
+ * `lessonFlows.js`, mixed in at the end of this file (the lesson's tools opened with no world run the same code:
+ * `ToolsRuntime.js`).
  *
  * A WORLD extends it and gives the mechanic through these hooks (the ONLY way the runtime reaches a world):
  *   initWorld(save)        its own fields, before the state exists (layout, what is built)
@@ -44,7 +46,8 @@ import { seeded, makeCloud, makeGem, makeSky, Particles, disposeScene } from '..
 import { makeRobot } from '../engine/robot';
 import { GameAudio } from '../engine/audio';
 import { GameInput } from '../engine/input';
-import { examLevelOpen, emptyExam } from './journey';
+import { emptyExam } from './journey';
+import { LESSON_FLOWS } from './lessonFlows';
 import { steerAngle, turnStep } from './steer';
 
 const SPEED = 6.2;
@@ -212,10 +215,6 @@ export class WorldRuntime {
     return () => this.listeners.delete(fn);
   };
   getState = () => this.state;
-  set(patch) {
-    this.state = { ...this.state, ...patch };
-    this.listeners.forEach((fn) => fn());
-  }
   say(text, hold = 6) {
     this.sayId += 1;
     this.set({ say: { text, id: this.sayId, hold } });
@@ -363,53 +362,6 @@ export class WorldRuntime {
   }
 
   // ───────────────────────────── the hub: the map, « تقدّمي », « مختبري », the launch ─────────────────────────────
-  /** The map opens from the title screen or from the world; it remembers where to return. */
-  openMap(sel = null, space = null) {
-    this.openHub({ type: 'map', sel, space });
-  }
-  /** « تقدّمي »: the student's progress in this lesson. « مختبري »: the lab of the lesson. */
-  openProgress() {
-    this.openHub({ type: 'progress' });
-  }
-  openLab() {
-    this.openHub({ type: 'lab' });
-  }
-  /** « عُدّة الانطلاق »: the launch of the lesson (`lessons/common/launchkit`). `then: 'start'` enters the world when it ends. */
-  openLaunch(thenStart = false) {
-    this.openHub({ type: 'launch', then: thenStart ? 'start' : null });
-  }
-  launched(then) {
-    this.closeMap();
-    if (then === 'start') this.start();
-  }
-
-  /** « خريطة المعارف »: the full page of every rule, example and common mistake of the lesson. */
-  openKnow(sel = null) {
-    this.openHub({ type: 'know', sel });
-  }
-  /** « الامتحان الأبيض »: the exam sitting (ExamSitting.jsx) — open once the four keys are owned. */
-  openSitting(level = 1) {
-    if (!this.lesson.journey.examOpen([...this.keysEver], this.practice) || !examLevelOpen(this.exam, level)) return;
-    this.openHub({ type: 'sitting', level, weak: this.exam.weak?.[level] ?? [], n: (this.exam.sittings ?? 0) + 1 });
-  }
-
-  /** « خروج » from a sitting, confirmed: nothing was marked or sent, the ladder has not moved — back to it. */
-  quitSitting() {
-    if (this.state.overlay?.type === 'sitting') this.openMap(null, 'exam');
-  }
-
-  /** A sitting was handed in and its copy read: the ladder moves, and the GAME comes back for the moment between two levels. */
-  finishSitting(level, mark, total, weak) {
-    const { exam, result } = this.lesson.journey.applySitting(this.exam, level, mark, total, weak);
-    this.exam = exam;
-    this.save();
-    if (result.passed) {
-      this.audio.play('finale');
-      for (let k = 0; k < result.stars; k += 1) setTimeout(() => this.audio.play('star', k + 1), 500 + k * 260);
-    } else this.audio.play('ui');
-    this.set({ exam, overlay: { type: 'promotion', result } });
-  }
-
   /** « قواعدي »: the rules he owns, readable from anywhere he plays (the button of the top bar). */
   openRules(key = null) {
     if (!this.state.keys.length) return;
@@ -421,98 +373,6 @@ export class WorldRuntime {
     this.set({ overlay: null, phase: from === 'title' ? 'title' : 'play' });
     this.input.clear();
   }
-  openHub(overlay) {
-    if (this.busy()) return;
-    const ph = this.state.phase;
-    if (!this.mapFrom) this.mapFrom = ph === 'title' ? 'title' : 'play';
-    this.audio.play('ui');
-    this.set({ overlay, phase: this.mapFrom === 'title' ? 'title' : 'dialog', prompt: null });
-  }
-
-  /**
-   * « وضع الورقة »: a screen that asks for written work (`source`) turns it on — the music stops, as in an exam — and off when
-   * it leaves. Several screens may ask at once; the music comes back when none does.
-   */
-  paperMode(source, on) {
-    if (!this.paperSources) this.paperSources = new Set();
-    const was = this.paperSources.size > 0;
-    if (on) this.paperSources.add(source);
-    else this.paperSources.delete(source);
-    const now = this.paperSources.size > 0;
-    if (was === now) return;
-    this.audio.setMusic(!now);
-    if (now) this.audio.play('paper');
-    this.set({ paper: now });
-  }
-
-  /** An answer that counts toward الكفاءات (evidence.js decides which): handed to the shell, which sends it to the server. */
-  evidence(context, ev) {
-    if (!ev) return;
-    const t = this.tally[ev.key] ?? { ok: 0, n: 0 };
-    this.tally = {
-      ...this.tally,
-      [ev.key]: { ok: t.ok + (this.lesson.evidence.verify(ev.claim) ? 1 : 0), n: t.n + 1 },
-    };
-    this.set({ tally: this.tally });
-    this.save();
-    this.onEvidence(context, ev);
-  }
-
-  /**
-   * A copy of « الامتحان الأبيض » was handed in: each answered step that counts adds to the tally of its key (« تقدّمي »), and the
-   * copy goes to the shell, which sends it to the practice engine — the SERVER re-computes every verdict (kit/bankEvidence.js).
-   */
-  handInSitting(subject, answers) {
-    const rows = this.lesson.sittings.tallyOf(subject, answers);
-    for (const r of rows) {
-      const t = this.tally[r.key] ?? { ok: 0, n: 0 };
-      this.tally = { ...this.tally, [r.key]: { ok: t.ok + (r.ok ? 1 : 0), n: t.n + 1 } };
-    }
-    if (rows.length) {
-      this.set({ tally: this.tally });
-      this.save();
-    }
-    this.onSitting(subject, answers);
-  }
-
-  /** A card of the knowledge page was opened / a rule passed its memory test. */
-  markRead(id) {
-    if (this.know.read.includes(id)) return;
-    this.know = { ...this.know, read: [...this.know.read, id] };
-    this.set({ know: this.know });
-    this.save();
-  }
-  /** DISCOVERY MODE of the knowledge page: these cards are now revealed (a card reveals the ones that follow it). */
-  discover(ids) {
-    const add = ids.filter((id) => !this.know.found.includes(id));
-    if (!add.length) return;
-    this.know = { ...this.know, found: [...this.know.found, ...add] };
-    this.audio.play('crystal');
-    this.set({ know: this.know });
-    this.save();
-  }
-  resetDiscovery(rootId) {
-    this.know = { ...this.know, found: [rootId] };
-    this.set({ know: this.know });
-    this.save();
-  }
-
-  /** A training session on a card of the knowledge page ended with `stars` (the best is kept). */
-  trained(id, stars) {
-    if ((this.know.trained[id] ?? 0) >= stars) return;
-    this.know = { ...this.know, trained: { ...this.know.trained, [id]: stars } };
-    if (stars) this.audio.play('success');
-    this.set({ know: this.know });
-    this.save();
-  }
-  seal(id) {
-    if (this.know.sealed.includes(id)) return;
-    this.know = { ...this.know, sealed: [...this.know.sealed, id] };
-    this.audio.play('key');
-    this.set({ know: this.know });
-    this.save();
-  }
-
   // ───────────────────────────── public: shell commands ─────────────────────────────
   start() {
     this.audio.unlock();
@@ -832,6 +692,77 @@ export class WorldRuntime {
     this.step(dt);
     this.renderer.render(this.scene, this.camera);
     this.placePrompt();
+    this.dodgeHero();
+  }
+
+  /** The robot on the screen, in the page's pixels — or null when he is not in front of the lens. */
+  heroRect() {
+    const box = (this.tmpBox ??= new THREE.Box3()).setFromObject(this.robot.group);
+    if (box.isEmpty()) return null;
+    const v = (this.tmpH ??= new THREE.Vector3());
+    const base = this.canvas.getBoundingClientRect();
+    let [l, t, r, b] = [Infinity, Infinity, -Infinity, -Infinity];
+    for (const x of [box.min.x, box.max.x])
+      for (const y of [box.min.y, box.max.y])
+        for (const z of [box.min.z, box.max.z]) {
+          v.set(x, y, z).project(this.camera);
+          if (v.z >= 1) return null;
+          const px = base.left + (v.x * 0.5 + 0.5) * base.width;
+          const py = base.top + (-v.y * 0.5 + 0.5) * base.height;
+          l = Math.min(l, px);
+          r = Math.max(r, px);
+          t = Math.min(t, py);
+          b = Math.max(b, py);
+        }
+    return { left: l, right: r, top: t, bottom: b };
+  }
+
+  /**
+   * NOTHING WRITTEN COVERS THE ROBOT (owner, 2026-11-27 on the French platform, ported 2026-11-28): the « E » prompt of
+   * the bottom centre steps to his side when he stands there (`--dodge`), and his own sentence rises above his head
+   * (`--lift`). In steps of 8 px, so that his bob does not make them tremble. The same button says whether the place is
+   * still far (`data-far`: no key to press yet). Physical pixels (`left`), the same in a page read right to left.
+   */
+  dodgeHero() {
+    const doc = this.canvas.ownerDocument;
+    const act = doc.querySelector('[data-di-act]');
+    const say = doc.querySelector('.di-say');
+    if (!act && !say) return;
+    const h = this.state.phase === 'play' || this.state.phase === 'dialog' ? this.heroRect() : null;
+    const step = (px) => `${Math.round(px / 8) * 8}px`;
+    if (act) {
+      act.toggleAttribute('data-far', Boolean(this.promptIt && this.promptIt !== this.activeIt));
+      const r = act.getBoundingClientRect();
+      const base = this.canvas.getBoundingClientRect();
+      const mid = base.left + base.width / 2;
+      let dodge = 0;
+      if (
+        h &&
+        r.bottom > h.top - 8 &&
+        r.top < h.bottom + 8 &&
+        mid + r.width / 2 > h.left - 12 &&
+        mid - r.width / 2 < h.right + 12
+      ) {
+        const right = h.right + 12 + r.width / 2 - mid;
+        const left = h.left - 12 - r.width / 2 - mid;
+        // to the side that asks the shorter step — and stays on the screen
+        dodge = Math.abs(left) < right && mid + left - r.width / 2 > base.left + 8 ? left : right;
+      }
+      act.style.setProperty('--dodge', step(dodge));
+    }
+    if (say) {
+      const lift0 = parseFloat(say.style.getPropertyValue('--lift')) || 0;
+      const r = say.getBoundingClientRect();
+      // where it would stand with no lift
+      const bottom = r.bottom + lift0;
+      const top = r.top + lift0;
+      let lift = 0;
+      if (h && bottom > h.top - 8 && top < h.bottom && r.right > h.left && r.left < h.right)
+        lift = bottom - (h.top - 12);
+      // never up into the instruction: the top bar and one line are kept
+      lift = Math.max(0, Math.min(lift, top - 130));
+      say.style.setProperty('--lift', step(lift));
+    }
   }
 
   /** Anchors the HUD's « E » bubble (an element handed over by the shell) above the thing the robot can use now. */
@@ -962,3 +893,7 @@ export class WorldRuntime {
     this.listeners.clear();
   }
 }
+
+// The flows that touch no 3D — the hub, « خريطة المعارف », « الامتحان الأبيض », the evidence — live in `lessonFlows.js`:
+// the world's runtime and the runtime of the lesson's tools opened WITHOUT a world (`ToolsRuntime.js`) run the same code.
+Object.assign(WorldRuntime.prototype, LESSON_FLOWS);

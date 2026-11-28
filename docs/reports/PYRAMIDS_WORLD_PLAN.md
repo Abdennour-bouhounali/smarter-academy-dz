@@ -107,23 +107,29 @@ the skin of the river (kit work K-b):
 - the three arches become three NUMBER BUOYS;
 - a CROCODILE surfaces in one lane between two buoys and costs a heart if the boat is in that lane.
 
-Four right buoys reach the dock (`total: 4`). **Every leg is numeric**, and a gate passes in about 3 s. Since
-2026-11-25 (owner) a buoy that names points carries its FIGURE beside the order (`run.js` → `figure.js › buoyFigure`,
-drawn by `kit/GateRunHud.jsx`; `GAME_WORLD.md` « The kit's gate run »); the buoys of k only have none. Each leg trains only what he has just sealed:
+Four right buoys reach the dock (`total: 4`). **Every buoy is ONE bare speed calculation** (owner, 2026-11-27, said of
+France and applied here on 2026-11-28: « the river game must never contain complicated questions: the questions must be
+speed calculation questions like: complete 4/12 = 5/… → the student completes 15 → the type of questions is similar to
+the calculations he will get while solving the exercises of the lesson »). It REPLACES the rule of 2026-11-25 (« the
+river questions draw their figure », commit `8ddb66b6`): no letter of a point, no figure (`figure.js › buoyFigure` was
+deleted), no sentence to interpret — the order alone (« أكمل », « احسب »), the calculation written as the bank's solutions
+write it, the box `\square`. Each leg trains the computations of the key just sealed (`run.js`):
 
-| Leg | After | What a buoy asks (mental numbers) | The error its wrong buoys hold |
+| Leg | After | What a buoy asks (mental numbers) | Its wrong buoys: the real mistakes of that calculation |
 |---|---|---|---|
-| 1 → 2 | 🔑 | « AM = 6, AB = 14, AN = 9 ⟹ AC = ? » (the nested chain) | the piece (AN × MB / AM); the inverted ratio |
-| 2 → 3 | 📐 | « $\frac{AM}{AB} = \frac{p}{q}$, AB = q × m ⟹ AM = ? » | AB − p; AB × q / p |
-| 3 → 4 | 🦋 | « $\frac{OC}{OB} = \frac{2}{7}$, OT = 21 ⟹ OD = ? » | OT − 5; OT × 7 / 2 |
-| 4 → 5 | 🔍 | « k = 0,7: تكبير أو تصغير؟ », « k = $\frac{7}{4}$, side 12 → ? » | k < 1 read as an enlargement; side + k |
+| 1 → 2 | 🔑 | `equality` « $\frac{2}{7} = \frac{\square}{35}$ » (the box anywhere) · `cross` « $\frac{35 \times 8}{7}$ » | the gap added (35 − 7 + 2 = 30); the division forgotten (70, 280); the wrong diagonal; the ratio upside down |
+| 2 → 3 | 📐 | `sum` « $\frac{28}{28 + 4} = \frac{7}{\square}$ » · `decimal` « $\frac{2}{7} = \frac{3}{\square}$ » (10,5) | the piece alone (the sum forgotten); the same slips as 🔑 |
+| 3 → 4 | 🦋 | `halfCross` « $\frac{8{,}5 \times 16}{10}$ » · `halfEquality` « $\frac{7}{24{,}5} = \frac{2}{\square}$ » | the product not yet divided; the gap added; the other quotients |
+| 4 → 5 | 🔍 | `image` « $35 \times \frac{8}{7}$ » · `coefficient` « $7 \div 2$ »; level 2 adds `back` « $\frac{6}{7} \times \square = 1$ » | 35 × 8 or 35 ÷ 7 (one step forgotten), 35 + 8 − 7 (the gap of k added); 7 − 2, 7 × 2; the same k, 1 − k |
 
 **The numbers.** The lesson's `world/run.js` generates them with `rand`, and its test uses `rng(seed)`. k = p/q with
-q ≤ 9, and sides are q × m with m ≤ 9. The test refuses:
+q ≤ 9 (none the bank writes), a number p × m or q × m at most 72, a decimal a half. The test recomputes the right buoy
+from the calculation itself and refuses:
 
 - every k of the bank;
-- every (piece, side) pair of the bank;
-- **any wave whose wrong buoy equals its right one**, for example AB − p = AM when m(q − p) = p, or side × k = side + k.
+- every pair of numbers the calculation shows (one of ten or more) that stands on one line of the bank;
+- any wave whose wrong buoy equals its right one, and any wrong buoy that is not one of the mistakes of its calculation;
+- a fact that writes a number of four digits; a prompt wider than 40 characters (`limits.test.js`).
 
 **The same rail is the practice ladder** (« فضاء التدريب », one node per key plus « تحدّي الامتحان », `kit/ladder.js`). The
 trip is the first level of the node of the key just sealed.
@@ -259,6 +265,16 @@ the world's log.
 Each kind is a pure reducer plus a pure view, in the shape of `rootCourts/calc.js`, and is played and tested without a
 browser. Its sentences say facts, never the rule (the lesson's `inquiries.test.js` forbids the rule's words in them). A
 miss is answered « توقّعك لم يصب هذه المرّة », followed by a fact.
+
+**The half-turn redrawn (2026-11-28, ported from France, commit `96cd3da6`; owner on its three grey bars: « this part is
+not clear… show it in the rotation of the small triangle and change with it », then « mathematical, professional and more
+attractive »).** `InquiryHalfturn.jsx › TurnFigure` draws the figure itself on squared paper: the two lines through the
+vertex, the big triangle, the small one turned with the place it left (dashed), the arc of the turn and its angle; the
+turn is set by two buttons around a dial (← →, the keys too). `Gauge.jsx › TurningGauge` is on screen from the first
+press: one row per pair of sides in notation, « [SE] على [SA] » (`THALES_TEXT.gauge`, `gaugeOn`, `gaugeTurn`), the
+small side tilted off its rule by (180° − angle) / 6 and laid on it at 180°, a dashed green line through the three ends
+when they agree. Light colours only (`inquiry.css`). New hook: `data-rf-gauge-turn=<angle>` (with `data-rf-aligned`,
+« yes » only once landed and aligned).
 
 ### 2.4 What is reused, what is new
 

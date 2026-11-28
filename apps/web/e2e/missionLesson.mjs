@@ -15,6 +15,8 @@ for (const [name, address] of [
   ['old-test-address', `${url}/ahill`],
 ]) {
   const { page, ctx } = await walk.student({ uid: 9301, lessonId: ID, url: address });
+  // an old module address redirects to the lesson's HOME (query dropped); the island is one step further
+  if (name !== 'lesson-address') await page.click('[data-lesson-home-enter]').catch(() => bad.push(`${name}: the redirect does not land on the lesson home`));
   await page
     .waitForSelector('[data-gameworld="mission-isle"] [data-mi-home]', { timeout: 60000 })
     .catch(() => bad.push(`${name}: the island's home is not on screen`));

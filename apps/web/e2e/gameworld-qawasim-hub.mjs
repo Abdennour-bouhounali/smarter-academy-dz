@@ -61,7 +61,7 @@ await w.run(async () => {
   {
     const { page, ctx } = await w.student({ uid: 9501, lessonId: ID, url: URL });
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
-    await page.click('[data-di-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.waitForTimeout(500);
+    await page.click('[data-di-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {}); await page.waitForTimeout(500);
     expect(await page.locator('[data-di-node]').count() === 5 && await page.locator('[data-di-node][data-open="true"]').count() === 0, 'a new student: five nodes on the map, all locked');
     expect(await page.locator('[data-di-level]:not([disabled])').count() === 0 && await page.locator('[data-di-next]').count() === 0, '…and no level can be played before a key is earned');
     { const names = await page.locator('[data-di-node]').evaluateAll((els) => els.map((e) => [e.dataset.diNode, e.querySelector('strong').textContent.trim()])); expect(names.every(([id, t]) => id === 'exam' || t === '؟ ؟ ؟'), `no rule is named before it is forged: each locked key reads « ؟ ؟ ؟ » (${names.map((n) => n[1]).join(' · ')})`); } // « no rule is told » (GAME_WORLD.md, 2026-11-19)
@@ -120,7 +120,7 @@ await w.run(async () => {
   await backToTitle('« عُدّتي »');
 
   // ── 3. the practice hub: the lesson's own mind map ──
-  await page.click('[data-di-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.waitForTimeout(600);
+  await page.click('[data-di-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {}); await page.waitForTimeout(600);
   expect(await page.locator('[data-di-space="game"].is-on').count() === 1, 'the hub opens on « فضاء اللعب »');
   expect(await page.locator('[data-di-node]').count() === 5 && await page.locator('[data-di-node][data-open="true"]').count() === 5, 'five nodes: the four keys and the exam challenge, all open (the four first runs are passed)');
   {
@@ -142,7 +142,7 @@ await w.run(async () => {
       await page.click(`[data-di-panel="${id}"] .di-map__rule .di-link`); await page.waitForSelector('[data-di-tablet]'); await page.waitForTimeout(300);
       expect((await page.textContent('.di-veil')).includes(L2.titles[id]), `node ${id}: « ذكّرني بالقاعدة » opens THIS rule’s tablet`);
       if (id === 'qawaid-qisma' || id === KEYS[0]) await shot(page, `hub-rule-${id}`, { exit: ['[data-di-tablet]', '[data-di-exit]'], numbers: true });
-      await page.click('[data-di-tablet]'); await page.waitForSelector('[data-di-mapcard]');
+      await page.click('[data-di-tablet]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
       const back = await page.locator('[data-di-panel]').getAttribute('data-di-panel');
       check(back === id, `node ${id}: closing the tablet comes back to the hub ON THE SAME NODE (it shows ${back})`);
     }
@@ -165,7 +165,7 @@ await w.run(async () => {
     const o = (await st(page)).overlay;
     expect(o === 'know' && await page.locator('[data-di-mapcard]').count() === 0 && (await page.textContent('[data-di-know]')).includes('قواسم عدد طبيعي'), `the hub’s « خريطة المعارف » opens the lesson’s knowledge page in place of the hub (overlay ${o})`);
   }
-  await page.click('[data-di-know-hub]'); await page.waitForSelector('[data-di-mapcard]');
+  await page.click('[data-di-know-hub]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   {
     const o = (await st(page)).overlay;
     expect(o === 'map' && await page.locator('[data-di-know]').count() === 0 && await page.locator('[data-di-next]').count() === 1, `its « فضاء التدريب » comes back to the hub (overlay ${o}, the knowledge page gone, « واصل التدريب » on screen)`);
@@ -211,7 +211,7 @@ await w.run(async () => {
     expect((await st(page)).phase === 'dash', '…and the run goes on');
   }
   // « خروج » leaves the run: back to the hub
-  await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]');
+  await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   expect(!(await st(page)).dash && (await st(page)).overlay === 'map', '« خروج » ends the run and comes back to the hub, nothing recorded');
   // two wrong gates in one run: the second card brings the rule by itself (GAME_WORLD.md § « فضاء التدريب »)
   await page.click('[data-di-next]'); await ff(page, 2.8);
@@ -230,7 +230,7 @@ await w.run(async () => {
   expect(await page.locator('[data-di-resume]').count() === 1, 'the « lost » card keeps its « واصل » button');
   await page.click('[data-di-resume]'); await ff(page, 0.3);
   expect((await st(page)).phase === 'dash' && !(await st(page)).overlay, '« واصل » after the second mistake resumes the run');
-  await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]');
+  await page.click('[data-di-quit]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   expect(!(await st(page)).dash && (await st(page)).overlay === 'map', '« خروج » leaves the run: back on the hub');
   await page.click('[data-di-map-close]'); await page.waitForSelector('[data-di-start]');
   {

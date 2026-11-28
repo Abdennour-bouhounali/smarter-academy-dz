@@ -1,0 +1,387 @@
+/* THE 2D GAME LOOK — the frame shared by its pages (Shell.jsx, parts.jsx; today the revision page). One fixed screen,
+   built for 1366×768; a dark look and its light twin. Ported from the French platform (2026-11-28), right to left: the
+   sides are logical (`inline-start` is the right) and the path fills from the right. No font is named here: the page
+   inherits the platform's Cairo (ARABIC_RTL_CONTRACT.md §3); the display weight is Cairo's heaviest. */
+
+.vb {
+  /* dark */
+  --bg: radial-gradient(circle at 22% 6%, #3b2fa0 0, #1a1642 55%, #120f30 100%);
+  --ink: #f6f4ff;
+  --soft: #b9b4e6;
+  --panel: #26215e;
+  --edge: #0c0a24;
+  --chip: rgb(12 10 36 / 60%);
+  --seg: rgb(255 255 255 / 18%);
+  --accent: #ffd23f;
+  --title: #ffd23f;
+  --ok: #3be8a0;
+  --ok-ink: #06281b;
+  --bad: #ff4d6d;
+  --bad-ink: #fff;
+  --key: #ffd23f;
+  --key-ink: #120f30;
+  --go: #3be8d8;
+  --field: #120f30;
+  --bot: #6f5cff;
+  --shadow: rgb(12 10 36);
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 14px 22px 16px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.55;
+  direction: rtl;
+}
+.vb[data-theme='light'] {
+  --bg: linear-gradient(200deg, #eef0ff, #e3f4ff);
+  --ink: #16133a;
+  --soft: #5b5788;
+  --panel: #fff;
+  --edge: #16133a;
+  --chip: rgb(22 19 58 / 9%);
+  --seg: rgb(22 19 58 / 16%);
+  --accent: #5b3df5;
+  --title: #4a2fe0;
+  --ok: #1fbf7a;
+  --ok-ink: #fff;
+  --bad: #ff4d6d;
+  --field: #fff;
+  --shadow: #16133a;
+}
+.vb button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.vb button:disabled {
+  cursor: default;
+}
+.vb :focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+.vb p {
+  margin: 0;
+}
+.vb h2 {
+  margin: 0;
+  color: inherit; /* the app's own heading colour is for its light pages */
+  font-family: inherit;
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+/* ── the top bar ── */
+.vb-segs {
+  display: grid;
+  gap: 6px;
+}
+.vb-segs i,
+.vb-segs button {
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 99px;
+  background: var(--seg);
+  transition: background 0.3s;
+}
+.vb-segs .is-done {
+  background: var(--accent);
+}
+/* the part under the eyes: half full, from the right (the reading side) */
+.vb-segs .is-on {
+  background: linear-gradient(270deg, var(--accent) 45%, var(--seg) 45%);
+}
+.vb-hud__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 9px;
+  font-weight: 700;
+}
+.vb-hud__title {
+  flex: 0 1 auto;
+  min-width: 0;
+  margin-inline-end: 4px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.3;
+}
+.vb-grow {
+  flex: 1;
+}
+.vb-pill {
+  padding: 5px 13px;
+  border-radius: 99px;
+  background: var(--chip);
+  border: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vb-pill--name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vb a.vb-pill,
+.vb a.vb-key {
+  color: inherit;
+  text-decoration: none;
+}
+.vb a.vb-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--accent);
+}
+.vb-hud__row > .vb-pill,
+.vb-hud__row > .vb-switch {
+  flex: none;
+}
+.vb-hud__row > .vb-pill--name {
+  flex: 0 1 auto;
+}
+.vb-switch {
+  display: flex;
+  padding: 3px;
+  border-radius: 99px;
+  background: var(--chip);
+}
+.vb-switch button {
+  border: 0;
+  background: none;
+  border-radius: 99px;
+  padding: 3px 12px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.vb-switch button[aria-pressed='true'] {
+  background: var(--key);
+  color: var(--key-ink);
+}
+
+/* ── the middle ── */
+.vb-main {
+  display: grid;
+  gap: 16px;
+  min-height: 0;
+}
+.vb-main--one {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  align-items: center;
+}
+
+/* ── the bottom bar ── */
+.vb-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 96px;
+}
+.vb-bot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+.vb-robot {
+  width: 76px;
+  height: 76px;
+  flex: none;
+}
+.vb-robot__head {
+  fill: var(--bot);
+  stroke: var(--edge);
+  stroke-width: 4;
+}
+.vb-robot__eye {
+  fill: #fff;
+  transition: transform 0.2s;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.vb-robot__mouth {
+  display: none;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+.vb-robot[data-mood='idle'] [data-for='idle'],
+.vb-robot[data-mood='oops'] [data-for='oops'],
+.vb-robot[data-mood='think'] [data-for='think'],
+.vb-robot[data-mood='win'] [data-for='win'] {
+  display: block;
+}
+.vb-robot[data-mood='oops'] .vb-robot__eye {
+  transform: scale(1.35);
+}
+.vb-robot[data-mood='win'] .vb-robot__eye {
+  transform: scaleY(0.35);
+}
+.vb-robot[data-mood='think'] .vb-robot__eye--r {
+  transform: translateY(-5px);
+}
+.vb-bubble {
+  background: var(--panel);
+  border: 3px solid var(--edge);
+  box-shadow: 0 5px 0 var(--shadow);
+  border-radius: 18px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.vb-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vb-key {
+  min-width: 132px;
+  height: 66px;
+  padding: 0 24px;
+  border-radius: 18px;
+  border: 3px solid var(--edge);
+  background: var(--key);
+  color: var(--key-ink) !important;
+  font-size: 1.35rem !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  box-shadow: 0 7px 0 var(--shadow);
+  transition:
+    transform 0.08s,
+    box-shadow 0.08s;
+}
+.vb-key--go {
+  background: var(--go);
+}
+.vb-key--mini {
+  min-width: 84px;
+  padding: 0 16px;
+}
+.vb-key:active:not(:disabled) {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--shadow);
+}
+.vb-key:disabled {
+  opacity: 0.5;
+}
+
+/* ── a numbered tile (the steps at the top of « صفحة واحدة ») ── */
+.vb-tile {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 14px 16px;
+  text-align: start;
+  background: var(--panel);
+  border: 3px solid var(--edge);
+  border-radius: 22px;
+  box-shadow: 0 7px 0 var(--shadow);
+  transition:
+    transform 0.08s,
+    box-shadow 0.08s;
+}
+.vb-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 0 var(--shadow);
+}
+.vb-tile:active {
+  transform: translateY(5px);
+  box-shadow: 0 2px 0 var(--shadow);
+}
+.vb-tile b {
+  font-weight: 900;
+  line-height: 1.25;
+}
+.vb-tile__n {
+  display: grid;
+  place-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  font-size: 1.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  background: var(--bot);
+  border: 3px solid var(--edge);
+}
+.vb-tile.is-seen {
+  border-color: var(--ok);
+}
+.vb-tile.is-seen::after {
+  content: '✓';
+  position: absolute;
+  top: 12px;
+  inset-inline-end: 14px;
+  display: grid;
+  place-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--ok);
+  color: var(--ok-ink);
+  font-weight: 800;
+}
+
+/* ── ONE page that scrolls (« صفحة واحدة ») ── */
+.vb-scroll {
+  position: relative;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 44px;
+  /* the scrollbar is on the left in right to left: the room for it is at the inline end */
+  padding-block: 4px 60px;
+  padding-inline: 4px 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent;
+}
+.vb-sec {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  scroll-margin-top: 4px;
+}
+.vb-sec__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.vb[data-mode='page'] {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .vb-scroll {
+    scroll-behavior: smooth;
+  }
+  .vb-robot[data-mood='win'] {
+    animation: vb-hop 0.5s 2;
+  }
+}
+@keyframes vb-hop {
+  50% {
+    transform: translateY(-12px) rotate(6deg);
+  }
+}

@@ -1,5 +1,6 @@
-// « فضاء التدريب » of a lesson, as a STUDENT (lessons 5–6's hub walks, made data): a new student sees every node locked and
-// « ؟ ؟ ؟ » for each key (no rule named before it is forged); a student who finished the story opens every door of the
+// « فضاء التدريب » of a lesson, as a STUDENT (lessons 5–6's hub walks, made data): a new student sees « فضاء الامتحان » first
+// and open, and every rule's node open and named (owner, 2026-11-26 on the French platform, ported 2026-11-28 — it used to
+// be all locked, « ؟ ؟ ؟ »), the summary node alone locked; a student who finished the story opens every door of the
 // title (« خريطة المعارف », « تقدّمي », « مختبري », « عُدّتي ») and comes back; the hub is the lesson's OWN mind map (its
 // root, its links, a node per key and the exam, each node's levels and rule tablet); the exam space is the bank's five
 // levels; a run of the gate dash: its rule, a wrong gate and its guidance card, « خروج », then two wrong gates (the rule
@@ -65,7 +66,7 @@ export async function hubWalk(L, D, opts) {
   };
 
   await w.run(async () => {
-    // ── 1. a student with no key: the doors open on locked nodes and a locked exam space ──
+    // ── 1. a student with no key: the doors open on an OPEN exam space and on OPEN games (owner, 2026-11-26) ──
     {
       const { page, ctx } = await w.student({ uid, lessonId: L.id, url: L.url, grade: L.grade });
       await page.waitForSelector('[data-di-start]', { timeout: 30000 });
@@ -73,27 +74,38 @@ export async function hubWalk(L, D, opts) {
       await page.waitForSelector('[data-di-mapcard]');
       await page.waitForTimeout(500);
       expect(
+        (await page.locator('[data-di-space="exam"].is-on').count()) === 1 &&
+          (await page.locator('[data-di-ladder="open"]').count()) === 1,
+        'a new student: the hub opens on « فضاء الامتحان », open before any key (owner, 2026-11-26)',
+      );
+      await page.click('[data-di-space="game"]');
+      await page.waitForSelector('[data-di-node]');
+      // the training games are open even to a student who never played the story — every rule's node is open and named,
+      // its first level can be played; only the summary node waits for the first level of each rule
+      expect(
         (await page.locator('[data-di-node]').count()) === KEYS.length + 1 &&
-          (await page.locator('[data-di-node][data-open="true"]').count()) === 0,
-        `a new student: ${KEYS.length + 1} nodes on the map, all locked`,
+          (await page.locator('[data-di-node][data-open="true"]').count()) === KEYS.length,
+        `a new student: ${KEYS.length + 1} nodes on the map, the ${KEYS.length} rules open, the summary still locked`,
       );
       expect(
-        (await page.locator('[data-di-level]:not([disabled])').count()) === 0 &&
-          (await page.locator('[data-di-next]').count()) === 0,
-        '…and no level can be played before a key is earned',
+        (await page.locator('[data-di-level]:not([disabled])').count()) >= 1 &&
+          (await page.locator('[data-di-next]').count()) === 1,
+        '…and a level can be played before any key is earned',
       );
       const names = await page
         .locator('[data-di-node]')
         .evaluateAll((els) => els.map((e) => [e.dataset.diNode, e.querySelector('strong').textContent.trim()]));
       expect(
-        names.every(([id, t]) => id === 'exam' || t === '؟ ؟ ؟'),
-        `no rule is named before it is forged: each locked key reads « ؟ ؟ ؟ » (${names.map((x) => x[1]).join(' · ')})`,
+        // kit/text.js › KT.hidden is « ؟ ؟ ؟ »: no node reads it any more; white space normalised
+        names.every(([, t]) => t.length > 0 && t.replace(/\s+/g, ' ') !== '؟ ؟ ؟'),
+        `every rule is named from the start (${names.map((x) => x[1]).join(' · ')})`,
       );
-      await mapApart(w, page, 'hub-locked');
-      await shot(page, 'hub-locked', { exit: ['[data-di-map-close]'], numbers: true });
+      await mapApart(w, page, 'hub-new-student');
+      await shot(page, 'hub-new-student', { exit: ['[data-di-map-close]'], numbers: true });
+      // « فضاء الامتحان » is open from the start, before any key (owner, 2026-11-26): its first level can be sat
       await page.click('[data-di-space="exam"]');
-      await page.waitForSelector('[data-di-ladder="locked"]');
-      await shot(page, 'exam-locked', { exit: ['[data-di-map-close]'], numbers: true });
+      await page.waitForSelector('[data-di-ladder="open"]');
+      await shot(page, 'exam-open-before-playing', { exit: ['[data-di-map-close]'], numbers: true });
       await page.click('[data-di-map-close]');
       expect(
         (await st(page)).phase === 'title' && (await page.locator('[data-di-start]').isVisible()),
@@ -193,7 +205,13 @@ export async function hubWalk(L, D, opts) {
     await page.click('[data-di-map]');
     await page.waitForSelector('[data-di-mapcard]');
     await page.waitForTimeout(600);
-    expect((await page.locator('[data-di-space="game"].is-on').count()) === 1, 'the hub opens on « فضاء اللعب »');
+    expect(
+      (await page.locator('[data-di-space="exam"].is-on').count()) === 1 &&
+        (await page.locator('[data-di-space]').first().getAttribute('data-di-space')) === 'exam',
+      'the hub opens on « فضاء الامتحان », the first of the two spaces (owner, 2026-11-26)',
+    );
+    await page.click('[data-di-space="game"]');
+    await page.waitForSelector('[data-di-node]');
     expect(
       (await page.locator('[data-di-node]').count()) === KEYS.length + 1 &&
         (await page.locator('[data-di-node][data-open="true"]').count()) === KEYS.length + 1,
@@ -274,6 +292,9 @@ export async function hubWalk(L, D, opts) {
       (await st(page)).overlay === 'map' && (await page.locator('[data-di-know]').count()) === 0,
       '…and its « فضاء التدريب » comes back to the hub',
     );
+    // the hub reopens on « فضاء الامتحان » (the first space): the game's levels are one tab away
+    await page.click('[data-di-space="game"]');
+    await page.waitForSelector('[data-di-node]');
 
     // ── 4. (another world) a practice level on ITS rail (worlds/<world>.mjs › practice) ──
     if (other) {

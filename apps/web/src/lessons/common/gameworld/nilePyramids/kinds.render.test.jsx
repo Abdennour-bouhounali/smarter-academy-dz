@@ -14,7 +14,7 @@ import { RIVER, riverFigure } from './logic';
 import { initPlan, planReducer } from './plan';
 import { initHalfturn, halfturnReducer } from './halfturn';
 import { initScale, scaleReducer } from './scale';
-import { thalesCase } from './ruleForge';
+import { thalesCase, THALES_TEXT } from './ruleForge';
 import { PLAN_SPEC, HALFTURN_SPEC, SCALE_SPEC, BUTTERFLY_PLAN_SPEC, ACROSS_PLAN_SPEC } from './test/specs';
 import { DIR, KIND_TEXT, WORLD_TEXT } from './strings';
 
@@ -115,6 +115,54 @@ describe('the experiments on screen', () => {
     out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
     expect(out).toContain('data-iq-landed="B"');
     expect(out).toContain('data-rf-aligned="yes"');
+  });
+
+  it('halfturn: the triangle turns on squared paper and the sides’ rows change WITH it (owner, 2026-11-27)', () => {
+    let s = halfturnReducer(HALFTURN_SPEC, initHalfturn(HALFTURN_SPEC), { type: 'predict', line: 'B' });
+    let out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
+    // the figure is drawn here (squared paper, the two lines, the two triangles), no ghost and no arc before a press
+    expect(out).toContain('class="np-tf"');
+    expect(out).toContain('np-tf__big');
+    expect(out).toContain('np-tf__small');
+    expect(out).not.toContain('np-tf__ghost');
+    expect(out).not.toContain('np-tf__arc');
+    // the gauge is there from the first moment of the turn: three rows « [IK] على [IP] », the sides in notation
+    expect(out).toContain('data-rf-gauge-turn="0"');
+    expect(out).toContain('data-rf-aligned="no"');
+    expect(out.match(/class="np-tg__row"/g)).toHaveLength(3);
+    for (const seg of ['[IK]', '[IP]', '[IL]', '[IQ]', '[KL]', '[PQ]']) expect(out).toContain(seg);
+    expect(plain(out)).toContain(THALES_TEXT.gauge);
+    expect(plain(out)).toContain(THALES_TEXT.gaugeOn);
+    expect(plain(out)).toContain(THALES_TEXT.gaugeTurn);
+    const tilt = (html) => [...html.matchAll(/rotate\((-?[\d.]+)deg\)/g)].map((m) => Number(m[1]));
+    expect(tilt(out)).toEqual([-30, -30, -30]);
+    // turned by 90°: the place it left (dashed), the arc with its angle, the pieces half way down to their rules
+    for (let k = 0; k < 3; k += 1) s = halfturnReducer(HALFTURN_SPEC, s, { type: 'turn', d: 1 });
+    out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
+    expect(out).toContain('np-tf__ghost');
+    expect(out).toContain('np-tf__arc');
+    expect(plain(out)).toContain('90°');
+    expect(out).toContain('data-rf-gauge-turn="90"');
+    expect(tilt(out)).toEqual([-15, -15, -15]);
+    // landed: the pieces lie on their rules; the parallel butterfly agrees, the crooked one stands apart
+    for (let k = 0; k < 3; k += 1) s = halfturnReducer(HALFTURN_SPEC, s, { type: 'turn', d: 1 });
+    out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
+    expect(out).toContain('data-rf-gauge-turn="180"');
+    expect(out).toContain('np-tg is-agreed');
+    expect(tilt(out).every((t) => t === 0)).toBe(true);
+    expect(plain(out)).toContain(THALES_TEXT.aligned);
+    s = halfturnReducer(HALFTURN_SPEC, s, { type: 'next' });
+    s = halfturnReducer(HALFTURN_SPEC, s, { type: 'predict', line: 'C' });
+    for (let k = 0; k < 6; k += 1) s = halfturnReducer(HALFTURN_SPEC, s, { type: 'turn', d: 1 });
+    out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
+    expect(out).toContain('data-iq-landed="B"');
+    expect(out).toContain('data-rf-aligned="no"');
+    expect(plain(out)).toContain(THALES_TEXT.apart);
+    // the dial and its two buttons, read left to right
+    s = halfturnReducer(HALFTURN_SPEC, initHalfturn(HALFTURN_SPEC), { type: 'predict', line: 'B' });
+    out = renderToString(<HalfturnView spec={HALFTURN_SPEC} state={s} act={act} />);
+    expect(out).toContain('class="np-turn" dir="ltr"');
+    expect(out).toContain('np-turn__dial');
   });
 
   it('halfturn: the chain in the butterfly’s own letters is never written by default, only with `chainOwn: true`', () => {

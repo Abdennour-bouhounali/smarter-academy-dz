@@ -254,6 +254,34 @@ its الكفاءات coverage from `world/evidence.js › POINTS` (the final tes
 gone. At the next deploy the content registry retires (`retired_at`, never deleted) the final-test items of the deleted
 « إختبار أولي » — follow-up 1 of the trace.
 
+## 2bis. Where a student lands (owner, 2026-11-26 on the French platform; ported 2026-11-28)
+
+- **The lesson's address is the STUDENT'S HOME of the lesson** (`features/lessonHome/LessonHome.jsx`, drawn by
+  `LessonIndex` for a student of a lesson whose pack has a world): one plain page, right to left, in the look of the
+  teacher's lesson page — the way into the world in huge (« ادخل عالم الدرس » / « واصل المغامرة »), a status line read
+  with no world loaded, then « وفي هذا الدرس أيضًا »: « فضاء التدريب », « خريطة المعارف » (when the pack has
+  `knowledge`), « صفحة المراجعة » (an account whose lesson has the page), « مختبري » (`lessonlab › hasLab`), « ملخّص
+  الوحدة » (once the unit has its summary), then « ما ستُحسن فعله ». Dev builds: `/__qa/lesson-home/:lessonId`.
+- **The world is one step further, at `?world=1`** (`lessons/lessonEntry.js` says it, for the home, the loading screen
+  `LessonWaiting`, the route boundary and the walks — `e2e/lib/lessonWalk/load.mjs`). The query words are ASCII (France:
+  `?monde=1`). Leaving the world (`exitTo`) comes back to this home, no longer to the catalogue. A teacher's preview
+  (`?apercu=eleve`) still opens the world directly, and leaves it for his page.
+- **The lesson's tools open WITH NO WORLD**: « فضاء التدريب », « خريطة المعارف » and « مختبري » are on the home AND on
+  the world's title screen. From the home they are at `?tool=practice|knowledge|lab`: `gameworld/LessonToolsLoader`
+  loads the lesson's CONTENT only (the route boundary does not preload the world for them), `kit/LessonTools.jsx` mounts
+  the SAME screens on `kit/ToolsRuntime.js` — the same state, the same flows (`kit/lessonFlows.js`, mixed into
+  `WorldRuntime` too), the same save and the same evidence (`kit/runtimeWiring.js`) — and no three.js. Only a GAME LEVEL
+  needs the world: it is loaded then, straight on that run (`?world=1&play=<node>:<level>`, no title screen), and the
+  end of the run comes back to the home. A paper of « فضاء الامتحان » is sat with no world. « تقدّمي », « عُدّتي » and
+  « من البداية » stay on the world's title screen only.
+- **« صفحة المراجعة » is a door of the home only**: it left the world's title screen, and the student's unit page
+  (`pages/unit/UnitMissionView.jsx`) no longer shows it. The teacher keeps it in his `LessonToolsBar`.
+- **Everything of the training space is open from the start**: « فضاء الامتحان » (first in the hub, the space it opens
+  on), every rule's games (`ladder.js › nodeOpen`) and every card of « خريطة المعارف » (`KnowledgePage.jsx`), with or
+  without the keys of the story (GAME_WORLD.md « فضاء اللعب / فضاء الامتحان »). Inside a rule the levels still open one
+  after the other; the summary node still waits for the first level of every rule; « ما التالي؟ » still advises the
+  story, then the game, then the papers (`journey.js › nextStep`, its own `played`).
+
 ## 3. Is a lesson done? — the status script and the definition of done
 
 ```bash

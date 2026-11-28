@@ -107,7 +107,7 @@ await w.run(async () => {
     const { page, ctx } = await w.student({ uid: 9951, lessonId: ID, url: URL });
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
     await page.click('[data-di-map]');
-    await page.waitForSelector('[data-di-mapcard]');
+    await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
     await page.waitForTimeout(500);
     expect(
       (await page.locator('[data-di-node]').count()) === 4 &&
@@ -234,7 +234,7 @@ await w.run(async () => {
 
   // ── 3. the practice hub: the lesson's own mind map ──
   await page.click('[data-di-map]');
-  await page.waitForSelector('[data-di-mapcard]');
+  await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   await page.waitForTimeout(600);
   expect((await page.locator('[data-di-space="game"].is-on').count()) === 1, 'the hub opens on « فضاء اللعب »');
   expect(
@@ -283,7 +283,7 @@ await w.run(async () => {
       if (id === KEYS[2] || id === KEYS[0])
         await shot(page, `hub-rule-${id}`, { exit: ['[data-di-tablet]', '[data-di-exit]'], numbers: true });
       await page.click('[data-di-tablet]');
-      await page.waitForSelector('[data-di-mapcard]');
+      await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
       const back = await page.locator('[data-di-panel]').getAttribute('data-di-panel');
       check(back === id, `node ${id}: closing the tablet comes back to the hub ON THE SAME NODE (it shows ${back})`);
     }
@@ -322,7 +322,7 @@ await w.run(async () => {
     );
   }
   await page.click('[data-di-know-hub]');
-  await page.waitForSelector('[data-di-mapcard]');
+  await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   {
     const o = (await st(page)).overlay;
     expect(
@@ -406,7 +406,7 @@ await w.run(async () => {
   }
   // « خروج » leaves the run: back to the hub
   await page.click('[data-di-quit]');
-  await page.waitForSelector('[data-di-mapcard]');
+  await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   expect(
     !(await st(page)).dash && (await st(page)).overlay === 'map',
     '« خروج » ends the run and comes back to the hub, nothing recorded',
@@ -448,7 +448,7 @@ await w.run(async () => {
     '« واصل » after the second mistake resumes the run',
   );
   await page.click('[data-di-quit]');
-  await page.waitForSelector('[data-di-mapcard]');
+  await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
   expect(!(await st(page)).dash && (await st(page)).overlay === 'map', '« خروج » leaves the run: back on the hub');
   await page.click('[data-di-map-close]');
   await page.waitForSelector('[data-di-start]');

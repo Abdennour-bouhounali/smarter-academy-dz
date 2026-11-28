@@ -114,7 +114,11 @@ describe('the road of « القاسم المشترك الأكبر »', () => {
     ])
       expect(STORY.pendingForge({ state: { stage, keys: [] } })).toBe(key);
     expect(STORY.pendingForge({ state: { stage: 2, keys: [KEYS[0]] } })).toBe(null);
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26); « ما التالي؟ » still advises the
+    // game first, until the first run of each key is passed
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
     // the sentences of the story say something and print no raw formula where the screen is plain
     for (const line of Object.values(STORY.text.say).map((x) => (typeof x === 'function' ? x(24, 14) : x)))
       expect(line).not.toMatch(/undefined|NaN/);

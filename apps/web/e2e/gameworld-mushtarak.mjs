@@ -405,7 +405,7 @@ await w.run(async () => {
     expect(sel !== null, `${where}: the ✕ is on screen and nothing covers it (${exits.join(' / ')})`);
     await page.click(sel);
     await page
-      .waitForFunction((id) => !location.pathname.endsWith(`/${id}`) && !document.querySelector('.di-root'), ID, {
+      .waitForFunction((id) => location.pathname.endsWith(`/${id}`) && !location.search.includes('world=1') && !document.querySelector('.di-root'), ID, {
         timeout: 15000,
       })
       .catch(() => {});
@@ -414,10 +414,10 @@ await w.run(async () => {
       world: Boolean(document.querySelector('.di-root')),
     }));
     expect(
-      !gone.path.endsWith(`/${ID}`) && !gone.world,
+      !gone.world,
       `${where}: the ✕ leaves the lesson — the world is closed, the page is ${gone.path}`,
     );
-    await page.goto(URL, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${URL}?world=1`, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
     await page.waitForTimeout(1200);
     const label = (await page.textContent('[data-di-start]')).trim();

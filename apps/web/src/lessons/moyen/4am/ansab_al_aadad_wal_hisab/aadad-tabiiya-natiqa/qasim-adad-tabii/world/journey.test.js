@@ -8,11 +8,16 @@ const { examOpen, nextExamLevel, applySitting, lessonProgress, nextStep } = jour
 const four = Object.fromEntries([0, 1, 2, 3].map((i) => [levelId(i, 0), { stars: 2, best: 600 }]));
 
 describe("the student's road: the two practice spaces and the progress", () => {
-  it('opens the exam space only after the gaming space was played', () => {
-    expect(examOpen(KEYS, {})).toBe(false);
-    expect(examOpen(KEYS, { [levelId(0, 0)]: { stars: 3 } })).toBe(false);
+  it('opens the exam space FROM THE START (owner, 2026-11-26), and still advises the game until it was played', () => {
+    expect(examOpen([], {})).toBe(true);
+    expect(examOpen(KEYS, {})).toBe(true);
+    expect(examOpen(KEYS, { [levelId(0, 0)]: { stars: 3 } })).toBe(true);
     expect(examOpen(KEYS, four)).toBe(true);
-    expect(examOpen([], four)).toBe(false);
+    expect(examOpen([], four)).toBe(true);
+    // what « ما التالي؟ » advises is unchanged: the game first, until every key is held and its first run passed
+    expect(nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
+    expect(nextStep({ finished: true, openKeys: KEYS, practice: { [levelId(0, 0)]: { stars: 3 } } }).do).toBe('game');
+    expect(nextStep({ finished: true, openKeys: KEYS, practice: four }).do).not.toBe('game');
   });
 
   it('climbs the ladder: 80 % passes and promotes once; a miss keeps the level and remembers what to work on', () => {

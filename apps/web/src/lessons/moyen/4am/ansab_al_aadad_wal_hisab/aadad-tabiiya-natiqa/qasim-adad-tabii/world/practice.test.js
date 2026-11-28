@@ -101,8 +101,11 @@ describe('حلبة التدريب — practice logic', () => {
     expect(makeWave(rng(3), 0, 0, null)).toBeTruthy();
   });
 
-  it('opens a node with its key, a level after the one before, the exam after the first level of the four nodes', () => {
-    expect(nodeOpen(0, [], {})).toBe(false);
+  it('opens every rule from the start (owner, 2026-11-26), a level after the one before, the exam after the first level of the four nodes', () => {
+    // no key held: the node and its first level are open, even for a student who never played the story
+    expect(nodeOpen(0, [], {})).toBe(true);
+    expect(levelOpen(0, 0, [], {})).toBe(true);
+    expect(levelOpen(0, 1, [], {})).toBe(false);
     expect(nodeOpen(0, [KEYS[0]], {})).toBe(true);
     expect(levelOpen(0, 1, [KEYS[0]], {})).toBe(false);
     expect(levelOpen(0, 1, [KEYS[0]], { [levelId(0, 0)]: { stars: 1 } })).toBe(true);
@@ -111,7 +114,7 @@ describe('حلبة التدريب — practice logic', () => {
     expect(nodeOpen(4, KEYS, four)).toBe(true);
     expect(nextLevel(KEYS, {}).id).toBe(levelId(0, 0));
     expect(nextLevel(KEYS, { [levelId(0, 0)]: { stars: 3 } }).id).toBe(levelId(0, 1));
-    expect(nextLevel([], {})).toBe(null);
+    expect(nextLevel([], {}).id).toBe(levelId(0, 0));
     const all = Object.fromEntries(LEVEL_ORDER.map((x) => [x.id, { stars: 3 }]));
     expect(nextLevel(KEYS, all)).toBe(null);
     expect(nextLevel(KEYS, { ...all, [levelId(2, 1)]: { stars: 2 } }).id).toBe(levelId(2, 1));

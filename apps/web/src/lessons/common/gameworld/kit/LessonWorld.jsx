@@ -4,7 +4,8 @@
  * overlays, all read from the game's state. The shell never computes maths: it shows what the game publishes and sends the
  * student's choices back.
  *
- * props: world (what the world gives, below), lesson (its pack), config (LESSON_CONFIG), basePath, exitTo (catalogue),
+ * props: world (what the world gives, below), lesson (its pack), config (LESSON_CONFIG), basePath, exitTo (the student's
+ *        home of the lesson, LESSON_V2.md §2bis),
  *        onModule(n) (marks a module done — and EVERY module of `config` once the story is finished, storyEnd.js),
  *        completedModules (the lesson's synced progress:
  *        it opens the practice nodes on a device that never played the story), mastery, preview.
@@ -14,6 +15,8 @@
  *   stages, maxStars    the pips of the top bar and the stars it can give
  *   text                { title, subtitle, turn, end: { title, text, stay } } — its own sentences on the kit's screens
  *   Hud                 what it shows in the middle while the student plays (its objective, its equation, its verdict)
+ *   Fact                what it has just answered while he walks, on the edge where the reading starts (the RIGHT,
+ *                       never over the way ahead — world.css « WHERE THE MESSAGES STAND »)
  *   Under, Over         its own layers under and over the kit's overlays (the HUD of a run, of a real-world case)
  *   overlay(o, s, game) its own overlays, by `o.type`; guide(o, s, game) the ones that explain a mistake
  *   playing(s), busy(s), quiet(s), paperOn(s), held(s)   when the student is in the world, in the middle of something, when
@@ -24,20 +27,17 @@
  */
 import { Suspense, lazy, useContext, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { levelAsked } from '../../../lessonEntry';
 import { X, Maximize2, Minimize2, ArrowUp, Star, Gem, BookOpen } from 'lucide-react';
 import { useLesson } from './LessonContext';
 import { KT } from './text';
 import { scopedStorage as storage } from '../../../../utils/storage';
-import { readSave, writeSave, schedulePush, flushPush } from './saveSync';
-import { storyEndMarker } from './storyEnd';
+import { readSave, writeSave, schedulePush } from './saveSync';
+import { runtimeCallbacks, useRuntimeFlush } from './runtimeWiring';
 import { AuthContext } from '../../../../context/AuthContext';
-import { sendGameEvidence, flushGameEvidence, newAttemptId } from './evidenceSend';
-import { sendSitting, flushSittings, uuid } from './bankEvidence';
 import { usePhoneScreen } from '../engine/phoneScreen';
 import TurnPhone from '../../../../components/common/TurnPhone';
-import { useLearningViewer } from '../../../../features/learning/learningViewer';
-import { hasRevision, revisionPath } from '../../../../features/classSession/boardLessons';
 import { launchDone } from '../../launchkit/store';
 import KnowledgePage from './KnowledgePage';
 import ExamSitting from './ExamSitting';
@@ -102,33 +102,14 @@ export default function LessonWorld({
   const auth = useContext(AuthContext);
   const tokenRef = useRef(null);
   tokenRef.current = auth?.token ?? null;
-  useEffect(() => {
-    const flush = () => {
-      flushGameEvidence(tokenRef.current);
-      flushSittings(tokenRef.current);
-    };
-    flush();
-    window.addEventListener('online', flush);
-    return () => window.removeEventListener('online', flush);
-  }, []);
-  // what is waiting to be saved on the server goes when the page is hidden (a phone put down) and when the world closes
-  useEffect(() => {
-    const push = () => document.visibilityState === 'hidden' && flushPush(tokenRef.current, config.id);
-    document.addEventListener('visibilitychange', push);
-    return () => {
-      document.removeEventListener('visibilitychange', push);
-      flushPush(tokenRef.current, config.id);
-    };
-  }, [config.id]);
+  // what waits to be sent goes when the connection is back, when the page is hidden and when the world closes
+  useRuntimeFlush(tokenRef, config.id);
 
   useEffect(() => {
     if (failed || !canvas.current) return undefined;
     let g;
-    // the end of the story completes the lesson: every module of the config is marked (storyEnd.js, LESSON_V2.md §1ter);
-    // a save already finished repairs the progress of a student who ended the story before that rule
-    const storyEnd = storyEndMarker(config, (n) => {
-      if (!previewRef.current) onModuleRef.current?.(n);
-    });
+    // the save, the evidence, a handed-in sitting, the end of the story: ONE wiring with the tools (runtimeWiring.js)
+    const { storyEnd, ...plugs } = runtimeCallbacks({ config, lesson, tokenRef, previewRef, onModuleRef });
     try {
       const sound = storage.getItem('smarter_world_sound') !== '0';
       const save = readSave(config.id);
@@ -138,26 +119,7 @@ export default function LessonWorld({
         save,
         sound,
         unlockedKeys: lesson.keysFromModules?.(completedModules) ?? [],
-        onSave: (data) => {
-          writeSave(config.id, data);
-          storyEnd(data);
-          // his journey follows him to his other devices (saveSync.js) — never from a teacher's preview
-          if (!previewRef.current) schedulePush(tokenRef.current, config.id);
-        },
-        onModule: (n) => onModuleRef.current?.(n),
-        onEvidence: (context, ev) => {
-          if (previewRef.current) return;
-          const payload = lesson.evidence.payloadOf(config.id, context, ev, newAttemptId());
-          if (import.meta.env.DEV) (window.__evidence ??= []).push(payload);
-          sendGameEvidence(tokenRef.current, config.id, payload);
-        },
-        // a handed-in sitting (bank sheets): to the practice engine, which re-computes every verdict on the server
-        onSitting: (subject, answers) => {
-          if (previewRef.current) return;
-          const sheet = lesson.sittings.sheetOf(subject, answers, uuid);
-          if (import.meta.env.DEV) (window.__sittingSheets ??= []).push(sheet);
-          sendSitting(tokenRef.current, sheet);
-        },
+        ...plugs,
       });
     } catch (e) {
       console.error('[gameworld]', e);
@@ -242,12 +204,6 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
   const { keys, rules, sittings } = useLesson();
   const s = useSyncExternalStore(game.subscribe, game.getState);
   const [full, setFull] = useState(false);
-  // « صفحة المراجعة » (REVISION_PAGE.md): a door of the title screen, for an account whose lesson has the page
-  const viewer = useLearningViewer();
-  const revisionTo =
-    viewer.usesWorkspaceShell && hasRevision(config.id)
-      ? revisionPath(config.id, viewer.isTeacher ? 'enseignant' : 'espace')
-      : null;
   const coarse = useMemo(() => window.matchMedia?.('(pointer: coarse)').matches, []);
   const { upright } = usePhoneScreen();
   useEffect(() => {
@@ -269,6 +225,21 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
   }, [game, paperOn]);
   const playing = world.playing ? world.playing(s) : s.phase === 'play' || s.phase === 'dialog';
   const busy = Boolean(world.busy?.(s));
+
+  // A GAME LEVEL asked from the lesson's tools opened without a world (`LessonTools.jsx`; owner, 2026-11-26): the world
+  // opens STRAIGHT on that run — no title screen, no warm-up — and once he is done and closes the hub, he goes back where
+  // he came from, never to a title screen he did not ask for.
+  const navigate = useNavigate();
+  const [level] = useState(() => levelAsked(new URLSearchParams(window.location.search)));
+  const [straight, setStraight] = useState(level ? 'wanted' : null);
+  useEffect(() => {
+    if (straight === 'wanted' && s.phase === 'title' && !o && !busy) {
+      setStraight(game.startPractice(level.node, level.level) === false ? null : 'open');
+    } else if (straight === 'open' && s.phase === 'title' && !o) {
+      setStraight(null);
+      navigate(exitTo, { replace: true });
+    }
+  }, [straight, level, s.phase, o, busy, game, navigate, exitTo]);
 
   return (
     <>
@@ -348,6 +319,14 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
         </div>
       )}
 
+      {/* what the world has just answered stands on the edge where the reading starts (the right), clear of the way
+          ahead (world.css « WHERE THE MESSAGES STAND ») */}
+      {playing && world.Fact && (
+        <div className="di-answer">
+          <world.Fact s={s} game={game} />
+        </div>
+      )}
+
       {world.Under && <world.Under s={s} game={game} />}
 
       {s.say && s.phase !== 'title' && !world.quiet?.(s) && <Say key={s.say.id} say={s.say} />}
@@ -397,8 +376,13 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
                 }}
                 data-di-act
               >
+                {!coarse && (
+                  <>
+                    <em>{KT.prompt.press}</em>
+                    <kbd>E</kbd>
+                  </>
+                )}
                 <span>{s.prompt}</span>
-                {!coarse && <kbd>E</kbd>}
               </button>
             )}
             <button
@@ -417,13 +401,12 @@ function Shell({ world, game, rootRef, exitTo, basePath, config, onRestart, mast
         </div>
       )}
 
-      {s.phase === 'title' && !o && !busy && (
+      {s.phase === 'title' && !o && !busy && !straight && (
         <Title
           s={s}
           game={game}
           world={world}
           lessonTitle={config.title}
-          revisionTo={revisionTo}
           onBegin={() => (launchDone(config.id) ? game.start() : game.openLaunch(true))}
           onRestart={onRestart}
           coarse={coarse}

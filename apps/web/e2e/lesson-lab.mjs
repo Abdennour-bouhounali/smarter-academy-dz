@@ -140,7 +140,7 @@ const ALONE = ['2quater', '2quinquies'];
 if (ONLY && !ALONE.includes(ONLY)) throw new Error(`E2E_LAB_ONLY: no step « ${ONLY} » can run alone (${ALONE.join(', ')})`);
 if (!ONLY) {
 // ══ 1. the first lesson of 4AM: the lab opens from the title screen of its game world ══
-await page.goto(`${BASE}/qasim-adad-tabii`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/qasim-adad-tabii?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="qasim-adad-tabii"]'); await page.waitForSelector('[data-ll-rows]');
 expect((await page.locator('.ll-rail [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join() === 'rows,jumps,sentences', 'the bench shows the three instruments of THIS lesson');
 expect(await page.locator('[data-ll-cabinet-open]').count() === 1 && (await page.textContent('[data-ll-cabinet-open]')).includes('(3)'), '« خزانتي » holds the three instruments of the earlier lessons (two of 1AM, one of 2AM)');
@@ -282,7 +282,7 @@ if (PHONE) {
 }
 
 // ══ 1bis. lesson 5 of 4AM (in its game world): « مِنضدة القائمتين », PLAYED — « جرّب » until both lists close ══
-await page.goto(`${BASE}/tayin-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/tayin-pgcd?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="tayin-pgcd"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]'); // the rail is drawn once the lab has loaded its instruments
 // « mine » only: the rail also keeps, under it, the instruments this student picked from the cabinet earlier in the walk
@@ -318,7 +318,7 @@ await page.click('[data-ll-close]');
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 5');
 
 // ══ 2. another lesson — the PGCD (lesson 6, in its game world since 2026-11-19): its own instrument, and the cabinet of everything before it ══
-await page.goto(`${BASE}/bahth-pgcd`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/bahth-pgcd?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="bahth-pgcd"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]'); // the rail is drawn once the lab has loaded its instruments
 { const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'euclid', `the PGCD lesson opens the SAME lab from its world: its one instrument is مربّعات إقليدس (${mine})`); }
@@ -399,7 +399,7 @@ await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 6');
 
 // ══ 2bis. lesson 7 (in its game world since 2026-11-20 — its mission home and its door `[data-mission-lab]` are gone): the SAME lab, its one instrument ══
-await page.goto(`${BASE}/awwaliyan-fima-baynahuma`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/awwaliyan-fima-baynahuma?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="awwaliyan-fima-baynahuma"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
 { const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'duo', `lesson 7 opens the lab from its world: its one instrument is مِجهر العددين (${mine})`); }
@@ -442,7 +442,7 @@ await page.click('[data-ll-close]'); await page.waitForTimeout(500);
 expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data-di-lab-open]').count() === 1, 'closing the lab returns to the world of lesson 7');
 
 // ══ 2ter. lesson 8 (in its game world since 2026-11-20 — its mission home and its door `[data-mission-lab]` are gone): the SAME lab, its one instrument ══
-await page.goto(`${BASE}/ikhtizal-kasr`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/ikhtizal-kasr?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="ikhtizal-kasr"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
 { const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'strip', `lesson 8 opens the lab from its world: its one instrument is شريط الكسر (${mine})`); }
@@ -470,7 +470,7 @@ expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data
 if (!ONLY || ONLY === '2quater') {
 // ══ 2quater. « الجذر التربيعي لعدد موجب » (unit 2, in its game world « قصر الساحات »): its one instrument « ساحة العدد » ══
 // written 2026-11-21, NOT run yet. Every reading is checked against the walk's OWN integer arithmetic (never the tool's).
-await page.goto(`${BASE}/jidhr-tarbii`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/jidhr-tarbii?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="jidhr-tarbii"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
 { const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'court', `jidhr-tarbii opens the lab from its world: its one instrument is ساحة العدد (${mine})`); }
@@ -521,7 +521,7 @@ expect(await page.locator('.ll-root').count() === 0 && await page.locator('[data
 if (!ONLY || ONLY === '2quinquies') {
 // ══ 2quinquies. « الأعداد الناطقة والأعداد غير الناطقة » (unit 2, lesson 2, « قصر الساحات »): its one instrument « منصّة الكسر » ══
 // written 2026-11-21, NOT run yet. Every count is checked against the walk's OWN integer arithmetic (never the tool's).
-await page.goto(`${BASE}/natiqa-ghayr-natiqa`, { waitUntil: 'networkidle' }); heard = 0;
+await page.goto(`${BASE}/natiqa-ghayr-natiqa?world=1`, { waitUntil: 'networkidle' }); heard = 0;
 await page.waitForSelector('[data-di-lab-open]'); await page.click('[data-di-lab-open]'); await page.waitForSelector('[data-lesson-lab="natiqa-ghayr-natiqa"]');
 await page.waitForSelector('[data-ll-mine] [data-ll-tool]');
 { const mine = (await page.locator('[data-ll-mine] [data-ll-tool]').evaluateAll((els) => els.map((e) => e.dataset.llTool))).join(); expect(mine === 'piece', `natiqa-ghayr-natiqa opens the lab from its world: its one instrument is منصّة الكسر (${mine})`); }

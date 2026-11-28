@@ -66,10 +66,15 @@ describe('the road of « الأعداد الناطقة والأعداد غير �
   it('the road: one stage per terrace; the exam opens after a first run of every key', () => {
     const stages = STORY.terraces.length;
     expect(stages).toBe(6);
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26)
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
     const firstRuns = Object.fromEntries(ladder.nodes.map((n, i) => [ladder.levelId(i, 0), { stars: 1, best: 100 }]));
     expect(journey.examOpen(KEYS, firstRuns)).toBe(true);
-    expect(journey.examOpen(KEYS.slice(0, 2), firstRuns)).toBe(false);
+    expect(journey.examOpen(KEYS.slice(0, 2), firstRuns)).toBe(true);
+    // what « ما التالي؟ » advises is unchanged: the game first, until the first run of each key is passed
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: firstRuns }).do).not.toBe('game');
     const p = journey.lessonProgress({ stage: 3, keys: [K1], know: { read: ['natiq'] } });
     expect(p.road[0].label.replace(/\s/g, ' ')).toBe(`3 / ${stages}`);
     expect(p.road[4].label.replace(/\s/g, ' ')).toBe(`1 / ${KNOWLEDGE.graph.nodes.length}`);

@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { rng, int, pick, shuffle } from './random';
 import { createLadder, buildWave, gatePoints, SUMMARY } from './ladder';
+import { nodeNudge } from './mapNudge';
 import { createTrainer, SESSION, sessionStars } from './trainer';
 import {
   answered,
@@ -201,8 +202,12 @@ describe('kit/ladder — with a toy lesson', () => {
     expect(() => ladder.waveOf(rng(1), 'never', {})).toThrow();
   });
 
-  it('opens a node with its key, a level after the one before it, the summary after every first level', () => {
-    expect(ladder.nodeOpen(0, [], {})).toBe(false);
+  it('opens every rule from the start (owner, 2026-11-26), a level after the one before it, the summary after every first level', () => {
+    // no key held: the node and its first level are open, even for a student who never played the story
+    expect(ladder.nodeOpen(0, [], {})).toBe(true);
+    expect(ladder.levelOpen(0, 0, [], {})).toBe(true);
+    expect(ladder.levelOpen(0, 1, [], {})).toBe(false);
+    expect(ladder.nextLevel([], {})?.id).toBe('tens:1');
     expect(ladder.nodeOpen(0, ['tens'], {})).toBe(true);
     expect(ladder.levelOpen(0, 1, ['tens'], {})).toBe(false);
     expect(ladder.levelOpen(0, 1, ['tens'], { 'tens:1': { stars: 1 } })).toBe(true);
@@ -212,6 +217,29 @@ describe('kit/ladder — with a toy lesson', () => {
     expect(ladder.nextLevel(['tens', 'odd'], both).id).toBe('tens:2');
     expect(ladder.practiceStars(both)).toBe(4);
     expect([gatePoints(0), gatePoints(3), gatePoints(5)]).toEqual([100, 150, 200]);
+  });
+
+  it('the hub map moves a node whose name is wider than its room into the map, never one that fits', () => {
+    // 2026-11-26 walk on the French platform: a name at 82 % of a 587 px map ran 85 px past its edge and, focused,
+    // scrolled the map 92 px sideways (ported 2026-11-28: the map never scrolls for a long name)
+    const W = 587;
+    expect(nodeNudge(0.5 * W, 250, W)).toBe(0);
+    expect(nodeNudge(0.82 * W, 150, W)).toBe(0);
+    const dx = nodeNudge(0.82 * W, 272, W);
+    expect(dx).toBeLessThan(0);
+    expect(0.82 * W + dx + 136).toBeCloseTo(W - 6, 6);
+    const left = nodeNudge(0.19 * W, 272, W);
+    expect(left).toBeGreaterThan(0);
+    expect(0.19 * W + left - 136).toBeCloseTo(6, 6);
+    // wider than the map: centred in it
+    expect(nodeNudge(0.82 * W, 700, W)).toBeCloseTo(W / 2 - 0.82 * W, 6);
+    for (let x = 0; x <= 100; x += 5)
+      for (const w of [80, 160, 240, 272]) {
+        const d = nodeNudge((x / 100) * W, w, W);
+        const l = (x / 100) * W + d - w / 2;
+        expect(l, `at ${x} %, ${w} px`).toBeGreaterThanOrEqual(6 - 1e-9);
+        expect(l + w, `at ${x} %, ${w} px`).toBeLessThanOrEqual(W - 6 + 1e-9);
+      }
   });
 });
 
@@ -442,10 +470,19 @@ describe('kit/bankSitting — a toy bank, served as it is', () => {
 
 describe('kit/journey — with a toy lesson', () => {
   const played = { 'tens:1': { stars: 1 }, 'odd:1': { stars: 1 } };
-  it('opens the exam space once every key is held and its first run passed', () => {
-    expect(journey.examOpen(['tens'], played)).toBe(false);
-    expect(journey.examOpen(['tens', 'odd'], { 'tens:1': { stars: 1 } })).toBe(false);
+  it('opens the exam space FROM THE START, even with no key and no run played (owner, 2026-11-26)', () => {
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(['tens'], played)).toBe(true);
     expect(journey.examOpen(['tens', 'odd'], played)).toBe(true);
+    // its levels still open one after the other
+    expect(examLevelOpen(emptyExam(), 1)).toBe(true);
+    expect(examLevelOpen(emptyExam(), 2)).toBe(false);
+  });
+
+  it('still advises the game before the exams, until every key is held and its first run passed', () => {
+    expect(journey.nextStep({ finished: true, openKeys: ['tens', 'odd'], practice: {} }).do).toBe('game');
+    expect(journey.nextStep({ finished: true, openKeys: ['tens', 'odd'], practice: played }).do).not.toBe('game');
+    expect(journey.nextStep({ finished: true, openKeys: ['tens'], practice: played }).do).toBe('game');
   });
 
   it('promotes at 80 %, keeps what to work on after a miss, and finishes on the last level', () => {

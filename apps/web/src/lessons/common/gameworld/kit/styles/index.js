@@ -5,6 +5,7 @@
  * each screen for a phone held sideways). A new sheet is added at its place in this list, never imported from a screen.
  */
 import './world.css'; // the HUD, the glass panels, the dash, the overlays, the title screen, the prompts in the world
+import './tools.css'; // the lesson's tools opened with no world: their ground
 import './practice.css'; // a run of the practice game, its map, the guidance card, the result of a run
 import './knowledge.css'; // « خريطة المعارف »: the full page
 import './cases.css'; // the screen of a real-world case
@@ -14,4 +15,5 @@ import './steps.css'; // « حيلة », what is known at this step, the earlier
 import './knowledgeJourney.css'; // « خريطة المعارف »: the discovery journey
 import './fit.css'; // no scrolling anywhere: every panel fits its content (Fit.jsx)
 import './spaces.css'; // the two practice spaces, the ladder of the exam, the promotion, « تقدّمي »
+import './sheets.css'; // the training space and the knowledge page as sheets of the world: the light values of the palette
 import './phone.css'; // a phone held sideways — always last

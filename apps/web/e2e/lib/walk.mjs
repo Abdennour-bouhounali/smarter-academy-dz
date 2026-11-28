@@ -221,7 +221,7 @@ export function createWalk(name, { foreign = [], foreignNumbers = [], fontFloor 
     });
     // The DOM, then the app's own sign that it started (index.html's boot spinner replaced by React), then a quiet
     // network AT BEST: « networkidle » alone waited on every dev module and could time out the whole walk (a load flake).
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.goto(/[?&](world|apercu)=/.test(url) ? url : `${url}${url.includes('?') ? '&' : '?'}world=1`, { waitUntil: 'domcontentloaded' });
     await page.waitForFunction(() => !document.querySelector('#root .root-spinner'), null, { timeout: 60000 });
     await page.waitForLoadState('networkidle', { timeout: 30000 }).catch(() => {});
     return { page, ctx };

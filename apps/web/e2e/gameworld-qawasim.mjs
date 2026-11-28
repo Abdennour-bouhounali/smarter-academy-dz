@@ -413,7 +413,7 @@ const inquiryFits = async (name) => {
 const fact = () => page.textContent('[data-iq-fact]');
 
 // ══════════════════════════ the story of lesson « قواسم عدد طبيعي » ══════════════════════════
-await page.goto(LESSON, { waitUntil: 'networkidle' });
+await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-di-start]', { timeout: 30000 });
 await page.waitForTimeout(1200);
 expect(

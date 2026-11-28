@@ -6,6 +6,7 @@ import { loadLessonManipulationStrings } from '../i18n/lessonManipulationStrings
 import { useLearningViewer } from '../features/learning/learningViewer';
 import LessonWaiting, { useOpensWorld } from './LessonWaiting';
 import { preloadWorld } from './worldPreload';
+import { toolAsked } from './lessonEntry';
 
 /**
  * Un chemin de MODULE (pas le sommaire) : la page qui s'ouvrira attend les textes
@@ -82,7 +83,8 @@ function loadLessonRoutes(lessonId) {
     // une URL de module), le sommaire s'en passe et les précharge une fois
     // affiché (LessonIndex › prefetchLessonStringsWhenIdle) (2026-10-17).
     loadLessonRuntimeCore().catch(() => {});
-    if (viewerPlaysWorlds) preloadWorld(lessonId);
+    // …unless the address asks for one of the lesson's tools: they open with NO world (lessonEntry.js › toolAsked)
+    if (viewerPlaysWorlds && !toolAsked(new URLSearchParams(window.location.search))) preloadWorld(lessonId);
     const promise = loadLessonRoutesFactory(lessonId)
       .then((factory) => {
         if (typeof factory !== 'function') throw new Error(`Lesson routes not found: ${lessonId}`);

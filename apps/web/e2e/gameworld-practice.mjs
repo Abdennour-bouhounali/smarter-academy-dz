@@ -75,7 +75,7 @@ async function student(id, seed = {}) {
   }, [id, seed]);
   const page = await ctx.newPage();
   page.on('pageerror', (e) => { errors.push(e.message); console.log('pageerror', e.message); });
-  await page.goto(LESSON, { waitUntil: 'networkidle' });
+  await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
   const shot = async (name) => { n += 1; await noScroll(page, name); await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` }); };
   const ff = (sec) => page.evaluate(async (s) => { const g = window.__world; for (let t = 0; t < s; t += 0.04) { g.step(0.04); await null; await null; } }, sec);
@@ -93,19 +93,19 @@ async function student(id, seed = {}) {
 const fits = (page) => page.evaluate(() => { const c = document.querySelector('.di-veil .di-card'); if (!c) return false; const r = c.getBoundingClientRect(); return c.scrollHeight <= c.clientHeight + 1 && r.top >= 0 && r.bottom <= window.innerHeight; });
 const doneSave = { v: 1, stage: 8, stars: { s15: 3 }, gems: [], keys: KEYS, falls: 0, flags: { storm: true, statues: true, anvil: true, seven: true, key4: true, bossPaid: true }, elapsed: 900000, finished: true };
 
-// ── 1. a student who never played: the map shows the lesson, every node locked ──
+// ── 1. a student who never played: the map shows the lesson, the four rules open, the exam node locked (owner, 2026-11-26) ──
 {
   const a = await student(9101);
-  await a.page.click('[data-di-map]'); await a.page.waitForSelector('[data-di-mapcard]'); await a.page.waitForTimeout(500); await a.shot('map-locked');
-  expect(await a.page.locator('[data-di-node][data-open="true"]').count() === 0 && await a.page.locator('[data-di-node]').count() === 5, 'new student: five nodes on the map, all locked');
-  expect(await a.page.locator('[data-di-next]').count() === 0 && await a.page.locator('[data-di-level]:not([disabled])').count() === 0, 'new student: no level can be played before a key is earned');
+  await a.page.click('[data-di-map]'); await a.page.waitForSelector('[data-di-mapcard]'); await a.page.click('[data-di-space="game"]').catch(() => {}); await a.page.waitForTimeout(500); await a.shot('map-new');
+  expect(await a.page.locator('[data-di-node][data-open="true"]').count() === 4 && await a.page.locator('[data-di-node]').count() === 5, 'new student: five nodes on the map, the four rules open, the exam node still locked');
+  expect(await a.page.locator('[data-di-next]').count() === 1 && await a.page.locator('[data-di-level]:not([disabled])').count() >= 1, 'new student: a level can be played before any key is earned');
   await a.page.click('[data-di-map-close]'); expect((await a.st()).phase === 'title' && await a.page.locator('[data-di-start]').count() === 1, 'closing the map returns to the title screen');
   await a.close();
 }
 
 // ── 2. a student who finished the story: practice straight from the title screen ──
 const b = await student(9102, { 'u_9102_smarter_world_qasim-adad-tabii': doneSave });
-await b.page.click('[data-di-map]'); await b.page.waitForSelector('[data-di-mapcard]'); await b.page.waitForTimeout(500); await b.shot('map-open');
+await b.page.click('[data-di-map]'); await b.page.waitForSelector('[data-di-mapcard]'); await b.page.click('[data-di-space="game"]').catch(() => {}); await b.page.waitForTimeout(500); await b.shot('map-open');
 expect(await b.page.locator('[data-di-node][data-open="true"]').count() === 4, 'four key nodes are open, the exam node is still locked');
 expect(await fits(b.page), 'the map fits the window without scrolling');
 expect((await b.page.textContent('[data-di-next]')).includes('سباق: أعداد صغيرة'), '« واصل التدريب » proposes the easiest level first');
@@ -145,14 +145,14 @@ await b.gate(true); await b.ff(0.5); await b.page.waitForTimeout(500); await b.s
 s = await b.st();
 expect(s.overlay === 'result' && !s.o.win && !s.practice['qasim-baqi:2'], 'three mistakes: the level is lost and nothing is recorded for it');
 // back to the map: the pips, then the first level of the three other nodes opens the exam node
-await b.page.click('[data-di-result-map]'); await b.page.waitForSelector('[data-di-mapcard]');
+await b.page.click('[data-di-result-map]'); await b.page.waitForSelector('[data-di-mapcard]'); await b.page.click('[data-di-space="game"]').catch(() => {});
 for (const id of ['qasim-jidaa', 'siyagh-mutakafia', 'wahid-wa-nafsuh']) {
   await b.page.click(`[data-di-node="${id}"]`); await b.page.click(`[data-di-level="${id}:1"]`); await b.ff(0.4);
   for (let i = 0; i < 6; i += 1) await b.gate(false);
   await b.ff(3);
   s = await b.st(); expect(s.overlay === 'result' && s.o.win && s.o.stars === 3, `${id}: level 1 won with 3 stars`);
   if (id === 'siyagh-mutakafia') { await b.page.waitForTimeout(500); await b.shot('result-3-stars'); }
-  await b.page.click('[data-di-result-map]'); await b.page.waitForSelector('[data-di-mapcard]');
+  await b.page.click('[data-di-result-map]'); await b.page.waitForSelector('[data-di-mapcard]'); await b.page.click('[data-di-space="game"]').catch(() => {});
 }
 await b.page.waitForTimeout(500); await b.shot('map-exam-open');
 expect(await b.page.locator('[data-di-node="exam"][data-open="true"]').count() === 1, 'the exam node opens once level 1 of the four keys is passed');
@@ -175,7 +175,7 @@ await b.close();
 // ── 3. another device: no game save, but the lesson's progress says modules 1 and 2 are done ──
 {
   const c = await student(9103, { 'u_9103_smarter_lesson_qasim-adad-tabii': { completedModules: ['1', '2', '3', '4'], completedExercises: [] } });
-  await c.page.click('[data-di-map]'); await c.page.waitForSelector('[data-di-mapcard]');
+  await c.page.click('[data-di-map]'); await c.page.waitForSelector('[data-di-mapcard]'); await c.page.click('[data-di-space="game"]').catch(() => {});
   expect(await c.page.locator('[data-di-node][data-open="true"]').count() === 4, 'on a device without a game save, the lesson progress opens the four nodes');
   await c.close();
 }

@@ -182,7 +182,11 @@ teacher layer is P3; until then a class student uses the student tap.)*
 `DiagnosticInviteBanner`, `pickHomeNextStep` — was **removed on 2026-11-09**, owner). Below the greeting, the lazy
 `features/home/compass/CompassHomeSections.jsx` holds the top of the page; everything else (the stats, the curriculum position,
 recent lessons, the spaces, premium, other grades) sits under ONE folded « المزيد » — folded, never deleted. The section reads the
-SERVER state only (`GET /compass`; a network error renders `off`, never an empty page):
+SERVER state only (`GET /compass`; a network error renders `off`, never an empty page). A crash never blanks the page
+either (2026-11-28, ported from the French platform): the section, and under « المزيد » the stats, the curriculum position and
+the recent lessons, each sit inside a `SectionErrorBoundary` (`components/student/`), and every page of the student's space
+inside another (`StudentLayout`, reset by the address): a crash shows a calm sentence and « إعادة المحاولة » in place of that
+part only (`SectionErrorBoundary.test.jsx`):
 
 | State | What shows |
 |---|---|

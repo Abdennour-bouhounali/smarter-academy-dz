@@ -12,17 +12,18 @@ import MissionDialog from '../../lessons/common/mission/MissionDialog';
 import PrerequisiteLessonChips from '../../lessons/common/components/PrerequisiteLessonChips';
 import ReviseFirst from '../../lessons/common/mission/ReviseFirst';
 import { unitState, unmetPrerequisites } from './unitMissions';
-import { hasRevision, revisionPath } from '../../features/classSession/boardLessons';
 import { summaryLessons, unitSummaryPath } from '../../features/revision/unitSummary';
 
 /**
  * THE UNIT PAGE, STUDENT VIEW — the PLAIN version (owner, 2026-11-26: « update it to the new version », the plain style of
  * the revision page; REVISION_PAGE.md §5). White cards, the one blue, no gradient, one column up to 1240 px; the page may
  * scroll (it replaces the one-screen, zoom-to-fit page of 2026-11-09):
- *   1. « درسك الآن » — the lesson to do, its progress, « واصل الدرس », « صفحة المراجعة » when it has one, « ما في الدرس؟ »;
+ *   1. « درسك الآن » — the lesson to do, its progress, « واصل الدرس », « ما في الدرس؟ »;
  *   2. the unit's challenge, rewritten by the platform (unitMissions.js), and the keys won lesson after lesson;
- *   3. the lessons of the unit as a LIST: one row per lesson (its state, its stars or minutes, « الدرس » and « مراجعة »),
- *      the title opens the lesson's window; then the challenge's row;
+ *   3. the lessons of the unit as a LIST: one row per lesson (its state, its stars or minutes, « الدرس »), the title opens
+ *      the lesson's window; then the challenge's row;
+ * « صفحة المراجعة » is NOT on this page any more (owner, 2026-11-26 on the French platform: « remove these buttons from
+ * here », ported 2026-11-28): it is a door of the student's home of the lesson (features/lessonHome, LESSON_V2.md §2bis).
  *   4. the chips: goals, the full challenge, history, « راجع قبل الوحدة » — each opens a window.
  * The window (MissionDialog `card`): one line of facts, 3 goals, « المزيد » for the rest, an unmet prerequisite shown up
  * front, one button. It is built not to scroll (e2e/unit-mission-view.mjs). No textbook reference is shown to the student.
@@ -108,11 +109,6 @@ function NowCard({ lesson, n, total, progress, first, t, onDetails }) {
             ←
           </span>
         </Link>
-        {hasRevision(lesson.id) && (
-          <Link to={revisionPath(lesson.id)} data-unit-revision={lesson.id} className={SECONDARY}>
-            {t('unit.mission.revision')}
-          </Link>
-        )}
         <button type="button" onClick={onDetails} data-unit-whats-in className={SECONDARY}>
           {t('unit.mission.whatsIn')}
         </button>
@@ -121,7 +117,7 @@ function NowCard({ lesson, n, total, progress, first, t, onDetails }) {
   );
 }
 
-/** Une ligne de la liste : l'état de la leçon, son nom (il ouvre sa fenêtre), puis « الدرس » et « مراجعة ». */
+/** Une ligne de la liste : l'état de la leçon, son nom (il ouvre sa fenêtre), puis « الدرس ». */
 function LessonLine({ row, n, total, status, t, onDetails }) {
   const { lesson, id, available, done, stars } = row;
   const circle =
@@ -160,11 +156,6 @@ function LessonLine({ row, n, total, status, t, onDetails }) {
         <span className="whitespace-nowrap rounded-full bg-nav-accent px-2.5 py-0.5 text-xs font-black text-white">
           {t('unit.mission.here')}
         </span>
-      )}
-      {available && hasRevision(id) && (
-        <Link to={revisionPath(id)} data-unit-revision={id} className={SECONDARY}>
-          {t('unit.mission.revision')}
-        </Link>
       )}
       {available ? (
         <Link to={lesson.path} data-unit-line-open={id} className={status === 'now' ? PRIMARY : SECONDARY}>

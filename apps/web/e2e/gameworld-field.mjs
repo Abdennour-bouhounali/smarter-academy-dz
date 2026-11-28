@@ -76,7 +76,7 @@ async function student(id, seed = {}) {
   }, [id, seed]);
   const page = await ctx.newPage();
   page.on('pageerror', (e) => { errors.push(e.message); console.log('pageerror', e.message); });
-  await page.goto(LESSON, { waitUntil: 'networkidle' });
+  await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
   await page.waitForSelector('[data-di-start]', { timeout: 30000 });
   const shot = async (name) => { n += 1; await noScroll(page, name); await page.screenshot({ path: `${OUT}/${String(n).padStart(2, '0')}-${name}.png` }); };
   const st = () => page.evaluate(() => { const s = window.__world.getState(); return { phase: s.phase, overlay: s.overlay?.type ?? null, o: s.overlay, depot: s.depot, practice: s.practice, know: s.know, eq: s.equation }; });
@@ -95,7 +95,7 @@ async function student(id, seed = {}) {
   };
   /** Plays the open mission to its end with right answers. */
   const finish = async () => { for (let i = 0; i < 40; i += 1) { const s = await st(); if (s.overlay === 'result' || !s.depot) break; await answer((await order()).answer); } };
-  const open = async (node, level) => { if (!(await page.locator('[data-di-mapcard]').count())) await page.click('[data-di-map], [data-di-result-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.click(`[data-di-node="${node}"]`); await page.click(`[data-di-level="${node}:${level}"]`); await page.waitForTimeout(300); await settle(); };
+  const open = async (node, level) => { if (!(await page.locator('[data-di-mapcard]').count())) await page.click('[data-di-map], [data-di-result-map]'); await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {}); await page.click(`[data-di-node="${node}"]`); await page.click(`[data-di-level="${node}:${level}"]`); await page.waitForTimeout(300); await settle(); };
   return { page, shot, st, settle, order, answer, finish, open, close: () => ctx.close() };
 }
 const p3 = { stars: 3, best: 900 };
@@ -243,7 +243,7 @@ for (const v of o.options.filter((x) => x !== o.answer)) { await a.answer(v); aw
 await a.answer(o.answer); o = await a.order();
 await a.answer({ x: o.total + 1 }); await a.page.waitForTimeout(500); await a.shot('depot-lost');
 s = await a.st(); expect(s.overlay === 'result' && !s.o.win && s.o.why, 'third mistake: the day is lost, the last explanation stays on the result');
-await a.page.click('[data-di-result-map]'); await a.page.waitForSelector('[data-di-mapcard]'); await a.page.waitForTimeout(400); await a.shot('hub');
+await a.page.click('[data-di-result-map]'); await a.page.waitForSelector('[data-di-mapcard]'); await a.page.click('[data-di-space="game"]').catch(() => {}); await a.page.waitForTimeout(400); await a.shot('hub');
 await a.page.click('[data-di-node="exam"]');
 expect(await a.page.locator('[data-di-level]').count() === 4 && (await a.page.textContent('.di-levels')).includes('قعدة الأصدقاء') && (await a.page.textContent('.di-levels')).includes('ورشة التبليط'), 'the exam node lists its four levels: a run, then the three worlds');
 
@@ -376,19 +376,19 @@ for (const id of ['siyagh', 'wahid', 'jidaa', 'khulasa']) {
   expect(cases.length > 0 && cases.every((p) => ['division', 'product', 'containers'].includes(p.claim.kind)) && all.every((p) => p.claim.kind !== 'truth'), 'the calculation steps of the real cases were sent too; a « صحيح أم خطأ » is never sent');
   console.log('    evidence sent:', all.length, '— by learning point:', JSON.stringify(all.reduce((m, p) => ({ ...m, [p.learningPoint.slice(-2)]: (m[p.learningPoint.slice(-2)] ?? 0) + 1 }), {})));
 }
-await a.page.click('[data-di-know-hub]'); await a.page.waitForSelector('[data-di-mapcard]');
+await a.page.click('[data-di-know-hub]'); await a.page.waitForSelector('[data-di-mapcard]'); await a.page.click('[data-di-space="game"]').catch(() => {});
 expect(await a.page.locator('[data-di-mapcard]').count() === 1, 'the practice space is still one tap away from the page');
 await a.page.reload({ waitUntil: 'networkidle' }); await a.page.waitForSelector('[data-di-start]');
 s = await a.st(); expect(s.know.found.length === 13 && s.know.read.length === 13 && s.know.sealed.length === 1 && s.know.trained.baqi === 2 && s.practice['qasim-baqi:3']?.stars === 2, 'cards read, seals, training stars and missions survive a reload');
 await a.close();
 
-// ── 5. a student without keys: the page exists, its cards are locked ──
+// ── 5. a student without keys: the page exists, its cards are open ──
 {
   const b = await student(9202);
   await b.page.click('[data-di-know-open]'); await b.page.waitForSelector('[data-di-know]'); await b.page.waitForTimeout(400); await b.shot('know-locked');
-  expect(await b.page.locator('[data-di-jcard][data-open="false"]').count() === 1 && await b.page.locator('[data-di-mystery]:not([disabled])').count() === 0, 'without keys the first card is locked and its mystery card cannot be turned: a rule is named only after it is discovered in the story');
+  expect(await b.page.locator('[data-di-jcard][data-open="false"]').count() === 0 && await b.page.locator('[data-di-mystery]:not([disabled])').count() > 0, 'without keys the first card is OPEN and a mystery card can be turned: every card is open before the story (owner, 2026-11-26)');
   await b.page.click('[data-di-know-mode]'); await b.page.waitForTimeout(300);
-  expect(await b.page.locator('[data-di-knode]').count() === 13 && await b.page.locator('[data-di-knode][data-open="true"]').count() === 0, 'the whole map shows 13 locked cards');
+  expect(await b.page.locator('[data-di-knode]').count() === 13 && await b.page.locator('[data-di-knode][data-open="true"]').count() === 13, 'the whole map shows 13 open cards');
   await b.page.click('[data-di-know-close]'); expect((await b.st()).phase === 'title', 'closing returns to the title screen');
   await b.close();
 }

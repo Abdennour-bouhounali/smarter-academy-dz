@@ -9,6 +9,8 @@
 //     slide; the felucca's lanes; the mission's boxes; the dev handle `window.__world` (Zero placed at a stake or a dock,
 //     the clock fast-forwarded, the state READ for the question only); the hooks `data-np-stake`, `data-np-register`,
 //     `data-np-predict`, `data-np-fact`, `data-np-sight`, `data-np-stage`, `data-np-dock`;
+//     the felucca's buoys are bare calculations since 2026-11-28 (`buoy` below): no `data-gr-figure` on this lesson's rail;
+//     the half-turn's gauge turns with the triangle (`data-rf-gauge-turn=<angle>` on `.np-tg`, from the first press);
 //   - `worlds/nilePyramidsExperiments.mjs`: the players of the kinds `plan` (📐), `halfturn` (🦋) and `scale` (🔍),
 //     registered in `experiments.mjs › EXPERIMENTS`, and `NP_FRAME` for `checks.mjs › inquiryFits`;
 //   - `gateRun.mjs`: `rcPractice` moved out of `rootCourts.mjs` (the felucca and the practice levels run on the kit's
@@ -79,36 +81,39 @@ const texNum = (t) => {
   const m = /\\dfrac\{([^}]*)\}\{([^}]*)\}/.exec(t);
   return m ? div(q(m[1]), q(m[2])) : q(String(t).replace(/[{}]/g, '').trim());
 };
-/** A buoy of a leg or of a practice level is right? — the order read (`ask`, `tex`), the walk's own arithmetic. */
+/**
+ * A buoy of a leg or of a practice level is right? — the order read (`ask`, `tex`), the walk's own arithmetic. Since
+ * 2026-11-28 a buoy is ONE bare calculation (owner, 2026-11-27: « speed calculation questions like: complete 4/12 = 5/… »):
+ * « أكمل » an equality of two fractions with its box `\square` (a term may be a sum « 4 + 8 »), « احسب » the cross product
+ * « \dfrac{12 \times 5}{4} », a side times k « 24 \times \dfrac{5}{6} », a coefficient « 9 \div 6 », and « أكمل »
+ * « \dfrac{5}{6} \times \square = 1 ». No letter, no figure: a buoy that names a point is refused here.
+ */
 function buoy(ask, tex, gate) {
-  const say = ask.replace(/[\u2066-\u2069\u200e\u200f]/g, '');
+  const say = ask.replace(/[\u2066-\u2069\u200e\u200f]/g, '').trim();
   const t = String(tex ?? '')
     .replace(/\\displaystyle\s*/g, '')
+    .replace(/\{,\}/g, ',')
     .trim();
-  const kOf = () => texNum(t.replace(/^.*k\s*=\s*/, ''));
-  if (/تكبير أم تصغير/.test(say)) return gate.trim() === (cmp(kOf(), '1') > 0 ? 'تكبير' : 'تصغير');
+  if (!/^(أكمل|احسب)$/.test(say) || /[A-Z]/.test(t.replace(/\\[a-z]+/g, '')))
+    throw new Error(`the walk reads only bare calculations, not « ${say} » ${t}`);
   const g = texNum(gate);
-  if (/من \(2\) إلى \(1\)/.test(say)) return eq(g, inv(kOf()));
-  const side = /طوله\s*(\d+)/.exec(say);
-  if (side) return eq(g, mul(side[1], kOf()));
-  const asked = /احسب\s*([A-Z]{2})/.exec(say)?.[1];
-  if (!asked) throw new Error(`the walk cannot read the buoy « ${say} » ${t}`);
-  const parts = t.split('\\quad').map((x) => x.trim());
-  const ratio = /\\dfrac\{([A-Z]{2})\}\{([A-Z]{2})\}\s*=\s*(.*)$/.exec(parts[0]);
-  if (ratio) {
-    // « X / Y = r » and one more length: the asked one is that length × r
-    const [, , , r] = ratio;
-    const z = parts[1].split('=')[1];
-    return eq(g, mul(z, texNum(r)));
+  // a term of the calculation: a number « 7,5 », or a sum « 4 + 8 »
+  const term = (x) => x.split('+').reduce((acc, y) => add(acc, q(y.trim())), '0');
+  let m = /^\\dfrac\{([^}]+)\}\{([^}]+)\} = \\dfrac\{([^}]+)\}\{([^}]+)\}$/.exec(t);
+  if (m) {
+    // a / b = c / d with g in the box: the two cross products are equal
+    const [a, b, c, d] = m.slice(1).map((x) => (x.trim() === '\\square' ? g : term(x)));
+    return eq(mul(a, d), mul(b, c));
   }
-  const vals = Object.fromEntries(parts.map((x) => x.split('=').map((y) => y.trim())));
-  // the letters as the figure names them: A the vertex (nested), or O with (AB) ∥ (CD) across it (butterfly)
-  const butterfly = 'OA' in vals;
-  const NAME = butterfly
-    ? { OA: 'VM', OC: 'VB', OB: 'VN', OD: 'VC' }
-    : { AM: 'VM', AB: 'VB', AN: 'VN', AC: 'VC', MB: 'MB', NC: 'NC', MN: 'MN', BC: 'BC' };
-  const known = Object.fromEntries(Object.entries(vals).map(([k, v]) => [NAME[k], v]));
-  return eq(g, lengthFrom(known, NAME[asked], butterfly ? 'butterfly' : 'nested'));
+  m = /^\\dfrac\{([\d,]+) \\times ([\d,]+)\}\{([\d,]+)\}$/.exec(t);
+  if (m) return eq(mul(g, m[3]), mul(m[1], m[2]));
+  m = /^(\d+) \\times \\dfrac\{(\d+)\}\{(\d+)\}$/.exec(t);
+  if (m) return eq(mul(g, m[3]), mul(m[1], m[2]));
+  m = /^(\d+) \\div (\d+)$/.exec(t);
+  if (m) return eq(mul(g, m[2]), q(m[1]));
+  m = /^\\dfrac\{(\d+)\}\{(\d+)\} \\times \\square = 1$/.exec(t);
+  if (m) return eq(mul(g, div(m[1], m[2])), '1');
+  throw new Error(`the walk cannot read the buoy « ${say} » ${t}`);
 }
 /** The numbers of a sentence of the story (« $AH = 104$ »): the first number after `re`. */
 const numAfter = (text, re) => {
@@ -310,7 +315,7 @@ export default {
   },
   // a tap of « تدرّب » is a buoy of the same waves: judged by the same arithmetic, from its order and its formula
   gate: Object.fromEntries(
-    ['nested', 'fourth', 'whole', 'butterfly', 'butterflyLen', 'direction', 'image', 'back'].map((t) => [
+    ['equality', 'cross', 'sum', 'decimal', 'halfCross', 'halfEquality', 'image', 'coefficient', 'back'].map((t) => [
       t,
       (x, n) => buoy(x.say, x.tex, String(n)),
     ]),

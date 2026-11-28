@@ -194,7 +194,11 @@ describe('the road of « العددان الأوّليّان فيما بينهم
       expect(STORY.pendingForge({ state: { stage, keys: [...held, key] } })).toBe(null);
     }
     expect(STORY.pendingForge({ state: { stage: 5, keys: [] } })).toBe(null);
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26); « ما التالي؟ » still advises the
+    // game first, until the first run of each key is passed
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
   });
 
   it('the store of the last bridge says the numbers of THIS lesson, in its own words', () => {

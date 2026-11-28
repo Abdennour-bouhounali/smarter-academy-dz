@@ -88,7 +88,7 @@ const settle = async () => { await page.waitForFunction(() => !document.querySel
 
 // ══ 1. the first « ابدأ » plays the launch before the world ══
 page = await student(9501);
-await page.goto(LESSON, { waitUntil: 'networkidle' });
+await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-di-start]'); await page.click('[data-di-start]'); await page.waitForSelector('[data-launch-kit="qasim-adad-tabii"]');
 expect(await page.evaluate(() => window.__world.getState().phase) === 'title', 'the first « ابدأ » opens the launch: the world has not started');
 expect((await page.locator('[data-lk-tool]').evaluateAll((els) => els.map((e) => `${e.dataset.lkTool}:${e.dataset.lkBand}:${e.dataset.lkSegments}`))).join() === `${A}:waiting:0,${B}:waiting:0`, 'the bag holds the two earlier الكفاءات the learning net gives for this lesson, both empty');
@@ -207,7 +207,7 @@ expect(await page.locator('[data-launch-kit]').count() === 0 && await page.evalu
 
 // ══ 4. a student who misses everything: no dead end — the earlier lesson, and ONE button to come back ══
 page = await student(9502, true); heard = 0;
-await page.goto(LESSON, { waitUntil: 'networkidle' });
+await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-di-start]'); await page.click('[data-di-start]'); await page.waitForSelector('[data-lk-start]'); await page.click('[data-lk-start]'); await page.waitForSelector('[data-lk-question]');
 await fill(false); await page.click('[data-lk-close]'); await page.waitForSelector('[data-lk-quit-box]');
 expect((await page.textContent('[data-lk-quit-box]')).includes('تخرج من الشحن؟'), 'leaving in the middle asks first');

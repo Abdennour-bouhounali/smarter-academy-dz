@@ -3,20 +3,33 @@
  * (`gameworld/kit/ladder.js`); a level is a run of the kit's rail, on the river (plan §1.3: « the same rail is the
  * practice ladder … the trip is the first level of the node of the key just sealed »). Its waves are the felucca's
  * (`run.js › GENERATORS`, `isRight`): one definition of a buoy, here and between the docks.
- * Each key practises ITS rule only: 🔑 the nested chain, 📐 the unknown from the ratio and from a side in two pieces,
- * 🦋 the butterfly, 🔍 the direction of k, the image of a side, the number back.
+ * Each key practises ITS calculations only, bare (owner, 2026-11-27: the river asks speed calculations, no figure):
+ * 🔑 an equality of two fractions to complete and the cross product « \dfrac{b \times c}{a} »; 📐 a side from the
+ * vertex as the sum of its two pieces, an equality whose box is a short decimal; 🦋 the same with a half length; 🔍 a side
+ * times k, a coefficient from two sides, the number that brings k back to 1.
  */
 import { createLadder, SUMMARY } from '../../../../../../common/gameworld/kit/ladder';
 import { GENERATORS, isRight, LEG_MIX } from './run';
 import { K1, K2, K3, K4 } from './math';
 
-/** The map: one node per key in the order of the lesson, then the summary node; levels from the easiest. */
+/**
+ * The map: one node per key in the order of the lesson, then the summary node; levels from the easiest — the second of
+ * each node faster, with bigger numbers (`{ big: true }`, `run.js › M`).
+ */
+const BIG = { big: true };
 export const PRACTICE_NODES = [
   {
     id: K1,
     levels: [
       { speed: 6.0, mix: LEG_MIX[0] },
-      { speed: 6.6, mix: LEG_MIX[0] },
+      {
+        speed: 6.6,
+        mix: [
+          ['equality', BIG],
+          ['cross', BIG],
+          ['equality', BIG],
+        ],
+      },
     ],
   },
   {
@@ -26,9 +39,9 @@ export const PRACTICE_NODES = [
       {
         speed: 6.6,
         mix: [
-          ['whole', {}],
-          ['fourth', {}],
-          ['whole', {}],
+          ['sum', BIG],
+          ['decimal', BIG],
+          ['sum', BIG],
         ],
       },
     ],
@@ -40,9 +53,9 @@ export const PRACTICE_NODES = [
       {
         speed: 6.6,
         mix: [
-          ['butterflyLen', {}],
-          ['butterfly', {}],
-          ['butterflyLen', {}],
+          ['halfEquality', BIG],
+          ['halfCross', BIG],
+          ['halfEquality', BIG],
         ],
       },
     ],
@@ -54,33 +67,33 @@ export const PRACTICE_NODES = [
       {
         speed: 6.6,
         mix: [
-          ['image', {}],
-          ['back', {}],
-          ['direction', {}],
+          ['image', BIG],
+          ['back', BIG],
+          ['coefficient', BIG],
         ],
       },
     ],
   },
-  // the summary node: two mixed runs, the second faster
+  // the summary node: two mixed runs, the second faster with bigger numbers
   {
     id: SUMMARY,
     levels: [
       {
         speed: 6.2,
         mix: [
-          ['nested', { find: 'VC' }],
-          ['whole', {}],
-          ['butterflyLen', {}],
+          ['equality', {}],
+          ['sum', {}],
+          ['halfCross', {}],
           ['image', {}],
         ],
       },
       {
         speed: 6.8,
         mix: [
-          ['nested', { find: 'MN' }],
-          ['fourth', {}],
-          ['butterfly', {}],
-          ['back', {}],
+          ['cross', BIG],
+          ['decimal', BIG],
+          ['halfEquality', BIG],
+          ['back', BIG],
         ],
       },
     ],

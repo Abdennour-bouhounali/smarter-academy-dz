@@ -690,7 +690,7 @@ export function harness({ id, url, grade = '4am', outName, alien = [], alienLabe
   };
   const open = async (uid) => {
     S.page = await student(uid);
-    await S.page.goto(url, { waitUntil: 'networkidle' });
+    await S.page.goto(/[?&](world|apercu)=/.test(url) ? url : `${url}${url.includes('?') ? '&' : '?'}world=1`, { waitUntil: 'networkidle' });
     await S.page.waitForSelector('[data-di-start]');
     await S.page.click('[data-di-start]');
     await S.page.waitForSelector(`[data-launch-kit="${id}"]`);

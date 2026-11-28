@@ -145,7 +145,7 @@ try {
   if (V2_HERE) {
     const ctx = await contextFor(browser, teacherToken, { width: 1440, height: 900 });
     const page = await ctx.newPage();
-    await page.goto(`${BASE}${UNIT}/${V2_HERE}`, { waitUntil: 'networkidle' });
+    await page.goto(`${BASE}${UNIT}/${V2_HERE}?apercu=eleve`, { waitUntil: 'networkidle' });
     await closeTour(page);
     const world = await page.locator('.di-root').first().waitFor({ timeout: 30000 }).then(() => true, () => false);
     await page.waitForTimeout(800);

@@ -18,7 +18,10 @@ full window with a small hovering robot, « زيرو ». The teacher and Classro
 - Switch: `world: { id: 'divisor-isles', content }` in the lesson's PACK (`lesson.pack.js`, `LESSON_V2.md` §1). The config
   has no `studentView` / `mission` any more (deleted with the old version, 2026-11-18).
 - Mount: `LessonIndex.jsx` renders the world for a STUDENT (not a teacher, not Classroom Mode) of any lesson whose pack
-  names a world, and for the teacher's preview (`?apercu=eleve`).
+  names a world, at `?world=1` — the lesson's address alone is his HOME of the lesson, and leaving the world (`exitTo`)
+  comes back there (2026-11-28, `LESSON_V2.md` §2bis) — and for the teacher's preview (`?apercu=eleve`). The training
+  space and the knowledge map also open from that home with NO world (`kit/LessonTools.jsx` on `kit/ToolsRuntime.js`;
+  the non-3D flows of the runtime are `kit/lessonFlows.js`, mixed into `WorldRuntime` and `ToolsRuntime`).
   `gameworld/LessonGameWorld.jsx` loads the WORLD (`gameworld/worlds.js › WORLDS`: one entry per world, never per
   lesson) and the lesson's content (its pack) together, lazily — three.js never enters the entry bundle. A world names
   no lesson. Both are usually on their way before it mounts (`lessons/worldPreload.js`, §1bis).
@@ -203,18 +206,21 @@ bridge (the only place of the story that needs paper). The game formats stay pla
 Five nodes in the order of the mind map; 16 levels, 48 ★, easiest first. Each key: two runs of the gate dash, then a field mission
 at the depot. The summary node « 🏆 تحدّي الامتحان »: one mixed run, then three full cases. « واصل التدريب » always proposes the next level.
 
-- **What opens what** (`nodeOpen / levelOpen / nextLevel`): a node opens with its key — earned in the story on this device, or proven
-  by the lesson's synced progress (`keysFromModules`), so a new device can revise; a level opens after the one before; the exam node
-  opens once level 1 of the four keys is passed. « من البداية » restarts the STORY only (`keysEver`, `practice`, `know` stay).
-- **A key's name comes after him** (2026-11-19, « no rule is told … only then its name »): a node whose key he does not hold
-  shows the lock and `KT.hidden` (« ؟ ؟ ؟ ») — never the tablet's title (`rules[key].title`), in the node or in its side panel,
-  and its levels are listed by number only, without the lesson's level names (`text.levels`). Once the key is held, the name
-  appears. The summary node « تحدّي الامتحان » is not a rule and keeps its name. The same guard holds on « تقدّمي » (a row not
-  earned), on the end card's key tooltips and in the knowledge journey's trail (a card turned over whose key is not held).
-  Enforced in `kit/PracticeHub.jsx`, `kit/Spaces.jsx › ProgressPage`, `kit/End.jsx`, `kit/KnowledgePage.jsx`; tested by
-  `kit/lockedNames.render.test.jsx` and asserted on a new student by each `e2e/gameworld-*-hub.mjs`. Not covered: the map's
-  ROOT (`practiceMap.root`, the lesson's title) and its edge labels are lesson data shown from the first screen — they must
-  name places of the story, never a rule.
+- **What opens what** (`nodeOpen / levelOpen / nextLevel`): **every rule's node is open from the start**, even for a student who
+  never played the story (owner, 2026-11-26 on the French platform, ported 2026-11-28 — it used to open with its key); a level
+  opens after the one before; the exam node opens once level 1 of the four keys is passed. « من البداية » restarts the STORY only (`keysEver`, `practice`, `know` stay).
+- **Every rule is named from the start** (owner, 2026-11-26 on the French platform: « fiche de connaissances and the
+  training games must be open even if the student did not start yet the lesson game »; ported 2026-11-28 — the rule of
+  2026-11-19, « ؟ ؟ ؟ » until the key is held, is withdrawn): the practice hub names every node and its levels, « تقدّمي »
+  names a row not earned (it still says « لم يُكسب بعد »), and every card of « خريطة المعارف » is open
+  (`KnowledgePage.jsx › isOpen`). Tested by `kit/lockedNames.render.test.jsx` and asserted on a new student by
+  `e2e/lib/lessonWalk/hub.mjs`. NOT updated: the older standalone walks `e2e/gameworld-*-hub.mjs` still assert the old rule.
+  The end card's key tooltips (`kit/End.jsx`) were not changed.
+- **The map never scrolls for a long name** (2026-11-28, from the French platform): a node's ICON sits on its point and its
+  name hangs below, wrapped at 17rem (`styles/practice.css › .di-node`); `kit/mapNudge.js › nodeNudge` moves a node whose
+  name is wider than the room by its point into the map (`--di-node-dx`, set by `PracticeHub.jsx` after each render and
+  once the fonts are in), its icon and pips back onto the point. The map is laid out left to right (`dir="ltr"`), each
+  name right to left. Tested in `kit/kit.test.js`.
 - **The gate dash is MENTAL ARITHMETIC** (owner, 2026-11-15, after questions no teacher could answer in the time of a gate): every
   number to work with stays inside the multiplication tables — `MENTAL`: a ≤ 100, a divisor or a factor ≤ 10 — and the slowest
   gate leaves 5 seconds. A test enforces it on every generated wave. Bigger numbers belong to the cases of the depot and to the
@@ -439,17 +445,21 @@ is a kit part since 2026-11-21: it names no world and no lesson. A world owns on
 (`stepWorld`, `lanesLive`, `robotPose`, `cameraShot`, `dispose` — listed at the top of the file) and draws
 `<GateRunHud run={s.run} game={game} content={…} />` over everything while `state.run` is set. The lesson gives the
 content: `{ levels, gates, round(level, random, n) → { ask, tex?, options × 3, right, why × 3, seconds?, figure? }, total?, text }`.
-**A round that names points carries `figure`** (2026-11-25, owner: « the questions in the river need a schema that show
-A B C »): a GeoFigure spec, published as `state.run.figure` (null without it — a world without figures is unchanged) and
-drawn by the HUD with the practice space's `components/StatementFigure.jsx` in its own light panel `data-gr-figure`, while
-the order is up (`go`, `paused`) and beside the fact (`hit`): on the inline-start side (the right in Arabic, the left in
-French), 16 px from the edge, its top at 16 rem — under the order's card, away from the buoys and the arrows —, at most
-306 × 360 px (`kit/trainerFigure.js › RUN_FIGURE`, `runFigure`: never under its 12 px label floor); the fact card is held
-to 44 rem beside it. On the Nile the lessons build it with `nilePyramids/figure.js › buoyFigure` (the order's letters, the
-lengths given, « ? » on the asked one, the chevrons; turned, or its free angle narrowed, until it fits), in their
-`run.js`; a buoy of k only (no point) has none.
-Without `total` the run ends with the last heart; with `total` it is a COURSE that ends after that many gates
-(`won`). A gate that was not the right one shows a FACT (`why`), never « wrong ».
+**Where the messages stand while he walks** (owner, 2026-11-27 on the French platform: « they hide the way of the
+robot », « it must not hide the robot itself »; ported 2026-11-28). The middle of the screen stays free. The instruction
+keeps the top. With a mouse and keys the « E » prompt is written at the bottom centre (`.di-act`: « اضغط E » then what
+it does) and steps to the robot's side when he stands there (`WorldRuntime.dodgeHero`, `--dodge`, physical pixels; a
+place still far shows only where to go, `data-far`); over the thing to use only a small « E » key floats (the words
+stay for a screen reader); the robot's sentence rises above his head (`--lift`). A world gives what it has just answered
+in its `Fact` slot (`LessonWorld.jsx`, `.di-answer`): it stands on the RIGHT edge, where an Arabic line starts (France:
+the left). No world of this tree fills `Fact` yet. On a touch screen the bubble over the thing and the thumb's button are
+unchanged. Styles: `styles/world.css` « WHERE THE MESSAGES STAND ».
+
+**The river asks speed calculations only** (owner, 2026-11-27, both platforms; it replaces the rule of 2026-11-25, « a
+round that names points carries `figure` »). A buoy is ONE bare calculation drawn from the lesson's own computations:
+the order alone (« أكمل », « احسب »), the formula, the box `\square`. No letter of a point, no figure. Its wrong buoys
+are the real mistakes of that calculation. The kit still accepts `figure?` (published as `state.run.figure`, drawn by
+the HUD in `data-gr-figure`); the Nile lessons hand none.
 
 **Two options of the run (K-b, 2026-11-24; `PYRAMIDS_WORLD_PLAN.md` §1.3).** A world that passes neither keeps the rail
 of light and its rules unchanged (`kit/gateRun.test.js` pins the scene and two scripted runs by fingerprints taken before
@@ -857,9 +867,13 @@ subject, blue for what the student writes, RED for the corrector and never befor
 Owner request: the student practises in the GAME first, then in the REAL format; the exercises follow his level; the game is
 felt BETWEEN two levels of the exam, never inside a sitting.
 
-- **« فضاء اللعب » / « فضاء الامتحان »** — a switch at the top of the practice hub (`KnowledgeMap`, `data-di-space`). The game
-  space is the 16 levels of §2bis. The exam space opens once the student has PLAYED: the four keys and the first run of each
-  (`journey.js › examOpen`). The title screen no longer opens a sitting directly.
+- **« فضاء الامتحان » / « فضاء اللعب »** — a switch at the top of the practice hub (`KnowledgeMap`, `data-di-space`). The game
+  space is the 16 levels of §2bis. **« فضاء الامتحان » is the FIRST of the two, the one the hub opens on (unless the world sends
+  him to one node), and it is OPEN FROM THE START, even for a student who never played** (owner, 2026-11-26 on the French
+  platform, ported 2026-11-28 — it used to wait for the four keys and the first run of each; `journey.js › examOpen`). Its
+  levels still open one after the other; « ما التالي؟ » still advises the game first (`journey.js › played`). The title
+  screen no longer opens a sitting directly, and « صفحة المراجعة » is no longer one of its doors (it is on the student's home
+  of the lesson, `LESSON_V2.md` §2bis).
 - **The ladder** (`Spaces.jsx › ExamLadder`, `bankSitting.js › BANK_LEVELS`): five rising steps — the five levels of the
   lesson's bank, with the names the practice space gives them.
 
@@ -1029,7 +1043,9 @@ Nothing in the game world scrolls — not the page, not a card, not a panel — 
 >   INK (text, border, stroke, a tint under 50 %) is dark on a light ground; a SHAPE (an opaque fill) stays bright, and
 >   dark text on a bright shape stays dark. Night values: `.di-root` (kit/styles/world.css); light values: `.rf-root`
 >   and its skins (kit/ruleForge.css « THE SHEET »), `.lk-root--inline` (launchKit.css), `.ll-root` (the lesson lab, ONE
->   light set for every world — lessonLab.css). A number coloured inside a
+>   light set for every world — lessonLab.css), `.di-mapcard` and `.di-page` (the training space and the knowledge page,
+>   sheets of the world too since 2026-11-28 — `kit/styles/sheets.css`, keyed by the shell's `data-gameworld`, which the
+>   tools opened with no world carry as well). A number coloured inside a
 >   formula (`\textcolor{#fbbf24}{…}`) is re-inked by `.rf-root .katex [style*=…]`. A new experiment uses the palette;
 >   the brand blue of shapes (`#2f7df6`, `#3b5bdb`) is written as it is. A world part drawn on the sheet (its `Line`)
 >   uses ink colours. The islands' workshop notebook (`Workshop.jsx`, a `.rf-root`) carries `data-rf-skin="isles"`.

@@ -83,10 +83,8 @@ for (const [w, h, collapsed] of [[1366, 768, false], [1024, 768, false], [1024, 
   check(m.view, `${tag} ${w}: the student sees the unit mission view`);
   check(m.sideways <= 1, `${tag} ${w}: no sideways scroll (${m.sideways}px)`);
   check(m.now === lessons[3] && m.done === '3', `${tag} ${w}: 3 lessons done, « درسك الآن » is lesson 4 (${m.now}, ${m.done})`);
-  check(
-    unitId !== 'aadad-tabiiya-natiqa' || m.revisions.includes('qasim-adad-tabii'),
-    `${tag} ${w}: the lesson that has a revision page offers it (${m.revisions.join(',')})`,
-  );
+  // « صفحة المراجعة » is a door of the student's HOME of the lesson since 2026-11-28 (LESSON_V2.md §2bis): never on his unit page
+  check(m.revisions.length === 0, `${tag} ${w}: no revision button on the student's unit page (${m.revisions.join(',')})`);
   await page.screenshot({ path: `${OUT}/${tag}-${w}${collapsed ? '-collapsed' : ''}.png`, fullPage: true });
   const stations = await page.$$eval('[data-unit-station]', (els) => els.map((e) => e.getAttribute('data-unit-station')).filter((x) => x !== 'challenge'));
   check(stations.length === lessons.length, `${tag} ${w}: ${lessons.length} stations on the path (${stations.length})`);

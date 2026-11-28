@@ -279,7 +279,7 @@ const cross = async (i) => {
   await ff(0.3);
 };
 
-await page.goto(LESSON, { waitUntil: 'networkidle' });
+await page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-di-start]', { timeout: 30000 });
 await page.waitForTimeout(1500);
 await shot('title');
@@ -1082,7 +1082,7 @@ s = await st();
 expect(s.overlay === 'end' && s.stage === 8, 'the lighthouse is lit and the end screen shows');
 // the end screen leads to the practice game: the map opens with the four nodes the story unlocked
 await page.click('[data-di-end-practice]');
-await page.waitForSelector('[data-di-mapcard]');
+await page.waitForSelector('[data-di-mapcard]'); await page.click('[data-di-space="game"]').catch(() => {});
 await page.waitForTimeout(400);
 await shot('map-after-story');
 expect(
@@ -1110,12 +1110,12 @@ await shot('title-resume');
 
 // ── the old version is deleted (owner, 2026-11-18): a module address and `?view=classic` lead to the world, never a 404 ──
 await page.goto(`${LESSON}/maarif`, { waitUntil: 'networkidle' });
-await page.waitForSelector('[data-gameworld]', { timeout: 30000 });
+await page.waitForSelector('[data-lesson-home]', { timeout: 30000 });
 expect(
   new URL(page.url()).pathname === new URL(LESSON).pathname,
-  'a module address of the deleted pages redirects to the lesson home',
+  'a module address of the deleted pages redirects to the lesson home (no world)',
 );
-await page.goto(`${LESSON}?view=classic`, { waitUntil: 'networkidle' });
+await page.goto(`${LESSON}?view=classic&world=1`, { waitUntil: 'networkidle' });
 await page.waitForSelector('[data-gameworld]', { timeout: 30000 });
 expect(!(await page.textContent('body')).includes('756'), '?view=classic opens the world: no mission player behind it');
 await shot('old-address');

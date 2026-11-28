@@ -312,7 +312,7 @@ await w.run(async () => {
     const before = await st();
     const path = new globalThis.URL(URL).pathname;
     await page.click(sel);
-    await page.waitForFunction((p) => window.location.pathname !== p, path, { timeout: 15000 });
+    await page.waitForFunction((p) => window.location.pathname !== p || !window.location.search.includes('world=1'), path, { timeout: 15000 });
     // the address changes first; the world is unmounted when the catalogue (a lazy page) has arrived: read it once it has
     // had the time to (it was read in the same instant as the address, and found still mounted — the clean measure of
     // 2026-11-19), and say how long it took
@@ -325,7 +325,7 @@ await w.run(async () => {
       gone,
       `${where}: the ✕ is clicked — he is out of the world (${await page.evaluate(() => window.location.pathname)}, the world gone after ${Date.now() - t0} ms)`,
     );
-    await page.goto(URL, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${URL}?world=1`, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('[data-di-start]', { timeout: 60000 });
     await page.waitForTimeout(1200);
     await shot(`back-${where}`);

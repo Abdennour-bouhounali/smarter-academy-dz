@@ -57,7 +57,7 @@ const WORLD_READY = '[data-di-start], [data-di-continue]';
 
 // ══ 1. device 1: he plays, his journey reaches the server ══
 const one = await device('one');
-await one.page.goto(LESSON, { waitUntil: 'networkidle' });
+await one.page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await one.page.waitForSelector(WORLD_READY, { timeout: 30000 });
 expect(Object.keys(store).length === 0 && await stage(one.page) === 0, 'a first device with nothing on the server starts at the first island');
 await one.page.evaluate(() => window.__world.arrive(2)); // he reaches the third island (the story's own `arrive` saves)
@@ -72,8 +72,10 @@ await one.page.screenshot({ path: `${OUT}/01-device-one.png` });
 
 // ══ 2. device 2, new, on a slow network: the loading screen, then HIS island ══
 const two = await device('two', { server: 'slow' });
-await two.page.goto(LESSON, { waitUntil: 'commit' });
+await two.page.goto(`${LESSON}?world=1`, { waitUntil: 'commit' });
 await two.page.waitForSelector('[data-gw-loading]', { timeout: 30000 });
+// its first words are « نفتح الدرس… » (the lesson's code arrives), then the world's own stages
+await two.page.waitForFunction(() => document.querySelector('[data-gw-loading]')?.textContent.includes('نجهّز عالمك'), null, { timeout: 30000 }).catch(() => {});
 {
   const box = await two.page.evaluate(() => { const el = document.querySelector('[data-gw-loading]'); const r = el.getBoundingClientRect(); return { text: el.textContent, w: r.width, h: r.height, vw: window.innerWidth, vh: window.innerHeight, bar: Boolean(el.querySelector('.gw-loading__bar i')) }; });
   expect(box.text.includes('التعرّف على قاسم') && box.text.includes('نجهّز عالمك') && box.bar && box.w === box.vw && box.h === box.vh, 'while the world arrives the student sees his lesson’s name and a bar that fills — never a blank page');
@@ -94,7 +96,7 @@ expect(await stage(one.page) === 4, 'back on the first device, he is where the s
 
 // ══ 4. a server that does not answer never blocks the game ══
 const three = await device('three', { server: 'down' });
-await three.page.goto(LESSON, { waitUntil: 'networkidle' });
+await three.page.goto(`${LESSON}?world=1`, { waitUntil: 'networkidle' });
 await three.page.waitForSelector(WORLD_READY, { timeout: 30000 });
 expect(await stage(three.page) === 0, 'offline on a new device: the world opens from the browser’s own copy (the beginning), it does not wait');
 

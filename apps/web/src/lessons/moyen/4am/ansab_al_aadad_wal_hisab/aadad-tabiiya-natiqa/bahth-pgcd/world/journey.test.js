@@ -203,7 +203,11 @@ describe('the road of « البحث عن القاسم المشترك الأكب�
       expect(STORY.pendingForge({ state: { stage, keys: held } })).toBe(key);
       expect(STORY.pendingForge({ state: { stage, keys: [...held, key] } })).toBe(then);
     }
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26); « ما التالي؟ » still advises the
+    // game first, until the first run of each key is passed
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
   });
 
   it('the store of the last bridge says the numbers of THIS lesson, in its own words', () => {

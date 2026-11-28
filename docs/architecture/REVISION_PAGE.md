@@ -1,7 +1,8 @@
 # « صفحة المراجعة » — the revision page of a lesson
 
 Asked by the owner on 2026-11-26: beside the game world, a plain one-page version of a lesson for older students who
-revise. **Built:** the template and the page of ONE lesson, `qasim-adad-tabii`. **Not committed to `main`.**
+revise. **Built:** the template, and the page of each of the 14 lessons that have a `revision.js` today (the model:
+`qasim-adad-tabii`); the student's page in the 2D game look (§4, 2026-11-28). **Not committed to `main`.**
 The prototype it was approved on: `docs/reports/mockups/revision-qasim-adad-tabii.html`.
 
 ## 1. Where it is
@@ -65,7 +66,26 @@ Nothing on the server: no progress, no evidence, nothing a teacher reads. Ticked
 (`sa:revision:<lesson>:steps`).
 
 ## 4. Look
-Plain, one column up to 1720 px, the platform's blue. « طباعة » prints ONE A4 memo sheet in two columns (owner, 2026-11-26: it must cost the student little): the page alone,
+**The student's page is the 2D game look** (2026-11-28, ported from the French platform, where its owner asked for it on
+2026-11-26 « for those who have no time to play »): `RevisionArcade.jsx`, `revisionArcade.css`, on the shared frame
+`features/versLeBrevet/` (`Shell.jsx` the top bar, `prefs.js` the reader's choices, `parts.jsx` the robot's bar, the keys
+and the sound, `versLeBrevet.css`, `text.js`). The SAME content and the same blocks (`RevisionBlock`, `RevisionQuiz`) read
+from the lesson's `revision.js` — nothing is written for it. It covers the whole window (a portal on `<body>`), right to
+left, with: a button back to the lesson (« إلى الدرس », `getLessonPath`), the path of the seven steps (each segment goes to
+its step), « طباعة », the sound (on unless the reader turned it off), a dark and a light look (« داكن / فاتح »), and two
+presentations behind one switch — « شاشة بشاشة » (one fixed screen at a time: a step flows into two columns from the right
+and the browser cuts it into screens, the next one to the left, so nothing scrolls and no block is split by hand; a formula
+too wide for its column is set smaller, never under two thirds; the robot's bar says « الخطوة n من 7، الشاشة i من k » with
+« السابق / التالي ») and « صفحة واحدة » (the seven steps on one page that scrolls, each with its « أنهيت هذه الخطوة »). The
+switch keeps the reader's place; `?mode=page|ecrans` opens one directly. The three choices stay in the browser (`vb-theme`,
+`vb-mode`, `vb-sound`); the ticked steps are the same key as the plain sheet (`revisionSteps.js`). The French end-of-unit
+lesson « Vers le brevet », built on the same frame, is NOT ported (it needs its own content per unit).
+
+**The plain sheet below stays the TEACHER's page and what PRINTS**: on the student's page it is kept in the page, hidden on
+screen (`.rv--paper`), and the game look leaves the paper (`@media print`). Not seen in a browser yet (2026-11-28): the
+right-to-left columns and their screens, the two looks and the fit of the formulas at 1366×768 are to be looked at.
+
+The plain sheet: one column up to 1720 px, the platform's blue. « طباعة » prints ONE A4 memo sheet in two columns (owner, 2026-11-26: it must cost the student little): the page alone,
 9.5 pt text, NO exercise (no task, no exercises step, no quiz), no example inside the lesson step, only the first two
 worked examples. The rules are the CSS `@media print` block. A new lesson's page is printed to PDF and its page count
 read before it is called done (at most 2 pages, one sheet).

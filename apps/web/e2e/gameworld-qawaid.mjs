@@ -298,14 +298,14 @@ await w.run(async () => {
   const leaveAndComeBack = async (sel, where) => {
     expect((await w.reachable(page, [sel])) !== null, `${where}: its ✕ is on screen and a click reaches it`);
     await page.click(sel);
-    await page.waitForURL((u) => !u.pathname.includes(ID), { timeout: 15000 });
+    await page.waitForURL((u) => !u.pathname.includes(ID) || !u.search.includes('world=1'), { timeout: 15000 });
     // the address changes first; the game is unmounted once the catalogue (a lazy page) has arrived
     await page.waitForSelector('.rf-root, .di-root canvas', { state: 'detached', timeout: 10000 }).catch(() => {});
     expect(
       (await page.locator('.rf-root, .di-root canvas').count()) === 0,
-      `${where}: the ✕ LEAVES the game — the page is the catalogue (${new URL(page.url()).pathname})`,
+      `${where}: the ✕ LEAVES the game — the page is the lesson home (${new URL(page.url()).pathname})`,
     );
-    await page.goto(LESSON_URL, { waitUntil: 'domcontentloaded' });
+    await page.goto(`${LESSON_URL}?world=1`, { waitUntil: 'domcontentloaded' });
     await page.waitForSelector('[data-di-start]', { timeout: 30000 });
     await page.waitForTimeout(1200);
     expect(

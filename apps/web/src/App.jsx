@@ -244,6 +244,8 @@ const NilePyramidsPreview = QA_FIXTURES_ENABLED
   : null;
 // the kit's gate run with the felucca's river and its crocodiles, alone (PYRAMIDS_WORLD_PLAN §2.4 K-b) — development only
 const GateRiverPreview = QA_FIXTURES_ENABLED ? lazy(() => import('./qa/gateRiver/GateRiverPreview.jsx')) : null;
+// the student's home of a lesson with no account (LESSON_V2.md §2bis) — development only
+const LessonHomeQa = QA_FIXTURES_ENABLED ? lazy(() => import('./features/lessonHome/LessonHomeQa.jsx')) : null;
 const MissionsHome = QA_FIXTURES_ENABLED
   ? lazy(() => import('./qa/missionPrototype/MissionPrototype.jsx').then((m) => ({ default: m.MissionsHome })))
   : null;
@@ -690,6 +692,7 @@ function AppRoutes() {
         {QA_FIXTURES_ENABLED && <Route path="/__qa/missions" element={<MissionsHome />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/nile-pyramids" element={<NilePyramidsPreview />} />}
         {QA_FIXTURES_ENABLED && <Route path="/__qa/gate-river" element={<GateRiverPreview />} />}
+        {QA_FIXTURES_ENABLED && <Route path="/__qa/lesson-home/:lessonId" element={<LessonHomeQa />} />}
       </Route>
     </Routes>
   );

@@ -1,6 +1,7 @@
-// « No rule is told … only then its name » (CLAUDE.md, GAME_WORLD.md « A key's name comes after him »): the kit's screens
-// that list the lesson's keys — the practice hub « فضاء التدريب » and « تقدّمي » — never print the name (the tablet's
-// title) of a key the student does not hold yet, nor the names of its levels. Server render: the first screen only.
+// The kit's screens that list the lesson's keys — the practice hub « فضاء التدريب » and « تقدّمي » — name every rule and
+// its levels FROM THE START, with or without its key (owner, 2026-11-26 on the French platform: « fiche de connaissances and
+// the training games must be open even if the student did not start yet the lesson game »; ported 2026-11-28). These tests
+// used to hold the opposite (a key not held had no name, « ؟ ؟ ؟ »). Server render: the first screen only.
 import { describe, it, expect, vi } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import PracticeHub from './PracticeHub';
@@ -8,7 +9,7 @@ import { ProgressPage } from './Spaces';
 import { LessonProvider } from './LessonContext';
 import { createLadder, SUMMARY } from './ladder';
 import { createJourney, emptyExam } from './journey';
-import { KT } from './text';
+import { KT, TX } from './text';
 
 globalThis.window = globalThis.window ?? {};
 // the sound switch reads the game's store (useSyncExternalStore), which a server render cannot: it is not under test here
@@ -49,6 +50,8 @@ const lesson = {
   },
   cards: { ofKey: {}, ofExercise: {}, fallback: null },
   evidence: { learningPointOf: () => null },
+  // the exam ladder's bank, not under test here: no level yet
+  sittings: { ready: () => true, prepare: () => Promise.resolve(), levels: [], available: () => false },
 };
 const game = {};
 // he holds the first key only: the second is not forged yet
@@ -66,36 +69,43 @@ const render = (el) => renderToString(<LessonProvider lesson={lesson}>{el}</Less
 // renderToString escapes nothing in Arabic, but splits adjacent text nodes with comments: compare on the bare text
 const textOf = (html) => html.replace(/<!--.*?-->/g, '');
 
-describe('a key not held yet has no name on the kit screens', () => {
-  it('the practice hub: the held node shows its name, the locked one shows the neutral label and no level name', () => {
-    const html = textOf(render(<PracticeHub s={s} game={game} />));
+describe('a rule is named and open on the kit screens from the start, with or without its key', () => {
+  it('the practice hub: the node of a key not held shows its name and its levels', () => {
+    const html = textOf(render(<PracticeHub s={s} game={game} space0="game" />));
     expect(html).toContain('اسم القاعدة الأولى');
     expect(html).toContain('سباق المستوى الأوّل أ');
-    expect(html).not.toContain('اسم القاعدة الثانية');
-    expect(html).toContain(KT.hidden);
-    // the summary node is not a rule: its name stays
+    expect(html).toContain('اسم القاعدة الثانية');
+    expect(html).not.toContain(KT.hidden);
     expect(html).toContain('تحدّي الامتحان');
   });
 
-  it('the practice hub: the panel of a locked node does not name its rule nor its levels', () => {
+  it('the practice hub: the panel of a key not held names its rule and its levels, and is not locked', () => {
     const html = textOf(render(<PracticeHub s={s} game={game} sel={1} />));
     expect(html).toContain('data-di-panel="second"');
-    expect(html).not.toContain('اسم القاعدة الثانية');
-    expect(html).not.toContain('سباق سرّيّ');
-    expect(html).toContain(KT.map.locked);
+    expect(html).toContain('اسم القاعدة الثانية');
+    expect(html).toContain('سباق سرّيّ أ');
+    expect(html).not.toContain(KT.map.locked);
   });
 
-  it('the practice hub: once the key is held, its name appears as before', () => {
+  it('the practice hub opens on « فضاء الامتحان », first and open, when nothing sends him to a node', () => {
+    const html = textOf(render(<PracticeHub s={s} game={game} />));
+    expect(html.indexOf('data-di-space="exam"')).toBeLessThan(html.indexOf('data-di-space="game"'));
+    expect(html).toMatch(/aria-selected="true"[^>]*data-di-space="exam"/);
+    expect(html).toContain('data-di-ladder="open"');
+  });
+
+  it('the practice hub: with the key held, nothing changes', () => {
     const html = textOf(render(<PracticeHub s={{ ...s, openKeys: ['first', 'second'] }} game={game} sel={1} />));
     expect(html).toContain('اسم القاعدة الثانية');
     expect(html).toContain('سباق سرّيّ أ');
   });
 
-  it('« تقدّمي »: a key not earned yet is a locked row without its name', () => {
+  it('« تقدّمي »: a key not earned yet is named, and its row still says it is not won', () => {
     const html = textOf(render(<ProgressPage s={s} game={game} lessonId="toy" lessonTitle="درس" />));
     expect(html).toContain('data-di-prow="second"');
     expect(html).toContain('اسم القاعدة الأولى');
-    expect(html).not.toContain('اسم القاعدة الثانية');
-    expect(html).toContain(KT.hidden);
+    expect(html).toContain('اسم القاعدة الثانية');
+    expect(html).toContain(TX.progress.notYet);
+    expect(html).not.toContain(KT.hidden);
   });
 });

@@ -26,6 +26,7 @@ import PremiumCard from '../../features/home/components/PremiumCard';
 import DailyChallengeCard from '../../features/home/components/DailyChallengeCard';
 import { fetchCompass } from '../../services/compassService';
 import { usePrefetchLessonRuntime } from '../../lessons/common/lessonRuntimeLoader';
+import SectionErrorBoundary from '../../components/student/SectionErrorBoundary';
 
 // « بوصلتي » sur l'accueil (YEAR_COMPASS.md §6bis) : un lot PARESSEUX — réseau + calendrier n'entrent
 // pas dans le lot de l'accueil ; la page s'affiche, puis la section arrive.
@@ -135,20 +136,23 @@ export default function StudentHome() {
           <HomeGreeting name={getDisplayName(user)} gradeName={grade?.name || null} />
         </motion.div>
 
+        {/* A crash of one section leaves the rest of the home standing (SectionErrorBoundary). */}
         <motion.div {...enter(0.05)}>
-          {compassLoaded ? (
-            <Suspense fallback={skeleton}>
-              <CompassHomeSections
-                compass={compass ?? { enabled: false }}
-                gradeId={gradeId}
-                today={today}
-                resume={continueCourse}
-                visits={visits}
-                classroom={classroom}
-                challenge={<DailyChallengeCard />}
-              />
-            </Suspense>
-          ) : skeleton}
+          <SectionErrorBoundary>
+            {compassLoaded ? (
+              <Suspense fallback={skeleton}>
+                <CompassHomeSections
+                  compass={compass ?? { enabled: false }}
+                  gradeId={gradeId}
+                  today={today}
+                  resume={continueCourse}
+                  visits={visits}
+                  classroom={classroom}
+                  challenge={<DailyChallengeCard />}
+                />
+              </Suspense>
+            ) : skeleton}
+          </SectionErrorBoundary>
         </motion.div>
 
         {/* ── Tout le reste : replié, jamais supprimé (règle « plier, ne jamais supprimer »). ── */}
@@ -169,10 +173,16 @@ export default function StudentHome() {
                 </button>
               </div>
             )}
-            <JourneyStats activity={gradeActivity} agg={tree.agg} profileStatus={status} />
+            <SectionErrorBoundary>
+              <JourneyStats activity={gradeActivity} agg={tree.agg} profileStatus={status} />
+            </SectionErrorBoundary>
             <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-2">
-              <CurriculumPreview context={whereContext} />
-              <RecentLearning items={recent} treeIndex={treeIndex} />
+              <SectionErrorBoundary>
+                <CurriculumPreview context={whereContext} />
+              </SectionErrorBoundary>
+              <SectionErrorBoundary>
+                <RecentLearning items={recent} treeIndex={treeIndex} />
+              </SectionErrorBoundary>
             </div>
             <LearningSpaceNav />
             <PremiumCard premiumCount={premiumCount} isPremium={isPremium} canSeeUpgrade={canSeeUpgrade} />

@@ -169,7 +169,11 @@ describe('the road of « القسمة الإقليدية وحصر حاصل ال�
     expect(STORY.pendingForge({ state: { stage: 3, keys: [KEYS[0]] } })).toBe(null);
     expect(STORY.pendingForge({ state: { stage: 2, keys: [] } })).toBe(null);
     expect(STORY.pendingForge({ state: { stage: 7, keys: [] } })).toBe(null);
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26); « ما التالي؟ » still advises the
+    // game first, until the first run of each key is passed
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
   });
 
   it('a bridge with its own sentence says it; the others are left to the world', () => {

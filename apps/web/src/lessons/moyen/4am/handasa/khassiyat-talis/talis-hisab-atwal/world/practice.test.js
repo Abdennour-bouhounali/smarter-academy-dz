@@ -57,16 +57,32 @@ describe('« فضاء التدريب » — the practice ladder of « خاصية
     );
   });
 
-  it('every buoy that names points carries its figure to the river (`roundOfWave`); the kinds of k none', () => {
+  it('every buoy of every level is a bare calculation to the river (`roundOfWave`): no figure, no point (owner, 2026-11-27)', () => {
     ladder.nodes.forEach((node, n) =>
       node.levels.forEach((_, l) => {
         for (const w of ladder.makeRun(rng(n * 7 + l + 1), n, l)) {
           const r = roundOfWave(w);
-          if (['direction', 'image', 'back'].includes(w.type)) expect(r.figure, w.type).toBeUndefined();
-          else expect(Object.keys(r.figure.points), w.type).toHaveLength(5);
+          expect(r, w.type).not.toHaveProperty('figure');
+          expect(['أكمل', 'احسب'], r.ask).toContain(r.ask);
+          expect(r.tex.replace(/\\[a-z]+/g, ''), r.tex).not.toMatch(/[A-Za-z]/);
         }
       }),
     );
+  });
+
+  it('the second level of every node draws the bigger numbers (`{ big: true }`), the first the small ones', () => {
+    for (const node of PRACTICE_NODES) {
+      for (const [, params] of node.levels[0].mix) expect(params.big, node.id).toBeFalsy();
+      for (const [, params] of node.levels[1].mix) expect(params.big, node.id).toBe(true);
+    }
+    // the numbers an order shows, at each level of each node: the second's largest above the first's
+    const biggest = (node, level) =>
+      Math.max(
+        ...Array.from({ length: 20 }, (_, s) => ladder.makeRun(rng((s + 1) * 211 + node), node, level))
+          .flat()
+          .flatMap((w) => (w.tex.match(/\d+/g) ?? []).map(Number)),
+      );
+    ladder.nodes.forEach((node, n) => expect(biggest(n, 1), node.id).toBeGreaterThan(biggest(n, 0)));
   });
 
   it('the hub names no key and no rule before its forge', () => {

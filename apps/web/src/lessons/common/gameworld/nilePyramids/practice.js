@@ -12,7 +12,9 @@
  *
  * A wave of the lesson carries what the river shows — `say` (the order), `tex?`, `gates` (three numbers or short texts,
  * « p/q » drawn over a real bar), `good`, `why: { right, wrong: { [gate]: fact } }`, `seconds?`, `figure?` (the drawing of a
- * wave that names points) — the felucca's legs' own shape.
+ * wave that names points) — the felucca's legs' own shape. Since 2026-11-28 the river asks SPEED CALCULATIONS only
+ * (owner, 2026-11-27): a buoy is one bare calculation, no letter of a point, no figure; `figure?` is kept for a lesson
+ * that would hand one.
  */
 import { PRACTICE_HEARTS } from '../kit/ladder';
 import { railSpeed } from '../kit/GateRun';
@@ -31,7 +33,7 @@ export const roundOfWave = (w) => ({
   right: w.good,
   why: w.gates.map((g, k) => (k === w.good ? w.why.right : (w.why.wrong?.[g] ?? w.why.right))),
   seconds: w.seconds,
-  // the drawing of a wave that names points (`nilePyramids/figure.js › buoyFigure`), drawn beside the order
+  // the drawing of a wave that names points (the kit draws it beside the order); the Algerian legs carry none
   ...(w.figure ? { figure: w.figure } : {}),
 });
 

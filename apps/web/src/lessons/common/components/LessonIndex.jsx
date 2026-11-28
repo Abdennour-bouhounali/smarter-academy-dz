@@ -39,6 +39,10 @@ const TeacherLessonPanel = lazy(() => import('../../../features/classSession/Tea
 const LessonToolsBar = lazy(() => import('../../../features/classSession/LessonToolsBar'));
 import { hasClassBoard } from '../../../features/classSession/boardLessons';
 const LessonGameWorld = lazy(() => import('../gameworld/LessonGameWorld'));
+// the STUDENT's home of a v2 lesson, and the lesson's tools opened from it with NO world (LESSON_V2.md §2bis)
+const LessonHome = lazy(() => import('../../../features/lessonHome/LessonHome'));
+const LessonToolsLoader = lazy(() => import('../gameworld/LessonToolsLoader'));
+import { opensWorldNow, toolAsked } from '../../lessonEntry';
 import { lessonPackFlags } from '../../registry';
 import WorldLoading from '../gameworld/WorldLoading';
 import { TeacherPanelSkeleton } from '../../../features/classSession/TeacherSkeletons';
@@ -486,8 +490,10 @@ export default function LessonIndex({ config, basePath }) {
     );
   }
 
-  // Le monde de jeu EST l'accueil d'une leçon v2 pour l'ÉLÈVE (LESSON_V2.md §2) : ni lecteur de mission, ni pages de module
-  // (supprimées ; leurs adresses renvoient ici), ni `?view=classic` (retiré le 2026-11-18, ordre du propriétaire).
+  // L'ÉLÈVE d'une leçon v2 arrive sur SON ACCUEIL de la leçon (features/lessonHome, LESSON_V2.md §2bis — propriétaire,
+  // 2026-11-26 sur la plateforme française, porté le 2026-11-28) : le monde de jeu est à `?world=1`, et le quitter revient
+  // ici ; « فضاء التدريب », « خريطة المعارف » et « مختبري » s'ouvrent d'ici SANS le monde (`?tool=…`). Ni lecteur de
+  // mission, ni pages de module (supprimées ; leurs adresses renvoient ici), ni `?view=classic` (retiré le 2026-11-18).
   // « جرّب كتلميذ » : l'enseignant ouvre le monde de l'élève en APERÇU (`?apercu=eleve`) — rien n'est enregistré ni envoyé (CLASS_SESSION.md §2).
   const pack = lessonPackFlags(config.id);
   const teacherCard = viewer.isTeacher && !presenting && Boolean(pack.board || pack.world);
@@ -501,6 +507,39 @@ export default function LessonIndex({ config, basePath }) {
     viewer.freeNavigation && !presenting && searchParams.get('apercu') === 'eleve' && Boolean(pack.world);
   const studentWorld = !viewer.freeNavigation && !presenting;
   const worldId = studentWorld || previewAsStudent ? (pack.world ?? null) : null;
+  const studentHome = Boolean(worldId) && !previewAsStudent && !opensWorldNow(searchParams);
+  // one of the lesson's tools, opened from the home WITH NO WORLD (`?tool=…`, lessonEntry.js)
+  const tool = studentHome ? toolAsked(searchParams) : null;
+  if (tool) {
+    return (
+      <Suspense fallback={null}>
+        <LessonToolsLoader
+          tool={tool}
+          config={config}
+          basePath={basePath}
+          exitTo={basePath}
+          onModule={(n) => markModuleCompleted(String(n))}
+          completedModules={completedModules}
+          mastery={Object.keys(masteryStatusById ?? {}).length ? masteryStatusById : null}
+        />
+      </Suspense>
+    );
+  }
+  // the student's home first: the world opens from it (`?world=1`), or for a teacher's preview
+  if (studentHome) {
+    return (
+      <Suspense fallback={null}>
+        <LessonHome
+          config={config}
+          basePath={basePath}
+          offsetClass={chrome.contentOffsetClass}
+          completedModules={completedModules}
+          masteryStatusById={masteryStatusById}
+        />
+      </Suspense>
+    );
+  }
+  // leaving the world comes back to the student's home of the lesson (a teacher's preview: to his page)
   if (worldId) {
     return (
       <Suspense fallback={<WorldLoading lessonId={config.id} title={config.title} />}>
@@ -508,11 +547,7 @@ export default function LessonIndex({ config, basePath }) {
           worldId={worldId}
           config={config}
           basePath={basePath}
-          exitTo={
-            previewAsStudent
-              ? basePath
-              : catalogueHref({ level: config.level, grade: config.grade, chapter: config.chapter })
-          }
+          exitTo={basePath}
           onModule={(n) => {
             if (!previewAsStudent) markModuleCompleted(String(n));
           }}

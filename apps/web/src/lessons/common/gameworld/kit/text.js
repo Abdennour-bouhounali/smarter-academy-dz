@@ -10,13 +10,13 @@ export const TX = {
   },
   close: 'إغلاق',
   tip: 'حيلة',
-  // the two practice spaces: the game first, then the real exam — the game lives BETWEEN the levels of the exam, never inside
+  // the two practice spaces: the real exam FIRST and open from the start (owner, 2026-11-26), then the game — which lives
+  // BETWEEN the levels of the exam, never inside
   spaces: {
     game: 'فضاء اللعب',
     exam: 'فضاء الامتحان',
     gameSub: 'سباقات ومهمّات: تدرّب وأنت تلعب.',
     examSub: 'امتحانات بيضاء على الورقة: خمس درجات، من تمرين واحد إلى امتحان كامل.',
-    examLocked: 'العب أوّلًا: أنهِ السباق الأوّل من كلّ مفتاح في فضاء اللعب، فيُفتح فضاء الامتحان.',
     level: (n) => `الدرجة ${n}`,
     minutes: (m) => `${m} دقائق`,
     points: (p) => `${p} نقاط`,
@@ -38,7 +38,6 @@ export const TX = {
     mark: 'العلامة',
   },
   lab: { open: 'مختبري' },
-  revision: { open: 'صفحة المراجعة' },
   launch: { open: 'عُدّتي' },
   progress: {
     open: 'تقدّمي',

@@ -136,7 +136,8 @@ export async function loadLesson(id, { base = process.env.E2E_BASE || 'http://lo
     folder: dir,
     grade: entry.grade,
     unit: entry.chapter,
-    url: `${base}/courses/${entry.level}/${entry.grade}/${entry.chapter}/${id}`,
+    // the world itself: the lesson's address alone is the student's home of the lesson (src/lessons/lessonEntry.js)
+    url: `${base}/courses/${entry.level}/${entry.grade}/${entry.chapter}/${id}?world=1`,
     lesson: mod[`world${at}`] ?? null,
     numbers: mod[`story${at}`]?.NUMBERS ?? null,
     script: mod[`script${at}`] ?? null,

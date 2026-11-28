@@ -44,7 +44,11 @@ describe('the road of « قواسم عدد طبيعي »', () => {
     for (const w of STORY.dashWaves) expect(w.gates.filter(w.test), w.say).toHaveLength(1);
     const quiz = STORY.text.quiz.rules;
     expect(quiz.options.map((o) => o.v).filter((v) => quiz.a % v === 0)).toEqual(quiz.answer);
-    expect(journey.examOpen(KEYS, {})).toBe(false);
+    // « فضاء الامتحان » is open from the start, with no key and no run (owner, 2026-11-26); « ما التالي؟ » still advises the
+    // game first, until the first run of each key is passed
+    expect(journey.examOpen([], {})).toBe(true);
+    expect(journey.examOpen(KEYS, {})).toBe(true);
+    expect(journey.nextStep({ finished: true, openKeys: KEYS, practice: {} }).do).toBe('game');
   });
 
   it('the store of the last bridge says the numbers of THIS lesson, everywhere, and the world writes none itself', () => {

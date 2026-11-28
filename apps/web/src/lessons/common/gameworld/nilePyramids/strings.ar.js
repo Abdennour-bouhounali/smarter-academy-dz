@@ -282,6 +282,10 @@ export const THALES_TEXT = {
   wordsHint: 'قل قاعدتك بكلماتك…',
   aligned: 'العلامات الثلاث على خطّ واحد.',
   apart: 'العلامات الثلاث ليست على خطّ واحد.',
+  /** The gauge of the half-turn (`Gauge.jsx › TurningGauge`): its lead, the word between two sides, while he turns. */
+  gauge: 'الأضلاع مثنى مثنى: ضلع من المثلّث الصغير على ضلع من المثلّث الكبير.',
+  gaugeOn: 'على',
+  gaugeTurn: 'أضلاع المثلّث الكبير الثلاثة ممدودة إلى طول واحد.',
   mirrored: 'بنته المرآة',
 };
 

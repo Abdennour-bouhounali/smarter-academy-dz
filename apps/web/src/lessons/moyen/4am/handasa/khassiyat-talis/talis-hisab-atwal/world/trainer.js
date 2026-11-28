@@ -4,7 +4,8 @@
  * Here: the kinds of question of THIS lesson, the plan of each card of its mind map, and how an answer is judged:
  * `check` gives first a HINT that says what the answer gives (never the answer), then the written correction.
  *
- *   game formats: a buoy of the felucca (`practice.js › waveOf`, its facts as hints), a true / false in one tap;
+ *   game formats: a buoy of the felucca (`practice.js › waveOf`: one bare calculation, no figure — its facts as hints),
+ *   a true / false in one tap;
  *   exam formats, the asks of the bank on the platform's OWN figures (`math.js › FIGURES`) and letters —
  *     🔑 « احسب النسبة » (a fraction over a bar), « اكتب النسب الثلاث » (segment names chosen inside fractions);
  *     📐 « احسب الطول » (a decimal box, its unit printed), the same when a side from the vertex is given in two pieces;
@@ -481,18 +482,11 @@ const Q = {
 
 /** What a session asks, by family of card: [kind, …arguments] for the six slots (game, game, exam, game, exam, exam). */
 const PLANS = {
-  k1: [
-    ['tap', 'nested', { find: 'VC' }],
-    ['tf', K1],
-    ['nisba'],
-    ['tap', 'nested', { find: 'MN' }],
-    ['nisab'],
-    ['nisba'],
-  ],
-  k2: [['tap', 'fourth', {}], ['tf', K2], ['tul'], ['tap', 'whole', {}], ['tulJuz'], ['tul']],
-  k3: [['tap', 'butterfly', {}], ['tf', K3], ['farasha'], ['tap', 'butterflyLen', {}], ['farashaNisab'], ['farasha']],
-  k4: [['tap', 'direction', {}], ['tf', K4], ['muamil'], ['tap', 'image', {}], ['tf', K4], ['muamil']],
-  mix: [['tap', 'nested', { find: 'VC' }], ['tf', K2], ['tulJuz'], ['tap', 'image', {}], ['farasha'], ['muamil']],
+  k1: [['tap', 'equality', {}], ['tf', K1], ['nisba'], ['tap', 'cross', {}], ['nisab'], ['nisba']],
+  k2: [['tap', 'sum', {}], ['tf', K2], ['tul'], ['tap', 'decimal', {}], ['tulJuz'], ['tul']],
+  k3: [['tap', 'halfCross', {}], ['tf', K3], ['farasha'], ['tap', 'halfEquality', {}], ['farashaNisab'], ['farasha']],
+  k4: [['tap', 'image', {}], ['tf', K4], ['muamil'], ['tap', 'coefficient', {}], ['tf', K4], ['muamil']],
+  mix: [['tap', 'equality', {}], ['tf', K2], ['tulJuz'], ['tap', 'image', {}], ['farasha'], ['muamil']],
 };
 /** Which plan a card of the lesson's mind map trains (`knowledge.js`). */
 export const PLAN_OF = {
