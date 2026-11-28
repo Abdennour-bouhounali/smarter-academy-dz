@@ -22,6 +22,12 @@ lesson stands on — a programme item of the learning net, of the same grade or 
 | The capsule (≈ 3 min, only when the gate asks) | a CORE tool left at « نبدأ منها »: its card, a worked example, its instrument in the lab (when its family has one), two easy questions — then the door is open (§3bis) |
 | The take-off | countdown, then the lesson starts |
 
+**Its colours are the world's** (owner, 2026-11-28). Opened in a world (`inline`, `.lk-root--inline`) the launch is a
+sheet laid on that world, which stays in sight behind it, blurred — the same sheet as the rule forge: papyrus on the
+Nile, wood and sky on the islands, stone in the courts (`launchKit.css` « THE COLOURS », keyed by the shell's
+`data-gameworld`). Every colour of `launchKit.css` is a token of the palette `--w-*` (GAME_WORLD.md « The palette »);
+outside a world (no `inline`) it keeps its night. A new station writes no fixed colour.
+
 It is **one component for every lesson**: `<LaunchKit lessonCode lessonTitle onDone onClose inline />` needs only the lesson's
 code. Nothing scrolls (designed 1280 × 720, and 1000 × 740 for a 4:3 screen, zoomed to the window — like « مختبري »).
 

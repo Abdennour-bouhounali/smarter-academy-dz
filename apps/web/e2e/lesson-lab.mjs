@@ -72,7 +72,7 @@ const dragTo = async (handle, vx, vy = null) => {
   const from = { x: box.x + box.width / 2, y: box.y + box.height / 2 }; const to = { x: ox + vx * k, y: vy == null ? from.y : oy + vy * k };
   await page.mouse.move(from.x, from.y); await page.mouse.down(); await page.mouse.move((from.x + to.x) / 2, (from.y + to.y) / 2, { steps: 6 }); await page.mouse.move(to.x, to.y, { steps: 6 }); await page.mouse.up(); await page.waitForTimeout(200);
 };
-const CYAN = '#7dfcff'; const GREEN = '#34d399'; const ROSE = '#fb7185';
+const CYAN = 'rgb(var(--w-cyan))'; const GREEN = 'rgb(var(--w-green))'; const ROSE = '#fb7185';
 /**
  * « مسطرة الحصر » as it is DRAWN: the plank rectangles under the length (inside: cyan or green, the one that passes: rose,
  * what is left: a dashed rect with no fill), the product line, the bracket line, the reading chips.
@@ -98,7 +98,7 @@ const plankEnd = (a, b, n) => 190 + (710 * n) / (Math.floor(a / b) + 1);
 /** « اللوح المشترك » as it is DRAWN, row by row: its label, ✓ or « يبقى r », the planks laid, where the planks and the gap end. */
 const planksDrawn = () => page.evaluate(([CYAN, GREEN]) => {
   const num = (r, k) => Number(r.getAttribute(k));
-  const held = document.querySelector('[data-ll-planks] > rect[fill="#fbbf24"]');
+  const held = document.querySelector('[data-ll-planks] > rect[fill="rgb(var(--w-gold))"]');
   const rows = [...document.querySelectorAll('[data-ll-row]')].map((g) => {
     const rects = [...g.querySelectorAll('rect')]; const outline = rects[0];
     const planks = rects.filter((r) => [CYAN, GREEN].includes(r.getAttribute('fill'))); const gap = rects.find((r) => r.getAttribute('fill') === 'none');

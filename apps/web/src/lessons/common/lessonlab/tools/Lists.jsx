@@ -81,7 +81,7 @@ export default function Lists({ a, b, play, report, start = 0 }) {
             y={y + 8}
             textAnchor="middle"
             fontSize="26"
-            style={{ fill: 'rgba(234,252,255,.55)' }}
+            style={{ fill: 'rgb(var(--w-ink) / 0.55)' }}
             data-ll-open
           >
             …
@@ -110,17 +110,17 @@ export default function Lists({ a, b, play, report, start = 0 }) {
                 width={CW}
                 height={CH}
                 rx="10"
-                fill={top ? '#fbbf24' : both ? '#064e3b' : '#062026'}
+                fill={top ? 'rgb(var(--w-gold))' : both ? 'rgb(var(--w-green-ink) / 0.14)' : 'rgb(var(--w-ground))'}
                 stroke={
                   cur.sel === v
-                    ? '#fff'
+                    ? 'rgb(var(--w-ink))'
                     : top
-                      ? '#fde68a'
+                      ? 'rgb(var(--w-gold-ink))'
                       : both
-                        ? '#34d399'
+                        ? 'rgb(var(--w-green-ink))'
                         : fresh
-                          ? '#fbbf24'
-                          : 'rgba(125,252,255,.55)'
+                          ? 'rgb(var(--w-gold-ink))'
+                          : 'rgb(var(--w-cyan-ink) / 0.55)'
                 }
                 strokeWidth={cur.sel === v || fresh ? 3.5 : 2}
               />
@@ -130,7 +130,7 @@ export default function Lists({ a, b, play, report, start = 0 }) {
                 textAnchor="middle"
                 fontSize="20"
                 fontWeight="900"
-                style={{ fill: top ? '#3b2a06' : '#eafcff' }}
+                style={{ fill: top ? '#3b2a06' : 'rgb(var(--w-ink))' }}
               >
                 {v}
               </text>
@@ -144,8 +144,8 @@ export default function Lists({ a, b, play, report, start = 0 }) {
             width="96"
             height="52"
             rx="14"
-            fill={Lst.done ? '#7dfcff' : 'rgba(125,252,255,.14)'}
-            stroke="#7dfcff"
+            fill={Lst.done ? 'rgb(var(--w-cyan))' : 'rgb(var(--w-cyan-ink) / 0.14)'}
+            stroke="rgb(var(--w-cyan-ink))"
             strokeWidth="2"
           />
           <text
@@ -154,7 +154,7 @@ export default function Lists({ a, b, play, report, start = 0 }) {
             textAnchor="middle"
             fontSize="26"
             fontWeight="900"
-            style={{ fill: Lst.done ? '#06262c' : '#7dfcff' }}
+            style={{ fill: Lst.done ? '#06262c' : 'rgb(var(--w-cyan-ink))' }}
           >
             {Lst.n}
           </text>
@@ -263,7 +263,7 @@ export default function Lists({ a, b, play, report, start = 0 }) {
                   y1={ROW.A + CH / 2}
                   x2={xb}
                   y2={ROW.B - CH / 2}
-                  stroke={top ? '#fbbf24' : '#34d399'}
+                  stroke={top ? 'rgb(var(--w-gold-ink))' : 'rgb(var(--w-green-ink))'}
                   strokeWidth={top ? 5 : 3}
                   strokeLinecap="round"
                   opacity={top ? 1 : 0.75}

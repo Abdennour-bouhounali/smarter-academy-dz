@@ -1,8 +1,8 @@
 /* A case of a rule forge that is a PAIR of gaps (forgeParts.jsx › `c.pair`): two bridges, one plank laid on both. The
    scene keeps the single bridge's box (`.rf-bridge`, kit/ruleForge.css); each bridge has its own held / fell look. */
 .rf-pairrow.is-held .rf-plank {
-  fill: #34d399;
-  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.8));
+  fill: rgb(var(--w-green));
+  filter: drop-shadow(0 0 8px rgb(var(--w-green-ink) / 0.8));
 }
 .rf-pairrow.is-fell .rf-plank {
   animation: rf-fall 0.7s ease-in forwards;

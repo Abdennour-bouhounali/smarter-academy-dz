@@ -77,8 +77,8 @@ export default function Rows({ a, b, setB, play, range }) {
           width={RIGHT - LEFT + 24}
           height={H + 20}
           rx="18"
-          fill="rgba(125,252,255,.04)"
-          stroke="rgba(125,252,255,.2)"
+          fill="rgb(var(--w-cyan-ink) / 0.04)"
+          stroke="rgb(var(--w-cyan-ink) / 0.2)"
           strokeWidth="1.5"
         />
         <text
@@ -86,7 +86,7 @@ export default function Rows({ a, b, setB, play, range }) {
           y={TOP - 18}
           textAnchor="middle"
           fontSize="17"
-          style={{ fill: '#7dfcff' }}
+          style={{ fill: 'rgb(var(--w-cyan-ink))' }}
           direction="rtl"
         >
           {b} في كلّ صفّ
@@ -98,7 +98,7 @@ export default function Rows({ a, b, setB, play, range }) {
               className="ll-counter"
               r={rad}
               style={{ transform: `translate(${RIGHT - (c.col + 0.5) * CW}px, ${TOP + (c.row + 0.5) * rh}px)` }}
-              fill={exact ? '#34d399' : c.rest ? '#fbbf24' : '#2dd4bf'}
+              fill={exact ? 'rgb(var(--w-green))' : c.rest ? 'rgb(var(--w-gold))' : 'rgb(var(--w-cyan))'}
             />
           ))}
         </g>
@@ -109,7 +109,7 @@ export default function Rows({ a, b, setB, play, range }) {
             direction="rtl"
             textAnchor="start"
             fontSize="19"
-            style={{ fill: exact ? '#6ee7b7' : '#5eead4' }}
+            style={{ fill: exact ? 'rgb(var(--w-green-ink))' : 'rgb(var(--w-cyan-ink))' }}
           >
             {L.q} {L.q > 10 ? 'صفًّا' : L.q > 2 ? 'صفوف' : L.q === 2 ? 'صفّان' : 'صفّ'}
           </text>
@@ -121,7 +121,7 @@ export default function Rows({ a, b, setB, play, range }) {
             direction="rtl"
             textAnchor="start"
             fontSize="19"
-            style={{ fill: '#fbbf24' }}
+            style={{ fill: 'rgb(var(--w-gold-ink))' }}
           >
             يبقى {L.r}
           </text>
@@ -137,12 +137,12 @@ export default function Rows({ a, b, setB, play, range }) {
           data-ll-wall
         >
           <rect x={wallX - 24} y={TOP - 16} width="48" height={H + 32} fill="transparent" />
-          <rect x={wallX - 5} y={TOP - 16} width="10" height={H + 32} rx="5" fill="#7dfcff" />
-          {!moved && <circle className="ll-pulse" cx={wallX} cy={TOP + H / 2} r="30" fill="#7dfcff" />}
-          <circle cx={wallX} cy={TOP + H / 2} r="19" fill="#7dfcff" stroke="#06262c" strokeWidth="3" />
+          <rect x={wallX - 5} y={TOP - 16} width="10" height={H + 32} rx="5" fill="rgb(var(--w-cyan))" />
+          {!moved && <circle className="ll-pulse" cx={wallX} cy={TOP + H / 2} r="30" fill="rgb(var(--w-cyan))" />}
+          <circle cx={wallX} cy={TOP + H / 2} r="19" fill="rgb(var(--w-cyan))" stroke="#06262c" strokeWidth="3" />
           <path
             d={`M ${wallX - 10} ${TOP + H / 2} l 6 -5 v 10 z M ${wallX + 10} ${TOP + H / 2} l -6 -5 v 10 z`}
-            fill="#06262c"
+            fill="rgb(var(--w-ground))"
           />
         </g>
         {!moved && (
@@ -152,7 +152,7 @@ export default function Rows({ a, b, setB, play, range }) {
             direction="rtl"
             textAnchor="start"
             fontSize="15"
-            style={{ fill: '#7dfcff', opacity: 0.9 }}
+            style={{ fill: 'rgb(var(--w-cyan-ink))', opacity: 0.9 }}
           >
             اسحب الجدار ← →
           </text>

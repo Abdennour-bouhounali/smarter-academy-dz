@@ -112,7 +112,14 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
     >
       <svg ref={svg} viewBox={`0 0 ${VW} ${VH}`} data-ll-bracket-tool data-n={x.n} data-q={x.q} data-over={x.over}>
         {/* the length a */}
-        <text x={X0 - 14} y={Y_GAP + 7} textAnchor="end" fontSize="18" direction="rtl" style={{ fill: '#e0f2fe' }}>
+        <text
+          x={X0 - 14}
+          y={Y_GAP + 7}
+          textAnchor="end"
+          fontSize="18"
+          direction="rtl"
+          style={{ fill: 'rgb(var(--w-ink))' }}
+        >
           الطول {a}
         </text>
         <rect
@@ -121,8 +128,8 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
           width={Math.max(2, a * u)}
           height={BAR}
           rx="5"
-          fill="rgba(234,252,255,.08)"
-          stroke="rgba(234,252,255,.55)"
+          fill="rgb(var(--w-ink) / 0.08)"
+          stroke="rgb(var(--w-ink) / 0.55)"
           strokeWidth="1.5"
         />
         <line
@@ -130,15 +137,29 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
           y1={Y_GAP - 26}
           x2={xa}
           y2={Y_PLANK + 26}
-          stroke="#fbbf24"
+          stroke="rgb(var(--w-gold-ink))"
           strokeWidth="2.5"
           strokeDasharray="6 5"
         />
-        <text x={xa} y={Y_GAP - 32} textAnchor="middle" fontSize="18" fontWeight="700" style={{ fill: '#fde68a' }}>
+        <text
+          x={xa}
+          y={Y_GAP - 32}
+          textAnchor="middle"
+          fontSize="18"
+          fontWeight="700"
+          style={{ fill: 'rgb(var(--w-gold-ink))' }}
+        >
           {a}
         </text>
         {/* the planks the hand lays */}
-        <text x={X0 - 14} y={Y_PLANK + 7} textAnchor="end" fontSize="18" direction="rtl" style={{ fill: '#e0f2fe' }}>
+        <text
+          x={X0 - 14}
+          y={Y_PLANK + 7}
+          textAnchor="end"
+          fontSize="18"
+          direction="rtl"
+          style={{ fill: 'rgb(var(--w-ink))' }}
+        >
           طول اللوح {b}
         </text>
         <g data-ll-planks-laid={x.n}>
@@ -151,7 +172,7 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
                 width={Math.max(1, w - gap)}
                 height={BAR - 6}
                 rx="3"
-                fill={k < x.q ? (x.exact ? '#34d399' : '#7dfcff') : '#fb7185'}
+                fill={k < x.q ? (x.exact ? 'rgb(var(--w-green))' : 'rgb(var(--w-cyan))') : '#fb7185'}
               />
             ))
           ) : (
@@ -162,7 +183,7 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
                 width={inside * w}
                 height={BAR - 6}
                 rx="3"
-                fill={x.exact ? '#34d399' : '#7dfcff'}
+                fill={x.exact ? 'rgb(var(--w-green))' : 'rgb(var(--w-cyan))'}
               />
               {x.n > x.q && (
                 <rect x={X0 + x.q * w} y={Y_PLANK - BAR / 2 + 3} width={w} height={BAR - 6} rx="3" fill="#fb7185" />
@@ -177,7 +198,7 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
               height={BAR - 6}
               rx="3"
               fill="none"
-              stroke="#fbbf24"
+              stroke="rgb(var(--w-gold-ink))"
               strokeWidth="2"
               strokeDasharray="5 4"
             />
@@ -185,8 +206,8 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
         </g>
         <g className="ll-handle" {...drag} tabIndex={0} onKeyDown={onKey} data-ll-plank-end>
           <rect x={X0 - 10} y={Y_PLANK - 24} width={X1 - X0 + 20} height="48" fill="transparent" />
-          {!moved && <circle className="ll-pulse" cx={xl} cy={Y_PLANK} r="22" fill="#fbbf24" />}
-          <circle cx={xl} cy={Y_PLANK} r="12" fill="#fde68a" stroke="#06262c" strokeWidth="3" />
+          {!moved && <circle className="ll-pulse" cx={xl} cy={Y_PLANK} r="22" fill="rgb(var(--w-gold))" />}
+          <circle cx={xl} cy={Y_PLANK} r="12" fill="rgb(var(--w-gold))" stroke="#06262c" strokeWidth="3" />
         </g>
         {/* what the planks make, compared with the length */}
         <text
@@ -196,7 +217,7 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
           fontSize="26"
           fontWeight="700"
           {...LTR}
-          style={{ ...LTR, fill: x.exact ? '#6ee7b7' : x.over ? '#fda4af' : '#e0f2fe' }}
+          style={{ ...LTR, fill: x.exact ? 'rgb(var(--w-green-ink))' : x.over ? '#be123c' : 'rgb(var(--w-ink))' }}
           data-ll-product
         >
           {`${x.n} × ${b} = ${x.laid} ${sign} ${a}`}
@@ -209,7 +230,7 @@ export default function Bracket({ a, b, play, report, start = 1 }) {
             fontSize="28"
             fontWeight="800"
             {...LTR}
-            style={{ ...LTR, fill: '#6ee7b7' }}
+            style={{ ...LTR, fill: 'rgb(var(--w-green-ink))' }}
             data-ll-bracket
           >
             {x.r === 0 ? `${a} ÷ ${b} = ${x.q}` : `${x.q} < ${a} ÷ ${b} < ${x.q + 1}`}
